@@ -3,7 +3,7 @@
   "patches-version": "dev",
   "enable-module-update": false,
   "youtube-morphe-anddea": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "youtube",
     "rv-brand": "morphe",
     "build-mode": "both",
@@ -23,7 +23,7 @@
     ]
   },
   "youtube-music-morphe-anddea": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "youtube-music",
     "rv-brand": "morphe",
     "build-mode": "both",
