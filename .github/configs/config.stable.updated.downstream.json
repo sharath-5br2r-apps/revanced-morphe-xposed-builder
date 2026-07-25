@@ -306,7 +306,7 @@
     ]
   },
   "instagram-morphe-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "instagram",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -324,7 +324,7 @@
     ]
   },
   "x-morphe-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "x",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -412,7 +412,7 @@
     ]
   },
   "discord-npatch-revenge": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "discord",
     "rv-brand": "npatch",
     "build-mode": "apk",
