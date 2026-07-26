@@ -199,7 +199,7 @@
     ]
   },
   "tiktok-morphe-tiktok": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "tiktok",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -216,7 +216,7 @@
     ]
   },
   "youtube-morphe-exp": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "youtube",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -235,7 +235,7 @@
     ]
   },
   "youtube-music-morphe-exp": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "youtube-music",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -396,7 +396,7 @@
     ]
   },
   "levilauncher-unlocked-viamorphe-bgmi": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "levilauncher-unlocked",
     "rv-brand": "viamorphe",
     "build-mode": "apk",

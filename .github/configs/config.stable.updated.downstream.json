@@ -396,7 +396,7 @@
     ]
   },
   "levilauncher-unlocked-viamorphe-bgmi": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "levilauncher-unlocked",
     "rv-brand": "viamorphe",
     "build-mode": "apk",

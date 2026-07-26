@@ -10,10 +10,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.36.0",
-    "prerelease": "v1.37.0-dev.2",
+    "prerelease": "v1.37.0-dev.3",
     "blocked": false,
     "stable_date": "2026-07-23T10:30:00Z",
-    "pre_date": "2026-07-25T12:46:45Z"
+    "pre_date": "2026-07-26T07:19:29Z"
   },
   "piko": {
     "repo": "crimera/piko",
@@ -113,10 +113,10 @@
   },
   "revenge": {
     "repo": "revenge-mod/revenge-xposed",
-    "stable": "1500",
-    "prerelease": "1500",
+    "stable": "1501",
+    "prerelease": "1501",
     "blocked": false,
-    "stable_date": "2026-07-25T20:12:59Z",
-    "pre_date": "2026-07-25T20:12:59Z"
+    "stable_date": "2026-07-26T06:34:59Z",
+    "pre_date": "2026-07-26T06:34:59Z"
   }
 }
