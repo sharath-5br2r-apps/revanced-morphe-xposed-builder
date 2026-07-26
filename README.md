@@ -330,12 +330,12 @@ Patches: [jasonwu1994/patches-1.14.0.mpp](https://github.com/jasonwu1994/Gboard-
 #### [Piko (Morphe)](https://github.com/crimera/piko)
 
 <details>
-<summary id="instagram-morphe-piko">Version: v435.0.0.37.76</summary>
+<summary id="instagram-morphe-piko">Version: v439.0.0.37.89</summary>
 
 <blockquote>
 
-[Release 2026-07-23](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260032)<br>
-Patches: [crimera/patches-3.8.0-dev.6.mpp](https://github.com/crimera/piko/releases/tag/v3.8.0-dev.6)
+[Release 2026-07-26](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260078)<br>
+Patches: [crimera/patches-3.9.0-dev.1.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.1)
 - Add settings
 - Allow user network certificate
 - Change like animation
@@ -348,9 +348,9 @@ Patches: [crimera/patches-3.8.0-dev.6.mpp](https://github.com/crimera/piko/relea
 - Disable analytics
 - Disable comments
 - Disable discover people
-- Disable double tap like
 - Disable explore
 - Disable highlights
+- Disable onboarding permission prompts
 - Disable screenshot detection
 - Disable stories
 - Disable story flipping
@@ -610,8 +610,8 @@ Patches: [MorpheApp/patches-1.36.0-dev.8.mpp](https://github.com/MorpheApp/morph
   
 <blockquote>
 
-[Release 2026-07-24](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260047)<br>
-Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/releases/v1.7.0), [crimera/patches-3.8.0-dev.6.mpp](https://github.com/crimera/piko/releases/tag/v3.8.0-dev.6)
+[Release 2026-07-26](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260078)<br>
+Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/releases/v1.7.0), [crimera/patches-3.9.0-dev.1.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.1)
 - Abstract shim layer
 - Abstract shim layer for method
 - Abstract shim layer for native library
@@ -668,6 +668,7 @@ Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/relea
 - Import/Export login token
 - Legacy share links
 - Log server response
+- More information on profile
 - Native downloader
 - Native reader mode
 - Native translator
