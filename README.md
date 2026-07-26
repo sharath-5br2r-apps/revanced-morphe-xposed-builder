@@ -404,8 +404,8 @@ Patches: [crimera/patches-3.8.0-dev.6.mpp](https://github.com/crimera/piko/relea
 
 <blockquote>
 
-[Release 2026-07-21](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
-Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
+[Release 2026-07-26](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260075)<br>
+Patches: [Paresh-Maheshwari/patches-1.19.1-dev.1.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.1-dev.1)
 - Bypass signature check
 - Enable all codecs
 - Enable screen mirroring
