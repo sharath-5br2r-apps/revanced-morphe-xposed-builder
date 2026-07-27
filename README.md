@@ -334,8 +334,8 @@ Patches: [jasonwu1994/patches-1.14.0.mpp](https://github.com/jasonwu1994/Gboard-
 
 <blockquote>
 
-[Release 2026-07-26](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260078)<br>
-Patches: [crimera/patches-3.9.0-dev.1.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.1)
+[Release 2026-07-27](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260087)<br>
+Patches: [crimera/patches-3.9.0-dev.2.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.2)
 - Add settings
 - Allow user network certificate
 - Change like animation
@@ -610,8 +610,8 @@ Patches: [MorpheApp/patches-1.36.0-dev.8.mpp](https://github.com/MorpheApp/morph
   
 <blockquote>
 
-[Release 2026-07-26](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260078)<br>
-Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/releases/v1.7.0), [crimera/patches-3.9.0-dev.1.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.1)
+[Release 2026-07-27](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260087)<br>
+Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/releases/v1.7.0), [crimera/patches-3.9.0-dev.2.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.2)
 - Abstract shim layer
 - Abstract shim layer for method
 - Abstract shim layer for native library
