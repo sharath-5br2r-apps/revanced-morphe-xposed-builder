@@ -324,7 +324,7 @@
     ]
   },
   "x-morphe-piko": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "x",
     "rv-brand": "morphe",
     "build-mode": "apk",

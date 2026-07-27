@@ -199,7 +199,7 @@
     ]
   },
   "tiktok-morphe-tiktok": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "tiktok",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -324,7 +324,7 @@
     ]
   },
   "x-morphe-piko": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "x",
     "rv-brand": "morphe",
     "build-mode": "apk",
