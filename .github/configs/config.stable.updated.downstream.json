@@ -129,7 +129,7 @@
     ]
   },
   "prime-video-morphe-hoodles": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "prime-video",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -199,7 +199,7 @@
     ]
   },
   "tiktok-morphe-tiktok": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "tiktok",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -240,7 +240,7 @@
     "rv-brand": "morphe-exp",
     "build-mode": "both",
     "arch": "both64",
-    "version": "9.28.51",
+    "version": "9.29.54",
     "cli-source": "MorpheApp/morphe-cli",
     "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",

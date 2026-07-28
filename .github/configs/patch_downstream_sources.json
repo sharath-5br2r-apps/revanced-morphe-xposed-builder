@@ -81,11 +81,11 @@
   },
   "icysymmetra": {
     "repo": "icysymmetra/tiktok-patches-for-morphe",
-    "stable": "v0.4.0",
-    "prerelease": "v0.4.0",
+    "stable": "v0.4.1",
+    "prerelease": "v0.4.1",
     "blocked": false,
-    "stable_date": "2026-07-26T20:05:40Z",
-    "pre_date": "2026-07-26T20:05:40Z"
+    "stable_date": "2026-07-28T10:28:30Z",
+    "pre_date": "2026-07-28T10:28:30Z"
   },
   "x-shim": {
     "enabled": false,
