@@ -449,7 +449,7 @@
     ]
   },
   "amazon-alexa-signed": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "amazon-alexa",
     "rv-brand": "signed",
     "build-mode": "apk",
