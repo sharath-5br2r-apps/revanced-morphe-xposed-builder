@@ -112,7 +112,7 @@
     ]
   },
   "github-morphe-hoodles": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "github",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -129,7 +129,7 @@
     ]
   },
   "prime-video-morphe-hoodles": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "prime-video",
     "rv-brand": "morphe",
     "build-mode": "apk",
