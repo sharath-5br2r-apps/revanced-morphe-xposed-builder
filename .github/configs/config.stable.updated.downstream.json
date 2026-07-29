@@ -412,7 +412,7 @@
     ]
   },
   "discord-npatch-revenge": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "discord",
     "rv-brand": "npatch",
     "build-mode": "apk",
@@ -449,7 +449,7 @@
     ]
   },
   "amazon-alexa-signed": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "amazon-alexa",
     "rv-brand": "signed",
     "build-mode": "apk",
