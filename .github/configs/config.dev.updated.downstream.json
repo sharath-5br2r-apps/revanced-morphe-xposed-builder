@@ -112,7 +112,7 @@
     ]
   },
   "github-morphe-hoodles": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "github",
     "rv-brand": "morphe",
     "build-mode": "apk",
