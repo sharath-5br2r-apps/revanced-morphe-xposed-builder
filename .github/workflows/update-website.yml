@@ -1,21 +1,45 @@
-name: Update Website
+name: Update Releases Catalog Website
 
 on:
   workflow_call:
+  schedule:
+    - cron: "0 * * * *" # 02:00 AM UTC everyday
   workflow_dispatch:
 
 concurrency:
-  group: website
+  group: catalog
   cancel-in-progress: true
 
 jobs:
-  dispatch_update:
+  update-catalog:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
     timeout-minutes: 10
+
     steps:
-      - name: Dispatch Website Cache Update
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with: 
+          ref: gh-pages
+
+      - name: Fetch releases from GitHub API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl -X POST https://api.github.com/repos/nullcpy/nullcpy.github.io/dispatches \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: token ${{ secrets.WEBSITE_DISPATCH_TOKEN }}" \
-          -d '{"event_type": "update-catalog-cache"}'
+          gh api --paginate repos/$GITHUB_REPOSITORY/releases > releases_new.json
+          # Validate: must be a non-empty JSON array
+          COUNT=$(jq 'if type == "array" then length else 0 end' releases_new.json)
+          if [ "$COUNT" -eq 0 ]; then
+            echo "::error::GitHub API returned an empty releases array. Aborting to preserve existing cache."
+            exit 1
+          fi
+          echo "Fetched $COUNT releases. Updating cache."
+          mv releases_new.json releases.json
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "update releases catalog"
+          file_pattern: releases.json
+          branch: gh-pages

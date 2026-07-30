@@ -10,3 +10,14 @@ cmpr
 __pycache__/
 build.json
 /test
+.env
+*.keystore
+/downloads
+/configs/config.dev.predl.toml
+/configs/config.stable.predl.toml
+/configs/config.dev.toml
+/configs/config.stable.toml
+/.github/configs/app_versions.json
+/build.tmp
+/*.json
+!/releases.json

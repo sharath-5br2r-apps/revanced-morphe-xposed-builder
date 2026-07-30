@@ -1,0 +1,17 @@
+
+[amazon-alexa-signed]
+enabled = true
+app-name = "amazon-alexa"
+rv-brand = "signed"
+build-mode = "apk"
+patches-source = "none"
+patches-source-host = "none"
+cli-source = "apksigner"
+cli-source-host = "none"
+arch = "all"
+uptodown-dlurl = "https://alexa.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
+dpi = "nodpi anydpi auto"
+[[amazon-alexa-signed.patches]]
+source = "none"
+host = "none"

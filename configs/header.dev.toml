@@ -1,0 +1,3 @@
+enable-module-update = true
+patches-version = "dev"
+parallel-jobs = 1

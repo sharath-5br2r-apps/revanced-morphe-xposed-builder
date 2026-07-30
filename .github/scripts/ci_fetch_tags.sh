@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-PATCH_FILE=".github/configs/patch_sources.json"
+PATCH_FILE=".github/configs/patch_downstream_sources.json"
 BASE_JSON=$(cat "$PATCH_FILE")
 
 fetch_gitlab_releases() {

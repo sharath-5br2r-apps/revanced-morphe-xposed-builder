@@ -144,7 +144,11 @@ for table_name in $(toml_get_table_names); do
 			abort "ERROR: include-stock '${app_args[include_stock]}' is not a valid option for '${table_name}': only 'disable', 'merged' or 'split' is allowed"
 		fi
 	} || app_args[include_stock]=merged
-
+	app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || app_args[apkmirror_example_url]=""
+	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
+	app_args[github_apk_filter]=$(toml_get "$t" github-apk-filter) || app_args[github_filter]=""
+	app_args[github_apk_exclude_filter]=$(toml_get "$t" github-apk-exclude-filter) || app_args[github_apk_exclude_filter]=""	
+	app_args[github_apk_pkgname]=$(toml_get "$t" github-apk-pkgname) || app_args[github_apk_pkgname]=""
 	for dl_from in "${DL_SRCS[@]}"; do
 		if app_args[${dl_from}_dlurl]=$(toml_get "$t" "${dl_from}-dlurl"); then
 			app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%/}
@@ -222,5 +226,10 @@ if [ -n "$SKIPPED" ]; then
 	log "\nSkipped:"
 	log "$SKIPPED"
 fi
-
+applied_list=$(grep -oP '(?<=INFO: ")[^"\n]+(?=" succeeded)|(?<=INFO: Applied: ).*')
+if [ -n "$applied_list" ]; then
+	log "\n<details><summary>Applied Patches</summary>"
+	log "\n$applied_list"
+	log "\n</details>"
+fi
 pr "Done"

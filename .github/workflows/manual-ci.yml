@@ -1,5 +1,5 @@
 name: Manual CI
-
+permissions: write-all
 on:
   workflow_dispatch:
     inputs:
@@ -7,21 +7,41 @@ on:
         description: "Select the config file to use"
         required: true
         type: choice
-        default: ".github/configs/config.manual.toml"
+        default: "configs/config.toml"
         options:
-          - ".github/configs/config.manual.toml"
-          - ".github/configs/config.dev.updated.json"
-          - ".github/configs/config.stable.updated.json"
-
+          - "configs/config.dev.toml"
+          - "configs/config.stable.toml"
+          - "configs/config.manual.toml"
+          - ".github/configs/config.dev.updated.downstream.json"
+          - ".github/configs/config.stable.updated.downstream.json"
+          - "Enter Manually"
+      manual_config_file:
+        description: "Enter the config file path manually (only if 'Enter Manually' is selected above)"
+        required: false
+        type: string
 concurrency:
   group: ci
   cancel-in-progress: false
 
 jobs:
+  resolve_config:
+    runs-on: ubuntu-latest
+    outputs:
+      config_file: ${{ steps.config.outputs.config_file }}
+    steps:
+      - name: Resolve config file
+        id: config
+        run: |
+          if [[ "${{ inputs.config_file }}" == "Enter Manually" ]]; then
+            echo "CONFIG_FILE=${{ inputs.manual_config_file }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "CONFIG_FILE=${{ inputs.config_file }}" >> "$GITHUB_OUTPUT"
+          fi
   build_manual:
     uses: ./.github/workflows/build.yml
+    needs: resolve_config
     with:
-      config_file: ${{ inputs.config_file }}
+      config_file: ${{ needs.resolve_config.outputs.config_file }}
     secrets: inherit
 
   trigger_cleanup:
@@ -36,10 +56,3 @@ jobs:
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
 
-  trigger_notify_failure:
-    needs: [build_manual]
-    if: ${{ failure() }}
-    uses: ./.github/workflows/notify.yml
-    with:
-      workflow_name: "Manual CI"
-    secrets: inherit

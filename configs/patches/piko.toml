@@ -1,0 +1,37 @@
+enable-module-update = true
+patches-version = "dev"
+[instagram-morphe-piko]
+enabled = true
+app-name = "instagram"
+rv-brand = "morphe"
+build-mode = "apk"
+arch = "both64"
+patcher-args = "--continue-on-error"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://instagram.en.uptodown.com/android"
+#archive-dlurl = "https://archive.org/download/geologically/apks/com.instagram.android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
+dpi = "nodpi anydpi auto"
+[[instagram-morphe-piko.patches]]
+source = "crimera/piko"
+brand = "piko"
+
+[x-morphe-piko]
+enabled = true 
+app-name = "x"
+rv-brand = "morphe"
+build-mode = "apk"
+version = "latest"
+patcher-args = "--continue-on-error"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://twitter.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
+dpi = "nodpi anydpi auto"
+[[x-morphe-piko.patches]]
+source = "inotia00/x-shim"
+host = "gitlab"
+brand = "xshim"
+[[x-morphe-piko.patches]]
+source = "crimera/piko"
+included-patches = "'Dynamic Color'"
+brand = "piko"

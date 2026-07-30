@@ -1,0 +1,15 @@
+enable-module-update = true
+patches-version = "dev"
+[speedtest-morphe-xtra]
+enabled = true
+app-name = "speedtest"
+rv-brand = "morphe"
+build-mode = "apk"
+arch = "both64"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://speedtest-net-mobile.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/ookla/speedtest"
+dpi = "nodpi anydpi auto"
+[[speedtest-morphe-xtra.patches]]
+source = "BholeyKaBhakt/revanced-patches-xtra"
+brand = "xtra"

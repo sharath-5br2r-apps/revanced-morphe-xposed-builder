@@ -25,7 +25,7 @@ jq -rn --argjson new "$TAGS_NEW" --argjson old "$TAGS_OLD" '
 ' > active.prerelease.json
 
 if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ]; then
-  STABLE_CONFIGS=$(find .github/configs/patches -name "*.toml" ! -name "*dev*.toml" | sort)
+  STABLE_CONFIGS=$(find configs/patches -name "*.toml" ! -name "*dev*.toml" | sort)
   if [ -n "$STABLE_CONFIGS" ]; then
     # shellcheck disable=SC2086
     yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $STABLE_CONFIGS > config.stable.json
@@ -40,15 +40,20 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "ReVanced/revanced-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) then . else (.value.enabled = false) end
+    # Safely extracts sources from the new nested patches array format
+        (if ($app.patches | type == "array") then [$app.patches[].source | ascii_downcase] else ["revanced/revanced-patches"] end) as $srcs |
+        if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) then
+          .
+        else
+          (.value.enabled = false)
+        end
       else . end
     )
-  ' config.stable.json > .github/configs/config.stable.updated.json
+  ' config.stable.json > .github/configs/config.stable.updated.downstream.json
 fi
 
 if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ]; then
-  DEV_CONFIGS=$(find .github/configs/patches -name "*.toml" ! -name "*stable*.toml" | sort)
+  DEV_CONFIGS=$(find configs/patches -name "*.toml" ! -name "*stable*.toml" | sort)
   if [ -n "$DEV_CONFIGS" ]; then
     # shellcheck disable=SC2086
     yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $DEV_CONFIGS > config.dev.json
@@ -63,8 +68,11 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] 
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "ReVanced/revanced-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        
+        (if ($app.patches | type == "array")
+        then [$app.patches[].source | ascii_downcase]
+        else ["revanced/revanced-patches"]
+        end) as $srcs |
+
         # Check if the app has any source where pre_date > stable_date
         (
           $srcs | map(
@@ -75,8 +83,12 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] 
           ) | any
         ) as $has_valid_dev |
 
-        if (($srcs - $active[0]) != $srcs) or (($activeApps[0] | index($k)) and $has_valid_dev) then . else (.value.enabled = false) end
-      else . end
+        if (($srcs - $active[0]) != $srcs) or (($activeApps[0] | index($k)) and $has_valid_dev) then
+          .
+        else
+          (.value.enabled = false)
+        end
+        else . end
     )
-  ' config.dev.json > .github/configs/config.dev.updated.json
+  ' config.dev.json > .github/configs/config.dev.updated.downstream.json
 fi

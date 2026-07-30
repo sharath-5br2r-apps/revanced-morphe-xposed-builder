@@ -1,0 +1,16 @@
+enable-module-update = true
+patches-version = "dev"
+[discord-npatch-revenge]
+enabled = true 
+app-name = "discord"
+rv-brand = "npatch"
+build-mode = "apk"
+arch = "all"
+cli-source = "7723mod/NPatch"
+apkcombo-dlurl = "https://apkcombo.com/discord/com.discord/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/"
+dpi = "nodpi anydpi auto"
+uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
+[[discord-npatch-revenge.patches]]
+source = "revenge-mod/revenge-xposed"
+brand = "revenge"

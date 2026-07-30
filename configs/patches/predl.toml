@@ -1,0 +1,54 @@
+enable-module-update = true
+patches-version = "dev"
+
+[winlator-viamorphe-pubgvn]
+enabled = true
+app-name = "winlator"
+rv-brand = "viamorphe"
+build-mode = "apk"
+cli-source = "MorpheApp/morphe-desktop"
+local-dlurl = "downloads/winlator.apk"
+[[winlator-viamorphe-pubgvn.patches]]
+source = "MorpheApp/morphe-patches"
+args = "-OpackageName='com.vng.pubgmobile'"
+included-patches = "'Change Package Name'"
+brand = "pubgvn"
+
+[zalith-launcher-2-plus-viamorphe-codm]
+enabled = true
+app-name = "zalith-launcher-2-plus"
+rv-brand = "viamorphe"
+build-mode = "apk"
+cli-source = "MorpheApp/morphe-desktop"
+local-dlurl = "downloads/zalith-launcher-2-plus.apk"
+[[zalith-launcher-2-plus-viamorphe-codm.patches]]
+source = "MorpheApp/morphe-patches"
+args = "-OpackageName='com.activision.callofduty.shooter'"
+included-patches = "'Change Package Name'"
+brand = "codm"
+
+[geode-viamorphe-pubgkr]
+enabled = true
+app-name = "geode"
+rv-brand = "viamorphe"
+build-mode = "apk"
+cli-source = "MorpheApp/morphe-desktop"
+local-dlurl = "downloads/geode.apk"
+[[geode-viamorphe-pubgkr.patches]]
+source = "MorpheApp/morphe-patches"
+args = "-OpackageName='com.pubg.krmobile'"
+included-patches = "'Change Package Name'"
+brand = "pubgkr"
+
+[levilauncher-unlocked-viamorphe-bgmi]
+enabled = true
+app-name = "levilauncher-unlocked"
+rv-brand = "viamorphe"
+build-mode = "apk"
+cli-source = "MorpheApp/morphe-desktop"
+local-dlurl = "downloads/levilauncher.apk"
+[[levilauncher-unlocked-viamorphe-bgmi.patches]]
+source = "MorpheApp/morphe-patches"
+args = "-OpackageName='com.pubg.imobile'"
+included-patches = "'Change Package Name'"
+brand = "bgmi"

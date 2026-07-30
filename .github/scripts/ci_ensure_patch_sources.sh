@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 mkdir -p .github/configs
-PATCH_FILE=".github/configs/patch_sources.json"
+PATCH_FILE=".github/configs/patch_downstream_sources.json"
 
 if [ ! -f "$PATCH_FILE" ]; then
   cat > "$PATCH_FILE" << 'EOF'

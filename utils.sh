@@ -1,18 +1,38 @@
 #!/usr/bin/env bash
+if [ -f .env ]; then
+  echo >&2 -e "\033[0;32m[+] Using .env file for keystore and signing.\033[0m"
+  source .env
+fi
+if [ -z "${KEYSTORE:-}" ] || [ -z "${KEYSTORE_PASS:-}" ] || [ -z "${KEYSTORE_P12:-}" ] || [ -z "${KEYSTORE_ALIAS:-}" ]; then
+  echo >&2 -e "\033[0;33m[!] Keystore information is not fully set. Please ensure KEYSTORE, KEYSTORE_PASS, KEYSTORE_P12, and KEYSTORE_ALIAS are defined in .env or environment variables.\033[0m"
+  echo >&2 -e "\033[0;33m[!] Auto generating values for KEYSTORE, KEYSTORE_PASS, KEYSTORE_P12, and KEYSTORE_ALIAS.\033[0m"
+  if [ ${GITHUB_REPOSITORY:-} ]; then
+	echo >&2 -e "::warning::utils.sh [!] Keystore information is not fully set. Please ensure KEYSTORE, KEYSTORE_PASS, KEYSTORE_P12, and KEYSTORE_ALIAS are defined in .env or environment variables.\n"
+  fi
+  source .env.default
+fi
 
+set -u
 MODULE_TEMPLATE_DIR="module"
 CWD=$(pwd)
 TEMP_DIR="temp"
 BIN_DIR="bin"
 BUILD_DIR="build"
-DL_SRCS=("direct" "github" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
+DL_SRCS=("local" "directv2" "direct" "github" "githubarchive" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
 BUILD_JSON_FILE="build.json"
 PATCH_OUTPUT=""
+mkdir -p "$TEMP_DIR" "$BIN_DIR" "$BUILD_DIR"
+base64 -d <<<"$KEYSTORE_P12" >"$TEMP_DIR/ks-p12.keystore"
+base64 -d <<<"$KEYSTORE" >"$TEMP_DIR/ks.keystore"
 
-if [ "${GITHUB_TOKEN-}" ]; then GH_HEADER="Authorization: token ${GITHUB_TOKEN}"; else GH_HEADER=; fi
+if [ "${GH_TOKEN-}" ]; then GH_HEADER="Authorization: token ${GH_TOKEN}"; else GH_HEADER=; fi
 NEXT_VER_CODE=${NEXT_VER_CODE:-$(date +'%Y%m%d')}
 OS=$(uname -o)
-
+if [[ $(uname -s ) == *"NT"* ]]; then
+	javapathsep=";"
+else
+	javapathsep=":"
+fi
 declare -gA __PREBUILTS_CACHE__
 declare -gA __PATCHES_LIST_CACHE__
 declare -gA __PATCH_VER_CACHE__
@@ -21,7 +41,7 @@ declare -gA __PKG_VERS_CACHE__
 toml_prep() {
 	if [ ! -f "$1" ]; then return 1; fi
 	if [ "${1##*.}" == toml ]; then
-		__TOML__=$($TOML --output json --file "$1" .)
+		__TOML__=$(yq -o=json -I=0 "$1")
 	elif [ "${1##*.}" == json ]; then
 		__TOML__=$(cat "$1")
 	else abort "config extension not supported"; fi
@@ -107,6 +127,8 @@ source_release_pick_from_list() {
 		github)
 			if [ "$mode" = dev ]; then
 				jq -e -c 'map(select(.prerelease == true and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
+      		elif [ "$mode" = absolutelatest ]
+        		jq -e -c 'map(select(.tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
 			else
 				jq -e -c 'map(select(.prerelease != true and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
 			fi
@@ -114,6 +136,8 @@ source_release_pick_from_list() {
 		gitlab)
 			if [ "$mode" = dev ]; then
 				jq -e -c 'map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)")))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
+      		elif [ "$mode" = absolutelatest ]
+        		jq -e -c 'map(select(.tag_name != null and .tag_name != "")) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
 			else
 				jq -e -c 'map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)") | not))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
 			fi
@@ -122,8 +146,19 @@ source_release_pick_from_list() {
 	esac
 }
 
+get_bcprov() {
+    if [ -f "$TEMP_DIR/bcprov.jar" ] && [ -f "$TEMP_DIR/bc.security" ]; then return 0; fi
+    local LAST_PROV bcversion
+    bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+') || return 1
+    pr "Downloading Bouncy Castle Provider"
+    wget -qO $TEMP_DIR/bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$bcversion/bcprov-jdk18on-$bcversion.jar" || return 1
+    LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security" | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
+    echo "security.provider.$((LAST_PROV + 1))=org.bouncycastle.jce.provider.BouncyCastleProvider" > $TEMP_DIR/bc.security
+}
+
 get_apkeditor() {
 	if [ -f "$TEMP_DIR/apkeditor.jar" ]; then return 0; fi
+  pr "Downloading APKEditor"
 	local api_resp dl_url
 	api_resp=$(gh_req "https://api.github.com/repos/REAndroid/APKEditor/releases/latest" -) || true
 	dl_url=$(echo "$api_resp" | jq -r '.assets[]? | select(.name | endswith(".jar")) | .browser_download_url' | head -1) || true
@@ -134,7 +169,7 @@ get_apkeditor() {
 }
 
 get_prebuilts() {
-	local cache_key="${1}_${2}_${3}_${4}_${5}_${6}"
+	local cache_key="${1}_${2}_${3}_${4}"
 	if [ -n "${__PREBUILTS_CACHE__["$cache_key"]:-}" ]; then
 		echo "${__PREBUILTS_CACHE__["$cache_key"]}"
 		return 0
@@ -146,11 +181,11 @@ get_prebuilts() {
 }
 
 _get_prebuilts() {
-	local cli_host=$1 cli_src=$2 cli_ver=$3 patches_host_list=$4 patches_src_list=$5 patches_ver_list=$6
+  local cli_host=$1 cli_src=$2 cli_ver=$3 patches_data=$4
 	
-	local first_patch_src
-	first_patch_src=$(list_args "$patches_src_list" | tr -d \"\' | head -n 1)
-	pr "Getting prebuilts (${first_patch_src%/*})" >&2
+  local first_patch_src
+  first_patch_src=$(jq -r '.[0].source // empty' <<<"$patches_data")
+  pr "Getting prebuilts (${first_patch_src%/*})" >&2
 
 	local cl_dir=${first_patch_src%/*}
 	cl_dir=${TEMP_DIR}/${cl_dir,,}-rv
@@ -158,15 +193,22 @@ _get_prebuilts() {
 
 	local host=$cli_host src=$cli_src tag="CLI" ver=${cli_ver} fprefix="cli"
 	host=${host,,}
-	if ! isoneof "$host" github gitlab; then abort "source host '$host' is not supported"; fi
+	if ! isoneof "$host" github gitlab none; then abort "source host '$host' is not supported"; fi
 
 	local grab_cl=false
 	local dir=${src%/*}
 	dir=${TEMP_DIR}/${dir,,}-rv
 	[ -d "$dir" ] || mkdir "$dir"
-
+  	if [[ "$host" != "none" ]]; then
 	local rv_rel release resp tag_name matches asset name url
 	rv_rel=$(source_release_api_base "$host" "$src") || return 1
+	if [ "$ver" = "absolutelatest" ]; then
+		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		ver=$(source_release_pick_from_list "$host" absolutelatest <<<"$resp" | jq -r '.tag_name') || true
+		if [ -z "$ver" ] || [ "$ver" = "null" ]; then
+			ver=$(jq -e -r '.[].tag_name' <<<"$resp" | get_highest_ver) || return 1
+		fi
+	fi	
 	if [ "$ver" = "dev" ]; then
 		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 		ver=$(source_release_pick_from_list "$host" dev <<<"$resp" | jq -r '.tag_name') || true
@@ -226,27 +268,27 @@ _get_prebuilts() {
 		tag_name=v${tag_name%.*}
 	fi
 
-	echo -n "$file "
+	echo "$file"
+	else
+		pr "Not Getting anything as source is none"
+  	fi
 
-	local IFS=$'\n'
-	local p_srcs=($(list_args "$patches_src_list" | tr -d \"\'))
-	local p_hosts=($(list_args "$patches_host_list" | tr -d \"\'))
-	local p_vers=($(list_args "$patches_ver_list" | tr -d \"\'))
-	unset IFS
+
 	for i in "${!p_srcs[@]}"; do
 		local host="${p_hosts[$i]:-${p_hosts[0]}}"
 		local src="${p_srcs[$i]}"
 		local ver="${p_vers[$i]:-${p_vers[0]}}"
 		
 		host=${host,,}
-		if ! isoneof "$host" github gitlab; then abort "source host '$host' is not supported"; fi
+		if ! isoneof "$host" github gitlab none; then abort "source host '$host' is not supported"; fi
 		local tag="Patches" fprefix="patches"
 		local grab_cl=true
 		
 		local dir=${src%/*}
 		dir=${TEMP_DIR}/${dir,,}-rv
 		[ -d "$dir" ] || mkdir "$dir"
-		
+		if [[ $host != "none" ]]; then
+
 		local rv_rel release resp tag_name matches asset name url
 		rv_rel=$(source_release_api_base "$host" "$src") || return 1
 		if [ "$ver" = "dev" ]; then
@@ -332,7 +374,7 @@ _get_prebuilts() {
 			if ! (
 				mkdir -p "${file}-zip" || return 1
 				unzip -qo "${file}" -d "${file}-zip" || return 1
-				java -cp "${BIN_DIR}/paccer.jar:${BIN_DIR}/dexlib2.jar" com.jhc.Main "${file}-zip/extensions/shared.${extensions_ext}" "${file}-zip/extensions/shared-patched.${extensions_ext}" || return 1
+				java -cp "${BIN_DIR}/paccer.jar$javapathsep${BIN_DIR}/dexlib2.jar" com.jhc.Main "${file}-zip/extensions/shared.${extensions_ext}" "${file}-zip/extensions/shared-patched.${extensions_ext}" || return 1
 				mv -f "${file}-zip/extensions/shared-patched.${extensions_ext}" "${file}-zip/extensions/shared.${extensions_ext}" || return 1
 				rm "${file}" || return 1
 				cd "${file}-zip" || abort
@@ -343,20 +385,42 @@ _get_prebuilts() {
 			rm -r "${file}-zip" || :
 		fi
 		
-		echo -n "$file "
+		echo -e "{\"$src\": {\"file\": \"$file\", \"version\": \"$tag_name\"}}" 
+		else
+			pr "Not Getting anything as source is none"
+		fi
 	done
 	echo
 }
 
 set_prebuilts() {
 	APKSIGNER="${BIN_DIR}/apksigner.jar"
-	local arch
+	local arch kernel ext 
 	arch=$(uname -m)
+	kernel=$(uname -s)
+	if [ "$kernel" = Linux ]; then kernel=linux; fi 
 	if [ "$arch" = aarch64 ]; then arch=arm64; elif [ "${arch:0:5}" = "armv7" ]; then arch=arm; fi
-	HTMLQ="${BIN_DIR}/htmlq/htmlq-${arch}"
-	AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}"
-	TOML="${BIN_DIR}/toml/tq-${arch}"
-}
+	if [[ "$kernel" = *"NT"* ]]; then kernel=windows; ext=.exe; else ext=; fi
+	HTMLQ="${BIN_DIR}/htmlq/htmlq-${kernel}-${arch}${ext}"
+	if [ ! -f "$HTMLQ" ]; then
+	    epr "htmlq binary isnt currenly available for $kernel $arch. Currently not supported."
+		exit 1
+	fi
+	AAPT2=$(command -v aapt2) || true
+	if [ -z "$AAPT2" ]; then
+		wpr "aapt2 not found in PATH, searching in Android SDK..."
+		if [[ -d "${ANDROID_HOME:-}" ]]; then
+			AAPT2=$(find /usr/local/lib/android/sdk/build-tools -name aapt2 | sort -r | head -n 1)
+		else
+			epr "Cannot Find aapt2, please install Android SDK or add aapt2 to PATH"
+			if [ $(uname -o) = Android ]; then
+				epr "On Android, you can install aapt2 with 'pkg install aapt2' or 'apt install aapt2'"
+			fi
+			exit 1
+		fi
+	fi
+	pr "Using aapt2: $AAPT2"
+	command -v yq >/dev/null 2>&1 || abort "\`yq\` is not installed. install it with 'apt install yq' or equivalent"}
 
 config_update() {
 	if [ ! -f build.md ]; then abort "build.md not available"; fi
@@ -481,7 +545,7 @@ get_patch_last_supported_ver() {
 }
 
 _get_patch_last_supported_ver() {
-	local list_patches=$1 pkg_name=$2 inc_sel=${3:-} _exc_sel=${4:-} _exclusive=${5:-} cli_source=${6:-} # TODO: resolve using all of these
+	local list_patches=$1 pkg_name=$2 inc_sel="${3:-}" _exc_sel="${4:-}" _exclusive=${5:-} cli_source=${6:-} # TODO: resolve using all of these
 	local op
 	if [ "$inc_sel" ]; then
 		if ! op=$(awk '{$1=$1}1' <<<"$list_patches"); then
@@ -490,7 +554,7 @@ _get_patch_last_supported_ver() {
 		fi
 		local ver vers="" NL=$'\n'
 		while IFS= read -r line; do
-			line="${line:1:${#line}-2}"
+			#line="${line:1:${#line}-2}"
 			ver=$(sed -n "/^Name: $line\$/,/^\$/p" <<<"$op" | sed -n "/^Compatible versions:\$/,/^\$/p" | tail -n +2)
 			vers=${ver}${NL}
 		done <<<"$(list_args "$inc_sel")"
@@ -547,15 +611,15 @@ patches_list_versions() {
 _patches_list_versions() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 cli_source=$4 extra_args=${5:-} op
 	local cli_source_l="${cli_source,,}"
-	if [[ "$cli_source_l" == *"npatch"* ]] || [[ "$cli_source_l" == *"lspatch"* ]]; then
+	if [[ "$cli_source_l" == *"npatch"* ]] || [[ "$cli_source_l" == *"lspatch"* ]] || [[ "$cli_source_l" == "apksigner" ]]; then
 		echo ""
 		return 0
 	fi
 
-	# Build arg strings for each jar in space-separated patches_jar
-	local IFS=$'\n'
-	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
-	unset IFS
+	# Build arg strings for each jar fromb jsonn 
+	local -a p_jars
+	mapfile -t p_jars < <(jq -r '.[] | .file' <<<"$patches_jar")
+
 	local p_args_short="" p_args_long=""
 	for j in "${p_jars[@]}"; do
 		p_args_short+="-p '$j' "
@@ -591,14 +655,13 @@ patches_list() {
 _patches_list() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 cli_source=$4 op
 	local cli_source_l="${cli_source,,}"
-	if [[ "$cli_source_l" == *"npatch"* ]] || [[ "$cli_source_l" == *"lspatch"* ]]; then
-		echo "Name: xposed-module-dummy"
+	if [[ "$cli_source_l" == *"npatch"* ]] || [[ "$cli_source_l" == *"lspatch"* ]] || [[ "$cli_source_l" == "apksigner" ]]; then
+		echo "Name: dummy"
 		return 0
 	fi
-	# Build arg strings for each jar in space-separated patches_jar
-	local IFS=$'\n'
-	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
-	unset IFS
+	# Build arg strings for each jar from jsonn
+	local -a p_jars
+	mapfile -t p_jars < <(jq -cr '.[] | .file' <<<"$patches_jar")
 	local p_args_short="" p_args_long="" p_args_pos=""
 	for j in "${p_jars[@]}"; do
 		p_args_short+="-p '$j' "
@@ -642,7 +705,7 @@ merge_splits() {
 		return 1
 	fi
 	# sign the merged stock apk
-	if ! OP=$(java -jar "$APKSIGNER" sign --ks ks-p12.keystore --ks-pass pass:123456789 --key-pass pass:123456789 --ks-key-alias jhc \
+	if ! OP=$(java -jar "$APKSIGNER" sign --ks $TEMP_DIR/ks-p12.keystore --ks-pass pass:$KEYSTORE_PASS --key-pass pass:$KEYSTORE_PASS --ks-key-alias $KEYSTORE_ALIAS \
 		--out "${output}" "${output}-unsigned"); then
 		epr "apksigner error: $OP"
 		return 1
@@ -679,7 +742,31 @@ _trawl_8191_get() {
 	return 1
 }
 
-
+_fs_8192_get() {
+	local url=$1 referer=${2:-}
+	local max_retries=4 attempt
+	local fs_url="${FLARESOLVERR_URL:-http://localhost:8192}/v1"
+	local extra_headers=""
+	[ -n "$referer" ] && extra_headers=",\"headers\":{\"Referer\":\"$referer\"}"
+	for attempt in $(seq 1 $max_retries); do
+		local response status
+		response=$(curl -s -X POST "$fs_url" \
+			-H 'Content-Type: application/json' \
+			-d "{\"cmd\":\"request.get\",\"url\":\"$url\",\"maxTimeout\":20000${extra_headers}}") || true
+		status=$(echo "$response" | jq -r '.status // empty')
+		if [[ "$status" == "ok" ]]; then
+			html=$(echo "$response" | jq -r '.solution.response // empty')
+			export CF_COOKIES
+			CF_COOKIES=$(echo "$response" | jq -r '[.solution.cookies[] | .name + "=" + .value] | join("; ")')
+			user_agent=$(echo "$response" | jq -r '.solution.userAgent // empty')
+			return 0
+		fi
+		wpr "FlareSolverr:8192 attempt $attempt/$max_retries failed for: $url"
+		sleep 5
+	done
+	wpr "FlareSolverr:8192 failed after $max_retries attempts: $url — falling back"
+	return 1
+}
 
 _cfb_get() {
 	local url=$1 referer=${2:-}
@@ -720,6 +807,7 @@ _fallback_get(){
 
 }
 _TRAWL8191_FAILED=0
+_FFS_8192_FAILED=0
 _CFB_FAILED=0
 _unqueued_cf_get() {
 	if [[ "$_CFB_FAILED" -eq 0 && "${CF_BYPASS_SOLVER_CFB_ENABLED:-false}" == true ]]; then
@@ -730,7 +818,11 @@ _unqueued_cf_get() {
 		_trawl_8191_get "$@" && return 0
 		_TRAWL8191_FAILED=1
     fi
-	if [[ "${CF_BYPASS_SOLVER_TRAWL_8191_ENABLED:-false}" == true || "${CF_BYPASS_SOLVER_CFB_ENABLED:-false}" == true || "${CF_BYPASS_SOLVER_CLOUDFLAREBYPASSFORSCRAPING_ENABLED:-false}" == true ]]; then
+	if [[ "$_FFS_8192_FAILED" -eq 0 && "${CF_BYPASS_SOLVER_FLARESOLVERR_ENABLED:-false}" == true ]]; then
+		_fs_8192_get "$@" && return 0
+		_FFS_8192_FAILED=1
+	fi
+	if [[ "${CF_BYPASS_SOLVER_TRAWL_8191_ENABLED:-false}" == true || "${CF_BYPASS_SOLVER_CFB_ENABLED:-false}" == true || "${CF_BYPASS_SOLVER_FLARESOLVERR_ENABLED:-false}" == true ]]; then
 		epr "All bypass solvers failed for: $1"
 		return 1
 	else
@@ -766,7 +858,7 @@ get_apkmirror_vers() {
 	_cf_get "https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}" || return 1
 	apkm_resp="$html"
 	vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
-	if [ "${__AAV__:-false}" = false ]; then
+	if [ "${version_mode:-false}" = false ]; then
 		local IFS=$'\n'
 		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers")
 		local v r_vers=()
@@ -1146,7 +1238,7 @@ _apkpure_install_xapk() {
 			epr "APKEditor m error: $OP"
 			return 1
 		fi
-		if ! OP=$(java -jar "$APKSIGNER" sign --ks ks-p12.keystore --ks-pass pass:123456789 --key-pass pass:123456789 --ks-key-alias jhc \
+		if ! OP=$(java -jar "$APKSIGNER" sign --ks $TEMP_DIR/ks-p12.keystore --ks-pass pass:$KEYSTORE_PASS --key-pass pass:$KEYSTORE_PASS --ks-key-alias $KEYSTORE_ALIAS \
 			--out "$output" "${output}-unsigned" 2>&1); then
 			epr "apksigner error: $OP"
 			return 1
@@ -1357,8 +1449,8 @@ get_archive_resp() {
 get_archive_vers() { sed 's/^[^-]*-//;s/-\(all\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"; }
 get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
 
-# -------------------- github --------------------
-dl_github() {
+# -------------------- githubarchive --------------------
+dl_githubarchive() {
     local url=$1 version=$2 output=$3 arch=$4
     local path="" version_f=${version// /}
 	local base_url=${__GITHUB_URL__:-$url}
@@ -1395,7 +1487,7 @@ dl_github() {
     esac
 }
 
-get_github_resp() {
+get_githubarchive_resp() {
     local repo tag resp
     
     repo=$(cut -d/ -f4-5 <<<"$1")
@@ -1409,20 +1501,128 @@ get_github_resp() {
     if [ -z "$__ARCHIVE_RESP__" ]; then return 1; fi
     
     # Grab the package name exactly like how get_archive_vers isolates the version
-    __ARCHIVE_PKG_NAME__=$(get_github_pkg_name)
+    __ARCHIVE_PKG_NAME__=$(get_githubarchive_pkg_name)
     if [ -z "$__ARCHIVE_PKG_NAME__" ]; then return 1; fi
     
     __GITHUB_URL__="https://github.com/${repo}/releases/download/${tag}"
 }
 
 # Extracts version matching the archive logic: strips prefix (up to first '-') and suffix (arch/extension)
-get_github_vers() {
+get_githubarchive_vers() {
     sed 's/^[^-]*-//;s/-\(all\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"
 }
 
 # Extracts package name by stripping everything from the first hyphen '-' onwards
-get_github_pkg_name() {
+get_githubarchive_pkg_name() {
     sed 's/-.*//' <<<"$__ARCHIVE_RESP__" | head -n 1
+}
+# -------------------- shared --------------------
+get_util_pkg_name() { $AAPT2 dump packagename "$1" | head -n 1; }
+get_util_vers() { $AAPT2 dump badging "$1" | grep versionName | sed -n "s/.*versionName='\([^']*\)'.*/\1/p" | head -n 1; }
+get_util_arch() {
+	local archs output=$1 arch=$2
+	if [[ "$arch" == "all" ]] | [[ "$arch" == "noarch" ]] || [[ "$arch" == "universal"]]; then
+	   echo $arch
+	   return 0
+	fi
+	if [[ "$arch" == "arm64" ]]; then
+	   arch="arm64-v8a"
+	elif [[ "$arch" == "arm" ]] || [[ "$arch" == "armeabi" ]] || [[ "$arch" == "arm-v7a" ]]; then
+	   arch="armeabi-v7a"
+	fi
+	archs=$($AAPT2 dump badging "$output" | grep native-code)
+	if [[ "$archs" == *"$arch"* ]]; then
+		echo $arch
+		return 0
+	else
+	    wpr "Architecture $arch not found in APK, falling back to 'all'"
+		echo "all"
+		return 0
+	fi
+}
+# -------------------- github --------------------
+get_github_resp() {
+	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
+	local rv_rel release tag_name ver resp
+	rv_rel=$(source_release_api_base "$host" "$src") || return 1
+	if [ "$version_mode" = "beta" ]; then
+		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		version=$(source_release_pick_from_list "$host" absolutelates <<<"$resp" | jq -r '.tag_name') || true
+		if [ -z "$version" ] || [ "$version" = "null" ]; then
+			version=$(jq -e -r '.[].tag_name' <<<"$resp" | get_highest_ver) || return 1
+		fi
+	fi
+	if [ "$version_mode" = "latest" ]; then
+		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		release=$(source_release_pick_from_list "$host" latest <<<"$resp") || return 1
+	else
+		rv_rel=$(source_release_tag_api "$host" "$src" "$version") || return 1
+		release=$({ if [ "$host" = github ]; then gh_req "$rv_rel" -; else req "$rv_rel" -; fi; }) || return 1
+	fi
+	__GITHUB_RESP__=$(jq -e -r '.tag_name as $tag | .assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$release")
+	if [ -z "$__GITHUB_RESP__" ]; then
+		epr "No APK assets found in GitHub release for version $version"
+		return 1
+	fi
+}
+get_github_pkg_name() { 
+	if [ -n "${app_args[github_apk_pkgname]}" ]; then
+		echo "${app_args[github_apk_pkgname]}"
+	else
+		epr "No Package Name specified for GitHub APK"
+	return 1
+	fi
+}
+get_github_vers() { jq -r '.tag_name' <<<"$__GITHUB_RESP__"; }
+dl_github() {
+	local url=$1 version=$2 output=$3 arch=$4
+    local path="" 
+	local base_url=${__GITHUB_URL__:-$url}
+    
+    # Matches the exact file selection logic from dl_archive
+    while IFS= read -r p; do
+        if [[ -n ${args[github_apk_filter]} ]] && [[ -z "$args[github_apk_exclude_filter]" ]]; then
+            if [[ "$p" == *"${args[github_apk_filter]}"* ]]; then
+                path="$p"
+                break
+            fi
+        elif [[ -n ${args[github_apk_exclude_filter]} ]] && [[ -z "$args[github_apk_filter]" ]]; then
+			if [[ "$p" != *"${args[github_apk_exclude_filter]}"* ]]; then
+				path="$p"
+				break
+			fi
+		elif [[ -n ${args[github_apk_filter]} ]] && [[ -n "$args[github_apk_exclude_filter]" ]]; then
+			if [[ "$p" == *"${args[github_apk_filter]}"* ]] && [[ "$p" != *"${args[github_apk_exclude_filter]}"* ]]; then
+				path="$p"
+				break
+			fi
+		else
+		    wpr "No github_apk_filter or github_apk_exclude_filter specified, defaulting to first matching asset"
+			path="$p"
+			break
+		fi
+    done <<<"$__ARCHIVE_RESP__"
+    
+    if [ -z "$path" ]; then
+        epr "APK not found in github"
+        return 1
+    fi
+    
+    local ext="${path##*.}"
+    case "$ext" in
+        apk)
+            req "${base_url}/${path}" "$output"
+            ;;
+        apkm|xapk|apks)
+			local bundle="${output}.${ext}"
+			req "${base_url}/${path}" "$bundle" || return 1
+			merge_splits "$bundle" "$output"
+            ;;
+        *)
+            epr "Unsupported github file type for ${path}"
+            return 1
+            ;;
+    esac
 }
 
 # -------------------- direct --------------------
@@ -1433,23 +1633,64 @@ dl_direct() {
 get_direct_vers() { cut -d- -f2 <<<"$__DIRECT_APKNAME__" | sed 's/\.\(apk\|xapk\|apks\|apkm\)$//'; }
 get_direct_pkg_name() { cut -d- -f1 <<<"$__DIRECT_APKNAME__" | sed 's/\.\(apk\|xapk\|apks\|apkm\)$//'; }
 get_direct_resp() { __DIRECT_APKNAME__=$(awk -F/ '{print $NF}' <<<"$1"); }
-# --------------------------------------------------
-
+# ----------------------- directv2 ---------------------
+get_directv2_resp() {
+	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
+	temp_output=$(mktemp -u "$TEMP_DIR/direct-XXXXXX.apk")
+	wget -q "$url" -O "$temp_output" || return 1
+	get_util_arch "$temp_output" "$arch" || return 1
+}
+get_directv2_vers() { get_util_vers "$temp_output"; }
+get_directv2_pkg_name() { get_util_pkg_name "$temp_output"; }
+dl_directv2() {
+	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
+	mv "$temp_output" "$output" || return 1
+}
+#---------------------------local----------------------
+get_local_resp() {
+	local_file=$1
+	if [ ! -f "$local_file" ]; then
+		epr "File not found: $local_file"
+		return 1
+	fi
+	get_util_arch "$local_file" "$arch" || return 1
+}
+get_local_vers() { get_util_vers "$local_file"; }
+get_local_pkg_name() { get_util_pkg_name "$local_file"; }
+dl_local() {
+	local local_file=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
+	cp "$local_file" "$output" || return 1
+}
+#------------------------------------------------------
 patch_apk() {
-	local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5 cli_source=$6
+	local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5 cli_source=$6 
 	local tmp_dir="${CWD}/${patched_apk}-temporary-files"
 	local IFS=$'\n'
 	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
 	unset IFS
 
 	local cli_source_l="${cli_source,,}"
+	if [[ "$cli_source_l" == "apksigner" ]]; then
+	   	if ! OP=$(java -jar "$APKSIGNER" sign --ks $TEMP_DIR/ks-p12.keystore --ks-pass pass:$KEYSTORE_PASS --key-pass pass:$KEYSTORE_PASS --ks-key-alias $KEYSTORE_ALIAS \
+			--out "${patched_apk}" "${stock_input}"); then
+			epr "apksigner error: $OP"
+			return 1
+		fi
+			return 0
+	fi
 	if [[ "$cli_source_l" == *"npatch"* ]] || [[ "$cli_source_l" == *"lspatch"* ]]; then
-		local p_args_modules=""
-		for j in "${p_jars[@]}"; do
-			p_args_modules+=" -m '$j'"
-		done
-		mkdir -p "$tmp_dir"
-		local cmd="java -jar '$cli_jar' '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
+		local -a p_jars
+	    mapfile -t p_jars < <(jq -r '.[] | .file' <<<"$patches_jar")
+	    local p_args_modules=""
+	    for j in "${p_jars[@]}"; do
+		    p_args_modules+="-m '$j' "
+	    done
+		if [[ "$cli_source_l" == *"npatch"* ]]; then
+		    get_bcprov || return 1
+			local cmd="java -cp "temp/bcprov.jar$javapathsep$cli_jar" -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k $TEMP_DIR/ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
+		else
+			local cmd="java -jar '$cli_jar' -k $TEMP_DIR/ks-p12.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
+		fi
 		pr "$cmd"
 		PATCH_OUTPUT=$(eval "$cmd" 2>&1)
 		local ret=$?
@@ -1469,14 +1710,42 @@ patch_apk() {
 	fi
 
 	local p_args_long="" p_args_short=""
-	for j in "${p_jars[@]}"; do
-		p_args_long+=" --patches '$j'"
-		p_args_short+=" -p '$j'"
-	done
+while read -r json; do
+		local list_patches
+		local patch_src=$(jq -r '.source' <<<"$json")
+		local per_patch_args=""
+		local excluded_patches=$(jq -r  '."excluded-patches" // ""' <<<"$json")
+		local included_patches=$(jq -r  '."included-patches" // ""' <<<"$json")
+		#if [ -n "$excluded_patches" ] && [[ $excluded_patches != *"'"* ]]; then abort "patch names inside excluded-patches must be quoted"; fi
+		#if [ -n "$included_patches" ] && [[ $included_patches != *"'"* ]]; then abort "patch names inside included-patches must be quoted"; fi
+		if [ -n "$excluded_patches" ] ; then per_patch_args+="$(join_args "$excluded_patches" "-d") "; fi
+		if [ -n "$included_patches" ] ; then per_patch_args+="$(join_args "$included_patches" "-e") "; fi
+		local per_patch_options=$(jq -r '.args // ""' <<<"$json")
+		per_patch_args+="$per_patch_options "
+		local curr_patches_jar=$(jq -r --arg src "$patch_src" '{$src: .[$src]}' <<<"$patches_jar")
+		list_patches=$(patches_list "$cli_jar" "$curr_patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
+		local microg_patch
+		local microg_autodetect=$(jq -r '."microg-autodetect" // true' <<<"$json")
+		microg_patch=$(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" || :) microg_patch=${microg_patch#*: }
+		if [ -n "$microg_patch" ] && [ "$microg_autodetect" = "true" ] && [[ ${p_patcher_args[*]} =~ $microg_patch ]]; then
+			wpr "You cant include/exclude microg patch as that's done by rvmm builder automatically."
+			per_patch_args="${per_patch_args[@]//-[ei] ${microg_patch}/}"
+		fi
+		if [ -n "$microg_patch" ] && [ "$microg_autodetect" = "true" ]; then
+			if [ "$build_mode" = apk ]; then
+				per_patch_args+=" -e \"${microg_patch}\" "
+			elif [ "$build_mode" = module ]; then
+				per_patch_args+=" -d \"${microg_patch}\" "
+			fi
+		fi
+		local patch_jar=$(jq -r --arg src "$patch_src" '.[$src].file' <<<"$curr_patches_jar")
+		p_args_long+=" --patches '$patch_jar' $per_patch_args"
+		p_args_short+=" -p '$patch_jar' $per_patch_args"
+	done < <(jq -c '.[]' <<<"$patches_data")
 
-	local base_cmd="java -jar '$cli_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=ks.keystore \
---keystore-entry-password=123456789 --keystore-password=123456789 --signer=jhc --keystore-entry-alias=jhc"
 
+	local base_cmd="java -jar '$cli_jar' patch '$stock_input'  -t '$tmp_dir' -o '$patched_apk' --keystore=$TEMP_DIR/ks.keystore \
+--keystore-entry-password=$KEYSTORE_PASS --keystore-password=$KEYSTORE_PASS --signer=$KEYSTORE_ALIAS --keystore-entry-alias=$KEYSTORE_ALIAS"
 	local cmd_long="${base_cmd}${p_args_long} $patcher_args"
 	local cmd_short="${base_cmd}${p_args_short} $patcher_args"
 
@@ -1487,7 +1756,7 @@ patch_apk() {
 		cmd_short+=" -b"
 	fi
 
-	if [ "$OS" = Android ]; then
+	if [ "$OS" = Android ] && [ "${cli_name::8}" = revanced ]; then
 		cmd_long+=" --custom-aapt2-binary='${AAPT2}'"
 		cmd_short+=" --custom-aapt2-binary='${AAPT2}'"
 	fi
@@ -1517,10 +1786,12 @@ patch_apk() {
 check_sig() {
 	local file=$1 pkg_name=$2
 	local sig
-	if grep -q "$pkg_name" sig.txt; then
-		sig=$(java -jar "$APKSIGNER" verify --print-certs "$file" | grep ^Signer | grep SHA-256 | tail -1 | awk '{print $NF}')
-		echo "$pkg_name signature: ${sig}"
-		grep -qFx "$sig $pkg_name" sig.txt
+	if [ ${args[check_sig]:-false} = true ];
+		if grep -q "$pkg_name" sig.txt; then
+			sig=$(java -jar "$APKSIGNER" verify --print-certs "$file" | grep ^Signer | grep SHA-256 | tail -1 | awk '{print $NF}')
+			echo "$pkg_name signature: ${sig}"
+			grep -qFx "$sig $pkg_name" sig.txt
+		fi
 	fi
 }
 
@@ -1561,14 +1832,18 @@ build_rv() {
 	local table=${args[table]}
 	local dl_from=${args[dl_from]}
 	local arch=${args[arch]}
+    local patches_data=${args[patches_data]}
 	local arch_f="${arch// /}"
 	local arch_list=("$arch_f")
 	[ "$arch_f" = "auto" ] && arch_list=("all" "arm64-v8a" "arm-v7a")
 
 	local p_patcher_args=()
-	if [ "${args[excluded_patches]}" ]; then p_patcher_args+=("$(join_args "${args[excluded_patches]}" -d)"); fi
-	if [ "${args[included_patches]}" ]; then p_patcher_args+=("$(join_args "${args[included_patches]}" -e)"); fi
-	[ "${args[exclusive_patches]}" = true ] && p_patcher_args+=("--exclusive")
+	local all_excluded_patches=""
+	local all_included_patches=""
+	while read -r json; do
+		all_excluded_patches+="$(jq -r '."excluded-patches" // ""' <<<"$json" | tr '\n' ' ')"
+		all_included_patches+="$(jq -r '."included-patches" // ""' <<<"$json" | tr '\n' ' ')"
+	done < <(jq -c '.[]' <<<"$patches_data")[ "${args[exclusive_patches]}" = true ] && p_patcher_args+=("--exclusive")
 
 	local tried_dl=()
 	if [ "${args[pkg_name]}" ]; then
@@ -1597,7 +1872,7 @@ build_rv() {
 	local get_latest_ver=false
 	if [ "$version_mode" = auto ]; then
 		if ! version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
-			"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}"); then
+			"${all_included_patches:-}" "${all_excluded_patches:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}"); then
 			epr "get_patch_last_supported_ver failed '$list_patches'"
 			return
 		elif [ -z "$version" ]; then get_latest_ver=true; fi
@@ -1617,8 +1892,7 @@ build_rv() {
 		p_patcher_args+=("-f")
 	fi
 	if [ $get_latest_ver = true ]; then
-		if [ "$version_mode" = beta ]; then __AAV__="true"; else __AAV__="false"; fi
-		local vers_cache_key="${dl_from}_${args[${dl_from}_dlurl]}_${__AAV__}"
+		local vers_cache_key="${dl_from}_${args[${dl_from}_dlurl]}_$version_mode"
 		if [ -n "${__PKG_VERS_CACHE__["$vers_cache_key"]:-}" ]; then
 			pkgvers="${__PKG_VERS_CACHE__["$vers_cache_key"]}"
 		else
@@ -1652,6 +1926,10 @@ build_rv() {
 			if [ "$arch_f" = "arm64-v8a" ] && ! unzip -l "$common_apk" 2>/dev/null | grep -q "lib/arm64-v8a/"; then
 				unzip -l "$common_apk" 2>/dev/null | grep -q "lib/" && missing_arch=true
 			elif [ "$arch_f" = "arm-v7a" ] && ! unzip -l "$common_apk" 2>/dev/null | grep -q "lib/armeabi-v7a/"; then
+				unzip -l "$common_apk" 2>/dev/null | grep -q "lib/" && missing_arch=true
+			elif [ "$arch_f" = "x86" ] && ! unzip -l "$common_apk" 2>/dev/null | grep -q "lib/x86/"; then
+				unzip -l "$common_apk" 2>/dev/null | grep -q "lib/" && missing_arch=true
+			elif [ "$arch_f" = "x86_64" ] && ! unzip -l "$common_apk" 2>/dev/null | grep -q "lib/x86_64/"; then
 				unzip -l "$common_apk" 2>/dev/null | grep -q "lib/" && missing_arch=true
 			fi
 			if [ "$missing_arch" = false ]; then
@@ -1820,26 +2098,44 @@ build_rv() {
 
 	local patcher_args patched_apk build_mode
 	local rv_brand_f=${args[rv_brand],,}
+	if [ "${args[rv_brand]}" == "none" ]; then
+		local rv_brand=""
+	else
+		local rv_brand=" ${args[rv_brand]}"
+	fi
 	rv_brand_f=${rv_brand_f// /-}
+	if [ "$rv_brand_f" == "none" ]; then
+		rv_brand_f=""
+	else
+		rv_brand_f="-${rv_brand_f}"
+	fi
 	local patches_ref="${args[patches_ref]}"
 	local changelog_url="${args[changelog_url]}"
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
 		pr "Building '${table}' in '$build_mode' mode"
+		local patchbranding="" modulebranding=""
+		while read -r json; do
+			local branding=$(jq -r '."brand" // ."source" // "" ' <<<"$json")
+			if [ -n "$branding" ] && [ "$branding" != "none" ]; then
+				local branding_f patchversion_f patchversion patchsrc 
+				branding_f=${branding// /-}
+				branding_f=${branding_f//'/'/-}
+				patchsrc=$(jq -r '."source" // "" ' <<<"$json")
+				patchversion=$(jq -r  --arg src "$patchsrc" '.[$src].version // ""'  <<<"$patches_jar")
+				patchversion_f=${patchversion// /-}
+				patchversion_f=${patchversion_f#v}
+				patchbranding+="$branding_f-v$patchversion_f-"
+				modulebranding+="$branding: $patchversion "
+			else
+			   local patchbranding="" modulebranding=""
+			fi
+		done < <(jq -c '.[]' <<<"$patches_data")
 		if [ ${#microg_patches[@]} -gt 0 ]; then
-			patched_apk="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}-${build_mode}.apk"
+		patched_apk="${TEMP_DIR}/${app_name_l}${rv_brand_f}-${version_f}-${patchbranding}${arch_f}-${build_mode}.apk"
 		else
-			patched_apk="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}.apk"
-		fi
-		if [ ${#microg_patches[@]} -gt 0 ]; then
-			for p in "${microg_patches[@]}"; do
-				if [ "$build_mode" = apk ]; then
-					patcher_args+=("-e \"$p\"")
-				elif [ "$build_mode" = module ]; then
-					patcher_args+=("-d \"$p\"")
-				fi
-			done
+			patched_apk="${TEMP_DIR}/${app_name_l}${rv_brand_f}-${version_f}-${patchbranding}${arch_f}.apk"
 		fi
 		if [ "$build_mode" = module ]; then
 			if [[ "${args[cli_source],,}" != *"revanced-cli"* ]]; then
@@ -1857,11 +2153,9 @@ build_rv() {
 			zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/x86_64/*" "lib/armeabi-v7a/*" >/dev/null 2>&1 || :
 		elif [ "$arch" = "x86_64" ]; then
 			zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/armeabi-v7a/*" "lib/x86/*" >/dev/null 2>&1 || :
-		else
-			zip -d "$stock_apk_to_patch" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
 		fi
 
-		local apk_output="${BUILD_DIR}/${app_name_l}-${rv_brand_f}-v${version_f}-${arch_f}.apk"
+		local apk_output="${BUILD_DIR}/${app_name_l}${rv_brand_f}-v${version_f}-${patchbranding}${arch_f}.apk"
 		if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
 			if ! patch_apk "$stock_apk_to_patch" "$patched_apk" "${patcher_args[*]}" "${args[cli]}" "${args[ptjar]}" "${args[cli_source]}"; then
 				epr "Building '${table}' failed!"
@@ -1876,7 +2170,7 @@ build_rv() {
 				cp -f "$patched_apk" "$apk_output"
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
-			write_build_info "${table% (*}" "${arch_f}" ".apk" "${app_name_l}-${rv_brand_f}" "$version_f" "$patches_ref" "$changelog_url"
+			write_build_info "${table% (*}" "${arch_f}" ".apk" "${app_name_l}-${rv_brand_f}" "$version_f-${patchbranding}" "$patches_ref" "$changelog_url"
 			continue
 		fi
 		local base_template
@@ -1890,13 +2184,13 @@ build_rv() {
 		patches_ver="${patches_jar%% *}"; patches_ver="${patches_ver##*-}"
 		module_prop \
 			"${args[module_prop_name]}" \
-			"${app_name} ${args[rv_brand]}" \
-			"${version_f} (patches ${patches_ver})" \
-			"${app_name} ${args[rv_brand]} module" \
+			"${app_name} ${rv_brand}" \
+			"${version_f} (patches ${modulebranding})" \
+			"${app_name} ${rv_brand} module" \
 			"https://raw.githubusercontent.com/${GITHUB_REPOSITORY-}/update/${upj}" \
 			"$base_template"
 
-		local module_output="${app_name_l}-${rv_brand_f}-module-v${version_f}-${arch_f}.zip"
+		local module_output="${app_name_l}${rv_brand_f}-module-v${version_f}-${patchbranding}${arch_f}.zip"
 		pr "Packing module ${table}"
 		cp -f "$patched_apk" "${base_template}/base.apk"
 
@@ -1918,7 +2212,7 @@ build_rv() {
 				elif [ "$arch" = "x86_64" ]; then
 					unzip -j "${stock_apk}.apkm" '*.apk' -x '*x86.apk' -x '*arm64_v8a.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
 				else
-					unzip -j "${stock_apk}.apkm" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -d "${base_template}/stock/" >/dev/null 2>&1
+					unzip -j "${stock_apk}.apkm" '*.apk' -d "${base_template}/stock/" >/dev/null 2>&1
 				fi
 			fi
 		fi
@@ -1927,7 +2221,7 @@ build_rv() {
 		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
 		popd >/dev/null || :
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
-		write_build_info "${table% (*}" "${arch_f}" ".zip" "${app_name_l}-${rv_brand_f}" "$version_f" "$patches_ref" "$changelog_url"
+		write_build_info "${table% (*}" "${arch_f}" ".zip" "${app_name_l}${rv_brand_f}" "$version_f" "$patches_ref" "$changelog_url"
 	done
 }
 
