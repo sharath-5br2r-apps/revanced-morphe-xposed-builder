@@ -1672,17 +1672,17 @@ dl_github2() {
 
     # Matches the exact file selection logic from dl_archive
     while IFS= read -r p; do
-        if [[ -n ${args[github2_apk_filter]} ]] && [[ -z "$args[github2_apk_exclude_filter]" ]]; then
+        if [[ -n ${args[github2_apk_filter]:-} ]] && [[ -z "$args[github2_apk_exclude_filter]" ]]; then
             if [[ "$p" == *"${args[github2_apk_filter]}"* ]]; then
                 path="$p"
                 break
             fi
-        elif [[ -n ${args[github2_apk_exclude_filter]} ]] && [[ -z "$args[github2_apk_filter]" ]]; then
+        elif [[ -n ${args[github2_apk_exclude_filter]:-} ]] && [[ -z "$args[github2_apk_filter]:-}" ]]; then
 			if [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
 				path="$p"
 				break
 			fi
-		elif [[ -n ${args[github2_apk_filter]} ]] && [[ -n "$args[github2_apk_exclude_filter]" ]]; then
+		elif [[ -n ${args[github2_apk_filter]:-} ]] && [[ -n "$args[github2_apk_exclude_filter]:-}" ]]; then
 			if [[ "$p" == *"${args[github2_apk_filter]}"* ]] && [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
 				path="$p"
 				break
@@ -1716,15 +1716,7 @@ dl_github2() {
     esac
 }
 
-#---------------------------local----------------------
-get_local_resp() {
-	local_file=$1
-	if [ ! -f "$local_file" ]; then
-		epr "File not found: $local_file"
-		return 1
-	fi
-	get_util_arch "$local_file" "$arch" || return 1
-}
+		
 # -------------------- direct --------------------
 dl_direct() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
@@ -1736,7 +1728,7 @@ get_direct_resp() { __DIRECT_APKNAME__=$(awk -F/ '{print $NF}' <<<"$1"); }
 # -------------------- local --------------------
 dl_local() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
-	mv "$url" "${output}" || return 1
+	cp "$url" "${output}" || return 1
 }
 get_local_vers() { cut -d- -f2 <<<"$__LOCAL_APKNAME__" | sed 's/\.\(apk\|xapk\|apks\|apkm\)$//'; }
 get_local_pkg_name() { cut -d- -f1 <<<"$__LOCAL_APKNAME__" | sed 's/\.\(apk\|xapk\|apks\|apkm\)$//'; }
@@ -2182,7 +2174,7 @@ build_rv() {
 						continue
 				fi
 
-				if [ -n "$downloaded_ver" ] && [[ "$dl_p" == "direct" ]] && [[ "$dl_p" == "local" ]]; then
+				if [ -n "$downloaded_ver" ] && { [[ "$dl_p" == "direct" ]] || [[ "$dl_p" == "local" ]] }; then
 					if [ "$version" != "$downloaded_ver" ]; then
 						pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
 						version="$downloaded_ver"
