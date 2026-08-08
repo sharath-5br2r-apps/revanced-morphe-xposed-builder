@@ -1629,100 +1629,108 @@ get_util_arch() {
 	fi
 }
 # -------------------- github2 --------------------
+# -------------------- github2 --------------------
 get_github2_resp() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
-	local rv_rel release tag_name ver resp
-  	local host=github src
-	__GITHUB2_URL__=$url
-	__GITHUB2_URL__=${__GITHUB2_URL__%/}
+	local rv_rel release tag_name resp host=github src
+
+	__GITHUB2_URL__=${url%/}
 	__GITHUB2_URL__=${__GITHUB2_URL__%.git}
 	src=$(cut -d/ -f4- <<<"$__GITHUB2_URL__")
 	rv_rel=$(source_release_api_base "$host" "$src" "https://gitlab.com") || return 1
+
 	if [ "$version_mode" = "beta" ]; then
-		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
-		version=$(source_release_pick_from_list "$host" absolutelatest <<<"$resp" | jq -r '.tag_name') || true
-		if [ -z "$version" ] || [ "$version" = "null" ]; then
-			version=$(jq -e -r '.[].tag_name' <<<"$resp" | get_highest_ver) || return 1
-		fi
-	fi
-	if [ "$version_mode" = "latest" ]; then
-		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		resp=$(gh_req "$rv_rel?per_page=100" -) || return 1
+		release=$(source_release_pick_from_list "$host" absolutelatest <<<"$resp") || return 1
+	elif [ "$version_mode" = "latest" ] || [ "$version_mode" = "auto" ] || [ -z "$version" ]; then
+		resp=$(gh_req "$rv_rel?per_page=100" -) || return 1
 		release=$(source_release_pick_from_list "$host" latest <<<"$resp") || return 1
-	fi
-	if [ "$version_mode" != "latest" ] && [ "$version_mode" != "beta" ]; then
+	else
 		rv_rel=$(source_release_tag_api "$host" "$src" "$version") || return 1
-		release=$({ if [ "$host" = github ]; then gh_req "$rv_rel" -; else req "$rv_rel" -; fi; }) || return 1
+		release=$(gh_req "$rv_rel" -) || return 1
 	fi
-	__GITHUB2_RESP__=$(jq -e -r '.tag_name as $tag | .assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$release")
-	if [ -z "$__GITHUB2_RESP__" ]; then
-		epr "No APK assets found in GitHub release for version $version"
+
+	tag_name=$(jq -r '.tag_name // empty' <<<"$release")
+	if [ -z "$tag_name" ]; then
+		epr "Could not find release tag for $src"
 		return 1
 	fi
-	__GITHUB2_URL__="${__GITHUB2_URL__}/releases/download/$version"
+
+	__GITHUB2_RESP__=$(jq -e -r '.assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$release")
+	if [ -z "$__GITHUB2_RESP__" ]; then
+		epr "No APK assets found in GitHub release for version $tag_name"
+		return 1
+	fi
+
+	__GITHUB2_TAG__="$tag_name"
+	__GITHUB2_URL__="${__GITHUB2_URL__}/releases/download/${tag_name}"
+
 	__DL_RESP_CACHE__["github2_resp_$url"]="$__GITHUB2_RESP__"
 	__DL_RESP_CACHE__["github2_url_$url"]="$__GITHUB2_URL__"
+	__DL_RESP_CACHE__["github2_tag_$url"]="$__GITHUB2_TAG__"
 }
+
 get_github2_pkg_name() { 
-	if [ -n "${app_args[github2_apk_pkgname]:-}" ]; then
-		echo "${app_args[github2_apk_pkgname]:-}"
+	local pkg="${args[github2_apk_pkgname]:-${app_args[github2_apk_pkgname]:-}}"
+	if [ -n "$pkg" ]; then
+		echo "$pkg"
 	else
 		epr "No Package Name specified for GitHub APK"
-	return 1
+		return 1
 	fi
 }
-get_github2_vers() { jq -r '.tag_name' <<<"$__GITHUB2_RESP__"; }
+
+get_github2_vers() { echo "${__GITHUB2_TAG__:-}"; }
+
 dl_github2() {
 	local url=$1 version=$2 output=$3 arch=$4
-    local path="" 
-	local base_url=${__GITHUB2_URL__:-$url}
+	local path="" 
+	local base_url="${__DL_RESP_CACHE__["github2_url_$url"]:-$url}"
 
-    # Matches the exact file selection logic from dl_archive
-    while IFS= read -r p; do
-	if [[ -n "${args[github2_apk_filter]:-}" ]] && [[ -z "${args[github2_apk_exclude_filter]:-}" ]]; then
-		if [[ "$p" == *"${args[github2_apk_filter]}"* ]]; then
+	while IFS= read -r p; do
+		if [[ -n "${args[github2_apk_filter]:-}" ]] && [[ -z "${args[github2_apk_exclude_filter]:-}" ]]; then
+			if [[ "$p" == *"${args[github2_apk_filter]}"* ]]; then
+				path="$p"
+				break
+			fi
+		elif [[ -n "${args[github2_apk_exclude_filter]:-}" ]] && [[ -z "${args[github2_apk_filter]:-}" ]]; then
+			if [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
+				path="$p"
+				break
+			fi
+		elif [[ -n "${args[github2_apk_filter]:-}" ]] && [[ -n "${args[github2_apk_exclude_filter]:-}" ]]; then
+			if [[ "$p" == *"${args[github2_apk_filter]}"* ]] && [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
+				path="$p"
+				break
+			fi
+		else
+			wpr "No github2_apk_filter or github2_apk_exclude_filter specified, defaulting to first matching asset"
 			path="$p"
 			break
 		fi
-	elif [[ -n "${args[github2_apk_exclude_filter]:-}" ]] && [[ -z "${args[github2_apk_filter]:-}" ]]; then
-		if [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
-			path="$p"
-			break
-		fi
-	elif [[ -n "${args[github2_apk_filter]:-}" ]] && [[ -n "${args[github2_apk_exclude_filter]:-}" ]]; then
-		if [[ "$p" == *"${args[github2_apk_filter]}"* ]] && [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
-			path="$p"
-			break
-		fi
-	else
-		    wpr "No github2_apk_filter or github2_apk_exclude_filter specified, defaulting to first matching asset"
-			path="$p"
-			break
-		fi
-    done <<<"$__GITHUB2_RESP__"
+	done <<<"$__GITHUB2_RESP__"
 
-    if [ -z "$path" ]; then
-        epr "APK not found in github"
-        return 1
-    fi
+	if [ -z "$path" ]; then
+		epr "APK not found in github"
+		return 1
+	fi
 
-    local ext="${path##*.}"
-    case "$ext" in
-        apk)
-            req "${base_url}/${path}" "$output"
-            ;;
-        apkm|xapk|apks)
+	local ext="${path##*.}"
+	case "$ext" in
+		apk)
+			req "${base_url}/${path}" "$output"
+			;;
+		apkm|xapk|apks)
 			local bundle="${output}.${ext}"
 			req "${base_url}/${path}" "$bundle" || return 1
 			merge_splits "$bundle" "$output"
-            ;;
-        *)
-            epr "Unsupported github file type for ${path}"
-            return 1
-            ;;
-    esac
+			;;
+		*)
+			epr "Unsupported github file type for ${path}"
+			return 1
+			;;
+	esac
 }
-
-
 # -------------------- direct --------------------
 dl_direct() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
