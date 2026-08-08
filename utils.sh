@@ -199,7 +199,7 @@ _get_prebuilts() {
 
 	local host=$cli_host src=$cli_src tag="CLI" ver=${cli_ver} fprefix="cli" gitlab_host
 	host=${host,,}
-	if [[ "$host" == "gitlab|"* ]]; then
+	if [[ "$host" == *"|gitlab" ]]; then
 		gitlab_host="${host%%|*}"
 		host="gitlab"
 	fi
@@ -296,7 +296,7 @@ _get_prebuilts() {
 		local ver="${p_vers[$i]:-${p_vers[0]}}"
 		local gitlab_host
 		host=${host,,}
-		if [[ "$host" == "gitlab|"* ]]; then
+		if [[ "$host" == *"|gitlab" ]]; then
 			gitlab_host="${host%%|*}"
 			host="gitlab"
 		elif [[ "$host" == "gitlab" ]]; then
@@ -1657,6 +1657,7 @@ get_github2_resp() {
 		epr "No APK assets found in GitHub release for version $version"
 		return 1
 	fi
+	__GITHUB2_URL__="${__GITHUB2_URL__}/releases/download/$version"
 	__DL_RESP_CACHE__["github2_resp_$url"]="$__GITHUB2_RESP__"
 }
 get_github2_pkg_name() { 
