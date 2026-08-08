@@ -1633,6 +1633,7 @@ get_github2_resp() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
 	local rv_rel release tag_name ver resp
   	host=github
+	src=$(cut -d/ -f4- <<<"$url")
 	rv_rel=$(source_release_api_base "$host" "$src" "https://gitlab.com") || return 1
 	if [ "$version_mode" = "beta" ]; then
 		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
@@ -2276,7 +2277,7 @@ build_rv() {
 	local microg_patches=()
 	local IFS=$'
 	'
-	if [[-n ${args[custom_microg_patches]} ]]; then
+	if [[ -n ${args[custom_microg_patches]:-} ]]; then
 		local listpatches=$(join_args "${args[custom_microg_patches]}" "\n")
 		for p in  $listpatches; do
 			microg_patches+=("$p")
