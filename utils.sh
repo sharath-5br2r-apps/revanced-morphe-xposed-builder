@@ -1628,8 +1628,7 @@ get_util_arch() {
 		return 0
 	fi
 }
-# -------------------- github2 --------------------
-# -------------------- github2 --------------------
+## -------------------- github2 --------------------
 get_github2_resp() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
 	local rv_rel release tag_name resp host=github src
@@ -1639,15 +1638,18 @@ get_github2_resp() {
 	src=$(cut -d/ -f4- <<<"$__GITHUB2_URL__")
 	rv_rel=$(source_release_api_base "$host" "$src" "https://gitlab.com") || return 1
 
-	if [ "$version_mode" = "beta" ]; then
-		resp=$(gh_req "$rv_rel?per_page=100" -) || return 1
-		release=$(source_release_pick_from_list "$host" absolutelatest <<<"$resp") || return 1
-	elif [ "$version_mode" = "latest" ] || [ "$version_mode" = "auto" ] || [ -z "$version" ]; then
-		resp=$(gh_req "$rv_rel?per_page=100" -) || return 1
-		release=$(source_release_pick_from_list "$host" latest <<<"$resp") || return 1
-	else
+	# Fetch specific tag if $version is passed or version_mode is a explicit version string
+	if [ -n "$version" ] && [ "$version_mode" != "latest" ] && [ "$version_mode" != "beta" ] && [ "$version_mode" != "auto" ]; then
 		rv_rel=$(source_release_tag_api "$host" "$src" "$version") || return 1
 		release=$(gh_req "$rv_rel" -) || return 1
+	else
+		# Default/auto/latest/beta: Fetch release feed
+		resp=$(gh_req "$rv_rel?per_page=100" -) || return 1
+		if [ "$version_mode" = "beta" ]; then
+			release=$(source_release_pick_from_list "$host" absolutelatest <<<"$resp") || return 1
+		else
+			release=$(source_release_pick_from_list "$host" latest <<<"$resp") || return 1
+		fi
 	fi
 
 	tag_name=$(jq -r '.tag_name // empty' <<<"$release")
@@ -1658,7 +1660,7 @@ get_github2_resp() {
 
 	__GITHUB2_RESP__=$(jq -e -r '.assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$release")
 	if [ -z "$__GITHUB2_RESP__" ]; then
-		epr "No APK assets found in GitHub release for version $tag_name"
+		epr "No APK assets found in GitHub release for $src ($tag_name)"
 		return 1
 	fi
 
