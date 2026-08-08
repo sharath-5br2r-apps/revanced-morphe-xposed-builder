@@ -499,8 +499,8 @@ config_update() {
 				elif [ "$PATCHES_VER" = "latest" ]; then
 					resp=$({ if [ "$PATCHES_HOST" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || continue
 					last_patches=$(source_release_pick_from_list "$PATCHES_HOST" latest <<<"$resp") || continue
-				elif [ "$PATCHES_VER" = "latest" ]; then
-				resp=$({ if [ "$PATCHES_HOST" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || continue
+				elif [ "$PATCHES_VER" = "absolutelatest" ]; then
+					resp=$({ if [ "$PATCHES_HOST" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || continue
 					last_patches=$(source_release_pick_from_list "$PATCHES_HOST" absolutelatest <<<"$resp") || continue
 				else
 					rv_rel=$(source_release_tag_api "$PATCHES_HOST" "$PATCHES_SRC" "$PATCHES_VER" "$PATCHES_GITLAB_HOST") || continue
@@ -1609,7 +1609,7 @@ get_util_pkg_name() { $AAPT2 dump packagename "$1" | head -n 1; }
 get_util_vers() { $AAPT2 dump badging "$1" | grep versionName | sed -n "s/.*versionName='\([^']*\)'.*/\1/p" | head -n 1; }
 get_util_arch() {
 	local archs output=$1 arch=$2
-	if [[ "$arch" == "all" ]] | [[ "$arch" == "noarch" ]] || [[ "$arch" == "universal" ]]; then
+	if [[ "$arch" == "all" ]] || [[ "$arch" == "noarch" ]] || [[ "$arch" == "universal" ]]; then
 	   echo $arch
 	   return 0
 	fi
@@ -1672,12 +1672,12 @@ dl_github2() {
     # Matches the exact file selection logic from dl_archive
     while IFS= read -r p; do
         if [[ -n ${args[github2_apk_filter]} ]] && [[ -z "$args[github2_apk_exclude_filter]" ]]; then
-            if [[ "$p" == *"${args[github_apk_filter]}"* ]]; then
+            if [[ "$p" == *"${args[github2_apk_filter]}"* ]]; then
                 path="$p"
                 break
             fi
         elif [[ -n ${args[github2_apk_exclude_filter]} ]] && [[ -z "$args[github2_apk_filter]" ]]; then
-			if [[ "$p" != *"${args[github_apk_exclude_filter]}"* ]]; then
+			if [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
 				path="$p"
 				break
 			fi
@@ -1762,8 +1762,8 @@ patch_apk() {
 		done
 		mkdir -p "$tmp_dir"
     if [[ "$cli_source_l" == *"npatch"* ]]; then
-		  get_bcprov || return 1
-			local cmd="java -cp "temp/bcprov.jar$javapathsep$cli_jar" -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k $TEMP_DIR/ks.keystore  $KEYSTORE_PASSWORD $KEYSTORE_ALIAS $KEYSTORE_KEY_PASSWORD '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
+		  	get_bcprov || return 1
+			local cmd="java -cp 'temp/bcprov.jar$javapathsep$cli_jar' -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k $TEMP_DIR/ks.keystore  $KEYSTORE_PASSWORD $KEYSTORE_ALIAS $KEYSTORE_KEY_PASSWORD '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
 		else
 			local cmd="java -jar '$cli_jar' -o '$tmp_dir' $p_args_modules $patcher_args '$stock_input'"
     fi
@@ -2274,7 +2274,8 @@ build_rv() {
   	fi
 
 	local microg_patches=()
-	local IFS=$
+	local IFS=$'
+	'
 	if [[-n ${args[custom_microg_patches]} ]]; then
 		local listpatches=$(join_args "${args[custom_microg_patches]}" "\n")
 		for p in  $listpatches; do
