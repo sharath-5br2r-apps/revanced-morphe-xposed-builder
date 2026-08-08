@@ -1568,7 +1568,7 @@ get_github_resp() {
 	if [ -n "${__DL_RESP_CACHE__["github_archive_resp_$url"]:-}" ]; then
 		__ARCHIVE_RESP__="${__DL_RESP_CACHE__["github_archive_resp_$url"]}"
 		__ARCHIVE_PKG_NAME__="${__DL_RESP_CACHE__["github_archive_pkg_$url"]}"
-		__GITHUB_URL__="${__DL_RESP_CACHE__["archive_url_$url"]}"
+		__GITHUB_URL__="${__DL_RESP_CACHE__["github_url_$url"]}"
 		return 0
 	fi
 	local repo tag resp
@@ -1584,7 +1584,7 @@ get_github_resp() {
 	if [ -z "$__ARCHIVE_RESP__" ]; then return 1; fi
 	
 	# Grab the package name exactly like how get_archive_vers isolates the version
-	__ARCHIVE_PKG_NAME__=$(get_archive_pkg_name)
+	__ARCHIVE_PKG_NAME__=$(get_github_pkg_name)
 	if [ -z "$__ARCHIVE_PKG_NAME__" ]; then return 1; fi
 	
 	__GITHUB_URL__="https://github.com/${repo}/releases/download/${tag}"

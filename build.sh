@@ -171,7 +171,7 @@ for table_name in $(toml_get_table_names); do
 	done
 	if [ -z "${app_args[dl_from]-}" ]; then abort "ERROR: no 'dlurl' option was set for '$table_name'. (${DL_SRCS[*]})"; fi
 	app_args[arch]=$(toml_get "$t" arch) || app_args[arch]="auto"
-	if ! isoneof "${app_args[arch]}" "auto" "both" "all" "arm64-v8a" "arm-v7a" "x86_64" "x86"; then
+	if ! isoneof "${app_args[arch]}" "auto" "both" "multi" "both64" "both32" "all" "arm64-v8a" "arm-v7a" "x86_64" "x86"; then
 		abort "wrong arch '${app_args[arch]}' for '$table_name'"
 	fi
 
@@ -238,7 +238,7 @@ for table_name in $(toml_get_table_names); do
 			app_args[module_prop_name]="${app_args[module_prop_name]}-x64"
 		elif [ "${app_args[arch]}" = "x86" ]; then
 			app_args[module_prop_name]="${app_args[module_prop_name]}-x86"
-		fi
+		fi	
 		build_rv "$(declare -p app_args)"
 	fi
 done
