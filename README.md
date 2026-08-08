@@ -104,8 +104,8 @@ Patches: [binarymend/patches-1.3.1.mpp](https://github.com/binarymend/morphe-pat
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260156)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Enable Premium
 </blockquote>
 </details>
@@ -172,8 +172,8 @@ Patches: [Raudrobot/patches-6.1.0.rvp](https://github.com/Raudrobot/revanced-pat
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Unlock premium features
 </blockquote>
 </details>
@@ -552,8 +552,8 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260156)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Enable Premium
 </blockquote>
 </details>
@@ -689,8 +689,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
   
 <blockquote>
 
-[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260167)<br>
-Patches: [jasonwu1994/patches-2.6.0.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.6.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: jasonwu1994/patches-2.6.0.mpp
 - AI Writing Tools
 - Add Gboard Signature Bypass
 - Advanced Voice Typing
@@ -721,8 +721,8 @@ Patches: [jasonwu1994/patches-2.6.0.mpp](https://github.com/jasonwu1994/Gboard-p
   
 <blockquote>
 
-[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260167)<br>
-Patches: [jasonwu1994/patches-2.6.0.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.6.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: jasonwu1994/patches-2.6.0.mpp
 - AI Writing Tools
 - Add Gboard Signature Bypass
 - Advanced Voice Typing
@@ -756,8 +756,8 @@ Patches: [jasonwu1994/patches-2.6.0.mpp](https://github.com/jasonwu1994/Gboard-p
   
 <blockquote>
 
-[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260167)<br>
-Patches: [jkennethcarino/patches-1.2.0.mpp](https://github.com/jkennethcarino/adobo/releases/tag/v1.2.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: jkennethcarino/patches-1.2.0.mpp
 - Always-incognito mode
 - Enable OCR feature
 - Enable clipboard in incognito
@@ -851,8 +851,8 @@ Patches: [Raudrobot/patches-6.1.0.rvp](https://github.com/Raudrobot/revanced-pat
   
 <blockquote>
 
-[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
-Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: RookieEnough/patches-1.1.0.mpp
 - Remove device restrictions
 </blockquote>
 </details>
@@ -886,8 +886,8 @@ Patches: [Raudrobot/patches-6.1.0.rvp](https://github.com/Raudrobot/revanced-pat
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
-Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: ajstrick81/patches-1.19.0.mpp
 - HBO Max - Disable Ads
 </blockquote>
 </details>
@@ -924,8 +924,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260161)<br>
-Patches: [kiraio-moe/patches-1.3.0.mpp](https://github.com/kiraio-moe/Lain-Patches/releases/tag/v1.3.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: kiraio-moe/patches-1.3.0.mpp
 - Unlock Premium
 </blockquote>
 </details>
@@ -965,8 +965,8 @@ Patches: [rushiranpise/patches-1.16.0.mpp](https://github.com/rushiranpise/morph
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Unlock premium features
 </blockquote>
 </details>
@@ -1004,8 +1004,8 @@ Patches: [jkennethcarino/patches-1.2.0.mpp](https://github.com/jkennethcarino/ad
 
 <blockquote>
 
-[Release 2026-07-16](https://github.com/nullcpy/rvb/releases/tag/260054)<br>
-Patches: [brosssh/patches-2.8.1.mpp](https://github.com/brosssh/morphe-patches/releases/tag/v2.8.1)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: brosssh/patches-2.8.1.mpp
 - Bypass signature check
 - Disable Reels scrolling
 - Disable story auto flipping
@@ -1147,13 +1147,12 @@ Patches:
 #### [ReVanced (ReVancedExperiments)](https://github.com/Aunali321/ReVancedExperiments)
 
 <details>
-<summary id="instagram-revanced-exp">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v426.0.0.37.68-gray?labelColor=E4405F&logo=instagram&logoColor=white&style=flat"></summary>
+<summary id="instagram-revanced-exp">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v430.0.0.53.80-gray?labelColor=E4405F&logo=instagram&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-05-14](https://github.com/nullcpy/rvb/releases/tag/245)<br>
-Patches: [Aunali321/patches-2.0.0.rvp](https://github.com/Aunali321/ReVancedExperiments/releases/tag/v2.0.0)
-
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: Aunali321/patches-2.0.0.rvp
 - Disable signature check
 - Enable Developer Menu
 - Hide Ads
@@ -1316,8 +1315,8 @@ Patches: [bufferk/patches-1.8.0.mpp](https://github.com/bufferk/morphe-patches/r
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Enable Premium
 </blockquote>
 </details>
@@ -1335,8 +1334,8 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
   
 <blockquote>
 
-[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
-Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: RookieEnough/patches-1.1.0.mpp
 - Disable typing indicator
 - Hide Facebook buttons
 - Hide inbox ads
@@ -1566,8 +1565,8 @@ Patches: [rushiranpise/patches-1.16.0.mpp](https://github.com/rushiranpise/morph
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260156)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Enable Prime
 </blockquote>
 </details>
@@ -1587,8 +1586,8 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Disable ads
 - Unlimited skips
 </blockquote>
@@ -1607,8 +1606,8 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
-Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: ajstrick81/patches-1.19.0.mpp
 - Disable auto-updates
 - Skip ads
 </blockquote>
@@ -1627,8 +1626,8 @@ Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-an
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
-Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: ajstrick81/patches-1.19.0.mpp
 - Disable auto-updates
 - Override certificate pinning
 - Skip ads
@@ -1691,8 +1690,8 @@ Patches: [binarymend/patches-1.3.1.mpp](https://github.com/binarymend/morphe-pat
   
 <blockquote>
 
-[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
-Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: RookieEnough/patches-1.1.0.mpp
 - Hide ads
 </blockquote>
 </details>
@@ -1738,8 +1737,8 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Enable Premium
 - MicroG integration
 </blockquote>
@@ -1792,8 +1791,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
-Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: ajstrick81/patches-1.19.0.mpp
 - Bundle native ad-strip hook
 - Disable auto-updates
 - Load native ad-strip hook
@@ -1817,8 +1816,8 @@ Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-an
 
 <blockquote>
 
-[Release 2026-07-23](https://github.com/nullcpy/rvb/releases/tag/260080)<br>
-Patches: [arandomhooman/patches-1.43.4.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.43.4)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: arandomhooman/patches-1.43.4.mpp
 - Unlock Premium
 </blockquote>
 </details>
@@ -1875,8 +1874,8 @@ Patches: [Raudrobot/patches-6.1.0.rvp](https://github.com/Raudrobot/revanced-pat
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260156)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Remove delay
 - Unlock LAN connections
 - Unlock custom DNS
@@ -2094,8 +2093,8 @@ Patches: [hxreborn/patches-1.3.0.mpp](https://github.com/hxreborn/morphe-patches
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Disable signature check
 - Enable Pro
 </blockquote>
@@ -2152,8 +2151,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - AMOLED dark theme
 - Disable telemetry
 - Enable SoundCloud Go
@@ -2225,9 +2224,8 @@ Patches: [BholeyKaBhakt/patches-2.12.0.mpp](https://github.com/BholeyKaBhakt/rev
 
 <blockquote>
 
-[Release 2026-05-01](https://github.com/nullcpy/rvb/releases/tag/189)<br>
-Patches: [binarymend/patches-1.3.1.mpp](https://github.com/binarymend/morphe-patches/releases/tag/v1.3.1)
-
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: binarymend/patches-1.3.1.mpp
 - Unlock Symfonium
 </blockquote>
 </details>
@@ -2351,8 +2349,8 @@ Patches: [rushiranpise/patches-1.16.0.mpp](https://github.com/rushiranpise/morph
   
 <blockquote>
 
-[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
-Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: RookieEnough/patches-1.1.0.mpp
 - Hide ads
 </blockquote>
 </details>
@@ -2403,8 +2401,8 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
   
 <blockquote>
 
-[Release 2026-07-28](https://github.com/nullcpy/rvb/releases/tag/260107)<br>
-Patches: [icysymmetra/patches-0.4.1.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.4.1)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: icysymmetra/patches-0.4.1.mpp
 - Always show publish date
 - Copy comments without username
 - Custom offline videos limit
@@ -2503,8 +2501,8 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
   
 <blockquote>
 
-[Release 2026-07-18](https://github.com/nullcpy/rvb/releases/tag/260064)<br>
-Patches: [bufferk/patches-1.8.0.mpp](https://github.com/bufferk/morphe-patches/releases/tag/v1.8.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: bufferk/patches-1.8.0.mpp
 - Disable analytics
 - Enable premium features
 - Hide 'Get Premium' banners
@@ -2528,8 +2526,8 @@ Patches: [bufferk/patches-1.8.0.mpp](https://github.com/bufferk/morphe-patches/r
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
-Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: ajstrick81/patches-1.19.0.mpp
 - Skip ads
 </blockquote>
 </details>
@@ -2614,8 +2612,8 @@ Patches: [arandomhooman/patches-1.43.4.mpp](https://github.com/arandomhooman/hoo
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: hoo-dles/patches-1.40.0.mpp
 - Enable Premium
 </blockquote>
 </details>
@@ -2633,8 +2631,8 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
-Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: RookieEnough/patches-1.1.0.mpp
 - Hide Ads
 </blockquote>
 </details>
@@ -2652,8 +2650,8 @@ Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Van
 
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
-Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: ajstrick81/patches-1.19.0.mpp
 - Override certificate pinning
 - Skip ads
 </blockquote>
@@ -3377,8 +3375,8 @@ Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patc
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
-Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: anddea/patches-4.2.0.mpp
 - Alternative thumbnails
 - Ambient mode control
 - Bypass URL redirects
@@ -3453,8 +3451,8 @@ Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/r
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
-Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: anddea/patches-4.2.0.mpp
 - Alternative thumbnails
 - Ambient mode control
 - Bypass URL redirects
@@ -3530,8 +3528,8 @@ Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/r
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
-Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: anddea/patches-4.2.0.mpp
 - Alternative thumbnails
 - Ambient mode control
 - Bypass URL redirects
@@ -4004,8 +4002,8 @@ Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patc
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
-Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: anddea/patches-4.2.0.mpp
 - Bitrate default value
 - Bypass image region restrictions
 - Certificate spoof
@@ -4052,8 +4050,8 @@ Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/r
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
-Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: anddea/patches-4.2.0.mpp
 - Bitrate default value
 - Bypass image region restrictions
 - Certificate spoof
@@ -4100,8 +4098,8 @@ Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/r
   
 <blockquote>
 
-[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
-Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
+[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+Patches: anddea/patches-4.2.0.mpp
 - Bitrate default value
 - Bypass image region restrictions
 - Certificate spoof
