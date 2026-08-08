@@ -29,7 +29,7 @@ BUILD_DIR="build"
 DL_SRCS=("local" "direct" "github2" "github" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
 BUILD_JSON_FILE="build.json"
 PATCH_OUTPUT=""
-
+mkdir -p "$TEMP_DIR"
 
 if [ "${GH_TOKEN-}" ]; then GH_HEADER="Authorization: token ${GH_TOKEN}"; else GH_HEADER=; fi
 NEXT_VER_CODE=${NEXT_VER_CODE:-$(date +'%Y%m%d')}
@@ -755,7 +755,7 @@ isoneof() {
 sign_apk() {
   get_bcprov
   local input=$1 output=$2 verbose=$3
-  if ! OP=$(java -cp "$APKSIGNER$javapathsep$TEMP_DIR/bcprov.jar" com.android.apksigner.ApkSignerTool sign --ks temp/ks.keystore --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks-type BKS --ks-pass pass:$KEYSTORE_PASSWORD --key-pass pass:$KEYSTORE_KEY_PASSWORD --ks-key-alias $KEYSTORE_ALIAS  --out="${output}" "${input}" 2>&1 ) ; then
+  if ! OP=$(java -cp "$APKSIGNER$javapathsep$TEMP_DIR/bcprov.jar" com.android.apksigner.ApkSignerTool sign --ks $TEMP_DIR/ks.keystore --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks-type BKS --ks-pass pass:$KEYSTORE_PASSWORD --key-pass pass:$KEYSTORE_KEY_PASSWORD --ks-key-alias $KEYSTORE_ALIAS  --out="${output}" "${input}" 2>&1 ) ; then
     epr "apksigner error: $OP"
     return 1
   fi
@@ -1716,7 +1716,7 @@ dl_github2() {
     esac
 }
 
-		
+
 # -------------------- direct --------------------
 dl_direct() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
@@ -1842,7 +1842,7 @@ patch_apk() {
 		fi
 	fi
 
-	local base_cmd="java -jar '$cli_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=ks.keystore \
+	local base_cmd="java -jar '$cli_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=$TEMP_DIR/ks.keystore \
 --keystore-entry-password=$KEYSTORE_KEY_PASSWORD --keystore-password=$KEYSTORE_PASSWORD --signer=$KEYSTORE_ALIAS --keystore-entry-alias=$KEYSTORE_ALIAS"
 
 	local -a ed_parts=()
