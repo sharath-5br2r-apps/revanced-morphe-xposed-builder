@@ -1648,7 +1648,8 @@ get_github2_resp() {
 	if [ "$version_mode" = "latest" ]; then
 		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 		release=$(source_release_pick_from_list "$host" latest <<<"$resp") || return 1
-	else
+	fi
+	if [ "$version_mode" != "latest" ] && [ "$version_mode" != "beta" ]; then
 		rv_rel=$(source_release_tag_api "$host" "$src" "$version") || return 1
 		release=$({ if [ "$host" = github ]; then gh_req "$rv_rel" -; else req "$rv_rel" -; fi; }) || return 1
 	fi
@@ -1659,6 +1660,7 @@ get_github2_resp() {
 	fi
 	__GITHUB2_URL__="${__GITHUB2_URL__}/releases/download/$version"
 	__DL_RESP_CACHE__["github2_resp_$url"]="$__GITHUB2_RESP__"
+	__DL_RESP_CACHE__["github2_url_$url"]="$__GITHUB2_URL__"
 }
 get_github2_pkg_name() { 
 	if [ -n "${app_args[github2_apk_pkgname]:-}" ]; then
