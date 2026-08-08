@@ -1632,7 +1632,7 @@ get_util_arch() {
 get_github2_resp() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
 	local rv_rel release tag_name ver resp
-  	host=github
+  	local host=github
 	src=$(cut -d/ -f4- <<<"$url")
 	rv_rel=$(source_release_api_base "$host" "$src" "https://gitlab.com") || return 1
 	if [ "$version_mode" = "beta" ]; then
@@ -1672,22 +1672,22 @@ dl_github2() {
 
     # Matches the exact file selection logic from dl_archive
     while IFS= read -r p; do
-        if [[ -n ${args[github2_apk_filter]:-} ]] && [[ -z "$args[github2_apk_exclude_filter]" ]]; then
-            if [[ "$p" == *"${args[github2_apk_filter]}"* ]]; then
-                path="$p"
-                break
-            fi
-        elif [[ -n ${args[github2_apk_exclude_filter]:-} ]] && [[ -z "$args[github2_apk_filter]:-}" ]]; then
-			if [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
-				path="$p"
-				break
-			fi
-		elif [[ -n ${args[github2_apk_filter]:-} ]] && [[ -n "$args[github2_apk_exclude_filter]:-}" ]]; then
-			if [[ "$p" == *"${args[github2_apk_filter]}"* ]] && [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
-				path="$p"
-				break
-			fi
-		else
+	if [[ -n "${args[github2_apk_filter]:-}" ]] && [[ -z "${args[github2_apk_exclude_filter]:-}" ]]; then
+		if [[ "$p" == *"${args[github2_apk_filter]}"* ]]; then
+			path="$p"
+			break
+		fi
+	elif [[ -n "${args[github2_apk_exclude_filter]:-}" ]] && [[ -z "${args[github2_apk_filter]:-}" ]]; then
+		if [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
+			path="$p"
+			break
+		fi
+	elif [[ -n "${args[github2_apk_filter]:-}" ]] && [[ -n "${args[github2_apk_exclude_filter]:-}" ]]; then
+		if [[ "$p" == *"${args[github2_apk_filter]}"* ]] && [[ "$p" != *"${args[github2_apk_exclude_filter]}"* ]]; then
+			path="$p"
+			break
+		fi
+	else
 		    wpr "No github2_apk_filter or github2_apk_exclude_filter specified, defaulting to first matching asset"
 			path="$p"
 			break
@@ -2174,7 +2174,7 @@ build_rv() {
 						continue
 				fi
 
-				if [ -n "$downloaded_ver" ] && { [[ "$dl_p" == "direct" ]] || [[ "$dl_p" == "local" ]] }; then
+				if [ -n "$downloaded_ver" ] && { [[ "$dl_p" == "direct" ]] || [[ "$dl_p" == "local" ]]; }; then
 					if [ "$version" != "$downloaded_ver" ]; then
 						pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
 						version="$downloaded_ver"
