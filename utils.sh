@@ -2061,7 +2061,7 @@ build_rv() {
 	list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
 	
 	local cli_source_l="${args[cli_source],,}"
-	if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"nstafel"* ]] && [[ "$cli_source_l" != "apksigner" ]]; then
+	if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"instafel"* ]] && [[ "$cli_source_l" != "apksigner" ]]; then
 		if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
 			epr "No app-specific patches found for '$pkg_name'. Skipping completely."
 			return 0
@@ -2205,7 +2205,7 @@ build_rv() {
 
 				local sig_op
 				local sig_ok=true
-        		if [[ $args[check_sig] == "true" ]]; then
+        		if [[ ${args[check_sig]} == "true" ]]; then
 				if [ -f "${stock_apk}.apkm" ]; then
 					rm -rf "${stock_apk}-zip" || :
 					unzip -j "${stock_apk}.apkm" -d "${stock_apk}-zip" >/dev/null
@@ -2255,7 +2255,7 @@ build_rv() {
 	fi
 
 	local sig_op
-	if [[ $args[check_sig] == "true" ]]; then
+	if [[ ${args[check_sig]} == "true" ]]; then
  	if [ -f "${stock_apk}.apkm" ]; then
 		rm -rf "${stock_apk}-zip" || :
 		unzip -j "${stock_apk}.apkm" -d "${stock_apk}-zip" >/dev/null
@@ -2283,14 +2283,15 @@ build_rv() {
   	fi
 
 	local microg_patches=()
-	local IFS=$'
-	'
+	local IFS='|'
 	if [[ -n ${args[custom_microg_patches]:-} ]]; then
-		local listpatches=$(join_args "${args[custom_microg_patches]}" "\n")
+		local listpatches=$(join_args "${args[custom_microg_patches]}" "|")
 		for p in  $listpatches; do
 			microg_patches+=("$p")
 		done
 	fi
+	local IFS=$'
+'
 	for p in $(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || :); do
 		microg_patches+=("$p")
 	done

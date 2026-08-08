@@ -76,7 +76,7 @@ for table_name in $(toml_get_table_names); do
 	if [[ "$cli_src_host" == *"|gitlab" ]]; then
 		cli_src_host="gitlab"
 	fi
-	if ! isoneof "$cli_src_host" github gitlab; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': only 'github' or 'gitlab' is allowed"; fi
+	if ! isoneof "$cli_src_host" github gitlab none; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': only 'github', 'gitlab' or 'none' is allowed"; fi
 
 	# Parse patch sources: may be a single string or multiline (quoted list)
 	IFS=$'\n'
@@ -88,7 +88,7 @@ for table_name in $(toml_get_table_names); do
 		if [[ "$h" == *"|gitlab" ]]; then
 			h="gitlab"
 		fi
-		if ! isoneof "$h" github gitlab none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': only 'github' or 'gitlab' is allowed"; fi
+		if ! isoneof "$h" github gitlab none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': only 'github', 'gitlab' or 'none' is allowed"; fi
 	done
 
 	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver")"; then
@@ -191,11 +191,53 @@ for table_name in $(toml_get_table_names); do
 		app_args[arch]="arm-v7a"
 		app_args[module_prop_name]="${module_prop_name_b}-arm"
 		build_rv "$(declare -p app_args)"
+	elif [ "${app_args[arch]}" = multi ]; then
+		app_args[table]="$table_name (arm64-v8a)"
+		app_args[arch]="arm64-v8a"
+		module_prop_name_b=${app_args[module_prop_name]}
+		app_args[module_prop_name]="${module_prop_name_b}-arm64"
+		build_rv "$(declare -p app_args)"
+		app_args[table]="$table_name (arm-v7a)"
+		app_args[arch]="arm-v7a"
+		app_args[module_prop_name]="${module_prop_name_b}-arm"
+		build_rv "$(declare -p app_args)"
+		app_args[table]="$table_name (x86_64)"
+		app_args[arch]="x86_64"
+		app_args[module_prop_name]="${module_prop_name_b}-x64"
+		build_rv "$(declare -p app_args)"
+		app_args[table]="$table_name (x86)"
+		app_args[arch]="x86"
+		app_args[module_prop_name]="${module_prop_name_b}-x86"
+		build_rv "$(declare -p app_args)"
+	elif [ "${app_args[arch]}" = "both64" ]; then
+		app_args[table]="$table_name (arm64-v8a)"
+		app_args[arch]="arm64-v8a"
+		module_prop_name_b=${app_args[module_prop_name]}
+		app_args[module_prop_name]="${module_prop_name_b}-arm64"
+		build_rv "$(declare -p app_args)"
+		app_args[table]="$table_name (x86_64)"
+		app_args[arch]="x86_64"
+		app_args[module_prop_name]="${module_prop_name_b}-x64"
+		build_rv "$(declare -p app_args)"
+	elif [ "${app_args[arch]}" = "both32" ]; then
+		app_args[table]="$table_name (arm-v7a)"
+		app_args[arch]="arm-v7a"
+		module_prop_name_b=${app_args[module_prop_name]}
+		app_args[module_prop_name]="${module_prop_name_b}-arm"
+		build_rv "$(declare -p app_args)"
+		app_args[table]="$table_name (x86)"
+		app_args[arch]="x86"
+		app_args[module_prop_name]="${module_prop_name_b}-x86"
+		build_rv "$(declare -p app_args)"
 	else
 		if [ "${app_args[arch]}" = "arm64-v8a" ]; then
 			app_args[module_prop_name]="${app_args[module_prop_name]}-arm64"
 		elif [ "${app_args[arch]}" = "arm-v7a" ]; then
 			app_args[module_prop_name]="${app_args[module_prop_name]}-arm"
+		elif [ "${app_args[arch]}" = "x86_64" ]; then
+			app_args[module_prop_name]="${app_args[module_prop_name]}-x64"
+		elif [ "${app_args[arch]}" = "x86" ]; then
+			app_args[module_prop_name]="${app_args[module_prop_name]}-x86"
 		fi
 		build_rv "$(declare -p app_args)"
 	fi
