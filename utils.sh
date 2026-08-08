@@ -755,7 +755,7 @@ isoneof() {
 sign_apk() {
   get_bcprov
   local input=$1 output=$2 verbose=$3
-  if ! OP=$(java -cp "$APKSIGNER$javapathsep$TEMP_DIR/bcprov.jar" com.android.apksigner.ApkSignerTool sign --ks $TEMP_DIR/ks.keystore --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks-type BKS --ks-pass pass:$KEYSTORE_PASSWORD --key-pass pass:$KEYSTORE_KEY_PASSWORD --ks-key-alias $KEYSTORE_ALIAS  --out="${output}" "${input}" 2>&1 ) ; then
+  if ! OP=$(java -cp "$APKSIGNER$javapathsep$TEMP_DIR/bcprov.jar" com.android.apksigner.ApkSignerTool sign --ks $TEMP_DIR/ks.keystore --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks-type BKS --ks-pass "pass:$KEYSTORE_PASSWORD" --key-pass "pass:$KEYSTORE_KEY_PASSWORD" --ks-key-alias "$KEYSTORE_ALIAS" --out="${output}" "${input}" 2>&1 ) ; then
     epr "apksigner error: $OP"
     return 1
   fi
@@ -1632,8 +1632,10 @@ get_util_arch() {
 get_github2_resp() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
 	local rv_rel release tag_name ver resp
-  	local host=github
+  	local host=github src
 	src=$(cut -d/ -f4- <<<"$url")
+	src=${src%.git}
+	src=${src%/}
 	rv_rel=$(source_release_api_base "$host" "$src" "https://gitlab.com") || return 1
 	if [ "$version_mode" = "beta" ]; then
 		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
@@ -1756,7 +1758,7 @@ patch_apk() {
 		mkdir -p "$tmp_dir"
     if [[ "$cli_source_l" == *"npatch"* ]]; then
 		  	get_bcprov || return 1
-			local cmd="java -cp 'temp/bcprov.jar$javapathsep$cli_jar' -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k $TEMP_DIR/ks.keystore  $KEYSTORE_PASSWORD $KEYSTORE_ALIAS $KEYSTORE_KEY_PASSWORD '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
+			local cmd="java -cp 'temp/bcprov.jar$javapathsep$cli_jar' -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k $TEMP_DIR/ks.keystore  "$KEYSTORE_PASSWORD" "$KEYSTORE_ALIAS" "$KEYSTORE_KEY_PASSWORD" '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
 		else
 			local cmd="java -jar '$cli_jar' -o '$tmp_dir' $p_args_modules $patcher_args '$stock_input'"
     fi
@@ -1843,7 +1845,7 @@ patch_apk() {
 	fi
 
 	local base_cmd="java -jar '$cli_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=$TEMP_DIR/ks.keystore \
---keystore-entry-password=$KEYSTORE_KEY_PASSWORD --keystore-password=$KEYSTORE_PASSWORD --signer=$KEYSTORE_ALIAS --keystore-entry-alias=$KEYSTORE_ALIAS"
+--keystore-entry-password=\"$KEYSTORE_KEY_PASSWORD\" --keystore-password=\"$KEYSTORE_PASSWORD\" --signer=\"$KEYSTORE_ALIAS\" --keystore-entry-alias=\"$KEYSTORE_ALIAS\""
 
 	local -a ed_parts=()
 	if [ -n "$per_bundle_ed" ]; then
@@ -2174,7 +2176,7 @@ build_rv() {
 						continue
 				fi
 
-				if [ -n "$downloaded_ver" ] && { [[ "$dl_p" == "direct" ]] || [[ "$dl_p" == "local" ]]; }; then
+				if [ -n "$downloaded_ver" ] && { [[ "$dl_p" == "direct" ]] || [[ "$dl_p" == "local" ]];	 }; then
 					if [ "$version" != "$downloaded_ver" ]; then
 						pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
 						version="$downloaded_ver"
