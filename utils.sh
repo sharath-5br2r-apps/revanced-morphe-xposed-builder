@@ -759,7 +759,7 @@ isoneof() {
 }
 sign_apk() {
   get_bcprov
-  local input=$1 output=$2 verbose=$3
+  local input=$1 output=$2 verbose=${3:-none}
   if ! OP=$(java -cp "$APKSIGNER$javapathsep$TEMP_DIR/bcprov.jar" com.android.apksigner.ApkSignerTool sign --ks $TEMP_DIR/ks.keystore --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks-type BKS --ks-pass "pass:$KEYSTORE_PASSWORD" --key-pass "pass:$KEYSTORE_KEY_PASSWORD" --ks-key-alias "$KEYSTORE_ALIAS" --out="${output}" "${input}" 2>&1); then
     epr "apksigner error: $OP"
     return 1
