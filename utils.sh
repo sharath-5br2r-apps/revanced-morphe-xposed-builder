@@ -23,7 +23,7 @@ CWD=$(pwd)
 TEMP_DIR="temp"
 BIN_DIR="bin"
 BUILD_DIR="build"
-DL_SRCS=("directv2" "direct" "github2" "github" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
+DL_SRCS=("local" "direct" "github2" "github" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
 BUILD_JSON_FILE="build.json"
 PATCH_OUTPUT=""
 
@@ -1678,19 +1678,7 @@ dl_github2() {
             ;;
     esac
 }
-# ----------------------- directv2 ---------------------
-get_directv2_resp() {
-	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
-	temp_output=$(mktemp -u "$TEMP_DIR/direct-XXXXXX.apk")
-	wget -q "$url" -O "$temp_output" || return 1
-	get_util_arch "$temp_output" "$arch" || return 1
-}
-get_directv2_vers() { get_util_vers "$temp_output"; }
-get_directv2_pkg_name() { get_util_pkg_name "$temp_output"; }
-dl_directv2() {
-	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
-	mv "$temp_output" "$output" || return 1
-}
+
 #---------------------------local----------------------
 get_local_resp() {
 	local_file=$1
@@ -1700,12 +1688,6 @@ get_local_resp() {
 	fi
 	get_util_arch "$local_file" "$arch" || return 1
 }
-get_local_vers() { get_util_vers "$local_file"; }
-get_local_pkg_name() { get_util_pkg_name "$local_file"; }
-dl_local() {
-	local local_file=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
-	cp "$local_file" "$output" || return 1
-}
 # -------------------- direct --------------------
 dl_direct() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
@@ -1714,7 +1696,16 @@ dl_direct() {
 get_direct_vers() { cut -d- -f2 <<<"$__DIRECT_APKNAME__" | sed 's/\.\(apk\|xapk\|apks\|apkm\)$//'; }
 get_direct_pkg_name() { cut -d- -f1 <<<"$__DIRECT_APKNAME__" | sed 's/\.\(apk\|xapk\|apks\|apkm\)$//'; }
 get_direct_resp() { __DIRECT_APKNAME__=$(awk -F/ '{print $NF}' <<<"$1"); }
+# -------------------- local --------------------
+dl_local() {
+│ local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
+│ mv "$url" "${output}" || return 1
+}
+get_local_vers() { cut -d- -f2 <<<"$__LOCAL_APKNAME__" | sed 's/\.\(apk\|xapk\|apks\|apkm\)$//'; }
+get_local_pkg_name() { cut -d- -f1 <<<"$__LOCAL_APKNAME__" | sed 's/\.\(apk\|xapk\|apks\|apkm\)$//'; }
+get_local_resp() { __LOCAL_APKNAME__=$(awk -F/ '{print $NF}' <<<"$1"); }
 # --------------------------------------------------
+
 
 patch_apk() {
 	local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5 cli_source=$6
