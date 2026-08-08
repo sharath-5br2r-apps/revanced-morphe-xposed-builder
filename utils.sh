@@ -4,12 +4,12 @@ if [ -f .env ]; then
   echo >&2 -e "\033[0;32m[+] Using .env file for keystore and signing.\033[0m"
   source .env
 fi
-if [ -z "${KEYSTORE_BASE64:-}" ] || [ -z "${KEYSTORE_PASSWORD:-}" ] || [ -z "${KEYSTORE_P12:-}" ] || [ -z "${KEYSTORE_ALIAS:-}" ]; then
-  echo >&2 -e "\033[0;33m[!] Keystore information is not fully set. Please ensure KEYSTORE, KEYSTORE_PASSWORD, KEYSTORE_P12, and KEYSTORE_ALIAS are defined in .env or environment variables.\033[0m"
-  echo >&2 -e "\033[0;33m[!] Auto generating values for KEYSTORE, KEYSTORE_PASSWORD, KEYSTORE_P12, and KEYSTORE_ALIAS.\033[0m"
+if [ -z "${KEYSTORE_BASE64:-}" ] || [ -z "${KEYSTORE_PASSWORD:-}" ] || [ -z "${KEYSTORE_ALIAS:-}" ]; then
+  echo >&2 -e "\033[0;33m[!] Keystore information is not fully set. Please ensure KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS are defined in .env or environment variables.\033[0m"
+  echo >&2 -e "\033[0;33m[!] Auto generating values for KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS.\033[0m"
   if [ ${GITHUB_REPOSITORY:-} ]; then
-	echo >&2 -e "::warning::utils.sh [!] Keystore information is not fully set. Please ensure KEYSTORE, KEYSTORE_PASSWORD, KEYSTORE_P12, and KEYSTORE_ALIAS are defined in .env or environment variables.\n"
-  echo >&2 -e "::warning::utils.sh [!] Auto generating values for KEYSTORE, KEYSTORE_PASSWORD, KEYSTORE_P12, and KEYSTORE_ALIAS.\n"
+	echo >&2 -e "::warning::utils.sh [!] Keystore information is not fully set. Please ensure KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS are defined in .env or environment variables.\n"
+  echo >&2 -e "::warning::utils.sh [!] Auto generating values for KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS.\n"
   fi
   source .env.default
 fi
@@ -1657,8 +1657,8 @@ get_github2_resp() {
 	__DL_RESP_CACHE__["github2_resp_$url"]="$__GITHUB2_RESP__"
 }
 get_github2_pkg_name() { 
-	if [ -n "${app_args[github_apk_pkgname]}" ]; then
-		echo "${app_args[github_apk_pkgname]}"
+	if [ -n "${app_args[github2_apk_pkgname]}" ]; then
+		echo "${app_args[github2_apk_pkgname]}"
 	else
 		epr "No Package Name specified for GitHub APK"
 	return 1
