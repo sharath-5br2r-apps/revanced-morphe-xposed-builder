@@ -73,6 +73,9 @@ for table_name in $(toml_get_table_names); do
 	cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
 	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
 	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
+	if [[ "$cli_src_host" == *"|gitlab" ]]; then
+		cli_src_host="gitlab"
+	fi
 	if ! isoneof "$cli_src_host" github gitlab; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': only 'github' or 'gitlab' is allowed"; fi
 
 	# Parse patch sources: may be a single string or multiline (quoted list)
@@ -82,7 +85,9 @@ for table_name in $(toml_get_table_names); do
 	p_vers=($(list_args "$patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
 	unset IFS
 	for h in "${p_hosts[@]}"; do
-		if ! isoneof "$h" github gitlab; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': only 'github' or 'gitlab' is allowed"; fi
+		if [[ "$h" == *"|gitlab" ]]; then
+			h="gitlab"
+		if ! isoneof "$h" github gitlab none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': only 'github' or 'gitlab' is allowed"; fi
 	done
 
 	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver")"; then
@@ -99,6 +104,10 @@ for table_name in $(toml_get_table_names); do
 	for i in "${!p_srcs[@]}"; do
 		psrc="${p_srcs[$i]}"
 		phost="${p_hosts[$i]:-${p_hosts[0]}}"
+		if [[ "$phost" == *"|gitlab" ]]; then
+			pgitlabhost="${h#*|}"
+			phost="gitlab"
+		fi
 		# Find the downloaded jar/apk for this source to get actual version
 		pdir=${psrc%/*}; pdir=${TEMP_DIR}/${pdir,,}-rv
 		pfile=$(find "$pdir" -name 'patches-*.rvp' -o -name 'patches-*.jar' -o -name '*.mpp' -o -name '*.apk' 2>/dev/null | sort | tail -1)
@@ -116,7 +125,7 @@ for table_name in $(toml_get_table_names); do
 			if [ "$phost" = github ]; then
 				changelog_url_all+="https://github.com/${psrc}/releases/tag/${ptag} "
 			else
-				changelog_url_all+="https://gitlab.com/${psrc}/-/releases/${ptag} "
+				changelog_url_all+="${pgitlabhost:-https://gitlab.com}/${psrc}/-/releases/${ptag} "
 			fi
 		fi
 	done
@@ -124,7 +133,11 @@ for table_name in $(toml_get_table_names); do
 	app_args[patches_ref]="${patches_ref_all% }"
 	app_args[changelog_url]="${changelog_url_all% }"
 	app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"
-
+	app_args[github2_apk_pkgname]=$(toml_get "$t" github2-apk-pkgname) || app_args[github2_apk_pkgname]=""
+	app_args[github2_apk_filter]=$(toml_get "$t" github2-apk-filter) || app_args[github2_apk_filter]=""
+	app_args[github2_apk_exclude_filter]=$(toml_get "$t" github2-apk-exclude-filter) || app_args[github2_apk_exclude_filter]=""
+	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
+	app_args[custom_microg_patches]=$(toml_get "$t" custom-microg-patches) || app_args[custom_microg_patches]=""
 	app_args[excluded_patches]=$(toml_get "$t" excluded-patches) || app_args[excluded_patches]=""
 	if [ -n "${app_args[excluded_patches]}" ] && [[ ${app_args[excluded_patches]} != *'"'* ]]; then abort "patch names inside excluded-patches must be quoted"; fi
 	app_args[included_patches]=$(toml_get "$t" included-patches) || app_args[included_patches]=""
