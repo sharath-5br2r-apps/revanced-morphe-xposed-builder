@@ -7,27 +7,27 @@
   },
   "devanced": {
     "repo": "RookieEnough/De-Vanced",
-    "stable": "v1.0.4",
+    "stable": "v1.1.0",
     "prerelease": "v1.0.3-dev.1",
     "blocked": false,
-    "stable_date": "2026-05-13T13:27:20Z",
+    "stable_date": "2026-08-05T16:41:03Z",
     "pre_date": "2026-04-02T03:58:26Z"
   },
   "anddea": {
     "repo": "anddea/revanced-patches",
-    "stable": "v4.1.0",
-    "prerelease": "v4.2.0-dev.11",
+    "stable": "v4.2.0",
+    "prerelease": "v4.2.0-dev.14",
     "blocked": false,
-    "stable_date": "2026-06-16T15:37:39Z",
-    "pre_date": "2026-08-03T10:41:09Z"
+    "stable_date": "2026-08-07T15:03:16Z",
+    "pre_date": "2026-08-07T12:05:23Z"
   },
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
-    "stable": "v1.38.0",
-    "prerelease": "v1.39.0-dev.4",
+    "stable": "v1.39.0",
+    "prerelease": "v1.39.0-dev.11",
     "blocked": false,
-    "stable_date": "2026-08-01T07:07:41Z",
-    "pre_date": "2026-08-04T13:19:41Z"
+    "stable_date": "2026-08-08T11:22:51Z",
+    "pre_date": "2026-08-08T09:12:53Z"
   },
   "piko": {
     "repo": "crimera/piko",
@@ -39,19 +39,19 @@
   },
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
-    "stable": "v1.39.0",
+    "stable": "v1.40.0",
     "prerelease": "v1.40.0-dev.7",
     "blocked": false,
-    "stable_date": "2026-07-15T16:13:49Z",
+    "stable_date": "2026-08-07T00:14:26Z",
     "pre_date": "2026-07-30T19:12:16Z"
   },
   "adobo": {
     "repo": "jkennethcarino/adobo",
     "stable": "v1.2.0",
-    "prerelease": "v1.3.0-dev.15",
+    "prerelease": "v1.3.0-dev.17",
     "blocked": false,
     "stable_date": "2026-06-14T11:51:20Z",
-    "pre_date": "2026-08-02T15:26:06Z"
+    "pre_date": "2026-08-06T12:20:35Z"
   },
   "rvexp": {
     "repo": "Aunali321/ReVancedExperiments",
@@ -81,10 +81,10 @@
     "repo": "Paresh-Maheshwari/paresh-patches",
     "host": "gitlab",
     "stable": "v1.19.0",
-    "prerelease": "v1.19.1-dev.1",
+    "prerelease": "v1.20.0-dev.2",
     "blocked": false,
     "stable_date": "2026-07-07T17:45:47.815Z",
-    "pre_date": "2026-07-26T14:37:21.887Z"
+    "pre_date": "2026-08-08T04:55:25.025Z"
   },
   "docbt": {
     "repo": "docbt/patched-up",
@@ -159,17 +159,17 @@
   "rushiranpise": {
     "repo": "rushiranpise/morphe-patches",
     "stable": "v1.16.0",
-    "prerelease": "v1.16.0-dev.1",
+    "prerelease": "v1.17.0-dev.1",
     "blocked": false,
     "stable_date": "2026-08-03T07:54:49Z",
-    "pre_date": "2026-08-03T07:23:44Z"
+    "pre_date": "2026-08-07T18:32:22Z"
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.18.0",
+    "stable": "v1.19.0",
     "prerelease": "v1.5.7-dev.3",
     "blocked": false,
-    "stable_date": "2026-08-01T18:04:15Z",
+    "stable_date": "2026-08-07T01:05:09Z",
     "pre_date": "2026-06-26T16:45:34Z"
   },
   "revenge": {
@@ -206,18 +206,18 @@
   },
   "kondratjev": {
     "repo": "kondratjev/morphe-patches",
-    "stable": "v1.17.0",
-    "stable_date": "2026-07-05T13:34:07Z",
-    "prerelease": "v1.18.0-dev.3",
-    "pre_date": "2026-08-01T23:38:58Z",
+    "stable": "v1.19.0",
+    "stable_date": "2026-08-07T12:27:23Z",
+    "prerelease": "v1.19.0-dev.1",
+    "pre_date": "2026-08-07T12:17:35Z",
     "blocked": false
   },
   "gboard": {
     "repo": "jasonwu1994/Gboard-patches",
-    "stable": "v2.5.0",
-    "stable_date": "2026-08-03T21:58:53Z",
-    "prerelease": "v2.5.0-dev.1",
-    "pre_date": "2026-08-03T03:19:38Z",
+    "stable": "v2.6.0",
+    "stable_date": "2026-08-07T02:53:18Z",
+    "prerelease": "v2.7.0-dev.2",
+    "pre_date": "2026-08-08T07:14:50Z",
     "blocked": false
   },
   "instafel": {
@@ -226,6 +226,30 @@
     "stable_date": "2026-07-30T22:32:38Z",
     "prerelease": "",
     "pre_date": "",
+    "blocked": false
+  },
+  "hxreborn": {
+    "repo": "hxreborn/morphe-patches",
+    "stable": "v1.3.0",
+    "stable_date": "2026-08-05T22:24:46Z",
+    "prerelease": "v1.1.0-dev.1",
+    "pre_date": "2026-07-19T18:13:41Z",
+    "blocked": false
+  },
+  "kiraio": {
+    "repo": "kiraio-moe/Lain-Patches",
+    "stable": "v1.3.0",
+    "stable_date": "2026-07-12T15:14:45Z",
+    "prerelease": "v1.4.0-dev.2",
+    "pre_date": "2026-07-18T01:49:32Z",
+    "blocked": false
+  },
+  "shaun": {
+    "repo": "shaun-the-sheep-patches/morphe-patches",
+    "stable": "v1.1.0",
+    "stable_date": "2026-07-07T18:52:06Z",
+    "prerelease": "v1.2.0-dev.1",
+    "pre_date": "2026-07-12T08:51:41Z",
     "blocked": false
   }
 }

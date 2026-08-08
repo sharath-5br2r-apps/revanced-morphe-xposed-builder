@@ -1738,7 +1738,7 @@ patch_apk() {
 		  get_bcprov || return 1
 			local cmd="java -cp "temp/bcprov.jar$javapathsep$cli_jar" -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k $TEMP_DIR/ks.keystore  $KEYSTORE_PASSWORD $KEYSTORE_ALIAS $KEYSTORE_KEY_PASSWORD '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
 		else
-			local cmd="java -jar '$cli_jar' '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
+			local cmd="java -jar '$cli_jar' -o '$tmp_dir' $p_args_modules $patcher_args '$stock_input'"
     fi
 		pr "$cmd"
 		PATCH_OUTPUT=$(eval "$cmd" 2>&1)
@@ -2025,7 +2025,7 @@ build_rv() {
 	list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
 	
 	local cli_source_l="${args[cli_source],,}"
-	if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"instafel"* ]] && [[ "$cli_source_l" != "apksigner" ]]; then
+	if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"nstafel"* ]] && [[ "$cli_source_l" != "apksigner" ]]; then
 		if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
 			epr "No app-specific patches found for '$pkg_name'. Skipping completely."
 			return 0
@@ -2294,7 +2294,8 @@ build_rv() {
 			done
 		fi
 		if [ "$build_mode" = module ]; then
-			if [[ "${args[cli_source],,}" != *"revanced-cli"* ]]; then
+			local cli_src_lower="${args[cli_source],,}"
+			if [[ "$cli_src_lower" != *"revanced-cli"* ]] && [[ "$cli_src_lower" != *"npatch"* ]] && [[ "$cli_src_lower" != *"lspatch"* ]] && [[ "$cli_src_lower" != *"instafel"* ]] && [[ "$cli_src_lower" != "apksigner" ]]; then
 				patcher_args+=("--mount")
 			fi
 		fi

@@ -100,12 +100,12 @@ Patches: [binarymend/patches-1.3.1.mpp](https://github.com/binarymend/morphe-pat
 #### [Morphe (hoo-dles)](https://github.com/hoo-dles/morphe-patches)
 
 <details>
-<summary id="adguard-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v4.12.81-gray?labelColor=68BC71&logo=adguard&logoColor=white&style=flat"></summary>
+<summary id="adguard-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v4.13.1-gray?labelColor=68BC71&logo=adguard&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260156)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Enable Premium
 </blockquote>
 </details>
@@ -172,8 +172,8 @@ Patches: [Raudrobot/patches-6.1.0.rvp](https://github.com/Raudrobot/revanced-pat
   
 <blockquote>
 
-[Release 2026-07-29](https://github.com/nullcpy/rvb/releases/tag/260112)<br>
-Patches: [hoo-dles/patches-1.40.0-dev.5.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0-dev.5)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Unlock premium features
 </blockquote>
 </details>
@@ -428,12 +428,12 @@ Patches: [rushiranpise/patches-1.16.0.mpp](https://github.com/rushiranpise/morph
 #### [Morphe (kondratjev)](https://github.com/kondratjev/morphe-patches)
 
 <details>
-<summary id="calorie-counter-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v11.6.0.1-gray?labelColor=00bb2a&logo=soundcloud&logoColor=white&style=flat"></summary>
+<summary id="calorie-counter-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v11.7.0.1-gray?labelColor=00bb2a&logo=soundcloud&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
-[Release 2026-07-29](https://github.com/nullcpy/rvb/releases/tag/260108)<br>
-Patches: [kondratjev/patches-1.17.0.mpp](https://github.com/kondratjev/morphe-patches/releases/tag/v1.17.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260160)<br>
+Patches: [kondratjev/patches-1.19.0.mpp](https://github.com/kondratjev/morphe-patches/releases/tag/v1.19.0)
 - Disable community tab
 - Disable force update dialog
 - Unlock Premium
@@ -496,7 +496,7 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
 
 <blockquote>
 
-[Release 2026-08-05](https://github.com/nullcpy/rvb/releases/tag/260142)<br>
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260152)<br>
 Patches: [revenge-mod/app-release.apk](https://github.com/revenge-mod/revenge-xposed/releases/tag/1601)
 </blockquote>
 </details>
@@ -552,8 +552,8 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
   
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260156)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Enable Premium
 </blockquote>
 </details>
@@ -680,33 +680,49 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 ### [Google Keyboard (Gboard)](https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin)
 
-`com.google.android.inputmethod.latin`
-
-#### [Morphe (adobo)](https://github.com/jkennethcarino/adobo)
-
-<details>
-<summary id="gboard-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v17.1.5.887912998.release-gray?labelColor=4285F4&logo=google&logoColor=white&style=flat"></summary>
-  
-<blockquote>
-
-[Release 2026-06-14](https://github.com/nullcpy/rvb/releases/tag/351)<br>
-Patches: [jkennethcarino/patches-1.2.0.mpp](https://github.com/jkennethcarino/adobo/releases/tag/v1.2.0)
-
-- Always-incognito mode
-- Enable OCR feature
-- Enable clipboard in incognito
-</blockquote>
-</details>
+`com.google.android.inputmethod.latin` `dev.jason.com.google.android.inputmethod.latin`
 
 #### [Morphe (Gboard-patches)](https://github.com/jasonwu1994/Gboard-patches)
 
 <details>
-<summary id="gboard-morphe-alt">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v17.7.7.932364120.release.arm64.v8a-gray?labelColor=4285F4&logo=google&logoColor=white&style=flat"></summary>
+<summary id="gboard-morphe"><b>Default</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v17.7.7.932364120.release.arm64.v8a-gray?labelColor=4285F4&logo=google&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-08-04](https://github.com/nullcpy/rvb/releases/tag/260138)<br>
-Patches: [jasonwu1994/patches-2.5.0.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.5.0)
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260167)<br>
+Patches: [jasonwu1994/patches-2.6.0.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.6.0)
+- AI Writing Tools
+- Add Gboard Signature Bypass
+- Advanced Voice Typing
+- Clipboard Custom Character Limit
+- Clipboard Enhancements
+- Custom Symbols
+- Developer options
+- Emojis, stickers & GIFs Tab Order
+- Enable Inline Autofill Suggestions
+- English QWERTY Up-Flick Uppercase
+- Grammar Checker
+- Inline Suggestions
+- Key Shape Selection
+- Latin Globe Key Ignore Interval
+- Long-Press Editing Shortcuts
+- Settings Homepage Override
+- Swipeable Custom Top Row
+- Use Bluetooth Microphone
+- Web Clipboard
+- Zhuyin Bottom Row Key Sizes
+- Zhuyin Quick Traditional/Simplified Toggle
+- Zhuyin Slide Input
+</blockquote>
+</details>
+
+<details>
+<summary id="gboard-morphe-clone"><b>Clone</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v17.7.7.932364120.release.arm64.v8a-gray?labelColor=4285F4&logo=google&logoColor=white&style=flat"></summary>
+  
+<blockquote>
+
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260167)<br>
+Patches: [jasonwu1994/patches-2.6.0.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.6.0)
 - AI Writing Tools
 - Add Gboard Signature Bypass
 - Advanced Voice Typing
@@ -730,6 +746,21 @@ Patches: [jasonwu1994/patches-2.5.0.mpp](https://github.com/jasonwu1994/Gboard-p
 - Zhuyin Bottom Row Key Sizes
 - Zhuyin Quick Traditional/Simplified Toggle
 - Zhuyin Slide Input
+</blockquote>
+</details>
+
+#### [Morphe (adobo)](https://github.com/jkennethcarino/adobo)
+
+<details>
+<summary id="gboard-morphe-adobo">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v17.7.7.932364120.release.arm64.v8a-gray?labelColor=4285F4&logo=google&logoColor=white&style=flat"></summary>
+  
+<blockquote>
+
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260167)<br>
+Patches: [jkennethcarino/patches-1.2.0.mpp](https://github.com/jkennethcarino/adobo/releases/tag/v1.2.0)
+- Always-incognito mode
+- Enable OCR feature
+- Enable clipboard in incognito
 </blockquote>
 </details>
 
@@ -763,12 +794,12 @@ Patches: [docbt/patches-1.10.0.mpp](https://github.com/docbt/patched-up/releases
 #### [Morphe (De-Vanced)](https://github.com/RookieEnough/De-Vanced)
 
 <details>
-<summary id="google-photos-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v7.86.0.956040398-gray?labelColor=FBBC04&logo=googlephotos&logoColor=white&style=flat"></summary>
+<summary id="google-photos-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v7.87.0.957333026-gray?labelColor=FBBC04&logo=googlephotos&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-07-30](https://github.com/nullcpy/rvb/releases/tag/260115)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-ReVanced/releases/tag/v1.0.4)
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Fix selected account persistence
 - GmsCore support
 - Spoof features
@@ -820,9 +851,8 @@ Patches: [Raudrobot/patches-6.1.0.rvp](https://github.com/Raudrobot/revanced-pat
   
 <blockquote>
 
-[Release 2026-05-13](https://github.com/nullcpy/rvb/releases/tag/242)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
-
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Remove device restrictions
 </blockquote>
 </details>
@@ -856,8 +886,8 @@ Patches: [Raudrobot/patches-6.1.0.rvp](https://github.com/Raudrobot/revanced-pat
 
 <blockquote>
 
-[Release 2026-08-01](https://github.com/nullcpy/rvb/releases/tag/260127)<br>
-Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.18.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
+Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
 - HBO Max - Disable Ads
 </blockquote>
 </details>
@@ -878,6 +908,25 @@ Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-an
 [Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
 Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
 - Enable Premium
+</blockquote>
+</details>
+
+---
+
+### [Hermit — Lite Apps Browser](https://play.google.com/store/apps/details?id=com.chimbori.hermitcrab)
+
+`com.chimbori.hermitcrab`
+
+#### [Morphe (kiraio-moe)](https://github.com/kiraio-moe/Lain-Patches)
+
+<details>
+<summary id="hermit-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v31.6.1-gray?labelColor=de2f3b&logo=android&logoColor=white&style=flat"></summary>
+
+<blockquote>
+
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260161)<br>
+Patches: [kiraio-moe/patches-1.3.0.mpp](https://github.com/kiraio-moe/Lain-Patches/releases/tag/v1.3.0)
+- Unlock Premium
 </blockquote>
 </details>
 
@@ -916,8 +965,8 @@ Patches: [rushiranpise/patches-1.16.0.mpp](https://github.com/rushiranpise/morph
   
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Unlock premium features
 </blockquote>
 </details>
@@ -1154,6 +1203,7 @@ Patches: [BholeyKaBhakt/patches-2.12.0.mpp](https://github.com/BholeyKaBhakt/rev
 </details>
 
 ---
+
 <a id="apps-k"></a>
 
 ### [komoot - hike, bike & run](https://play.google.com/store/apps/details?id=de.komoot.android)
@@ -1174,6 +1224,26 @@ Patches: [brosssh/patches-2.8.1.mpp](https://github.com/brosssh/morphe-patches/r
 </details>
 
 ---
+
+### [KineStop: Car sickness aid](https://play.google.com/store/apps/details?id=com.urbandroid.kinestop)
+
+`com.urbandroid.kinestop`
+
+#### [Morphe (shaun-the-sheep-patches)](https://github.com/shaun-the-sheep-patches/morphe-patches)
+
+<details>
+<summary id="kinestop-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v5.1-gray?labelColor=3c99ee&logo=android&logoColor=white&style=flat"></summary>
+
+<blockquote>
+
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260160)<br>
+Patches: [shaun-the-sheep-patches/patches-1.1.0.mpp](https://github.com/shaun-the-sheep-patches/morphe-patches/releases/tag/v1.1.0)
+- Unlock Premium
+</blockquote>
+</details>
+
+---
+
 <a id="apps-l"></a>
 
 ### [Lumina Wallpapers](https://play.google.com/store/apps/details?id=com.lumina.wallpapers)
@@ -1246,8 +1316,8 @@ Patches: [bufferk/patches-1.8.0.mpp](https://github.com/bufferk/morphe-patches/r
 
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Enable Premium
 </blockquote>
 </details>
@@ -1265,13 +1335,14 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
   
 <blockquote>
 
-[Release 2026-05-13](https://github.com/nullcpy/rvb/releases/tag/242)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
-
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Disable typing indicator
-- Hide Facebook button
+- Hide Facebook buttons
 - Hide inbox ads
+- Hide inbox stories and notes tray
 - Hide inbox subtabs
+- Open links externally
 - Remove Meta AI
 </blockquote>
 </details>
@@ -1325,9 +1396,8 @@ Patches: [quantavil/patches-1.33.0.mpp](https://github.com/quantavil/edge-morphe
   
 <blockquote>
 
-[Release 2026-05-13](https://github.com/nullcpy/rvb/releases/tag/242)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
-
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Hide OneDrive migration
 </blockquote>
 </details>
@@ -1492,12 +1562,12 @@ Patches: [rushiranpise/patches-1.16.0.mpp](https://github.com/rushiranpise/morph
 #### [Morphe (hoo-dles)](https://github.com/hoo-dles/morphe-patches)
 
 <details>
-<summary id="nova-launcher-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v81042-gray?labelColor=FF6B00&logo=android&logoColor=white&style=flat"></summary>
+<summary id="nova-launcher-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v88600-gray?labelColor=FF6B00&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260156)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Enable Prime
 </blockquote>
 </details>
@@ -1517,8 +1587,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
   
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Disable ads
 - Unlimited skips
 </blockquote>
@@ -1537,8 +1607,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-01](https://github.com/nullcpy/rvb/releases/tag/260127)<br>
-Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.18.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
+Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
 - Disable auto-updates
 - Skip ads
 </blockquote>
@@ -1557,8 +1627,8 @@ Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-an
   
 <blockquote>
 
-[Release 2026-08-01](https://github.com/nullcpy/rvb/releases/tag/260127)<br>
-Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.18.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
+Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
 - Disable auto-updates
 - Override certificate pinning
 - Skip ads
@@ -1574,13 +1644,12 @@ Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-an
 #### [Morphe (De-Vanced)](https://github.com/RookieEnough/De-Vanced)
 
 <details>
-<summary id="photomath-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v8.47.1-gray?labelColor=DA2323&logo=android&logoColor=white&style=flat"></summary>
+<summary id="photomath-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v8.48.0-gray?labelColor=DA2323&logo=android&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-05-13](https://github.com/nullcpy/rvb/releases/tag/242)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
-
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Hide update popup
 - Spoof device ID
 - Unlock plus
@@ -1622,8 +1691,8 @@ Patches: [binarymend/patches-1.3.1.mpp](https://github.com/binarymend/morphe-pat
   
 <blockquote>
 
-[Release 2026-07-09](https://github.com/nullcpy/rvb/releases/tag/260026)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Hide ads
 </blockquote>
 </details>
@@ -1669,8 +1738,8 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
   
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Enable Premium
 - MicroG integration
 </blockquote>
@@ -1723,8 +1792,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-01](https://github.com/nullcpy/rvb/releases/tag/260127)<br>
-Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.18.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
+Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
 - Bundle native ad-strip hook
 - Disable auto-updates
 - Load native ad-strip hook
@@ -1760,18 +1829,21 @@ Patches: [arandomhooman/patches-1.43.4.mpp](https://github.com/arandomhooman/hoo
 
 `ch.protonmail.android`
 
-#### [Morphe (De-Vanced)](https://github.com/RookieEnough/De-Vanced)
+#### [Morphe (hxreborn)](https://github.com/hxreborn/morphe-patches)
 
 <details>
-<summary id="proton-mail-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v4.15.0-gray?labelColor=6A4DFF&logo=protonmail&logoColor=white&style=flat"></summary>
+<summary id="proton-mail-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v7.10.4-gray?labelColor=6A4DFF&logo=protonmail&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-05-13](https://github.com/nullcpy/rvb/releases/tag/242)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
-
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260147)<br>
+Patches: [hxreborn/patches-1.3.0.mpp](https://github.com/hxreborn/morphe-patches/releases/tag/v1.3.0)
+- AMOLED dark theme
+- Hide upgrade upselling
 - Remove 'Sent from' signature
 - Remove free accounts limit
+- Spoof signature
+- Unlock custom time picker
 </blockquote>
 </details>
 
@@ -1799,12 +1871,12 @@ Patches: [Raudrobot/patches-6.1.0.rvp](https://github.com/Raudrobot/revanced-pat
 #### [Morphe (hoo-dles)](https://github.com/hoo-dles/morphe-patches)
 
 <details>
-<summary id="proton-vpn-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v5.17.72.0-gray?labelColor=6D4AFF&logo=protonvpn&logoColor=white&style=flat"></summary>
+<summary id="proton-vpn-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v5.19.43.0-gray?labelColor=6D4AFF&logo=protonvpn&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260156)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Remove delay
 - Unlock LAN connections
 - Unlock custom DNS
@@ -1856,8 +1928,8 @@ Patches: [Raudrobot/patches-6.1.0.rvp](https://github.com/Raudrobot/revanced-pat
   
 <blockquote>
 
-[Release 2026-08-04](https://github.com/nullcpy/rvb/releases/tag/260140)<br>
-Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0-dev.4)
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260166)<br>
+Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0)
 - Custom font
 - Disable modern home
 - Disable screenshot popup
@@ -1878,12 +1950,12 @@ Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morph
 </details>
 
 <details>
-<summary id="reddit-morphe-exp"><b>Experimental</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v2026.30.0-gray?labelColor=FF4500&logo=reddit&logoColor=white&style=flat"></summary>
+<summary id="reddit-morphe-exp"><b>Experimental</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v2026.31.1-gray?labelColor=FF4500&logo=reddit&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-08-04](https://github.com/nullcpy/rvb/releases/tag/260140)<br>
-Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0-dev.4)
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260166)<br>
+Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0)
 - Custom font
 - Disable modern home
 - Disable screenshot popup
@@ -1906,12 +1978,12 @@ Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morph
 #### [Morphe (Adobo)](https://github.com/jkennethcarino/adobo)
 
 <details>
-<summary id="reddit-morphe-adobo"><b>Default</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v2026.30.0-gray?labelColor=FF4500&logo=reddit&logoColor=white&style=flat"></summary>
+<summary id="reddit-morphe-adobo"><b>Default</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v2026.31.0-gray?labelColor=FF4500&logo=reddit&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-08-02](https://github.com/nullcpy/rvb/releases/tag/260130)<br>
-Patches: [jkennethcarino/patches-1.3.0-dev.15.mpp](https://github.com/jkennethcarino/adobo/releases/tag/v1.3.0-dev.15)
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260154)<br>
+Patches: [jkennethcarino/patches-1.3.0-dev.17.mpp](https://github.com/jkennethcarino/adobo/releases/tag/v1.3.0-dev.17)
 - Colorize comment indent lines
 - Disable home screen redirect
 - Disable screenshot banner
@@ -1995,16 +2067,17 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
 
 `com.michaldrabik.showly2`
 
-#### [Morphe (hoo-dles)](https://github.com/hoo-dles/morphe-patches)
+#### [Morphe (hxreborn)](https://github.com/hxreborn/morphe-patches)
 
 <details>
 <summary id="showly-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v3.70.0-gray?labelColor=ec483b&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
-- Enable Premium
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260146)<br>
+Patches: [hxreborn/patches-1.3.0.mpp](https://github.com/hxreborn/morphe-patches/releases/tag/v1.3.0)
+- AMOLED dark theme
+- Unlock premium
 </blockquote>
 </details>
 
@@ -2021,8 +2094,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Disable signature check
 - Enable Pro
 </blockquote>
@@ -2079,8 +2152,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
   
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - AMOLED dark theme
 - Disable telemetry
 - Enable SoundCloud Go
@@ -2090,15 +2163,15 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
 #### [Morphe (kondratjev)](https://github.com/kondratjev/morphe-patches)
 
 <details>
-<summary id="soundcloud-morphe-alt">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v2026.06.25.release-gray?labelColor=FF5500&logo=soundcloud&logoColor=white&style=flat"></summary>
+<summary id="soundcloud-morphe-alt">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v2026.07.23.release-gray?labelColor=FF5500&logo=soundcloud&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
-[Release 2026-07-29](https://github.com/nullcpy/rvb/releases/tag/260108)<br>
-Patches: [kondratjev/patches-1.17.0.mpp](https://github.com/kondratjev/morphe-patches/releases/tag/v1.17.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260160)<br>
+Patches: [kondratjev/patches-1.19.0.mpp](https://github.com/kondratjev/morphe-patches/releases/tag/v1.19.0)
 - Disable analytics
 - Disable consent popup
-- Enable SoundCloud Go+
+- Enable SoundCloud Go
 </blockquote>
 </details>
 
@@ -2278,9 +2351,8 @@ Patches: [rushiranpise/patches-1.16.0.mpp](https://github.com/rushiranpise/morph
   
 <blockquote>
 
-[Release 2026-05-13](https://github.com/nullcpy/rvb/releases/tag/242)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
-
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Hide ads
 </blockquote>
 </details>
@@ -2456,8 +2528,8 @@ Patches: [bufferk/patches-1.8.0.mpp](https://github.com/bufferk/morphe-patches/r
 
 <blockquote>
 
-[Release 2026-08-01](https://github.com/nullcpy/rvb/releases/tag/260127)<br>
-Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.18.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
+Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
 - Skip ads
 </blockquote>
 </details>
@@ -2471,13 +2543,12 @@ Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-an
 #### [Morphe (De-Vanced)](https://github.com/RookieEnough/De-Vanced)
 
 <details>
-<summary id="tumblr-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v44.5.0.108-gray?labelColor=36465D&logo=tumblr&logoColor=white&style=flat"></summary>
+<summary id="tumblr-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v45.7.1.100-gray?labelColor=36465D&logo=tumblr&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
-[Release 2026-05-13](https://github.com/nullcpy/rvb/releases/tag/242)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
-
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Disable Ad-Free Banner
 - Disable Tumblr TV
 - Disable blog notification reminder
@@ -2543,8 +2614,8 @@ Patches: [arandomhooman/patches-1.43.4.mpp](https://github.com/arandomhooman/hoo
 
 <blockquote>
 
-[Release 2026-07-15](https://github.com/nullcpy/rvb/releases/tag/260053)<br>
-Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260155)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Enable Premium
 </blockquote>
 </details>
@@ -2562,9 +2633,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-05-13](https://github.com/nullcpy/rvb/releases/tag/242)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
-
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Hide Ads
 </blockquote>
 </details>
@@ -2582,8 +2652,8 @@ Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Van
 
 <blockquote>
 
-[Release 2026-08-01](https://github.com/nullcpy/rvb/releases/tag/260127)<br>
-Patches: [ajstrick81/patches-1.17.0.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.18.0)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260157)<br>
+Patches: [ajstrick81/patches-1.18.1.mpp](https://github.com/ajstrick81/morphe-androidtv-patches/releases/tag/v1.19.0)
 - Override certificate pinning
 - Skip ads
 </blockquote>
@@ -2689,13 +2759,12 @@ Patches: [rushiranpise/patches-1.15.1.mpp](https://github.com/rushiranpise/morph
 #### [Morphe (De-Vanced)](https://github.com/RookieEnough/De-Vanced)
 
 <details>
-<summary id="rar-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v7.20.build131-gray?labelColor=FF6B00&logo=android&logoColor=white&style=flat"></summary>
+<summary id="rar-morphe">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v7.23.build134-gray?labelColor=FF6B00&logo=android&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-05-13](https://github.com/nullcpy/rvb/releases/tag/242)<br>
-Patches: [RookieEnough/patches-1.0.4.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.0.4)
-
+[Release 2026-08-06](https://github.com/nullcpy/rvb/releases/tag/260144)<br>
+Patches: [RookieEnough/patches-1.1.0.mpp](https://github.com/RookieEnough/De-Vanced/releases/tag/v1.1.0)
 - Hide purchase reminder
 </blockquote>
 </details>
@@ -2966,8 +3035,8 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
   
 <blockquote>
 
-[Release 2026-08-04](https://github.com/nullcpy/rvb/releases/tag/260140)<br>
-Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0-dev.4)
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260166)<br>
+Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0)
 - Add to queue
 - Alternative thumbnails
 - Ambient mode
@@ -3051,8 +3120,8 @@ Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morph
   
 <blockquote>
 
-[Release 2026-08-01](https://github.com/nullcpy/rvb/releases/tag/260124)<br>
-Patches: [MorpheApp/patches-1.38.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.38.0)
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260166)<br>
+Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0)
 - Add to queue
 - Alternative thumbnails
 - Ambient mode
@@ -3108,6 +3177,7 @@ Patches: [MorpheApp/patches-1.38.0.mpp](https://github.com/MorpheApp/morphe-patc
 - Open videos fullscreen
 - Override YouTube Music buttons
 - Play all
+- Playback in feeds
 - Playback speed
 - Reload video
 - Remove background playback restrictions
@@ -3135,8 +3205,8 @@ Patches: [MorpheApp/patches-1.38.0.mpp](https://github.com/MorpheApp/morphe-patc
   
 <blockquote>
 
-[Release 2026-08-01](https://github.com/nullcpy/rvb/releases/tag/260124)<br>
-Patches: [MorpheApp/patches-1.38.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.38.0)
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260166)<br>
+Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0)
 - Add to queue
 - Alternative thumbnails
 - Ambient mode
@@ -3192,6 +3262,7 @@ Patches: [MorpheApp/patches-1.38.0.mpp](https://github.com/MorpheApp/morphe-patc
 - Open videos fullscreen
 - Override YouTube Music buttons
 - Play all
+- Playback in feeds
 - Playback speed
 - Reload video
 - Remove background playback restrictions
@@ -3215,12 +3286,12 @@ Patches: [MorpheApp/patches-1.38.0.mpp](https://github.com/MorpheApp/morphe-patc
 </details>
 
 <details>
-<summary id="youtube-morphe-exp"><b>Experimental</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v21.31.523-gray?labelColor=FF0000&logo=youtube&logoColor=white&style=flat"></summary>
+<summary id="youtube-morphe-exp"><b>Experimental</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v21.32.2-gray?labelColor=FF0000&logo=youtube&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-08-04](https://github.com/nullcpy/rvb/releases/tag/260140)<br>
-Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0-dev.4)
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260166)<br>
+Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0)
 - Add to queue
 - Alternative thumbnails
 - Ambient mode
@@ -3306,8 +3377,8 @@ Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morph
   
 <blockquote>
 
-[Release 2026-08-03](https://github.com/nullcpy/rvb/releases/tag/260135)<br>
-Patches: [anddea/patches-4.2.0-dev.11.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.11)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
+Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
 - Alternative thumbnails
 - Ambient mode control
 - Bypass URL redirects
@@ -3316,11 +3387,11 @@ Patches: [anddea/patches-4.2.0-dev.11.mpp](https://github.com/anddea/revanced-pa
 - Change player flyout menu toggles
 - Change share sheet
 - Change start page
+- Custom DPI
 - Custom Shorts action buttons
 - Custom double tap length
 - Description components
 - Disable QUIC protocol
-- Disable forced auto audio tracks
 - Disable forced auto captions
 - Disable haptic feedback
 - Disable layout updates
@@ -3330,6 +3401,7 @@ Patches: [anddea/patches-4.2.0-dev.11.mpp](https://github.com/anddea/revanced-pa
 - Disable splash animation
 - Enable debug logging
 - Enable gradient loading screen
+- Force original audio
 - Force player buttons background
 - Fullscreen components
 - GmsCore support
@@ -3347,6 +3419,7 @@ Patches: [anddea/patches-4.2.0-dev.11.mpp](https://github.com/anddea/revanced-pa
 - Navigation bar components
 - Open links externally
 - Overlay buttons
+- Playback in feeds
 - Player components
 - Remove background playback restrictions
 - Remove viewer discretion dialog
@@ -3380,9 +3453,8 @@ Patches: [anddea/patches-4.2.0-dev.11.mpp](https://github.com/anddea/revanced-pa
   
 <blockquote>
 
-[Release 2026-06-16](https://github.com/nullcpy/rvb/releases/tag/357)<br>
-Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.1.0)
-
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
+Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
 - Alternative thumbnails
 - Ambient mode control
 - Bypass URL redirects
@@ -3391,11 +3463,11 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Change player flyout menu toggles
 - Change share sheet
 - Change start page
+- Custom DPI
 - Custom Shorts action buttons
 - Custom double tap length
 - Description components
 - Disable QUIC protocol
-- Disable forced auto audio tracks
 - Disable forced auto captions
 - Disable haptic feedback
 - Disable layout updates
@@ -3405,6 +3477,7 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Disable splash animation
 - Enable debug logging
 - Enable gradient loading screen
+- Force original audio
 - Force player buttons background
 - Fullscreen components
 - GmsCore support
@@ -3423,6 +3496,7 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Navigation bar components
 - Open links externally
 - Overlay buttons
+- Playback in feeds
 - Player components
 - Remove background playback restrictions
 - Remove viewer discretion dialog
@@ -3431,10 +3505,12 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Sanitize sharing links
 - Seekbar components
 - Set transcript cookies
+- Settings menu filter
 - Shorts components
 - Snack bar components
 - SponsorBlock
 - Spoof app version
+- Spoof video streams
 - Spoof watch history
 - Swipe controls
 - Theme
@@ -3442,6 +3518,7 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Translations for YouTube
 - Video playback
 - Voice Over Translation
+- Wide search bar
 - Visual preferences icons for YouTube
 - Reload video
 - Settings for YouTube
@@ -3453,9 +3530,8 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
   
 <blockquote>
 
-[Release 2026-06-16](https://github.com/nullcpy/rvb/releases/tag/357)<br>
-Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.1.0)
-
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
+Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
 - Alternative thumbnails
 - Ambient mode control
 - Bypass URL redirects
@@ -3464,11 +3540,11 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Change player flyout menu toggles
 - Change share sheet
 - Change start page
+- Custom DPI
 - Custom Shorts action buttons
 - Custom double tap length
 - Description components
 - Disable QUIC protocol
-- Disable forced auto audio tracks
 - Disable forced auto captions
 - Disable haptic feedback
 - Disable layout updates
@@ -3478,6 +3554,7 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Disable splash animation
 - Enable debug logging
 - Enable gradient loading screen
+- Force original audio
 - Force player buttons background
 - Fullscreen components
 - GmsCore support
@@ -3496,6 +3573,7 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Navigation bar components
 - Open links externally
 - Overlay buttons
+- Playback in feeds
 - Player components
 - Remove background playback restrictions
 - Remove viewer discretion dialog
@@ -3504,10 +3582,12 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Sanitize sharing links
 - Seekbar components
 - Set transcript cookies
+- Settings menu filter
 - Shorts components
 - Snack bar components
 - SponsorBlock
 - Spoof app version
+- Spoof video streams
 - Spoof watch history
 - Swipe controls
 - Theme
@@ -3515,6 +3595,7 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Translations for YouTube
 - Video playback
 - Voice Over Translation
+- Wide search bar
 - Visual preferences icons for YouTube
 - Reload video
 - Settings for YouTube
@@ -3823,8 +3904,8 @@ Patches: [wchill/patches-5.16.4.mpp](https://github.com/wchill/rvx-morphed/relea
   
 <blockquote>
 
-[Release 2026-08-04](https://github.com/nullcpy/rvb/releases/tag/260140)<br>
-Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0-dev.4)
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260166)<br>
+Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0)
 - Bypass certificate checks
 - Change header
 - Change miniplayer color
@@ -3872,8 +3953,8 @@ Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morph
   
 <blockquote>
 
-[Release 2026-08-04](https://github.com/nullcpy/rvb/releases/tag/260140)<br>
-Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0-dev.4)
+[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260166)<br>
+Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0)
 - Bypass certificate checks
 - Change header
 - Change miniplayer color
@@ -3923,8 +4004,8 @@ Patches: [MorpheApp/patches-1.39.0-dev.4.mpp](https://github.com/MorpheApp/morph
   
 <blockquote>
 
-[Release 2026-08-03](https://github.com/nullcpy/rvb/releases/tag/260135)<br>
-Patches: [anddea/patches-4.2.0-dev.11.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.11)
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
+Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
 - Bitrate default value
 - Bypass image region restrictions
 - Certificate spoof
@@ -3934,11 +4015,11 @@ Patches: [anddea/patches-4.2.0-dev.11.mpp](https://github.com/anddea/revanced-pa
 - Disable Cairo splash animation
 - Disable QUIC protocol
 - Disable dislike redirection
-- Disable forced auto audio tracks
 - Disable forced auto captions
 - Enable debug logging
 - Enable landscape mode
 - Flyout menu components
+- Force original audio
 - GmsCore support
 - Hide account components
 - Hide action bar components
@@ -3956,6 +4037,7 @@ Patches: [anddea/patches-4.2.0-dev.11.mpp](https://github.com/anddea/revanced-pa
 - SponsorBlock
 - Spoof app version for lyrics
 - Spoof video streams
+- Third-party lyrics
 - Track crossfade
 - Translations for YouTube Music
 - Video playback
@@ -3966,13 +4048,12 @@ Patches: [anddea/patches-4.2.0-dev.11.mpp](https://github.com/anddea/revanced-pa
 </details>
 
 <details>
-<summary id="youtube-music-anddea-nord"><b>Nord Theme</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v8.30.54-gray?labelColor=2E3440&logo=youtubemusic&logoColor=88C0D0&style=flat"></summary>
+<summary id="youtube-music-anddea-nord"><b>Nord Theme</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v9.15.51-gray?labelColor=2E3440&logo=youtubemusic&logoColor=88C0D0&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-06-16](https://github.com/nullcpy/rvb/releases/tag/357)<br>
-Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.1.0)
-
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
+Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
 - Bitrate default value
 - Bypass image region restrictions
 - Certificate spoof
@@ -3982,10 +4063,11 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Disable Cairo splash animation
 - Disable QUIC protocol
 - Disable dislike redirection
-- Disable forced auto audio tracks
 - Disable forced auto captions
+- Enable debug logging
 - Enable landscape mode
 - Flyout menu components
+- Force original audio
 - GmsCore support
 - Hide account components
 - Hide action bar components
@@ -3999,8 +4081,12 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Return YouTube Dislike
 - Return YouTube Username
 - Sanitize sharing links
+- Settings menu filter
 - SponsorBlock
 - Spoof app version for lyrics
+- Spoof video streams
+- Third-party lyrics
+- Track crossfade
 - Translations for YouTube Music
 - Video playback
 - Watch history
@@ -4010,13 +4096,12 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 </details>
 
 <details>
-<summary id="youtube-music-anddea-mocha"><b>Mocha Theme</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v8.30.54-gray?labelColor=1E1E2E&logo=youtubemusic&logoColor=F5E0DC&style=flat"></summary>
+<summary id="youtube-music-anddea-mocha"><b>Mocha Theme</b>&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v9.15.51-gray?labelColor=1E1E2E&logo=youtubemusic&logoColor=F5E0DC&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-06-16](https://github.com/nullcpy/rvb/releases/tag/357)<br>
-Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.1.0)
-
+[Release 2026-08-07](https://github.com/nullcpy/rvb/releases/tag/260163)<br>
+Patches: [anddea/patches-4.2.0.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0)
 - Bitrate default value
 - Bypass image region restrictions
 - Certificate spoof
@@ -4026,10 +4111,11 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Disable Cairo splash animation
 - Disable QUIC protocol
 - Disable dislike redirection
-- Disable forced auto audio tracks
 - Disable forced auto captions
+- Enable debug logging
 - Enable landscape mode
 - Flyout menu components
+- Force original audio
 - GmsCore support
 - Hide account components
 - Hide action bar components
@@ -4043,8 +4129,12 @@ Patches: [anddea/patches-4.1.0.mpp](https://github.com/anddea/revanced-patches/r
 - Return YouTube Dislike
 - Return YouTube Username
 - Sanitize sharing links
+- Settings menu filter
 - SponsorBlock
 - Spoof app version for lyrics
+- Spoof video streams
+- Third-party lyrics
+- Track crossfade
 - Translations for YouTube Music
 - Video playback
 - Watch history
