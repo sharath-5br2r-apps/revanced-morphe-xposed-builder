@@ -106,7 +106,7 @@ for table_name in $(toml_get_table_names); do
 		psrc="${p_srcs[$i]}"
 		phost="${p_hosts[$i]:-${p_hosts[0]}}"
 		if [[ "$phost" == *"|gitlab" ]]; then
-			pgitlabhost="${phost#*|}"
+			pgitlabhost="${phost%%|*}"
 			phost="gitlab"
 		fi
 		# Find the downloaded jar/apk for this source to get actual version

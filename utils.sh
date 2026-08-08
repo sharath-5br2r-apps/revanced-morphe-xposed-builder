@@ -480,7 +480,7 @@ config_update() {
 		for i in "${!p_srcs[@]}"; do
 			local PATCHES_SRC="${p_srcs[$i]}"
 			local PATCHES_HOST="${p_hosts[$i]:-${p_hosts[0]}}"
-			if [[ "$PATCHES_HOST" == "gitlab|"* ]]; then
+			if [[ "$PATCHES_HOST" == *"|gitlab" ]]; then
 				PATCHES_GITLAB_HOST="${PATCHES_HOST%%|*}"
 				PATCHES_HOST="gitlab"
 			else
@@ -1633,9 +1633,10 @@ get_github2_resp() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
 	local rv_rel release tag_name ver resp
   	local host=github src
-	src=$(cut -d/ -f4- <<<"$url")
-	src=${src%.git}
-	src=${src%/}
+	__GITHUB2_URL__=$url
+	__GITHUB2_URL__=${__GITHUB2_URL__%/}
+	__GITHUB2_URL__=${__GITHUB2_URL__%.git}
+	src=$(cut -d/ -f4- <<<"$__GITHUB2_URL__")
 	rv_rel=$(source_release_api_base "$host" "$src" "https://gitlab.com") || return 1
 	if [ "$version_mode" = "beta" ]; then
 		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
@@ -1659,8 +1660,8 @@ get_github2_resp() {
 	__DL_RESP_CACHE__["github2_resp_$url"]="$__GITHUB2_RESP__"
 }
 get_github2_pkg_name() { 
-	if [ -n "${app_args[github2_apk_pkgname]}" ]; then
-		echo "${app_args[github2_apk_pkgname]}"
+	if [ -n "${app_args[github2_apk_pkgname]:-}" ]; then
+		echo "${app_args[github2_apk_pkgname]:-}"
 	else
 		epr "No Package Name specified for GitHub APK"
 	return 1
@@ -1758,7 +1759,7 @@ patch_apk() {
 		mkdir -p "$tmp_dir"
     if [[ "$cli_source_l" == *"npatch"* ]]; then
 		  	get_bcprov || return 1
-			local cmd="java -cp 'temp/bcprov.jar$javapathsep$cli_jar' -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k $TEMP_DIR/ks.keystore  "$KEYSTORE_PASSWORD" "$KEYSTORE_ALIAS" "$KEYSTORE_KEY_PASSWORD" '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
+			local cmd="java -cp 'temp/bcprov.jar$javapathsep$cli_jar' -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k $TEMP_DIR/ks.keystore  '$KEYSTORE_PASSWORD' '$KEYSTORE_ALIAS' '$KEYSTORE_KEY_PASSWORD' '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
 		else
 			local cmd="java -jar '$cli_jar' -o '$tmp_dir' $p_args_modules $patcher_args '$stock_input'"
     fi
