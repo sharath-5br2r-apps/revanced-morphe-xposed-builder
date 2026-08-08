@@ -87,6 +87,7 @@ for table_name in $(toml_get_table_names); do
 	for h in "${p_hosts[@]}"; do
 		if [[ "$h" == *"|gitlab" ]]; then
 			h="gitlab"
+		fi
 		if ! isoneof "$h" github gitlab none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': only 'github' or 'gitlab' is allowed"; fi
 	done
 

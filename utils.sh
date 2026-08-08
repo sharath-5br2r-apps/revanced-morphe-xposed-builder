@@ -133,7 +133,7 @@ source_release_pick_from_list() {
 		github)
 			if [ "$mode" = dev ]; then
 				jq -e -c 'map(select(.prerelease == true and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
-			elif [ "$mode" = absolutelatest ]
+			elif [ "$mode" = absolutelatest ]; then
 				jq -e -c 'map(select(.tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
 			else
 				jq -e -c 'map(select(.prerelease != true and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
@@ -142,7 +142,7 @@ source_release_pick_from_list() {
 		gitlab)
 			if [ "$mode" = dev ]; then
 				jq -e -c 'map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)")))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
-			elif [ "$mode" = absolutelatest ]
+			elif [ "$mode" = absolutelatest ]; then		
 				jq -e -c 'map(select(.tag_name != null and .tag_name != "")) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
 			else
 				jq -e -c 'map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)") | not))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
@@ -329,6 +329,7 @@ _get_prebuilts() {
 				ver=$(jq -e -r '.[].tag_name' <<<"$resp" | get_highest_ver) || return 1
 				release="" # Clear release if we had to fallback to get_highest_ver
 			fi
+		fi
 		if [ "$ver" = "latest" ]; then
 			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 			release=$(source_release_pick_from_list "$host" latest <<<"$resp") || return 1
@@ -344,7 +345,7 @@ _get_prebuilts() {
 		if [ -z "$file" ]; then
 			matches=$(source_release_assets_json "$host" <<<"$release") || return 1
 			if [ "$(jq 'length' <<<"$matches")" -gt 1 ]; then
-				local matches_new
+					local matches_new
 				if echo "$cli_src" | grep -qiE "(npatch|lspatch)"; then
 					matches_new=$(jq -e -r 'map(select(.name | test("\\.apk$"; "i")))' <<<"$matches")
 				else
@@ -417,10 +418,10 @@ _get_prebuilts() {
 		fi
 		
 		echo -n "$file "
-  	else
-		pr "Not Getting anything as source is none"
-      	echo "none"
-	fi
+		else
+			pr "Not Getting anything as source is none"
+			echo "none"
+		fi
 	done
 	echo
 }
@@ -704,7 +705,7 @@ _patches_list() {
 		echo "Name: xposed-module-dummy"
 		return 0
 	fi
-  if [[ "$cli_source_l" == "apksigner"]]; then
+  if [[ "$cli_source_l" == "apksigner" 	]]; then
     echo "Name: apksigner-dummy"
     return 0
   fi
@@ -1608,7 +1609,7 @@ get_util_pkg_name() { $AAPT2 dump packagename "$1" | head -n 1; }
 get_util_vers() { $AAPT2 dump badging "$1" | grep versionName | sed -n "s/.*versionName='\([^']*\)'.*/\1/p" | head -n 1; }
 get_util_arch() {
 	local archs output=$1 arch=$2
-	if [[ "$arch" == "all" ]] | [[ "$arch" == "noarch" ]] || [[ "$arch" == "universal"]]; then
+	if [[ "$arch" == "all" ]] | [[ "$arch" == "noarch" ]] || [[ "$arch" == "universal" ]]; then
 	   echo $arch
 	   return 0
 	fi
@@ -1944,7 +1945,7 @@ write_build_info() {
 		--arg patches "$patches" \
 		--arg changelog "$changelog" \
 		--argjson applied "$applied_json" \
-		'if has($key) then .[$key].exts = (.[$key].exts + [$ext] | unique) else .[$key] = {exts: [$ext], name: $name, arch: $arch, version: $version, patches: $patches, changlog: $changelog, applied_patches: $applied} end' \
+		'if has($key) then .[$key].exts = (.[$key].exts + [$ext] | unique) else .[$key] = {exts: [$ext], name: $name, arch: $arch, version: $version, patches: $patches, changelog: $changelog, applied_patches: $applied} end' \
 		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
 }
 
@@ -2273,9 +2274,13 @@ build_rv() {
   	fi
 
 	local microg_patches=()
-	local IFS=$'
-'
-	if [[ $args[microg_autodetect] == "true" ]]
+	local IFS=$
+	if [[-n ${args[custom_microg_patches]} ]]; then
+		local listpatches=$(join_args "${args[custom_microg_patches]}" "\n")
+		for p in  $listpatches; do
+			microg_patches+=("$p")
+		done
+	fi
 	for p in $(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || :); do
 		microg_patches+=("$p")
 	done
@@ -2294,7 +2299,6 @@ build_rv() {
 			wpr "You cant include/exclude microg patch as that's done by rvmm builder automatically."
 		fi
 	fi
-  	fi
 
 	local patcher_args patched_apk build_mode
 	local rv_brand_f=${args[rv_brand],,}
