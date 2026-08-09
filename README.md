@@ -1025,8 +1025,8 @@ Patches: brosssh/patches-2.8.1.mpp
 
 <blockquote>
 
-[Release 2026-08-03](https://github.com/nullcpy/rvb/releases/tag/260137)<br>
-Patches: [crimera/patches-3.9.0-dev.4.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.4)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+Patches: [crimera/patches-3.9.0-dev.6.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.6)
 - Add settings
 - Allow user network certificate
 - Change like animation
@@ -1039,7 +1039,6 @@ Patches: [crimera/patches-3.9.0-dev.4.mpp](https://github.com/crimera/piko/relea
 - Disable analytics
 - Disable comments
 - Disable discover people
-- Disable double tap like
 - Disable explore
 - Disable highlights
 - Disable onboarding permission prompts
@@ -1067,6 +1066,7 @@ Patches: [crimera/patches-3.9.0-dev.4.mpp](https://github.com/crimera/piko/relea
 - More options on post
 - More options on profile
 - Open links externally
+- Recommended flags
 - Remove build expired popup
 - Remove empty bottom space
 - Sanitize share links
@@ -1884,12 +1884,12 @@ Patches: hoo-dles/patches-1.40.0.mpp
 #### [Morphe (paresh-patches)](https://gitlab.com/Paresh-Maheshwari/paresh-patches)
 
 <details>
-<summary id="proton-vpn-morphe-paresh">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v5.19.16.0-gray?labelColor=6D4AFF&logo=protonvpn&logoColor=white&style=flat"></summary>
+<summary id="proton-vpn-morphe-paresh">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v5.19.72.0-gray?labelColor=6D4AFF&logo=protonvpn&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-07-07](https://github.com/nullcpy/rvb/releases/tag/260017)<br>
-Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
 - Disable telemetry
 - Proton VPN Premium
 </blockquote>
@@ -3949,8 +3949,8 @@ Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patc
   
 <blockquote>
 
-[Release 2026-08-08](https://github.com/nullcpy/rvb/releases/tag/260166)<br>
-Patches: [MorpheApp/patches-1.39.0.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.39.0)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+Patches: [MorpheApp/patches-1.40.0-dev.1.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.1)
 - Bypass certificate checks
 - Change header
 - Change miniplayer color
