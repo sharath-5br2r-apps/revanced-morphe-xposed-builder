@@ -609,9 +609,8 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
 
 <blockquote>
 
-[Release 2026-05-04](https://github.com/nullcpy/rvb/releases/tag/200)<br>
-Patches: [MeridianFresco/patches-1.0.0.mpp](https://github.com/MeridianFresco/morphe-meta-patches/releases/tag/v1.0.0)
-
+[Release 2026-08-09](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260004)<br>
+Patches: MeridianFresco/patches-1.0.0.mpp
 - Hide 'Sponsored Stories'
 - Hide story ads
 </blockquote>
@@ -777,11 +776,10 @@ Patches: jkennethcarino/patches-1.2.0.mpp
   
 <blockquote>
 
-[Release 2026-07-18](https://github.com/nullcpy/rvb/releases/tag/260058)<br>
-Patches: [docbt/patches-1.10.0.mpp](https://github.com/docbt/patched-up/releases/tag/v1.10.0)
+[Release 2026-08-09](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260004)<br>
+Patches: docbt/patches-1.10.0.mpp
 - Enable CustomTabs
 - GmsCore support
-- Change package name
 </blockquote>
 </details>
 
@@ -924,7 +922,7 @@ Patches: [hoo-dles/patches-1.39.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-08](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260002)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-testorg/my-patched-apks-rebase/releases/tag/260004)<br>
 Patches: kiraio-moe/patches-1.3.0.mpp
 - Unlock Premium
 </blockquote>
