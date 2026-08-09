@@ -7,7 +7,7 @@ on:
         description: "Select the config file to use"
         required: true
         type: choice
-        default: "configs/config.toml"
+        default: "configs/config.manual.generated.toml"
         options:
           - "configs/config.manual.generated.toml"
           - "configs/config.manual.toml"
