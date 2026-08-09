@@ -2,7 +2,7 @@ name: CI
 
 on:
   schedule:
-    - cron: "20 */4 * * *" # Every 4 hours
+    - cron: "0 0/2 * * *" # Every 2 hours
   workflow_dispatch:
 
 concurrency:
@@ -54,7 +54,7 @@ jobs:
         with:
           branch: main
           skip_checkout: true
-          file_pattern: .github/configs/patch_sources.json
+          file_pattern: configs/patch_sources.json
           commit_message: "Create dummy patch_sources.json"
 
       - name: Fetch latest tags
@@ -103,26 +103,13 @@ jobs:
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
         run: bash .github/scripts/ci_resolve_triggers.sh
 
-      - name: Notify telegram
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
-        env:
-          TG_TOKEN: ${{ secrets.TG_TOKEN }}
-          TAGS_OLD: ${{ steps.compare.outputs.tags_old }}
-          TAGS_NEW: ${{ steps.compare.outputs.tags_new }}
-          TRIGGER_STABLE: ${{ steps.compare.outputs.TRIGGER_STABLE }}
-          TRIGGER_PRERELEASE: ${{ steps.compare.outputs.TRIGGER_PRERELEASE }}
-          TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE }}
-          EFFECTIVE_STABLE: ${{ steps.effective_triggers.outputs.TRIGGER_STABLE }}
-          EFFECTIVE_PRERELEASE: ${{ steps.effective_triggers.outputs.TRIGGER_PRERELEASE }}
-        run: bash .github/scripts/ci_notify_telegram.sh
-
       - name: Commit updated patch sources and configs
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
-          file_pattern: .github/configs/*.json
+          file_pattern: configs/*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
   build_dev:
@@ -130,7 +117,7 @@ jobs:
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.dev.updated.json"
+      config_file: "configs/config.dev.updated.json"
     secrets: inherit
 
   build_stable:
@@ -138,7 +125,7 @@ jobs:
     if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && needs.build_dev.result != 'cancelled' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.stable.updated.json"
+      config_file: "configs/config.stable.updated.json"
     secrets: inherit
 
   trigger_cleanup:
@@ -150,13 +137,5 @@ jobs:
   trigger_website_update:
     needs: [build_dev, build_stable, trigger_cleanup]
     if: ${{ always() && (needs.build_dev.result == 'success' || needs.build_stable.result == 'success') }}
-    uses: ./.github/workflows/update-website.yml
-    secrets: inherit
-
-  trigger_notify_failure:
-    needs: [check_patch, build_dev, build_stable]
-    if: ${{ failure() }}
-    uses: ./.github/workflows/notify.yml
-    with:
-      workflow_name: "CI"
+    uses: ./.github/workflows/update-catalog.yml
     secrets: inherit

@@ -2,7 +2,7 @@ enable-module-update = true
 patches-version = "absolutelatest"
 
 
-[gboard-morphe]
+[gboard-morphe-jasonwu1994]
 enabled = true
 app-name = "gboard"
 rv-brand = "morphe-jasonwu1994"
@@ -17,7 +17,7 @@ dpi = "nodpi anydpi auto"
 archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin"
 github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
 
-[gboard-morphe-clone]
+[gboard-morphe-jasonwu1994-clone]
 enabled = true
 app-name = "gboard"
 rv-brand = "morphe-jasonwu1994-clone"

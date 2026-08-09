@@ -4,6 +4,7 @@ patches-version = "absolutelatest"
 enabled = true
 app-name = "speedtest"
 rv-brand = "morphe-xtra"
+version = "latest
 build-mode = "apk"
 arch = "both64"
 cli-source = "MorpheApp/morphe-desktop"

@@ -8,10 +8,10 @@ source utils.sh
 set_prebuilts
 
 # Find all app configs
-CONFIG_FILES=$(find .github/configs/patches -name "*.toml")
+CONFIG_FILES=$(find configs/patches -name "*.toml")
 
 if [ -z "$CONFIG_FILES" ]; then
-    echo "No config files found in .github/configs/patches"
+    echo "No config files found in configs/patches"
     exit 0
 fi
 
@@ -19,23 +19,23 @@ fi
 # shellcheck disable=SC2086
 yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $CONFIG_FILES > temp_all_configs.json
 
-[ -f .github/configs/app_versions.json ] || echo '{}' > .github/configs/app_versions.json
+[ -f configs/app_versions.json ] || echo '{}' > configs/app_versions.json
 > fetched_app_versions.jsonl
-CHECK_ONLY_LISTED=$(jq -r '."_check_only_listed" // false' .github/configs/app_versions.json)
+CHECK_ONLY_LISTED=$(jq -r '."_check_only_listed" // false' configs/app_versions.json)
 
 if [ "$CHECK_ONLY_LISTED" = "true" ]; then
-    jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[] | "\(.key)|\(.value.keys[0])"' .github/configs/app_versions.json > check_list.txt
+    jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[] | "\(.key)|\(.value.keys[0])"' configs/app_versions.json > check_list.txt
 else
     # All enabled apps
     ENABLED_APPS=$(jq -r 'to_entries | map(select((.value | type == "object") and .value.enabled == true)) | .[].key' temp_all_configs.json)
     
     # Get all grouped apps to exclude them
-    GROUPED_APPS=$(jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[].value.keys[]?' .github/configs/app_versions.json 2>/dev/null || echo "")
+    GROUPED_APPS=$(jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[].value.keys[]?' configs/app_versions.json 2>/dev/null || echo "")
     
     > check_list.txt
     
     # Add groups first
-    jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[] | "\(.key)|\(.value.keys[0])"' .github/configs/app_versions.json >> check_list.txt
+    jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[] | "\(.key)|\(.value.keys[0])"' configs/app_versions.json >> check_list.txt
     
     # Add non-grouped enabled apps
     for app in $ENABLED_APPS; do
