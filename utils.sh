@@ -89,12 +89,12 @@ base64 -d <<<"$KEYSTORE_BASE64" >$TEMP_DIR/ks.keystore
 source_release_api_base() {
 	local host=${1,,} src=$2 encoded gitlab_host=$3
 	case "$host" in
-	github) echo "https://api.github.com/repos/${src}/releases" ;;
-	gitlab)
-		encoded=$(jq -nr --arg v "$src" '$v | @uri')
+		github) echo "https://api.github.com/repos/${src}/releases" ;;
+		gitlab)
+			encoded=$(jq -nr --arg v "$src" '$v | @uri')
 		echo "${gitlab_host:-https://gitlab.com}/api/v4/projects/${encoded}/releases"
-		;;
-	*) return 1 ;;
+			;;
+		*) return 1 ;;
 	esac
 }
 
@@ -102,52 +102,52 @@ source_release_tag_api() {
 	local host=${1,,} src=$2 tag=$3 base gitlab_host=$4
 	base=$(source_release_api_base "$host" "$src" "$gitlab_host") || return 1
 	case "$host" in
-	github) echo "${base}/tags/${tag}" ;;
-	gitlab) echo "${base}/${tag}" ;;
-	*) return 1 ;;
+		github) echo "${base}/tags/${tag}" ;;
+		gitlab) echo "${base}/${tag}" ;;
+		*) return 1 ;;
 	esac
 }
 
 source_release_assets_json() {
 	local host=${1,,}
 	case "$host" in
-	github) jq -e '[.assets[]? | select(.name | (endswith("asc") or endswith("json")) | not)]' ;;
-	gitlab) jq -e '[.assets.links[]? | select(.name | (endswith("asc") or endswith("json")) | not)]' ;;
-	*) return 1 ;;
+		github) jq -e '[.assets[]? | select(.name | (endswith("asc") or endswith("json")) | not)]' ;;
+		gitlab) jq -e '[.assets.links[]? | select(.name | (endswith("asc") or endswith("json")) | not)]' ;;
+		*) return 1 ;;
 	esac
 }
 
 source_release_asset_url() {
 	local host=${1,,}
 	case "$host" in
-	github) jq -r '.url' ;;
-	gitlab) jq -r '.direct_asset_url // .url' ;;
-	*) return 1 ;;
+		github) jq -r '.url' ;;
+		gitlab) jq -r '.direct_asset_url // .url' ;;
+		*) return 1 ;;
 	esac
 }
 
 source_release_pick_from_list() {
 	local host=${1,,} mode=$2 gitlab_host=${3:-https://gitlab.com}
 	case "$host" in
-	github)
-		if [ "$mode" = dev ]; then
-			jq -e -c 'map(select(.prerelease == true and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
+		github)
+			if [ "$mode" = dev ]; then
+				jq -e -c 'map(select(.prerelease == true and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
 		elif [ "$mode" = absolutelatest ]; then
 			jq -e -c 'map(select(.tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
-		else
-			jq -e -c 'map(select(.prerelease != true and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
-		fi
-		;;
-	gitlab)
-		if [ "$mode" = dev ]; then
-			jq -e -c 'map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)")))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
+			else
+				jq -e -c 'map(select(.prerelease != true and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty'
+			fi
+			;;
+		gitlab)
+			if [ "$mode" = dev ]; then
+				jq -e -c 'map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)")))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
 		elif [ "$mode" = absolutelatest ]; then
 			jq -e -c 'map(select(.tag_name != null and .tag_name != "")) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
-		else
-			jq -e -c 'map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)") | not))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
-		fi
-		;;
-	*) return 1 ;;
+			else
+				jq -e -c 'map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)") | not))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty'
+			fi
+			;;
+		*) return 1 ;;
 	esac
 }
 
@@ -187,7 +187,7 @@ get_prebuilts() {
 
 _get_prebuilts() {
 	local cli_host=$1 cli_src=$2 cli_ver=$3 patches_host_list=$4 patches_src_list=$5 patches_ver_list=$6
-
+	
 	local first_patch_src
 	first_patch_src=$(list_args "$patches_src_list" | tr -d \"\' | head -n 1)
 	pr "Getting prebuilts (${first_patch_src%/*})" >&2
@@ -209,11 +209,120 @@ _get_prebuilts() {
 	dir=${TEMP_DIR}/${dir,,}-rv
 	[ -d "$dir" ] || mkdir "$dir"
 	if [[ "$host" != "none" ]]; then
-		local rv_rel release resp tag_name matches asset name url
+	local rv_rel release resp tag_name matches asset name url
 		rv_rel=$(source_release_api_base "$host" "$src" "${gitlab_host:-https://gitlab.com}") || return 1
+	if [ "$ver" = "dev" ]; then
+		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		release=$(source_release_pick_from_list "$host" dev <<<"$resp") || true
+		ver=$(jq -r '.tag_name' <<<"$release") || true
+		if [ -z "$ver" ] || [ "$ver" = "null" ]; then
+			ver=$(jq -e -r '.[].tag_name' <<<"$resp" | get_highest_ver) || return 1
+			release="" # Clear release if we had to fallback to get_highest_ver
+		fi
+	fi
+	if [ "$ver" = "latest" ]; then
+		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		release=$(source_release_pick_from_list "$host" latest <<<"$resp") || return 1
+	elif [ -z "${release:-}" ]; then
+			rv_rel=$(source_release_tag_api "$host" "$src" "$ver" "${gitlab_host:-https://gitlab.com}") || return 1
+		release=$({ if [ "$host" = github ]; then gh_req "$rv_rel" -; else req "$rv_rel" -; fi; }) || return 1
+	fi
+	tag_name=$(jq -r '.tag_name' <<<"$release") || return 1
+	name_ver=$tag_name
+
+	local file
+	file=$(find "$dir" -name "*${fprefix}-${name_ver#v}.*" -type f 2>/dev/null | head -1)
+	if [ -z "$file" ]; then
+		matches=$(source_release_assets_json "$host" <<<"$release") || return 1
+		if [ "$(jq 'length' <<<"$matches")" -gt 1 ]; then
+			local matches_new
+			matches_new=$(jq -e -r 'map(select(.name | test("\\.(jar|zip)$"; "i")))' <<<"$matches" 2>/dev/null) || true
+			if [ -n "$matches_new" ] && [ "$(jq 'length' <<<"$matches_new")" -ge 1 ]; then
+				matches=$matches_new
+			fi
+		fi
+		if [ "$(jq 'length' <<<"$matches")" -gt 1 ]; then
+			local matches_new
+			matches_new=$(jq -e -r 'map(select(.name | contains("-dev") | not))' <<<"$matches")
+			if [ "$(jq 'length' <<<"$matches_new")" -eq 1 ]; then
+				matches=$matches_new
+			fi
+		fi
+		if [ "$(jq 'length' <<<"$matches")" -gt 1 ]; then
+			local matches_new
+			matches_new=$(jq -e -r 'map(select(.name | contains("debug") | not))' <<<"$matches")
+			if [ "$(jq 'length' <<<"$matches_new")" -ge 1 ]; then
+				matches=$matches_new
+			fi
+		fi
+		if [ "$(jq 'length' <<<"$matches")" -eq 0 ]; then
+			epr "No asset was found"
+			return 1
+		elif [ "$(jq 'length' <<<"$matches")" -ne 1 ]; then
+			wpr "More than 1 asset was found for this release. Falling back to the first one found..."
+		fi
+		asset=$(jq -r ".[0]" <<<"$matches")
+		url=$(source_release_asset_url "$host" <<<"$asset")
+		name=$(jq -r .name <<<"$asset")
+		file="${dir}/${name}"
+		if [ "$host" = github ]; then
+			gh_dl "$file" "$url" >&2 || return 1
+		else
+			pr "Getting '$file' from '$url'"
+			_req "$url" "$file" -H "Accept: application/octet-stream" >&2 || return 1
+		fi
+		echo "$tag: $(cut -d/ -f1 <<<"$src")/${name}  " >>"${cl_dir}/changelog.md"
+	else
+		grab_cl=false
+		name=$(basename "$file")
+		tag_name=$(cut -d'-' -f3- <<<"$name")
+		tag_name=v${tag_name%.*}
+	fi
+	echo -n "$file "
+	else
+		pr "Not Getting anything as source is none"
+		echo "none"
+	fi
+
+	local IFS=$'\n'
+	local p_srcs=($(list_args "$patches_src_list" | tr -d \"\'))
+	local p_hosts=($(list_args "$patches_host_list" | tr -d \"\'))
+	local p_vers=($(list_args "$patches_ver_list" | tr -d \"\'))
+	unset IFS
+	for i in "${!p_srcs[@]}"; do
+		local host="${p_hosts[$i]:-${p_hosts[0]}}"
+		local src="${p_srcs[$i]}"
+		local ver="${p_vers[$i]:-${p_vers[0]}}"
+		local gitlab_host
+		host=${host,,}
+		if [[ "$host" == *"|gitlab" ]]; then
+			gitlab_host="${host%%|*}"
+			host="gitlab"
+		elif [[ "$host" == "gitlab" ]]; then
+			gitlab_host="https://gitlab.com"
+		fi
+		if ! isoneof "$host" github gitlab none; then abort "source host '$host' is not supported"; fi
+		local tag="Patches" fprefix="patches"
+		local grab_cl=true
+		
+		local dir=${src%/*}
+		dir=${TEMP_DIR}/${dir,,}-rv
+		[ -d "$dir" ] || mkdir "$dir"
+		if [[ $host != "none" ]]; then
+		local rv_rel release resp tag_name matches asset name url
+			rv_rel=$(source_release_api_base "$host" "$src" "${gitlab_host:-}") || return 1
 		if [ "$ver" = "dev" ]; then
 			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 			release=$(source_release_pick_from_list "$host" dev <<<"$resp") || true
+			ver=$(jq -r '.tag_name' <<<"$release") || true
+			if [ -z "$ver" ] || [ "$ver" = "null" ]; then
+				ver=$(jq -e -r '.[].tag_name' <<<"$resp" | get_highest_ver) || return 1
+				release="" # Clear release if we had to fallback to get_highest_ver
+			fi
+		fi
+		if [ "$ver" = "absolutelatest" ]; then
+			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+			release=$(source_release_pick_from_list "$host" absolutelatest <<<"$resp") || true
 			ver=$(jq -r '.tag_name' <<<"$release") || true
 			if [ -z "$ver" ] || [ "$ver" = "null" ]; then
 				ver=$(jq -e -r '.[].tag_name' <<<"$resp" | get_highest_ver) || return 1
@@ -224,7 +333,7 @@ _get_prebuilts() {
 			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 			release=$(source_release_pick_from_list "$host" latest <<<"$resp") || return 1
 		elif [ -z "${release:-}" ]; then
-			rv_rel=$(source_release_tag_api "$host" "$src" "$ver" "${gitlab_host:-https://gitlab.com}") || return 1
+				rv_rel=$(source_release_tag_api "$host" "$src" "$ver" "${gitlab_host:-}") || return 1
 			release=$({ if [ "$host" = github ]; then gh_req "$rv_rel" -; else req "$rv_rel" -; fi; }) || return 1
 		fi
 		tag_name=$(jq -r '.tag_name' <<<"$release") || return 1
@@ -236,8 +345,12 @@ _get_prebuilts() {
 			matches=$(source_release_assets_json "$host" <<<"$release") || return 1
 			if [ "$(jq 'length' <<<"$matches")" -gt 1 ]; then
 				local matches_new
-				matches_new=$(jq -e -r 'map(select(.name | test("\\.(jar|zip)$"; "i")))' <<<"$matches" 2>/dev/null) || true
-				if [ -n "$matches_new" ] && [ "$(jq 'length' <<<"$matches_new")" -ge 1 ]; then
+				if echo "$cli_src" | grep -qiE "(npatch|lspatch)"; then
+					matches_new=$(jq -e -r 'map(select(.name | test("\\.apk$"; "i")))' <<<"$matches")
+				else
+					matches_new=$(jq -e -r 'map(select(.name | test("\\.(rvp|mpp|jar)$"; "i")))' <<<"$matches")
+				fi
+				if [ "$(jq 'length' <<<"$matches_new")" -ge 1 ]; then
 					matches=$matches_new
 				fi
 			fi
@@ -275,148 +388,35 @@ _get_prebuilts() {
 		else
 			grab_cl=false
 			name=$(basename "$file")
-			tag_name=$(cut -d'-' -f3- <<<"$name")
-			tag_name=v${tag_name%.*}
 		fi
-		echo -n "$file "
-	else
-		pr "Not Getting anything as source is none"
-		echo "none"
-	fi
 
-	local IFS=$'\n'
-	local p_srcs=($(list_args "$patches_src_list" | tr -d \"\'))
-	local p_hosts=($(list_args "$patches_host_list" | tr -d \"\'))
-	local p_vers=($(list_args "$patches_ver_list" | tr -d \"\'))
-	unset IFS
-	for i in "${!p_srcs[@]}"; do
-		local host="${p_hosts[$i]:-${p_hosts[0]}}"
-		local src="${p_srcs[$i]}"
-		local ver="${p_vers[$i]:-${p_vers[0]}}"
-		local gitlab_host
-		host=${host,,}
-		if [[ "$host" == *"|gitlab" ]]; then
-			gitlab_host="${host%%|*}"
-			host="gitlab"
-		elif [[ "$host" == "gitlab" ]]; then
-			gitlab_host="https://gitlab.com"
-		fi
-		if ! isoneof "$host" github gitlab none; then abort "source host '$host' is not supported"; fi
-		local tag="Patches" fprefix="patches"
-		local grab_cl=true
+		echo "$tag_name" > "${dir}/tag_name.txt"
 
-		local dir=${src%/*}
-		dir=${TEMP_DIR}/${dir,,}-rv
-		[ -d "$dir" ] || mkdir "$dir"
-		if [[ $host != "none" ]]; then
-			local rv_rel release resp tag_name matches asset name url
-			rv_rel=$(source_release_api_base "$host" "$src" "${gitlab_host:-}") || return 1
-			if [ "$ver" = "dev" ]; then
-				resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
-				release=$(source_release_pick_from_list "$host" dev <<<"$resp") || true
-				ver=$(jq -r '.tag_name' <<<"$release") || true
-				if [ -z "$ver" ] || [ "$ver" = "null" ]; then
-					ver=$(jq -e -r '.[].tag_name' <<<"$resp" | get_highest_ver) || return 1
-					release="" # Clear release if we had to fallback to get_highest_ver
-				fi
-			fi
-			if [ "$ver" = "absolutelatest" ]; then
-				resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
-				release=$(source_release_pick_from_list "$host" absolutelatest <<<"$resp") || true
-				ver=$(jq -r '.tag_name' <<<"$release") || true
-				if [ -z "$ver" ] || [ "$ver" = "null" ]; then
-					ver=$(jq -e -r '.[].tag_name' <<<"$resp" | get_highest_ver) || return 1
-					release="" # Clear release if we had to fallback to get_highest_ver
-				fi
-			fi
-			if [ "$ver" = "latest" ]; then
-				resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
-				release=$(source_release_pick_from_list "$host" latest <<<"$resp") || return 1
-			elif [ -z "${release:-}" ]; then
-				rv_rel=$(source_release_tag_api "$host" "$src" "$ver" "${gitlab_host:-}") || return 1
-				release=$({ if [ "$host" = github ]; then gh_req "$rv_rel" -; else req "$rv_rel" -; fi; }) || return 1
-			fi
-			tag_name=$(jq -r '.tag_name' <<<"$release") || return 1
-			name_ver=$tag_name
-
-			local file
-			file=$(find "$dir" -name "*${fprefix}-${name_ver#v}.*" -type f 2>/dev/null | head -1)
-			if [ -z "$file" ]; then
-				matches=$(source_release_assets_json "$host" <<<"$release") || return 1
-				if [ "$(jq 'length' <<<"$matches")" -gt 1 ]; then
-					local matches_new
-					if echo "$cli_src" | grep -qiE "(npatch|lspatch)"; then
-						matches_new=$(jq -e -r 'map(select(.name | test("\\.apk$"; "i")))' <<<"$matches")
-					else
-						matches_new=$(jq -e -r 'map(select(.name | test("\\.(rvp|mpp|jar)$"; "i")))' <<<"$matches")
-					fi
-					if [ "$(jq 'length' <<<"$matches_new")" -ge 1 ]; then
-						matches=$matches_new
-					fi
-				fi
-				if [ "$(jq 'length' <<<"$matches")" -gt 1 ]; then
-					local matches_new
-					matches_new=$(jq -e -r 'map(select(.name | contains("-dev") | not))' <<<"$matches")
-					if [ "$(jq 'length' <<<"$matches_new")" -eq 1 ]; then
-						matches=$matches_new
-					fi
-				fi
-				if [ "$(jq 'length' <<<"$matches")" -gt 1 ]; then
-					local matches_new
-					matches_new=$(jq -e -r 'map(select(.name | contains("debug") | not))' <<<"$matches")
-					if [ "$(jq 'length' <<<"$matches_new")" -ge 1 ]; then
-						matches=$matches_new
-					fi
-				fi
-				if [ "$(jq 'length' <<<"$matches")" -eq 0 ]; then
-					epr "No asset was found"
-					return 1
-				elif [ "$(jq 'length' <<<"$matches")" -ne 1 ]; then
-					wpr "More than 1 asset was found for this release. Falling back to the first one found..."
-				fi
-				asset=$(jq -r ".[0]" <<<"$matches")
-				url=$(source_release_asset_url "$host" <<<"$asset")
-				name=$(jq -r .name <<<"$asset")
-				file="${dir}/${name}"
-				if [ "$host" = github ]; then
-					gh_dl "$file" "$url" >&2 || return 1
-				else
-					pr "Getting '$file' from '$url'"
-					_req "$url" "$file" -H "Accept: application/octet-stream" >&2 || return 1
-				fi
-				echo "$tag: $(cut -d/ -f1 <<<"$src")/${name}  " >>"${cl_dir}/changelog.md"
+		if [ "$grab_cl" = true ]; then
+			if [ "$host" = github ]; then
+				echo -e "[Changelog](https://github.com/${src}/releases/tag/${tag_name})\n" >>"${cl_dir}/changelog.md"
 			else
-				grab_cl=false
-				name=$(basename "$file")
-			fi
-
-			echo "$tag_name" >"${dir}/tag_name.txt"
-
-			if [ "$grab_cl" = true ]; then
-				if [ "$host" = github ]; then
-					echo -e "[Changelog](https://github.com/${src}/releases/tag/${tag_name})\n" >>"${cl_dir}/changelog.md"
-				else
 					echo -e "[Changelog](${gitlab_host:-https://gitlab.com}/${src}/-/releases/${tag_name})\n" >>"${cl_dir}/changelog.md"
-				fi
 			fi
-			if [ "$REMOVE_RV_INTEGRATIONS_CHECKS" = true ]; then
-				local extensions_ext
-				extensions_ext=$(unzip -l "${file}" "extensions/shared.*" | grep -o "shared\..*") extensions_ext="${extensions_ext#*.}"
-				if ! (
-					mkdir -p "${file}-zip" || return 1
-					unzip -qo "${file}" -d "${file}-zip" || return 1
+		fi
+		if [ "$REMOVE_RV_INTEGRATIONS_CHECKS" = true ]; then
+			local extensions_ext
+			extensions_ext=$(unzip -l "${file}" "extensions/shared.*" | grep -o "shared\..*") extensions_ext="${extensions_ext#*.}"
+			if ! (
+				mkdir -p "${file}-zip" || return 1
+				unzip -qo "${file}" -d "${file}-zip" || return 1
 					java -cp "${BIN_DIR}/paccer.jar${javapathsep}${BIN_DIR}/dexlib2.jar" com.jhc.Main "${file}-zip/extensions/shared.${extensions_ext}" "${file}-zip/extensions/shared-patched.${extensions_ext}" || return 1
-					mv -f "${file}-zip/extensions/shared-patched.${extensions_ext}" "${file}-zip/extensions/shared.${extensions_ext}" || return 1
-					rm "${file}" || return 1
-					cd "${file}-zip" || abort
-					zip -0rq "${CWD}/${file}" . || return 1
-				) >&2; then
-					echo >&2 "Patching revanced-integrations failed"
-				fi
-				rm -r "${file}-zip" || :
+				mv -f "${file}-zip/extensions/shared-patched.${extensions_ext}" "${file}-zip/extensions/shared.${extensions_ext}" || return 1
+				rm "${file}" || return 1
+				cd "${file}-zip" || abort
+				zip -0rq "${CWD}/${file}" . || return 1
+			) >&2; then
+				echo >&2 "Patching revanced-integrations failed"
 			fi
-
-			echo -n "$file "
+			rm -r "${file}-zip" || :
+		fi
+		
+		echo -n "$file "
 		else
 			pr "Not Getting anything as source is none"
 			echo "none"
@@ -546,9 +546,9 @@ _req() {
 		dlp="$(dirname "$op")/tmp.$(basename "$op")"
 		if [ -f "$dlp" ]; then
 			local wait_c=0
-			while [ -f "$dlp" ] && [ $wait_c -lt 300 ]; do
+			while [ -f "$dlp" ] && [ $wait_c -lt 300 ]; do 
 				sleep 1
-				wait_c=$((wait_c + 1))
+				wait_c=$((wait_c+1))
 			done
 			if [ -f "$op" ]; then return 0; fi
 		fi
@@ -669,7 +669,7 @@ _patches_list_versions() {
 	fi
 
 	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
-
+	
 	if [[ "$cli_source_l" == *"morphe-desktop"* ]]; then
 		local p_args_morphe=""
 		for j in "${p_jars[@]}"; do
@@ -846,7 +846,7 @@ _cfb_get() {
 	wpr "CloudflareBypassForScraping failed after $max_retries attempts: $url"
 	return 1
 }
-_fallback_get() {
+_fallback_get(){
 	local url=$1
 	html=$(req "$url" -) || return 1
 	CF_COOKIES=""
@@ -899,7 +899,7 @@ get_apkmirror_resp() {
 	__DL_RESP_CACHE__["apkmirror_resp_$url"]="$__APKMIRROR_RESP__"
 	__DL_RESP_CACHE__["apkmirror_cat_$url"]="$__APKMIRROR_CAT__"
 	set +u
-	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-}"
+	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-}" 
 	set -u
 }
 
@@ -946,10 +946,10 @@ apkmirror_search() {
 	for ((n = 1; n < 40; n++)); do
 		node=$($HTMLQ "div.table-row.headerFont:nth-last-child($n)" <<<"$resp")
 		if [ -z "$node" ]; then break; fi
-
+		
 		dlurl=$($HTMLQ --base https://www.apkmirror.com --attribute href "div.table-cell:nth-child(1) > a:nth-child(1)" <<<"$node")
 		if [ -z "$dlurl" ]; then continue; fi
-
+		
 		local node_apk_bundle node_arch node_dpi
 		node_apk_bundle=$($HTMLQ "div.table-cell:nth-child(1) span.apkm-badge:first-of-type" --text <<<"$node" | xargs)
 		[ -z "$node_apk_bundle" ] && node_apk_bundle="APK"
@@ -1016,10 +1016,10 @@ dl_apkmirror() {
 		target_ver=$(echo "$version" | tr '.' '-' | grep -oP '\d+(-\d+)+')
 		if [ -n "$slug_ver" ] && [ -n "$target_ver" ]; then
 			release_url="${base_url}${example_path/$slug_ver/$target_ver}"
-			_cf_get "$release_url" || true
+				_cf_get "$release_url" || true
 			resp="$html"
 			if [[ "$resp" == *"Page Not Found"* ]] || [[ "$resp" == *"404 Whoops"* ]] || [ -z "$resp" ]; then
-				release_url=""
+					release_url=""
 			fi
 		fi
 	fi
@@ -1049,21 +1049,21 @@ dl_apkmirror() {
 			local page_url="$list_url/"
 			[[ $page_num -gt 1 ]] && page_url="$list_url/page/$page_num/"
 			_cf_get "$page_url" || return 1
-
+			
 			local html_flat=$(echo "$html" | tr -d '\n\r')
 			local html_split="${html_flat//<\/a>/<\/a>
 }"
 
 			local all_links=$(echo "$html_split" | grep -oP 'href="\K/apk/[^"]+')
-
+			
 			# 1. Exact URL match (strict)
 			version_href=$(echo "$all_links" | grep -F "$search_version-release" | head -1) || true
-
+			
 			# 2. Exact text match
 			if [ -z "$version_href" ]; then
 				version_href=$(echo "$html_split" | grep -F "$version" | grep -oP 'href="\K[^"]+' | head -1) || true
 			fi
-
+			
 			# 3. Clean text match
 			if [ -z "$version_href" ] && [ -n "$clean_version" ] && [ "$clean_version" != "$version" ]; then
 				version_href=$(echo "$html_split" | grep -F "$clean_version" | grep -oP 'href="\K[^"]+' | head -1) || true
@@ -1086,7 +1086,7 @@ dl_apkmirror() {
 				break
 			fi
 		done
-
+		
 		# Fallback to direct search if not found on first 5 pages
 		if [ -z "$release_url" ]; then
 			local search_list_url="https://www.apkmirror.com/?post_type=app_release&searchtype=apk&s=${__APKMIRROR_CAT__}+${version}"
@@ -1096,13 +1096,13 @@ dl_apkmirror() {
 				if [[ "$html" != *"No results found matching your query"* ]]; then
 					search_links=$($HTMLQ --attribute href "div.appRow h5 a" <<<"$html")
 				fi
-
+				
 				# Try to find exact version match first to be safe, otherwise fallback to top result
 				version_href=$(echo "$search_links" | grep -F "$search_version-release" | head -1) || true
 				if [ -z "$version_href" ] && [ -n "$clean_search_version" ]; then
 					version_href=$(echo "$search_links" | grep -E "${clean_search_version}(-[a-z0-9]+)*-release" | head -1) || true
 				fi
-
+				
 				# Search query is exact, so the top search result is the best match if strict regexes fail
 				if [ -z "$version_href" ]; then
 					version_href=$(echo "$search_links" | head -1) || true
@@ -1138,10 +1138,10 @@ dl_apkmirror() {
 			fi
 		done
 		if [ -z "$dlurl" ]; then return 1; fi
-
+		
 		_cf_get "$dlurl" || return 1
 		resp="$html"
-
+		
 	fi
 
 	local all_dl_btns btn_url
@@ -1293,7 +1293,7 @@ _apkpure_install_xapk() {
 	get_apkeditor || return 1
 	if unzip -l "$xapk" 2>/dev/null | grep -q '^[[:space:]]*[0-9].*base\.apk$'; then
 		pr "Extracting base.apk from XAPK"
-		unzip -p "$xapk" base.apk >"$output" || return 1
+		unzip -p "$xapk" base.apk > "$output" || return 1
 	else
 		pr "Merging XAPK splits with APKEditor"
 		local OP
@@ -1380,11 +1380,11 @@ decoded=urllib.parse.unquote(raw)
 parts=urllib.parse.urlsplit(decoded)
 query=urllib.parse.parse_qsl(parts.query, keep_blank_values=True)
 encoded=urllib.parse.urlunsplit((
-		parts.scheme,
-		parts.netloc,
-		urllib.parse.quote(parts.path, safe='/'),
-		urllib.parse.urlencode(query, doseq=True, safe='/:_-.'),
-		parts.fragment,
+    parts.scheme,
+    parts.netloc,
+    urllib.parse.quote(parts.path, safe='/'),
+    urllib.parse.urlencode(query, doseq=True, safe='/:_-.'),
+    parts.fragment,
 ))
 print(encoded)
 PYC
@@ -1494,10 +1494,10 @@ dl_archive() {
 	local path="" version_f=${version// /}
 	while IFS= read -r p; do
 		case "$p" in
-		*"${version_f#v}-${arch// /}.apk" | *"${version_f#v}-${arch// /}.apkm" | *"${version_f#v}-${arch// /}.xapk" | *"${version_f#v}-${arch// /}.apks" | *"${version_f#v}-all.apk" | *"${version_f#v}-all.apkm" | *"${version_f#v}-all.xapk" | *"${version_f#v}-all.apks")
-			path="$p"
-			break
-			;;
+			*"${version_f#v}-${arch// /}.apk"|*"${version_f#v}-${arch// /}.apkm"|*"${version_f#v}-${arch// /}.xapk"|*"${version_f#v}-${arch// /}.apks"|*"${version_f#v}-all.apk"|*"${version_f#v}-all.apkm"|*"${version_f#v}-all.xapk"|*"${version_f#v}-all.apks")
+				path="$p"
+				break
+				;;
 		esac
 	done <<<"$__ARCHIVE_RESP__"
 	if [ -z "$path" ]; then
@@ -1505,17 +1505,17 @@ dl_archive() {
 		return 1
 	fi
 	case "${path##*.}" in
-	apk)
-		req "${url}/${path}" "$output"
-		;;
-	apkm | xapk | apks)
-		req "${url}/${path}" "${output}.${path##*.}" || return 1
-		merge_splits "${output}.${path##*.}" "${output}"
-		;;
-	*)
-		epr "Unsupported archive file type for ${path}"
-		return 1
-		;;
+		apk)
+			req "${url}/${path}" "$output"
+			;;
+		apkm|xapk|apks)
+			req "${url}/${path}" "${output}.${path##*.}" || return 1
+			merge_splits "${output}.${path##*.}" "${output}"
+			;;
+		*)
+			epr "Unsupported archive file type for ${path}"
+			return 1
+			;;
 	esac
 }
 get_archive_resp() {
@@ -1537,40 +1537,40 @@ get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
 
 # -------------------- github --------------------
 dl_github() {
-	local url=$1 version=$2 output=$3 arch=$4
-	local path="" version_f=${version// /}
+    local url=$1 version=$2 output=$3 arch=$4
+    local path="" version_f=${version// /}
 	local base_url=${__GITHUB_URL__:-$url}
-
-	# Matches the exact file selection logic from dl_archive
-	while IFS= read -r p; do
-		case "$p" in
-		*"${version_f#v}-${arch// /}.apk" | *"${version_f#v}-${arch// /}.apkm" | *"${version_f#v}-${arch// /}.xapk" | *"${version_f#v}-${arch// /}.apks" | *"${version_f#v}-all.apk" | *"${version_f#v}-all.apkm" | *"${version_f#v}-all.xapk" | *"${version_f#v}-all.apks")
-			path="$p"
-			break
-			;;
-		esac
-	done <<<"$__ARCHIVE_RESP__"
-
-	if [ -z "$path" ]; then
-		epr "Version ${version} with arch ${arch} not found in github"
-		return 1
-	fi
-
-	local ext="${path##*.}"
-	case "$ext" in
-	apk)
-		req "${base_url}/${path}" "$output"
-		;;
-	apkm | xapk | apks)
-		local bundle="${output}.${ext}"
-		req "${base_url}/${path}" "$bundle" || return 1
-		merge_splits "$bundle" "$output"
-		;;
-	*)
-		epr "Unsupported github file type for ${path}"
-		return 1
-		;;
-	esac
+    
+    # Matches the exact file selection logic from dl_archive
+    while IFS= read -r p; do
+        case "$p" in
+            *"${version_f#v}-${arch// /}.apk"|*"${version_f#v}-${arch// /}.apkm"|*"${version_f#v}-${arch// /}.xapk"|*"${version_f#v}-${arch// /}.apks"|*"${version_f#v}-all.apk"|*"${version_f#v}-all.apkm"|*"${version_f#v}-all.xapk"|*"${version_f#v}-all.apks")
+                path="$p"
+                break
+                ;;
+        esac
+    done <<<"$__ARCHIVE_RESP__"
+    
+    if [ -z "$path" ]; then
+        epr "Version ${version} with arch ${arch} not found in github"
+        return 1
+    fi
+    
+    local ext="${path##*.}"
+    case "$ext" in
+        apk)
+            req "${base_url}/${path}" "$output"
+            ;;
+        apkm|xapk|apks)
+			local bundle="${output}.${ext}"
+			req "${base_url}/${path}" "$bundle" || return 1
+			merge_splits "$bundle" "$output"
+            ;;
+        *)
+            epr "Unsupported github file type for ${path}"
+            return 1
+            ;;
+    esac
 }
 
 get_github_resp() {
@@ -1582,23 +1582,23 @@ get_github_resp() {
 		return 0
 	fi
 	local repo tag resp
-
+	
 	repo=$(cut -d/ -f4-5 <<<"$url")
 	tag=${url%/}
 	tag=${tag##*/}
-
+	
 	resp=$(gh_req "https://api.github.com/repos/${repo}/releases/tags/${tag}" -) || return 1
-
+	
 	# Extract only supported file extensions
 	__ARCHIVE_RESP__=$(jq -r '.assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$resp")
 	if [ -z "$__ARCHIVE_RESP__" ]; then return 1; fi
-
+	
 	# Grab the package name exactly like how get_archive_vers isolates the version
 	__ARCHIVE_PKG_NAME__=$(get_github_pkg_name)
 	if [ -z "$__ARCHIVE_PKG_NAME__" ]; then return 1; fi
-
+	
 	__GITHUB_URL__="https://github.com/${repo}/releases/download/${tag}"
-
+	
 	__DL_RESP_CACHE__["github_archive_resp_$url"]="$__ARCHIVE_RESP__"
 	__DL_RESP_CACHE__["github_archive_pkg_$url"]="$__ARCHIVE_PKG_NAME__"
 	__DL_RESP_CACHE__["github_url_$url"]="$__GITHUB_URL__"
@@ -1606,12 +1606,12 @@ get_github_resp() {
 
 # Extracts version matching the archive logic: strips prefix (up to first '-') and suffix (arch/extension)
 get_github_vers() {
-	sed 's/^[^-]*-//;s/-\(all\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"
+    sed 's/^[^-]*-//;s/-\(all\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"
 }
 
 # Extracts package name by stripping everything from the first hyphen '-' onwards
 get_github_pkg_name() {
-	sed 's/-.*//' <<<"$__ARCHIVE_RESP__" | head -n 1
+    sed 's/-.*//' <<<"$__ARCHIVE_RESP__" | head -n 1
 }
 
 # -------------------- shared --------------------
@@ -1785,7 +1785,7 @@ patch_apk() {
 			get_bcprov || return 1
 			local cmd="java -cp 'temp/bcprov.jar$javapathsep$cli_jar' -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k $TEMP_DIR/ks.keystore  '$KEYSTORE_PASSWORD' '$KEYSTORE_ALIAS' '$KEYSTORE_KEY_PASSWORD' '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
 		else
-			local cmd="java -jar '$cli_jar' -o '$tmp_dir' $p_args_modules $patcher_args '$stock_input'"
+		local cmd="java -jar '$cli_jar' -o '$tmp_dir' $p_args_modules $patcher_args '$stock_input'"
 		fi
 		pr "$cmd"
 		PATCH_OUTPUT=$(eval "$cmd" 2>&1)
@@ -1875,13 +1875,13 @@ patch_apk() {
 	local -a ed_parts=()
 	if [ -n "$per_bundle_ed" ]; then
 		local IFS='|'
-		read -ra ed_parts <<<"$per_bundle_ed"
+		read -ra ed_parts <<< "$per_bundle_ed"
 		unset IFS
 	fi
 
 	local p_args_long="" p_args_short=""
 	if [[ "$cli_source_l" == *"morphe-desktop"* ]]; then
-		for ((i = 0; i < ${#p_jars[@]}; i++)); do
+		for ((i=0; i<${#p_jars[@]}; i++)); do
 			local j="${p_jars[$i]}"
 			local ed="${ed_parts[$i]:-}"
 			p_args_long+=" --patches '$j'${ed}"
@@ -1968,7 +1968,7 @@ write_build_info() {
 		--arg changelog "$changelog" \
 		--argjson applied "$applied_json" \
 		'if has($key) then .[$key].exts = (.[$key].exts + [$ext] | unique) else .[$key] = {exts: [$ext], name: $name, arch: $arch, version: $version, patches: $patches, changelog: $changelog, applied_patches: $applied} end' \
-		"$BUILD_JSON_FILE" >"${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
+		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
 }
 
 build_rv() {
@@ -1999,10 +1999,10 @@ build_rv() {
 
 	if [[ "$exc_str" == *"|"* ]] || [[ "$inc_str" == *"|"* ]]; then
 		local -a exc_parts=() inc_parts=()
-		IFS='|' read -ra exc_parts <<<"$exc_str"
-		IFS='|' read -ra inc_parts <<<"$inc_str"
-
-		for ((bi = 0; bi < n_bundles; bi++)); do
+		IFS='|' read -ra exc_parts <<< "$exc_str"
+		IFS='|' read -ra inc_parts <<< "$inc_str"
+		
+		for ((bi=0; bi<n_bundles; bi++)); do
 			local bundle_ed=""
 			local bp_exc="${exc_parts[$bi]:-}"
 			local bp_inc="${inc_parts[$bi]:-}"
@@ -2018,7 +2018,7 @@ build_rv() {
 		if [ -n "$exc_str" ]; then global_ed+=" $(join_args "$exc_str" -d)"; fi
 		if [ -n "$inc_str" ]; then global_ed+=" $(join_args "$inc_str" -e)"; fi
 		[ "${args[exclusive_patches]}" = true ] && global_ed+=" --exclusive"
-		for ((bi = 0; bi < n_bundles; bi++)); do
+		for ((bi=0; bi<n_bundles; bi++)); do
 			per_bundle_ed_args+=("$global_ed")
 		done
 	fi
@@ -2046,7 +2046,7 @@ build_rv() {
 			epr "ERROR: Could not get response for ${table} in ${dl_p}"
 			continue
 		fi
-
+		
 		# If pkg_name is still empty, try to scrape it from the response
 		if [ -z "$pkg_name" ]; then
 			if ! pkg_name=$(get_"${dl_p}"_pkg_name) || [ -z "$pkg_name" ]; then
@@ -2055,7 +2055,7 @@ build_rv() {
 				continue
 			fi
 		fi
-
+		
 		tried_dl+=("$dl_p")
 		dl_from=$dl_p
 		break
@@ -2073,7 +2073,7 @@ build_rv() {
 
 	pr "Package name of '${table}' is '$pkg_name'"
 	list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
-
+	
 	local cli_source_l="${args[cli_source],,}"
 	if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"instafel"* ]] && [[ "$cli_source_l" != "apksigner" ]]; then
 		if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
@@ -2188,67 +2188,67 @@ build_rv() {
 					rm -f "${stock_apk}.xapk"
 				fi
 
-				local downloaded_pkg downloaded_ver
+					local downloaded_pkg downloaded_ver
 				downloaded_pkg=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
 				downloaded_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-
-				if [ -z "$downloaded_pkg" ]; then
+					
+					if [ -z "$downloaded_pkg" ]; then
 					epr "ERROR: Downloaded file is not a valid APK or aapt2 failed to parse it. Rejecting..."
-					rm -f "$stock_apk"
-					continue
-				fi
+						rm -f "$stock_apk"
+						continue
+					fi
 
-				if [ -n "$downloaded_pkg" ] && [ "$downloaded_pkg" != "$pkg_name" ] && [[ "$pkg_name" == *.* ]]; then
-					epr "ERROR: Downloaded APK package name ($downloaded_pkg) does not match expected ($pkg_name). Rejecting..."
-					rm -f "$stock_apk"
-					continue
-				fi
+					if [ -n "$downloaded_pkg" ] && [ "$downloaded_pkg" != "$pkg_name" ] && [[ "$pkg_name" == *.* ]]; then
+						epr "ERROR: Downloaded APK package name ($downloaded_pkg) does not match expected ($pkg_name). Rejecting..."
+						rm -f "$stock_apk"
+						continue
+					fi
 
 				if [ -n "$downloaded_ver" ] && { [[ "$dl_p" == "direct" ]] || [[ "$dl_p" == "local" ]]; }; then
-					if [ "$version" != "$downloaded_ver" ]; then
-						pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
-						version="$downloaded_ver"
-						version_f=${version// /}
-						version_f=${version_f#v}
-
-						local new_stock_apk="${TEMP_DIR}/${pkg_name}-${version_f}-${arch_f}.apk"
-						mv "$stock_apk" "$new_stock_apk"
-						stock_apk="$new_stock_apk"
+						if [ "$version" != "$downloaded_ver" ]; then
+							pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
+							version="$downloaded_ver"
+							version_f=${version// /}
+							version_f=${version_f#v}
+							
+							local new_stock_apk="${TEMP_DIR}/${pkg_name}-${version_f}-${arch_f}.apk"
+							mv "$stock_apk" "$new_stock_apk"
+							stock_apk="$new_stock_apk"
+						fi
 					fi
-				fi
 
 				local sig_op
 				local sig_ok=true
 				if [[ ${args[check_sig]} == "true" ]]; then
-					if [ -f "${stock_apk}.apkm" ]; then
-						rm -rf "${stock_apk}-zip" || :
-						unzip -j "${stock_apk}.apkm" -d "${stock_apk}-zip" >/dev/null
-						if [ -f "${stock_apk}-zip/base.apk" ]; then
-							if ! sig_op=$(check_sig "${stock_apk}-zip/base.apk" "$pkg_name" 2>&1); then
-								epr "Signature mismatch on base.apk: $sig_op. Rejecting download from $dl_p..."
-								sig_ok=false
-							fi
-						else
-							for a in "${stock_apk}"-zip/*.apk; do
-								if ! sig_op=$(check_sig "$a" "$pkg_name" 2>&1); then
-									epr "Signature mismatch on $a: $sig_op. Rejecting download from $dl_p..."
-									sig_ok=false
-									break
-								fi
-								break # Only check one APK if no base.apk
-							done
-						fi
-						rm -rf "${stock_apk}-zip" || :
-					else
-						if ! sig_op=$(check_sig "$stock_apk" "$pkg_name" 2>&1); then
-							epr "Signature mismatch on $stock_apk: $sig_op. Rejecting download from $dl_p..."
+				if [ -f "${stock_apk}.apkm" ]; then
+					rm -rf "${stock_apk}-zip" || :
+					unzip -j "${stock_apk}.apkm" -d "${stock_apk}-zip" >/dev/null
+					if [ -f "${stock_apk}-zip/base.apk" ]; then
+						if ! sig_op=$(check_sig "${stock_apk}-zip/base.apk" "$pkg_name" 2>&1); then
+							epr "Signature mismatch on base.apk: $sig_op. Rejecting download from $dl_p..."
 							sig_ok=false
 						fi
+					else
+						for a in "${stock_apk}"-zip/*.apk; do
+							if ! sig_op=$(check_sig "$a" "$pkg_name" 2>&1); then
+								epr "Signature mismatch on $a: $sig_op. Rejecting download from $dl_p..."
+								sig_ok=false
+								break
+							fi
+							break # Only check one APK if no base.apk
+						done
 					fi
-					if [ "$sig_ok" = false ]; then
-						rm -f "$stock_apk" "${stock_apk}.apkm"
-						continue
+					rm -rf "${stock_apk}-zip" || :
+				else
+					if ! sig_op=$(check_sig "$stock_apk" "$pkg_name" 2>&1); then
+						epr "Signature mismatch on $stock_apk: $sig_op. Rejecting download from $dl_p..."
+						sig_ok=false
 					fi
+				fi
+				if [ "$sig_ok" = false ]; then
+					rm -f "$stock_apk" "${stock_apk}.apkm"
+					continue
+				fi
 				fi
 				break
 			done
@@ -2270,30 +2270,30 @@ build_rv() {
 
 	local sig_op
 	if [[ ${args[check_sig]} == "true" ]]; then
-		if [ -f "${stock_apk}.apkm" ]; then
-			rm -rf "${stock_apk}-zip" || :
-			unzip -j "${stock_apk}.apkm" -d "${stock_apk}-zip" >/dev/null
-			if [ -f "${stock_apk}-zip/base.apk" ]; then
-				if ! sig_op=$(check_sig "${stock_apk}-zip/base.apk" "$pkg_name" 2>&1); then
-					epr "Not building $table, apk signature mismatch 'base.apk': $sig_op"
-					return 0
-				fi
-			else
-				for a in "${stock_apk}"-zip/*.apk; do
-					if ! sig_op=$(check_sig "$a" "$pkg_name" 2>&1); then
-						epr "Not building $table, apk signature mismatch '$a': $sig_op"
-						return 0
-					fi
-					break # Only check one APK if no base.apk
-				done
-			fi
-			rm -rf "${stock_apk}-zip" || :
-		else
-			if ! sig_op=$(check_sig "$stock_apk" "$pkg_name" 2>&1); then
-				epr "Not building $table, apk signature mismatch '$stock_apk': $sig_op"
+	if [ -f "${stock_apk}.apkm" ]; then
+		rm -rf "${stock_apk}-zip" || :
+		unzip -j "${stock_apk}.apkm" -d "${stock_apk}-zip" >/dev/null
+		if [ -f "${stock_apk}-zip/base.apk" ]; then
+			if ! sig_op=$(check_sig "${stock_apk}-zip/base.apk" "$pkg_name" 2>&1); then
+				epr "Not building $table, apk signature mismatch 'base.apk': $sig_op"
 				return 0
 			fi
+		else
+			for a in "${stock_apk}"-zip/*.apk; do
+				if ! sig_op=$(check_sig "$a" "$pkg_name" 2>&1); then
+					epr "Not building $table, apk signature mismatch '$a': $sig_op"
+					return 0
+				fi
+				break # Only check one APK if no base.apk
+			done
 		fi
+		rm -rf "${stock_apk}-zip" || :
+	else
+		if ! sig_op=$(check_sig "$stock_apk" "$pkg_name" 2>&1); then
+			epr "Not building $table, apk signature mismatch '$stock_apk': $sig_op"
+			return 0
+		fi
+	fi
 	fi
 
 	local microg_patches=()
@@ -2304,12 +2304,12 @@ build_rv() {
 			microg_patches+=("$p")
 		done
 	else
-		local IFS=$'
+	local IFS=$'
 '
-		for p in $(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || :); do
-			microg_patches+=("$p")
-		done
-		unset IFS
+	for p in $(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || :); do
+		microg_patches+=("$p")
+	done
+	unset IFS
 	fi
 	if [ ${#microg_patches[@]} -gt 0 ]; then
 		local found=false
@@ -2349,7 +2349,7 @@ build_rv() {
 				elif [ "$build_mode" = module ]; then
 					mg_arg=" -d \"$p\""
 				fi
-				for ((bi = 0; bi < n_bundles; bi++)); do
+				for ((bi=0; bi<n_bundles; bi++)); do
 					cur_per_bundle_ed_args[$bi]+="$mg_arg"
 				done
 			done
@@ -2374,7 +2374,7 @@ build_rv() {
 		fi
 
 		local per_bundle_ed_joined=""
-		for ((bi = 0; bi < n_bundles; bi++)); do
+		for ((bi=0; bi<n_bundles; bi++)); do
 			[ $bi -gt 0 ] && per_bundle_ed_joined+="|"
 			per_bundle_ed_joined+="${cur_per_bundle_ed_args[$bi]}"
 		done
