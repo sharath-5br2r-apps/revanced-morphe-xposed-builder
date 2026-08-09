@@ -4,13 +4,13 @@
     "keys": [
       "discord-npatch-revenge"
     ],
-    "version": "338.13 - Stable"
+    "version": "340.13 - Stable"
   },
   "Prime-Video": {
     "keys": [
       "prime-video-morphe-hoodles"
     ],
-    "version": "3.0.465.1647"
+    "version": "3.0.467.188547"
   },
   "Amazon Alexa": {
     "keys": [
@@ -28,18 +28,18 @@
     "keys": [
       "proton-vpn-morphe-paresh"
     ],
-    "version": "5.19.61.0"
+    "version": "5.19.78.0"
   },
   "X": {
     "keys": [
       "x-morphe-xshim-piko"
     ],
-    "version": "12.12.0-release.0"
+    "version": "12.15.1-release.0"
   },
   "Speedtest": {
     "keys": [
       "speedtest-morphe-xtra"
     ],
-    "version": "0"
+    "version": "7.0.7"
   }
 }
