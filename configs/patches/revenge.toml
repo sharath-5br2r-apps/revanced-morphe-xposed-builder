@@ -3,7 +3,7 @@ patches-version = "absolutelatest"
 [discord-npatch-revenge]
 enabled = true 
 app-name = "discord"
-rv-brand = "npatch&revenge"
+rv-brand = "npatch-revenge"
 build-mode = "apk"
 arch = "all"
 cli-source = "7723mod/NPatch"
