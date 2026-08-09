@@ -11,12 +11,7 @@ on:
       config_file:
         description: "Select the config file to use"
         required: true
-        type: choice
-        default: ".github/configs/config.manual.toml"
-        options:
-          - ".github/configs/config.manual.toml"
-          - ".github/configs/config.dev.updated.json"
-          - ".github/configs/config.stable.updated.json"
+        type: string
 
 concurrency:
   group: build
@@ -61,15 +56,7 @@ jobs:
       - name: Resolve build context
         id: context
         run: bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}"
-
-      - name: Install Bouncy Castle for BKS Keystore
-        run: |
-          if yq -o=json eval '.' "${{ steps.context.outputs.CONFIG_FILE }}" | jq -e 'to_entries | any((.value | type == "object") and .value.enabled == true and (.value["cli-source"] | type == "string" and test("npatch|lspatch"; "i")))' >/dev/null; then
-            bash .github/scripts/build_install_bouncy_castle.sh
-          else
-            echo "Skipping Bouncy Castle installation (no enabled Xposed modules found in config)."
-          fi
-
+        
       - name: Resolve version code
         id: version
         env:
@@ -78,11 +65,15 @@ jobs:
 
       - name: Build modules and apks
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           CF_BYPASS_SOLVER_TRAWL_8191_ENABLED: "true"
           CF_BYPASS_SOLVER_CFB_ENABLED: "true"
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_ALIAS: "sharath"
         run: |
           set -euo pipefail
           ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}"
@@ -115,6 +106,7 @@ jobs:
           prerelease: ${{ steps.context.outputs.IS_PRERELEASE == 'true' }}
 
       - name: Notify telegram
+        if: false
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_THREAD_ID: ${{ steps.context.outputs.TG_THREAD_ID }}
