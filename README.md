@@ -85,8 +85,9 @@ Thank you to everyone in the open-source community who helps keep these projects
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [arandomhooman/hoomans-morphe-patches](https://github.com/arandomhooman/hoomans-morphe-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.3)
+- Remove ads
 </blockquote>
 </details>
 
@@ -103,8 +104,9 @@ Patches: [arandomhooman/hoomans-morphe-patches](https://github.com/arandomhooman
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [arandomhooman/hoomans-morphe-patches](https://github.com/arandomhooman/hoomans-morphe-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.3)
+- Unlock Pro
 </blockquote>
 </details>
 
@@ -121,8 +123,8 @@ Patches: [arandomhooman/hoomans-morphe-patches](https://github.com/arandomhooman
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: None
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: 
 </blockquote>
 </details>
 
@@ -139,8 +141,16 @@ Patches: None
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [rushiranpise/morphe-patches](https://github.com/rushiranpise/morphe-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [rushiranpise/patches-1.17.0-dev.1.mpp](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.17.0-dev.1)
+- Dark mode
+- Disable search suggestions tracking
+- Disable video autoplay
+- Disable video autoplay
+- Fix Amazon manifest conflicts
+- Open links in browser
+- Price history charts
+- Remove ads
 </blockquote>
 </details>
 
@@ -159,8 +169,8 @@ Patches: [rushiranpise/morphe-patches](https://github.com/rushiranpise/morphe-pa
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [revenge-mod/revenge-xposed](https://github.com/revenge-mod/revenge-xposed)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [revenge-mod/app-release.apk](https://github.com/revenge-mod/revenge-xposed/releases/tag/1601)
 </blockquote>
 </details>
 
@@ -179,8 +189,31 @@ Patches: [revenge-mod/revenge-xposed](https://github.com/revenge-mod/revenge-xpo
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [jasonwu1994/Gboard-patches](https://github.com/jasonwu1994/Gboard-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.7.0-dev.3)
+- AI Writing Tools
+- Add Gboard Signature Bypass
+- Advanced Voice Typing
+- Clipboard Custom Character Limit
+- Clipboard Enhancements
+- Custom Symbols
+- Developer options
+- Emojis, stickers & GIFs Tab Order
+- Enable Inline Autofill Suggestions
+- Enable OCR / Scan Text
+- English QWERTY Up-Flick Uppercase
+- Grammar Checker
+- Inline Suggestions
+- Key Shape Selection
+- Latin Globe Key Ignore Interval
+- Long-Press Editing Shortcuts
+- Settings Homepage Override
+- Swipeable Custom Top Row
+- Use Bluetooth Microphone
+- Web Clipboard
+- Zhuyin Bottom Row Key Sizes
+- Zhuyin Quick Traditional/Simplified Toggle
+- Zhuyin Slide Input
 </blockquote>
 </details>
 
@@ -189,8 +222,32 @@ Patches: [jasonwu1994/Gboard-patches](https://github.com/jasonwu1994/Gboard-patc
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [jasonwu1994/Gboard-patches](https://github.com/jasonwu1994/Gboard-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.7.0-dev.3)
+- AI Writing Tools
+- Add Gboard Signature Bypass
+- Advanced Voice Typing
+- Clipboard Custom Character Limit
+- Clipboard Enhancements
+- Custom Symbols
+- Developer options
+- Emojis, stickers & GIFs Tab Order
+- Enable Inline Autofill Suggestions
+- Enable OCR / Scan Text
+- English QWERTY Up-Flick Uppercase
+- Grammar Checker
+- Inline Suggestions
+- Key Shape Selection
+- Latin Globe Key Ignore Interval
+- Long-Press Editing Shortcuts
+- Package Rename
+- Settings Homepage Override
+- Swipeable Custom Top Row
+- Use Bluetooth Microphone
+- Web Clipboard
+- Zhuyin Bottom Row Key Sizes
+- Zhuyin Quick Traditional/Simplified Toggle
+- Zhuyin Slide Input
 </blockquote>
 </details>
 
@@ -207,8 +264,9 @@ Patches: [jasonwu1994/Gboard-patches](https://github.com/jasonwu1994/Gboard-patc
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [hoo-dles/morphe-patches](https://github.com/hoo-dles/morphe-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [hoo-dles/patches-1.40.0-dev.7.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0-dev.7)
+- AMOLED dark theme
 </blockquote>
 </details>
 
@@ -227,8 +285,62 @@ Patches: [hoo-dles/morphe-patches](https://github.com/hoo-dles/morphe-patches)
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [crimera/piko](https://github.com/crimera/piko)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [crimera/patches-3.9.0-dev.6.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.6)
+- Add settings
+- Allow user network certificate
+- Change like animation
+- Change version code
+- Copy comment
+- Customise story ring size
+- Customise story timestamp
+- Disable Reels scrolling
+- Disable ads
+- Disable analytics
+- Disable comments
+- Disable discover people
+- Disable explore
+- Disable highlights
+- Disable onboarding permission prompts
+- Disable screenshot detection
+- Disable stories
+- Disable story flipping
+- Disable swipe to create
+- Disable typing status
+- Disable video autoplay
+- Download media
+- Download voice message
+- External downloader
+- Filter stories
+- Friendship status indicator
+- Hide group creation button on sharesheet
+- Hide navigation buttons
+- Hide notes tray
+- Hide reshare button
+- Hide stories tray
+- Hide suggested content
+- Improve image viewing
+- Limit feed to following profiles
+- Make ephemeral media permanent
+- Mark chat as read manually
+- More options on post
+- More options on profile
+- Open links externally
+- Recommended flags
+- Remove build expired popup
+- Remove empty bottom space
+- Sanitize share links
+- Save media comment
+- Stories audio autoplay
+- Theme
+- Unlock Plus benefits
+- Unlock developer options
+- Unlock employee options
+- Validate links
+- View DMs anonymously
+- View live anonymously
+- View stories anonymously
+- View story mentions
 </blockquote>
 </details>
 
@@ -247,8 +359,10 @@ Patches: [crimera/piko](https://github.com/crimera/piko)
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [binarymend/morphe-patches](https://github.com/binarymend/morphe-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [binarymend/patches-1.3.1-dev.1.mpp](https://github.com/binarymend/morphe-patches/releases/tag/v1.3.1-dev.1)
+- Make UI look like Pro
+- Unlock Moon+ Reader Pro
 </blockquote>
 </details>
 
@@ -267,8 +381,10 @@ Patches: [binarymend/morphe-patches](https://github.com/binarymend/morphe-patche
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [hoo-dles/morphe-patches](https://github.com/hoo-dles/morphe-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [hoo-dles/patches-1.40.0-dev.7.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0-dev.7)
+- Enable speed control
+- Skip ads
 </blockquote>
 </details>
 
@@ -285,8 +401,10 @@ Patches: [hoo-dles/morphe-patches](https://github.com/hoo-dles/morphe-patches)
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [Paresh-Maheshwari/paresh-patches](https://gitlab.com/Paresh-Maheshwari/paresh-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
+- Disable telemetry
+- Proton VPN Premium
 </blockquote>
 </details>
 
@@ -305,8 +423,10 @@ Patches: [Paresh-Maheshwari/paresh-patches](https://gitlab.com/Paresh-Maheshwari
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [BholeyKaBhakt/revanced-patches-xtra](https://github.com/BholeyKaBhakt/revanced-patches-xtra)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [BholeyKaBhakt/patches-2.12.0-dev.1.mpp](https://github.com/BholeyKaBhakt/revanced-patches-xtra/releases/tag/v2.12.0-dev.1)
+- AdFree Account
+- Disable Logging(analytics)
 </blockquote>
 </details>
 
@@ -323,8 +443,9 @@ Patches: [BholeyKaBhakt/revanced-patches-xtra](https://github.com/BholeyKaBhakt/
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [arandomhooman/hoomans-morphe-patches](https://github.com/arandomhooman/hoomans-morphe-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.3)
+- Unlock Premium
 </blockquote>
 </details>
 
@@ -343,8 +464,30 @@ Patches: [arandomhooman/hoomans-morphe-patches](https://github.com/arandomhooman
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [icysymmetra/patches-0.4.0-dev.1.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.4.0-dev.1)
+- Always show publish date
+- Copy comments without username
+- Custom offline videos limit
+- Disable login requirement
+- Downloads
+- Enable Open Debug
+- Feature Gate Lab
+- Feed filter
+- Feed tab navigation
+- Fix Google login
+- Hide CAPTCHA popups
+- Hide floating promotions
+- Hold-and-slide 2x lock
+- Open external links directly
+- Playback speed
+- Remember clear display
+- SIM spoof
+- Sanitize sharing links
+- Settings
+- Show seekbar
+- Translate comments
+- Disable screen capture detection
 </blockquote>
 </details>
 
@@ -363,8 +506,82 @@ Patches: [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [inotia00/x-shim](https://gitlab.com/inotia00/x-shim) & [crimera/piko](https://github.com/crimera/piko)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/releases/v1.7.0), [crimera/patches-3.9.0-dev.6.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.6)
+- Abstract shim layer
+- Abstract shim layer for method
+- Abstract shim layer for native library
+- Add ability to copy media link
+- Block redirecting to X Lite
+- Change app icon
+- Change version code
+- Clear tracking params
+- Control video auto scroll
+- Custom download folder
+- Custom emoji font
+- Custom font
+- Custom share menu
+- Custom sharing domain
+- Customise post font size
+- Customize Inline action Bar items
+- Customize Navigation Bar items
+- Customize default reply sorting
+- Customize explore tabs
+- Customize notification tabs
+- Customize profile tabs
+- Customize search suggestions
+- Customize search tab items
+- Customize side bar items
+- Customize timeline top bar
+- Delete from database
+- Disable auto timeline scroll on launch
+- Disable chirp font
+- Download patch
+- Dynamic color
+- Enable PiP mode automatically
+- Enable Undo Posts
+- Enable debug menu for posts
+- Enable force HD videos
+- Force enable translate
+- Handle custom twitter links
+- Hide Banner
+- Hide Community Notes
+- Hide FAB
+- Hide FAB Menu Buttons
+- Hide Live Threads
+- Hide Recommended Users
+- Hide badges from navigation bar icons
+- Hide bookmark icon in timeline
+- Hide community badges
+- Hide followed by context
+- Hide hidden replies
+- Hide immersive player
+- Hide nudge button
+- Hide post metrics
+- Hide promote button
+- Hide recommendation items
+- Hook feature flag
+- Import/Export login token
+- Legacy share links
+- Log server response
+- More information on profile
+- Native downloader
+- Native reader mode
+- Native translator
+- No shortened URL
+- Pause search suggestions
+- Remove Ads
+- Remove premium upsell
+- Remove search suggestions
+- Remove view count
+- Round off numbers
+- Selectable Text
+- Share Tweet as Image
+- Show changelogs
+- Show poll results
+- Show post source label
+- Show sensitive media
+- Support external downloader
 </blockquote>
 </details>
 
@@ -383,8 +600,74 @@ Patches: [inotia00/x-shim](https://gitlab.com/inotia00/x-shim) & [crimera/piko](
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [anddea/revanced-patches](https://github.com/anddea/revanced-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.14)
+- Alternative thumbnails
+- Ambient mode control
+- Bypass URL redirects
+- Bypass image region restrictions
+- Change form factor
+- Change player flyout menu toggles
+- Change share sheet
+- Change start page
+- Custom DPI
+- Custom Shorts action buttons
+- Custom double tap length
+- Description components
+- Disable QUIC protocol
+- Disable forced auto captions
+- Disable haptic feedback
+- Disable layout updates
+- Disable resuming Miniplayer on startup
+- Disable resuming Shorts on startup
+- Disable sign in to TV popup
+- Disable splash animation
+- Enable debug logging
+- Enable gradient loading screen
+- Force original audio
+- Force player buttons background
+- Fullscreen components
+- GmsCore support
+- Hide action buttons
+- Hide ads
+- Hide comments components
+- Hide feed components
+- Hide feed flyout menu
+- Hide layout components
+- Hide player buttons
+- Hide player flyout menu
+- Hook YouTube Music actions
+- Hook download actions
+- Miniplayer
+- Navigation bar components
+- Open links externally
+- Overlay buttons
+- Playback in feeds
+- Player components
+- Remove background playback restrictions
+- Remove viewer discretion dialog
+- Return YouTube Dislike
+- Return YouTube Username
+- Sanitize sharing links
+- Seekbar components
+- Set transcript cookies
+- Settings menu filter
+- Shorts components
+- Snack bar components
+- SponsorBlock
+- Spoof app version
+- Spoof video streams
+- Spoof watch history
+- Swipe controls
+- Theme
+- Toolbar components
+- Translations for YouTube
+- Video playback
+- Voice Over Translation
+- Wide search bar
+- Visual preferences icons for YouTube
+- Reload video
+- Settings for YouTube
 </blockquote>
 </details>
 
@@ -401,8 +684,46 @@ Patches: [anddea/revanced-patches](https://github.com/anddea/revanced-patches)
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [anddea/revanced-patches](https://github.com/anddea/revanced-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.14)
+- Bitrate default value
+- Bypass image region restrictions
+- Certificate spoof
+- Change share sheet
+- Change start page
+- Dark theme
+- Disable Cairo splash animation
+- Disable QUIC protocol
+- Disable dislike redirection
+- Disable forced auto captions
+- Enable debug logging
+- Enable landscape mode
+- Flyout menu components
+- Force original audio
+- GmsCore support
+- Hide account components
+- Hide action bar components
+- Hide ads
+- Hide layout components
+- Navigation bar components
+- Player components
+- Remove background playback restrictions
+- Remove viewer discretion dialog
+- Restore old style library shelf
+- Return YouTube Dislike
+- Return YouTube Username
+- Sanitize sharing links
+- Settings menu filter
+- SponsorBlock
+- Spoof app version for lyrics
+- Spoof video streams
+- Third-party lyrics
+- Track crossfade
+- Translations for YouTube Music
+- Video playback
+- Watch history
+- Visual preferences icons for YouTube Music
+- Settings for YouTube Music
 </blockquote>
 </details>
 
@@ -413,8 +734,47 @@ Patches: [anddea/revanced-patches](https://github.com/anddea/revanced-patches)
 
 <blockquote>
 
-[Latest Release](https://github.com/sharath-5br2r/my-patched-apks/releases)<br>
-Patches: [MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [MorpheApp/patches-1.40.0-dev.1.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.1)
+- Bypass certificate checks
+- Change header
+- Change miniplayer color
+- Change start page
+- Check watch history domain name resolution
+- Crossfade
+- Custom branding
+- Disable DRC audio
+- Disable QUIC protocol
+- Disable dislike redirection
+- Downloads
+- Enable debugging
+- Enable exclusive audio playback
+- Enable forced miniplayer
+- Enable swipe to dismiss miniplayer
+- Force original audio
+- GmsCore support
+- Hide ads
+- Hide buttons
+- Hide filter bar
+- Hide flyout menu components
+- Hide layout components
+- Hide music action buttons
+- Miniplayer previous and next buttons
+- Navigation bar
+- Network proxy
+- Remember repeat state
+- Remember shuffle state
+- Remove background playback restrictions
+- Remove viewer discretion dialog
+- Return YouTube Dislike
+- Sanitize sharing links
+- Scrobbling
+- Settings menu filter
+- SponsorBlock
+- Spoof app version
+- Spoof video streams
+- Theme
+- Third-party lyrics
 </blockquote>
 </details>
 
