@@ -1,6 +1,6 @@
 {
-  "version": "v9.28.51 (patches morphe: v1.36.0-dev.7 )",
-  "versionCode": 260006,
-  "zipUrl": "https://github.com/sharath-5br2r/my-patched-apks/releases/download/260006/youtube-music-morphe-exp-module-v9.28.51-morphe-v1.36.0-dev.7-x86_64.zip",
+  "version": "v9.30.52 (patches dev.1.mpp)",
+  "versionCode": 260001,
+  "zipUrl": "https://github.com/sharath-5br2r/my-patched-apks/releases/download/260001/youtube-music-morphe-exp-module-v9.30.52-x86_64.zip",
   "changelog": "https://raw.githubusercontent.com/sharath-5br2r/my-patched-apks/update/build.md"
 }

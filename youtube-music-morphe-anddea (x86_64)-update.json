@@ -1,6 +1,6 @@
 {
-  "version": "v9.15.51 (patches anddea: v4.2.0-dev.7 )",
+  "version": "v9.15.51 (patches dev.14.mpp)",
   "versionCode": 260001,
-  "zipUrl": "https://github.com/sharath-5br2r/my-patched-apks/releases/download/260001/youtube-music-morphe-module-v9.15.51-anddea-v4.2.0-dev.7-x86_64.zip",
+  "zipUrl": "https://github.com/sharath-5br2r/my-patched-apks/releases/download/260001/youtube-music-morphe-anddea-module-v9.15.51-x86_64.zip",
   "changelog": "https://raw.githubusercontent.com/sharath-5br2r/my-patched-apks/update/build.md"
 }
