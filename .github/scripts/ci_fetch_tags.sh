@@ -21,7 +21,7 @@ fi
 
 while read -r id repo host enabled enabledStable enabledDev; do
   if [ "$enabled" == "false" ]; then continue; fi
-  if [ "$host" == *"|gitlab"]; then
+  if [ "$host" == *"|gitlab" ]; then
     gitlab_host="${host%*|}"
     host="gitlab"
   else
