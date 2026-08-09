@@ -2,7 +2,7 @@ enable-module-update = true
 patches-version = "absolutelatest"
 
 [youtube-morphe-exp]
-enabled = true
+enabled = false
 app-name = "youtube"
 rv-brand = "morphe-exp"
 build-mode = "both"
@@ -25,8 +25,7 @@ app-name = "youtube-music"
 rv-brand = "morphe-exp"
 build-mode = "both"
 arch = "both64"
-version = "9.28.51"
-cli-source = "MorpheApp/morphe-cli"
+version = "exp"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 dpi = "nodpi anydpi auto"
