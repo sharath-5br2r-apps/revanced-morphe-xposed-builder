@@ -85,7 +85,7 @@ Thank you to everyone in the open-source community who helps keep these projects
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.3)
 - Remove ads
 </blockquote>
@@ -104,7 +104,7 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.3)
 - Unlock Pro
 </blockquote>
@@ -123,7 +123,7 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: 
 </blockquote>
 </details>
@@ -141,7 +141,7 @@ Patches:
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [rushiranpise/patches-1.17.0-dev.1.mpp](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.17.0-dev.1)
 - Dark mode
 - Disable search suggestions tracking
@@ -169,7 +169,7 @@ Patches: [rushiranpise/patches-1.17.0-dev.1.mpp](https://github.com/rushiranpise
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [revenge-mod/app-release.apk](https://github.com/revenge-mod/revenge-xposed/releases/tag/1601)
 </blockquote>
 </details>
@@ -189,7 +189,7 @@ Patches: [revenge-mod/app-release.apk](https://github.com/revenge-mod/revenge-xp
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.7.0-dev.3)
 - AI Writing Tools
 - Add Gboard Signature Bypass
@@ -222,7 +222,7 @@ Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gb
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.7.0-dev.3)
 - AI Writing Tools
 - Add Gboard Signature Bypass
@@ -285,7 +285,7 @@ Patches: [hoo-dles/patches-1.40.0-dev.7.mpp](https://github.com/hoo-dles/morphe-
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [crimera/patches-3.9.0-dev.6.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.6)
 - Add settings
 - Allow user network certificate
@@ -359,7 +359,7 @@ Patches: [crimera/patches-3.9.0-dev.6.mpp](https://github.com/crimera/piko/relea
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [binarymend/patches-1.3.1-dev.1.mpp](https://github.com/binarymend/morphe-patches/releases/tag/v1.3.1-dev.1)
 - Make UI look like Pro
 - Unlock Moon+ Reader Pro
@@ -381,8 +381,8 @@ Patches: [binarymend/patches-1.3.1-dev.1.mpp](https://github.com/binarymend/morp
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260006)<br>
-Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+Patches: [hoo-dles/patches-1.40.0-dev.7.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0-dev.7)
 - Enable speed control
 - Skip ads
 </blockquote>
@@ -401,8 +401,8 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260006)<br>
-Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
 - Disable telemetry
 - Proton VPN Premium
 </blockquote>
@@ -423,7 +423,7 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [BholeyKaBhakt/patches-2.12.0-dev.1.mpp](https://github.com/BholeyKaBhakt/revanced-patches-xtra/releases/tag/v2.12.0-dev.1)
 - AdFree Account
 - Disable Logging(analytics)
@@ -443,7 +443,7 @@ Patches: [BholeyKaBhakt/patches-2.12.0-dev.1.mpp](https://github.com/BholeyKaBha
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.3)
 - Unlock Premium
 </blockquote>
@@ -464,7 +464,7 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [icysymmetra/patches-0.4.0-dev.1.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.4.0-dev.1)
 - Always show publish date
 - Copy comments without username
@@ -506,7 +506,7 @@ Patches: [icysymmetra/patches-0.4.0-dev.1.mpp](https://github.com/icysymmetra/ti
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/releases/v1.7.0), [crimera/patches-3.9.0-dev.6.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.6)
 - Abstract shim layer
 - Abstract shim layer for method
@@ -600,7 +600,7 @@ Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/relea
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.14)
 - Alternative thumbnails
 - Ambient mode control
@@ -684,7 +684,7 @@ Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-pa
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.14)
 - Bitrate default value
 - Bypass image region restrictions
@@ -734,7 +734,7 @@ Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-pa
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [MorpheApp/patches-1.40.0-dev.1.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.1)
 - Bypass certificate checks
 - Change header
