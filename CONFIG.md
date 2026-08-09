@@ -13,7 +13,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/inc/app"
 ## More about other options:
 
 There exists an example below with all defaults shown and all the keys explicitly set.  
-**All keys are optional** (except download urls) and are assigned to their default values if not set explicitly.  
+**Most keys are optional** (except download urls) and are assigned to their default values if not set explicitly.  
 
 ```toml
 compression-level = 9                # module zip compression level
@@ -21,9 +21,10 @@ remove-rv-integrations-checks = true # remove checks from the revanced integrati
 dpi = "nodpi anydpi 120-640dpi"      # dpi packages to be searched in order. default: "nodpi anydpi"
 
 patches-source = "revanced/revanced-patches" # where to fetch patches bundle from. default: "MorpheApp/morphe-patches"
-patches-source-host = "github"               # source host for patches: "github" or "gitlab". default: "github"
+patches-source-host = "github"               # source host for patches: "github", "gitlab" or "none". default: "github" for custom gitlab instances, use "https://{repo-host}|gitlab" instead.
+
 cli-source = "ReVanced/revanced-cli"             # where to fetch cli from. default: "MorpheApp/morphe-desktop"
-cli-source-host = "github"                       # source host for cli: "github" or "gitlab". default: "github"
+cli-source-host = "github"                       # source host for cli: "github" , "gitlab" or "none". For custom gitlab instances, use "https://{repo-host}|gitlab" instead. default: "github"
 # options like cli-source can also set per app
 rv-brand = "ReVanced Extended" # rebrand from 'ReVanced' to something different. default: patches-source owner
 

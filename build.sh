@@ -4,7 +4,7 @@ set -euo pipefail
 shopt -s nullglob
 
 source utils.sh
-echo '{}' >"$BUILD_JSON_FILE"
+echo '{}' > "$BUILD_JSON_FILE"
 
 trap "abort" INT
 
