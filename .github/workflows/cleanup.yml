@@ -24,9 +24,9 @@ jobs:
         with:
           delete_releases: true
           delete_tags: true
-          releases_keep_latest: 98
+          releases_keep_latest: 198
           delete_workflows: true
-          workflows_keep_day: 3
+          workflows_keep_day: 90
           releases_keep_keyword: stable/beta
           gh_token: ${{ secrets.GITHUB_TOKEN }}
 
