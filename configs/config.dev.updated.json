@@ -4,7 +4,7 @@
   "youtube-morphe-anddea": {
     "enabled": false,
     "app-name": "youtube",
-    "rv-brand": "morphe",
+    "rv-brand": "morphe-anddea",
     "build-mode": "both",
     "arch": "all",
     "cli-source": "MorpheApp/morphe-desktop",

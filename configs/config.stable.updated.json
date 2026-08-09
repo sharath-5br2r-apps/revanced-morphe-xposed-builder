@@ -4,7 +4,7 @@
   "youtube-morphe-anddea": {
     "enabled": false,
     "app-name": "youtube",
-    "rv-brand": "morphe",
+    "rv-brand": "morphe-anddea",
     "build-mode": "both",
     "arch": "all",
     "cli-source": "MorpheApp/morphe-desktop",
@@ -143,7 +143,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "tiktok-morphe-icysymmetra": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "tiktok",
     "rv-brand": "morphe-icysymmetra",
     "build-mode": "apk",
