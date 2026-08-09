@@ -4,14 +4,15 @@ set -euo pipefail
 shopt -s nullglob
 
 source utils.sh
-echo '{}' > "$BUILD_JSON_FILE"
+echo '{}' >"$BUILD_JSON_FILE"
 
 trap "abort" INT
 
 if [ "${1-}" = "clean" ]; then
-	rm -r "$TEMP_DIR" "$BUILD_DIR" build.md
-	exit 0
+  rm -r "$TEMP_DIR" "$BUILD_DIR" build.md
+  exit 0
 fi
+rm -f "$TEMP_DIR/cf_get.lock"
 
 jq --version >/dev/null || abort "\`jq\` is not installed. install it with 'apt install jq' or equivalent"
 java --version >/dev/null || abort "\`java\` is not installed. install it with 'apt install openjdk-21-jre' or equivalent"
@@ -36,21 +37,21 @@ DEF_RV_BRAND=$(toml_get "$main_config_t" rv-brand) || DEF_RV_BRAND="ReVanced"
 mkdir -p "$TEMP_DIR" "$BUILD_DIR"
 
 if [ "${2-}" = "--config-update" ]; then
-	config_update
-	exit 0
+  config_update
+  exit 0
 fi
 
 : >build.md
 ENABLE_MODULE_UPDATE=$(toml_get "$main_config_t" enable-module-update) || ENABLE_MODULE_UPDATE=true
 if [ "$ENABLE_MODULE_UPDATE" = true ] && [ -z "${GITHUB_REPOSITORY-}" ]; then
-	pr "You are building locally. Module updates will not be enabled."
-	ENABLE_MODULE_UPDATE=false
+  pr "You are building locally. Module updates will not be enabled."
+  ENABLE_MODULE_UPDATE=false
 fi
 if ((COMPRESSION_LEVEL > 9)) || ((COMPRESSION_LEVEL < 0)); then abort "compression-level must be within 0-9"; fi
 
 rm -rf module/bin/*/tmp.*
 for file in "$TEMP_DIR"/*/changelog.md; do
-	[ -f "$file" ] && : >"$file"
+  [ -f "$file" ] && : >"$file"
 done
 
 mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm ${MODULE_TEMPLATE_DIR}/bin/x86 ${MODULE_TEMPLATE_DIR}/bin/x64
@@ -60,187 +61,193 @@ mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm ${MODUL
 [ -f "${MODULE_TEMPLATE_DIR}/bin/x64/cmpr" ] || gh_dl "${MODULE_TEMPLATE_DIR}/bin/x64/cmpr" "https://github.com/j-hc/cmpr/releases/latest/download/cmpr-x86_64"
 
 for table_name in $(toml_get_table_names); do
-	if [ -z "$table_name" ]; then continue; fi
-	t=$(toml_get_table "$table_name")
-	enabled=$(toml_get "$t" enabled) || enabled=true
-	vtf "$enabled" "enabled"
-	if [ "$enabled" = false ]; then continue; fi
+  if [ -z "$table_name" ]; then continue; fi
+  t=$(toml_get_table "$table_name")
+  enabled=$(toml_get "$t" enabled) || enabled=true
+  vtf "$enabled" "enabled"
+  if [ "$enabled" = false ]; then continue; fi
 
-	declare -A app_args
-	patches_src=$(toml_get "$t" patches-source) || patches_src=$DEF_PATCHES_SRC
-	patches_src_host=$(toml_get "$t" patches-source-host) || patches_src_host=$DEF_PATCHES_SRC_HOST
-	patches_ver=$(toml_get "$t" patches-version) || patches_ver=$DEF_PATCHES_VER
-	cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
-	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
-	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
-	if [[ "$cli_src_host" == *"|gitlab" ]]; then
-		cli_src_host="gitlab"
-	fi
-	if ! isoneof "$cli_src_host" github gitlab none; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': only 'github', 'gitlab' or 'none' is allowed"; fi
+  declare -A app_args
+  patches_src=$(toml_get "$t" patches-source) || patches_src=$DEF_PATCHES_SRC
+  patches_src_host=$(toml_get "$t" patches-source-host) || patches_src_host=$DEF_PATCHES_SRC_HOST
+  patches_ver=$(toml_get "$t" patches-version) || patches_ver=$DEF_PATCHES_VER
+  cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
+  cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
+  cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
+  if [[ "$cli_src_host" == *"|gitlab" ]]; then
+    cli_src_host="gitlab"
+  fi
+  if ! isoneof "$cli_src_host" github gitlab none; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': only 'github', 'gitlab' or 'none' is allowed"; fi
 
-	# Parse patch sources: may be a single string or multiline (quoted list)
-	IFS=$'\n'
-	p_srcs=($(list_args "$patches_src" | tr -d \"\')); [ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$patches_src")
-	p_hosts=($(list_args "$patches_src_host" | tr -d \"\')); [ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$patches_src_host")
-	p_vers=($(list_args "$patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
-	unset IFS
-	for h in "${p_hosts[@]}"; do
-		if [[ "$h" == *"|gitlab" ]]; then
-			h="gitlab"
-		fi
-		if ! isoneof "$h" github gitlab none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': only 'github', 'gitlab' or 'none' is allowed"; fi
-	done
+  # Parse patch sources: may be a single string or multiline (quoted list)
+  IFS=$'\n'
+  p_srcs=($(list_args "$patches_src" | tr -d \"\'))
+  [ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$patches_src")
+  p_hosts=($(list_args "$patches_src_host" | tr -d \"\'))
+  [ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$patches_src_host")
+  p_vers=($(list_args "$patches_ver" | tr -d \"\'))
+  [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
+  unset IFS
+  for h in "${p_hosts[@]}"; do
+    if [[ "$h" == *"|gitlab" ]]; then
+      h="gitlab"
+    fi
+    if ! isoneof "$h" github gitlab none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': only 'github', 'gitlab' or 'none' is allowed"; fi
+  done
 
-	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver")"; then
-		epr "Could not get prebuilts"
-		continue
-	fi
-	read -r cli_jar patches_jar_all <<< "$PREBUILTS"
-	app_args[cli]=$cli_jar
-	app_args[ptjar]=$patches_jar_all
-	app_args[cli_source]=$cli_src
+  if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver")"; then
+    epr "Could not get prebuilts"
+    continue
+  fi
+  read -r cli_jar patches_jar_all <<<"$PREBUILTS"
+  app_args[cli]=$cli_jar
+  app_args[ptjar]=$patches_jar_all
+  app_args[cli_source]=$cli_src
 
-	# Build aggregated patches_ref and changelog_url from all sources
-	patches_ref_all="" changelog_url_all=""
-	for i in "${!p_srcs[@]}"; do
-		psrc="${p_srcs[$i]}"
-		phost="${p_hosts[$i]:-${p_hosts[0]}}"
-		if [[ "$phost" == *"|gitlab" ]]; then
-			pgitlabhost="${phost%%|*}"
-			phost="gitlab"
-		fi
-		# Find the downloaded jar/apk for this source to get actual version
-		pdir=${psrc%/*}; pdir=${TEMP_DIR}/${pdir,,}-rv
-		pfile=$(find "$pdir" -name 'patches-*.rvp' -o -name 'patches-*.jar' -o -name '*.mpp' -o -name '*.apk' 2>/dev/null | sort | tail -1)
-		if [ -n "$pfile" ]; then
-			pfilename=${pfile##*/}
-			
-			if [ -f "${pdir}/tag_name.txt" ]; then
-				ptag=$(cat "${pdir}/tag_name.txt")
-			else
-				pver_actual=${pfilename#*-}; pver_actual=${pver_actual%.*}
-				ptag="v${pver_actual#v}"
-			fi
-			
-			patches_ref_all+="${psrc%%/*}/${pfilename} "
-			if [ "$phost" = github ]; then
-				changelog_url_all+="https://github.com/${psrc}/releases/tag/${ptag} "
-			else
-				changelog_url_all+="${pgitlabhost:-https://gitlab.com}/${psrc}/-/releases/${ptag} "
-			fi
-		fi
-	done
-	app_args[patches_src]=${p_srcs[0]}
-	app_args[patches_ref]="${patches_ref_all% }"
-	app_args[changelog_url]="${changelog_url_all% }"
-	app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"
-	app_args[github2_apk_pkgname]=$(toml_get "$t" github2-apk-pkgname) || app_args[github2_apk_pkgname]=""
-	app_args[github2_apk_filter]=$(toml_get "$t" github2-apk-filter) || app_args[github2_apk_filter]=""
-	app_args[github2_apk_exclude_filter]=$(toml_get "$t" github2-apk-exclude-filter) || app_args[github2_apk_exclude_filter]=""
-	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
-	app_args[custom_microg_patches]=$(toml_get "$t" custom-microg-patches) || app_args[custom_microg_patches]=""
-	app_args[excluded_patches]=$(toml_get "$t" excluded-patches) || app_args[excluded_patches]=""
-	if [ -n "${app_args[excluded_patches]}" ] && [[ ${app_args[excluded_patches]} != *'"'* ]]; then abort "patch names inside excluded-patches must be quoted"; fi
-	app_args[included_patches]=$(toml_get "$t" included-patches) || app_args[included_patches]=""
-	if [ -n "${app_args[included_patches]}" ] && [[ ${app_args[included_patches]} != *'"'* ]]; then abort "patch names inside included-patches must be quoted"; fi
-	app_args[exclusive_patches]=$(toml_get "$t" exclusive-patches) && vtf "${app_args[exclusive_patches]}" "exclusive-patches" || app_args[exclusive_patches]=false
-	app_args[version]=$(toml_get "$t" version) || app_args[version]="auto"
-	app_args[app_name]=$(toml_get "$t" app-name) || app_args[app_name]=$table_name
-	app_args[patcher_args]=$(toml_get "$t" patcher-args) || app_args[patcher_args]=""
-	app_args[table]=$table_name
-	app_args[build_mode]=$(toml_get "$t" build-mode) && {
-		if ! isoneof "${app_args[build_mode]}" both apk module; then
-			abort "ERROR: build-mode '${app_args[build_mode]}' is not a valid option for '${table_name}': only 'both', 'apk' or 'module' is allowed"
-		fi
-	} || app_args[build_mode]=apk
-	app_args[include_stock]=$(toml_get "$t" include-stock) && {
-		if ! isoneof "${app_args[include_stock]}" disable merged split; then
-			abort "ERROR: include-stock '${app_args[include_stock]}' is not a valid option for '${table_name}': only 'disable', 'merged' or 'split' is allowed"
-		fi
-	} || app_args[include_stock]=merged
+  # Build aggregated patches_ref and changelog_url from all sources
+  patches_ref_all="" changelog_url_all=""
+  for i in "${!p_srcs[@]}"; do
+    psrc="${p_srcs[$i]}"
+    phost="${p_hosts[$i]:-${p_hosts[0]}}"
+    if [[ "$phost" == *"|gitlab" ]]; then
+      pgitlabhost="${phost%%|*}"
+      phost="gitlab"
+    fi
+    # Find the downloaded jar/apk for this source to get actual version
+    pdir=${psrc%/*}
+    pdir=${TEMP_DIR}/${pdir,,}-rv
+    pfile=$(find "$pdir" -name 'patches-*.rvp' -o -name 'patches-*.jar' -o -name '*.mpp' -o -name '*.apk' 2>/dev/null | sort | tail -1)
+    if [ -n "$pfile" ]; then
+      pfilename=${pfile##*/}
 
-	for dl_from in "${DL_SRCS[@]}"; do
-		if app_args[${dl_from}_dlurl]=$(toml_get "$t" "${dl_from}-dlurl"); then
-			app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%/}
-			app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%download}
-			app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%/}
-			app_args[dl_from]=${dl_from}
-		else
-			app_args[${dl_from}_dlurl]=""
-		fi
-	done
-	if [ -z "${app_args[dl_from]-}" ]; then abort "ERROR: no 'dlurl' option was set for '$table_name'. (${DL_SRCS[*]})"; fi
-	app_args[arch]=$(toml_get "$t" arch) || app_args[arch]="auto"
-	if ! isoneof "${app_args[arch]}" "auto" "both" "multi" "both64" "both32" "all" "arm64-v8a" "arm-v7a" "x86_64" "x86"; then
-		abort "wrong arch '${app_args[arch]}' for '$table_name'"
-	fi
+      if [ -f "${pdir}/tag_name.txt" ]; then
+        ptag=$(cat "${pdir}/tag_name.txt")
+      else
+        pver_actual=${pfilename#*-}
+        pver_actual=${pver_actual%.*}
+        ptag="v${pver_actual#v}"
+      fi
 
-	app_args[pkg_name]=$(toml_get "$t" pkg-name) || app_args[pkg_name]=""
-	app_args[dpi]=$(toml_get "$t" dpi) || app_args[dpi]=""
-	table_name_f=${table_name,,}
-	table_name_f=${table_name_f// /-}
-	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-jhc"
+      patches_ref_all+="${psrc%%/*}/${pfilename} "
+      if [ "$phost" = github ]; then
+        changelog_url_all+="https://github.com/${psrc}/releases/tag/${ptag} "
+      else
+        changelog_url_all+="${pgitlabhost:-https://gitlab.com}/${psrc}/-/releases/${ptag} "
+      fi
+    fi
+  done
+  app_args[patches_src]=${p_srcs[0]}
+  app_args[patches_ref]="${patches_ref_all% }"
+  app_args[changelog_url]="${changelog_url_all% }"
+  app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"
+  app_args[github2_apk_pkgname]=$(toml_get "$t" github2-apk-pkgname) || app_args[github2_apk_pkgname]=""
+  app_args[github2_apk_filter]=$(toml_get "$t" github2-apk-filter) || app_args[github2_apk_filter]=""
+  app_args[github2_apk_exclude_filter]=$(toml_get "$t" github2-apk-exclude-filter) || app_args[github2_apk_exclude_filter]=""
+  app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
+  app_args[prefer_dl_mode]=$(toml_get "$t" prefer-dl-mode) || app_args[prefer_dl_mode]=apk
+  app_args[custom_microg_patches]=$(toml_get "$t" custom-microg-patches) || app_args[custom_microg_patches]=""
+  app_args[excluded_patches]=$(toml_get "$t" excluded-patches) || app_args[excluded_patches]=""
+  if [ -n "${app_args[excluded_patches]}" ] && [[ ${app_args[excluded_patches]} != *'"'* ]]; then abort "patch names inside excluded-patches must be quoted"; fi
+  app_args[included_patches]=$(toml_get "$t" included-patches) || app_args[included_patches]=""
+  if [ -n "${app_args[included_patches]}" ] && [[ ${app_args[included_patches]} != *'"'* ]]; then abort "patch names inside included-patches must be quoted"; fi
+  app_args[exclusive_patches]=$(toml_get "$t" exclusive-patches) && vtf "${app_args[exclusive_patches]}" "exclusive-patches" || app_args[exclusive_patches]=false
+  app_args[version]=$(toml_get "$t" version) || app_args[version]="auto"
+  app_args[app_name]=$(toml_get "$t" app-name) || app_args[app_name]=$table_name
+  app_args[patcher_args]=$(toml_get "$t" patcher-args) || app_args[patcher_args]=""
+  app_args[table]=$table_name
+  app_args[build_mode]=$(toml_get "$t" build-mode) && {
+    if ! isoneof "${app_args[build_mode]}" both apk module; then
+      abort "ERROR: build-mode '${app_args[build_mode]}' is not a valid option for '${table_name}': only 'both', 'apk' or 'module' is allowed"
+    fi
+  } || app_args[build_mode]=apk
+  app_args[include_stock]=$(toml_get "$t" include-stock) && {
+    if ! isoneof "${app_args[include_stock]}" disable merged split; then
+      abort "ERROR: include-stock '${app_args[include_stock]}' is not a valid option for '${table_name}': only 'disable', 'merged' or 'split' is allowed"
+    fi
+  } || app_args[include_stock]=merged
 
-	if [ "${app_args[arch]}" = both ]; then
-		app_args[table]="$table_name (arm64-v8a)"
-		app_args[arch]="arm64-v8a"
-		module_prop_name_b=${app_args[module_prop_name]}
-		app_args[module_prop_name]="${module_prop_name_b}-arm64"
-		build_rv "$(declare -p app_args)"
-		app_args[table]="$table_name (arm-v7a)"
-		app_args[arch]="arm-v7a"
-		app_args[module_prop_name]="${module_prop_name_b}-arm"
-		build_rv "$(declare -p app_args)"
-	elif [ "${app_args[arch]}" = multi ]; then
-		app_args[table]="$table_name (arm64-v8a)"
-		app_args[arch]="arm64-v8a"
-		module_prop_name_b=${app_args[module_prop_name]}
-		app_args[module_prop_name]="${module_prop_name_b}-arm64"
-		build_rv "$(declare -p app_args)"
-		app_args[table]="$table_name (arm-v7a)"
-		app_args[arch]="arm-v7a"
-		app_args[module_prop_name]="${module_prop_name_b}-arm"
-		build_rv "$(declare -p app_args)"
-		app_args[table]="$table_name (x86_64)"
-		app_args[arch]="x86_64"
-		app_args[module_prop_name]="${module_prop_name_b}-x64"
-		build_rv "$(declare -p app_args)"
-		app_args[table]="$table_name (x86)"
-		app_args[arch]="x86"
-		app_args[module_prop_name]="${module_prop_name_b}-x86"
-		build_rv "$(declare -p app_args)"
-	elif [ "${app_args[arch]}" = "both64" ]; then
-		app_args[table]="$table_name (arm64-v8a)"
-		app_args[arch]="arm64-v8a"
-		module_prop_name_b=${app_args[module_prop_name]}
-		app_args[module_prop_name]="${module_prop_name_b}-arm64"
-		build_rv "$(declare -p app_args)"
-		app_args[table]="$table_name (x86_64)"
-		app_args[arch]="x86_64"
-		app_args[module_prop_name]="${module_prop_name_b}-x64"
-		build_rv "$(declare -p app_args)"
-	elif [ "${app_args[arch]}" = "both32" ]; then
-		app_args[table]="$table_name (arm-v7a)"
-		app_args[arch]="arm-v7a"
-		module_prop_name_b=${app_args[module_prop_name]}
-		app_args[module_prop_name]="${module_prop_name_b}-arm"
-		build_rv "$(declare -p app_args)"
-		app_args[table]="$table_name (x86)"
-		app_args[arch]="x86"
-		app_args[module_prop_name]="${module_prop_name_b}-x86"
-		build_rv "$(declare -p app_args)"
-	else
-		if [ "${app_args[arch]}" = "arm64-v8a" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-arm64"
-		elif [ "${app_args[arch]}" = "arm-v7a" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-arm"
-		elif [ "${app_args[arch]}" = "x86_64" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-x64"
-		elif [ "${app_args[arch]}" = "x86" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-x86"
-		fi	
-		build_rv "$(declare -p app_args)"
-	fi
+  for dl_from in "${DL_SRCS[@]}"; do
+    if app_args[${dl_from}_dlurl]=$(toml_get "$t" "${dl_from}-dlurl"); then
+      app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%/}
+      app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%download}
+      app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%/}
+      app_args[dl_from]=${dl_from}
+    else
+      app_args[${dl_from}_dlurl]=""
+    fi
+  done
+  if [ -z "${app_args[dl_from]-}" ]; then abort "ERROR: no 'dlurl' option was set for '$table_name'. (${DL_SRCS[*]})"; fi
+  app_args[arch]=$(toml_get "$t" arch) || app_args[arch]="auto"
+  if ! isoneof "${app_args[arch]}" "auto" "both" "multi" "both64" "both32" "all" "arm64-v8a" "arm-v7a" "x86_64" "x86"; then
+    abort "wrong arch '${app_args[arch]}' for '$table_name'"
+  fi
+
+  app_args[pkg_name]=$(toml_get "$t" pkg-name) || app_args[pkg_name]=""
+  app_args[dpi]=$(toml_get "$t" dpi) || app_args[dpi]=""
+  table_name_f=${table_name,,}
+  table_name_f=${table_name_f// /-}
+  app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-jhc"
+
+  if [ "${app_args[arch]}" = both ]; then
+    app_args[table]="$table_name (arm64-v8a)"
+    app_args[arch]="arm64-v8a"
+    module_prop_name_b=${app_args[module_prop_name]}
+    app_args[module_prop_name]="${module_prop_name_b}-arm64"
+    build_rv "$(declare -p app_args)"
+    app_args[table]="$table_name (arm-v7a)"
+    app_args[arch]="arm-v7a"
+    app_args[module_prop_name]="${module_prop_name_b}-arm"
+    build_rv "$(declare -p app_args)"
+  elif [ "${app_args[arch]}" = multi ]; then
+    app_args[table]="$table_name (arm64-v8a)"
+    app_args[arch]="arm64-v8a"
+    module_prop_name_b=${app_args[module_prop_name]}
+    app_args[module_prop_name]="${module_prop_name_b}-arm64"
+    build_rv "$(declare -p app_args)"
+    app_args[table]="$table_name (arm-v7a)"
+    app_args[arch]="arm-v7a"
+    app_args[module_prop_name]="${module_prop_name_b}-arm"
+    build_rv "$(declare -p app_args)"
+    app_args[table]="$table_name (x86_64)"
+    app_args[arch]="x86_64"
+    app_args[module_prop_name]="${module_prop_name_b}-x64"
+    build_rv "$(declare -p app_args)"
+    app_args[table]="$table_name (x86)"
+    app_args[arch]="x86"
+    app_args[module_prop_name]="${module_prop_name_b}-x86"
+    build_rv "$(declare -p app_args)"
+  elif [ "${app_args[arch]}" = "both64" ]; then
+    app_args[table]="$table_name (arm64-v8a)"
+    app_args[arch]="arm64-v8a"
+    module_prop_name_b=${app_args[module_prop_name]}
+    app_args[module_prop_name]="${module_prop_name_b}-arm64"
+    build_rv "$(declare -p app_args)"
+    app_args[table]="$table_name (x86_64)"
+    app_args[arch]="x86_64"
+    app_args[module_prop_name]="${module_prop_name_b}-x64"
+    build_rv "$(declare -p app_args)"
+  elif [ "${app_args[arch]}" = "both32" ]; then
+    app_args[table]="$table_name (arm-v7a)"
+    app_args[arch]="arm-v7a"
+    module_prop_name_b=${app_args[module_prop_name]}
+    app_args[module_prop_name]="${module_prop_name_b}-arm"
+    build_rv "$(declare -p app_args)"
+    app_args[table]="$table_name (x86)"
+    app_args[arch]="x86"
+    app_args[module_prop_name]="${module_prop_name_b}-x86"
+    build_rv "$(declare -p app_args)"
+  else
+    if [ "${app_args[arch]}" = "arm64-v8a" ]; then
+      app_args[module_prop_name]="${app_args[module_prop_name]}-arm64"
+    elif [ "${app_args[arch]}" = "arm-v7a" ]; then
+      app_args[module_prop_name]="${app_args[module_prop_name]}-arm"
+    elif [ "${app_args[arch]}" = "x86_64" ]; then
+      app_args[module_prop_name]="${app_args[module_prop_name]}-x64"
+    elif [ "${app_args[arch]}" = "x86" ]; then
+      app_args[module_prop_name]="${app_args[module_prop_name]}-x86"
+    fi
+    build_rv "$(declare -p app_args)"
+  fi
 done
 rm -rf temp/tmp.*
 if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then abort "All builds failed."; fi
@@ -275,8 +282,8 @@ log "$changelog_merged"
 
 SKIPPED=$(cat "$TEMP_DIR"/skipped 2>/dev/null || :)
 if [ -n "$SKIPPED" ]; then
-	log "\nSkipped:"
-	log "$SKIPPED"
+  log "\nSkipped:"
+  log "$SKIPPED"
 fi
 
 pr "Done"

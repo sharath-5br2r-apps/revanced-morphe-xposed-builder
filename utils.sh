@@ -772,7 +772,7 @@ sign_apk() {
 }
 merge_splits() {
   local bundle=$1 output=$2
-  if unzip -l "$bundle" 2>/dev/null | grep -q '^[[:space:]]*[0-9].*AndroidManifest\.xml$'; then
+  if unzip -l "$bundle" 2>/dev/null | grep '^[[:space:]]*[0-9].*AndroidManifest\.xml$'; then
     pr "Downloaded bundle is actually a standard APK. Bypassing merge."
     mv -f "$bundle" "$output"
     return 0
@@ -799,7 +799,7 @@ _trawl_8191_get() {
       -H 'Content-Type: application/json' \
       -d "{\"url\":\"$url\",\"maxTimeout\":60000,\"skipHttp\":true${extra_headers}}") || true
     status=$(echo "$response" | jq -r '.statusCode // empty')
-    if [[ "$status" == "200" ]]; then
+    if [[ "$status" =~ ^[1-3][0-9][0-9]$ ]]; then
       html=$(echo "$response" | jq -r '.html // empty')
       if [[ -n "$html" && "$html" != *"Attention Required!"* && "$html" != *"Just a moment..."* && "$html" != *"Please Wait... | Cloudflare"* && "$html" != *"Verify you are human"* ]]; then
         export CF_COOKIES
@@ -1125,7 +1125,8 @@ dl_apkmirror() {
   local node dlurl=""
   node=$($HTMLQ "div.table-row.headerFont:nth-last-child(1)" -r "span:nth-child(n+3)" <<<"$resp")
   if [ "$node" ]; then
-    if [ "${args[prefer_dl_mode]:-}" = "bundle" ]; then
+    if [ "${prefer_dl_mode}" == "bundle" ]; then
+      pr "Preferring Bundle "
       types="BUNDLE APK"
     else
       types="APK BUNDLE"
@@ -1903,7 +1904,7 @@ patch_apk() {
     cmd_short+=" -b"
   fi
 
-  if [ "$OS" = Android ] || [ "${cli_name::8}" = revanced ]; then
+  if [ "$OS" = Android ] && [ "${cli_name::8}" = revanced ]; then
     cmd_long+=" --custom-aapt2-binary='${AAPT2}'"
     cmd_short+=" --custom-aapt2-binary='${AAPT2}'"
   fi
@@ -1971,6 +1972,7 @@ write_build_info() {
 build_rv() {
   eval "declare -A args=${1#*=}"
   local version="" pkg_name=""
+  local prefer_dl_mode=${args[prefer_dl_mode]}
   local cli_jar="${args[cli]}"
   local patches_jar="${args[ptjar]}"
   local mode_arg=${args[build_mode]} version_mode=${args[version]}
@@ -2173,7 +2175,7 @@ build_rv() {
           rm -f "$stock_apk"
           continue
         fi
-        if ! unzip -l "$stock_apk" 2>/dev/null | grep -q '^[[:space:]]*[0-9].*AndroidManifest\.xml$'; then
+        if ! unzip -l "$stock_apk" 2>/dev/null | grep '^[[:space:]]*[0-9].*AndroidManifest\.xml$'; then
           pr "WARNING: ${stock_apk} does not contain AndroidManifest.xml at root. Attempting to extract as XAPK/APKS..."
           mv "$stock_apk" "${stock_apk}.xapk"
           if ! _apkpure_install_xapk "${stock_apk}.xapk" "$stock_apk"; then
@@ -2299,13 +2301,14 @@ build_rv() {
     for p in $listpatches; do
       microg_patches+=("$p")
     done
-  fi
-  local IFS=$'
+  else
+    local IFS=$'
 '
-  for p in $(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || :); do
-    microg_patches+=("$p")
-  done
-  unset IFS
+    for p in $(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || :); do
+      microg_patches+=("$p")
+    done
+    unset IFS
+  fi
   if [ ${#microg_patches[@]} -gt 0 ]; then
     local found=false
     for p in "${microg_patches[@]}"; do

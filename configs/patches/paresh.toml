@@ -1,7 +1,7 @@
 enable-module-update = true
 patches-version = "absolutelatest"
 [fing-morphe-paresh]
-enabled = true
+enabled = false
 app-name = "fing"
 rv-brand = "morphe-paresh"
 build-mode = "apk"
@@ -11,6 +11,7 @@ uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
 dpi = "nodpi anydpi auto"
 patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
 
 [proton-vpn-morphe-paresh]
 enabled = true
@@ -23,9 +24,10 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvp
 prefer-dl-mode = "bundle"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
+dpi = "120-640dpi"
 
 [jiohotstar-morphe-paresh]
-enabled = true
+enabled = false
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "jiohotstar"
 rv-brand = "morphe-paresh"
