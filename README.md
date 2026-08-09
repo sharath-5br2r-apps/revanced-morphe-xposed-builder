@@ -1884,12 +1884,12 @@ Patches: hoo-dles/patches-1.40.0.mpp
 #### [Morphe (paresh-patches)](https://gitlab.com/Paresh-Maheshwari/paresh-patches)
 
 <details>
-<summary id="proton-vpn-morphe-paresh">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v5.19.72.0-gray?labelColor=6D4AFF&logo=protonvpn&logoColor=white&style=flat"></summary>
+<summary id="proton-vpn-morphe-paresh">&emsp;<a href="https://nullcpy.github.io/"><img src="https://img.shields.io/badge/version-v5.19.16.0-gray?labelColor=6D4AFF&logo=protonvpn&logoColor=white&style=flat"></summary>
   
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260002)<br>
-Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
+Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
 - Disable telemetry
 - Proton VPN Premium
 </blockquote>
