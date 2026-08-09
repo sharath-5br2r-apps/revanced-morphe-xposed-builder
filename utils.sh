@@ -846,7 +846,7 @@ _cf_get() {
 
 # -------------------- apkmirror --------------------
 get_apkmirror_resp() {
-	local url="${1}"
+	local url="${1}" 
 	if [ -n "${__DL_RESP_CACHE__["apkmirror_resp_$url"]:-}" ]; then
 		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["apkmirror_resp_$url"]}"
 		__APKMIRROR_CAT__="${__DL_RESP_CACHE__["apkmirror_cat_$url"]}"
@@ -860,7 +860,7 @@ get_apkmirror_resp() {
 	__DL_RESP_CACHE__["apkmirror_resp_$url"]="$__APKMIRROR_RESP__"
 	__DL_RESP_CACHE__["apkmirror_cat_$url"]="$__APKMIRROR_CAT__"
 	set +u
-	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-}" 
+	__APKMIRROR_EXAMPLE_URL__="${apkmirror_example_url:-}" 
 	set -u
 }
 
@@ -1926,7 +1926,7 @@ write_build_info() {
 		--arg name "$name" \
 		--arg version "$version" \
 		--arg patches "$patches" \
-		--arg changelog "$changelog" \
+		--arg changlog "$changelog" \
 		--argjson applied "$applied_json" \
 		'if has($key) then .[$key].exts = (.[$key].exts + [$ext] | unique) else .[$key] = {exts: [$ext], name: $name, arch: $arch, version: $version, patches: $patches, changelog: $changelog, applied_patches: $applied} end' \
 		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
@@ -1936,6 +1936,7 @@ build_rv() {
 	eval "declare -A args=${1#*=}"
 	local version="" pkg_name=""
 	local prefer_dl_mode=${args[prefer_dl_mode]}
+	local apkmirror_example_url=${args[apkmirror_example_url]}
 	local cli_jar="${args[cli]}"
 	local patches_jar="${args[ptjar]}"
 	local mode_arg=${args[build_mode]} version_mode=${args[version]}

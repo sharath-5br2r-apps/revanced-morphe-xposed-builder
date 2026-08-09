@@ -55,7 +55,10 @@ while IFS='|' read -r group app; do
     apkmirror_url=$(jq -r ".\"$app\".\"apkmirror-dlurl\" // empty" temp_all_configs.json)
     apkpure_url=$(jq -r ".\"$app\".\"apkpure-dlurl\" // empty" temp_all_configs.json)
     apkcombo_url=$(jq -r ".\"$app\".\"apkcombo-dlurl\" // empty" temp_all_configs.json)
-
+    version=$(jq -r ".\"$app\".\"version\" // empty" temp_all_configs.json)
+    prefer_apk_mode=$(jq -r ".\"$app\".\"prefer-apk-mode\" // 'apk'" temp_all_configs.json)
+    apkmirror_example_url=$(jq -r ".\"$app\".\"apkmirror-example-url\" // empty" temp_all_configs.json)
+    
     dlurls=()
     sources=()
     [ -n "$uptodown_url" ] && { dlurls+=("$uptodown_url"); sources+=("uptodown"); }
@@ -78,13 +81,13 @@ while IFS='|' read -r group app; do
             echo "Reusing cached version for $app: $latest_ver"
             break
         else
-            if [[ "$source" == "uptodown" ]]; then
-                get_uptodown_resp "$dlurl" || { echo "Failed uptodown resp for $app"; continue; }
-                vers=$(get_uptodown_vers) || { echo "Failed uptodown vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "apkmirror" ]]; then
+            if [[ "$source" == "apkmirror" ]]; then
                 get_apkmirror_resp "$dlurl" || { echo "Failed apkmirror resp for $app"; continue; }
                 vers=$(get_apkmirror_vers) || { echo "Failed apkmirror vers for $app"; continue; }
+                latest_ver=$(echo "$vers" | get_highest_ver) || true
+            elif [[ "$source" == "uptodown" ]]; then
+                get_uptodown_resp "$dlurl" || { echo "Failed uptodown resp for $app"; continue; }
+                vers=$(get_uptodown_vers) || { echo "Failed uptodown vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "apkpure" ]]; then
                 get_apkpure_resp "$dlurl" || { echo "Failed apkpure resp for $app"; continue; }
