@@ -52,6 +52,6 @@ jobs:
   trigger_website_update:
     needs: [build_manual, trigger_cleanup]
     if: ${{ always() && needs.build_manual.result == 'success' }}
-    uses: ./.github/workflows/update-catalog.yml
+    uses: ./.github/workflows/update-cache.yml
     secrets: inherit
 
