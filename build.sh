@@ -35,8 +35,8 @@ DEF_CLI_SRC=$(toml_get "$main_config_t" cli-source) || DEF_CLI_SRC="MorpheApp/mo
 DEF_CLI_SRC_HOST=$(toml_get "$main_config_t" cli-source-host) || DEF_CLI_SRC_HOST="github"
 DEF_RV_BRAND=$(toml_get "$main_config_t" rv-brand) || DEF_RV_BRAND="ReVanced"
 mkdir -p "$TEMP_DIR" "$BUILD_DIR"
-
-if [ "${2-}" = "--config-update" ]; then
+last_arg="${!#}"
+if [ "${last_arg:-}" == "--config-update" ]; then
   config_update
   exit 0
 fi
@@ -63,6 +63,7 @@ mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm ${MODUL
 for table_name in $(toml_get_table_names); do
   if [ -z "$table_name" ]; then continue; fi
   t=$(toml_get_table "$table_name")
+  if [[ "${@:2}" != *"$table_name"* ]] && [ -n "${2:-}" ]; then continue; fi
   enabled=$(toml_get "$t" enabled) || enabled=true
   vtf "$enabled" "enabled"
   if [ "$enabled" = false ]; then continue; fi
@@ -144,6 +145,7 @@ for table_name in $(toml_get_table_names); do
   app_args[github2_apk_filter]=$(toml_get "$t" github2-apk-filter) || app_args[github2_apk_filter]=""
   app_args[github2_apk_exclude_filter]=$(toml_get "$t" github2-apk-exclude-filter) || app_args[github2_apk_exclude_filter]=""
   app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
+  app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || args[apkmirror_example_url]=""
   app_args[prefer_dl_mode]=$(toml_get "$t" prefer-dl-mode) || app_args[prefer_dl_mode]=apk
   app_args[custom_microg_patches]=$(toml_get "$t" custom-microg-patches) || app_args[custom_microg_patches]=""
   app_args[excluded_patches]=$(toml_get "$t" excluded-patches) || app_args[excluded_patches]=""

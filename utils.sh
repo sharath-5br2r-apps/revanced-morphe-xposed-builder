@@ -908,7 +908,7 @@ get_apkmirror_vers() {
   _cf_get "https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}" || return 1
   apkm_resp="$html"
   vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
-  if [ "${version_mode:-}" = beta ]; then
+  if [ "${version_mode:-}" != beta ]; then
     local IFS=$'\n'
     vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers")
     local v r_vers=()
@@ -1772,6 +1772,8 @@ patch_apk() {
   local cli_source_l="${cli_source,,}"
   if [[ $cli_source_l == "apksigner" ]]; then
     PATCH_OUTPUT=$(sign_apk "${stock_input}" "${patched_apk}" verbose 2>&1)
+    pr "Signed ${stock_input} to ${patched_apk}"
+    return 0
   fi
   if [[ "$cli_source_l" == *"npatch"* ]] || [[ "$cli_source_l" == *"lspatch"* ]]; then
     local p_args_modules=""
