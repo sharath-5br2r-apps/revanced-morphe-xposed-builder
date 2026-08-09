@@ -6,12 +6,6 @@ on:
       config_file:
         required: true
         type: string
-  workflow_dispatch:
-    inputs:
-      config_file:
-        description: "Select the config file to use"
-        required: true
-        type: string
 
 concurrency:
   group: build
@@ -55,7 +49,9 @@ jobs:
 
       - name: Resolve build context
         id: context
-        run: bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}"
+        run: |
+          bash scripts/generate_manual_config.sh
+          bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}"
         
       - name: Resolve version code
         id: version
@@ -104,17 +100,6 @@ jobs:
           tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
           overwrite_files: true
           prerelease: ${{ steps.context.outputs.IS_PRERELEASE == 'true' }}
-
-      - name: Notify telegram
-        if: false
-        env:
-          TG_TOKEN: ${{ secrets.TG_TOKEN }}
-          TG_THREAD_ID: ${{ steps.context.outputs.TG_THREAD_ID }}
-          TITLE_SUFFIX: ${{ steps.context.outputs.TITLE_SUFFIX }}
-          NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          GITHUB_SERVER_URL: ${{ github.server_url }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: bash .github/scripts/build_notify_telegram.sh
 
       - name: Update changelog and module update files
         env:

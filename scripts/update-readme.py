@@ -56,7 +56,7 @@ for key, info in build_data.items():
 
         current_date = datetime.datetime.now().strftime("%Y-%m-%d")
         patches = info.get("patches", "")
-        changelog_url = info.get("changlog", "")
+        changelog_url = info.get("changeplog", "")
         # Support multiple space-separated patch refs and changelog URLs
         patch_parts = patches.split() if patches else []
         url_parts = changelog_url.split() if changelog_url else []

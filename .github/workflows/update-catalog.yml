@@ -1,0 +1,48 @@
+name: Update Releases Catalog Website
+
+on:
+  workflow_call:
+  schedule:
+    - cron: "0 * * * *" # 02:00 AM UTC everyday
+  workflow_dispatch:
+
+concurrency:
+  group: catalog
+  cancel-in-progress: true
+
+jobs:
+  update-catalog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with: 
+          ref: gh-pages
+
+      - name: Fetch releases from GitHub API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api --paginate repos/$GITHUB_REPOSITORY/releases > releases_new.json
+
+          # Validate: must be a non-empty JSON array
+          COUNT=$(jq 'if type == "array" then length else 0 end' releases_new.json)
+          if [ "$COUNT" -eq 0 ]; then
+            echo "::error::GitHub API returned an empty releases array. Aborting to preserve existing cache."
+            exit 1
+          fi
+
+          echo "Fetched $COUNT releases. Updating cache."
+          mv releases_new.json releases.json
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "update releases catalog"
+          commit_author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com> # Remove if not needed, or replace with your own name/emails
+          file_pattern: releases.json
+          branch: gh-pages
