@@ -381,8 +381,8 @@ Patches: [binarymend/patches-1.3.1-dev.1.mpp](https://github.com/binarymend/morp
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
-Patches: [hoo-dles/patches-1.40.0-dev.7.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0-dev.7)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
+Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Enable speed control
 - Skip ads
 </blockquote>
@@ -401,8 +401,8 @@ Patches: [hoo-dles/patches-1.40.0-dev.7.mpp](https://github.com/hoo-dles/morphe-
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260002)<br>
-Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
+Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
 - Disable telemetry
 - Proton VPN Premium
 </blockquote>
@@ -464,28 +464,34 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
-Patches: [icysymmetra/patches-0.4.0-dev.1.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.4.0-dev.1)
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
+Patches: [icysymmetra/patches-0.6.1.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.6.1)
 - Always show publish date
 - Copy comments without username
 - Custom offline videos limit
 - Disable login requirement
+- Disable long-press quick share
 - Downloads
-- Enable Open Debug
+- Enable Live search
+- Enable non-personalized search
 - Feature Gate Lab
 - Feed filter
 - Feed tab navigation
 - Fix Google login
 - Hide CAPTCHA popups
 - Hide floating promotions
+- Hide quick comment reactions
 - Hold-and-slide 2x lock
 - Open external links directly
 - Playback speed
 - Remember clear display
+- Resume videos after scrolling
 - SIM spoof
 - Sanitize sharing links
 - Settings
 - Show seekbar
+- Show seekbar thumbnail
+- Stop video looping
 - Translate comments
 - Disable screen capture detection
 </blockquote>
