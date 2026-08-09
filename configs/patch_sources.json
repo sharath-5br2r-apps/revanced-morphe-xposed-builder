@@ -1,0 +1,122 @@
+{
+  "anddea": {
+    "repo": "anddea/revanced-patches",
+    "stable": "v4.1.0",
+    "prerelease": "v4.2.0-dev.8",
+    "blocked": false,
+    "stable_date": "2026-06-16T15:37:39Z",
+    "pre_date": "2026-07-24T18:03:29Z"
+  },
+  "morphe": {
+    "repo": "MorpheApp/morphe-patches",
+    "stable": "v1.37.0",
+    "prerelease": "v1.38.0-dev.1",
+    "blocked": false,
+    "stable_date": "2026-07-26T08:56:17Z",
+    "pre_date": "2026-07-29T10:04:50Z"
+  },
+  "piko": {
+    "repo": "crimera/piko",
+    "stable": "v3.8.0",
+    "prerelease": "v3.9.0-dev.2",
+    "blocked": false,
+    "stable_date": "2026-07-24T16:32:23Z",
+    "pre_date": "2026-07-27T18:28:09Z"
+  },
+  "hoodles": {
+    "repo": "hoo-dles/morphe-patches",
+    "stable": "v1.39.0",
+    "prerelease": "v1.40.0-dev.6",
+    "blocked": false,
+    "stable_date": "2026-07-15T16:13:49Z",
+    "pre_date": "2026-07-29T20:49:32Z"
+  },
+  "adobo": {
+    "repo": "jkennethcarino/adobo",
+    "stable": "v1.2.0",
+    "prerelease": "v1.3.0-dev.13",
+    "blocked": false,
+    "stable_date": "2026-06-14T11:51:20Z",
+    "pre_date": "2026-07-26T12:53:34Z"
+  },
+  "binarymend": {
+    "repo": "binarymend/morphe-patches",
+    "stable": "v1.3.1",
+    "prerelease": "v1.3.1",
+    "blocked": false,
+    "stable_date": "2026-04-27T12:49:57Z",
+    "pre_date": "2026-04-27T12:49:57Z"
+  },
+  "paresh": {
+    "repo": "Paresh-Maheshwari/paresh-patches",
+    "host": "gitlab",
+    "stable": "v1.19.0",
+    "prerelease": "v1.19.1-dev.1",
+    "blocked": false,
+    "stable_date": "2026-07-07T17:45:47.815Z",
+    "pre_date": "2026-07-26T14:37:21.887Z"
+  },
+  "patcheddit": {
+    "enabled": false,
+    "repo": "wchill/patcheddit",
+    "stable": "v1.4.0",
+    "prerelease": "v1.4.1-dev.1",
+    "blocked": false
+  },
+  "rvxtra": {
+    "repo": "BholeyKaBhakt/revanced-patches-xtra",
+    "stable": "v2.12.0",
+    "prerelease": "v2.12.0",
+    "blocked": false,
+    "stable_date": "2026-06-22T17:44:41Z",
+    "pre_date": "2026-06-22T17:44:41Z"
+  },
+  "meta": {
+    "repo": "MeridianFresco/morphe-meta-patches",
+    "stable": "v1.0.0",
+    "prerelease": "v1.0.0",
+    "blocked": false,
+    "stable_date": "2026-04-11T21:51:39Z",
+    "pre_date": "2026-04-11T21:51:39Z"
+  },
+  "icysymmetra": {
+    "repo": "icysymmetra/tiktok-patches-for-morphe",
+    "stable": "v0.4.1",
+    "prerelease": "v0.4.1",
+    "blocked": false,
+    "stable_date": "2026-07-28T10:28:30Z",
+    "pre_date": "2026-07-28T10:28:30Z"
+  },
+  "x-shim": {
+    "enabled": false,
+    "repo": "inotia00/x-shim",
+    "host": "gitlab",
+    "stable": "v1.6.2",
+    "prerelease": "",
+    "blocked": false
+  },
+  "hooman": {
+    "repo": "arandomhooman/hoomans-morphe-patches",
+    "stable": "v1.43.4",
+    "prerelease": "v1.43.4",
+    "blocked": false,
+    "stable_date": "2026-07-22T21:59:04Z",
+    "pre_date": "2026-07-22T21:59:04Z"
+  },
+  "rushiranpise": {
+    "repo": "rushiranpise/morphe-patches",
+    "stable": "v1.15.1",
+    "prerelease": "v1.15.1",
+    "blocked": false,
+    "stable_date": "2026-07-23T18:35:27Z",
+    "pre_date": "2026-07-23T18:35:27Z"
+  },
+  "revenge": {
+    "repo": "revenge-mod/revenge-xposed",
+    "stable": "1503",
+    "prerelease": "1503",
+    "blocked": false,
+    "stable_date": "2026-07-29T15:36:44Z",
+    "pre_date": "2026-07-29T15:36:44Z"
+  }
+}
