@@ -1,0 +1,300 @@
+enable-module-update = true
+patches-version = "dev"
+
+[youtube-morphe-anddea]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe"
+build-mode = "both"
+arch = "all"
+cli-source = "MorpheApp/morphe-desktop"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+dpi = "nodpi anydpi auto"
+#archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
+patches-source = "anddea/revanced-patches"
+
+[youtube-music-morphe-anddea]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-anddea"
+build-mode = "both"
+arch = "both64"
+cli-source = "MorpheApp/morphe-desktop"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
+dpi = "nodpi anydpi auto"
+# archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.youtube.music"
+patches-source = "anddea/revanced-patches"
+
+[speedtest-morphe-xtra]
+enabled = true
+app-name = "speedtest"
+rv-brand = "morphe-xtra"
+version = "latest"
+build-mode = "apk"
+arch = "both64"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://speedtest-net-mobile.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/ookla/speedtest"
+dpi = "nodpi anydpi auto"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+[moonplus-reader-morphe-binarymend]
+enabled = true
+app-name = "moonplus-reader"
+rv-brand = "morphe-binarymend"
+build-mode = "apk"
+arch = "all"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://moon-reader.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/moon/moon-reader"
+# archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.photos"
+dpi = "nodpi anydpi auto"
+patches-source = "binarymend/morphe-patches"
+
+[gboard-morphe-jasonwu1994]
+enabled = true
+app-name = "gboard"
+rv-brand = "morphe-jasonwu1994"
+build-mode = "both"
+arch = "arm64-v8a"
+patches-source = "jasonwu1994/Gboard-patches"
+excluded-patches = "'Package Rename'"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://gboard-go.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
+dpi = "nodpi anydpi auto"
+archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
+
+[gboard-morphe-jasonwu1994-clone]
+enabled = true
+app-name = "gboard"
+rv-brand = "morphe-jasonwu1994-clone"
+build-mode = "apk"
+arch = "arm64-v8a"
+patches-source = "jasonwu1994/Gboard-patches"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://gboard-go.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
+dpi = "nodpi anydpi auto"
+archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
+
+[github-morphe-hoodles]
+enabled = true
+app-name = "github"
+rv-brand = "morphe-hoodles"
+build-mode = "apk"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://github-android.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
+# archive-dlurl = "https://archive.org/download/geologically/apks/com.github.android"
+patches-source = "hoo-dles/morphe-patches"
+included-patches = "'AMOLED dark theme'"
+
+[prime-video-morphe-hoodles]
+enabled = true
+app-name = "prime-video"
+rv-brand = "morphe-hoodles"
+build-mode = "apk"
+version = "latest"
+arch = "arm64-v8a"
+cli-source = "MorpheApp/morphe-desktop"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/"
+uptodown-dlurl = "https://amazon-video.en.uptodown.com/android"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+excluded-patches = "'Rename Shared Permissions'"
+
+[adobe-acrobat-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "adobe-acrobat"
+rv-brand = "morphe-hooman"
+version = "26.6.1"
+build-mode = "apk"
+uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+[symfonium-morphe-hooman]
+enabled = true
+app-name = "symfonium"
+rv-brand = "morphe-hooman"
+build-mode = "apk"
+arch = "all"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://symfonium.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+[adm-morphe-hooman]
+enabled = true
+app-name = "adm"
+rv-brand = "morphe-hooman"
+build-mode = "apk"
+arch = "all"
+cli-source = "MorpheApp/morphe-desktop"
+dpi = "nodpi anydpi auto"
+uptodown-dlurl = "https://advanced-download-manager.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+[tiktok-morphe-icysymmetra]
+enabled = true
+app-name = "tiktok"
+rv-brand = "morphe-icysymmetra"
+build-mode = "apk"
+uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+patches-source = "icysymmetra/tiktok-patches-for-morphe"
+
+[youtube-morphe-exp]
+enabled = false
+app-name = "youtube"
+rv-brand = "morphe-exp"
+build-mode = "both"
+version = "exp"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+dpi = "nodpi anydpi auto"
+archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+patches-source = "MorpheApp/morphe-patches"
+patcher-args = "-OdarkThemeBackgroundColor=#000000 "
+included-patches = "'Theme'"
+
+[youtube-music-morphe-exp]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-exp"
+build-mode = "both"
+arch = "both64"
+version = "exp"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
+dpi = "nodpi anydpi auto"
+archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.apps.youtube.music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+patches-source = "MorpheApp/morphe-patches"
+patcher-args = "-OdarkThemeBackgroundColor=#000000 "
+included-patches = "'Theme'"
+
+[fing-morphe-paresh]
+enabled = false
+app-name = "fing"
+rv-brand = "morphe-paresh"
+build-mode = "apk"
+patches-source-host = "gitlab"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+
+[proton-vpn-morphe-paresh]
+enabled = true
+app-name = "proton-vpn"
+rv-brand = "morphe-paresh"
+build-mode = "apk"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn"
+prefer-dl-mode = "bundle"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+dpi = "120-640dpi"
+
+[jiohotstar-morphe-paresh]
+enabled = false
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "jiohotstar"
+rv-brand = "morphe-paresh"
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+[instagram-morphe-piko]
+enabled = true
+app-name = "instagram"
+rv-brand = "morphe-piko"
+build-mode = "apk"
+arch = "both64"
+patcher-args = "--continue-on-error"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://instagram.en.uptodown.com/android"
+#archive-dlurl = "https://archive.org/download/geologically/apks/com.instagram.android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
+dpi = "nodpi anydpi auto"
+patches-source = "crimera/piko"
+
+[x-morphe-xshim-piko]
+enabled = true
+app-name = "x"
+rv-brand = "morphe-xshim-piko"
+build-mode = "apk"
+version = "latest"
+patcher-args = "--continue-on-error"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://twitter.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
+dpi = "nodpi anydpi auto"
+patches-source = "'inotia00/x-shim' 'crimera/piko'"
+patches-source-host = "'gitlab' 'github'"
+included-patches = "'Dynamic Color'"
+
+[discord-npatch-revenge]
+enabled = true
+app-name = "discord"
+rv-brand = "npatch-revenge"
+build-mode = "apk"
+arch = "all"
+cli-source = "7723mod/NPatch"
+patches-source = "revenge-mod/revenge-xposed"
+patcher-args = "-l 0"
+# uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
+apkcombo-dlurl = "https://apkcombo.com/discord/com.discord"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers"
+apkmirror-example-url = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-340-13-stable-release/"
+
+[amazon-india-morphe-rushiranpise]
+enabled = true
+app-name = "amazon-india"
+rv-brand = "morphe-rushiranpise"
+build-mode = "apk"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay/"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+included-patches = "'Dark Mode' 'Open Links in Browser'"
+excluded-patches = "'Hide Rufus Tab'"
+custom-microg-patches = "'None'"
+
+[amazon-alexa-signed]
+enabled = true
+app-name = "amazon-alexa"
+rv-brand = "signed"
+build-mode = "apk"
+cli-source = "apksigner"
+cli-source-host = "none"
+patches-source = "none"
+patches-source-host = "none"
+arch = "all"
+prefer-dl-mode = "bundle"
+uptodown-dlurl = "https://alexa.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
+dpi = "120-480dpi 480-640dpi"
