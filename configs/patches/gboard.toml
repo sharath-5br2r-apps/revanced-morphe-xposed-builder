@@ -1,0 +1,33 @@
+enable-module-update = true
+patches-version = "absolutelatest"
+
+
+[gboard-morphe]
+enabled = true
+app-name = "gboard"
+rv-brand = "morphe-jasonwu1994"
+build-mode = "both"
+arch = "arm64-v8a"
+patches-source = "jasonwu1994/Gboard-patches"
+excluded-patches = "'Package Rename'"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://gboard-go.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
+dpi = "nodpi anydpi auto"
+archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
+
+[gboard-morphe-clone]
+enabled = true
+app-name = "gboard"
+rv-brand = "morphe-jasonwu1994-clone"
+build-mode = "apk"
+arch = "arm64-v8a"
+patches-source = "jasonwu1994/Gboard-patches"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://gboard-go.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
+dpi = "nodpi anydpi auto"
+archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
+

@@ -1,0 +1,14 @@
+enable-module-update = true
+patches-version = "absolutelatest"
+[tiktok-morphe-tiktok]
+enabled = true
+app-name = "tiktok"
+rv-brand = "morphe-icysymmetra"
+build-mode = "apk"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+archive-dlurl = "https://archive.org/download/geologically/apks/com.zhiliaoapp.musically"
+dpi = "nodpi anydpi auto"
+source = "icysymmetra/tiktok-patches-for-morphe"
+

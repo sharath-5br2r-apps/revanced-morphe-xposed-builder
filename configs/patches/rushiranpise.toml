@@ -1,0 +1,15 @@
+enable-module-update = true
+patches-version = "absolutelatest"
+[amazon-india-morphe-rushiranpise]
+enabled = true
+app-name = "amazon-india"
+rv-brand = "morphe-rushiranpise"
+build-mode = "apk"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay/"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+included-patches = "'Dark Mode' 'Open Links in Browser'"
+excluded-patches = "'Hide Rufus Tab'"
+custom-gmscore-patches = "'None'"
