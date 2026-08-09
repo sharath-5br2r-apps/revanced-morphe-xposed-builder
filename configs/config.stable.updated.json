@@ -2,7 +2,7 @@
   "patches-version": "latest",
   "enable-module-update": true,
   "youtube-morphe-anddea": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube",
     "rv-brand": "morphe",
     "build-mode": "both",
@@ -15,7 +15,7 @@
     "patches-source": "anddea/revanced-patches"
   },
   "youtube-music-morphe-anddea": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube-music",
     "rv-brand": "morphe-anddea",
     "build-mode": "both",
@@ -28,7 +28,7 @@
     "patches-source": "anddea/revanced-patches"
   },
   "speedtest-morphe-xtra": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "speedtest",
     "rv-brand": "morphe-xtra",
     "version": "latest",
@@ -82,7 +82,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
   },
   "github-morphe-hoodles": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "github",
     "rv-brand": "morphe-hoodles",
     "build-mode": "apk",
@@ -143,7 +143,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "tiktok-morphe-icysymmetra": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "tiktok",
     "rv-brand": "morphe-icysymmetra",
     "build-mode": "apk",
@@ -170,7 +170,7 @@
     "included-patches": "'Theme'"
   },
   "youtube-music-morphe-exp": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube-music",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -237,7 +237,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-xshim-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "x",
     "rv-brand": "morphe-xshim-piko",
     "build-mode": "apk",
@@ -252,7 +252,7 @@
     "included-patches": "'Dynamic Color'"
   },
   "discord-npatch-revenge": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "discord",
     "rv-brand": "npatch-revenge",
     "build-mode": "apk",
@@ -265,7 +265,7 @@
     "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-340-13-stable-release/"
   },
   "amazon-india-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "amazon-india",
     "rv-brand": "morphe-rushiranpise",
     "build-mode": "apk",
