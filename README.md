@@ -68,7 +68,7 @@ Thank you to everyone in the open-source community who helps keep these projects
 
 ---
 
-<p align="center"><b>Jump to:</b> <a href="#apps-a">A</a> &bull; B &bull; C &bull; <a href="#apps-d">D</a> &bull; E &bull; F &bull; <a href="#apps-g">G</a> &bull; H &bull; <a href="#apps-i">I</a> &bull; J &bull; K &bull; L &bull; <a href="#apps-m">M</a> &bull; N &bull; O &bull; <a href="#apps-p">P</a> &bull; Q &bull; R &bull; <a href="#apps-s">S</a> &bull; <a href="#apps-t">T</a> &bull; U &bull; V &bull; W &bull; <a href="#apps-x">X</a> &bull; <a href="#apps-y">Y</a> &bull; Z</p>
+<p align="center"><b>Jump to:</b> <a href="#apps-a">A</a> &bull; B &bull; C &bull; <a href="#apps-d">D</a> &bull; E &bull; <a href="apps-f">F</a> &bull; <a href="#apps-g">G</a> &bull; H &bull; <a href="#apps-i">I</a> &bull; <a href="#apps-j">J</a> &bull; K &bull; L &bull; <a href="#apps-m">M</a> &bull; N &bull; O &bull; <a href="#apps-p">P</a> &bull; Q &bull; R &bull; <a href="#apps-s">S</a> &bull; <a href="#apps-t">T</a> &bull; U &bull; V &bull; W &bull; <a href="#apps-x">X</a> &bull; <a href="#apps-y">Y</a> &bull; Z</p>
 
 ---
 
@@ -171,6 +171,28 @@ Patches: [rushiranpise/patches-1.17.0-dev.1.mpp](https://github.com/rushiranpise
 
 [Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
 Patches: [revenge-mod/app-release.apk](https://github.com/revenge-mod/revenge-xposed/releases/tag/1601)
+</blockquote>
+</details>
+
+---
+
+<a id="apps-f"></a>
+
+### [Fing - Network Tools](https://play.google.com/store/apps/details/Fing_Ferramentas_de_rede?id=com.overlook.android.fing)
+
+`com.overlook.android.fing`
+
+#### [Morphe (paresh-patches)](https://gitlab.com/Paresh-Maheshwari/paresh-patches)
+
+<details>
+<summary id="fing-morphe-paresh">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=blue&logo=android&logoColor=white&style=flat"></summary>
+
+<blockquote>
+
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
+Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
+- Disable telemetry
+- Proton VPN Premium
 </blockquote>
 </details>
 
@@ -346,6 +368,27 @@ Patches: [crimera/patches-3.9.0-dev.6.mpp](https://github.com/crimera/piko/relea
 
 ---
 
+<a id="apps-j"></a>
+
+### [JioHotstar]https://play.google.com/store/apps/details?id=in.startv.hotstar]
+
+`in.startv.hotstar`
+
+#### [Morphe (paresh-patches)](https://gitlab.com/Paresh-Maheshwari/paresh-patches)
+
+<details>
+<summary id="jiohotstar-morphe-paresh">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=blue&logo=android&logoColor=white&style=flat"></summary>
+
+<blockquote>
+
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
+Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
+- Disable telemetry
+- Proton VPN Premium
+</blockquote>
+</details>
+
+---
 <a id="apps-m"></a>
 
 ### [Moon+ Reader](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader)
@@ -599,7 +642,85 @@ Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/relea
 
 `com.google.android.youtube`
 
-#### [ReVanced Advanced (Anddea)](https://github.com/anddea/revanced-patches)
+#### [Morphe (Experimental)](https://github.com/MorpheApp/morphe-patches)
+
+<details>
+<summary id="youtube-morphe-exp">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF0000&logo=youtube&logoColor=white&style=flat"></summary>
+
+<blockquote>
+
+[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.14)
+- Alternative thumbnails
+- Ambient mode control
+- Bypass URL redirects
+- Bypass image region restrictions
+- Change form factor
+- Change player flyout menu toggles
+- Change share sheet
+- Change start page
+- Custom DPI
+- Custom Shorts action buttons
+- Custom double tap length
+- Description components
+- Disable QUIC protocol
+- Disable forced auto captions
+- Disable haptic feedback
+- Disable layout updates
+- Disable resuming Miniplayer on startup
+- Disable resuming Shorts on startup
+- Disable sign in to TV popup
+- Disable splash animation
+- Enable debug logging
+- Enable gradient loading screen
+- Force original audio
+- Force player buttons background
+- Fullscreen components
+- GmsCore support
+- Hide action buttons
+- Hide ads
+- Hide comments components
+- Hide feed components
+- Hide feed flyout menu
+- Hide layout components
+- Hide player buttons
+- Hide player flyout menu
+- Hook YouTube Music actions
+- Hook download actions
+- Miniplayer
+- Navigation bar components
+- Open links externally
+- Overlay buttons
+- Playback in feeds
+- Player components
+- Remove background playback restrictions
+- Remove viewer discretion dialog
+- Return YouTube Dislike
+- Return YouTube Username
+- Sanitize sharing links
+- Seekbar components
+- Set transcript cookies
+- Settings menu filter
+- Shorts components
+- Snack bar components
+- SponsorBlock
+- Spoof app version
+- Spoof video streams
+- Spoof watch history
+- Swipe controls
+- Theme
+- Toolbar components
+- Translations for YouTube
+- Video playback
+- Voice Over Translation
+- Wide search bar
+- Visual preferences icons for YouTube
+- Reload video
+- Settings for YouTube
+</blockquote>
+</details>
+
+#### [ReVanced Extrended (Anddea, Morphe)](https://github.com/anddea/revanced-patches)
 
 <details>
 <summary id="youtube-morphe-anddea">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF0000&logo=youtube&logoColor=white&style=flat"></summary>
@@ -683,7 +804,7 @@ Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-pa
 
 `com.google.android.apps.youtube.music`
 
-#### [ReVanced Advanced (Anddea)](https://github.com/anddea/revanced-patches)
+#### [ReVanced Extended (Anddea, Morphe)](https://github.com/anddea/revanced-patches)
 
 <details>
 <summary id="youtube-music-morphe-anddea">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF0000&logo=youtubemusic&logoColor=white&style=flat"></summary>
