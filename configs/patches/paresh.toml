@@ -1,7 +1,7 @@
 enable-module-update = true
 patches-version = "absolutelatest"
 [fing-morphe-paresh]
-enabled = false
+enabled = true
 app-name = "fing"
 rv-brand = "morphe-paresh"
 build-mode = "apk"
@@ -27,7 +27,7 @@ patches-source-host = "gitlab"
 dpi = "120-640dpi"
 
 [jiohotstar-morphe-paresh]
-enabled = false
+enabled = true
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "jiohotstar"
 rv-brand = "morphe-paresh"
