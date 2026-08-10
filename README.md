@@ -448,8 +448,8 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260012)<br>
-Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260014)<br>
+Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
 - Disable telemetry
 - Proton VPN Premium
 </blockquote>
@@ -511,8 +511,8 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
-Patches: [icysymmetra/patches-0.6.1.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.6.1)
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260014)<br>
+Patches: [icysymmetra/patches-0.6.2-dev.1.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.6.2-dev.1)
 - Always show publish date
 - Copy comments without username
 - Custom offline videos limit
