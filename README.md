@@ -649,74 +649,83 @@ Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/relea
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
-Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.14)
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+Patches: [MorpheApp/patches-1.40.0-dev.1.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.1)
+- Add to queue
 - Alternative thumbnails
-- Ambient mode control
-- Bypass URL redirects
+- Ambient mode
 - Bypass image region restrictions
+- Bypass link redirects
+- Captions
 - Change form factor
-- Change player flyout menu toggles
-- Change share sheet
+- Change header
 - Change start page
-- Custom DPI
-- Custom Shorts action buttons
-- Custom double tap length
-- Description components
+- Check watch history domain name resolution
+- Copy video link
+- Custom branding
+- Custom player overlay opacity
+- Disable DRC audio
 - Disable QUIC protocol
-- Disable forced auto captions
+- Disable Shorts resuming on startup
+- Disable double tap actions
+- Disable fullscreen gestures
 - Disable haptic feedback
 - Disable layout updates
-- Disable resuming Miniplayer on startup
-- Disable resuming Shorts on startup
+- Disable player popup panels
+- Disable rolling number animations
 - Disable sign in to TV popup
-- Disable splash animation
-- Enable debug logging
-- Enable gradient loading screen
+- Disable video codecs
+- Double tap to seek
+- Downloads
+- Enable debugging
+- Exit fullscreen mode
 - Force original audio
-- Force player buttons background
-- Fullscreen components
 - GmsCore support
-- Hide action buttons
+- Hide Shorts components
 - Hide ads
-- Hide comments components
-- Hide feed components
-- Hide feed flyout menu
+- Hide autoplay preview
+- Hide end screen cards
+- Hide end screen suggested video
+- Hide info cards
 - Hide layout components
-- Hide player buttons
-- Hide player flyout menu
-- Hook YouTube Music actions
-- Hook download actions
+- Hide player flyout menu components
+- Hide player overlay buttons
+- Hide related video overlay
+- Hide related videos
+- Hide timestamp
+- Hide video action buttons
+- Loop video
+- Media notification controls
 - Miniplayer
-- Navigation bar components
+- Navigation bar
+- Network proxy
+- Open Shorts in regular player
+- Open channel of live avatar
 - Open links externally
-- Overlay buttons
+- Open system share sheet
+- Open videos fullscreen
+- Override YouTube Music buttons
+- Play all
 - Playback in feeds
-- Player components
+- Playback speed
+- Reload video
 - Remove background playback restrictions
 - Remove viewer discretion dialog
 - Return YouTube Dislike
-- Return YouTube Username
 - Sanitize sharing links
-- Seekbar components
-- Set transcript cookies
+- Save to watch later
+- Seekbar
 - Settings menu filter
-- Shorts components
-- Snack bar components
+- Shorts autoplay
 - SponsorBlock
 - Spoof app version
+- Spoof device dimensions
 - Spoof video streams
-- Spoof watch history
 - Swipe controls
 - Theme
-- Toolbar components
-- Translations for YouTube
-- Video playback
-- Voice Over Translation
+- Video quality
+- Voice over translation
 - Wide search bar
-- Visual preferences icons for YouTube
-- Reload video
-- Settings for YouTube
 </blockquote>
 </details>
 
@@ -861,7 +870,7 @@ Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-pa
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
 Patches: [MorpheApp/patches-1.40.0-dev.1.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.1)
 - Bypass certificate checks
 - Change header
