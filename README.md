@@ -369,7 +369,7 @@ Patches: [crimera/patches-3.9.0-dev.6.mpp](https://github.com/crimera/piko/relea
 
 <a id="apps-j"></a>
 
-### [JioHotstar]https://play.google.com/store/apps/details?id=in.startv.hotstar]
+### [JioHotstar]https://play.google.com/store/apps/details?id=in.startv.hotstar)
 
 `in.startv.hotstar`
 
