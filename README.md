@@ -448,8 +448,8 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260008)<br>
-Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260009)<br>
+Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
 - Disable telemetry
 - Proton VPN Premium
 </blockquote>
@@ -653,8 +653,8 @@ Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/relea
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
-Patches: [MorpheApp/patches-1.40.0-dev.1.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.1)
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260009)<br>
+Patches: [MorpheApp/patches-1.40.0-dev.2.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.2)
 - Add to queue
 - Alternative thumbnails
 - Ambient mode
@@ -874,8 +874,8 @@ Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-pa
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
-Patches: [MorpheApp/patches-1.40.0-dev.1.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.1)
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260009)<br>
+Patches: [MorpheApp/patches-1.40.0-dev.2.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.2)
 - Bypass certificate checks
 - Change header
 - Change miniplayer color
