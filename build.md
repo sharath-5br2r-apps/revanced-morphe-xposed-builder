@@ -1,6 +1,4 @@
-fing-morphe-paresh (all): 12.12.0  
 proton-vpn-morphe-paresh (all): 5.19.72.0  
-jiohotstar-morphe-paresh (all): 26.04.27.10  
 
 **Notes:**  
 • Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
