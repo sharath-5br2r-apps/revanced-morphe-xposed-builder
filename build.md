@@ -1,4 +1,6 @@
-proton-vpn-morphe-paresh (all): 5.19.16.0  
+instagram-morphe-piko (arm64-v8a): 439.0.0.37.89  
+instagram-morphe-piko (x86_64): 439.0.0.37.89  
+x-morphe-xshim-piko (all): 12.15.1-release.0  
 
 **Notes:**  
 • Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
@@ -7,5 +9,8 @@ proton-vpn-morphe-paresh (all): 5.19.16.0
 [GitHub](https://github.com/nullcpy/rvb) | [Group](https://t.me/rvb27) | [Donate](https://fahim-ahmed05.github.io/donate) | [Website](https://nullcpy.github.io)
   
 CLI: MorpheApp/morphe-desktop-1.13.0-all.jar  
-Patches: Paresh-Maheshwari/patches-1.19.0.mpp  
-[Changelog](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)  
+Patches: crimera/patches-3.9.0-dev.7.mpp  
+[Changelog](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.7)
+
+Patches: inotia00/patches-1.7.0.mpp  
+[Changelog](https://gitlab.com/inotia00/x-shim/-/releases/v1.7.0)  
