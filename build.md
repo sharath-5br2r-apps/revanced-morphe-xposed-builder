@@ -1,6 +1,6 @@
-youtube-morphe-exp (all): 21.32.2  
-youtube-music-morphe-exp (arm64-v8a): 9.30.52  
-youtube-music-morphe-exp (x86_64): 9.30.52  
+fing-morphe-paresh (all): 12.12.0  
+proton-vpn-morphe-paresh (all): 5.19.72.0  
+jiohotstar-morphe-paresh (all): 26.04.27.10  
 
 **Notes:**  
 • Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
@@ -9,5 +9,5 @@ youtube-music-morphe-exp (x86_64): 9.30.52
 [GitHub](https://github.com/nullcpy/rvb) | [Group](https://t.me/rvb27) | [Donate](https://fahim-ahmed05.github.io/donate) | [Website](https://nullcpy.github.io)
   
 CLI: MorpheApp/morphe-desktop-1.13.0-all.jar  
-Patches: MorpheApp/patches-1.40.0-dev.1.mpp  
-[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.1)  
+Patches: Paresh-Maheshwari/patches-1.20.0-dev.2.mpp  
+[Changelog](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)  
