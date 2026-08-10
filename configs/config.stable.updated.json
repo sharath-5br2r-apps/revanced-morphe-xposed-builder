@@ -93,7 +93,7 @@
     "included-patches": "'AMOLED dark theme'"
   },
   "prime-video-morphe-hoodles": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "prime-video",
     "rv-brand": "morphe-hoodles",
     "build-mode": "apk",
