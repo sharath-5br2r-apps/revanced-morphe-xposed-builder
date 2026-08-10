@@ -2,7 +2,7 @@ enable-module-update = true
 patches-version = "absolutelatest"
 
 [youtube-morphe-exp]
-enabled = false
+enabled = true 
 app-name = "youtube"
 rv-brand = "morphe-exp"
 build-mode = "both"
