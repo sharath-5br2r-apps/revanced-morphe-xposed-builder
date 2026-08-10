@@ -189,10 +189,9 @@ Patches: [revenge-mod/app-release.apk](https://github.com/revenge-mod/revenge-xp
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
-Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
-- Disable telemetry
-- Proton VPN Premium
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260005)<br>
+Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
+- Fing Premium
 </blockquote>
 </details>
 
@@ -381,10 +380,15 @@ Patches: [crimera/patches-3.9.0-dev.6.mpp](https://github.com/crimera/piko/relea
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
-Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
-- Disable telemetry
-- Proton VPN Premium
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260005)<br>
+Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
+- Bypass signature check
+- Enable all codecs
+- Enable screen mirroring
+- Enable screenshots
+- Force HDR10
+- Premium unlock
+- Remove ads
 </blockquote>
 </details>
 
@@ -444,8 +448,8 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260003)<br>
-Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
+[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260005)<br>
+Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
 - Disable telemetry
 - Proton VPN Premium
 </blockquote>
