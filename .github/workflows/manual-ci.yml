@@ -11,8 +11,8 @@ on:
         options:
           - "configs/config.manual.generated.toml"
           - "configs/config.manual.toml"
-          - "configs/config.dev.updated.downstream.json"
-          - "configs/config.stable.updated.downstream.json"
+          - "configs/config.dev.updated.json"
+          - "configs/config.stable.updated.json"
           - "Enter Manually"
       manual_config_file:
         description: "Enter the config file path manually (only if 'Enter Manually' is selected above)"
