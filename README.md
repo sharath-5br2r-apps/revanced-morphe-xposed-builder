@@ -559,7 +559,7 @@ Patches: [icysymmetra/patches-0.7.0-dev.3.mpp](https://github.com/icysymmetra/ti
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260013)<br>
+[Release 2026-08-11](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260029)<br>
 Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/releases/v1.7.0), [crimera/patches-3.9.0-dev.7.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.7)
 - Abstract shim layer
 - Abstract shim layer for method
