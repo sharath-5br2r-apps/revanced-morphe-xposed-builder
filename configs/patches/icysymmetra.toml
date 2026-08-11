@@ -3,6 +3,7 @@ patches-version = "absolutelatest"
 [tiktok-morphe-icysymmetra]
 enabled = true
 app-name = "tiktok"
+pkg-name = "com.zhiliaoapp.musically"
 rv-brand = "morphe-icysymmetra"
 build-mode = "apk"
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"

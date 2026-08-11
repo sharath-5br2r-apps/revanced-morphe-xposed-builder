@@ -4,6 +4,7 @@ patches-version = "absolutelatest"
 enabled = true
 app-name = "moonplus-reader"
 rv-brand = "morphe-binarymend"
+pkg-name = "com.flyersoft.moonreader"
 build-mode = "apk"
 arch = "all"
 cli-source = "MorpheApp/morphe-desktop"

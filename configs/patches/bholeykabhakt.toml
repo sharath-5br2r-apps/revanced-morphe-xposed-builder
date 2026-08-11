@@ -3,6 +3,7 @@ patches-version = "absolutelatest"
 [speedtest-morphe-xtra]
 enabled = true
 app-name = "speedtest"
+pkg-name = "org.zwanoo.android.speedtest"
 rv-brand = "morphe-xtra"
 version = "latest"
 build-mode = "apk"

@@ -3,6 +3,7 @@ patches-version = "absolutelatest"
 [discord-npatch-revenge]
 enabled = true 
 app-name = "discord"
+pkg-name = "com.discord"
 rv-brand = "npatch-revenge"
 build-mode = "apk"
 arch = "all"

@@ -5,6 +5,7 @@ enabled = true
 app-name = "amazon-india"
 rv-brand = "morphe-rushiranpise"
 build-mode = "apk"
+pkg-name = "in.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay/"
