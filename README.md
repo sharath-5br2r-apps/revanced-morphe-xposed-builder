@@ -141,8 +141,8 @@ Patches:
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
-Patches: [rushiranpise/patches-1.17.0-dev.1.mpp](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.17.0-dev.1)
+[Release 2026-08-11](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260027)<br>
+Patches: [rushiranpise/patches-1.17.0.mpp](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.17.0)
 - Dark mode
 - Disable search suggestions tracking
 - Disable video autoplay
