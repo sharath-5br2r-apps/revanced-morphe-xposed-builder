@@ -93,7 +93,7 @@
     "included-patches": "'AMOLED dark theme'"
   },
   "prime-video-morphe-hoodles": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "prime-video",
     "rv-brand": "morphe-hoodles",
     "build-mode": "apk",
@@ -200,7 +200,7 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches"
   },
   "proton-vpn-morphe-paresh": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "proton-vpn",
     "rv-brand": "morphe-paresh",
     "build-mode": "apk",
@@ -265,7 +265,7 @@
     "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-340-13-stable-release/"
   },
   "amazon-india-morphe-rushiranpise": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "amazon-india",
     "rv-brand": "morphe-rushiranpise",
     "build-mode": "apk",
