@@ -1124,7 +1124,7 @@ dl_apkmirror() {
 	local final_url
 	final_url=$($HTMLQ "a#download-link" --attribute href <<<"$html" 2>/dev/null | head -1) || true
 	[ -z "$final_url" ] && final_url=$(echo "$html" | grep -oP 'id="download-link"[^>]*href="\K[^"]+' | head -1) || true
-	if [ -z "$final_url" ]; then; epr "Could not find final download link on APKMirror"; return 1; fi
+	if [ -z "$final_url" ]; then epr "Could not find final download link on APKMirror"; return 1; fi
 	final_url=$(echo "$final_url" | sed 's/&amp;/\&/g')
 	[[ "$final_url" != http* ]] && final_url="${base_url}${final_url}"
 
