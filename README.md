@@ -448,8 +448,8 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260015)<br>
-Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
+[Release 2026-08-11](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260018)<br>
+Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
 - Disable telemetry
 - Proton VPN Premium
 </blockquote>
