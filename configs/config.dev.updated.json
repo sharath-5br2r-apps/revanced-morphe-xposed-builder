@@ -158,7 +158,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "tiktok-morphe-icysymmetra": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "tiktok",
     "pkg-name": "com.zhiliaoapp.musically",
     "rv-brand": "morphe-icysymmetra",
@@ -259,7 +259,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-xshim-piko": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "x",
     "rv-brand": "morphe-xshim-piko",
     "build-mode": "apk",
