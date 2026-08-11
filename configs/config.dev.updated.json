@@ -143,7 +143,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "tiktok-morphe-icysymmetra": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "tiktok",
     "rv-brand": "morphe-icysymmetra",
     "build-mode": "apk",
@@ -200,7 +200,7 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches"
   },
   "proton-vpn-morphe-paresh": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "proton-vpn",
     "rv-brand": "morphe-paresh",
     "build-mode": "apk",
