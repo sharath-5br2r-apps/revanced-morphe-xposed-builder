@@ -511,8 +511,8 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260017)<br>
-Patches: [icysymmetra/patches-0.7.0-dev.1.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.7.0-dev.1)
+[Release 2026-08-11](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260026)<br>
+Patches: [icysymmetra/patches-0.7.0-dev.2.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.7.0-dev.2)
 - Always show publish date
 - Copy comments without username
 - Custom offline videos limit
