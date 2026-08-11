@@ -13,22 +13,8 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/imdb/imdb-imdb",
     "dpi": "nodpi anydpi auto"
   },
-  "gboard-morphe-adobo": {
-    "enabled": false,
-    "app-name": "gboard",
-    "rv-brand": "morphe-adobo",
-    "build-mode": "both",
-    "arch": "arm64-v8a",
-    "patches-source": "jkennethcarino/adobo",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://gboard-go.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
-    "dpi": "nodpi anydpi auto",
-    "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
-  },
   "disneyplus-morphe-androidtv": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "disneyplus",
     "rv-brand": "morphe-androidtv",
     "build-mode": "apk",
@@ -40,7 +26,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.disney.disneyplus"
   },
   "prime-video-morphe-androidtv": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "prime-video",
     "rv-brand": "morphe-androidtv",
     "build-mode": "apk",
@@ -53,7 +39,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.amazon.amazonvideo.livingroom"
   },
   "hbomax-morphe-androidtv": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "hbomax",
     "rv-brand": "morphe-androidtv",
     "build-mode": "apk",
@@ -65,7 +51,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.wbd.hbomax"
   },
   "peacock-morphe-androidtv": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "peacock",
     "rv-brand": "morphe-androidtv",
     "build-mode": "apk",
@@ -78,7 +64,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.peacocktv.peacockandroid"
   },
   "tubi-morphe-androidtv": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "tubi",
     "rv-brand": "morphe-androidtv",
     "build-mode": "apk",
@@ -90,7 +76,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.tubitv"
   },
   "vix-morphe-androidtv": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "vix",
     "rv-brand": "morphe-androidtv",
     "build-mode": "apk",
@@ -102,7 +88,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.univision.prendetv"
   },
   "plutotv-morphe-androidtv": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "plutotv",
     "rv-brand": "morphe-androidtv",
     "build-mode": "apk",
@@ -636,8 +622,10 @@
     "rv-brand": "morphe",
     "build-mode": "both",
     "arch": "arm64-v8a",
-    "patches-source": "jasonwu1994/Gboard-patches",
-    "excluded-patches": "'Package Rename'",
+    "patches-source": "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'",
+    "included-patches": " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'",
+    "exclusive-patches": "'jkennethcarino/adobo'",
+    "excluded-patches": "'Package Rename' | ",
     "cli-source": "MorpheApp/morphe-desktop",
     "uptodown-dlurl": "https://gboard-go.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
@@ -651,7 +639,9 @@
     "rv-brand": "morphe-clone",
     "build-mode": "apk",
     "arch": "arm64-v8a",
-    "patches-source": "jasonwu1994/Gboard-patches",
+    "patches-source": "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'",
+    "included-patches": " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'",
+    "exclusive-patches": "'jkennethcarino/adobo'",
     "cli-source": "MorpheApp/morphe-desktop",
     "uptodown-dlurl": "https://gboard-go.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
@@ -1790,7 +1780,7 @@
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.youtube"
   },
   "adguard-morphe-nightly": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "adguard",
     "rv-brand": "morphe-nightly",
     "build-mode": "both",
@@ -1803,7 +1793,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.adguard.android"
   },
   "waze-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "waze",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1815,7 +1805,7 @@
     "dpi": "nodpi anydpi auto"
   },
   "warp-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "warp",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1827,7 +1817,7 @@
     "dpi": "nodpi anydpi auto"
   },
   "hola-vpn-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "hola-vpn",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1839,7 +1829,7 @@
     "apkpure-dlurl": "https://m.apkpure.com/hola-vpn-proxy-plus/org.hola.prem"
   },
   "ninja-vpn-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "ninja-vpn",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1852,7 +1842,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/app.ninjavpn.android"
   },
   "windscribe-vpn-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "windscribe-vpn",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1866,7 +1856,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.windscribe.vpn"
   },
   "terabox-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "terabox",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1878,7 +1868,7 @@
     "uptodown-dlurl": "https://terabox.en.uptodown.com/android"
   },
   "all-document-reader-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "all-document-reader",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1890,7 +1880,7 @@
     "dpi": "nodpi anydpi auto"
   },
   "accuweather-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "accuweather",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1902,7 +1892,7 @@
     "dpi": "nodpi anydpi auto"
   },
   "the-weather-channel-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "the-weather-channel",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1913,7 +1903,7 @@
     "dpi": "nodpi anydpi auto"
   },
   "beta-maniac-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "beta-maniac",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1925,7 +1915,7 @@
     "dpi": "nodpi anydpi auto"
   },
   "google-photos-morphe-alt": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "google-photos",
     "rv-brand": "morphe-alt",
     "build-mode": "apk",
@@ -1938,7 +1928,7 @@
     "dpi": "nodpi anydpi auto"
   },
   "moviebox-morphe": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "moviebox",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -1949,7 +1939,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.community.oneroom"
   },
   "moviebox-morphe-androidtv": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "moviebox",
     "rv-brand": "morphe-androidtv",
     "build-mode": "apk",

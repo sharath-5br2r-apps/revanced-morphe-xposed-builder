@@ -24,18 +24,18 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.39.1",
-    "prerelease": "v1.39.1-dev.1",
+    "prerelease": "v1.40.0-dev.3",
     "blocked": false,
     "stable_date": "2026-08-08T17:05:00Z",
-    "pre_date": "2026-08-08T15:37:43Z"
+    "pre_date": "2026-08-11T08:43:03Z"
   },
   "piko": {
     "repo": "crimera/piko",
     "stable": "v3.8.0",
-    "prerelease": "v3.9.0-dev.5",
+    "prerelease": "v3.9.0-dev.7",
     "blocked": false,
     "stable_date": "2026-07-24T16:32:23Z",
-    "pre_date": "2026-08-09T13:36:18Z"
+    "pre_date": "2026-08-10T18:24:24Z"
   },
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
@@ -48,10 +48,10 @@
   "adobo": {
     "repo": "jkennethcarino/adobo",
     "stable": "v1.3.0",
-    "prerelease": "v1.3.0-dev.18",
+    "prerelease": "v1.3.1-dev.1",
     "blocked": false,
     "stable_date": "2026-08-09T09:18:28Z",
-    "pre_date": "2026-08-09T09:14:54Z"
+    "pre_date": "2026-08-09T15:18:19Z"
   },
   "rvexp": {
     "repo": "Aunali321/ReVancedExperiments",
@@ -134,11 +134,11 @@
   },
   "tiktok": {
     "repo": "icysymmetra/tiktok-patches-for-morphe",
-    "stable": "v0.5.0",
-    "prerelease": "v0.4.0-dev.1",
+    "stable": "v0.6.1",
+    "prerelease": "v0.7.0-dev.2",
     "blocked": false,
-    "stable_date": "2026-08-09T02:11:58Z",
-    "pre_date": "2026-07-26T01:31:02Z"
+    "stable_date": "2026-08-09T20:37:48Z",
+    "pre_date": "2026-08-11T12:57:51Z"
   },
   "x-shim": {
     "enabled": false,
@@ -158,18 +158,18 @@
   },
   "rushiranpise": {
     "repo": "rushiranpise/morphe-patches",
-    "stable": "v1.16.0",
-    "prerelease": "v1.17.0-dev.1",
+    "stable": "v1.17.0",
+    "prerelease": "v1.17.0-dev.2",
     "blocked": false,
-    "stable_date": "2026-08-03T07:54:49Z",
-    "pre_date": "2026-08-07T18:32:22Z"
+    "stable_date": "2026-08-11T17:08:22Z",
+    "pre_date": "2026-08-11T17:04:25Z"
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.23.0",
+    "stable": "v1.24.0",
     "prerelease": "v1.5.7-dev.3",
     "blocked": false,
-    "stable_date": "2026-08-09T14:22:44Z",
+    "stable_date": "2026-08-09T18:57:18Z",
     "pre_date": "2026-06-26T16:45:34Z"
   },
   "revenge": {

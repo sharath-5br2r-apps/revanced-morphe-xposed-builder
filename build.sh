@@ -104,6 +104,7 @@ for table_name in $(toml_get_table_names); do
 	app_args[cli]=$cli_jar
 	app_args[ptjar]=$patches_jar_all
 	app_args[cli_source]=$cli_src
+	app_args[patches_sources_all]="${p_srcs[*]}"
 
 	# Build aggregated patches_ref and changelog_url from all sources
 	patches_ref_all="" changelog_url_all=""
@@ -141,9 +142,6 @@ for table_name in $(toml_get_table_names); do
 	app_args[patches_ref]="${patches_ref_all% }"
 	app_args[changelog_url]="${changelog_url_all% }"
 	app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"
-	app_args[github2_apk_pkgname]=$(toml_get "$t" github2-apk-pkgname) || app_args[github2_apk_pkgname]=""
-	app_args[github2_apk_filter]=$(toml_get "$t" github2-apk-filter) || app_args[github2_apk_filter]=""
-	app_args[github2_apk_exclude_filter]=$(toml_get "$t" github2-apk-exclude-filter) || app_args[github2_apk_exclude_filter]=""
 	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
 	app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || app_args[apkmirror_example_url]=""
 	app_args[prefer_dl_mode]=$(toml_get "$t" prefer-dl-mode) || app_args[prefer_dl_mode]=apk
@@ -152,7 +150,7 @@ for table_name in $(toml_get_table_names); do
 	if [ -n "${app_args[excluded_patches]}" ] && [[ ${app_args[excluded_patches]} != *'"'* ]]; then abort "patch names inside excluded-patches must be quoted"; fi
 	app_args[included_patches]=$(toml_get "$t" included-patches) || app_args[included_patches]=""
 	if [ -n "${app_args[included_patches]}" ] && [[ ${app_args[included_patches]} != *'"'* ]]; then abort "patch names inside included-patches must be quoted"; fi
-	app_args[exclusive_patches]=$(toml_get "$t" exclusive-patches) && vtf "${app_args[exclusive_patches]}" "exclusive-patches" || app_args[exclusive_patches]=false
+	app_args[exclusive_patches]=$(toml_get "$t" exclusive-patches) || app_args[exclusive_patches]=false
 	app_args[version]=$(toml_get "$t" version) || app_args[version]="auto"
 	app_args[app_name]=$(toml_get "$t" app-name) || app_args[app_name]=$table_name
 	app_args[patcher_args]=$(toml_get "$t" patcher-args) || app_args[patcher_args]=""

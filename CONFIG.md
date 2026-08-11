@@ -36,6 +36,7 @@ patches-version = "v2.160.0"
 cli-version = "v5.0.0"
 [Some-App]
 app-name = "SomeApp" # if set, release name becomes SomeApp instead of Some-App. default is same as table name, which is 'Some-App' here.
+pkg-name = "com.some.app" # explicit package name override. recommended to avoid unnecessary network checks when caching.
 enabled = true       # whether to build the app. default: true
 build-mode = "both"  # 'both', 'apk' or 'module'. default: apk
 
@@ -55,11 +56,11 @@ patcher-args = """\
 excluded-patches = """\
   'Some Patch' \
   'Some Other Patch' \
-  """
+  """                                                      # whitespace seperated list of patches to exclude. When mixing multiple `patches-source` bundles, you can use `|` to separate the patches for each bundle. To skip a bundle, leave the side empty (e.g. `" | 'Patch for second bundle'"`).
 
-included-patches = "'Some Patch'"                          # whitespace seperated list of non-default patches to include. default: ""
+included-patches = "'Some Patch'"                          # whitespace seperated list of non-default patches to include. default: "". When mixing multiple `patches-source` bundles, you can use `|` to separate the patches for each bundle. To skip a bundle, leave the side empty (e.g. `" | 'Patch for second bundle'"`).
 include-stock = "merged"                                   # 'merged', 'split' or 'disable'. default: merged
-exclusive-patches = false                                  # exclude all patches by default. default: false
+exclusive-patches = false                                  # exclude all patches by default. Accepts `true`, `false`, or a string of patch sources (e.g. `"'jkennethcarino/adobo'"`). When a specific patch source is provided, only that bundle becomes exclusive, while others retain their default patches. default: false
 
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inc/app"
 # APKMirror Specific args(these are optional)
@@ -75,13 +76,6 @@ github-dlurl = "https://github.com/nvbangg/apks/releases/tag/com.some.app"
 direct-dlurl = "https://website/com.google.android.youtube-20.40.45-all.apk"
 # local file path. the path can point to an apk file with name format shown in this example. It can also be relative to script file.
 local-dlurl = "/home/user/Downloads/com.google.android.youtube-20.40.45-all.apk"
-
-# github releases based on repo url
-github2-dlurl = "https://github.com/owner/repo"
-# Additional fields for github2-dlurl:
-github2-pkg-name = "com.some.app" # package name of the app.Mandatory if github2-dlurl is used. It is used to find the correct know the app.
-github2-apk-filter = "arm64-v8a" # optional. used to filter the apk assets based on architecture or variant. default: none.
-github2-apk-exclude-filter = "arm-v7a" # optional. used to exclude apk assets based on architecture or variant. default: none.
 
 # github release tag url. downloads apk assets from that release.
 github-dlurl = "https://github.com/nvbangg/apks/releases/tag/com.some.app"
