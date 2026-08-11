@@ -56,7 +56,7 @@ while IFS='|' read -r group app; do
     apkpure_url=$(jq -r ".\"$app\".\"apkpure-dlurl\" // empty" temp_all_configs.json)
     apkcombo_url=$(jq -r ".\"$app\".\"apkcombo-dlurl\" // empty" temp_all_configs.json)
     version=$(jq -r ".\"$app\".\"version\" // empty" temp_all_configs.json)
-    if [ "$version" == "beta"]; then __AAV__="true"; else __AAV__="false"; fi
+    if [ "$version" == "beta" ]; then __AAV__="true"; else __AAV__="false"; fi
     prefer_apk_mode=$(jq -r ".\"$app\".\"prefer-apk-mode\" // \"apk\"" temp_all_configs.json)
     apkmirror_example_url=$(jq -r ".\"$app\".\"apkmirror-example-url\" // empty" temp_all_configs.json)
     
