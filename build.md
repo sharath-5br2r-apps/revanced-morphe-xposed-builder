@@ -1,4 +1,5 @@
-prime-video-morphe-hoodles (arm64-v8a): 3.0.467  
+gboard-morphe-jasonwu1994-adobo (arm64-v8a): 17.7.7.932364120-release-arm64-v8a  
+gboard-morphe-jasonwu1994-adobo-clone (arm64-v8a): 17.7.7.932364120-release-arm64-v8a  
 
 **Notes:**  
 • Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
@@ -7,8 +8,8 @@ prime-video-morphe-hoodles (arm64-v8a): 3.0.467
 [GitHub](https://github.com/nullcpy/rvb) | [Group](https://t.me/rvb27) | [Donate](https://fahim-ahmed05.github.io/donate) | [Website](https://nullcpy.github.io)
   
 CLI: MorpheApp/morphe-desktop-1.13.0-all.jar  
-Patches: hoo-dles/patches-1.40.0.mpp  
-[Changelog](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+Patches: jasonwu1994/patches-2.8.0-dev.2.mpp  
+[Changelog](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.8.0-dev.2)
 
-Patches: Paresh-Maheshwari/patches-1.19.0.mpp  
-[Changelog](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)  
+Patches: jkennethcarino/patches-1.3.1-dev.1.mpp  
+[Changelog](https://github.com/jkennethcarino/adobo/releases/tag/v1.3.1-dev.1)  
