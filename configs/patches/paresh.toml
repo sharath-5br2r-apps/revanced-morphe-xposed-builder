@@ -18,6 +18,7 @@ patches-source-host = "gitlab"
 enabled = true
 app-name = "proton-vpn"
 rv-brand = "morphe-paresh"
+version = "latest"
 build-mode = "apk"
 pkg-name = "ch.protonvpn.android"
 cli-source = "MorpheApp/morphe-desktop"
