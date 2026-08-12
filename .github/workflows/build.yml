@@ -6,6 +6,9 @@ on:
       config_file:
         required: true
         type: string
+      exclusive_apps:
+        required: false
+        type: string
 
 concurrency:
   group: build
@@ -75,7 +78,7 @@ jobs:
           KEYSTORE_ALIAS: "sharath"
         run: |
           set -euo pipefail
-          ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}"
+          ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}" "${{ inputs.exclusive_apps }}"
 
       - name: Cleanup old cached APKs
         run: bash .github/scripts/build_cache_cleanup.sh
