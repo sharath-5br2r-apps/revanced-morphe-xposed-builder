@@ -36,8 +36,9 @@ jobs:
         id: config
         run: |
           if [[ "${{ inputs.config_file }}" == "Enter Manually" ]]; then
-            if [[ -f "configs/patches/${{ inputs.manual_config_file }}.toml" ]]; then
-              echo "CONFIG_FILE=configs/patches/${{ inputs.manual_config_file }}.toml" >> "$GITHUB_OUTPUT"
+            patches_config_file="configs/patches/${{ inputs.manual_config_file }}.toml" 
+            if [[ -f "$patches_config_file" ]]; then
+              echo "CONFIG_FILE=$patches_config_file" >> "$GITHUB_OUTPUT"
             elif [[ -f "${{ inputs.manual_config_file }}" ]]; then
               echo "CONFIG_FILE=${{ inputs.manual_config_file }}" >> "$GITHUB_OUTPUT"
             else
