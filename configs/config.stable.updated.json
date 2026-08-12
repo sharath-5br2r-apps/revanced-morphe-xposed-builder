@@ -104,7 +104,7 @@
     "included-patches": "'AMOLED dark theme'"
   },
   "prime-video-morphe-hoodles": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "prime-video",
     "rv-brand": "morphe-hoodles",
     "pkg-name": "com.amazon.avod.thirdpartyclient",
@@ -219,7 +219,7 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches"
   },
   "proton-vpn-morphe-paresh": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "proton-vpn",
     "rv-brand": "morphe-paresh",
     "build-mode": "apk",
@@ -259,7 +259,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-xshim-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "x",
     "rv-brand": "morphe-xshim-piko",
     "build-mode": "apk",
