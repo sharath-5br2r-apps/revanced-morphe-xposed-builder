@@ -4,11 +4,11 @@
 
 <p align="center"><b>Automatically builds and publishes APKs & Magisk/KernelSU Modules whenever new patches are released.</b></p>
 
-<p align="center"><a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/Download-21a378?style=flat&logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmZmZmIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNSAyMGgxNHYtMkg1djJ6TTE5IDloLTRWM0g5djZINWw3IDcgNy03eiIvPjwvc3ZnPg==&logoColor=white"></a> <a href="#credits--acknowledgements"><img src="https://img.shields.io/badge/Donate%20to%20Upstream-ea4335?style=flat&logo=ko-fi&logoColor=white"></a></p>
+<p align="center"><a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/Download-21a378?style=flat&logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmZmZmIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNSAyMGgxNHYtMkg1djJ6TTE5IDloLTRWM0g5djZINWw3IDcgNy03eiIvPjwvc3ZnPg==&logoColor=white"></a> <a href="#credits--acknowledgements"><img src="https://img.shields.io/badge/Donate%20to%20Upstream-ea4335?style=flat&logo=ko-fi&logoColor=white"></a></p>
 
-<p align="center"><a href="https://github.com/sharath-5br2r/my-patched-apks"><img src="https://img.shields.io/github/stars/sharath-5br2r/my-patched-apks?label=Stars&logo=github&style=social"></a> <a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/github/downloads/sharath-5br2r/my-patched-apks/total?logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNSAyMGgxNHYtMkg1djJ6TTE5IDloLTRWM0g5djZINWw3IDcgNy03eiIvPjwvc3ZnPg==&label=Downloads&style=social"></a></p>
+<p align="center"><a href="https://github.com/sharath-5br2r/my-patched-apks"><img src="https://img.shields.io/github/stars/sharath-5br2r/my-patched-apks?label=Stars&logo=github&style=social"></a> <a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/github/downloads/sharath-5br2r/my-patched-apks/total?logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNSAyMGgxNHYtMkg1djJ6TTE5IDloLTRWM0g5djZINWw3IDcgNy03eiIvPjwvc3ZnPg==&label=Downloads&style=social"></a></p>
 
-<p align="center"><a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://visitor-badge.laobi.icu/badge?page_id=sharath-5br2r.github.io.my-patched-apks&left_text=Website%20Visitors&right_color=%231283c3&format=true&query_only=true"></a> <a href="https://github.com/sharath-5br2r/my-patched-apks"><img src="https://visitor-badge.laobi.icu/badge?page_id=sharath-5br2r.my-patched-apks&left_text=GitHub%20Visitors&format=true"></a> </p>
+<p align="center"><a href="https://sharath-5br2r.github.io/catalog"><img src="https://visitor-badge.laobi.icu/badge?page_id=sharath-5br2r.github.io.my-patched-apks&left_text=Website%20Visitors&right_color=%231283c3&format=true&query_only=true"></a> <a href="https://github.com/sharath-5br2r/my-patched-apks"><img src="https://visitor-badge.laobi.icu/badge?page_id=sharath-5br2r.my-patched-apks&left_text=GitHub%20Visitors&format=true"></a> </p>
 
 ---
 
@@ -30,7 +30,7 @@ Thank you to everyone in the open-source community who helps keep these projects
 
 > [!NOTE]
 >
-> 🌐 **[Visit Download Website](https://sharath-5br2r.github.io/my-patched-apks)**
+> 🌐 **[Visit Download Website](https://sharath-5br2r.github.io/catalog)**
 >
 > For the best experience, please download from the website. It features:
 >
@@ -81,7 +81,7 @@ Thank you to everyone in the open-source community who helps keep these projects
 #### [Morphe (hoomans-patches)](https://github.com/arandomhooman/hoomans-morphe-patches)
 
 <details>
-<summary id="adm-morphe-hooman">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=0268a5&logo=android&logoColor=white&style=flat"></summary>
+<summary id="adm-morphe-hooman">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=0268a5&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -100,7 +100,7 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 #### [Morphe (hoomans-patches)](https://github.com/arandomhooman/hoomans-morphe-patches)
 
 <details>
-<summary id="adobe-acrobat-morphe-hooman">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-v26.6.1-gray?labelColor=b30b00&logo=android&logoColor=white&style=flat"></summary>
+<summary id="adobe-acrobat-morphe-hooman">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-v26.6.1-gray?labelColor=b30b00&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -119,7 +119,7 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 #### Signed
 
 <details>
-<summary id="amazon-alexa-signed">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF9900&logo=amazon&logoColor=white&style=flat"></summary>
+<summary id="amazon-alexa-signed">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF9900&logo=amazon&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -137,7 +137,7 @@ Patches:
 #### [Morphe (rushiranpise)](https://github.com/rushiranpise/morphe-patches)
 
 <details>
-<summary id="amazon-india-morphe-rushiranpise">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF9900&logo=amazon&logoColor=white&style=flat"></summary>
+<summary id="amazon-india-morphe-rushiranpise">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF9900&logo=amazon&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -165,7 +165,7 @@ Patches: [rushiranpise/patches-1.18.0-dev.2.mpp](https://github.com/rushiranpise
 #### [Xposed (revenge-mod)](https://github.com/revenge-mod/revenge-xposed)
 
 <details>
-<summary id="discord-npatch-revenge">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=5865f2&logo=discord&logoColor=white&style=flat"></summary>
+<summary id="discord-npatch-revenge">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=5865f2&logo=discord&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -185,7 +185,7 @@ Patches: [revenge-mod/app-release.apk](https://github.com/revenge-mod/revenge-xp
 #### [Morphe (paresh-patches)](https://gitlab.com/Paresh-Maheshwari/paresh-patches)
 
 <details>
-<summary id="fing-morphe-paresh">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=blue&logo=android&logoColor=white&style=flat"></summary>
+<summary id="fing-morphe-paresh">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=blue&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -206,7 +206,7 @@ Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-
 #### [Morphe (Gboard-patches)](https://github.com/jasonwu1994/Gboard-patches)
 
 <details>
-<summary id="gboard-morphe-jasonwu1994"><b>Default</b>&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=4285F4&logo=google&logoColor=white&style=flat"></summary>
+<summary id="gboard-morphe-jasonwu1994"><b>Default</b>&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=4285F4&logo=google&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -239,7 +239,7 @@ Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gb
 </details>
 
 <details>
-<summary id="gboard-morphe-jasonwu1994-clone"><b>Clone</b>&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=4285F4&logo=google&logoColor=white&style=flat"></summary>
+<summary id="gboard-morphe-jasonwu1994-clone"><b>Clone</b>&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=4285F4&logo=google&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -281,7 +281,7 @@ Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gb
 #### [Morphe (hoo-dles)](https://github.com/hoo-dles/morphe-patches)
 
 <details>
-<summary id="github-morphe-hoodles">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=181717&logo=github&logoColor=white&style=flat"></summary>
+<summary id="github-morphe-hoodles">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=181717&logo=github&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -302,7 +302,7 @@ Patches: [hoo-dles/patches-1.40.0-dev.7.mpp](https://github.com/hoo-dles/morphe-
 #### [Morphe (Piko)](https://github.com/crimera/piko)
 
 <details>
-<summary id="instagram-morphe-piko">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=E4405F&logo=instagram&logoColor=white&style=flat"></summary>
+<summary id="instagram-morphe-piko">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=E4405F&logo=instagram&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -376,7 +376,7 @@ Patches: [crimera/patches-3.9.0-dev.7.mpp](https://github.com/crimera/piko/relea
 #### [Morphe (paresh-patches)](https://gitlab.com/Paresh-Maheshwari/paresh-patches)
 
 <details>
-<summary id="jiohotstar-morphe-paresh">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=blue&logo=android&logoColor=white&style=flat"></summary>
+<summary id="jiohotstar-morphe-paresh">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=blue&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -402,7 +402,7 @@ Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-
 #### [Morphe (binarymend)](https://github.com/binarymend/morphe-patches)
 
 <details>
-<summary id="moonplus-reader-morphe-binarymend">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=4285F4&logo=android&logoColor=white&style=flat"></summary>
+<summary id="moonplus-reader-morphe-binarymend">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=4285F4&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -424,7 +424,7 @@ Patches: [binarymend/patches-1.3.1-dev.1.mpp](https://github.com/binarymend/morp
 #### [Morphe (hoo-dles)](https://github.com/hoo-dles/morphe-patches)
 
 <details>
-<summary id="prime-video-morphe-hoodles">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=0578ff&logo=android&logoColor=white&style=flat"></summary>
+<summary id="prime-video-morphe-hoodles">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=0578ff&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -444,7 +444,7 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
 #### [Morphe (paresh-patches)](https://gitlab.com/Paresh-Maheshwari/paresh-patches)
 
 <details>
-<summary id="proton-vpn-morphe-paresh">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=6D4AFF&logo=protonvpn&logoColor=white&style=flat"></summary>
+<summary id="proton-vpn-morphe-paresh">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=6D4AFF&logo=protonvpn&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -466,7 +466,7 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
 #### [Morphe (BholeyKaBhakt)](https://github.com/BholeyKaBhakt/revanced-patches-xtra)
 
 <details>
-<summary id="speedtest-morphe-xtra">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=242639&logo=android&logoColor=white&style=flat"></summary>
+<summary id="speedtest-morphe-xtra">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=242639&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -486,7 +486,7 @@ Patches: [BholeyKaBhakt/patches-2.12.0-dev.1.mpp](https://github.com/BholeyKaBha
 #### [Morphe (hoomans-patches)](https://github.com/arandomhooman/hoomans-morphe-patches)
 
 <details>
-<summary id="symfonium-morphe-hooman">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF5722&logo=android&logoColor=white&style=flat"></summary>
+<summary id="symfonium-morphe-hooman">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF5722&logo=android&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -507,7 +507,7 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 #### [Morphe (icysymmetra)](https://github.com/icysymmetra/tiktok-patches-for-morphe)
 
 <details>
-<summary id="tiktok-morphe-icysymmetra">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=000000&logo=tiktok&logoColor=white&style=flat"></summary>
+<summary id="tiktok-morphe-icysymmetra">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=000000&logo=tiktok&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -555,7 +555,7 @@ Patches: [icysymmetra/patches-0.7.0-dev.3.mpp](https://github.com/icysymmetra/ti
 #### [Morphe (Piko)](https://github.com/crimera/piko)
 
 <details>
-<summary id="x-morphe-xshim-piko">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=0F1419&logo=x&logoColor=white&style=flat"></summary>
+<summary id="x-morphe-xshim-piko">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=0F1419&logo=x&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -648,7 +648,7 @@ Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/relea
 #### [Morphe (Experimental)](https://github.com/MorpheApp/morphe-patches)
 
 <details>
-<summary id="youtube-morphe-exp">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF0000&logo=youtube&logoColor=white&style=flat"></summary>
+<summary id="youtube-morphe-exp">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF0000&logo=youtube&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -735,7 +735,7 @@ Patches: [MorpheApp/patches-1.40.0-dev.3.mpp](https://github.com/MorpheApp/morph
 #### [ReVanced Extrended (Anddea, Morphe)](https://github.com/anddea/revanced-patches)
 
 <details>
-<summary id="youtube-morphe-anddea">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF0000&logo=youtube&logoColor=white&style=flat"></summary>
+<summary id="youtube-morphe-anddea">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF0000&logo=youtube&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -819,7 +819,7 @@ Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-pa
 #### [ReVanced Extended (Anddea, Morphe)](https://github.com/anddea/revanced-patches)
 
 <details>
-<summary id="youtube-music-morphe-anddea">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF0000&logo=youtubemusic&logoColor=white&style=flat"></summary>
+<summary id="youtube-music-morphe-anddea">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-latest-gray?labelColor=FF0000&logo=youtubemusic&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
@@ -869,7 +869,7 @@ Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-pa
 #### [Morphe (Experimental)](https://github.com/MorpheApp/morphe-patches)
 
 <details>
-<summary id="youtube-music-morphe-exp">&emsp;<a href="https://sharath-5br2r.github.io/my-patched-apks"><img src="https://img.shields.io/badge/version-exp-gray?labelColor=FF0000&logo=youtubemusic&logoColor=white&style=flat"></summary>
+<summary id="youtube-music-morphe-exp">&emsp;<a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/version-exp-gray?labelColor=FF0000&logo=youtubemusic&logoColor=white&style=flat"></summary>
 
 <blockquote>
 
