@@ -1808,7 +1808,6 @@ build_rv() {
 			pkg_name="${tmp##*/}"
 		fi
 	fi
-	local version="" pkg_name=""
 	local prefer_dl_mode=${args[prefer_dl_mode]}
 	local apkmirror_example_url=${args[apkmirror_example_url]}
 	local cli_jar="${args[cli]}"
