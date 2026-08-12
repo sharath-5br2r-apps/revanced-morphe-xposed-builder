@@ -15,7 +15,7 @@ on:
           - "configs/config.stable.updated.json"
           - "Enter Manually"
       manual_config_file:
-        description: "Enter the config file name in patches or config file path manually (only if 'Enter Manually' is selected above)"
+        description: "Enter the config file name(without ext) in patches or config file path(with ext)manually (only if 'Enter Manually' is selected above)"
         required: false
         type: string
       exclusive_apps:
@@ -37,7 +37,7 @@ jobs:
         run: |
           if [[ "${{ inputs.config_file }}" == "Enter Manually" ]]; then
             if [[ -f "configs/patches/${{ inputs.manual_config_file }}" ]]; then
-              echo "CONFIG_FILE=${{ inputs.manual_config_file }}" >> "$GITHUB_OUTPUT"
+              echo "CONFIG_FILE=${{ inputs.manual_config_file }}.toml" >> "$GITHUB_OUTPUT"
             elif [[ -f "${{ inputs.manual_config_file }}" ]]; then
               echo "CONFIG_FILE=${{ inputs.manual_config_file }}" >> "$GITHUB_OUTPUT"
             else
