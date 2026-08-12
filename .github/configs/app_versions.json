@@ -8,7 +8,6 @@
   },
   "Google Photos": {
     "keys": [
-      "google-photos-revanced",
       "google-photos-morphe"
     ],
     "version": "7.87.0.957333026"
