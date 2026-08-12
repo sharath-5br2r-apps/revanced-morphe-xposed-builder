@@ -36,9 +36,9 @@ jobs:
         id: config
         run: |
           if [[ "${{ inputs.config_file }}" == "Enter Manually" ]]; then
-            if [[ -f "configs/patches/${{ inputs.manual_config_file }} ]]; then
+            if [[ -f "configs/patches/${{ inputs.manual_config_file }}" ]]; then
               echo "CONFIG_FILE=${{ inputs.manual_config_file }}" >> "$GITHUB_OUTPUT"
-            elif [[ -f ${{ inputs.manual_config_file }}" ]]
+            elif [[ -f "${{ inputs.manual_config_file }}" ]]; then
               echo "CONFIG_FILE=${{ inputs.manual_config_file }}" >> "$GITHUB_OUTPUT"
             else
               echo "Config file ${{ inputs.manual_config_file }} not found"
