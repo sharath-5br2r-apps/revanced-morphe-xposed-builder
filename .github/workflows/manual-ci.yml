@@ -32,6 +32,9 @@ jobs:
     outputs:
       config_file: ${{ steps.config.outputs.config_file }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        
       - name: Resolve config file
         id: config
         run: |
