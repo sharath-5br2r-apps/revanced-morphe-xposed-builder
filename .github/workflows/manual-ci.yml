@@ -15,7 +15,11 @@ on:
           - "configs/config.stable.updated.json"
           - "Enter Manually"
       manual_config_file:
-        description: "Enter the config file path manually (only if 'Enter Manually' is selected above)"
+        description: "Enter the config file name in patches or config file path manually (only if 'Enter Manually' is selected above)"
+        required: false
+        type: string
+      exclusive_apps:
+        description: "Enter the toml table names of the only apps you want to build. When empty, all apps are built."
         required: false
         type: string
 concurrency:
@@ -32,7 +36,14 @@ jobs:
         id: config
         run: |
           if [[ "${{ inputs.config_file }}" == "Enter Manually" ]]; then
-            echo "CONFIG_FILE=${{ inputs.manual_config_file }}" >> "$GITHUB_OUTPUT"
+            if [[ -f "configs/patches/${{ inputs.manual_config_file }} ]]; then
+              echo "CONFIG_FILE=${{ inputs.manual_config_file }}" >> "$GITHUB_OUTPUT"
+            elif [[ -f ${{ inputs.manual_config_file }}" ]]
+              echo "CONFIG_FILE=${{ inputs.manual_config_file }}" >> "$GITHUB_OUTPUT"
+            else
+              echo "Config file ${{ inputs.manual_config_file }} not found"
+              exit 1
+            fi
           else
             echo "CONFIG_FILE=${{ inputs.config_file }}" >> "$GITHUB_OUTPUT"
           fi
@@ -41,6 +52,7 @@ jobs:
     needs: resolve_config
     with:
       config_file: ${{ needs.resolve_config.outputs.config_file }}
+      exclusive_apps: ${{ inputs.exclusive_apps }}
     secrets: inherit
 
   trigger_cleanup:
