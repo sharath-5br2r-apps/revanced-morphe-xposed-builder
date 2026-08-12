@@ -67,6 +67,7 @@
     "included-patches": " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'",
     "exclusive-patches": "'jkennethcarino/adobo'",
     "excluded-patches": "'Package Rename' | ",
+    "patcher-args": "--continue-on-error",
     "cli-source": "MorpheApp/morphe-desktop",
     "uptodown-dlurl": "https://gboard-go.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
@@ -85,6 +86,7 @@
     "exclusive-patches": "'jkennethcarino/adobo'",
     "pkg-name": "com.google.android.inputmethod.latin",
     "cli-source": "MorpheApp/morphe-desktop",
+    "patcher-args": "--continue-on-error",
     "uptodown-dlurl": "https://gboard-go.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
     "dpi": "nodpi anydpi auto",
@@ -219,7 +221,7 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches"
   },
   "proton-vpn-morphe-paresh": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "proton-vpn",
     "rv-brand": "morphe-paresh",
     "build-mode": "apk",
@@ -289,7 +291,7 @@
     "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-340-13-stable-release/"
   },
   "amazon-india-morphe-rushiranpise": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "amazon-india",
     "rv-brand": "morphe-rushiranpise",
     "build-mode": "apk",
