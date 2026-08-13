@@ -11,7 +11,7 @@ uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
 dpi = "nodpi anydpi auto"
 # archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.adguard.android"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
 
 [waze-morphe]
 enabled = true
@@ -54,7 +54,7 @@ dpi = "nodpi anydpi auto"
 uptodown-dlurl = "https://holavpn.en.uptodown.com/android"
 apkpure-dlurl = "https://apkpure.com/hola-free-vpn-proxy-unblocker/org.hola"
 apkcombo-dlurl = "https://apkcombo.com/hola-vpn-fast-free-vpn-proxy/org.hola.play"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/org.hola.play"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/org.hola.play"
 
 [ninja-vpn-morphe]
 enabled = true
@@ -69,7 +69,7 @@ dpi = "nodpi anydpi auto"
 apkpure-dlurl = "https://apkpure.com/ninja-vpn-fast-secure-vpn/app.ninjavpn.android"
 # uptodown-dlurl = "https://ninja-vpn.uptodown.com/android"
 apkcombo-dlurl = "https://apkcombo.com/ninja-vpn-fast-secure-vpn/app.ninjavpn.android"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/app.ninjavpn.android"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.ninjavpn.android"
 
 [windscribe-vpn-morphe]
 enabled = true
@@ -84,7 +84,7 @@ dpi = "nodpi anydpi auto"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
 uptodown-dlurl = "https://windscribe.uptodown.com/android"
 apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.windscribe.vpn"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
 
 [terabox-morphe]
 enabled = true
@@ -114,7 +114,7 @@ dpi = "nodpi anydpi auto"
 # archive-dlurl = ""
 apkcombo-dlurl = "https://apkcombo.com/accuweather/com.accuweather.android"
 apkpure-dlurl = "https://apkpure.com/accuweather-weather-radar/com.accuweather.android"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.accuweather.android"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.accuweather.android"
 
 [the-weather-channel-morphe]
 enabled = true
@@ -131,7 +131,7 @@ dpi = "nodpi anydpi auto"
 # archive-dlurl = ""
 apkcombo-dlurl = "https://apkcombo.com/the-weather-channel/com.weather.Weather"
 apkpure-dlurl = "https://apkpure.com/the-weather-channel-radar/com.weather.Weather"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.weather.Weather"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.weather.Weather"
 
 [beta-maniac-morphe]
 enabled = true
@@ -175,7 +175,7 @@ uptodown-dlurl = "https://com-community-oneroom.en.uptodown.com/android"
 # apkmirror-dlurl = ""
 # dpi = "nodpi anydpi auto"
 # archive-dlurl = ""
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.community.oneroom"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.community.oneroom"
 
 [moviebox-morphe-androidtv]
 enabled = true
@@ -190,7 +190,7 @@ cli-source = "MorpheApp/morphe-desktop"
 # apkmirror-dlurl = ""
 # dpi = "nodpi anydpi auto"
 # archive-dlurl = ""
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.community.mbox.tv"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.community.mbox.tv"
 
 [messenger-morphe]
 enabled = true
@@ -208,7 +208,7 @@ dpi = "nodpi anydpi auto"
 apkpure-dlurl = "https://apkpure.com/facebook-messenger/com.facebook.orca"
 apkcombo-dlurl = "https://apkcombo.com/facebook-messenger/com.facebook.orca"
 # archive-dlurl = "https://archive.org/download/geologically/apks/com.facebook.orca"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.facebook.orca"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.facebook.orca"
 
 [pocket-casts-morphe]
 enabled = true
@@ -223,4 +223,4 @@ uptodown-dlurl = "https://pocket-casts-podcast-player.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/automattic-inc/pocket-casts"
 dpi = "nodpi anydpi auto"
 apkcombo-dlurl = "https://apkcombo.com/pocket-casts/au.com.shiftyjelly.pocketcasts"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/au.com.shiftyjelly.pocketcasts"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/au.com.shiftyjelly.pocketcasts"

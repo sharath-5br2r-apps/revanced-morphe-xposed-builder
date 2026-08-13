@@ -73,7 +73,7 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
     "dpi": "nodpi anydpi auto",
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
   },
   "gboard-morphe-jasonwu1994-adobo-clone": {
     "enabled": false,
@@ -91,7 +91,7 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
     "dpi": "nodpi anydpi auto",
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
   },
   "github-morphe-hoodles": {
     "enabled": false,
@@ -181,7 +181,7 @@
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
     "dpi": "nodpi anydpi auto",
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.youtube",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.youtube",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
     "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
     "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
     "patches-source": "MorpheApp/morphe-patches",
@@ -200,7 +200,7 @@
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
     "dpi": "nodpi anydpi auto",
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.apps.youtube.music",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.apps.youtube.music",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music",
     "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
     "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music",
     "patches-source": "MorpheApp/morphe-patches",

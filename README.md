@@ -1,18 +1,18 @@
 
 
-<div align="center"><h1><img src="https://raw.githubusercontent.com/sharath-5br2r/my-patched-apks/a5af1123e55c63119c6b81be894602e2f032fe08/.github/assets/icon.png"> <img src="https://raw.githubusercontent.com/sharath-5br2r/my-patched-apks/a5af1123e55c63119c6b81be894602e2f032fe08/.github/assets/icon1.png"><br>ReVanced & Morphe Builder</h1></div>
+<div align="center"><h1><img src="https://raw.githubusercontent.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/a5af1123e55c63119c6b81be894602e2f032fe08/.github/assets/icon.png"> <img src="https://raw.githubusercontent.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/a5af1123e55c63119c6b81be894602e2f032fe08/.github/assets/icon1.png"><br>ReVanced & Morphe Builder</h1></div>
 
 <p align="center"><b>Automatically builds and publishes APKs & Magisk/KernelSU Modules whenever new patches are released.</b></p>
 
 <p align="center"><a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/badge/Download-21a378?style=flat&logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmZmZmIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNSAyMGgxNHYtMkg1djJ6TTE5IDloLTRWM0g5djZINWw3IDcgNy03eiIvPjwvc3ZnPg==&logoColor=white"></a> <a href="#credits--acknowledgements"><img src="https://img.shields.io/badge/Donate%20to%20Upstream-ea4335?style=flat&logo=ko-fi&logoColor=white"></a></p>
 
-<p align="center"><a href="https://github.com/sharath-5br2r/my-patched-apks"><img src="https://img.shields.io/github/stars/sharath-5br2r/my-patched-apks?label=Stars&logo=github&style=social"></a> <a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/github/downloads/sharath-5br2r/my-patched-apks/total?logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNSAyMGgxNHYtMkg1djJ6TTE5IDloLTRWM0g5djZINWw3IDcgNy03eiIvPjwvc3ZnPg==&label=Downloads&style=social"></a></p>
+<p align="center"><a href="https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder"><img src="https://img.shields.io/github/stars/sharath-5br2r-apps/revanced-morphe-xposed-builder?label=Stars&logo=github&style=social"></a> <a href="https://sharath-5br2r.github.io/catalog"><img src="https://img.shields.io/github/downloads/sharath-5br2r-apps/revanced-morphe-xposed-builder/total?logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNSAyMGgxNHYtMkg1djJ6TTE5IDloLTRWM0g5djZINWw3IDcgNy03eiIvPjwvc3ZnPg==&label=Downloads&style=social"></a></p>
 
-<p align="center"><a href="https://sharath-5br2r.github.io/catalog"><img src="https://visitor-badge.laobi.icu/badge?page_id=sharath-5br2r.github.io.my-patched-apks&left_text=Website%20Visitors&right_color=%231283c3&format=true&query_only=true"></a> <a href="https://github.com/sharath-5br2r/my-patched-apks"><img src="https://visitor-badge.laobi.icu/badge?page_id=sharath-5br2r.my-patched-apks&left_text=GitHub%20Visitors&format=true"></a> </p>
+<p align="center"><a href="https://sharath-5br2r.github.io/catalog"><img src="https://visitor-badge.laobi.icu/badge?page_id=sharath-5br2r.github.io.my-patched-apks&left_text=Website%20Visitors&right_color=%231283c3&format=true&query_only=true"></a> <a href="https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder"><img src="https://visitor-badge.laobi.icu/badge?page_id=sharath-5br2r.my-patched-apks&left_text=GitHub%20Visitors&format=true"></a> </p>
 
 ---
 
-<p align="center"><a href="https://github.com/sharath-5br2r/my-patched-apks/issues"><img src="https://img.shields.io/badge/Issues-2f2f2f?style=flat&logo=github&logoColor=white"></a> <a href="https://github.com/sharath-5br2r/my-patched-apks/pulls"><img src="https://img.shields.io/badge/Pull%20Requests-2f2f2f?style=flat&logo=github&logoColor=white"></a> <a href="https://github.com/sharath-5br2r/my-patched-apks/discussions"><img src="https://img.shields.io/badge/Discussions-2f2f2f?style=flat&logo=github&logoColor=white"></a> <a href="https://github.com/sharath-5br2r/my-patched-apks/actions"><img src="https://img.shields.io/badge/Actions-2f2f2f?style=flat&logo=github&logoColor=white"></a></p>
+<p align="center"><a href="https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/issues"><img src="https://img.shields.io/badge/Issues-2f2f2f?style=flat&logo=github&logoColor=white"></a> <a href="https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/pulls"><img src="https://img.shields.io/badge/Pull%20Requests-2f2f2f?style=flat&logo=github&logoColor=white"></a> <a href="https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/discussions"><img src="https://img.shields.io/badge/Discussions-2f2f2f?style=flat&logo=github&logoColor=white"></a> <a href="https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/actions"><img src="https://img.shields.io/badge/Actions-2f2f2f?style=flat&logo=github&logoColor=white"></a></p>
 
 ---
 
@@ -44,8 +44,8 @@ Thank you to everyone in the open-source community who helps keep these projects
 > All APKs and modules in this repository are 100% automated. If you need help, please direct your feedback to the right place:
 >
 > - 🧩 **Patch Issues:** If a specific feature/mod is broken (e.g., ads are showing), please open an issue in the **respective patch developer's repository**.
-> - 🛠️ **Builder Issues:** If an app fails to build, or the download links are broken, **[open an Issue here on GitHub](https://github.com/sharath-5br2r/my-patched-apks/issues/new/choose)**.
-> - 💬 **General Help & Requests:** Need help installing, or want to request a new app? **[Open an Issue here on GitHub](https://github.com/sharath-5br2r/my-patched-apks/issues/new/choose)** or **[open a discussion here on GitHub](https://github.com/sharath-5br2r/my-patched-apks/discussions/new?category=general)**.
+> - 🛠️ **Builder Issues:** If an app fails to build, or the download links are broken, **[open an Issue here on GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/issues/new/choose)**.
+> - 💬 **General Help & Requests:** Need help installing, or want to request a new app? **[Open an Issue here on GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/issues/new/choose)** or **[open a discussion here on GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/discussions/new?category=general)**.
 
 ---
 
@@ -53,7 +53,7 @@ Thank you to everyone in the open-source community who helps keep these projects
 
 > These two releases act as a permanent, continuously updated vault, ensuring downloads remain reliably available without interruption.
 
-&emsp;[![Stable](https://img.shields.io/github/downloads/sharath-5br2r/my-patched-apks/stable/total?label=Stable&labelColor=7b52ab&color=gray&logo=github&logoColor=white&style=flat)](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/stable) [![Beta](https://img.shields.io/github/downloads-pre/sharath-5br2r/my-patched-apks/beta/total?label=Beta&labelColor=b33939&color=gray&logo=github&logoColor=white&style=flat)](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/beta)
+&emsp;[![Stable](https://img.shields.io/github/downloads/sharath-5br2r-apps/revanced-morphe-xposed-builder/stable/total?label=Stable&labelColor=7b52ab&color=gray&logo=github&logoColor=white&style=flat)](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/stable) [![Beta](https://img.shields.io/github/downloads-pre/sharath-5br2r-apps/revanced-morphe-xposed-builder/beta/total?label=Beta&labelColor=b33939&color=gray&logo=github&logoColor=white&style=flat)](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/beta)
 
 ---
 
@@ -85,7 +85,7 @@ Thank you to everyone in the open-source community who helps keep these projects
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.3)
 - Remove ads
 </blockquote>
@@ -104,7 +104,7 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.3)
 - Unlock Pro
 </blockquote>
@@ -123,7 +123,7 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: 
 </blockquote>
 </details>
@@ -141,7 +141,7 @@ Patches:
 
 <blockquote>
 
-[Release 2026-08-12](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260031)<br>
+[Release 2026-08-12](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260031)<br>
 Patches: [rushiranpise/patches-1.18.0-dev.2.mpp](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.18.0-dev.2)
 - Dark mode
 - Disable search suggestions tracking
@@ -169,7 +169,7 @@ Patches: [rushiranpise/patches-1.18.0-dev.2.mpp](https://github.com/rushiranpise
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [revenge-mod/app-release.apk](https://github.com/revenge-mod/revenge-xposed/releases/tag/1601)
 </blockquote>
 </details>
@@ -189,7 +189,7 @@ Patches: [revenge-mod/app-release.apk](https://github.com/revenge-mod/revenge-xp
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260005)<br>
+[Release 2026-08-10](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260005)<br>
 Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
 - Fing Premium
 </blockquote>
@@ -210,7 +210,7 @@ Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.7.0-dev.3)
 - AI Writing Tools
 - Add Gboard Signature Bypass
@@ -243,7 +243,7 @@ Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gb
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.7.0-dev.3)
 - AI Writing Tools
 - Add Gboard Signature Bypass
@@ -285,7 +285,7 @@ Patches: [jasonwu1994/patches-2.7.0-dev.3.mpp](https://github.com/jasonwu1994/Gb
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260004)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260004)<br>
 Patches: [hoo-dles/patches-1.40.0-dev.7.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0-dev.7)
 - AMOLED dark theme
 </blockquote>
@@ -306,7 +306,7 @@ Patches: [hoo-dles/patches-1.40.0-dev.7.mpp](https://github.com/hoo-dles/morphe-
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260013)<br>
+[Release 2026-08-10](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260013)<br>
 Patches: [crimera/patches-3.9.0-dev.7.mpp](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.7)
 - Add settings
 - Allow user network certificate
@@ -380,7 +380,7 @@ Patches: [crimera/patches-3.9.0-dev.7.mpp](https://github.com/crimera/piko/relea
 
 <blockquote>
 
-[Release 2026-08-10](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260005)<br>
+[Release 2026-08-10](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260005)<br>
 Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
 - Bypass signature check
 - Enable all codecs
@@ -406,7 +406,7 @@ Patches: [Paresh-Maheshwari/patches-1.20.0-dev.2.mpp](https://gitlab.com/Paresh-
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [binarymend/patches-1.3.1-dev.1.mpp](https://github.com/binarymend/morphe-patches/releases/tag/v1.3.1-dev.1)
 - Make UI look like Pro
 - Unlock Moon+ Reader Pro
@@ -428,7 +428,7 @@ Patches: [binarymend/patches-1.3.1-dev.1.mpp](https://github.com/binarymend/morp
 
 <blockquote>
 
-[Release 2026-08-12](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260033)<br>
+[Release 2026-08-12](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260033)<br>
 Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
 - Enable speed control
 - Skip ads
@@ -448,7 +448,7 @@ Patches: [hoo-dles/patches-1.40.0.mpp](https://github.com/hoo-dles/morphe-patche
 
 <blockquote>
 
-[Release 2026-08-12](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260033)<br>
+[Release 2026-08-12](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260033)<br>
 Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)
 - Disable telemetry
 - Proton VPN Premium
@@ -470,7 +470,7 @@ Patches: [Paresh-Maheshwari/patches-1.19.0.mpp](https://gitlab.com/Paresh-Mahesh
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [BholeyKaBhakt/patches-2.12.0-dev.1.mpp](https://github.com/BholeyKaBhakt/revanced-patches-xtra/releases/tag/v2.12.0-dev.1)
 - AdFree Account
 - Disable Logging(analytics)
@@ -490,7 +490,7 @@ Patches: [BholeyKaBhakt/patches-2.12.0-dev.1.mpp](https://github.com/BholeyKaBha
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.3)
 - Unlock Premium
 </blockquote>
@@ -511,7 +511,7 @@ Patches: [arandomhooman/patches-1.44.0-dev.3.mpp](https://github.com/arandomhoom
 
 <blockquote>
 
-[Release 2026-08-11](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260028)<br>
+[Release 2026-08-11](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260028)<br>
 Patches: [icysymmetra/patches-0.7.0-dev.3.mpp](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.7.0-dev.3)
 - Always show publish date
 - Copy comments without username
@@ -559,7 +559,7 @@ Patches: [icysymmetra/patches-0.7.0-dev.3.mpp](https://github.com/icysymmetra/ti
 
 <blockquote>
 
-[Release 2026-08-11](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260030)<br>
+[Release 2026-08-11](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260030)<br>
 Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/releases/v1.7.0), [crimera/patches-3.8.0.mpp](https://github.com/crimera/piko/releases/tag/v3.8.0)
 - Abstract shim layer
 - Abstract shim layer for method
@@ -652,7 +652,7 @@ Patches: [inotia00/patches-1.7.0.mpp](https://gitlab.com/inotia00/x-shim/-/relea
 
 <blockquote>
 
-[Release 2026-08-11](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260023)<br>
+[Release 2026-08-11](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260023)<br>
 Patches: [MorpheApp/patches-1.40.0-dev.3.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.3)
 - Add to queue
 - Alternative thumbnails
@@ -739,7 +739,7 @@ Patches: [MorpheApp/patches-1.40.0-dev.3.mpp](https://github.com/MorpheApp/morph
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.14)
 - Alternative thumbnails
 - Ambient mode control
@@ -823,7 +823,7 @@ Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-pa
 
 <blockquote>
 
-[Release 2026-08-09](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260001)<br>
+[Release 2026-08-09](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260001)<br>
 Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-patches/releases/tag/v4.2.0-dev.14)
 - Bitrate default value
 - Bypass image region restrictions
@@ -873,7 +873,7 @@ Patches: [anddea/patches-4.2.0-dev.14.mpp](https://github.com/anddea/revanced-pa
 
 <blockquote>
 
-[Release 2026-08-11](https://github.com/sharath-5br2r/my-patched-apks/releases/tag/260023)<br>
+[Release 2026-08-11](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/tag/260023)<br>
 Patches: [MorpheApp/patches-1.40.0-dev.3.mpp](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.3)
 - Bypass certificate checks
 - Change header

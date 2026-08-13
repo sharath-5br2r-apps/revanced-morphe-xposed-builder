@@ -110,7 +110,7 @@ uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn"
 dpi = "nodpi anydpi auto"
 archive-dlurl = "https://archive.org/download/geologically/apks/ch.protonvpn.android"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/ch.protonvpn.android"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
 
 [truecaller-morphe]
 enabled = true

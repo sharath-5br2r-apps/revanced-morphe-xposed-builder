@@ -29,7 +29,7 @@ def main():
         print("No versions recorded. Skipping update.")
         return
 
-    repo_url = f"https://oauth2:{token}@github.com/nullcpy/apks.git"
+    repo_url = f"https://oauth2:{token}@github.com/sharath-5br2r-apps/apks-dump.git"
     clone_dir = "temp/apks_repo"
     
     if os.path.exists(clone_dir):
