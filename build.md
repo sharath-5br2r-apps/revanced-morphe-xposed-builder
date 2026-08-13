@@ -1,4 +1,5 @@
-prime-video-morphe-hoodles (arm64-v8a): 3.0.467  
+proton-vpn-morphe-paresh (all): 5.19.72.0  
+amazon-india-morphe-rushiranpise (all): 32.12.4.300  
 
 **Notes:**  
 • Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
@@ -7,8 +8,8 @@ prime-video-morphe-hoodles (arm64-v8a): 3.0.467
 [GitHub](https://github.com/nullcpy/rvb) | [Group](https://t.me/rvb27) | [Donate](https://fahim-ahmed05.github.io/donate) | [Website](https://nullcpy.github.io)
   
 CLI: MorpheApp/morphe-desktop-1.13.0-all.jar  
-Patches: hoo-dles/patches-1.40.0.mpp  
-[Changelog](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
+Patches: Paresh-Maheshwari/patches-1.20.0-dev.2.mpp  
+[Changelog](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
 
-Patches: Paresh-Maheshwari/patches-1.19.0.mpp  
-[Changelog](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)  
+Patches: rushiranpise/patches-1.18.0-dev.6.mpp  
+[Changelog](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.18.0-dev.6)  
