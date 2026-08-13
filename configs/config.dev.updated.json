@@ -292,7 +292,7 @@
     "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-340-13-stable-release/"
   },
   "amazon-india-morphe-rushiranpise": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "amazon-india",
     "rv-brand": "morphe-rushiranpise",
     "build-mode": "apk",
