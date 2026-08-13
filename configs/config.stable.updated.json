@@ -106,7 +106,7 @@
     "included-patches": "'AMOLED dark theme'"
   },
   "prime-video-morphe-hoodles": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "prime-video",
     "rv-brand": "morphe-hoodles",
     "pkg-name": "com.amazon.avod.thirdpartyclient",
@@ -221,7 +221,7 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches"
   },
   "proton-vpn-morphe-paresh": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "proton-vpn",
     "rv-brand": "morphe-paresh",
     "version": "latest",
@@ -278,7 +278,7 @@
     "included-patches": "'Dynamic Color'"
   },
   "discord-npatch-revenge": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "discord",
     "pkg-name": "com.discord",
     "rv-brand": "npatch-revenge",
