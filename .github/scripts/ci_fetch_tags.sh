@@ -60,6 +60,9 @@ while read -r id repo host enabled enabledStable enabledDev; do
       pre_date=$(echo "$pre_obj" | jq -r '.published_at // ""')
     fi
 
+    [ "$enabledStable" = "false" ] && { stable=""; stable_date=""; }
+    [ "$enabledDev" = "false" ] && { pre=""; pre_date=""; }
+
     if [ -n "$stable" ]; then echo "Found stable: $stable"; fi
     if [ -n "$pre" ]; then echo "Found pre-release: $pre"; fi
     if [ -z "$stable" ] && [ -z "$pre" ]; then echo "::warning::No valid tags found for $repo"; fi
