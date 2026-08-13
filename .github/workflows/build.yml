@@ -55,7 +55,7 @@ jobs:
       - name: Resolve version code
         id: version
         env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: bash .github/scripts/build_resolve_version.sh
 
       - name: Cache APKs
@@ -68,8 +68,8 @@ jobs:
 
       - name: Build modules and apks
         env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           UPLOAD_APKS_REPO: "sharath-5br2r-apps/apks-dump"
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -83,8 +83,9 @@ jobs:
           ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}" "${{ inputs.exclusive_apps }}"
 
       - name: Update Usage Tracker
+        if: ${{ secrets.ENABLE_CROSS_REPO == 'true' }}
         env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: python3 .github/scripts/update_usage_tracker.py || true
         
       - name: Cleanup old cached APKs
@@ -98,7 +99,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           body: ${{ steps.get_output.outputs.BUILD_LOG }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           files: ./build/*
           name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
           tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -107,7 +108,7 @@ jobs:
 
       - name: Upload build.json to numbered release
         env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           gh release upload ${{ steps.version.outputs.NEXT_VER_CODE }} build.json \
             --repo "$GITHUB_REPOSITORY" --clobber
@@ -136,7 +137,7 @@ jobs:
       - name: Upload to release (Archive)
         uses: softprops/action-gh-release@v3
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           files: ./build/*
           tag_name: ${{ steps.context.outputs.ARCHIVE_TAG }}
           overwrite_files: true
