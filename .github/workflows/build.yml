@@ -68,7 +68,9 @@ jobs:
 
       - name: Build modules and apks
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
+          UPLOAD_APKS_REPO: "nullcpy/apks"
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           CF_BYPASS_SOLVER_TRAWL_8191_ENABLED: "true"
@@ -80,6 +82,11 @@ jobs:
           set -euo pipefail
           ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}" "${{ inputs.exclusive_apps }}"
 
+      - name: Update Usage Tracker
+        env:
+          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
+        run: python3 .github/scripts/update_usage_tracker.py || true
+        
       - name: Cleanup old cached APKs
         run: bash .github/scripts/build_cache_cleanup.sh
 

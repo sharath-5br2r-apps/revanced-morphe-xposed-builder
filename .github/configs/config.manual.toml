@@ -2,18 +2,20 @@
 # cli-version = "dev"
 enable-module-update = true
 
-[pocket-casts-morphe]
+[poweramp-morphe]
 enabled = true
-pkg-name = "au.com.shiftyjelly.pocketcasts"
-app-name = "pocket-casts"
+pkg-name = "com.maxmpz.audioplayer"
+app-name = "poweramp"
 rv-brand = "morphe"
 build-mode = "apk"
-arch = "both"
-patches-source = "rushiranpise/morphe-patches"
+arch = "all"
+patches-source = "arandomhooman/hoomans-morphe-patches"
 cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://pocket-casts-podcast-player.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/automattic-inc/pocket-casts"
 dpi = "nodpi anydpi auto"
-apkcombo-dlurl = "https://apkcombo.com/pocket-casts/au.com.shiftyjelly.pocketcasts"
+uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp"
+apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
+apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.maxmpz.audioplayer"
 
 

@@ -7,27 +7,27 @@
   },
   "devanced": {
     "repo": "RookieEnough/De-Vanced",
-    "stable": "v1.2.0",
+    "stable": "v1.2.1",
     "prerelease": "v1.2.1-dev.1",
     "blocked": false,
-    "stable_date": "2026-08-12T15:50:22Z",
+    "stable_date": "2026-08-12T17:58:59Z",
     "pre_date": "2026-08-12T17:18:51Z"
   },
   "anddea": {
     "repo": "anddea/revanced-patches",
     "stable": "v4.2.0",
-    "prerelease": "v4.2.0-dev.14",
+    "prerelease": "v4.3.0-dev.1",
     "blocked": false,
     "stable_date": "2026-08-07T15:03:16Z",
-    "pre_date": "2026-08-07T12:05:23Z"
+    "pre_date": "2026-08-13T09:21:15Z"
   },
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.39.1",
-    "prerelease": "v1.40.0-dev.4",
+    "prerelease": "v1.40.0-dev.5",
     "blocked": false,
     "stable_date": "2026-08-08T17:05:00Z",
-    "pre_date": "2026-08-12T09:26:46Z"
+    "pre_date": "2026-08-13T09:30:03Z"
   },
   "piko": {
     "repo": "crimera/piko",
@@ -150,19 +150,19 @@
   },
   "hoomans": {
     "repo": "arandomhooman/hoomans-morphe-patches",
-    "stable": "v1.43.4",
-    "prerelease": "v1.44.0-dev.3",
+    "stable": "v1.44.0",
+    "prerelease": "v1.44.0-dev.4",
     "blocked": false,
-    "stable_date": "2026-07-22T21:59:04Z",
-    "pre_date": "2026-07-22T21:28:31Z"
+    "stable_date": "2026-08-13T04:42:46Z",
+    "pre_date": "2026-08-13T04:04:19Z"
   },
   "rushiranpise": {
     "repo": "rushiranpise/morphe-patches",
     "stable": "v1.17.0",
-    "prerelease": "v1.18.0-dev.5",
+    "prerelease": "v1.18.0-dev.6",
     "blocked": false,
     "stable_date": "2026-08-11T17:08:22Z",
-    "pre_date": "2026-08-12T13:40:00Z"
+    "pre_date": "2026-08-13T08:19:51Z"
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
@@ -214,8 +214,8 @@
   },
   "gboard": {
     "repo": "jasonwu1994/Gboard-patches",
-    "stable": "v2.7.0",
-    "stable_date": "2026-08-09T04:04:17Z",
+    "stable": "v2.8.0",
+    "stable_date": "2026-08-12T21:04:56Z",
     "prerelease": "v2.8.0-dev.2",
     "pre_date": "2026-08-11T22:33:02Z",
     "blocked": false
@@ -250,6 +250,14 @@
     "stable_date": "2026-07-07T18:52:06Z",
     "prerelease": "v1.2.0-dev.1",
     "pre_date": "2026-07-12T08:51:41Z",
+    "blocked": false
+  },
+  "durgesh0505": {
+    "repo": "durgesh0505/chiggi_morphe_patches",
+    "stable": "v1.18.0",
+    "stable_date": "2026-07-23T01:30:52Z",
+    "prerelease": "",
+    "pre_date": "",
     "blocked": false
   }
 }
