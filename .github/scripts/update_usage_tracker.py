@@ -4,10 +4,15 @@ import json
 import time
 import subprocess
 
-def run_cmd(cmd, check=True):
+def run_cmd(cmd, check=True, sanitize=None):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     if check and result.returncode != 0:
-        print(f"Error running command: {cmd}\n{result.stderr}")
+        safe_cmd = cmd
+        safe_stderr = result.stderr
+        if sanitize:
+            safe_cmd = safe_cmd.replace(sanitize, "***")
+            safe_stderr = safe_stderr.replace(sanitize, "***")
+        print(f"Error running command: {safe_cmd}\n{safe_stderr}")
         sys.exit(1)
     return result.stdout.strip()
 
@@ -36,7 +41,7 @@ def main():
         run_cmd(f"rm -rf {clone_dir}")
 
     print("Cloning apks repository...")
-    run_cmd(f"git clone --depth 1 {repo_url} {clone_dir}")
+    run_cmd(f"git clone --depth 1 {repo_url} {clone_dir}", sanitize=token)
 
     usage_file = os.path.join(clone_dir, "usage.json")
     
