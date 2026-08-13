@@ -68,7 +68,6 @@ jobs:
 
       - name: Build modules and apks
         env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           UPLOAD_APKS_REPO: "sharath-5br2r-apps/apks-dump"
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -85,7 +84,7 @@ jobs:
       - name: Update Usage Tracker
         if: ${{ secrets.ENABLE_CROSS_REPO == 'true' }}
         env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: python3 .github/scripts/update_usage_tracker.py || true
         
       - name: Cleanup old cached APKs
