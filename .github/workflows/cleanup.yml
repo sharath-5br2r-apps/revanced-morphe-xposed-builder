@@ -28,9 +28,9 @@ jobs:
           delete_workflows: true
           workflows_keep_day: 90
           releases_keep_keyword: stable/beta
-          gh_token: ${{ secrets.GITHUB_TOKEN }}
+          gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Cleanup Archive Release Assets
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: python3 .github/scripts/cleanup-archive-assets.py

@@ -56,7 +56,7 @@ jobs:
         if: steps.ensure_patch_sources.outputs.created == 'false'
         id: fetch_tags
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: bash .github/scripts/ci_fetch_tags.sh
 
       - name: Compare latest vs stored tags
