@@ -17,7 +17,7 @@ def run_cmd(cmd, check=True, sanitize=None):
     return result.stdout.strip()
 
 def main():
-    token = os.environ.get("APKS_REPO_TOKEN")
+    token = os.environ.get("APKS_REPO_TOKEN") or os.environ.get("PERSONAL_ACCESS_TOKEN") or os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     if not token:
         print("APKS_REPO_TOKEN is not set. Skipping usage tracker update.")
         return

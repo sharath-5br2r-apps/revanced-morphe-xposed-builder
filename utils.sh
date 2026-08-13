@@ -30,6 +30,7 @@ BUILD_JSON_FILE="build.json"
 PATCH_OUTPUT=""
 mkdir -p "$TEMP_DIR"
 
+GH_TOKEN="${GH_TOKEN:-${PERSONAL_ACCESS_TOKEN:-${GITHUB_TOKEN:-}}}"
 if [ "${GH_TOKEN-}" ]; then GH_HEADER="Authorization: token ${GH_TOKEN}"; else GH_HEADER=; fi
 NEXT_VER_CODE=${NEXT_VER_CODE:-$(date +'%Y%m%d')}
 OS=$(uname -o)
