@@ -262,7 +262,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-piko": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "x",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",

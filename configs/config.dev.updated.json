@@ -2,7 +2,7 @@
   "patches-version": "dev",
   "enable-module-update": false,
   "youtube-morphe-anddea": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube",
     "rv-brand": "morphe-anddea",
     "build-mode": "both",
@@ -16,7 +16,7 @@
     "patches-source": "anddea/revanced-patches"
   },
   "youtube-music-morphe-anddea": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube-music",
     "rv-brand": "morphe-anddea",
     "build-mode": "both",
@@ -170,7 +170,7 @@
     "patches-source": "icysymmetra/tiktok-patches-for-morphe"
   },
   "youtube-morphe-exp": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -189,7 +189,7 @@
     "included-patches": "'Theme'"
   },
   "youtube-music-morphe-exp": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube-music",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -262,7 +262,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-piko": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "x",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",
