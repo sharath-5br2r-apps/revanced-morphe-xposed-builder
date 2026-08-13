@@ -17,7 +17,7 @@ def run_cmd(cmd, check=True, sanitize=None):
     return result.stdout.strip()
 
 def main():
-    token = os.environ.get("PERSONAL_ACCESS_TOKEN") or os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    token = os.environ.get("PERSONAL_ACCESS_TOKEN")
     if not token:
         print("PERSONAL_ACCESS_TOKEN is not set. Skipping usage tracker update.")
         return
