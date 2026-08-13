@@ -62,8 +62,8 @@ while IFS='|' read -r group app; do
     
     dlurls=()
     sources=()
-    [ -n "$uptodown_url" ] && { dlurls+=("$uptodown_url"); sources+=("uptodown"); }
     [ -n "$apkmirror_url" ] && { dlurls+=("$apkmirror_url"); sources+=("apkmirror"); }
+    [ -n "$uptodown_url" ] && { dlurls+=("$uptodown_url"); sources+=("uptodown"); }
     [ -n "$apkpure_url" ] && { dlurls+=("$apkpure_url"); sources+=("apkpure"); }
     [ -n "$apkcombo_url" ] && { dlurls+=("$apkcombo_url"); sources+=("apkcombo"); }
 
@@ -83,13 +83,13 @@ while IFS='|' read -r group app; do
             echo "::notice::Reusing cached version for $app: $latest_ver"
             break
         else
-            if [[ "$source" == "uptodown" ]]; then
-                get_uptodown_resp "$dlurl" || { echo "::warning::Failed uptodown resp for $app"; continue; }
-                vers=$(get_uptodown_vers) || { echo "::warning::Failed uptodown vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "apkmirror" ]]; then
+            if [[ "$source" == "apkmirror" ]]; then
                 get_apkmirror_resp "$dlurl" || { echo "::warning::Failed apkmirror resp for $app"; continue; }
                 vers=$(get_apkmirror_vers) || { echo "::warning::Failed apkmirror vers for $app"; continue; }
+                latest_ver=$(echo "$vers" | get_highest_ver) || true
+            elif [[ "$source" == "uptodown" ]]; then
+                get_uptodown_resp "$dlurl" || { echo "::warning::Failed uptodown resp for $app"; continue; }
+                vers=$(get_uptodown_vers) || { echo "::warning::Failed uptodown vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "apkpure" ]]; then
                 get_apkpure_resp "$dlurl" || { echo "::warning::Failed apkpure resp for $app"; continue; }
