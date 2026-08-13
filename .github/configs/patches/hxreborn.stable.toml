@@ -13,7 +13,7 @@ dpi = "nodpi anydpi auto"
 apkpure-dlurl = "https://apkpure.com/proton-mail-encrypted-email/ch.protonmail.android"
 apkcombo-dlurl = "https://apkcombo.com/proton-mail/ch.protonmail.android"
 archive-dlurl = "https://archive.org/download/geologically/apks/ch.protonmail.android"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonmail.android"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/ch.protonmail.android"
 
 [showly-morphe]
 enabled = true

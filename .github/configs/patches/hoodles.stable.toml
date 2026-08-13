@@ -11,7 +11,7 @@ cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
 dpi = "nodpi anydpi auto"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.soundcloud.android"
 
 [duolingo-morphe]
 enabled = true
@@ -26,7 +26,7 @@ uptodown-dlurl = "https://duolingo.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
 dpi = "nodpi anydpi auto"
 # archive-dlurl = "https://archive.org/download/geologically/apks/com.duolingo"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.duolingo"
 
 [wps-office-morphe]
 enabled = true
@@ -42,7 +42,7 @@ uptodown-dlurl = "https://wps-office.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/wps-software-pte-ltd/wps-office-pdf"
 dpi = "nodpi anydpi auto"
 # archive-dlurl = ""
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cn.wps.moffice_eng"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/cn.wps.moffice_eng"
 
 [wallcraft-morphe]
 enabled = true
@@ -168,7 +168,7 @@ uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
 dpi = "nodpi anydpi auto"
 # archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.adguard.android"
 
 [nova-launcher-morphe]
 enabled = true
@@ -183,7 +183,7 @@ uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
 dpi = "nodpi anydpi auto"
 archive-dlurl = "https://archive.org/download/geologically/apks/com.teslacoilsw.launcher"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.teslacoilsw.launcher"
 
 [ventusky-morphe]
 enabled = true
@@ -255,7 +255,7 @@ uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn"
 dpi = "nodpi anydpi auto"
 archive-dlurl = "https://archive.org/download/geologically/apks/ch.protonvpn.android"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/ch.protonvpn.android"
 
 [hellochinese-morphe]
 enabled = true
@@ -321,6 +321,6 @@ cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/lightroom/"
 archive-dlurl = "https://archive.org/download/geologically/apks/com.adobe.lrmobile"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.lrmobile"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.adobe.lrmobile"
 
 
