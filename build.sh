@@ -201,6 +201,7 @@ for table_name in $(toml_get_table_names); do
 		app_args[module_prop_name]="${module_prop_name_b}-arm"
 		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
 		build_rv "$(declare -p app_args)"
+		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
 	elif [ "${app_args[arch]}" = multi ]; then
 		app_args[table]="$table_name (arm64-v8a)"
 		app_args[arch]="arm64-v8a"

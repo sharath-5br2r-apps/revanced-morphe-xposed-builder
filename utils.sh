@@ -1839,7 +1839,7 @@ verify_downloaded_apk() {
 	
 	if [ -f "${stock_apk%.apk}.apkm" ]; then
 		rm -rf "${stock_apk}-zip" || :
-		unzip -j "${stock_apk%.apk}.apkm" -d "${stock_apk}-zip" >/dev/null
+		unzip -j "${stock_apk%.apk}.apkm" -d "${stock_apk}-zip" >/dev/null 2>&1
 		if [ -f "${stock_apk}-zip/base.apk" ]; then
 			if ! sig_op=$(check_sig "${stock_apk}-zip/base.apk" "$pkg_name" 2>&1); then
 				epr "Signature mismatch on base.apk: $sig_op. Rejecting download from $dl_p..."
@@ -2041,7 +2041,7 @@ build_rv() {
 
 		list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
 		local cli_source_l="${args[cli_source],,}"
-		if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"instafel"* ]] || [[ "$cli_source_l" == "apksigner" ]]; then
+		if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"instafel"* ]] && [[ "$cli_source_l" != *"apksigner"* ]]; then
 			if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
 				epr "No app-specific patches found for '$pkg_name'. Skipping completely."
 				return 0
@@ -2191,7 +2191,7 @@ build_rv() {
 			list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
 			
 			local cli_source_l="${args[cli_source],,}"
-			if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"instafel"* ]] || [[ "$cli_source_l" != "apksigner" ]]; then
+			if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"instafel"* ]] && [[ "$cli_source_l" != *"apksigner"* ]]; then
 				if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
 					epr "No app-specific patches found for '$pkg_name'. Skipping completely."
 					return 0
@@ -2403,24 +2403,26 @@ build_rv() {
 	local sig_op
 	if [[ "${args[check_sig]:-false}" == "true" ]]; then
 		if [ -f "${stock_apk%.apk}.apkm" ]; then
-		rm -rf "${stock_apk}-zip" || :
-		unzip -j "${stock_apk%.apk}.apkm" -d "${stock_apk}-zip" >/dev/null
-		if [ -f "${stock_apk}-zip/base.apk" ]; then
-			if ! sig_op=$(check_sig "${stock_apk}-zip/base.apk" "$pkg_name" 2>&1); then
-				epr "Not building $table, apk signature mismatch 'base.apk': $sig_op"
-				return 0
-			fi
-		else
-			for a in "${stock_apk}"-zip/*.apk; do
-				if ! sig_op=$(check_sig "$a" "$pkg_name" 2>&1); then
-					epr "Not building $table, apk signature mismatch '$a': $sig_op"
+			rm -rf "${stock_apk}-zip" || :
+			unzip -j "${stock_apk%.apk}.apkm" -d "${stock_apk}-zip" >/dev/null 2>&1
+			if [ -f "${stock_apk}-zip/base.apk" ]; then
+				if ! sig_op=$(check_sig "${stock_apk}-zip/base.apk" "$pkg_name" 2>&1); then
+					epr "Not building $table, apk signature mismatch 'base.apk': $sig_op"
+					rm -rf "${stock_apk}-zip" || :
 					return 0
 				fi
-				break # Only check one APK if no base.apk
-			done
-		fi
-		rm -rf "${stock_apk}-zip" || :
-	else
+			else
+				for a in "${stock_apk}"-zip/*.apk; do
+					if ! sig_op=$(check_sig "$a" "$pkg_name" 2>&1); then
+						epr "Not building $table, apk signature mismatch '$a': $sig_op"
+						rm -rf "${stock_apk}-zip" || :
+						return 0
+					fi
+					break # Only check one APK if no base.apk
+				done
+			fi
+			rm -rf "${stock_apk}-zip" || :
+		else
 		if ! sig_op=$(check_sig "$stock_apk" "$pkg_name" 2>&1); then
 			epr "Not building $table, apk signature mismatch '$stock_apk': $sig_op"
 			return 0
