@@ -40,13 +40,16 @@ jobs:
         run: |
           if [[ "${{ inputs.config_file }}" == "Enter Manually" ]]; then
             manual_input="${{ inputs.manual_config_file }}"
-            manual_name="${manual_input%.toml}"
-            if [[ -f "configs/patches/${manual_name}.toml" ]]; then
-              echo "CONFIG_FILE=configs/patches/${manual_name}.toml" >> "$GITHUB_OUTPUT"
-            elif [[ -f ".github/configs/patches/${manual_name}.toml" ]]; then
-              echo "CONFIG_FILE=.github/configs/patches/${manual_name}.toml" >> "$GITHUB_OUTPUT"
-            elif [[ -f "$manual_input" ]]; then
+            if [[ -f "$manual_input" ]]; then
               echo "CONFIG_FILE=$manual_input" >> "$GITHUB_OUTPUT"
+            elif [[ -f "configs/patches/${manual_input}.toml" ]]; then
+              echo "CONFIG_FILE=configs/patches/${manual_input}.toml" >> "$GITHUB_OUTPUT"
+            elif [[ -f ".github/configs/patches/${manual_input}.toml" ]]; then
+              echo "CONFIG_FILE=.github/configs/patches/${manual_input}.toml" >> "$GITHUB_OUTPUT"
+            elif [[ -f "configs/${manual_input}" ]]; then
+              echo "CONFIG_FILE=configs/${manual_input}" >> "$GITHUB_OUTPUT"
+            elif [[ -f ".github/configs/${manual_input}" ]]; then
+              echo "CONFIG_FILE=.github/configs/${manual_input}" >> "$GITHUB_OUTPUT"
             else
               echo "Config file '$manual_input' not found"
               exit 1
