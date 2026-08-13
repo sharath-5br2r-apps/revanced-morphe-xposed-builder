@@ -1,4 +1,4 @@
-prime-video-morphe-hoodles (arm64-v8a): 3.0.467  
+proton-vpn-morphe-paresh (all): 5.19.72.0  
 x-morphe-piko (all): 12.15.2-release.0  
 
 **Notes:**  
@@ -8,11 +8,8 @@ x-morphe-piko (all): 12.15.2-release.0
 [GitHub](https://github.com/nullcpy/rvb) | [Group](https://t.me/rvb27) | [Donate](https://fahim-ahmed05.github.io/donate) | [Website](https://nullcpy.github.io)
   
 CLI: MorpheApp/morphe-desktop-1.13.0-all.jar  
-Patches: crimera/patches-3.8.0.mpp  
-[Changelog](https://github.com/crimera/piko/releases/tag/v3.8.0)
+Patches: crimera/patches-3.9.0-dev.7.mpp  
+[Changelog](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.7)
 
-Patches: hoo-dles/patches-1.40.0.mpp  
-[Changelog](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0)
-
-Patches: Paresh-Maheshwari/patches-1.19.0.mpp  
-[Changelog](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.19.0)  
+Patches: Paresh-Maheshwari/patches-1.20.0-dev.2.mpp  
+[Changelog](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)  
