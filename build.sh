@@ -111,6 +111,7 @@ for table_name in $(toml_get_table_names); do
 	for i in "${!p_srcs[@]}"; do
 		psrc="${p_srcs[$i]}"
 		phost="${p_hosts[$i]:-${p_hosts[0]}}"
+		pgitlabhost=""
 		if [[ "$phost" == *"|gitlab" ]]; then
 			pgitlabhost="${phost%%|*}"
 			phost="gitlab"

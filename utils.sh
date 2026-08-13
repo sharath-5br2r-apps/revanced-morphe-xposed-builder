@@ -664,7 +664,7 @@ patches_list_versions() {
 _patches_list_versions() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 cli_source=$4 extra_args=${5:-} op
 	local cli_source_l="${cli_source,,}"
-	if [[ "$cli_source_l" == *"npatch"* ]] || [[ "$cli_source_l" == *"lspatch"* ]] || [[ "$cli_source_l" == *"instafel"* ]] || [[ "$cli_source_l" == "apksigner" ]]; then
+	if [[ "$cli_source_l" != *"revanced"* ]] && [[ "$cli_source_l" != *"morphe"* ]]; then
 		echo ""
 		return 0
 	fi
