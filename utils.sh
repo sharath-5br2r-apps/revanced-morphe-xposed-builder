@@ -2041,7 +2041,7 @@ build_rv() {
 
 		list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
 		local cli_source_l="${args[cli_source],,}"
-		if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"instafel"* ]] && [[ "$cli_source_l" != *"apksigner"* ]]; then
+		if [[ "$cli_source_l" == *"revanced"* ]] || [[ "$cli_source_l" == *"morphe"* ]]; then
 			if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
 				epr "No app-specific patches found for '$pkg_name'. Skipping completely."
 				return 0
@@ -2191,7 +2191,7 @@ build_rv() {
 			list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
 			
 			local cli_source_l="${args[cli_source],,}"
-			if [[ "$cli_source_l" != *"npatch"* ]] && [[ "$cli_source_l" != *"lspatch"* ]] && [[ "$cli_source_l" != *"instafel"* ]] && [[ "$cli_source_l" != *"apksigner"* ]]; then
+			if [[ "$cli_source_l" == *"revanced"* ]] || [[ "$cli_source_l" == *"morphe"* ]]; then
 				if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
 					epr "No app-specific patches found for '$pkg_name'. Skipping completely."
 					return 0
