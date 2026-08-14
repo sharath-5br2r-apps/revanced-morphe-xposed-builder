@@ -30,7 +30,7 @@ The main build entry point is `build.sh`. It accepts the following arguments:
 | `clean` | Flag | Cleans temporary build directories (`temp/`, `build/`, `build.md`). | `./build.sh clean` |
 | `--config-update` | Flag | Generates updated JSON/TOML configurations without triggering APK builds. | `./build.sh --config-update` |
 | `[config_file]` | Path | Path to configuration file (`.json` or `.toml`). Default: auto-resolved `configs/config.toml`. | `./build.sh configs/config.stable.updated.json` |
-| `[exclusive_apps]` | String | Space-separated list of exact TOML section keys (table names, e.g. `"YouTube YouTube-Music"`) to build exclusively. | `./build.sh configs/config.stable.updated.json "YouTube YouTube-Music"` |
+| `[exclusive_apps]` | String | Space-separated list of exact TOML section keys (table names, e.g. `"youtube-morphe-exp youtube-music-morphe-anddea"`) to build exclusively. | `./build.sh configs/config.stable.updated.json "youtube-morphe-exp youtube-music-morphe-anddea"` |
 
 ---
 
@@ -133,10 +133,10 @@ patches-version = "v2.160.0"
 cli-version = "v5.0.0"
 
 > [!NOTE]
-> **TOML Section Keys vs. Display Names**: The build system, CLI arguments (`exclusive_apps`), and CI tracking files always identify apps by their **exact TOML section key / table header** (e.g. `[YouTube]` or `[YouTube-Music]`). The `app-name` setting is purely an optional display override for generated release output names.
+> **TOML Section Keys vs. Display Names**: The build system, CLI arguments (`exclusive_apps`), and CI tracking files always identify apps by their **exact TOML section key / table header** (such as `[youtube-morphe-exp]` or `[youtube-music-morphe-anddea]`). The `app-name` setting is purely an optional display override for generated release output names.
 
-[Some-App]
-app-name = "SomeApp"                                       # Custom release name override. default: table name ('Some-App')
+[youtube-morphe-exp]
+app-name = "YouTube"                                       # Custom release name override. default: table name ('youtube-morphe-exp')
 pkg-name = "com.some.app"                                 # Explicit package name override.
 enabled = true                                             # Whether to build the app. default: true
 build-mode = "both"                                        # 'both', 'apk' or 'module'. default: apk
