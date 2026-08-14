@@ -868,7 +868,7 @@ merge_splits() {
 
 _trawl_get() {
 	local url=$1 referer=${2:-}
-	local max_retries=1 attempt
+	local max_retries=2 attempt
 	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
 	[ -z "$trawl_base" ] && return 1
 	local solver_url="${trawl_base%/}/scrape"
@@ -876,9 +876,9 @@ _trawl_get() {
 	[ -n "$referer" ] && extra_headers=",\"headers\":{\"Referer\":\"$referer\"}"
 	for attempt in $(seq 1 $max_retries); do
 		local response status
-		response=$(curl -m 90 -s -X POST "$solver_url" \
+		response=$(curl -m 15 -s -X POST "$solver_url" \
 			-H 'Content-Type: application/json' \
-			-d "{\"url\":\"$url\",\"maxTimeout\":60000,\"skipHttp\":true${extra_headers}}") || true
+			-d "{\"url\":\"$url\",\"maxTimeout\":15000,\"skipHttp\":true${extra_headers}}") || true
 		status=$(echo "$response" | jq -r '.statusCode // empty')
 		if [[ "$status" =~ ^[1-3][0-9][0-9]$ ]]; then
 			html=$(echo "$response" | jq -r '.html // empty')
@@ -890,7 +890,7 @@ _trawl_get() {
 			fi
 		fi
 		wpr "Trawl attempt $attempt/$max_retries failed for: $url"
-		sleep 5
+		sleep 2
 	done
 	wpr "[!] Trawl failed after $max_retries attempts: $url"
 	return 1
@@ -911,7 +911,7 @@ _cfb_get() {
 		http_code=$(curl -s -o "$response_file" -w '%{http_code}' \
 			-D "$TEMP_DIR/cfb_response_headers.txt" \
 			-G --data-urlencode "url=$url" \
-			--max-time 30 \
+			--max-time 15 \
 			"$solver_url") || true
 		if [[ "$http_code" == "200" ]]; then
 			html=$(cat "$response_file")
@@ -935,7 +935,7 @@ _cfb_get() {
 
 _fs_get() {
 	local url=$1 referer=${2:-}
-	local max_retries=1 attempt
+	local max_retries=2 attempt
 	local fs_base="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}"
 	[ -z "$fs_base" ] && return 1
 	local solver_url="${fs_base%/}/v1"
@@ -943,9 +943,9 @@ _fs_get() {
 	[ -n "$referer" ] && extra_headers=",\"headers\":{\"Referer\":\"$referer\"}"
 	for attempt in $(seq 1 $max_retries); do
 		local response status
-		response=$(curl -m 90 -s -X POST "$solver_url" \
+		response=$(curl -m 15 -s -X POST "$solver_url" \
 			-H 'Content-Type: application/json' \
-			-d "{\"cmd\":\"request.get\",\"url\":\"$url\",\"maxTimeout\":60000${extra_headers}}") || true
+			-d "{\"cmd\":\"request.get\",\"url\":\"$url\",\"maxTimeout\":15000${extra_headers}}") || true
 		status=$(echo "$response" | jq -r '.status // empty')
 		if [[ "$status" == "ok" ]]; then
 			html=$(echo "$response" | jq -r '.solution.response // empty')
@@ -957,7 +957,7 @@ _fs_get() {
 			fi
 		fi
 		wpr "FlareSolverr attempt $attempt/$max_retries failed for: $url"
-		sleep 5
+		sleep 2
 	done
 	wpr "[!] FlareSolverr failed after $max_retries attempts: $url"
 	return 1

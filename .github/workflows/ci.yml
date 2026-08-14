@@ -17,6 +17,7 @@ jobs:
     timeout-minutes: 10
     env:
       TRAWL_URL: "http://localhost:8191"
+      CFB_URL: "http://localhost:8000"
     services:
       redis:
         image: redis:alpine
@@ -29,6 +30,10 @@ jobs:
         env:
           REDIS_URL: redis://redis:6379
         options: --shm-size=1gb
+      cfb:
+        image: ghcr.io/sarveshpro/cloudflarebypassforscraping:latest
+        ports:
+          - 8000:8000
     outputs:
       trigger_stable: ${{ steps.effective_triggers.outputs.TRIGGER_STABLE }}
       trigger_prerelease: ${{ steps.effective_triggers.outputs.TRIGGER_PRERELEASE }}
