@@ -788,7 +788,7 @@ merge_splits() {
 	sign_apk "${output}-unsigned" "${output}"
 }
 
-_trawl_8191_get() {
+_trawl_get() {
 	local url=$1 referer=${2:-}
 	local max_retries=1 attempt
 	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
@@ -818,6 +818,42 @@ _trawl_8191_get() {
 	return 1
 }
 
+_cfb_get() {
+	local url=$1 referer=${2:-}
+	local max_retries=2 attempt
+	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
+	[ -z "$cfb_base" ] && return 1
+	local solver_url="${cfb_base%/}/html"
+
+	for attempt in $(seq 1 $max_retries); do
+		local response_file
+		rm -f "$TEMP_DIR/cfb_response_headers.txt"
+		response_file=$(mktemp)
+		local http_code
+		http_code=$(curl -s -o "$response_file" -w '%{http_code}' \
+			-D "$TEMP_DIR/cfb_response_headers.txt" \
+			-G --data-urlencode "url=$url" \
+			--max-time 30 \
+			"$solver_url") || true
+		if [[ "$http_code" == "200" ]]; then
+			html=$(cat "$response_file")
+			if [[ -n "$html" && "$html" != *"Attention Required!"* && "$html" != *"Just a moment..."* && "$html" != *"Please Wait... | Cloudflare"* && "$html" != *"Verify you are human"* ]]; then
+				export CF_COOKIES
+				CF_COOKIES=$(grep -i '^x-cf-bypasser-cookies:' "$TEMP_DIR/cfb_response_headers.txt" 2>/dev/null | cut -d':' -f2- | xargs)
+				local cfb_ua
+				cfb_ua=$(grep -i '^x-cf-bypasser-user-agent:' "$TEMP_DIR/cfb_response_headers.txt" 2>/dev/null | cut -d':' -f2- | xargs)
+				[[ -n "$cfb_ua" ]] && user_agent="$cfb_ua"
+				rm -f "$response_file" "$TEMP_DIR/cfb_response_headers.txt"
+				return 0
+			fi
+		fi
+		rm -f "$response_file" "$TEMP_DIR/cfb_response_headers.txt"
+		wpr "CFB attempt $attempt/$max_retries failed for: $url"
+		sleep 2
+	done
+	wpr "[!] CFB failed after $max_retries attempts: $url"
+	return 1
+}
 
 _fallback_get(){
 	local url=$1
@@ -828,13 +864,20 @@ _fallback_get(){
 	CF_COOKIES=""
 	user_agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0"
 }
+
 _unqueued_cf_get() {
 	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
+	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
+
 	if [ -n "$trawl_base" ]; then
-		_trawl_8191_get "$@" && return 0
-	else
-		_fallback_get "$@" && return 0
+		_trawl_get "$@" && return 0
 	fi
+
+	if [ -n "$cfb_base" ]; then
+		_cfb_get "$@" && return 0
+	fi
+
+	_fallback_get "$@" && return 0
 
 	epr "All methods failed for: $1"
 	return 1

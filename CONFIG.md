@@ -47,6 +47,8 @@ The script reads signing credentials and GitHub API authentication from environm
 | `KEYSTORE_PASSWORD` | Optional | Keystore password. |
 | `KEYSTORE_ALIAS` | Optional | Keystore key alias. |
 | `KEYSTORE_KEY_PASSWORD` | Optional | Key entry password. Defaults to `KEYSTORE_PASSWORD` if not specified. |
+| `TRAWL_URL` | Optional | URL of running Trawl Cloudflare solver service (e.g. `http://localhost:8191`). Skips if omitted. |
+| `CFB_URL` | Optional | URL of running CloudflareBypassForScraping solver service (e.g. `http://localhost:8000`). Skips if omitted. |
 
 ### 🔐 Optional Keystore Setup (`.env`)
 
