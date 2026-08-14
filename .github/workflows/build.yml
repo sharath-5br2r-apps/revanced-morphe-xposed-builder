@@ -72,7 +72,7 @@ jobs:
           UPLOAD_APKS_REPO: "sharath-5br2r-apps/apks-dump"
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          CF_BYPASS_SOLVER_TRAWL_8191_ENABLED: "true"
+          TRAWL_URL: "http://localhost:8191"
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}

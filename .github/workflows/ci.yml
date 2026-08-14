@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      CF_BYPASS_SOLVER_TRAWL_8191_ENABLED: "true"
+      TRAWL_URL: "http://localhost:8191"
     services:
       redis:
         image: redis:alpine

@@ -791,7 +791,9 @@ merge_splits() {
 _trawl_8191_get() {
 	local url=$1 referer=${2:-}
 	local max_retries=1 attempt
-	local solver_url="${TRAWL_URL:-http://localhost:8191}/scrape"
+	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
+	[ -z "$trawl_base" ] && return 1
+	local solver_url="${trawl_base%/}/scrape"
 	local extra_headers=""
 	[ -n "$referer" ] && extra_headers=",\"headers\":{\"Referer\":\"$referer\"}"
 	for attempt in $(seq 1 $max_retries); do
@@ -809,10 +811,10 @@ _trawl_8191_get() {
 				return 0
 			fi
 		fi
-		wpr "Trawl:8191 attempt $attempt/$max_retries failed for: $url"
+		wpr "Trawl attempt $attempt/$max_retries failed for: $url"
 		sleep 5
 	done
-	wpr "[!] Trawl:8191 failed after $max_retries attempts: $url"
+	wpr "[!] Trawl failed after $max_retries attempts: $url"
 	return 1
 }
 
@@ -827,7 +829,8 @@ _fallback_get(){
 	user_agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0"
 }
 _unqueued_cf_get() {
-	if [[ "${CF_BYPASS_SOLVER_TRAWL_8191_ENABLED:-false}" == true ]]; then
+	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
+	if [ -n "$trawl_base" ]; then
 		_trawl_8191_get "$@" && return 0
 	else
 		_fallback_get "$@" && return 0
