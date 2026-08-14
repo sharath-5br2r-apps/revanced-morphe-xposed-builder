@@ -9,6 +9,9 @@ Adding a new app is as simple as adding an entry to a `.toml` file in `configs/p
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 ```
 
+> [!NOTE]
+> **Architecture Note (`main` vs `legacy`)**: The `main` branch represents a complete rewrite featuring a modular configuration directory (`configs/patches/`), multi-architecture build targets (`multi`, `both64`, `both32`), a dynamic Cloudflare solver pipeline (`TRAWL_URL`, `CFB_URL`, `FS_URL`), local build script generators (`generate_manual_config.sh`), and native Xposed module injection. The `legacy` branch is a significantly different earlier edition.
+
 > [!WARNING]
 > When a patch name contains a single quote, double it inside the string (e.g. `'Hide ''Get Music Premium'''`).
 
