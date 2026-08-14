@@ -855,6 +855,36 @@ _cfb_get() {
 	return 1
 }
 
+_fs_get() {
+	local url=$1 referer=${2:-}
+	local max_retries=1 attempt
+	local fs_base="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}"
+	[ -z "$fs_base" ] && return 1
+	local solver_url="${fs_base%/}/v1"
+	local extra_headers=""
+	[ -n "$referer" ] && extra_headers=",\"headers\":{\"Referer\":\"$referer\"}"
+	for attempt in $(seq 1 $max_retries); do
+		local response status
+		response=$(curl -m 90 -s -X POST "$solver_url" \
+			-H 'Content-Type: application/json' \
+			-d "{\"cmd\":\"request.get\",\"url\":\"$url\",\"maxTimeout\":60000${extra_headers}}") || true
+		status=$(echo "$response" | jq -r '.status // empty')
+		if [[ "$status" == "ok" ]]; then
+			html=$(echo "$response" | jq -r '.solution.response // empty')
+			if [[ -n "$html" && "$html" != *"Attention Required!"* && "$html" != *"Just a moment..."* && "$html" != *"Please Wait... | Cloudflare"* && "$html" != *"Verify you are human"* ]]; then
+				export CF_COOKIES
+				CF_COOKIES=$(echo "$response" | jq -r '[.solution.cookies[] | .name + "=" + .value] | join("; ")')
+				user_agent=$(echo "$response" | jq -r '.solution.userAgent // empty')
+				return 0
+			fi
+		fi
+		wpr "FlareSolverr attempt $attempt/$max_retries failed for: $url"
+		sleep 5
+	done
+	wpr "[!] FlareSolverr failed after $max_retries attempts: $url"
+	return 1
+}
+
 _fallback_get(){
 	local url=$1
 	html=$(curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 -s -f "$url" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0") || return 1
@@ -868,6 +898,7 @@ _fallback_get(){
 _unqueued_cf_get() {
 	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
 	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
+	local fs_base="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}"
 
 	if [ -n "$trawl_base" ]; then
 		_trawl_get "$@" && return 0
@@ -875,6 +906,10 @@ _unqueued_cf_get() {
 
 	if [ -n "$cfb_base" ]; then
 		_cfb_get "$@" && return 0
+	fi
+
+	if [ -n "$fs_base" ]; then
+		_fs_get "$@" && return 0
 	fi
 
 	_fallback_get "$@" && return 0
