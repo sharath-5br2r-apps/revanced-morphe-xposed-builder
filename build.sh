@@ -75,7 +75,7 @@ for table_name in $(toml_get_table_names); do
 	cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
 	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
 	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
-	local cli_host_type="" cli_host_inst=""
+	cli_host_type="" cli_host_inst=""
 	if ! parse_host_spec "$cli_src_host" cli_host_type cli_host_inst; then
 		abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name'"
 	fi
@@ -87,7 +87,7 @@ for table_name in $(toml_get_table_names); do
 	p_vers=($(list_args "$patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
 	unset IFS
 	for h in "${p_hosts[@]}"; do
-		local ph_type="" ph_inst=""
+		ph_type="" ph_inst=""
 		if ! parse_host_spec "$h" ph_type ph_inst; then
 			abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name'"
 		fi
