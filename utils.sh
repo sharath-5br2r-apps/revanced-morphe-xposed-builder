@@ -2547,9 +2547,16 @@ build_rv() {
 		list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
 		local cli_source_l="${args[cli_source],,}"
 		if [[ "$cli_source_l" == *"revanced"* ]] || [[ "$cli_source_l" == *"morphe"* ]]; then
-			if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
-				epr "No app-specific patches found for '$pkg_name'. Skipping completely."
-				return 0
+			if [[ "$cli_source_l" == *"morphe"* ]]; then
+				if [ -z "$list_patches" ] || ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
+					wpr "WARNING: No app-specific patches found for '$pkg_name'. Skipping build."
+					return 0
+				fi
+			else
+				if ! grep -Fq "$pkg_name" <<<"$list_patches" && ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
+					wpr "WARNING: No app-specific patches found for '$pkg_name'. Skipping build."
+					return 0
+				fi
 			fi
 		fi
 
@@ -2569,7 +2576,7 @@ build_rv() {
 					epr "get_patch_exp_ver failed"
 				fi
 				if [ -z "$resolved_version" ]; then
-					epr "No exp version found for '$pkg_name', skipping."
+					wpr "WARNING: No exp version found for '$pkg_name', skipping build."
 					return 0
 				fi
 			elif isoneof "$version_mode" latest beta; then
@@ -2697,9 +2704,16 @@ build_rv() {
 			
 			local cli_source_l="${args[cli_source],,}"
 			if [[ "$cli_source_l" == *"revanced"* ]] || [[ "$cli_source_l" == *"morphe"* ]]; then
-				if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
-					epr "No app-specific patches found for '$pkg_name'. Skipping completely."
-					return 0
+				if [[ "$cli_source_l" == *"morphe"* ]]; then
+					if [ -z "$list_patches" ] || ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
+						wpr "WARNING: No app-specific patches found for '$pkg_name'. Skipping build."
+						return 0
+					fi
+				else
+					if ! grep -Fq "$pkg_name" <<<"$list_patches" && ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
+						wpr "WARNING: No app-specific patches found for '$pkg_name'. Skipping build."
+						return 0
+					fi
 				fi
 			fi
 		fi

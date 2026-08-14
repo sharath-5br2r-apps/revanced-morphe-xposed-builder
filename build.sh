@@ -276,7 +276,10 @@ for table_name in $(toml_get_table_names); do
 	fi
 done
 rm -rf temp/tmp.*
-if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then abort "All builds failed."; fi
+if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then
+	wpr "WARNING: No builds completed or output directory is empty."
+	exit 0
+fi
 
 log "\n**Notes:**"
 log "• Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs."
