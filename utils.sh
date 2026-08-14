@@ -2549,13 +2549,11 @@ build_rv() {
 		if [[ "$cli_source_l" == *"revanced"* ]] || [[ "$cli_source_l" == *"morphe"* ]]; then
 			if [[ "$cli_source_l" == *"morphe"* ]]; then
 				if [ -z "$list_patches" ] || ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
-					wpr "WARNING: No app-specific patches found for '$pkg_name'. Skipping build."
-					return 0
+					wpr "WARNING: No app-specific patches found for '$pkg_name', assuming universal patches apply and continuing build."
 				fi
 			else
 				if ! grep -Fq "$pkg_name" <<<"$list_patches" && ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
-					wpr "WARNING: No app-specific patches found for '$pkg_name'. Skipping build."
-					return 0
+					wpr "WARNING: No app-specific patches found for '$pkg_name', assuming universal patches apply and continuing build."
 				fi
 			fi
 		fi
@@ -2706,13 +2704,11 @@ build_rv() {
 			if [[ "$cli_source_l" == *"revanced"* ]] || [[ "$cli_source_l" == *"morphe"* ]]; then
 				if [[ "$cli_source_l" == *"morphe"* ]]; then
 					if [ -z "$list_patches" ] || ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
-						wpr "WARNING: No app-specific patches found for '$pkg_name'. Skipping build."
-						return 0
+						wpr "WARNING: No app-specific patches found for '$pkg_name', assuming universal patches apply and continuing build."
 					fi
 				else
 					if ! grep -Fq "$pkg_name" <<<"$list_patches" && ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
-						wpr "WARNING: No app-specific patches found for '$pkg_name'. Skipping build."
-						return 0
+						wpr "WARNING: No app-specific patches found for '$pkg_name', assuming universal patches apply and continuing build."
 					fi
 				fi
 			fi
