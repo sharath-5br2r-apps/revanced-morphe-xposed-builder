@@ -791,22 +791,6 @@ patches_list_versions() {
 	echo "$result"
 }
 
-ensure_cli_dependencies() {
-	mkdir -p "$BIN_DIR"
-	if [ ! -f "$BIN_DIR/jna.jar" ]; then
-		pr "Downloading JNA library for CLI..." >&2
-		_req "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0/jna-5.14.0.jar" "$BIN_DIR/jna.jar" >&2 || return 1
-	fi
-	if [ ! -f "$BIN_DIR/jna-platform.jar" ]; then
-		pr "Downloading JNA Platform library for CLI..." >&2
-		_req "https://repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.14.0/jna-platform-5.14.0.jar" "$BIN_DIR/jna-platform.jar" >&2 || return 1
-	fi
-	if [ ! -f "$BIN_DIR/compose-material3.jar" ]; then
-		pr "Downloading Compose Material3 library for CLI..." >&2
-		_req "https://repo1.maven.org/maven2/org/jetbrains/compose/material3/material3-desktop/1.6.11/material3-desktop-1.6.11.jar" "$BIN_DIR/compose-material3.jar" >&2 || return 1
-	fi
-}
-
 _patches_list_versions() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 cli_source=$4 extra_args=${5:-} op
 	local cli_source_l="${cli_source,,}"
@@ -818,13 +802,11 @@ _patches_list_versions() {
 	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
 	
 	if [[ "$cli_source_l" == *"morphe-desktop"* ]]; then
-		ensure_cli_dependencies || return 1
-		local p_args_morphe="" p_cp=""
+		local p_args_morphe=""
 		for j in "${p_jars[@]}"; do
 			p_args_morphe+="--patches '$j' "
-			p_cp+="${javapathsep:-:}$j"
 		done
-		if ! op=$(eval java -Djava.awt.headless=true -cp "'$cli_jar${javapathsep:-:}$BIN_DIR/jna.jar${javapathsep:-:}$BIN_DIR/jna-platform.jar${javapathsep:-:}$BIN_DIR/compose-material3.jar${p_cp}'" app.morphe.MorpheLauncherKt list-versions $p_args_morphe -f "'$pkg_name'" $extra_args 2>&1); then
+		if ! op=$(eval java -jar "'$cli_jar'" list-versions $p_args_morphe -f "'$pkg_name'" $extra_args 2>&1); then
 			epr "Could not list versions $cli_jar: '$op'"
 			return 1
 		fi
@@ -833,7 +815,7 @@ _patches_list_versions() {
 		for j in "${p_jars[@]}"; do
 			p_args_revanced+="-p '$j' "
 		done
-		if ! op=$(eval java -Djava.awt.headless=true -jar "'$cli_jar'" list-versions -b $p_args_revanced -f "'$pkg_name'" $extra_args 2>&1); then
+		if ! op=$(eval java -jar "'$cli_jar'" list-versions -b $p_args_revanced -f "'$pkg_name'" $extra_args 2>&1); then
 			epr "Could not list versions $cli_jar: '$op'"
 			return 1
 		fi
@@ -871,7 +853,7 @@ _patches_list() {
 			cp "$j" "$cli_dir/ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
 			cp "$j" "ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
 		done
-		if ! op=$(eval java -Djava.awt.headless=true -jar "'$cli_jar'" list 2>&1); then
+		if ! op=$(eval java -jar "'$cli_jar'" list 2>&1); then
 			epr "Could not get patches list $cli_jar: '$op'"
 			return 1
 		fi
@@ -879,13 +861,11 @@ _patches_list() {
 		return 0
 	fi
 	if [[ "$cli_source_l" == *"morphe-desktop"* ]]; then
-		ensure_cli_dependencies || return 1
-		local p_args_morphe="" p_cp=""
+		local p_args_morphe=""
 		for j in "${p_jars[@]}"; do
 			p_args_morphe+="--patches '$j' "
-			p_cp+="${javapathsep:-:}$j"
 		done
-		if ! op=$(eval java -Djava.awt.headless=true -cp "'$cli_jar${javapathsep:-:}$BIN_DIR/jna.jar${javapathsep:-:}$BIN_DIR/jna-platform.jar${javapathsep:-:}$BIN_DIR/compose-material3.jar${p_cp}'" app.morphe.MorpheLauncherKt list-patches $p_args_morphe -f "'$pkg_name'" --with-versions --with-packages 2>&1); then
+		if ! op=$(eval java -jar "'$cli_jar'" list-patches $p_args_morphe -f "'$pkg_name'" --with-versions --with-packages 2>&1); then
 			epr "Could not get patches list $cli_jar: '$op'"
 			return 1
 		fi
@@ -894,7 +874,7 @@ _patches_list() {
 		for j in "${p_jars[@]}"; do
 			p_args_revanced+="-p '$j' "
 		done
-		if ! op=$(eval java -Djava.awt.headless=true -jar "'$cli_jar'" list-patches -b $p_args_revanced --packages --versions --options --filter-package-name="'$pkg_name'" 2>&1); then
+		if ! op=$(eval java -jar "'$cli_jar'" list-patches -b $p_args_revanced --packages --versions --options --filter-package-name="'$pkg_name'" 2>&1); then
 			epr "Could not get patches list $cli_jar: '$op'"
 			return 1
 		fi
@@ -2146,19 +2126,8 @@ patch_apk() {
 		fi
 	fi
 
-	local base_cmd=""
-	if [[ "$cli_source_l" == *"morphe-desktop"* ]]; then
-		ensure_cli_dependencies || return 1
-		local p_args_cp=""
-		for j in "${p_jars[@]}"; do
-			p_args_cp+="${javapathsep:-:}$j"
-		done
-		base_cmd="java -Djava.awt.headless=true -cp '$cli_jar${javapathsep:-:}$BIN_DIR/jna.jar${javapathsep:-:}$BIN_DIR/jna-platform.jar${javapathsep:-:}$BIN_DIR/compose-material3.jar${p_args_cp}' app.morphe.MorpheLauncherKt patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=$TEMP_DIR/ks.keystore \
+	local base_cmd="java -jar '$cli_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=$TEMP_DIR/ks.keystore \
 --keystore-entry-password=\"$KEYSTORE_KEY_PASSWORD\" --keystore-password=\"$KEYSTORE_PASSWORD\" --signer=\"$KEYSTORE_ALIAS\" --keystore-entry-alias=\"$KEYSTORE_ALIAS\""
-	else
-		base_cmd="java -Djava.awt.headless=true -jar '$cli_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=$TEMP_DIR/ks.keystore \
---keystore-entry-password=\"$KEYSTORE_KEY_PASSWORD\" --keystore-password=\"$KEYSTORE_PASSWORD\" --signer=\"$KEYSTORE_ALIAS\" --keystore-entry-alias=\"$KEYSTORE_ALIAS\""
-	fi
 
 	local -a ed_parts=()
 	if [ -n "$per_bundle_ed" ]; then

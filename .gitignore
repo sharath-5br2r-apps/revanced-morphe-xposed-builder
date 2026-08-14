@@ -22,7 +22,6 @@ cmpr
 *.apkm
 *.xapk
 *.apks
-*.jar
 *.zip
 *.tar
 *.tar.gz
