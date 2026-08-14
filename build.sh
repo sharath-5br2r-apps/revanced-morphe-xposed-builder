@@ -278,7 +278,7 @@ if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then abort "All builds failed."; fi
 log "\n**Notes:**"
 log "• Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs."
 log "• Use [Zygisk Detach](https://github.com/j-hc/zygisk-detach) to stop Play Store from updating Modules."
-log "\n[GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Group](https://t.me/rvb27) | [Website](https://sharath-5br2r-apps.github.io)\n"
+log "\n[GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Website](https://sharath-5br2r-apps.github.io)\n"
 
 changelog_merged=$(cat "$TEMP_DIR"/*/changelog.md 2>/dev/null || :)
 changelog_merged=$(awk '
