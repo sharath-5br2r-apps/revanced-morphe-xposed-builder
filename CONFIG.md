@@ -30,7 +30,7 @@ The main build entry point is `build.sh`. It accepts the following arguments:
 | `clean` | Flag | Cleans temporary build directories (`temp/`, `build/`, `build.md`). | `./build.sh clean` |
 | `--config-update` | Flag | Generates updated JSON/TOML configurations without triggering APK builds. | `./build.sh --config-update` |
 | `[config_file]` | Path | Path to configuration file (`.json` or `.toml`). Default: auto-resolved `configs/config.toml`. | `./build.sh configs/config.stable.updated.json` |
-| `[exclusive_apps]` | String | Space-separated list of app table names to build exclusively. | `./build.sh configs/config.stable.updated.json "YouTube YouTube-Music"` |
+| `[exclusive_apps]` | String | Space-separated list of exact TOML section keys (table names, e.g. `"YouTube YouTube-Music"`) to build exclusively. | `./build.sh configs/config.stable.updated.json "YouTube YouTube-Music"` |
 
 ---
 
@@ -131,6 +131,9 @@ rv-brand = "ReVanced Extended"                   # Rebrand prefix from 'ReVanced
 
 patches-version = "v2.160.0"
 cli-version = "v5.0.0"
+
+> [!NOTE]
+> **TOML Section Keys vs. Display Names**: The build system, CLI arguments (`exclusive_apps`), and CI tracking files always identify apps by their **exact TOML section key / table header** (e.g. `[YouTube]` or `[YouTube-Music]`). The `app-name` setting is purely an optional display override for generated release output names.
 
 [Some-App]
 app-name = "SomeApp"                                       # Custom release name override. default: table name ('Some-App')
