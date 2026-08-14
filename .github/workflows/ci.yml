@@ -31,7 +31,7 @@ jobs:
           REDIS_URL: redis://redis:6379
         options: --shm-size=1gb
       cfb:
-        image: ghcr.io/sarveshpro/cloudflarebypassforscraping:latest
+        image: ghcr.io/sarperavci/cloudflarebypassforscraping:latest
         ports:
           - 8000:8000
     outputs:
