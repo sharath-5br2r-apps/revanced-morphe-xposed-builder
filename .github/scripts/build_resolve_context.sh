@@ -9,7 +9,7 @@ fi
 
 echo "CONFIG_FILE=$CONFIG" >> "$GITHUB_OUTPUT"
 
-IS_DEV=false 
+IS_DEV=false
 if [[ "$CONFIG" == *"dev"* ]]; then
   IS_DEV=true
 elif [[ "$CONFIG" == *.json ]]; then

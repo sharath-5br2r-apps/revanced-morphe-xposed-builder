@@ -82,12 +82,9 @@ for table_name in $(toml_get_table_names); do
 
 	# Parse patch sources: may be a single string or multiline (quoted list)
 	IFS=$'\n'
-	p_srcs=($(list_args "$patches_src" | tr -d \"\'))
-	[ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$patches_src")
-	p_hosts=($(list_args "$patches_src_host" | tr -d \"\'))
-	[ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$patches_src_host")
-	p_vers=($(list_args "$patches_ver" | tr -d \"\'))
-	[ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
+	p_srcs=($(list_args "$patches_src" | tr -d \"\')); [ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$patches_src")
+	p_hosts=($(list_args "$patches_src_host" | tr -d \"\')); [ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$patches_src_host")
+	p_vers=($(list_args "$patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
 	unset IFS
 	for h in "${p_hosts[@]}"; do
 		if [[ "$h" == *"|gitlab" ]]; then
@@ -117,8 +114,7 @@ for table_name in $(toml_get_table_names); do
 			phost="gitlab"
 		fi
 		# Find the downloaded jar/apk for this source to get actual version
-		pdir=${psrc%/*}
-		pdir=${TEMP_DIR}/${pdir,,}-rv
+		pdir=${psrc%/*}; pdir=${TEMP_DIR}/${pdir,,}-rv
 		pfile=$(find "$pdir" -name 'patches-*.rvp' -o -name 'patches-*.jar' -o -name '*.mpp' -o -name '*.apk' 2>/dev/null | sort | tail -1)
 		if [ -n "$pfile" ]; then
 			pfilename=${pfile##*/}
@@ -126,8 +122,7 @@ for table_name in $(toml_get_table_names); do
 			if [ -f "${pdir}/tag_name.txt" ]; then
 				ptag=$(cat "${pdir}/tag_name.txt")
 			else
-				pver_actual=${pfilename#*-}
-				pver_actual=${pver_actual%.*}
+				pver_actual=${pfilename#*-}; pver_actual=${pver_actual%.*}
 				ptag="v${pver_actual#v}"
 			fi
 

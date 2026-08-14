@@ -1346,11 +1346,11 @@ decoded=urllib.parse.unquote(raw)
 parts=urllib.parse.urlsplit(decoded)
 query=urllib.parse.parse_qsl(parts.query, keep_blank_values=True)
 encoded=urllib.parse.urlunsplit((
-    parts.scheme,
-    parts.netloc,
-    urllib.parse.quote(parts.path, safe='/'),
-    urllib.parse.urlencode(query, doseq=True, safe='/:_-.'),
-    parts.fragment,
+	parts.scheme,
+	parts.netloc,
+	urllib.parse.quote(parts.path, safe='/'),
+	urllib.parse.urlencode(query, doseq=True, safe='/:_-.'),
+	parts.fragment,
 ))
 print(encoded)
 PYC
@@ -1522,42 +1522,42 @@ get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
 
 # -------------------- github --------------------
 dl_github() {
-    local url=$1 version=$2 output=$3 arch=$4
-    local path="" version_f=${version// /}
+	local url=$1 version=$2 output=$3 arch=$4
+	local path="" version_f=${version// /}
 	local base_url=${__GITHUB_URL__:-$url}
-    
-    # Matches the exact file selection logic from dl_archive
-    for a in "${arch// /}" "common" "all"; do
-        for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
-            while IFS= read -r p; do
-                if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
-                    path="$p"
-                    break 3
-                fi
-            done <<<"$__ARCHIVE_RESP__"
-        done
-    done
-    
-    if [ -z "$path" ]; then
-        epr "Version ${version} with arch ${arch} not found in github"
-        return 1
-    fi
-    
-    local ext="${path##*.}"
-    case "$ext" in
-        apk)
-            req "${base_url}/${path}" "$output"
-            ;;
-        apkm|xapk|apks)
+	
+	# Matches the exact file selection logic from dl_archive
+	for a in "${arch// /}" "common" "all"; do
+		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
+			while IFS= read -r p; do
+				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
+					path="$p"
+					break 3
+				fi
+			done <<<"$__ARCHIVE_RESP__"
+		done
+	done
+	
+	if [ -z "$path" ]; then
+		epr "Version ${version} with arch ${arch} not found in github"
+		return 1
+	fi
+	
+	local ext="${path##*.}"
+	case "$ext" in
+		apk)
+			req "${base_url}/${path}" "$output"
+			;;
+		apkm|xapk|apks)
 			local bundle="${output}.${ext}"
 			req "${base_url}/${path}" "$bundle" || return 1
 			merge_splits "$bundle" "$output"
-            ;;
-        *)
-            epr "Unsupported github file type for ${path}"
-            return 1
-            ;;
-    esac
+			;;
+		*)
+			epr "Unsupported github file type for ${path}"
+			return 1
+			;;
+	esac
 }
 
 get_github_resp() {
@@ -1593,12 +1593,12 @@ get_github_resp() {
 
 # Extracts version matching the archive logic: strips prefix (up to first '-') and suffix (arch/extension)
 get_github_vers() {
-    sed 's/^[^-]*-//;s/-\(all\|common\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"
+	sed 's/^[^-]*-//;s/-\(all\|common\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"
 }
 
 # Extracts package name by stripping everything from the first hyphen '-' onwards
 get_github_pkg_name() {
-    sed 's/-.*//' <<<"$__ARCHIVE_RESP__" | head -n 1
+	sed 's/-.*//' <<<"$__ARCHIVE_RESP__" | head -n 1
 }
 
 
