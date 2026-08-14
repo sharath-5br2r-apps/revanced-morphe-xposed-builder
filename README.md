@@ -919,6 +919,41 @@ Patches: [MorpheApp/patches-1.40.0-dev.3.mpp](https://github.com/MorpheApp/morph
 
 ---
 
+## 🛠️ Local Building & Command Line Usage
+
+You can build APKs and Magisk/KSU modules locally on Android (Termux), Linux, or macOS.
+
+### Prerequisites
+- **Bash** (`bash` 4.4+)
+- **OpenJDK 21** (`java`)
+- **jq** (`jq`)
+- **Python 3** (`python3`)
+- **cURL** (`curl`)
+
+### Command Line Flags & Usage
+```bash
+./build.sh [config_file] [exclusive_apps] [--config-update] [clean]
+```
+
+- **Clean build artifacts**: `./build.sh clean`
+- **Update configurations**: `./build.sh --config-update`
+- **Build all stable apps**: `./build.sh configs/config.stable.updated.json`
+- **Build a specific app exclusively**: `./build.sh configs/config.stable.updated.json "YouTube"`
+
+### Optional Keystore Setup (`.env`)
+Create a `.env` file in the project root to sign APKs with a custom keystore:
+
+```bash
+KEYSTORE_BASE64="<base64_encoded_keystore>"
+KEYSTORE_PASSWORD="mysecretpassword"
+KEYSTORE_ALIAS="mykeyalias"
+KEYSTORE_KEY_PASSWORD="mykeypassword"
+```
+
+*If no `.env` or keystore environment variables are supplied, `utils.sh` automatically falls back to `.env.default` and uses the bundled debug keystore (`ks.keystore`). For complete configuration options, see [CONFIG.md](CONFIG.md).*
+
+---
+
 ## 💖 Credits & Acknowledgements
 
 This automated builder would not be possible without the incredible work and dedication of the open-source Android community. A massive thank you to:
