@@ -278,7 +278,7 @@ if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then abort "All builds failed."; fi
 log "\n**Notes:**"
 log "• Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs."
 log "• Use [Zygisk Detach](https://github.com/j-hc/zygisk-detach) to stop Play Store from updating Modules."
-log "\n[GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Group](https://t.me/rvb27) | [Donate](https://fahim-ahmed05.github.io/donate) | [Website](https://sharath-5br2r-apps.github.io)\n"
+log "\n[GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Group](https://t.me/rvb27) | [Website](https://sharath-5br2r-apps.github.io)\n"
 
 changelog_merged=$(cat "$TEMP_DIR"/*/changelog.md 2>/dev/null || :)
 changelog_merged=$(awk '
@@ -302,6 +302,25 @@ changelog_merged=$(awk '
 	print line
 }' <<<"$changelog_merged")
 log "$changelog_merged"
+
+if [ -f "$BUILD_JSON_FILE" ]; then
+	patches_summary=$(jq -r '
+		to_entries | map(
+			.key as $app |
+			.value as $val |
+			if ($val.applied_patches | length) > 0 then
+				"<details><summary><b>" + $app + " (" + (($val.applied_patches | length) | tostring) + " patches)</b></summary>\n\n" +
+				($val.applied_patches | map("• " + .) | join("\n")) +
+				"\n</details>"
+			else
+				empty
+			fi
+		) | join("\n\n")
+	' "$BUILD_JSON_FILE" 2>/dev/null || true)
+	if [ -n "$patches_summary" ]; then
+		log "\n<details><summary><b>Applied Patches Details</b></summary>\n\n${patches_summary}\n</details>\n"
+	fi
+fi
 
 SKIPPED=$(cat "$TEMP_DIR"/skipped 2>/dev/null || :)
 if [ -n "$SKIPPED" ]; then
