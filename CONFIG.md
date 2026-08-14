@@ -91,10 +91,10 @@ sudo apt update && sudo apt install openjdk-21-jre-headless jq python3 curl bash
 
 ### 2. Generating TOML Configurations for Local Builds
 
-Local building reads modular TOML configuration files from `configs/patches/`. You can compile these TOML files into a single combined configuration file `configs/config.manual.generated.toml` using the generator script:
+Local building reads modular TOML configuration files from `configs/patches/`. You can compile these TOML files into combined manual configuration files using the generator script:
 
 ```bash
-# Generate combined TOML config from all modular TOML files in configs/patches/
+# Generate both config.manual.generated.toml and config.manual.stable.generated.toml (with patches-version = "latest")
 ./scripts/generate_manual_config.sh
 ```
 
@@ -106,14 +106,14 @@ Or compile JSON configs from patch sources using `./build.sh --config-update`.
 # 1. Clean previous build artifacts
 ./build.sh clean
 
-# 2. Generate merged local TOML configuration
+# 2. Generate merged local TOML configurations
 ./scripts/generate_manual_config.sh
 
-# 3. Build using the generated manual TOML config
-./build.sh configs/config.manual.generated.toml
+# 3. Build using the generated stable manual TOML config
+./build.sh configs/config.manual.stable.generated.toml
 
 # 4. Or build a specific app exclusively using its TOML section key
-./build.sh configs/config.manual.generated.toml "youtube-morphe-exp"
+./build.sh configs/config.manual.stable.generated.toml "youtube-morphe-exp"
 ```
 
 ---

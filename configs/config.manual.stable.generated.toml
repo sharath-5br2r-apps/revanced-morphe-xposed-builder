@@ -1,5 +1,5 @@
 enable-module-update = true
-patches-version = "dev"
+patches-version = "latest"
 
 [youtube-morphe-anddea]
 enabled = true
