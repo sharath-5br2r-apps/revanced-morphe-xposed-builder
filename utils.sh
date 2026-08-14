@@ -117,6 +117,13 @@ parse_host_spec() {
 				return 1
 				;;
 			none) host_inst="none" ;;
+			http://*|https://*|*.*)
+				host_inst="$raw_spec"
+				if [[ "$host_inst" != http://* ]] && [[ "$host_inst" != https://* ]]; then
+					host_inst="https://${host_inst}"
+				fi
+				host_type="forgejo"
+				;;
 			*)
 				return 1
 				;;
@@ -1809,10 +1816,10 @@ get_repo_resp() {
 	if [ -n "$tag" ]; then
 		local tag_api
 		tag_api=$(source_release_tag_api "$host" "$src" "$tag" "$host_instance") || return 1
-		resp=$({ if [ "$host" = github ]; then gh_req "$tag_api" -; else req "$tag_api" -; fi; }) || return 1
+		resp=$({ if [ "$host" = github ]; then gh_req "$tag_api" - 2>/dev/null || req "${host_instance}/api/v1/repos/${src}/releases/tags/${tag}" -; else req "$tag_api" -; fi; }) || return 1
 		release="[${resp}]"
 	else
-		resp=$({ if [ "$host" = github ]; then gh_req "${api_url}?per_page=100" -; else req "${api_url}?per_page=100" -; fi; }) || return 1
+		resp=$({ if [ "$host" = github ]; then gh_req "${api_url}?per_page=100" - 2>/dev/null || req "${host_instance}/api/v1/repos/${src}/releases?per_page=100" -; else req "${api_url}?per_page=100" -; fi; }) || return 1
 		release="$resp"
 	fi
 
