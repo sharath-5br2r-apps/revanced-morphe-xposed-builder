@@ -55,6 +55,9 @@ while IFS='|' read -r group app; do
     apkmirror_url=$(jq -r ".\"$app\".\"apkmirror-dlurl\" // empty" temp_all_configs.json)
     apkpure_url=$(jq -r ".\"$app\".\"apkpure-dlurl\" // empty" temp_all_configs.json)
     apkcombo_url=$(jq -r ".\"$app\".\"apkcombo-dlurl\" // empty" temp_all_configs.json)
+    repo_url=$(jq -r ".\"$app\".\"repo-dlurl\" // empty" temp_all_configs.json)
+    repo_dlurl_filter=$(jq -r ".\"$app\".\"repo-dlurl-filter\" // empty" temp_all_configs.json)
+    repo_dlurl_source=$(jq -r ".\"$app\".\"repo-dlurl-source\" // empty" temp_all_configs.json)
     version=$(jq -r ".\"$app\".\"version\" // empty" temp_all_configs.json)
     if [ "$version" == "beta" ]; then __AAV__="true"; else __AAV__="false"; fi
     prefer_apk_mode=$(jq -r ".\"$app\".\"prefer-apk-mode\" // \"apk\"" temp_all_configs.json)
@@ -64,10 +67,11 @@ while IFS='|' read -r group app; do
     pkg_name=$(jq -r ".\"$app\".\"pkg-name\" // empty" temp_all_configs.json)
     check_sig=$(jq -r ".\"$app\".\"check-sig\" // false" temp_all_configs.json)
     custom_microg_patches=$(jq -r ".\"$app\".\"custom-microg-patches\" // empty" temp_all_configs.json)
-    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode apkmirror_example_url
+    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode apkmirror_example_url repo_dlurl_filter repo_dlurl_source
     
     dlurls=()
     sources=()
+    [ -n "$repo_url" ] && { dlurls+=("$repo_url"); sources+=("repo"); }
     [ -n "$apkmirror_url" ] && { dlurls+=("$apkmirror_url"); sources+=("apkmirror"); }
     [ -n "$uptodown_url" ] && { dlurls+=("$uptodown_url"); sources+=("uptodown"); }
     [ -n "$apkpure_url" ] && { dlurls+=("$apkpure_url"); sources+=("apkpure"); }
@@ -89,7 +93,11 @@ while IFS='|' read -r group app; do
             echo "::notice::Reusing cached version for $app: $latest_ver"
             break
         else
-            if [[ "$source" == "apkmirror" ]]; then
+            if [[ "$source" == "repo" ]]; then
+                get_repo_resp "$dlurl" || { echo "::warning::Failed repo resp for $app"; continue; }
+                vers=$(get_repo_vers) || { echo "::warning::Failed repo vers for $app"; continue; }
+                latest_ver=$(echo "$vers" | get_highest_ver) || true
+            elif [[ "$source" == "apkmirror" ]]; then
                 get_apkmirror_resp "$dlurl" || { echo "::warning::Failed apkmirror resp for $app"; continue; }
                 vers=$(get_apkmirror_vers) || { echo "::warning::Failed apkmirror vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true

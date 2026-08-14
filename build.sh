@@ -75,10 +75,10 @@ for table_name in $(toml_get_table_names); do
 	cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
 	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
 	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
-	if [[ "$cli_src_host" == *"|gitlab" ]]; then
-		cli_src_host="gitlab"
+	local cli_host_type="" cli_host_inst=""
+	if ! parse_host_spec "$cli_src_host" cli_host_type cli_host_inst; then
+		abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name'"
 	fi
-	if ! isoneof "$cli_src_host" github gitlab none; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': only 'github', 'gitlab' or 'none' is allowed"; fi
 
 	# Parse patch sources: may be a single string or multiline (quoted list)
 	IFS=$'\n'
@@ -87,13 +87,16 @@ for table_name in $(toml_get_table_names); do
 	p_vers=($(list_args "$patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
 	unset IFS
 	for h in "${p_hosts[@]}"; do
-		if [[ "$h" == *"|gitlab" ]]; then
-			h="gitlab"
+		local ph_type="" ph_inst=""
+		if ! parse_host_spec "$h" ph_type ph_inst; then
+			abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name'"
 		fi
-		if ! isoneof "$h" github gitlab none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': only 'github', 'gitlab' or 'none' is allowed"; fi
 	done
 
-	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver")"; then
+	cli_src_filter=$(toml_get "$t" cli-source-filter) || cli_src_filter=$(toml_get "$t" cli-filter) || cli_src_filter=""
+	patches_src_filter=$(toml_get "$t" patches-source-filter) || patches_src_filter=$(toml_get "$t" patches-filter) || patches_src_filter=""
+
+	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver" "$cli_src_filter" "$patches_src_filter")"; then
 		epr "Could not get prebuilts"
 		continue
 	fi
@@ -108,29 +111,22 @@ for table_name in $(toml_get_table_names); do
 	for i in "${!p_srcs[@]}"; do
 		psrc="${p_srcs[$i]}"
 		phost="${p_hosts[$i]:-${p_hosts[0]}}"
-		pgitlabhost=""
-		if [[ "$phost" == *"|gitlab" ]]; then
-			pgitlabhost="${phost%%|*}"
-			phost="gitlab"
-		fi
+		phost_type="" phost_inst=""
+		parse_host_spec "$phost" phost_type phost_inst || true
 		# Find the downloaded jar/apk for this source to get actual version
 		pdir=${psrc%/*}; pdir=${TEMP_DIR}/${pdir,,}-rv
 		pfile=$(find "$pdir" -name 'patches-*.rvp' -o -name 'patches-*.jar' -o -name '*.mpp' -o -name '*.apk' 2>/dev/null | sort | tail -1)
 		if [ -n "$pfile" ]; then
 			pfilename=${pfile##*/}
-
-			if [ -f "${pdir}/tag_name.txt" ]; then
-				ptag=$(cat "${pdir}/tag_name.txt")
-			else
-				pver_actual=${pfilename#*-}; pver_actual=${pver_actual%.*}
-				ptag="v${pver_actual#v}"
-			fi
-
-			patches_ref_all+="${psrc%%/*}/${pfilename} "
-			if [ "$phost" = github ]; then
-				changelog_url_all+="https://github.com/${psrc}/releases/tag/${ptag} "
-			else
-				changelog_url_all+="${pgitlabhost:-https://gitlab.com}/${psrc}/-/releases/${ptag} "
+			ptag=${pfilename#patches-}
+			ptag=${ptag%.jar}; ptag=${ptag%.rvp}; ptag=${ptag%.mpp}; ptag=${ptag%.apk}
+			patches_ref_all+="${ptag} "
+			if [ "$phost_type" = github ]; then
+				changelog_url_all+="${phost_inst:-https://github.com}/${psrc}/releases/tag/v${ptag#v} "
+			elif [ "$phost_type" = gitlab ]; then
+				changelog_url_all+="${phost_inst:-https://gitlab.com}/${psrc}/-/releases/${ptag} "
+			elif [ "$phost_type" = forgejo ] || [ "$phost_type" = gitea ]; then
+				changelog_url_all+="${phost_inst}/${psrc}/releases/tag/${ptag} "
 			fi
 		fi
 	done
@@ -138,6 +134,9 @@ for table_name in $(toml_get_table_names); do
 	app_args[patches_ref]="${patches_ref_all% }"
 	app_args[changelog_url]="${changelog_url_all% }"
 	app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"
+	app_args[repo_dlurl_filter]=$(toml_get "$t" repo-dlurl-filter) || app_args[repo_dlurl_filter]=""
+	app_args[repo_dlurl_source]=$(toml_get "$t" repo-dlurl-source) || app_args[repo_dlurl_source]=""
+	app_args[repo_dlurl_source]=$(toml_get "$t" repo-dlurl-source) || app_args[repo_dlurl_source]=""
 	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
 	app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || app_args[apkmirror_example_url]=""
 	app_args[prefer_dl_mode]=$(toml_get "$t" prefer-dl-mode) || app_args[prefer_dl_mode]=apk

@@ -136,12 +136,14 @@ enable-module-update = true          # Enable Magisk/KernelSU module auto-update
 dpi = "nodpi anydpi 120-640dpi"      # Default DPI packages searched in order. default: "nodpi anydpi"
 
 patches-source = "MorpheApp/morphe-patches" # Patch bundle repository. default: "MorpheApp/morphe-patches"
-patches-source-host = "github"              # Host type: "github", "gitlab", "https://{repo-host}|gitlab", or "none". default: "github"
+patches-source-host = "github"            # Host type: "github", "gitlab", "{host}|gitlab", "{domain}|forgejo", or "none". default: "github"
 patches-version = "latest"                  # Version option: 'latest', 'dev', 'absolutelatest', or version string (e.g. 'v1.2.3'). default: "latest"
+patches-source-filter = "'' ''"             # Case-insensitive regex filter for patch release assets. Use "'filter1' 'filter2'" when multiple patch sources are used. default: ""
 
 cli-source = "MorpheApp/morphe-desktop"     # CLI engine repository. default: "MorpheApp/morphe-desktop"
-cli-source-host = "github"                 # Host type: "github", "gitlab", "https://{repo-host}|gitlab", or "none". default: "github"
+cli-source-host = "github"                 # Host type: "github", "gitlab", "{host}|gitlab", "{domain}|forgejo", or "none". default: "github"
 cli-version = "latest"                     # CLI version option. default: "latest"
+cli-source-filter = ""                     # Case-insensitive regex filter for CLI release assets. default: ""
 
 rv-brand = "ReVanced"                       # Rebrand prefix from 'ReVanced'. default: patches-source owner
 
@@ -182,6 +184,9 @@ include-stock = "merged"                                   # Stock APK inclusion
 exclusive-patches = false                                  # Exclude all patches by default unless specified. Accepts true, false, or patch source string. default: false
 
 # Download URLs (Specify at least one)
+repo-dlurl = "https://github.com/owner/repository"         # Download directly from GitHub/GitLab release assets of any single-app repository.
+repo-dlurl-filter = "arm64"                                 # Regex/substring to include matching release asset names (e.g. 'arm64' or 'release.apk').
+repo-dlurl-source = "github"                                # Repository host type: 'github', 'gitlab', '{host}|gitlab', '{domain}|forgejo', or 'none'. default: auto
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 prefer-dl-mode = "bundle"                                  # 'bundle' or 'apk'. default: apk. If 'bundle', attempts bundle download first, then falls back to apk.
 apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/youtube/youtube-20-08-35-release/" # Example URL used to resolve app & package name.
