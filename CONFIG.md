@@ -9,24 +9,6 @@ Adding a new app is as simple as adding an entry to a `.toml` file in `configs/p
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 ```
 
-> [!NOTE]
-> **Architecture Note (`main` vs `legacy`)**: The `main` branch represents a complete rewrite featuring a modular configuration directory (`configs/patches/`), multi-architecture build targets (`multi`, `both64`, `both32`), a dynamic Cloudflare solver pipeline (`TRAWL_URL`, `CFB_URL`, `FS_URL`), local build script generators (`generate_manual_config.sh`), and native Xposed module injection. The `legacy` branch is a significantly different earlier edition. See [Key Differences: main vs legacy](#️-key-differences-main-rewritten-vs-legacy) below.
-
----
-
-## 🏛️ Key Differences: `main` (Rewritten) vs `legacy`
-
-The `main` branch is a ground-up rewrite of the build engine, offering significantly greater flexibility, modularity, and features compared to the `legacy` edition:
-
-| Feature / System | `legacy` Branch | `main` Branch (Rewritten) |
-| :--- | :--- | :--- |
-| **Configuration Model** | Single monolithic configuration file (`.github/configs/config.toml`). | Modular configuration system (`configs/patches/*.toml`) separated into base, `.stable.toml`, and `.dev.toml` files with automated TOML compilation. |
-| **Cloudflare Bypass Pipeline** | Hardcoded boolean flags (`CF_BYPASS_SOLVER_TRAWL_8191_ENABLED`) and single-solver polling. | Dynamic URL-based solver pipeline supporting **`TRAWL_URL`**, **`CFB_URL`**, and **`FS_URL`** (FlareSolverr/Byparr). Automatically attempts active solvers and falls back cleanly if omitted. |
-| **Architecture Build Modes** | Supported `auto`, `arm64-v8a`, `arm-v7a`, `all`, and `both`. | Extended multi-arch support adding **`multi`** (all 4 architectures), **`both64`** (`arm64-v8a` + `x86_64`), and **`both32`** (`arm-v7a` + `x86`). |
-| **Local Build Workflow** | Manual JSON editing or full CI triggering required. | Dedicated local build script (`scripts/generate_manual_config.sh`) producing `configs/config.manual.stable.generated.toml` (with `patches-version = "latest"`) and `build-termux.sh`. |
-| **Custom Engine Injection** | Basic ReVanced CLI support only. | Native Xposed module injection via NPatch (`7723mod/NPatch`), LSPatch, Instafel Patcher (`instafel/p-rel`), and plain APK signing (`apksigner`). |
-| **Source Host Flexibility** | Basic GitHub/GitLab support. | Supports custom self-hosted GitLab domains via `https://{domain}\|gitlab` syntax and local files via `local-dlurl`. |
-
 > [!WARNING]
 > When a patch name contains a single quote, double it inside the string (e.g. `'Hide ''Get Music Premium'''`).
 
