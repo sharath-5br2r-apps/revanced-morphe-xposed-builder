@@ -1,13 +1,12 @@
-# Configuration Guide & CLI Reference
+# Configuration Guide & Complete Options Reference
 
 Easily configure and build patched Android applications and Magisk/KernelSU modules locally or in GitHub Actions.
 
-Adding a new app is as simple as adding a entry to a `.toml` file in `configs/patches/`:
+Adding a new app is as simple as adding an entry to a `.toml` file in `configs/patches/`:
 
 ```toml
-[Some-App]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/inc/app"
-# or uptodown-dlurl = "https://spotify.en.uptodown.com/android"
+[youtube-morphe-exp]
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 ```
 
 > [!WARNING]
@@ -15,9 +14,9 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/inc/app"
 
 ---
 
-## 🛠️ Command Line Flags & Usage
+## 🛠️ Command Line Arguments & Usage
 
-The main build entry point is `build.sh`. It accepts the following arguments:
+The primary entry point for building is `build.sh`. It accepts the following positional flags and arguments:
 
 ```bash
 ./build.sh [config_file] [exclusive_apps] [--config-update] [clean]
@@ -28,9 +27,9 @@ The main build entry point is `build.sh`. It accepts the following arguments:
 | Parameter | Type | Description | Example |
 | :--- | :--- | :--- | :--- |
 | `clean` | Flag | Cleans temporary build directories (`temp/`, `build/`, `build.md`). | `./build.sh clean` |
-| `--config-update` | Flag | Generates updated JSON/TOML configurations without triggering APK builds. | `./build.sh --config-update` |
-| `[config_file]` | Path | Path to configuration file (`.json` or `.toml`). Default: auto-resolved `configs/config.toml`. | `./build.sh configs/config.stable.updated.json` |
-| `[exclusive_apps]` | String | Space-separated list of exact TOML section keys (table names, e.g. `"youtube-morphe-exp youtube-music-morphe-anddea"`) to build exclusively. | `./build.sh configs/config.stable.updated.json "youtube-morphe-exp youtube-music-morphe-anddea"` |
+| `--config-update` | Flag | Runs configuration update script (`config_update`) without triggering APK builds. | `./build.sh --config-update` |
+| `[config_file]` | Path | Path to JSON or TOML configuration file. Default: auto-resolved `configs/config.toml` or updated JSON. | `./build.sh configs/config.stable.updated.json` |
+| `[exclusive_apps]` | String | Space-separated list of exact TOML section keys (table headers) to build exclusively. | `./build.sh configs/config.stable.updated.json "youtube-morphe-exp youtube-music-morphe-anddea"` |
 
 ---
 
@@ -43,14 +42,11 @@ The script reads signing credentials and GitHub API authentication from environm
 | Variable | Required | Description |
 | :--- | :--- | :--- |
 | `PERSONAL_ACCESS_TOKEN` | Optional | GitHub Personal Access Token for release queries and GitHub API rate limits. |
-| `GITHUB_TOKEN` | Optional | Default fallback GitHub Token. |
-| `KEYSTORE_BASE64` | Optional | Base64-encoded **`.bks`** (BouncyCastle format) keystore file for signing APKs/modules. |
+| `GH_TOKEN` / `GITHUB_TOKEN` | Optional | Fallback GitHub API tokens. |
+| `KEYSTORE_BASE64` | Optional | Base64-encoded **`.bks`** (BouncyCastle format) keystore file for signing APKs and modules. |
 | `KEYSTORE_PASSWORD` | Optional | Keystore password. |
-| `KEYSTORE_ALIAS` | Optional | Keystore alias name. |
-| `KEYSTORE_KEY_PASSWORD` | Optional | Key entry password. Defaults to `KEYSTORE_PASSWORD` if not set. |
-
-> [!IMPORTANT]
-> **Keystore Format Requirement**: The signing engine uses BouncyCastle provider with `--ks-type BKS`. `KEYSTORE_BASE64` **only accepts `.bks`** keystores. Standard `.jks` or `.p12` keystores will fail signing unless converted to `.bks`.
+| `KEYSTORE_ALIAS` | Optional | Keystore key alias. |
+| `KEYSTORE_KEY_PASSWORD` | Optional | Key entry password. Defaults to `KEYSTORE_PASSWORD` if not specified. |
 
 ### 🔐 Optional Keystore Setup (`.env`)
 
@@ -64,12 +60,14 @@ KEYSTORE_ALIAS="mykeyalias"
 KEYSTORE_KEY_PASSWORD="mykeypassword"
 ```
 
-> [!NOTE]
-> **Automatic Fallback**: If no `.env` or keystore environment variables are supplied, `utils.sh` automatically falls back to `.env.default` and signs APKs using the bundled debug keystore (`ks.keystore`).
+> [!IMPORTANT]
+> **Keystore Format Requirement**: The signing engine uses BouncyCastle provider with `--ks-type BKS`. `KEYSTORE_BASE64` **only accepts `.bks`** keystores. Standard `.jks` or `.p12` keystores will fail signing unless converted to `.bks`.
+>
+> **Automatic Debug Fallback**: If no `.env` or keystore environment variables are supplied, `utils.sh` automatically falls back to `.env.default` and signs built APKs using the bundled debug keystore (`ks.keystore`).
 
 ---
 
-## 💻 Local Build Setup (Termux / Linux / macOS)
+## 💻 Local Building Setup (Termux / Linux / macOS)
 
 ### 1. Prerequisites
 
@@ -103,87 +101,97 @@ sudo apt update && sudo apt install openjdk-21-jre-headless jq python3 curl bash
 # 3. Build all enabled apps in stable configuration
 ./build.sh configs/config.stable.updated.json
 
-# 4. Or build a specific app exclusively (e.g. YouTube)
-./build.sh configs/config.stable.updated.json "YouTube"
+# 4. Build a specific app exclusively using its TOML section key
+./build.sh configs/config.stable.updated.json "youtube-morphe-exp"
 ```
 
 ---
 
-## ⚙️ Configuration Reference (`config.toml`)
+## ⚙️ Complete Options Reference (`config.toml`)
 
-Below is a complete reference of configuration options with their defaults:
+Below is the complete reference of all supported global and app-level configuration keys:
 
 ```toml
-compression-level = 9                # Magisk/KSU module zip compression level (1-9). default: 9
+# ==============================================================================
+# Global Base Configurations (Top-level)
+# ==============================================================================
+
+compression-level = 9                # Magisk/KernelSU module zip compression level (1-9). default: 9
 remove-rv-integrations-checks = true # Remove integration checks from ReVanced integrations. default: true
-dpi = "nodpi anydpi 120-640dpi"      # DPI variants searched in order. default: "nodpi anydpi"
+enable-module-update = true          # Enable Magisk/KernelSU module auto-update prop in module.prop. default: true
+dpi = "nodpi anydpi 120-640dpi"      # Default DPI packages searched in order. default: "nodpi anydpi"
 
-patches-source = "revanced/revanced-patches" # Bundle repository. default: "MorpheApp/morphe-patches"
-# Supported Hosts: "github" and "gitlab". For custom gitlab instances, use "https://{repo-host}|gitlab". "none" disables fetching patches. Default: "github"
+patches-source = "MorpheApp/morphe-patches" # Patch bundle repository. default: "MorpheApp/morphe-patches"
+patches-source-host = "github"              # Host type: "github", "gitlab", "https://{repo-host}|gitlab", or "none". default: "github"
+patches-version = "latest"                  # Version option: 'latest', 'dev', 'absolutelatest', or version string (e.g. 'v1.2.3'). default: "latest"
 
-patches-source-host = "github"
+cli-source = "MorpheApp/morphe-desktop"     # CLI engine repository. default: "MorpheApp/morphe-desktop"
+cli-source-host = "github"                 # Host type: "github", "gitlab", "https://{repo-host}|gitlab", or "none". default: "github"
+cli-version = "latest"                     # CLI version option. default: "latest"
 
-# Version Options: 'latest' downloads latest stable release, 'dev' downloads latest dev release, 'absolutelatest' downloads whichever is latest (stable or dev). Or specify a version number (e.g. 'v1.2.3'). Default: "latest"
+rv-brand = "ReVanced"                       # Rebrand prefix from 'ReVanced'. default: patches-source owner
 
-cli-source = "ReVanced/revanced-cli"             # CLI repository. default: "MorpheApp/morphe-desktop"
-cli-source-host = "github"
-rv-brand = "ReVanced Extended"                   # Rebrand prefix from 'ReVanced'. default: patches-source owner
-
-patches-version = "v2.160.0"
-cli-version = "v5.0.0"
+# ==============================================================================
+# App-Level Configurations (Per-Section Table)
+# ==============================================================================
 
 > [!NOTE]
 > **TOML Section Keys vs. Display Names**: The build system, CLI arguments (`exclusive_apps`), and CI tracking files always identify apps by their **exact TOML section key / table header** (such as `[youtube-morphe-exp]` or `[youtube-music-morphe-anddea]`). The `app-name` setting is purely an optional display override for generated release output names.
 
 [youtube-morphe-exp]
-app-name = "YouTube"                                       # Custom release name override. default: table name ('youtube-morphe-exp')
-pkg-name = "com.some.app"                                 # Explicit package name override.
-enabled = true                                             # Whether to build the app. default: true
-build-mode = "both"                                        # 'both', 'apk' or 'module'. default: apk
+app-name = "YouTube"                                       # Custom display name override for release outputs. default: table section key ('youtube-morphe-exp')
+pkg-name = "com.google.android.youtube"                    # Explicit package name override to avoid network checks during caching.
+enabled = true                                             # Whether to build this app table. default: true
+build-mode = "both"                                        # 'both', 'apk', or 'module'. default: apk
 
-# 'auto' gets the latest possible version supported by all included patches
-# 'exp' gets the latest experimental version from patches.json.
+# App Version Resolution:
+# 'auto' gets the highest version supported by all included patches.
+# 'exp' gets the latest experimental version from patches.json (falls back to 'latest' if none found).
 # 'latest' gets the latest stable version without checking patch constraints.
 # 'beta' gets the latest beta/alpha release.
-version = "auto"                                           # 'auto', 'exp', 'latest', 'beta' or specific version (e.g. '17.40.41'). default: auto
+version = "auto"                                           # 'auto', 'exp', 'latest', 'beta', or explicit version (e.g. '20.08.35'). default: auto
 
-# Optional CLI arguments (supports multiline strings)
+# Optional CLI arguments passed directly to patcher CLI (supports multiline strings)
 patcher-args = """\
   -OdarkThemeBackgroundColor=#FF0F0F0F \
   -Oanother-option=value \
   """
 
+# Patch Selection
 excluded-patches = """\
   'Some Patch' \
   'Some Other Patch' \
-  """                                                      # Whitespace-separated list of patches to exclude. Use '|' to separate per source bundle.
+  """                                                      # Whitespace-separated list of patches to exclude. Use '|' to separate per patch bundle.
 
-included-patches = "'Some Patch'"                          # Whitespace-separated list of non-default patches to include. default: "". Use '|' to separate per source bundle.
-include-stock = "merged"                                   # 'merged', 'split' or 'disable'. default: merged
-exclusive-patches = false                                  # Exclude all patches by default. Accepts true, false, or patch source string. default: false
+included-patches = "'Some Patch'"                          # Whitespace-separated list of non-default patches to include. default: "". Use '|' to separate per patch bundle.
+include-stock = "merged"                                   # Stock APK inclusion mode: 'merged', 'split', or 'disable'. default: merged
+exclusive-patches = false                                  # Exclude all patches by default unless specified. Accepts true, false, or patch source string. default: false
 
-apkmirror-dlurl = "https://www.apkmirror.com/apk/inc/app"
-prefer-dl-mode = "bundle"                                  # 'bundle' or 'apk'. default: apk. If 'bundle', attempts bundle first, then falls back to apk.
-apkmirror-example-url = "https://www.apkmirror.com/apk/inc/app/app-1-2-3-release/" # Example URL used to resolve app & package name.
+# Download URLs (Specify at least one)
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+prefer-dl-mode = "bundle"                                  # 'bundle' or 'apk'. default: apk. If 'bundle', attempts bundle download first, then falls back to apk.
+apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/youtube/youtube-20-08-35-release/" # Example URL used to resolve app & package name.
 
-uptodown-dlurl = "https://spotify.en.uptodown.com/android"
-apkpure-dlurl = "https://apkpure.com/some-app/com.some.app"
-apkcombo-dlurl = "https://apkcombo.com/some-app/com.some.app"
-github-dlurl = "https://github.com/nvbangg/apks/releases/tag/com.some.app"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkpure-dlurl = "https://apkpure.com/youtube/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/nvbangg/apks/releases/tag/com.google.android.youtube"
 direct-dlurl = "https://website/com.google.android.youtube-20.40.45-all.apk"
-local-dlurl = "/home/user/Downloads/com.google.android.youtube-20.40.45-all.apk"
+local-dlurl = "/home/user/Downloads/com.google.android.youtube-20.40.45-all.apk" # Local file path relative to builder directory or absolute path.
 
-module-prop-name = "some-app-module"                       # Module prop name.
-dpi = "360-480dpi"                                         # Used to select APK variant from APKMirror. default: nodpi anydpi
-arch = "arm64-v8a"                                         # 'auto', 'arm64-v8a', 'arm-v7a', 'all', 'both', 'both64', 'both32', 'multi'. default: auto
+# Variant & Hardware Selection
+module-prop-name = "youtube-module"                        # Custom module prop name for Magisk/KSU. default: `${table_name}-jhc`
+dpi = "360-480dpi"                                         # Used to select APK variant from APKMirror ('auto' matches whatever is available). default: nodpi anydpi
+arch = "arm64-v8a"                                         # Options: 'auto', 'arm64-v8a', 'arm-v7a', 'all', 'both', 'both64', 'both32', 'multi'. default: auto
 
+# Security & Patching Overrides
 check-sig = false                                          # Whether to verify signature of downloaded APK. default: false
-custom-microg-patches = "'Package Rename'"                 # Custom non-root patches to apply (disables internal microg scanning). default: none
+custom-microg-patches = "'Package Rename'"                 # Custom non-root patches to apply (disables internal microg scanning). Setting to "'None'" disables microg scanning completely. default: none
 ```
 
 ---
 
-## 🔀 Multiple Patch Sources
+## 🔀 Multiple Patch Sources & Per-Bundle Filtering
 
 Pass multiple patch bundles by specifying `patches-source` as a quoted list:
 
@@ -216,21 +224,36 @@ patches-version = "'latest' 'v1.2.3'"
 Inject Xposed modules natively using `7723mod/NPatch` or `LSPatch` directly from your config:
 
 ```toml
-[Discord]
-cli-source = "7723mod/NPatch"                            # Use NPatch as CLI
+[discord-npatch-revenge]
+cli-source = "7723mod/NPatch"                            # Use NPatch as CLI engine
 cli-version = "latest"
 patches-source = "revenge-mod/revenge-xposed"            # Xposed module as patches bundle
 patches-version = "latest"
-version = "auto"
+version = "auto"                                         # 'auto' safely falls back to 'latest'
 arch = "auto"
 github-dlurl = "https://github.com/discord/releases/..."
 ```
 
 ---
 
+## 📸 Instafel Patcher Engine (Instagram Alpha)
+
+Build Instagram Alpha natively using the Instafel Patcher engine (`instafel/p-rel`) and Patcher Core (`instafel/pc-rel`):
+
+```toml
+[instagram-instafel]
+cli-source = "instafel/p-rel"                            # Use Instafel Patcher CLI
+cli-version = "latest"
+patches-source = "instafel/pc-rel"                       # Provide Instafel Patcher Core
+patches-version = "latest"
+included-patches = "'unlock_developer_options' 'remove_snooze_warning' 'remove_ads' 'instafel'"
+```
+
+---
+
 ## 🔑 Plain APK Signing
 
-Sign APKs using `apksigner` without patching:
+Sign APKs using `apksigner` without applying patches:
 
 ```toml
 [plain-apk-signing]
@@ -242,7 +265,7 @@ patches-source-host = "none"
 
 ---
 
-## 📁 Modular Configuration Directory
+## 📁 Modular Configuration Directory Structure
 
 All configurations are organized inside `configs/patches/`:
 
@@ -251,3 +274,19 @@ All configurations are organized inside `configs/patches/`:
 - `*.dev.toml`: Configurations merged into `dev` (pre-release) builds.
 
 Configurations in `configs/patches/` without `stable` or `dev` in their filename are automatically included in **both** builds.
+
+---
+
+## 🔄 Automatic App Version Checking
+
+The CI workflow automatically detects when a new version of an app is released on APKMirror, Uptodown, or Archive.org.
+
+### How it Works
+1. **Version Fetching**: During the CI run, it reads all enabled apps from the `configs/patches/*.toml` configurations and queries the URLs (`apkmirror-dlurl`, `uptodown-dlurl`, etc.).
+2. **Comparison**: It checks the newly fetched versions against the currently stored versions in `configs/app_versions.json`.
+3. **Triggering**: If a new version is detected, the app section key is added to a temporary active list, and the CI is triggered to build it.
+
+### Tracking File (`configs/app_versions.json`)
+App versions are permanently tracked and committed to `configs/app_versions.json`.
+
+**Selective Checking:** To restrict CI version checking to specific apps (saving network resources), add `"_check_only_listed": true` to the top level of `app_versions.json`. When enabled, the script will only check for updates for keys already listed in the file.
