@@ -59,6 +59,12 @@ while IFS='|' read -r group app; do
     if [ "$version" == "beta" ]; then __AAV__="true"; else __AAV__="false"; fi
     prefer_apk_mode=$(jq -r ".\"$app\".\"prefer-apk-mode\" // \"apk\"" temp_all_configs.json)
     apkmirror_example_url=$(jq -r ".\"$app\".\"apkmirror-example-url\" // empty" temp_all_configs.json)
+    dpi=$(jq -r ".\"$app\".\"dpi\" // empty" temp_all_configs.json)
+    min_sdk=$(jq -r ".\"$app\".\"min-sdk\" // empty" temp_all_configs.json)
+    pkg_name=$(jq -r ".\"$app\".\"pkg-name\" // empty" temp_all_configs.json)
+    check_sig=$(jq -r ".\"$app\".\"check-sig\" // false" temp_all_configs.json)
+    custom_microg_patches=$(jq -r ".\"$app\".\"custom-microg-patches\" // empty" temp_all_configs.json)
+    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode apkmirror_example_url
     
     dlurls=()
     sources=()
