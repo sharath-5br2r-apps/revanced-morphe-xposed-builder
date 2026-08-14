@@ -94,9 +94,14 @@ for table_name in $(toml_get_table_names); do
 	done
 
 	cli_src_filter=$(toml_get "$t" cli-source-filter) || cli_src_filter=$(toml_get "$t" cli-filter) || cli_src_filter=""
-	patches_src_filter=$(toml_get "$t" patches-source-filter) || patches_src_filter=$(toml_get "$t" patches-filter) || patches_src_filter=""
+	cli_tag_filter=$(toml_get "$t" cli-tag-filter) || cli_tag_filter=$(toml_get "$t" cli-version-filter) || cli_tag_filter=""
+	cli_rel_name_filter=$(toml_get "$t" cli-release-name-filter) || cli_rel_name_filter=$(toml_get "$t" cli-release-filter) || cli_rel_name_filter=""
 
-	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver" "$cli_src_filter" "$patches_src_filter")"; then
+	patches_src_filter=$(toml_get "$t" patches-source-filter) || patches_src_filter=$(toml_get "$t" patches-filter) || patches_src_filter=""
+	patches_tag_filter=$(toml_get "$t" patches-tag-filter) || patches_tag_filter=$(toml_get "$t" patches-version-filter) || patches_tag_filter=""
+	patches_rel_name_filter=$(toml_get "$t" patches-release-name-filter) || patches_rel_name_filter=$(toml_get "$t" patches-release-filter) || patches_rel_name_filter=""
+
+	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver" "$cli_src_filter" "$patches_src_filter" "$cli_tag_filter" "$patches_tag_filter" "$cli_rel_name_filter" "$patches_rel_name_filter")"; then
 		epr "Could not get prebuilts"
 		continue
 	fi
@@ -109,32 +114,36 @@ for table_name in $(toml_get_table_names); do
 	# Build aggregated patches_ref and changelog_url from all sources
 	patches_ref_all="" changelog_url_all=""
 	for i in "${!p_srcs[@]}"; do
-		psrc="${p_srcs[$i]}"
-		phost="${p_hosts[$i]:-${p_hosts[0]}}"
+		raw_ph="${p_hosts[$i]:-${p_hosts[0]}}"
 		phost_type="" phost_inst=""
-		parse_host_spec "$phost" phost_type phost_inst || true
-		# Find the downloaded jar/apk for this source to get actual version
-		pdir=${psrc%/*}; pdir=${TEMP_DIR}/${pdir,,}-rv
-		pfile=$(find "$pdir" -name 'patches-*.rvp' -o -name 'patches-*.jar' -o -name '*.mpp' -o -name '*.apk' 2>/dev/null | sort | tail -1)
-		if [ -n "$pfile" ]; then
-			pfilename=${pfile##*/}
-			ptag=${pfilename#patches-}
-			ptag=${ptag%.jar}; ptag=${ptag%.rvp}; ptag=${ptag%.mpp}; ptag=${ptag%.apk}
-			patches_ref_all+="${ptag} "
-			if [ "$phost_type" = github ]; then
-				changelog_url_all+="${phost_inst:-https://github.com}/${psrc}/releases/tag/v${ptag#v} "
-			elif [ "$phost_type" = gitlab ]; then
-				changelog_url_all+="${phost_inst:-https://gitlab.com}/${psrc}/-/releases/${ptag} "
-			elif [ "$phost_type" = forgejo ] || [ "$phost_type" = gitea ]; then
-				changelog_url_all+="${phost_inst}/${psrc}/releases/tag/${ptag} "
-			fi
+		parse_host_spec "$raw_ph" phost_type phost_inst || true
+		psrc="${p_srcs[$i]}"
+		pver="${p_vers[$i]:-${p_vers[0]}}"
+		pref=""
+		if [ "$pver" != "latest" ] && [ "$pver" != "dev" ] && [ "$pver" != "absolutelatest" ] && [[ "$pver" != regex:* ]]; then
+			pref="${pver}"
+		fi
+		patches_ref_all="${patches_ref_all}${pref},"
+		if [ "$phost_type" = "none" ]; then
+			changelog_url_all="${changelog_url_all}passthrough "
+		elif [ "$phost_type" = gitlab ]; then
+			ptag="${pref:-latest}"
+			changelog_url_all="${changelog_url_all}${phost_inst:-https://gitlab.com}/${psrc}/-/releases/${ptag} "
+		elif [ "$phost_type" = forgejo ] || [ "$phost_type" = gitea ]; then
+			ptag="${pref:-latest}"
+			changelog_url_all="${changelog_url_all}${phost_inst}/${psrc}/releases/tag/${ptag} "
+		else
+			ptag="${pref:-latest}"
+			changelog_url_all="${changelog_url_all}${phost_inst:-https://github.com}/${psrc}/releases/tag/${ptag} "
 		fi
 	done
 	app_args[patches_src]=${p_srcs[0]}
-	app_args[patches_ref]="${patches_ref_all% }"
+	app_args[patches_ref]="${patches_ref_all%,}"
 	app_args[changelog_url]="${changelog_url_all% }"
 	app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"
 	app_args[repo_dlurl_filter]=$(toml_get "$t" repo-dlurl-filter) || app_args[repo_dlurl_filter]=""
+	app_args[repo_dlurl_tag_filter]=$(toml_get "$t" repo-dlurl-tag-filter) || app_args[repo_dlurl_tag_filter]=""
+	app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-name-filter) || app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-filter) || app_args[repo_dlurl_release_name_filter]=""
 	app_args[repo_dlurl_source]=$(toml_get "$t" repo-dlurl-source) || app_args[repo_dlurl_source]=""
 	app_args[repo_dlurl_source]=$(toml_get "$t" repo-dlurl-source) || app_args[repo_dlurl_source]=""
 	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false

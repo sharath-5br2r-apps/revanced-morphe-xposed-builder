@@ -1,0 +1,10 @@
+[brave-stable-morphe-dh6k-arm64-v8a]
+enabled = true
+app-name = "brave-stable"
+rv-brand = "morphe-dh6k"
+build-mode = "apk"
+arch = "arm64-v8a"
+pkg-name = "com.brave.browser"
+cli-source = "MorpheApp/morphe-desktop"
+repo-dlurl = "https://github.com/brave/brave-browser"
+version = "stable"

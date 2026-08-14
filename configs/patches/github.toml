@@ -1,0 +1,12 @@
+[github-morphe-hoodles-stylus]
+enabled = true
+app-name = "github"
+rv-brand = "morphe-hoodles-stylus"
+build-mode = "apk"
+pkg-name = "com.github.android"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://github-android.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
+# archive-dlurl = "https://archive.org/download/geologically/apks/com.github.android"
+patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
+included-patches = "'AMOLED dark theme'"

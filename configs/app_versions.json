@@ -41,5 +41,41 @@
       "speedtest-morphe-xtra"
     ],
     "version": "7.0.7"
+  },
+  "Bitwarden": {
+    "keys": [
+      "bitwarden-morphe-stylus"
+    ],
+    "version": "2026.7.1-bwpm"
+  },
+  "Oxygen Updater": {
+    "keys": [
+      "oxygen-updater-morphe-rushiranpise"
+    ],
+    "version": "7.1.0"
+  },
+  "Brave Beta": {
+    "keys": [
+      "brave-beta-morphe-dh6k-arm64-v8a"
+    ],
+    "version": "1.94.110"
+  },
+  "PC Remote": {
+    "keys": [
+      "pc-remote-morphe-rushiranpise"
+    ],
+    "version": "8.3.4"
+  },
+  "Microsoft Word": {
+    "keys": [
+      "microsoft-word-morphe-rushiranpise"
+    ],
+    "version": "16.0.20131.20080"
+  },
+  "Microsoft Excel": {
+    "keys": [
+      "microsoft-excel-morphe-rushiranpise"
+    ],
+    "version": "16.0.20131.20080"
   }
 }

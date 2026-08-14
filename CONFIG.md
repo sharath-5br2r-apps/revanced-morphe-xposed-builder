@@ -137,13 +137,17 @@ dpi = "nodpi anydpi 120-640dpi"      # Default DPI packages searched in order. d
 
 patches-source = "MorpheApp/morphe-patches" # Patch bundle repository. default: "MorpheApp/morphe-patches"
 patches-source-host = "github"            # Host type: "github", "gitlab", "{host}|gitlab", "{domain}|forgejo", or "none". default: "github"
-patches-version = "latest"                  # Version option: 'latest', 'dev', 'absolutelatest', or version string (e.g. 'v1.2.3'). default: "latest"
+patches-version = "latest"                  # Version option: 'latest', 'dev', 'absolutelatest', 'regex:pattern', or version string (e.g. 'v1.2.3'). default: "latest"
 patches-source-filter = "'' ''"             # Case-insensitive regex filter for patch release assets. Use "'filter1' 'filter2'" when multiple patch sources are used. default: ""
+patches-tag-filter = ""                     # Case-insensitive regex filter for patch release tags (e.g. '^v1\.2\..*'). default: ""
+patches-release-name-filter = ""            # Case-insensitive regex filter for patch release titles/names. default: ""
 
 cli-source = "MorpheApp/morphe-desktop"     # CLI engine repository. default: "MorpheApp/morphe-desktop"
 cli-source-host = "github"                 # Host type: "github", "gitlab", "{host}|gitlab", "{domain}|forgejo", or "none". default: "github"
-cli-version = "latest"                     # CLI version option. default: "latest"
+cli-version = "latest"                     # CLI version option: 'latest', 'dev', 'absolutelatest', 'regex:pattern', or version string. default: "latest"
 cli-source-filter = ""                     # Case-insensitive regex filter for CLI release assets. default: ""
+cli-tag-filter = ""                        # Case-insensitive regex filter for CLI release tags (e.g. '^v2\..*'). default: ""
+cli-release-name-filter = ""               # Case-insensitive regex filter for CLI release titles/names. default: ""
 
 rv-brand = "ReVanced"                       # Rebrand prefix from 'ReVanced'. default: patches-source owner
 
@@ -186,6 +190,8 @@ exclusive-patches = false                                  # Exclude all patches
 # Download URLs (Specify at least one)
 repo-dlurl = "https://github.com/owner/repository"         # Download directly from GitHub/GitLab release assets of any single-app repository.
 repo-dlurl-filter = "arm64"                                 # Regex/substring to include matching release asset names (e.g. 'arm64' or 'release.apk').
+repo-dlurl-tag-filter = "v1\..*"                           # Case-insensitive regex filter for repository release tags. default: ""
+repo-dlurl-release-name-filter = "Stable.*"                 # Case-insensitive regex filter for repository release titles/names. default: ""
 repo-dlurl-source = "github"                                # Repository host type: 'github', 'gitlab', '{host}|gitlab', '{domain}|forgejo', or 'none'. default: auto
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 prefer-dl-mode = "bundle"                                  # 'bundle' or 'apk'. default: apk. If 'bundle', attempts bundle download first, then falls back to apk.

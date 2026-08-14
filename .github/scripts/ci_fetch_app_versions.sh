@@ -8,16 +8,15 @@ source utils.sh
 set_prebuilts
 
 # Find all app configs
-CONFIG_FILES=$(find configs/patches -name "*.toml")
+mapfile -t CONFIG_FILES < <(find configs/patches -name "*.toml") 2>/dev/null || CONFIG_FILES=($(find configs/patches -name "*.toml"))
 
-if [ -z "$CONFIG_FILES" ]; then
+if [ ${#CONFIG_FILES[@]} -eq 0 ]; then
     echo "No config files found in configs/patches"
     exit 0
 fi
 
 # Convert all TOML files to a single JSON
-# shellcheck disable=SC2086
-yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $CONFIG_FILES > temp_all_configs.json
+yq -o=json eval-all '. as $item ireduce ({}; . * $item)' "${CONFIG_FILES[@]}" > temp_all_configs.json
 
 [ -f configs/app_versions.json ] || echo '{}' > configs/app_versions.json
 > fetched_app_versions.jsonl
@@ -57,6 +56,8 @@ while IFS='|' read -r group app; do
     apkcombo_url=$(jq -r ".\"$app\".\"apkcombo-dlurl\" // empty" temp_all_configs.json)
     repo_url=$(jq -r ".\"$app\".\"repo-dlurl\" // empty" temp_all_configs.json)
     repo_dlurl_filter=$(jq -r ".\"$app\".\"repo-dlurl-filter\" // empty" temp_all_configs.json)
+    repo_dlurl_tag_filter=$(jq -r ".\"$app\".\"repo-dlurl-tag-filter\" // empty" temp_all_configs.json)
+    repo_dlurl_release_name_filter=$(jq -r ".\"$app\".\"repo-dlurl-release-name-filter\" // .\"$app\".\"repo-dlurl-release-filter\" // empty" temp_all_configs.json)
     repo_dlurl_source=$(jq -r ".\"$app\".\"repo-dlurl-source\" // empty" temp_all_configs.json)
     version=$(jq -r ".\"$app\".\"version\" // empty" temp_all_configs.json)
     if [ "$version" == "beta" ]; then __AAV__="true"; else __AAV__="false"; fi
@@ -67,7 +68,7 @@ while IFS='|' read -r group app; do
     pkg_name=$(jq -r ".\"$app\".\"pkg-name\" // empty" temp_all_configs.json)
     check_sig=$(jq -r ".\"$app\".\"check-sig\" // false" temp_all_configs.json)
     custom_microg_patches=$(jq -r ".\"$app\".\"custom-microg-patches\" // empty" temp_all_configs.json)
-    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode apkmirror_example_url repo_dlurl_filter repo_dlurl_source
+    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode apkmirror_example_url repo_dlurl_filter repo_dlurl_tag_filter repo_dlurl_release_name_filter repo_dlurl_source
     
     dlurls=()
     sources=()

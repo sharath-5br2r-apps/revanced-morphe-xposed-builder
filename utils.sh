@@ -234,8 +234,31 @@ get_apkeditor() {
 	gh_dl "$TEMP_DIR/apkeditor.jar" "$dl_url" >/dev/null || return 1
 }
 
+filter_releases_by_regex() {
+	local tag_pattern="${1:-}"
+	local name_pattern="${2:-}"
+	[ -z "$tag_pattern" ] && [ -z "$name_pattern" ] && { cat; return 0; }
+	
+	tag_pattern="${tag_pattern#regex:}"
+	name_pattern="${name_pattern#regex:}"
+	
+	jq -c --arg tf "$tag_pattern" --arg nf "$name_pattern" '
+		(if type == "array" then . else [.] end) |
+		map(
+			select(
+				($tf == "" or (.tag_name != null and (.tag_name | test($tf; "i")))) and
+				($nf == "" or (.name != null and (.name | test($nf; "i"))))
+			)
+		)
+	' 2>/dev/null || cat
+}
+
+filter_releases_by_tag_regex() {
+	filter_releases_by_regex "$1" ""
+}
+
 get_prebuilts() {
-	local cache_key="${1}_${2}_${3}_${4}_${5}_${6}_${7:-}_${8:-}"
+	local cache_key="${1}_${2}_${3}_${4}_${5}_${6}_${7:-}_${8:-}_${9:-}_${10:-}_${11:-}_${12:-}"
 	if [ -n "${__PREBUILTS_CACHE__["$cache_key"]:-}" ]; then
 		echo "${__PREBUILTS_CACHE__["$cache_key"]}"
 		return 0
@@ -248,7 +271,8 @@ get_prebuilts() {
 
 _get_prebuilts() {
 	local cli_host=$1 cli_src=$2 cli_ver=$3 patches_host_list=$4 patches_src_list=$5 patches_ver_list=$6
-	local cli_filter=${7:-} patches_filter_list=${8:-}
+	local cli_filter=${7:-} patches_filter_list=${8:-} cli_tag_filter=${9:-} patches_tag_filter_list=${10:-}
+	local cli_rel_name_filter=${11:-} patches_rel_name_filter_list=${12:-}
 	
 	local first_patch_src
 	first_patch_src=$(list_args "$patches_src_list" | tr -d \"\' | head -n 1)
@@ -263,6 +287,12 @@ _get_prebuilts() {
 		abort "source host '$raw_cli_host' is not supported"
 	fi
 
+	local cli_tag_pattern="${cli_tag_filter:-}"
+	if [ -z "$cli_tag_pattern" ] && [[ "$cli_ver" == regex:* ]]; then
+		cli_tag_pattern="${cli_ver#regex:}"
+	fi
+	local cli_rel_name_pattern="${cli_rel_name_filter:-}"
+
 	local grab_cl=false
 	local dir=${src%/*}
 	dir=${TEMP_DIR}/${dir,,}-rv
@@ -270,7 +300,11 @@ _get_prebuilts() {
 	if [[ "$host" != "none" ]]; then
 	local rv_rel release resp tag_name matches asset name url
 	rv_rel=$(source_release_api_base "$host" "$src" "$host_instance") || return 1
-	if [ "$ver" = "dev" ]; then
+	if [ -n "$cli_tag_pattern" ] || [ -n "$cli_rel_name_pattern" ]; then
+		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		resp=$(filter_releases_by_regex "$cli_tag_pattern" "$cli_rel_name_pattern" <<<"$resp")
+		release=$(source_release_pick_from_list "$host" absolutelatest "$host_instance" <<<"$resp") || return 1
+	elif [ "$ver" = "dev" ]; then
 		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 		release=$(source_release_pick_from_list "$host" dev "$host_instance" <<<"$resp") || true
 		ver=$(jq -r '.tag_name' <<<"$release") || true
@@ -279,7 +313,7 @@ _get_prebuilts() {
 			release="" # Clear release if we had to fallback to get_highest_ver
 		fi
 	fi
-	if [ "$ver" = "latest" ]; then
+	if [ -z "${release:-}" ] && [ "$ver" = "latest" ]; then
 		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 		release=$(source_release_pick_from_list "$host" latest "$host_instance" <<<"$resp") || return 1
 	elif [ -z "${release:-}" ]; then
@@ -362,12 +396,19 @@ _get_prebuilts() {
 	local p_hosts=($(list_args "$patches_host_list" | tr -d \"\'))
 	local p_vers=($(list_args "$patches_ver_list" | tr -d \"\'))
 	local p_filters=($(list_args "$patches_filter_list" | tr -d \"\'))
+	local p_tag_filters=($(list_args "$patches_tag_filter_list" | tr -d \"\'))
+	local p_rel_name_filters=($(list_args "$patches_rel_name_filter_list" | tr -d \"\'))
 	unset IFS
 	for i in "${!p_srcs[@]}"; do
 		local raw_host="${p_hosts[$i]:-${p_hosts[0]}}"
 		local src="${p_srcs[$i]}"
 		local ver="${p_vers[$i]:-${p_vers[0]}}"
 		local pf="${p_filters[$i]:-${p_filters[0]:-}}"
+		local ptf="${p_tag_filters[$i]:-${p_tag_filters[0]:-}}"
+		if [ -z "$ptf" ] && [[ "$ver" == regex:* ]]; then
+			ptf="${ver#regex:}"
+		fi
+		local prnf="${p_rel_name_filters[$i]:-${p_rel_name_filters[0]:-}}"
 		local host="" host_instance=""
 		if ! parse_host_spec "$raw_host" host host_instance; then
 			abort "source host '$raw_host' is not supported"
@@ -381,7 +422,11 @@ _get_prebuilts() {
 		if [[ $host != "none" ]]; then
 		local rv_rel release resp tag_name matches asset name url
 		rv_rel=$(source_release_api_base "$host" "$src" "$host_instance") || return 1
-		if [ "$ver" = "dev" ]; then
+		if [ -n "$ptf" ] || [ -n "$prnf" ]; then
+			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+			resp=$(filter_releases_by_regex "$ptf" "$prnf" <<<"$resp")
+			release=$(source_release_pick_from_list "$host" absolutelatest "$host_instance" <<<"$resp") || return 1
+		elif [ "$ver" = "dev" ]; then
 			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 			release=$(source_release_pick_from_list "$host" dev "$host_instance" <<<"$resp") || true
 			ver=$(jq -r '.tag_name' <<<"$release") || true
@@ -390,7 +435,7 @@ _get_prebuilts() {
 				release="" # Clear release if we had to fallback to get_highest_ver
 			fi
 		fi
-		if [ "$ver" = "absolutelatest" ]; then
+		if [ -z "${release:-}" ] && [ "$ver" = "absolutelatest" ]; then
 			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 			release=$(source_release_pick_from_list "$host" absolutelatest "$host_instance" <<<"$resp") || true
 			ver=$(jq -r '.tag_name' <<<"$release") || true
@@ -399,7 +444,7 @@ _get_prebuilts() {
 				release="" # Clear release if we had to fallback to get_highest_ver
 			fi
 		fi
-		if [ "$ver" = "latest" ]; then
+		if [ -z "${release:-}" ] && [ "$ver" = "latest" ]; then
 			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
 			release=$(source_release_pick_from_list "$host" latest "$host_instance" <<<"$resp") || return 1
 		elif [ -z "${release:-}" ]; then
@@ -1771,10 +1816,12 @@ get_github_pkg_name() {
 get_repo_resp() {
 	local url="${1%/}"
 	local filter="${repo_dlurl_filter:-${args[repo_dlurl_filter]:-}}"
+	local tag_filter="${repo_dlurl_tag_filter:-${args[repo_dlurl_tag_filter]:-}}"
+	local rel_name_filter="${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-${repo_dlurl_release_filter:-${args[repo_dlurl_release_filter]:-}}}}"
 	local source_host="${repo_dlurl_source:-${args[repo_dlurl_source]:-github}}"
 	[ -z "$source_host" ] && source_host="github"
 
-	local cache_key="repo_${url}_${filter}_${source_host}"
+	local cache_key="repo_${url}_${filter}_${tag_filter}_${rel_name_filter}_${source_host}"
 	if [ -n "${__DL_RESP_CACHE__["$cache_key"]:-}" ]; then
 		__REPO_RESP_JSON__="${__DL_RESP_CACHE__["$cache_key"]}"
 		return 0
@@ -1824,6 +1871,10 @@ get_repo_resp() {
 	fi
 
 	if [ -z "$release" ] || [ "$release" = "[]" ]; then return 1; fi
+
+	if { [ -n "$tag_filter" ] || [ -n "$rel_name_filter" ]; } && [ -z "$tag" ]; then
+		release=$(filter_releases_by_regex "$tag_filter" "$rel_name_filter" <<<"$release")
+	fi
 
 	local mode="latest"
 	if [ "${__AAV__:-false}" = true ] || [ "${version:-}" = "beta" ] || [ "${version:-}" = "dev" ] || [ "${version:-}" = "absolutelatest" ]; then

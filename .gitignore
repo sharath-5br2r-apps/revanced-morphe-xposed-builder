@@ -1,14 +1,58 @@
-*.apk
-*.zip
-/temp
-/build
-test*
-/logs
+# Temporary & Build Directories
+/temp/
+/build/
+/logs/
+/dist/
+/out/
+*-temporary-files/
+
+# Temporary Script & CI Output Files
+temp_all_configs.json
+fetched_app_versions.jsonl
+check_list.txt
+build.json
 build.md
 cmpr
-*-temporary-files
+*.log
+*.tmp
+*.bak
+
+# Binaries, Packages & Archives
+*.apk
+*.apkm
+*.xapk
+*.apks
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Environment & Credentials
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.p12
+*.pem
+
+# Python & Node Cache
 __pycache__/
-build.json
-/test
-/.env
+*.py[cod]
+*$py.class
+node_modules/
+.venv/
+venv/
+env/
+
+# IDE & OS Junk
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Redis Data
 *.rdb
