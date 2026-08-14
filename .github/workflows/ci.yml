@@ -107,30 +107,30 @@ jobs:
           file_pattern: configs/*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
-  build_dev:
-    needs: check_patch
-    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/config.dev.updated.json"
-    secrets: inherit
-
   build_stable:
-    needs: [check_patch, build_dev]
-    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && needs.build_dev.result != 'cancelled' }}
+    needs: check_patch
+    if: ${{ needs.check_patch.outputs.trigger_stable == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.updated.json"
     secrets: inherit
 
+  build_dev:
+    needs: [check_patch, build_stable]
+    if: ${{ always() && needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && needs.build_stable.result != 'cancelled' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.dev.updated.json"
+    secrets: inherit
+
   trigger_cleanup:
-    needs: [build_dev, build_stable]
-    if: ${{ always() && (needs.build_dev.result == 'success' || needs.build_stable.result == 'success') }}
+    needs: [build_stable, build_dev]
+    if: ${{ always() && (needs.build_stable.result == 'success' || needs.build_dev.result == 'success') }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_dev, build_stable, trigger_cleanup]
-    if: ${{ always() && (needs.build_dev.result == 'success' || needs.build_stable.result == 'success') }}
+    needs: [build_stable, build_dev, trigger_cleanup]
+    if: ${{ always() && (needs.build_stable.result == 'success' || needs.build_dev.result == 'success') }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
