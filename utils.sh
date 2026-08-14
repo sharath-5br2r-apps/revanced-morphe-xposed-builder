@@ -1791,6 +1791,7 @@ get_repo_resp() {
 		return 0
 	fi
 
+	local src="" tag=""
 	src=$(echo "$url" | sed -E 's|https?://[^/]+/([^/]+/[^/]+).*|\1|')
 	src="${src%.git}"
 	src="${src%/releases}"
