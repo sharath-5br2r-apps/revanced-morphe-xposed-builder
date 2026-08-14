@@ -476,7 +476,7 @@ _get_prebuilts() {
 					if echo "$cli_src" | grep -qiE "(npatch|lspatch)"; then
 						matches_new=$(jq -e -r 'map(select(.name | test("\\.apk$"; "i")))' <<<"$matches")
 					else
-						matches_new=$(jq -e -r 'map(select(.name | test("\\.(rvp|mpp|jar)$"; "i")))' <<<"$matches")
+						matches_new=$(jq -e -r 'map(select((.name | test("\\.(rvp|mpp|jar)$"; "i")) and (.name | test("morphe-desktop|revanced-cli"; "i") | not)))' <<<"$matches")
 					fi
 					if [ "$(jq 'length' <<<"$matches_new")" -ge 1 ]; then
 						matches=$matches_new
@@ -799,13 +799,32 @@ _patches_list_versions() {
 		return 0
 	fi
 
-	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
+	local p_jars=()
+	for j in $(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'); do
+		local j_name=$(basename "$j")
+		if [[ "$j_name" == *"morphe-desktop"* ]] || [[ "$j_name" == *"revanced-cli"* ]]; then
+			continue
+		fi
+		p_jars+=("$j")
+	done
+	if [ ${#p_jars[@]} -eq 0 ]; then
+		echo ""
+		return 0
+	fi
 	
 	if [[ "$cli_source_l" == *"morphe-desktop"* ]]; then
+		if [ ${#p_jars[@]} -eq 0 ]; then
+			echo ""
+			return 0
+		fi
 		local p_args_morphe=""
 		for j in "${p_jars[@]}"; do
-			p_args_morphe+="--patches '$j' "
+			[ -n "$j" ] && [ -f "$j" ] && p_args_morphe+="--patches '$j' "
 		done
+		if [ -z "$p_args_morphe" ]; then
+			echo ""
+			return 0
+		fi
 		if ! op=$(eval java -jar "'$cli_jar'" list-versions $p_args_morphe -f "'$pkg_name'" $extra_args 2>&1); then
 			epr "Could not list versions $cli_jar: '$op'"
 			return 1
@@ -845,7 +864,18 @@ _patches_list() {
 		echo "Name: passthrough-dummy"
 		return 0
 	fi
-	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
+	local p_jars=()
+	for j in $(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'); do
+		local j_name=$(basename "$j")
+		if [[ "$j_name" == *"morphe-desktop"* ]] || [[ "$j_name" == *"revanced-cli"* ]]; then
+			continue
+		fi
+		p_jars+=("$j")
+	done
+	if [ ${#p_jars[@]} -eq 0 ]; then
+		echo ""
+		return 0
+	fi
 	if [[ "$cli_source_l" == *"instafel"* ]]; then
 		local cli_dir
 		cli_dir=$(dirname "$cli_jar")
@@ -861,10 +891,18 @@ _patches_list() {
 		return 0
 	fi
 	if [[ "$cli_source_l" == *"morphe-desktop"* ]]; then
+		if [ ${#p_jars[@]} -eq 0 ]; then
+			echo ""
+			return 0
+		fi
 		local p_args_morphe=""
 		for j in "${p_jars[@]}"; do
-			p_args_morphe+="--patches '$j' "
+			[ -n "$j" ] && [ -f "$j" ] && p_args_morphe+="--patches '$j' "
 		done
+		if [ -z "$p_args_morphe" ]; then
+			echo ""
+			return 0
+		fi
 		if ! op=$(eval java -jar "'$cli_jar'" list-patches $p_args_morphe -f "'$pkg_name'" --with-versions --with-packages 2>&1); then
 			epr "Could not get patches list $cli_jar: '$op'"
 			return 1
