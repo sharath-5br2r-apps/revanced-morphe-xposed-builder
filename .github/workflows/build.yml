@@ -82,10 +82,12 @@ jobs:
           ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}" "${{ inputs.exclusive_apps }}"
 
       - name: Update Usage Tracker
-        if: ${{ secrets.PERSONAL_ACCESS_TOKEN != '' }}
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        run: python3 .github/scripts/update_usage_tracker.py || true
+        run: |
+          if [ -n "${PERSONAL_ACCESS_TOKEN:-}" ]; then
+            python3 .github/scripts/update_usage_tracker.py || true
+          fi
         
       - name: Cleanup old cached APKs
         run: bash .github/scripts/build_cache_cleanup.sh
