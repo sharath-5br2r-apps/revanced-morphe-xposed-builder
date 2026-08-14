@@ -160,7 +160,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "tiktok-morphe-icysymmetra": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "tiktok",
     "pkg-name": "com.zhiliaoapp.musically",
     "rv-brand": "morphe-icysymmetra",
@@ -170,7 +170,7 @@
     "patches-source": "icysymmetra/tiktok-patches-for-morphe"
   },
   "youtube-morphe-exp": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "youtube",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -189,7 +189,7 @@
     "included-patches": "'Theme'"
   },
   "youtube-music-morphe-exp": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "youtube-music",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -221,7 +221,7 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches"
   },
   "proton-vpn-morphe-paresh": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "proton-vpn",
     "rv-brand": "morphe-paresh",
     "version": "latest",
@@ -262,7 +262,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "x",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",
