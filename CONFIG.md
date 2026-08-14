@@ -44,18 +44,21 @@ The script reads signing credentials and GitHub API authentication from environm
 | :--- | :--- | :--- |
 | `PERSONAL_ACCESS_TOKEN` | Optional | GitHub Personal Access Token for release queries and GitHub API rate limits. |
 | `GITHUB_TOKEN` | Optional | Default fallback GitHub Token. |
-| `KEYSTORE_BASE64` | Optional | Base64-encoded `.jks` or `.p12` keystore file for signing APKs/modules. |
+| `KEYSTORE_BASE64` | Optional | Base64-encoded **`.bks`** (BouncyCastle format) keystore file for signing APKs/modules. |
 | `KEYSTORE_PASSWORD` | Optional | Keystore password. |
 | `KEYSTORE_ALIAS` | Optional | Keystore alias name. |
 | `KEYSTORE_KEY_PASSWORD` | Optional | Key entry password. Defaults to `KEYSTORE_PASSWORD` if not set. |
+
+> [!IMPORTANT]
+> **Keystore Format Requirement**: The signing engine uses BouncyCastle provider with `--ks-type BKS`. `KEYSTORE_BASE64` **only accepts `.bks`** keystores. Standard `.jks` or `.p12` keystores will fail signing unless converted to `.bks`.
 
 ### 🔐 Optional Keystore Setup (`.env`)
 
 You can create a `.env` file in the root directory to customize your APK signing keys:
 
 ```bash
-# Generate base64 keystore string: base64 -w 0 my-release-key.jks
-KEYSTORE_BASE64="<your_base64_encoded_keystore_data>"
+# Generate base64 string from a BKS keystore: base64 -w 0 my-release-key.bks
+KEYSTORE_BASE64="<your_base64_encoded_bks_keystore_data>"
 KEYSTORE_PASSWORD="mysecretpassword"
 KEYSTORE_ALIAS="mykeyalias"
 KEYSTORE_KEY_PASSWORD="mykeypassword"
