@@ -89,20 +89,31 @@ On **Ubuntu / Debian**:
 sudo apt update && sudo apt install openjdk-21-jre-headless jq python3 curl bash
 ```
 
-### 2. Running Local Builds
+### 2. Generating TOML Configurations for Local Builds
+
+Local building reads modular TOML configuration files from `configs/patches/`. You can compile these TOML files into a single combined configuration file `configs/config.manual.generated.toml` using the generator script:
+
+```bash
+# Generate combined TOML config from all modular TOML files in configs/patches/
+./scripts/generate_manual_config.sh
+```
+
+Or compile JSON configs from patch sources using `./build.sh --config-update`.
+
+### 3. Running Local Builds
 
 ```bash
 # 1. Clean previous build artifacts
 ./build.sh clean
 
-# 2. Update configurations from patch sources
-./build.sh --config-update
+# 2. Generate merged local TOML configuration
+./scripts/generate_manual_config.sh
 
-# 3. Build all enabled apps in stable configuration
-./build.sh configs/config.stable.updated.json
+# 3. Build using the generated manual TOML config
+./build.sh configs/config.manual.generated.toml
 
-# 4. Build a specific app exclusively using its TOML section key
-./build.sh configs/config.stable.updated.json "youtube-morphe-exp"
+# 4. Or build a specific app exclusively using its TOML section key
+./build.sh configs/config.manual.generated.toml "youtube-morphe-exp"
 ```
 
 ---
