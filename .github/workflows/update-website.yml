@@ -16,7 +16,7 @@ jobs:
       - name: Dispatch Website Cache Update
         env:
           PAT_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
+          WEBSITE_REPO: ${{ vars.WEBSITE_REPO }}
         run: |
           if [ -n "${WEBSITE_REPO:-}" ] && [ -n "${PAT_TOKEN:-}" ]; then
             curl -X POST "https://api.github.com/repos/${WEBSITE_REPO}/dispatches" \
