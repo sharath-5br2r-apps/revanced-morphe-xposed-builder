@@ -74,8 +74,8 @@ while IFS='|' read -r group app; do
     
     dlurls=()
     sources=()
-    [ -n "$apkmirror_url" ] && { dlurls+=("$apkmirror_url"); sources+=("apkmirror"); }
     [ -n "$repo_url" ] && { dlurls+=("$repo_url"); sources+=("repo"); }
+    [ -n "$apkmirror_url" ] && { dlurls+=("$apkmirror_url"); sources+=("apkmirror"); }
     [ -n "$github_url" ] && { dlurls+=("$github_url"); sources+=("github"); }
     [ -n "$archive_url" ] && { dlurls+=("$archive_url"); sources+=("archive"); }
     [ -n "$uptodown_url" ] && { dlurls+=("$uptodown_url"); sources+=("uptodown"); }
