@@ -10,6 +10,7 @@ on:
         default: "configs/config.manual.generated.toml"
         options:
           - "configs/config.manual.generated.toml"
+          - "configs/config.manual.stable.generated.toml"
           - "configs/config.manual.toml"
           - "configs/config.dev.updated.json"
           - "configs/config.stable.updated.json"
@@ -19,7 +20,7 @@ on:
         required: false
         type: string
       exclusive_apps:
-        description: "Enter the toml table names of the only apps you want to build. When empty, all apps are built."
+        description: "Enter the toml table names or regex pattern of the apps you want to build. When empty, all apps are built."
         required: false
         type: string
 concurrency:
@@ -44,12 +45,8 @@ jobs:
               echo "CONFIG_FILE=$manual_input" >> "$GITHUB_OUTPUT"
             elif [[ -f "configs/patches/${manual_input}.toml" ]]; then
               echo "CONFIG_FILE=configs/patches/${manual_input}.toml" >> "$GITHUB_OUTPUT"
-            elif [[ -f ".github/configs/patches/${manual_input}.toml" ]]; then
-              echo "CONFIG_FILE=.github/configs/patches/${manual_input}.toml" >> "$GITHUB_OUTPUT"
             elif [[ -f "configs/${manual_input}" ]]; then
               echo "CONFIG_FILE=configs/${manual_input}" >> "$GITHUB_OUTPUT"
-            elif [[ -f ".github/configs/${manual_input}" ]]; then
-              echo "CONFIG_FILE=.github/configs/${manual_input}" >> "$GITHUB_OUTPUT"
             else
               echo "Config file '$manual_input' not found"
               exit 1

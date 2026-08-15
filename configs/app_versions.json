@@ -20,9 +20,9 @@
   },
   "Adobe Acrobat": {
     "keys": [
-      "adobe-acrobat-morphe-hooman-disablec"
+      "adobe-acrobat-morphe-rushiranpise"
     ],
-    "version": "26.6.1.45942"
+    "version": "0"
   },
   "Proton VPN": {
     "keys": [
@@ -56,7 +56,8 @@
   },
   "Brave Beta": {
     "keys": [
-      "brave-beta-morphe-dh6k-arm64-v8a"
+      "brave-beta-morphe-dh6k-arm64-v8a",
+      "brave-beta-morphe-dh6k-x86_64"
     ],
     "version": "1.94.110"
   },
@@ -77,5 +78,17 @@
       "microsoft-excel-morphe-rushiranpise"
     ],
     "version": "16.0.20131.20080"
+  },
+  "Amazon India": {
+    "keys": [
+      "amazon-india-morphe-rushiranpise"
+    ],
+    "version": "0"
+  },
+  "GitHub": {
+    "keys": [
+      "github-morphe-hoodles-stylus"
+    ],
+    "version": "1.267.0"
   }
 }

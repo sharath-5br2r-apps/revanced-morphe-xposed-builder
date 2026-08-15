@@ -63,7 +63,27 @@ mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm ${MODUL
 for table_name in $(toml_get_table_names); do
 	if [ -z "$table_name" ]; then continue; fi
 	t=$(toml_get_table "$table_name")
-	if [[ "${@:2}" != *"$table_name"* ]] && [ -n "${2:-}" ]; then continue; fi
+	if [ -n "${2:-}" ]; then
+		skip_table=false
+		has_pos_args=false
+		pos_matched=false
+		for arg in "${@:2}"; do
+			if [[ "$arg" == !* ]]; then
+				pat="${arg#!}"
+				if [ -n "$pat" ] && [[ "$table_name" =~ $pat ]]; then
+					skip_table=true
+					break
+				fi
+			else
+				has_pos_args=true
+				if [[ "$table_name" =~ $arg ]]; then
+					pos_matched=true
+				fi
+			fi
+		done
+		if [ "$skip_table" = true ]; then continue; fi
+		if [ "$has_pos_args" = true ] && [ "$pos_matched" = false ]; then continue; fi
+	fi
 	enabled=$(toml_get "$t" enabled) || enabled=true
 	vtf "$enabled" "enabled"
 	if [ "$enabled" = false ]; then continue; fi
@@ -101,7 +121,7 @@ for table_name in $(toml_get_table_names); do
 	patches_tag_filter=$(toml_get "$t" patches-tag-filter) || patches_tag_filter=$(toml_get "$t" patches-version-filter) || patches_tag_filter=""
 	patches_rel_name_filter=$(toml_get "$t" patches-release-name-filter) || patches_rel_name_filter=$(toml_get "$t" patches-release-filter) || patches_rel_name_filter=""
 
-	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver" "$cli_src_filter" "$patches_src_filter" "$cli_tag_filter" "$patches_tag_filter" "$cli_rel_name_filter" "$patches_rel_name_filter")"; then
+	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "${p_hosts[*]}" "${p_srcs[*]}" "${p_vers[*]}" "$cli_src_filter" "$patches_src_filter" "$cli_tag_filter" "$patches_tag_filter" "$cli_rel_name_filter" "$patches_rel_name_filter")"; then
 		epr "Could not get prebuilts"
 		continue
 	fi
@@ -144,7 +164,6 @@ for table_name in $(toml_get_table_names); do
 	app_args[repo_dlurl_filter]=$(toml_get "$t" repo-dlurl-filter) || app_args[repo_dlurl_filter]=""
 	app_args[repo_dlurl_tag_filter]=$(toml_get "$t" repo-dlurl-tag-filter) || app_args[repo_dlurl_tag_filter]=""
 	app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-name-filter) || app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-filter) || app_args[repo_dlurl_release_name_filter]=""
-	app_args[repo_dlurl_source]=$(toml_get "$t" repo-dlurl-source) || app_args[repo_dlurl_source]=""
 	app_args[repo_dlurl_source]=$(toml_get "$t" repo-dlurl-source) || app_args[repo_dlurl_source]=""
 	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
 	app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || app_args[apkmirror_example_url]=""

@@ -9,3 +9,22 @@ cli-source = "MorpheApp/morphe-desktop"
 patches-source = "dh6k/morphe-patches"
 repo-dlurl = "https://github.com/brave/brave-browser"
 version = "stable"
+repo-dlurl-filter = "MonoArm64.apk"
+repo-dlurl-release-name-filter = "^Release v"
+
+[brave-stable-morphe-dh6k-x86_64]
+enabled = true
+app-name = "brave-stable"
+rv-brand = "morphe-dh6k"
+build-mode = "apk"
+arch = "x86_64"
+pkg-name = "com.brave.browser"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "dh6k/morphe-patches"
+repo-dlurl = "https://github.com/brave/brave-browser"
+version = "stable"
+repo-dlurl-filter = "Monox64.apk"
+repo-dlurl-release-name-filter = "^Release v"
+
+
+

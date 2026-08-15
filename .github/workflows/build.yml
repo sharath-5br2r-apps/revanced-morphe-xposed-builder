@@ -62,7 +62,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: temp/apks
-          key: apks-${{ hashFiles('.github/configs/app_versions.json', '.github/configs/patches/**/*.toml') }}
+          key: apks-${{ hashFiles('configs/app_versions.json', 'configs/patches/**/*.toml') }}
           restore-keys: |
             apks-
 

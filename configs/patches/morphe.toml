@@ -2,7 +2,7 @@ enable-module-update = true
 patches-version = "absolutelatest"
 
 [youtube-morphe-exp]
-enabled = true 
+enabled = true
 app-name = "youtube"
 rv-brand = "morphe-exp"
 build-mode = "both"
@@ -12,8 +12,8 @@ cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 dpi = "nodpi anydpi auto"
-archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.youtube"
+# archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
+# github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 patches-source = "MorpheApp/morphe-patches"
@@ -31,11 +31,10 @@ pkg-name = "com.google.android.apps.youtube.music"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 dpi = "nodpi anydpi auto"
-archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.youtube.music"
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.apps.youtube.music"
+# archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.youtube.music"
+# github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.apps.youtube.music"
 apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
 apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
 patches-source = "MorpheApp/morphe-patches"
 patcher-args = "-OdarkThemeBackgroundColor=#000000 "
 included-patches = "'Theme'"
-

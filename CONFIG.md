@@ -28,8 +28,8 @@ The primary entry point for building is `build.sh`. It accepts the following pos
 | :--- | :--- | :--- | :--- |
 | `clean` | Flag | Cleans temporary build directories (`temp/`, `build/`, `build.md`). | `./build.sh clean` |
 | `--config-update` | Flag | Runs configuration update script (`config_update`) without triggering APK builds. | `./build.sh --config-update` |
-| `[config_file]` | Path | Path to JSON or TOML configuration file. Default: auto-resolved `configs/config.toml` or updated JSON. | `./build.sh configs/config.stable.updated.json` |
-| `[exclusive_apps]` | String | Space-separated list of exact TOML section keys (table headers) to build exclusively. | `./build.sh configs/config.stable.updated.json "youtube-morphe-exp youtube-music-morphe-anddea"` |
+| `[config_file]` | Path | Path to JSON or TOML configuration file. Default: auto-resolved `configs/config.toml` or updated JSON. | `./build.sh configs/patches/rushiranpise.toml` |
+| `[exclusive_apps]` | String / Regex | Exact TOML section key or regex pattern to build matching apps exclusively. | `./build.sh configs/patches/rushiranpise.toml '[^amazon.]'` |
 
 ---
 
@@ -189,7 +189,7 @@ exclusive-patches = false                                  # Exclude all patches
 
 # Download URLs (Specify at least one)
 repo-dlurl = "https://github.com/owner/repository"         # Download directly from GitHub/GitLab release assets of any single-app repository.
-repo-dlurl-filter = "arm64"                                 # Regex/substring to include matching release asset names (e.g. 'arm64' or 'release.apk').
+repo-dlurl-filter = "arm64"                                 # Regex filter for asset names. Prefix with '!' for inverse matching (e.g. '!arm64' excludes arm64 assets).
 repo-dlurl-tag-filter = "v1\..*"                           # Case-insensitive regex filter for repository release tags. default: ""
 repo-dlurl-release-name-filter = "Stable.*"                 # Case-insensitive regex filter for repository release titles/names. default: ""
 repo-dlurl-source = "github"                                # Repository host type: 'github', 'gitlab', '{host}|gitlab', '{domain}|forgejo', or 'none'. default: auto
@@ -211,7 +211,7 @@ arch = "arm64-v8a"                                         # Options: 'auto', 'a
 
 # Security & Patching Overrides
 check-sig = false                                          # Whether to verify signature of downloaded APK. default: false
-custom-microg-patches = "'Package Rename'"                 # Custom non-root patches to apply (disables internal microg scanning). Setting to "'None'" disables microg scanning completely. default: none
+custom-microg-patches = "'Package Rename'"                 # Custom non-root patches to apply. Setting to "'None'" cleanly disables MicroG patches without adding empty arguments. default: none
 ```
 
 ---
@@ -307,11 +307,12 @@ Configurations in `configs/patches/` without `stable` or `dev` in their filename
 The CI workflow automatically detects when a new version of an app is released on APKMirror, Uptodown, or Archive.org.
 
 ### How it Works
-1. **Version Fetching**: During the CI run, it reads all enabled apps from the `configs/patches/*.toml` configurations and queries the URLs (`apkmirror-dlurl`, `uptodown-dlurl`, etc.).
-2. **Comparison**: It checks the newly fetched versions against the currently stored versions in `configs/app_versions.json`.
-3. **Triggering**: If a new version is detected, the app section key is added to a temporary active list, and the CI is triggered to build it.
+1. **Version Fetching**: During the CI run, it reads enabled apps from the `configs/patches/*.toml` configurations and queries the download URLs (`apkmirror-dlurl`, `uptodown-dlurl`, `repo-dlurl`, etc.). If a version lookup fails to return a valid version, the CI script explicitly errors out (`exit 1`) to prevent invalid state.
+2. **Comparison**: It compares newly fetched versions against stored versions in `configs/app_versions.json`.
+3. **Triggering**: If a new version is detected, the app section key is added to the active build list and the CI is triggered.
 
 ### Tracking File (`configs/app_versions.json`)
 App versions are permanently tracked and committed to `configs/app_versions.json`.
 
-**Selective Checking:** To restrict CI version checking to specific apps (saving network resources), add `"_check_only_listed": true` to the top level of `app_versions.json`. When enabled, the script will only check for updates for keys already listed in the file.
+- **Initial Setup**: Apps initialized with version `"0"` will automatically trigger a version update and build on the next CI run.
+- **Selective Checking**: To restrict CI version checking to specific apps (saving network resources), set `"_check_only_listed": true` at the top level of `app_versions.json`. When enabled, the workflow will only check for updates for apps listed in the file.

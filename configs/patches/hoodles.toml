@@ -1,17 +1,5 @@
 enable-module-update = true
 patches-version = "absolutelatest"
-[github-morphe-hoodles]
-enabled = true
-app-name = "github"
-rv-brand = "morphe-hoodles"
-build-mode = "apk"
-pkg-name = "com.github.android"
-cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://github-android.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
-# archive-dlurl = "https://archive.org/download/geologically/apks/com.github.android"
-patches-source = "hoo-dles/morphe-patches"
-included-patches = "'AMOLED dark theme'"
 
 [prime-video-morphe-hoodles]
 enabled = true

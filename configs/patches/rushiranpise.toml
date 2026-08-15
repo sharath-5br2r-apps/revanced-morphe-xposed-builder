@@ -14,6 +14,7 @@ patches-source = "rushiranpise/morphe-patches"
 included-patches = "'Dark Mode' 'Open Links in Browser'"
 excluded-patches = "'Hide Rufus Tab'"
 custom-microg-patches = "'None'"
+version = "latest"
 
 [adobe-acrobat-morphe-rushiranpise]
 enabled = true
@@ -22,36 +23,40 @@ app-name = "adobe-acrobat"
 rv-brand = "morphe-rushiranpise"
 version = "latest"
 build-mode = "apk"
+arch = "both64"
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
 dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/smorphe-patches"
+patches-source = "rushiranpise/morphe-patches"
+custom-microg-patches = "'None'"
 
 [microsoft-word-morphe-rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "microsoft-word"
 rv-brand = "morphe-rushiranpise"
-version = "latest"
+custom-microg-patches = "'None'"
 build-mode = "apk"
+arch = "both64"
 pkg-name = "com.microsoft.office.word"
 uptodown-dlurl = "https://microsoft-word-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/word/"
 dpi = "nodpi anydpi auto"
-
+patches-source = "rushiranpise/morphe-patches"
 
 [microsoft-excel-morphe-rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "microsoft-excel"
 rv-brand = "morphe-rushiranpise"
-version = "latest"
+custom-microg-patches = "'None'"
 build-mode = "apk"
 pkg-name = "com.microsoft.office.excel"
 uptodown-dlurl = "https://microsoft-excel-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/excel/"
 dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
 
 [pc-remote-morphe-rushiranpise]
 enabled = true
@@ -59,11 +64,13 @@ cli-source = "MorpheApp/morphe-desktop"
 app-name = "pc-remote"
 rv-brand = "morphe-rushiranpise"
 version = "latest"
+custom-microg-patches = "'None'"
 build-mode = "apk"
 pkg-name = "com.monect.portable"
 uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
 dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
 
 [oxygen-updater-morphe-rushiranpise]
 enabled = true
@@ -71,6 +78,8 @@ cli-source = "MorpheApp/morphe-desktop"
 app-name = "oxygen-updater"
 rv-brand = "morphe-rushiranpise"
 version = "latest"
+custom-microg-patches = "'None'"
 build-mode = "apk"
-pkg-name = "com.arjanvlek.soxygenupdater"
+pkg-name = "com.arjanvlek.oxygenupdater"
 repo-dlurl = "https://github.com/oxygen-updater/os-updater"
+patches-source = "rushiranpise/morphe-patches"
