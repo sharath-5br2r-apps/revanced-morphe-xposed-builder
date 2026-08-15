@@ -21,6 +21,7 @@ fi
 HTMLQ="${HTMLQ:-htmlq}"
 
 set -u
+shopt -s nullglob extglob
 MODULE_TEMPLATE_DIR="module"
 CWD=$(pwd)
 TEMP_DIR="temp"
