@@ -216,7 +216,7 @@ pkg-name = "com.dv.adm"
 cli-source = "MorpheApp/morphe-desktop"
 dpi = "nodpi anydpi auto"
 uptodown-dlurl = "https://advanced-download-manager.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/advanced-download-manager/advanced-download-manager/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [tiktok-morphe-icysymmetra]
