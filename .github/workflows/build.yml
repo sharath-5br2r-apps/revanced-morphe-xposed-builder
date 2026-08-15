@@ -32,6 +32,10 @@ jobs:
         env:
           REDIS_URL: redis://redis:6379
         options: --shm-size=1gb
+      cfb:
+        image: ghcr.io/sarperavci/cloudflarebypassforscraping:latest
+        ports:
+          - 8000:8000
     steps:
       - name: Setup java
         uses: actions/setup-java@v5
@@ -73,6 +77,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           TRAWL_URL: "http://localhost:8191"
+          CFB_URL: "http://localhost:8000"
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
