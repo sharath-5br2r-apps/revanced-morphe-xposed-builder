@@ -16,12 +16,13 @@ jobs:
       - name: Dispatch Website Cache Update
         env:
           PAT_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
         run: |
-          TOKEN="${PAT_TOKEN:-$GH_TOKEN}"
-          if [ -n "$TOKEN" ]; then
-            curl -X POST https://api.github.com/repos/sharath-5br2r-apps/sharath-5br2r-apps.github.io/dispatches \
+          if [ -n "${WEBSITE_REPO:-}" ] && [ -n "${PAT_TOKEN:-}" ]; then
+            curl -X POST "https://api.github.com/repos/${WEBSITE_REPO}/dispatches" \
               -H "Accept: application/vnd.github.v3+json" \
-              -H "Authorization: token $TOKEN" \
+              -H "Authorization: token $PAT_TOKEN" \
               -d '{"event_type": "update-catalog-cache"}'
+          else
+            echo "WEBSITE_REPO or PERSONAL_ACCESS_TOKEN is not present. Skipping website update."
           fi

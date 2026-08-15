@@ -18,8 +18,9 @@ def run_cmd(cmd, check=True, sanitize=None):
 
 def main():
     token = os.environ.get("PERSONAL_ACCESS_TOKEN")
-    if not token:
-        print("PERSONAL_ACCESS_TOKEN is not set. Skipping usage tracker update.")
+    apks_repo = os.environ.get("APKS_REPO") or os.environ.get("UPLOAD_APKS_REPO")
+    if not token or not apks_repo:
+        print("APKS_REPO or PERSONAL_ACCESS_TOKEN is not set. Skipping usage tracker update.")
         return
 
     used_versions_file = "temp/used_versions.txt"
@@ -34,7 +35,7 @@ def main():
         print("No versions recorded. Skipping update.")
         return
 
-    repo_url = f"https://oauth2:{token}@github.com/sharath-5br2r-apps/apks-dump.git"
+    repo_url = f"https://oauth2:{token}@github.com/{apks_repo}.git"
     clone_dir = "temp/apks_repo"
     
     if os.path.exists(clone_dir):

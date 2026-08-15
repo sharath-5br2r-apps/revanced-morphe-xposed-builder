@@ -2925,16 +2925,18 @@ build_rv() {
 				all_apk="$cached_all_apk"
 			fi
 
-			if [ -f "$stock_apk" ] && [ -n "${UPLOAD_APKS_REPO:-}" ] && [ "$dl_p" != "github" ] && [ "$dl_p" != "archive" ]; then
-				pr "Uploading newly downloaded APKs to ${UPLOAD_APKS_REPO}..."
-				if gh release view "$pkg_name" --repo "$UPLOAD_APKS_REPO" >/dev/null 2>&1 || gh release create "$pkg_name" --repo "$UPLOAD_APKS_REPO" --title "$pkg_name" --notes ""; then
+			local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-}}"
+			local pat_token="${PERSONAL_ACCESS_TOKEN:-}"
+			if [ -f "$stock_apk" ] && [ -n "$apks_repo" ] && [ -n "$pat_token" ] && [ "$dl_p" != "github" ] && [ "$dl_p" != "archive" ]; then
+				pr "Uploading newly downloaded APKs to ${apks_repo}..."
+				if GH_TOKEN="$pat_token" gh release view "$pkg_name" --repo "$apks_repo" >/dev/null 2>&1 || GH_TOKEN="$pat_token" gh release create "$pkg_name" --repo "$apks_repo" --title "$pkg_name" --notes ""; then
 					if [ -f "$all_apk" ]; then
-						gh release upload "$pkg_name" "$all_apk" --repo "$UPLOAD_APKS_REPO" --clobber || true
+						GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$all_apk" --repo "$apks_repo" --clobber || true
 					else
-						gh release upload "$pkg_name" "$stock_apk" --repo "$UPLOAD_APKS_REPO" --clobber || true
+						GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$stock_apk" --repo "$apks_repo" --clobber || true
 					fi
 				else
-					wpr "Failed to view/create release $pkg_name on $UPLOAD_APKS_REPO"
+					wpr "Failed to view/create release $pkg_name on $apks_repo"
 				fi
 			fi
 		else
