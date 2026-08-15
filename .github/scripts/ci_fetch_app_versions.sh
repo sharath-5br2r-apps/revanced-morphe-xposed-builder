@@ -52,8 +52,6 @@ while IFS='|' read -r group app; do
     
     apkmirror_url=$(jq -r ".\"$app\".\"apkmirror-dlurl\" // empty" temp_all_configs.json)
     uptodown_url=$(jq -r ".\"$app\".\"uptodown-dlurl\" // empty" temp_all_configs.json)
-    github_url=$(jq -r ".\"$app\".\"github-dlurl\" // empty" temp_all_configs.json)
-    archive_url=$(jq -r ".\"$app\".\"archive-dlurl\" // empty" temp_all_configs.json)
     apkpure_url=$(jq -r ".\"$app\".\"apkpure-dlurl\" // empty" temp_all_configs.json)
     apkcombo_url=$(jq -r ".\"$app\".\"apkcombo-dlurl\" // empty" temp_all_configs.json)
     repo_url=$(jq -r ".\"$app\".\"repo-dlurl\" // empty" temp_all_configs.json)
@@ -76,8 +74,6 @@ while IFS='|' read -r group app; do
     sources=()
     [ -n "$repo_url" ] && { dlurls+=("$repo_url"); sources+=("repo"); }
     [ -n "$apkmirror_url" ] && { dlurls+=("$apkmirror_url"); sources+=("apkmirror"); }
-    [ -n "$github_url" ] && { dlurls+=("$github_url"); sources+=("github"); }
-    [ -n "$archive_url" ] && { dlurls+=("$archive_url"); sources+=("archive"); }
     [ -n "$uptodown_url" ] && { dlurls+=("$uptodown_url"); sources+=("uptodown"); }
     [ -n "$apkpure_url" ] && { dlurls+=("$apkpure_url"); sources+=("apkpure"); }
     [ -n "$apkcombo_url" ] && { dlurls+=("$apkcombo_url"); sources+=("apkcombo"); }
@@ -102,14 +98,6 @@ while IFS='|' read -r group app; do
             if [[ "$source" == "repo" ]]; then
                 get_repo_resp "$dlurl" || { echo "::warning::Failed repo resp for $app"; continue; }
                 vers=$(get_repo_vers) || { echo "::warning::Failed repo vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "github" ]]; then
-                get_github_resp "$dlurl" || { echo "::warning::Failed github resp for $app"; continue; }
-                vers=$(get_github_vers) || { echo "::warning::Failed github vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "archive" ]]; then
-                get_archive_resp "$dlurl" || { echo "::warning::Failed archive resp for $app"; continue; }
-                vers=$(get_archive_vers) || { echo "::warning::Failed archive vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "apkmirror" ]]; then
                 get_apkmirror_resp "$dlurl" || { echo "::warning::Failed apkmirror resp for $app"; continue; }
