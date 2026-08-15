@@ -43,6 +43,8 @@ The script reads signing credentials and GitHub API authentication from environm
 | :--- | :--- | :--- |
 | `PERSONAL_ACCESS_TOKEN` | Optional | GitHub Personal Access Token for release queries and GitHub API rate limits. |
 | `GH_TOKEN` / `GITHUB_TOKEN` | Optional | Fallback GitHub API tokens. |
+| `APKS_REPO` | Optional *(CI Only)* | Target GitHub repository (`owner/repo`, e.g. `owner/apks-dump`) for uploading stock APK dumps and tracking version usage. Useful for CI workflows only. |
+| `WEBSITE_REPO` | Optional *(CI Only)* | Target GitHub repository (`owner/repo`, e.g. `owner/owner.github.io`) for dispatching website/catalog cache update events. Useful for CI workflows only. |
 | `KEYSTORE_BASE64` | Optional | Base64-encoded **`.bks`** (BouncyCastle format) keystore file for signing APKs and modules. |
 | `KEYSTORE_PASSWORD` | Optional | Keystore password. |
 | `KEYSTORE_ALIAS` | Optional | Keystore key alias. |
