@@ -1138,9 +1138,10 @@ _cf_get() {
 # -------------------- apkmirror --------------------
 get_apkmirror_resp() {
 	local url="${1}"
-	if [ -n "${__DL_RESP_CACHE__["apkmirror_resp_$url"]:-}" ]; then
-		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["apkmirror_resp_$url"]}"
-		__APKMIRROR_CAT__="${__DL_RESP_CACHE__["apkmirror_cat_$url"]}"
+	local key="apkmirror_${url//[^a-zA-Z0-9]/_}"
+	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
+		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["$key"]}"
+		__APKMIRROR_CAT__="${__DL_RESP_CACHE__["cat_$key"]}"
 		return 0
 	fi
 	local html=""
@@ -1148,8 +1149,8 @@ get_apkmirror_resp() {
 	__APKMIRROR_RESP__="$html"
 	local clean_url="${url%/}"
 	__APKMIRROR_CAT__="${clean_url##*/}"
-	__DL_RESP_CACHE__["apkmirror_resp_$url"]="$__APKMIRROR_RESP__"
-	__DL_RESP_CACHE__["apkmirror_cat_$url"]="$__APKMIRROR_CAT__"
+	__DL_RESP_CACHE__["$key"]="$__APKMIRROR_RESP__"
+	__DL_RESP_CACHE__["cat_$key"]="$__APKMIRROR_CAT__"
 	set +u
 	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-}" 
 	set -u
@@ -1458,10 +1459,11 @@ dl_apkmirror() {
 # -------------------- apkpure --------------------
 get_apkpure_resp() {
 	local url="${1}"
-	if [ -n "${__DL_RESP_CACHE__["apkpure_resp_$url"]:-}" ]; then
-		__APKPURE_BASE_URL__="${__DL_RESP_CACHE__["apkpure_base_$url"]}"
-		__APKPURE_PKG__="${__DL_RESP_CACHE__["apkpure_pkg_$url"]}"
-		__APKPURE_RESP__="${__DL_RESP_CACHE__["apkpure_resp_$url"]}"
+	local key="apkpure_${url//[^a-zA-Z0-9]/_}"
+	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
+		__APKPURE_BASE_URL__="${__DL_RESP_CACHE__["base_$key"]}"
+		__APKPURE_PKG__="${__DL_RESP_CACHE__["pkg_$key"]}"
+		__APKPURE_RESP__="${__DL_RESP_CACHE__["$key"]}"
 		return 0
 	fi
 	url="${url%/downloading*}"
@@ -1472,9 +1474,9 @@ get_apkpure_resp() {
 	local html=""
 	_cf_get "${url}/downloading/" || return 1
 	__APKPURE_RESP__="$html"
-	__DL_RESP_CACHE__["apkpure_base_$1"]="$__APKPURE_BASE_URL__"
-	__DL_RESP_CACHE__["apkpure_pkg_$1"]="$__APKPURE_PKG__"
-	__DL_RESP_CACHE__["apkpure_resp_$1"]="$__APKPURE_RESP__"
+	__DL_RESP_CACHE__["base_$key"]="$__APKPURE_BASE_URL__"
+	__DL_RESP_CACHE__["pkg_$key"]="$__APKPURE_PKG__"
+	__DL_RESP_CACHE__["$key"]="$__APKPURE_RESP__"
 }
 
 get_apkpure_vers() {
@@ -1565,10 +1567,11 @@ _apkpure_install_xapk() {
 # -------------------- apkcombo --------------------
 get_apkcombo_resp() {
 	local url="${1}"
-	if [ -n "${__DL_RESP_CACHE__["apkcombo_resp_$url"]:-}" ]; then
-		__APKCOMBO_RESP__="${__DL_RESP_CACHE__["apkcombo_resp_$url"]}"
-		__APKCOMBO_PKG__="${__DL_RESP_CACHE__["apkcombo_pkg_$url"]}"
-		__APKCOMBO_BASE_URL__="${__DL_RESP_CACHE__["apkcombo_base_$url"]}"
+	local key="apkcombo_${url//[^a-zA-Z0-9]/_}"
+	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
+		__APKCOMBO_RESP__="${__DL_RESP_CACHE__["$key"]}"
+		__APKCOMBO_PKG__="${__DL_RESP_CACHE__["pkg_$key"]}"
+		__APKCOMBO_BASE_URL__="${__DL_RESP_CACHE__["base_$key"]}"
 		return 0
 	fi
 	url="${url%/}"
@@ -1577,9 +1580,9 @@ get_apkcombo_resp() {
 	local html=""
 	_cf_get "https://apkcombo.com/search/${__APKCOMBO_PKG__}/download" || return 1
 	__APKCOMBO_RESP__="$html"
-	__DL_RESP_CACHE__["apkcombo_resp_$1"]="$__APKCOMBO_RESP__"
-	__DL_RESP_CACHE__["apkcombo_pkg_$1"]="$__APKCOMBO_PKG__"
-	__DL_RESP_CACHE__["apkcombo_base_$1"]="$__APKCOMBO_BASE_URL__"
+	__DL_RESP_CACHE__["$key"]="$__APKCOMBO_RESP__"
+	__DL_RESP_CACHE__["pkg_$key"]="$__APKCOMBO_PKG__"
+	__DL_RESP_CACHE__["base_$key"]="$__APKCOMBO_BASE_URL__"
 }
 get_apkcombo_vers() {
 	echo "$__APKCOMBO_RESP__" | grep -oP 'phone-\K[0-9][^-]+-apk' | sed 's/-apk$//' | head -1
@@ -1673,15 +1676,16 @@ PYC
 # -------------------- uptodown --------------------
 get_uptodown_resp() {
 	local url="${1}"
-	if [ -n "${__DL_RESP_CACHE__["uptodown_resp_$url"]:-}" ]; then
-		__UPTODOWN_RESP__="${__DL_RESP_CACHE__["uptodown_resp_$url"]}"
-		__UPTODOWN_RESP_PKG__="${__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]}"
+	local key="uptodown_${url//[^a-zA-Z0-9]/_}"
+	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
+		__UPTODOWN_RESP__="${__DL_RESP_CACHE__["$key"]}"
+		__UPTODOWN_RESP_PKG__="${__DL_RESP_CACHE__["pkg_$key"]}"
 		return 0
 	fi
 	__UPTODOWN_RESP__=$(req "${url}/versions" -) || return 1
 	__UPTODOWN_RESP_PKG__=$(req "${url}/download" -) || return 1
-	__DL_RESP_CACHE__["uptodown_resp_$url"]="$__UPTODOWN_RESP__"
-	__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]="$__UPTODOWN_RESP_PKG__"
+	__DL_RESP_CACHE__["$key"]="$__UPTODOWN_RESP__"
+	__DL_RESP_CACHE__["pkg_$key"]="$__UPTODOWN_RESP_PKG__"
 }
 get_uptodown_vers() { $HTMLQ --text ".version" <<<"$__UPTODOWN_RESP__"; }
 dl_uptodown() {
@@ -1849,10 +1853,11 @@ dl_github() {
 
 get_github_resp() {
 	local url="${1}"
-	if [ -n "${__DL_RESP_CACHE__["github_archive_resp_$url"]:-}" ]; then
-		__ARCHIVE_RESP__="${__DL_RESP_CACHE__["github_archive_resp_$url"]}"
-		__ARCHIVE_PKG_NAME__="${__DL_RESP_CACHE__["github_archive_pkg_$url"]}"
-		__GITHUB_URL__="${__DL_RESP_CACHE__["github_url_$url"]}"
+	local key="github_archive_${url//[^a-zA-Z0-9]/_}"
+	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
+		__ARCHIVE_RESP__="${__DL_RESP_CACHE__["$key"]}"
+		__ARCHIVE_PKG_NAME__="${__DL_RESP_CACHE__["pkg_$key"]}"
+		__GITHUB_URL__="${__DL_RESP_CACHE__["ghurl_$key"]}"
 		return 0
 	fi
 	local repo tag resp
@@ -1873,9 +1878,9 @@ get_github_resp() {
 	
 	__GITHUB_URL__="https://github.com/${repo}/releases/download/${tag}"
 	
-	__DL_RESP_CACHE__["github_archive_resp_$url"]="$__ARCHIVE_RESP__"
-	__DL_RESP_CACHE__["github_archive_pkg_$url"]="$__ARCHIVE_PKG_NAME__"
-	__DL_RESP_CACHE__["github_url_$url"]="$__GITHUB_URL__"
+	__DL_RESP_CACHE__["$key"]="$__ARCHIVE_RESP__"
+	__DL_RESP_CACHE__["pkg_$key"]="$__ARCHIVE_PKG_NAME__"
+	__DL_RESP_CACHE__["ghurl_$key"]="$__GITHUB_URL__"
 }
 
 # Extracts version matching the archive logic: strips prefix (up to first '-') and suffix (arch/extension)

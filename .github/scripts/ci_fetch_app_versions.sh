@@ -88,9 +88,10 @@ while IFS='|' read -r group app; do
     for i in "${!dlurls[@]}"; do
         dlurl="${dlurls[$i]}"
         source="${sources[$i]}"
+        cache_key="url_${dlurl//[^a-zA-Z0-9]/_}"
         
-        if [ -n "${cached_versions[$dlurl]:-}" ]; then
-            latest_ver="${cached_versions[$dlurl]}"
+        if [ -n "${cached_versions["$cache_key"]:-}" ]; then
+            latest_ver="${cached_versions["$cache_key"]}"
             echo "::notice::Reusing cached version for $app: $latest_ver"
             break
         else
@@ -117,7 +118,7 @@ while IFS='|' read -r group app; do
             fi
             
             if [ -n "$latest_ver" ]; then
-                cached_versions[$dlurl]="$latest_ver"
+                cached_versions["$cache_key"]="$latest_ver"
                 # Sleep to avoid rate limiting only if we actually fetched
                 sleep $((RANDOM % 5 + 3))
                 break
