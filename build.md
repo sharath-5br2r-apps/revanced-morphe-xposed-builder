@@ -1,6 +1,39 @@
+youtube-morphe-anddea (all): 20.51.39  
+youtube-music-morphe-anddea (arm64-v8a): 9.15.51  
+youtube-music-morphe-anddea (x86_64): 9.15.51  
+speedtest-morphe-xtra (arm64-v8a): 7.0.7  
+speedtest-morphe-xtra (x86_64): 7.0.7  
+moonplus-reader-morphe-binarymend (all): 10.5  
+brave-beta-morphe-dh6k-arm64-v8a (arm64-v8a): 1.94.109  
+brave-beta-morphe-dh6k-x86_64 (x86_64): 1.94.109  
+brave-stable-morphe-dh6k-arm64-v8a (arm64-v8a): 1.93.136  
+brave-stable-morphe-dh6k-x86_64 (x86_64): 1.93.136  
+gboard-morphe-jasonwu1994-adobo (arm64-v8a): 17.7.7.932364120-release-arm64-v8a  
+gboard-morphe-jasonwu1994-adobo-clone (arm64-v8a): 17.7.7.932364120-release-arm64-v8a  
+prime-video-morphe-hoodles (arm64-v8a): 3.0.467  
+adobe-acrobat-morphe-hooman (arm64-v8a): 26.6.1  
+symfonium-morphe-hooman (all): 14.1.0  
+tiktok-morphe-icysymmetra (all): 46.2.3  
 youtube-morphe-exp (all): 21.33.321  
 youtube-music-morphe-exp (arm64-v8a): 9.31.51  
 youtube-music-morphe-exp (x86_64): 9.31.51  
+fing-morphe-paresh (all): 12.12.0  
+proton-vpn-morphe-paresh (all): 5.19.72.0  
+jiohotstar-morphe-paresh (all): 26.04.27.10  
+instagram-morphe-piko (arm64-v8a): 439.0.0.37.89  
+instagram-morphe-piko (x86_64): 439.0.0.37.89  
+x-morphe-piko (all): 12.15.2-release.0  
+discord-npatch-revenge (all): 341.13-Stable  
+amazon-india-morphe-rushiranpise (all): 32.15.0.300  
+adobe-acrobat-morphe-rushiranpise (arm64-v8a): 26.7.1  
+adobe-acrobat-morphe-rushiranpise (x86_64): 26.7.1  
+microsoft-word-morphe-rushiranpise (arm64-v8a): 16.0.20228.20090  
+microsoft-word-morphe-rushiranpise (x86_64): 16.0.20228.20090  
+microsoft-excel-morphe-rushiranpise (arm64-v8a): 16.0.20228.20090  
+pc-remote-morphe-rushiranpise (all): 8.3.5  
+oxygen-updater-morphe-rushiranpise (all): 7.1.0  
+amazon-alexa-signed (all): 2.2.698932.0  
+bitwarden-morphe-stylus (all): 2026.7.1  
 
 **Notes:**  
 • Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
@@ -9,5 +42,48 @@ youtube-music-morphe-exp (x86_64): 9.31.51
 [GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Website](https://sharath-5br2r-apps.github.io)
   
 CLI: MorpheApp/morphe-desktop-1.13.0-all.jar  
+Patches: anddea/patches-4.3.0-dev.1.mpp  
+[Changelog](https://github.com/anddea/revanced-patches/releases/tag/v4.3.0-dev.1)
+
+Patches: arandomhooman/patches-1.44.0-dev.4.mpp  
+[Changelog](https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.44.0-dev.4)
+
+Patches: BholeyKaBhakt/patches-2.12.0-dev.1.mpp  
+[Changelog](https://github.com/BholeyKaBhakt/revanced-patches-xtra/releases/tag/v2.12.0-dev.1)
+
+Patches: binarymend/patches-1.3.1-dev.1.mpp  
+[Changelog](https://github.com/binarymend/morphe-patches/releases/tag/v1.3.1-dev.1)
+
+Patches: crimera/patches-3.9.0-dev.7.mpp  
+[Changelog](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.7)
+
+Patches: dh6k/patches-1.2.0-dev.3.mpp  
+[Changelog](https://github.com/dh6k/morphe-patches/releases/tag/v1.2.0-dev.3)
+
+Patches: hoo-dles/patches-1.40.0-dev.7.mpp  
+[Changelog](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.40.0-dev.7)
+
+Patches: ch3thanhs/patches-1.4.0-dev.1.mpp  
+[Changelog](https://github.com/ch3thanhs/stylus/releases/tag/v1.4.0-dev.1)
+
+Patches: icysymmetra/patches-0.7.0-dev.4.mpp  
+[Changelog](https://github.com/icysymmetra/tiktok-patches-for-morphe/releases/tag/v0.7.0-dev.4)
+
+Patches: jasonwu1994/patches-2.11.0-dev.1.mpp  
+[Changelog](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v2.11.0-dev.1)
+
+Patches: jkennethcarino/patches-1.3.1-dev.1.mpp  
+[Changelog](https://github.com/jkennethcarino/adobo/releases/tag/v1.3.1-dev.1)
+
 Patches: MorpheApp/patches-1.40.0-dev.6.mpp  
-[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.6)  
+[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.6)
+
+Patches: Paresh-Maheshwari/patches-1.20.0-dev.2.mpp  
+[Changelog](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/releases/v1.20.0-dev.2)
+
+CLI: 7723mod/jar-v1.0.7-741-release.jar  
+Patches: revenge-mod/app-release.apk  
+[Changelog](https://github.com/revenge-mod/revenge-xposed/releases/tag/1601)
+
+Patches: rushiranpise/patches-1.18.0-dev.6.mpp  
+[Changelog](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.18.0-dev.6)  

@@ -1,6 +1,6 @@
 {
-  "version": "v9.15.51 (patches dev.14.mpp)",
-  "versionCode": 260001,
-  "zipUrl": "https://github.com/sharath-5br2r/my-patched-apks/releases/download/260001/youtube-music-morphe-anddea-module-v9.15.51-x86_64.zip",
-  "changelog": "https://raw.githubusercontent.com/sharath-5br2r/my-patched-apks/update/build.md"
+  "version": "v9.15.51 (patches dev.1.mpp)",
+  "versionCode": 260067,
+  "zipUrl": "https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/download/260067/youtube-music-morphe-anddea-module-v9.15.51-x86_64.zip",
+  "changelog": "https://raw.githubusercontent.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/update/build.md"
 }
