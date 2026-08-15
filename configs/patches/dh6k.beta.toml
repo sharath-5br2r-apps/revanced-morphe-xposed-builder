@@ -10,6 +10,7 @@ patches-source = "dh6k/morphe-patches"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "MonoArm64.apk"
 repo-dlurl-release-name-filter = "^Beta v"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.brave.browser_beta"
 version = "latest"
 
 [brave-beta-morphe-dh6k-x86_64]
@@ -24,6 +25,7 @@ patches-source = "dh6k/morphe-patches"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "Monox64.apk"
 repo-dlurl-release-name-filter = "^Beta v"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.brave.browser_beta"
 version = "latest"
 
 

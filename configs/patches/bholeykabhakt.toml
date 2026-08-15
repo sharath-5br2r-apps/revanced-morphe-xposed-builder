@@ -5,6 +5,7 @@ enabled = true
 app-name = "speedtest"
 pkg-name = "org.zwanoo.android.speedtest"
 rv-brand = "morphe-xtra"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/org.zwanoo.android.speedtest"
 version = "latest"
 build-mode = "apk"
 arch = "both64"

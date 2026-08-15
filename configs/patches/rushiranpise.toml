@@ -14,6 +14,7 @@ patches-source = "rushiranpise/morphe-patches"
 included-patches = "'Dark Mode' 'Open Links in Browser'"
 excluded-patches = "'Hide Rufus Tab'"
 custom-microg-patches = "'None'"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
 version = "latest"
 
 [adobe-acrobat-morphe-rushiranpise]
@@ -21,6 +22,7 @@ enabled = true
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "adobe-acrobat"
 rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 version = "latest"
 build-mode = "apk"
 arch = "both64"
@@ -43,6 +45,7 @@ pkg-name = "com.microsoft.office.word"
 uptodown-dlurl = "https://microsoft-word-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/word/"
 dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word"
 patches-source = "rushiranpise/morphe-patches"
 
 [microsoft-excel-morphe-rushiranpise]
@@ -56,6 +59,7 @@ pkg-name = "com.microsoft.office.excel"
 uptodown-dlurl = "https://microsoft-excel-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/excel/"
 dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel"
 patches-source = "rushiranpise/morphe-patches"
 
 [pc-remote-morphe-rushiranpise]
@@ -63,6 +67,7 @@ enabled = true
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "pc-remote"
 rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
 version = "latest"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -77,6 +82,7 @@ enabled = true
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "oxygen-updater"
 rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arjanvlek.oxygenupdater"
 version = "latest"
 custom-microg-patches = "'None'"
 build-mode = "apk"

@@ -14,6 +14,7 @@ uptodown-dlurl = "https://instagram.en.uptodown.com/android"
 #archive-dlurl = "https://archive.org/download/geologically/apks/com.instagram.android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
 dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android"
 patches-source = "crimera/piko"
 
 [x-morphe-piko]
@@ -21,6 +22,7 @@ enabled = true
 app-name = "x"
 rv-brand = "morphe-piko"
 build-mode = "apk"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 version = "latest"
 pkg-name = "com.twitter.android"
 patcher-args = "--continue-on-error"

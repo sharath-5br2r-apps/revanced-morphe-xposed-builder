@@ -12,5 +12,6 @@ uptodown-dlurl = "https://moon-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/moon/moon-reader"
 # archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.photos"
 dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.flyersoft.moonreader"
 patches-source = "binarymend/morphe-patches"
 
