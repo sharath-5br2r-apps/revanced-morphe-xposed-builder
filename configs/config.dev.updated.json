@@ -201,7 +201,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "tiktok-morphe-icysymmetra": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "tiktok",
     "pkg-name": "com.zhiliaoapp.musically",
     "rv-brand": "morphe-icysymmetra",
@@ -291,7 +291,7 @@
     "patches-source-host": "gitlab"
   },
   "instagram-morphe-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "instagram",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",
@@ -306,7 +306,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "x",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",
