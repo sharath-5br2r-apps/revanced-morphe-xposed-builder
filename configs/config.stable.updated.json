@@ -13,6 +13,7 @@
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
     "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
     "patches-source": "anddea/revanced-patches"
   },
   "youtube-music-morphe-anddea": {
@@ -27,6 +28,7 @@
     "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
     "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music",
     "patches-source": "anddea/revanced-patches"
   },
   "speedtest-morphe-xtra": {
@@ -34,6 +36,7 @@
     "app-name": "speedtest",
     "pkg-name": "org.zwanoo.android.speedtest",
     "rv-brand": "morphe-xtra",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/org.zwanoo.android.speedtest",
     "version": "latest",
     "build-mode": "apk",
     "arch": "both64",
@@ -54,6 +57,7 @@
     "uptodown-dlurl": "https://moon-reader.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/moon/moon-reader",
     "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.flyersoft.moonreader",
     "patches-source": "binarymend/morphe-patches"
   },
   "brave-beta-morphe-dh6k-arm64-v8a": {
@@ -68,6 +72,7 @@
     "repo-dlurl": "https://github.com/brave/brave-browser/releases",
     "repo-dlurl-filter": "MonoArm64.apk",
     "repo-dlurl-release-name-filter": "^Beta v",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.brave.browser_beta",
     "version": "latest"
   },
   "brave-beta-morphe-dh6k-x86_64": {
@@ -82,6 +87,7 @@
     "repo-dlurl": "https://github.com/brave/brave-browser/releases",
     "repo-dlurl-filter": "Monox64.apk",
     "repo-dlurl-release-name-filter": "^Beta v",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.brave.browser_beta",
     "version": "latest"
   },
   "brave-stable-morphe-dh6k-arm64-v8a": {
@@ -94,6 +100,7 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "dh6k/morphe-patches",
     "repo-dlurl": "https://github.com/brave/brave-browser",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.brave.browser",
     "version": "stable",
     "repo-dlurl-filter": "MonoArm64.apk",
     "repo-dlurl-release-name-filter": "^Release v"
@@ -108,6 +115,7 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "dh6k/morphe-patches",
     "repo-dlurl": "https://github.com/brave/brave-browser",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.brave.browser",
     "version": "stable",
     "repo-dlurl-filter": "Monox64.apk",
     "repo-dlurl-release-name-filter": "^Release v"
@@ -129,7 +137,7 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
     "dpi": "nodpi anydpi auto",
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
   },
   "gboard-morphe-jasonwu1994-adobo-clone": {
     "enabled": false,
@@ -147,7 +155,7 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
     "dpi": "nodpi anydpi auto",
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
   },
   "github-morphe-hoodles-stylus": {
     "enabled": false,
@@ -156,10 +164,12 @@
     "build-mode": "apk",
     "pkg-name": "com.github.android",
     "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://github-android.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android",
     "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
     "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' ",
+    "dpi": "480-640dpi",
     "version": "latest"
   },
   "prime-video-morphe-hoodles": {
@@ -168,6 +178,7 @@
     "rv-brand": "morphe-hoodles",
     "pkg-name": "com.amazon.avod.thirdpartyclient",
     "build-mode": "apk",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient",
     "version": "latest",
     "arch": "arm64-v8a",
     "cli-source": "MorpheApp/morphe-desktop",
@@ -182,6 +193,7 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "adobe-acrobat",
     "rv-brand": "morphe-hooman",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader",
     "version": "26.6.1",
     "build-mode": "apk",
     "pkg-name": "com.adobe.reader",
@@ -201,6 +213,7 @@
     "uptodown-dlurl": "https://symfonium.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast",
     "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.symfonik.music.player",
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "adm-morphe-hooman": {
@@ -214,6 +227,7 @@
     "dpi": "nodpi anydpi auto",
     "uptodown-dlurl": "https://advanced-download-manager.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm",
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "tiktok-morphe-icysymmetra": {
@@ -224,6 +238,7 @@
     "build-mode": "apk",
     "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically",
     "patches-source": "icysymmetra/tiktok-patches-for-morphe"
   },
   "youtube-morphe-exp": {
@@ -231,6 +246,7 @@
     "app-name": "youtube",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
     "version": "exp",
     "pkg-name": "com.google.android.youtube",
     "cli-source": "MorpheApp/morphe-desktop",
@@ -249,6 +265,7 @@
     "rv-brand": "morphe-exp",
     "build-mode": "both",
     "arch": "both64",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music",
     "version": "exp",
     "pkg-name": "com.google.android.apps.youtube.music",
     "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
@@ -270,6 +287,7 @@
     "uptodown-dlurl": "https://fing-network-tools.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/fing-limited/fing-network-tools",
     "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing",
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
@@ -277,6 +295,7 @@
     "enabled": false,
     "app-name": "proton-vpn",
     "rv-brand": "morphe-paresh",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android",
     "version": "latest",
     "build-mode": "apk",
     "pkg-name": "ch.protonvpn.android",
@@ -297,6 +316,7 @@
     "pkg-name": "in.startv.hotstar",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/",
     "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar",
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
@@ -312,6 +332,7 @@
     "uptodown-dlurl": "https://instagram.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
     "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android",
     "patches-source": "crimera/piko"
   },
   "x-morphe-piko": {
@@ -319,6 +340,7 @@
     "app-name": "x",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android",
     "version": "latest",
     "pkg-name": "com.twitter.android",
     "patcher-args": "--continue-on-error",
@@ -338,6 +360,7 @@
     "build-mode": "apk",
     "arch": "all",
     "cli-source": "7723mod/NPatch",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord",
     "patches-source": "revenge-mod/revenge-xposed",
     "patcher-args": "-l 0",
     "apkcombo-dlurl": "https://apkcombo.com/discord/com.discord",
@@ -358,6 +381,7 @@
     "included-patches": "'Dark Mode' 'Open Links in Browser'",
     "excluded-patches": "'Hide Rufus Tab'",
     "custom-microg-patches": "'None'",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping",
     "version": "latest"
   },
   "adobe-acrobat-morphe-rushiranpise": {
@@ -365,6 +389,7 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "adobe-acrobat",
     "rv-brand": "morphe-rushiranpise",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader",
     "version": "latest",
     "build-mode": "apk",
     "arch": "both64",
@@ -387,6 +412,7 @@
     "uptodown-dlurl": "https://microsoft-word-preview.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/microsoft-corporation/word/",
     "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word",
     "patches-source": "rushiranpise/morphe-patches"
   },
   "microsoft-excel-morphe-rushiranpise": {
@@ -400,6 +426,7 @@
     "uptodown-dlurl": "https://microsoft-excel-preview.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/microsoft-corporation/excel/",
     "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel",
     "patches-source": "rushiranpise/morphe-patches"
   },
   "pc-remote-morphe-rushiranpise": {
@@ -407,6 +434,7 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "pc-remote",
     "rv-brand": "morphe-rushiranpise",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable",
     "version": "latest",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
@@ -421,6 +449,7 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "oxygen-updater",
     "rv-brand": "morphe-rushiranpise",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arjanvlek.oxygenupdater",
     "version": "latest",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
@@ -436,6 +465,7 @@
     "cli-source": "apksigner",
     "pkg-name": "com.amazon.dee.app",
     "cli-source-host": "none",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.dee.app",
     "patches-source": "none",
     "patches-source-host": "none",
     "arch": "all",
@@ -454,6 +484,7 @@
     "repo-dlurl": "https://github.com/bitwarden/android",
     "repo-dlurl-filter": "fdroid.apk",
     "repo-dlurl-tag-filter": "bwpm",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden",
     "version": "latest",
     "patches-source": "ch3thanhs/stylus"
   }
