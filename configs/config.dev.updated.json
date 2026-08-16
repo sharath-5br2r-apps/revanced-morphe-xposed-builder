@@ -212,7 +212,7 @@
     "patches-source": "icysymmetra/tiktok-patches-for-morphe"
   },
   "youtube-morphe-exp": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -230,7 +230,7 @@
     "included-patches": "'Theme'"
   },
   "youtube-music-morphe-exp": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube-music",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -291,7 +291,7 @@
     "patches-source-host": "gitlab"
   },
   "instagram-morphe-piko": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "instagram",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",
@@ -306,7 +306,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-piko": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "x",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",

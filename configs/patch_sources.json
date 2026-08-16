@@ -18,10 +18,10 @@
   "piko": {
     "repo": "crimera/piko",
     "stable": "v3.8.0",
-    "prerelease": "v3.9.0-dev.7",
+    "prerelease": "v3.9.0-dev.8",
     "blocked": false,
     "stable_date": "2026-07-24T16:32:23Z",
-    "pre_date": "2026-08-10T18:24:24Z"
+    "pre_date": "2026-08-16T14:01:04Z"
   },
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
