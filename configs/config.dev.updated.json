@@ -128,7 +128,7 @@
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
   },
   "github-morphe-hoodles-stylus": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "github",
     "rv-brand": "morphe-hoodles-stylus",
     "build-mode": "apk",
@@ -143,7 +143,7 @@
     "version": "latest"
   },
   "prime-video-morphe-hoodles": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "prime-video",
     "rv-brand": "morphe-hoodles",
     "pkg-name": "com.amazon.avod.thirdpartyclient",
@@ -291,7 +291,7 @@
     "patches-source-host": "gitlab"
   },
   "instagram-morphe-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "instagram",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",
@@ -306,7 +306,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "x",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",
