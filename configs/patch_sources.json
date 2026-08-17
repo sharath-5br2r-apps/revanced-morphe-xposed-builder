@@ -26,10 +26,10 @@
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
     "stable": "v1.40.0",
-    "prerelease": "v1.40.0-dev.7",
+    "prerelease": "v1.41.0-dev.1",
     "blocked": false,
     "stable_date": "2026-08-07T00:14:26Z",
-    "pre_date": "2026-07-30T19:12:16Z"
+    "pre_date": "2026-08-16T23:43:24Z"
   },
   "adobo": {
     "repo": "jkennethcarino/adobo",
