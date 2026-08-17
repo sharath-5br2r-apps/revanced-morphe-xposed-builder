@@ -1153,7 +1153,7 @@ get_apkmirror_resp() {
 	__DL_RESP_CACHE__["$key"]="$__APKMIRROR_RESP__"
 	__DL_RESP_CACHE__["cat_$key"]="$__APKMIRROR_CAT__"
 	set +u
-	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-}" 
+	__APKMIRROR_EXAMPLE_URL__="${args["apkmirror_example_url"]:-}"
 	set -u
 }
 
