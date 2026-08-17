@@ -2870,12 +2870,14 @@ build_rv() {
 					rm -f "${stock_apk}.xapk"
 				fi
 
-					local downloaded_pkg downloaded_ver
-				downloaded_pkg=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
-				downloaded_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-					
-					if [ -z "$downloaded_pkg" ]; then
-					epr "ERROR: Downloaded file is not a valid APK or aapt2 failed to parse it. Rejecting..."
+					local downloaded_pkg="" downloaded_ver=""
+					if [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
+						downloaded_pkg=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
+						downloaded_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
+					fi
+
+					if [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ] && [ -z "$downloaded_pkg" ]; then
+						epr "ERROR: Downloaded file is not a valid APK or aapt2 failed to parse it. Rejecting..."
 						rm -f "$stock_apk"
 						continue
 					fi
