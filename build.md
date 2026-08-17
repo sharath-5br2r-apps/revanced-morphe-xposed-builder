@@ -11,5 +11,5 @@ oxygen-updater-morphe-rushiranpise (all): 7.1.0
 [GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Website](https://sharath-5br2r-apps.github.io)
   
 CLI: MorpheApp/morphe-desktop-1.13.0-all.jar  
-Patches: rushiranpise/patches-1.18.0-dev.7.mpp  
-[Changelog](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.18.0-dev.7)  
+Patches: rushiranpise/patches-1.18.1.mpp  
+[Changelog](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.18.1)  
