@@ -2575,8 +2575,8 @@ build_rv() {
 	if [ -n "$pkg_name" ]; then
 		# Check app_versions.json for exact version if running in CI
 		if [ -n "${CI:-}${GITHUB_REPOSITORY:-}${GITHUB_ACTIONS:-}" ]; then
-			local app_versions_file=".github/configs/app_versions.json"
-			[ -f "$app_versions_file" ] || app_versions_file="configs/app_versions.json"
+			local app_versions_file="configs/app_versions.json"
+			[ -f "$app_versions_file" ] || app_versions_file=".github/configs/app_versions.json"
 			if [ -f "$app_versions_file" ]; then
 				local json_ver=$(jq -r --arg t "$table" 'to_entries | map(select(.key | startswith("_") | not)) | map(select(.value.keys != null and (.value.keys | index($t)))) | .[0].value.version // empty' "$app_versions_file")
 				if [ -n "$json_ver" ]; then
