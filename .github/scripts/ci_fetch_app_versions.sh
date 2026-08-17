@@ -127,7 +127,7 @@ while IFS='|' read -r group app; do
     done
     
     if [ -n "$latest_ver" ]; then
-        echo "::notice::Latest version for $group is $latest_ver"
+        echo "Latest version for $group is $latest_ver"
         jq -n --arg grp "$group" --arg ver "$latest_ver" '{($grp): $ver}' >> fetched_app_versions.jsonl
     else
         echo "::error::Could not find latest version for $group"
@@ -141,9 +141,6 @@ else
     FETCHED_JSON="{}"
 fi
 
-DELIM="$(openssl rand -hex 8)"
-echo "fetched<<${DELIM}" >> "$GITHUB_OUTPUT"
-echo "$FETCHED_JSON" >> "$GITHUB_OUTPUT"
-echo "${DELIM}" >> "$GITHUB_OUTPUT"
+echo "$FETCHED_JSON" > fetched_app_versions.json
 
 rm -f temp_all_configs.json fetched_app_versions.jsonl check_list.txt

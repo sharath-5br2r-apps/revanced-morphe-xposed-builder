@@ -1,9 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-[ -n "${TAGS_OLD:-}" ] || TAGS_OLD='{}'
-[ -n "${TAGS_NEW:-}" ] || TAGS_NEW='{}'
+[ -f tags_old.json ] && TAGS_OLD=$(cat tags_old.json) || TAGS_OLD='{}'
+[ -f tags_new.json ] && TAGS_NEW=$(cat tags_new.json) || TAGS_NEW='{}'
 [ -f active_apps.json ] || echo '[]' > active_apps.json
+[ -f active_patch_apps.stable.json ] || echo '[]' > active_patch_apps.stable.json
+[ -f active_patch_apps.dev.json ] || echo '[]' > active_patch_apps.dev.json
 
 jq -rn --argjson new "$TAGS_NEW" --argjson old "$TAGS_OLD" '
   [ $new | to_entries[] | . as $e
@@ -33,15 +35,15 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
     echo "{}" > config.stable.json
   fi
 
-  jq --slurpfile active active.stable.json --slurpfile activeApps active_apps.json '
+  jq --slurpfile active active.stable.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.stable.json '
     { "patches-version": "latest", "enable-module-update": true } as $force |
     ($force + . + $force) |
     with_entries(
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "ReVanced/revanced-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) then . else (.value.enabled = false) end
+        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or ($activeApps[0] | index($k)) then . else (.value.enabled = false) end
       else . end
     )
   ' config.stable.json > configs/config.stable.updated.json
@@ -56,14 +58,14 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] 
     echo "{}" > config.dev.json
   fi
 
-  jq --slurpfile active active.prerelease.json --slurpfile activeApps active_apps.json --argjson tags "$TAGS_NEW" '
+  jq --slurpfile active active.prerelease.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.dev.json --argjson tags "$TAGS_NEW" '
     { "patches-version": "dev", "enable-module-update": false } as $force |
     ($force + . + $force) |
     with_entries(
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "ReVanced/revanced-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
         
         # Check if the app has any source where pre_date > stable_date
         (
@@ -75,7 +77,7 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] 
           ) | any
         ) as $has_valid_dev |
 
-        if (($srcs - $active[0]) != $srcs) or (($activeApps[0] | index($k)) and $has_valid_dev) then . else (.value.enabled = false) end
+        if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or (($activeApps[0] | index($k)) and $has_valid_dev) then . else (.value.enabled = false) end
       else . end
     )
   ' config.dev.json > configs/config.dev.updated.json
