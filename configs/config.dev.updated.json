@@ -338,7 +338,7 @@
     "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-340-13-stable-release/"
   },
   "amazon-india-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "amazon-india",
     "rv-brand": "morphe-rushiranpise",
     "build-mode": "apk",
@@ -355,7 +355,7 @@
     "version": "latest"
   },
   "adobe-acrobat-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "adobe-acrobat",
     "rv-brand": "morphe-rushiranpise",
@@ -371,7 +371,7 @@
     "custom-microg-patches": "'None'"
   },
   "microsoft-word-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "microsoft-word",
     "rv-brand": "morphe-rushiranpise",
@@ -386,7 +386,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "microsoft-excel-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "microsoft-excel",
     "rv-brand": "morphe-rushiranpise",
@@ -400,7 +400,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "pc-remote-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "pc-remote",
     "rv-brand": "morphe-rushiranpise",
@@ -415,7 +415,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "oxygen-updater-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "oxygen-updater",
     "rv-brand": "morphe-rushiranpise",
