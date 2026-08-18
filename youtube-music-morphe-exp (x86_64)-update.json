@@ -1,6 +1,6 @@
 {
-  "version": "v9.31.51 (patches dev.6.mpp)",
-  "versionCode": 260067,
-  "zipUrl": "https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/download/260067/youtube-music-morphe-exp-module-v9.31.51-x86_64.zip",
+  "version": "v9.32.51 (patches dev.10.mpp)",
+  "versionCode": 260091,
+  "zipUrl": "https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/download/260091/youtube-music-morphe-exp-module-v9.32.51-x86_64.zip",
   "changelog": "https://raw.githubusercontent.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/update/build.md"
 }
