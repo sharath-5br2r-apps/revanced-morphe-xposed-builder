@@ -24,7 +24,7 @@ on:
         required: false
         type: string
 concurrency:
-  group: ci
+  group: manual-ci-${{ inputs.manual_config_file || inputs.config_file }}
   cancel-in-progress: false
 
 jobs:
@@ -73,4 +73,3 @@ jobs:
     if: ${{ always() && needs.build_manual.result == 'success' }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
-
