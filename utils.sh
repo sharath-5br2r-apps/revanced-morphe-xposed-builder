@@ -3202,7 +3202,8 @@ build_rv() {
 		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url"
 	done
 	if [ "$arch" = "all" ] && [ -n "$final_apk_output" ] && [ -f "$final_apk_output" ]; then
-		split_universal_apk "$final_apk_output" "${final_apk_output%.apk}" || \
+		local split_output_base="${final_apk_output%-all.apk}"
+		split_universal_apk "$final_apk_output" "$split_output_base" || \
 			wpr "No native ABI splits generated for ${table}; keeping universal APK only."
 	fi
 }
