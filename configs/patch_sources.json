@@ -106,10 +106,10 @@
   "rushiranpise": {
     "repo": "rushiranpise/morphe-patches",
     "stable": "v1.18.3",
-    "prerelease": "v1.19.0-dev.4",
+    "prerelease": "v1.19.0-dev.5",
     "blocked": false,
     "stable_date": "2026-08-17T22:24:12Z",
-    "pre_date": "2026-08-18T19:35:44Z"
+    "pre_date": "2026-08-18T20:46:34Z"
   },
   "revenge": {
     "repo": "revenge-mod/revenge-xposed",
