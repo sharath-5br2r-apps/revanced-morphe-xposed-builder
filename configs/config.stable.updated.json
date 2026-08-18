@@ -61,7 +61,7 @@
     "patches-source": "binarymend/morphe-patches"
   },
   "brave-beta-morphe-dh6k-arm64-v8a": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -76,7 +76,7 @@
     "version": "latest"
   },
   "brave-beta-morphe-dh6k-x86_64": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
