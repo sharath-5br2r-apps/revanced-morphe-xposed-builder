@@ -1,6 +1,6 @@
 {
-  "version": "v20.51.39 (patches dev.1.mpp)",
-  "versionCode": 260067,
-  "zipUrl": "https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/download/260067/youtube-morphe-anddea-module-v20.51.39-all.zip",
+  "version": "v21.33.321 (patches 4.2.0.mpp)",
+  "versionCode": 260093,
+  "zipUrl": "https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/download/260093/youtube-morphe-anddea-module-v21.33.321-all.zip",
   "changelog": "https://raw.githubusercontent.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/update/build.md"
 }
