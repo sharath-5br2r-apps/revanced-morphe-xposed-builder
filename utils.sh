@@ -1900,7 +1900,7 @@ get_repo_resp() {
 	local filter="${repo_dlurl_filter:-${args[repo_dlurl_filter]:-}}"
 	[ -z "$filter" ] && filter='\.(apk|apkm|xapk|apks)$'
 	local tag_filter="${repo_dlurl_tag_filter:-${args[repo_dlurl_tag_filter]:-}}"
-	local rel_name_filter="${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-${repo_dlurl_release_filter:-${args[repo_dlurl_release_filter]:-}}}}"
+	local rel_name_filter="${repo_dlurl_release_name_filter:-${args["repo_dlurl_release_name_filter"]:-${repo_dlurl_release_filter:-${args["repo_dlurl_release_filter"]:-}}}}"
 	local source_host="${repo_dlurl_source:-${args[repo_dlurl_source]:-github}}"
 	[ -z "$source_host" ] && source_host="github"
 
