@@ -6,7 +6,7 @@ enabled = true
 app-name = "instagram"
 rv-brand = "morphe-piko"
 build-mode = "apk"
-arch = "both64"
+arch = "multi"
 pkg-name = "com.instagram.android"
 patcher-args = "--continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
@@ -33,4 +33,3 @@ dpi = "nodpi anydpi auto"
 patches-source = "crimera/piko"
 patches-source-host = "github"
 included-patches = "'Dynamic Color'"
-

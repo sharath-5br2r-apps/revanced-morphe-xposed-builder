@@ -22,7 +22,7 @@ enabled = true
 app-name = "youtube-music"
 rv-brand = "morphe-anddea"
 build-mode = "both"
-arch = "both64"
+arch = "multi"
 pkg-name = "com.google.android.apps.youtube.music"
 cli-source = "MorpheApp/morphe-desktop"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"

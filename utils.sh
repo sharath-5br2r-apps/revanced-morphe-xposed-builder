@@ -2427,6 +2427,36 @@ check_is_universal() {
 	return 1
 }
 
+split_universal_apk() {
+	local input=$1 output_base=$2
+	local -a abis=(arm64-v8a armeabi-v7a x86_64 x86)
+	local abi other unsigned output
+	local found=false
+
+	for abi in "${abis[@]}"; do
+		if ! unzip -l "$input" 2>/dev/null | grep -q "lib/${abi}/"; then
+			continue
+		fi
+		found=true
+		output="${output_base}-${abi}.apk"
+		unsigned="${output}.unsigned"
+		cp -f "$input" "$unsigned"
+		for other in "${abis[@]}"; do
+			[ "$other" = "$abi" ] && continue
+			zip -dq "$unsigned" "lib/${other}/*" >/dev/null 2>&1 || :
+		done
+		if ! sign_apk "$unsigned" "$output" >/dev/null 2>&1; then
+			epr "Failed to sign architecture split: $output"
+			rm -f "$unsigned" "$output"
+			continue
+		fi
+		rm -f "$unsigned"
+		pr "Built architecture split: '$output'"
+	done
+
+	[ "$found" = true ]
+}
+
 build_rv() {
 	eval "declare -A args=${1#*=}"
 	local version="${args[version]:-}" pkg_name="${args[pkg_name]:-}"
@@ -3038,7 +3068,7 @@ build_rv() {
 		fi
 	fi
 
-	local patcher_args patched_apk build_mode
+	local patcher_args patched_apk build_mode final_apk_output=""
 	local rv_brand_raw="${args[rv_brand]}"
 	local rv_brand_f="${rv_brand_raw,,}"
 	rv_brand_f="${rv_brand_f// /-}"
@@ -3117,6 +3147,7 @@ build_rv() {
 				cp -f "$patched_apk" "$apk_output"
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
+			final_apk_output="$apk_output"
 			write_build_info "${table% (*}" "${arch_f}" ".apk" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url"
 			continue
 		fi
@@ -3170,6 +3201,10 @@ build_rv() {
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
 		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url"
 	done
+	if [ "$arch" = "all" ] && [ -n "$final_apk_output" ] && [ -f "$final_apk_output" ]; then
+		split_universal_apk "$final_apk_output" "${final_apk_output%.apk}" || \
+			wpr "No native ABI splits generated for ${table}; keeping universal APK only."
+	fi
 }
 
 list_args() { tr -d '\t\r' <<<"$1" | tr -s ' ' | sed "s/' '/'\\n'/g" | sed 's/" "/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :; }
