@@ -203,7 +203,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "symfonium-morphe-hooman": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "symfonium",
     "rv-brand": "morphe-hooman",
     "build-mode": "apk",
@@ -217,7 +217,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "adm-morphe-hooman": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "adm",
     "rv-brand": "morphe-hooman",
     "build-mode": "apk",
@@ -354,7 +354,7 @@
     "included-patches": "'Dynamic Color'"
   },
   "discord-npatch-revenge": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "discord",
     "pkg-name": "com.discord",
     "rv-brand": "npatch-revenge",
