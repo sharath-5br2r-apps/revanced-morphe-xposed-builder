@@ -41,6 +41,12 @@ def get_app_mappings():
                 m_pkg = re.search(r'pkg-name\s*=\s*"([^"]+)"', body)
                 pkg_name = m_pkg.group(1) if m_pkg else ''
                 
+                m_app = re.search(r'app-name\s*=\s*"([^"]+)"', body)
+                app_name = m_app.group(1).lower() if m_app else ''
+                
+                m_pf = re.search(r'patch-folder\s*=\s*"([^"]+)"', body)
+                patch_folder = m_pf.group(1).lower() if m_pf else ''
+                
                 if not pkg_name:
                     m_git = re.search(r'github-dlurl\s*=\s*"([^"]+)"', body)
                     m_arch = re.search(r'archive-dlurl\s*=\s*"([^"]+)"', body)
@@ -51,13 +57,14 @@ def get_app_mappings():
                 
                 if pkg_name:
                     if enabledStable:
-                        apps_stable.setdefault(src, {})[key] = pkg_name
+                        apps_stable.setdefault(src, {})[key] = {'pkg': pkg_name, 'app_name': app_name, 'patch_folder': patch_folder}
                     if enabledDev:
-                        apps_dev.setdefault(src, {})[key] = pkg_name
+                        apps_dev.setdefault(src, {})[key] = {'pkg': pkg_name, 'app_name': app_name, 'patch_folder': patch_folder}
 
     return apps_stable, apps_dev, cli_sources
 
-def process_zip(path, pkgs):
+def process_zip(path, pkg_info):
+    pkgs = list(pkg_info.keys())
     pkg_bytes = {p: p.encode() for p in pkgs}
     buckets = {p: hashlib.md5() for p in pkgs + ['shared']}
     comp_map = {}
@@ -70,6 +77,23 @@ def process_zip(path, pkgs):
                 comp = m.group(1)
                 if comp not in ['shared', 'all']:
                     all_comps.add(comp)
+                    # Heuristics
+                    for pkg, meta in pkg_info.items():
+                        pf = meta.get('patch_folder', '')
+                        an = meta.get('app_name', '')
+                        an_clean = an.replace('-', '')
+                        
+                        if comp in comp_map: continue
+                        
+                        if pf and comp == pf:
+                            comp_map[comp] = pkg
+                            break
+                        elif an and (comp == an or comp == an_clean):
+                            comp_map[comp] = pkg
+                            break
+                        elif pkg and comp in pkg.split('.'):
+                            comp_map[comp] = pkg
+                            break
             
             if info.filename.endswith('.class'):
                 content = z.read(info)
@@ -100,7 +124,7 @@ def process_zip(path, pkgs):
                     if reg.search(info.filename):
                         if comp in comp_map:
                             buckets[comp_map[comp]].update(content)
-                        assigned = True
+                        assigned = True # Mark as handled to avoid shared bucket poisoning
                         break
                         
             if not assigned:
@@ -113,7 +137,11 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
         print(f"::notice::No enabled apps found for {repo} ({channel}). Skipping patch inspection.")
         return
         
-    repo_pkgs = list(set(repo_apps.values()))
+    pkg_info = {}
+    for meta in repo_apps.values():
+        pkg = meta['pkg']
+        if pkg not in pkg_info:
+            pkg_info[pkg] = meta
     
     if not is_revanced_or_morphe:
         print(f"::notice::Skipping patch inspection for {repo} (not revanced/morphe). Triggering all.")
@@ -165,14 +193,19 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
             no_debug_files = [f for f in files if 'debug' not in f.lower()]
             if len(no_debug_files) >= 1:
                 files = no_debug_files
+                
+        if len(files) > 1:
+            version = tag[1:] if tag.startswith('v') else tag
+            version_files = [f for f in files if version in f]
+            if len(version_files) >= 1:
+                files = version_files
         
         if not files:
             print(f"::warning::No patch file found for {repo}@{tag}. Defaulting to trigger all.")
             active_list.extend(repo_apps.keys())
             return
         
-        patch_file = files[0]
-        new_hashes = process_zip(patch_file, repo_pkgs)
+        new_hashes = process_zip(files[0], pkg_info)
         
         # Cleanup downloaded files
         for f in glob.glob('*.mpp') + glob.glob('*.rvp') + glob.glob('*.jar'):
@@ -266,7 +299,7 @@ def run():
             evaluate_repo_channel(repo_lower, repo, new_info.get('prerelease'), 'dev', new_info, hashes, active_dev, apps_stable, apps_dev, is_revanced_or_morphe)
 
     with open(hash_file, 'w') as f:
-        json.dump(hashes, f, indent=2)
+        json.dump(hashes, f, indent=2, sort_keys=True)
         
     with open('active_patch_apps.stable.json', 'w') as f:
         json.dump(list(set(active_stable)), f)

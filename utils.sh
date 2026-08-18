@@ -1058,10 +1058,14 @@ _cfb_get() {
 			fi
 		fi
 		rm -f "$response_file" "$TEMP_DIR/cfb_response_headers.txt"
-		wpr "CFB attempt $attempt/$max_retries failed for: $url"
+		if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+			wpr "CFB attempt $attempt/$max_retries failed for: $url"
+		fi
 		sleep 2
 	done
-	wpr "[!] CFB failed after $max_retries attempts: $url"
+	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+		wpr "[!] CFB failed after $max_retries attempts: $url"
+	fi
 	return 1
 }
 
@@ -2578,7 +2582,9 @@ build_rv() {
 			local app_versions_file="configs/app_versions.json"
 			[ -f "$app_versions_file" ] || app_versions_file=".github/configs/app_versions.json"
 			if [ -f "$app_versions_file" ]; then
-				local json_ver=$(jq -r --arg t "$table" 'to_entries | map(select(.key | startswith("_") | not)) | map(select(.value.keys != null and (.value.keys | index($t)))) | .[0].value.version // empty' "$app_versions_file")
+				local t_pure="${table% (arm64-v8a)}"
+				t_pure="${t_pure% (arm-v7a)}"
+				local json_ver=$(jq -r --arg t "$t_pure" 'to_entries | map(select(.key | startswith("_") | not)) | map(select(.value.keys != null and (.value.keys | index($t)))) | .[0].value.version // empty' "$app_versions_file")
 				if [ -n "$json_ver" ]; then
 					resolved_version="$json_ver"
 				fi

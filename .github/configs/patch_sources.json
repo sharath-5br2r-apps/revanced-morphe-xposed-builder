@@ -7,10 +7,10 @@
   },
   "devanced": {
     "repo": "RookieEnough/De-Vanced",
-    "stable": "v1.2.1",
+    "stable": "v1.2.2",
     "prerelease": "v1.2.1-dev.1",
     "blocked": false,
-    "stable_date": "2026-08-12T17:58:59Z",
+    "stable_date": "2026-08-18T08:27:44Z",
     "pre_date": "2026-08-12T17:18:51Z"
   },
   "anddea": {
@@ -24,10 +24,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.39.1",
-    "prerelease": "v1.40.0-dev.7",
+    "prerelease": "v1.40.0-dev.9",
     "blocked": false,
     "stable_date": "2026-08-08T17:05:00Z",
-    "pre_date": "2026-08-15T20:56:55Z"
+    "pre_date": "2026-08-18T07:59:46Z"
   },
   "piko": {
     "repo": "crimera/piko",
@@ -39,11 +39,11 @@
   },
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
-    "stable": "v1.40.0",
-    "prerelease": "v1.41.0-dev.3",
+    "stable": "v1.41.0",
+    "prerelease": "v1.41.0-dev.4",
     "blocked": false,
-    "stable_date": "2026-08-07T00:14:26Z",
-    "pre_date": "2026-08-17T06:31:43Z"
+    "stable_date": "2026-08-18T04:15:22Z",
+    "pre_date": "2026-08-18T00:56:32Z"
   },
   "adobo": {
     "repo": "jkennethcarino/adobo",
@@ -150,26 +150,26 @@
   },
   "hoomans": {
     "repo": "arandomhooman/hoomans-morphe-patches",
-    "stable": "v1.49.0",
+    "stable": "v1.50.1",
     "prerelease": "v1.44.0-dev.4",
     "blocked": false,
-    "stable_date": "2026-08-17T04:08:22Z",
+    "stable_date": "2026-08-18T04:30:21Z",
     "pre_date": "2026-08-13T04:04:19Z"
   },
   "rushiranpise": {
     "repo": "rushiranpise/morphe-patches",
-    "stable": "v1.18.0",
-    "prerelease": "v1.18.0-dev.7",
+    "stable": "v1.18.3",
+    "prerelease": "v1.18.4-dev.1",
     "blocked": false,
-    "stable_date": "2026-08-17T08:48:47Z",
-    "pre_date": "2026-08-17T08:45:24Z"
+    "stable_date": "2026-08-17T22:24:12Z",
+    "pre_date": "2026-08-18T10:02:17Z"
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.27.0",
+    "stable": "v1.28.0",
     "prerelease": "v1.5.7-dev.3",
     "blocked": false,
-    "stable_date": "2026-08-16T17:55:02Z",
+    "stable_date": "2026-08-17T22:44:10Z",
     "pre_date": "2026-06-26T16:45:34Z"
   },
   "revenge": {
@@ -230,8 +230,8 @@
   },
   "hxreborn": {
     "repo": "hxreborn/morphe-patches",
-    "stable": "v1.7.0",
-    "stable_date": "2026-08-16T17:04:30Z",
+    "stable": "v1.8.0",
+    "stable_date": "2026-08-18T12:01:41Z",
     "prerelease": "v1.1.0-dev.1",
     "pre_date": "2026-07-19T18:13:41Z",
     "blocked": false
