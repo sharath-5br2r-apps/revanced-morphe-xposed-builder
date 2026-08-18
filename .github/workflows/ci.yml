@@ -113,16 +113,16 @@ jobs:
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
   build_stable:
-    needs: check_patch
-    if: ${{ needs.check_patch.outputs.trigger_stable == '1' }}
+    needs: [check_patch, build_dev]
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && needs.build_dev.result != 'cancelled' && needs.build_dev.result != 'failure' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.updated.json"
     secrets: inherit
 
   build_dev:
-    needs: [check_patch, build_stable]
-    if: ${{ always() && needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && needs.build_stable.result != 'cancelled' }}
+    needs: check_patch
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.updated.json"
