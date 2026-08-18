@@ -57,7 +57,11 @@ while IFS='|' read -r group app; do
     repo_url=$(jq -r ".\"$app\".\"repo-dlurl\" // empty" temp_all_configs.json)
     repo_dlurl_filter=$(jq -r ".\"$app\".\"repo-dlurl-filter\" // empty" temp_all_configs.json)
     repo_dlurl_tag_filter=$(jq -r ".\"$app\".\"repo-dlurl-tag-filter\" // empty" temp_all_configs.json)
-    repo_dlurl_release_name_filter=$(jq -r ".\"$app\".\"repo-dlurl-release-name-filter\" // .\"$app\".\"repo-dlurl-release-filter\" // empty" temp_all_configs.json)
+    repo_dlurl_release_name_filter=$(jq -r ".\"$app\".\"repo-dlurl-release-name-filter\" // empty" temp_all_configs.json)
+    if [ -z "$repo_dlurl_release_name_filter" ]; then
+        repo_dlurl_release_name_filter=$(jq -r ".\"$app\".\"repo-dlurl-release-filter\" // empty" temp_all_configs.json)
+    fi
+    repo_dlurl_release_filter="$repo_dlurl_release_name_filter"
     repo_dlurl_source=$(jq -r ".\"$app\".\"repo-dlurl-source\" // empty" temp_all_configs.json)
     version=$(jq -r ".\"$app\".\"version\" // empty" temp_all_configs.json)
     if [ "$version" == "beta" ]; then __AAV__="true"; else __AAV__="false"; fi
@@ -68,7 +72,7 @@ while IFS='|' read -r group app; do
     pkg_name=$(jq -r ".\"$app\".\"pkg-name\" // empty" temp_all_configs.json)
     check_sig=$(jq -r ".\"$app\".\"check-sig\" // false" temp_all_configs.json)
     custom_microg_patches=$(jq -r ".\"$app\".\"custom-microg-patches\" // empty" temp_all_configs.json)
-    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode apkmirror_example_url repo_dlurl_filter repo_dlurl_tag_filter repo_dlurl_release_name_filter repo_dlurl_source
+    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode apkmirror_example_url repo_dlurl_filter repo_dlurl_tag_filter repo_dlurl_release_name_filter repo_dlurl_release_filter repo_dlurl_source
     
     dlurls=()
     sources=()
