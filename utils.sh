@@ -2609,8 +2609,8 @@ build_rv() {
 			if [ "$version_mode" = auto ]; then
 				if ! resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
 					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}"); then
-					epr "get_patch_last_supported_ver failed for '$pkg_name'"
-					return 0
+					wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
+					resolved_version=""
 				fi
 			elif [ "$version_mode" = exp ]; then
 				if [[ "$cli_source_l" == *"revanced/revanced-cli"* ]]; then
@@ -2765,8 +2765,8 @@ build_rv() {
 			if [ "$version_mode" = auto ]; then
 				if ! resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
 					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}"); then
-					epr "get_patch_last_supported_ver failed for '$pkg_name'"
-					return 0
+					wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
+					resolved_version=""
 				fi
 			elif [ "$version_mode" = exp ]; then
 				local cli_source_l="${args[cli_source],,}"
