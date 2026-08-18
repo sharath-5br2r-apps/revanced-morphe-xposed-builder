@@ -16,13 +16,13 @@
     "keys": [
       "amazon-alexa-signed"
     ],
-    "version": "2.2.698932.0"
+    "version": "2.2.704406.0"
   },
   "Adobe Acrobat": {
     "keys": [
       "adobe-acrobat-morphe-rushiranpise"
     ],
-    "version": "0"
+    "version": "26.7.1"
   },
   "Proton VPN": {
     "keys": [
@@ -34,7 +34,7 @@
     "keys": [
       "x-morphe-piko"
     ],
-    "version": "12.15.2-release.0"
+    "version": "12.17.0-release.0"
   },
   "Speedtest": {
     "keys": [
@@ -59,36 +59,36 @@
       "brave-beta-morphe-dh6k-arm64-v8a",
       "brave-beta-morphe-dh6k-x86_64"
     ],
-    "version": "1.94.110"
+    "version": "1.94.109"
   },
   "PC Remote": {
     "keys": [
       "pc-remote-morphe-rushiranpise"
     ],
-    "version": "8.3.4"
+    "version": "8.3.5"
   },
   "Microsoft Word": {
     "keys": [
       "microsoft-word-morphe-rushiranpise"
     ],
-    "version": "16.0.20131.20080"
+    "version": "16.0.20326.20034"
   },
   "Microsoft Excel": {
     "keys": [
       "microsoft-excel-morphe-rushiranpise"
     ],
-    "version": "16.0.20131.20080"
+    "version": "16.0.20326.20034"
   },
   "Amazon India": {
     "keys": [
       "amazon-india-morphe-rushiranpise"
     ],
-    "version": "0"
+    "version": "32.15.0.300"
   },
   "GitHub": {
     "keys": [
       "github-morphe-hoodles-stylus"
     ],
-    "version": "1.267.0"
+    "version": "1.272.0"
   }
 }
