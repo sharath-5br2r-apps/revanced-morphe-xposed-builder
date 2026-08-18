@@ -61,7 +61,7 @@
     "patches-source": "binarymend/morphe-patches"
   },
   "brave-beta-morphe-dh6k-arm64-v8a": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -76,7 +76,7 @@
     "version": "latest"
   },
   "brave-beta-morphe-dh6k-x86_64": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -354,7 +354,7 @@
     "included-patches": "'Dynamic Color'"
   },
   "discord-npatch-revenge": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "discord",
     "pkg-name": "com.discord",
     "rv-brand": "npatch-revenge",
