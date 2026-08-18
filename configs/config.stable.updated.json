@@ -61,7 +61,7 @@
     "patches-source": "binarymend/morphe-patches"
   },
   "brave-beta-morphe-dh6k-arm64-v8a": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -76,7 +76,7 @@
     "version": "latest"
   },
   "brave-beta-morphe-dh6k-x86_64": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -158,7 +158,7 @@
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
   },
   "github-morphe-hoodles-stylus": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "github",
     "rv-brand": "morphe-hoodles-stylus",
     "build-mode": "apk",
@@ -336,7 +336,7 @@
     "patches-source": "crimera/piko"
   },
   "x-morphe-piko": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "x",
     "rv-brand": "morphe-piko",
     "build-mode": "apk",
@@ -368,7 +368,7 @@
     "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-340-13-stable-release/"
   },
   "amazon-india-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "amazon-india",
     "rv-brand": "morphe-rushiranpise",
     "build-mode": "apk",
@@ -385,7 +385,7 @@
     "version": "latest"
   },
   "adobe-acrobat-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "adobe-acrobat",
     "rv-brand": "morphe-rushiranpise",
@@ -401,7 +401,7 @@
     "custom-microg-patches": "'None'"
   },
   "microsoft-word-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "microsoft-word",
     "rv-brand": "morphe-rushiranpise",
@@ -416,7 +416,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "microsoft-excel-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "microsoft-excel",
     "rv-brand": "morphe-rushiranpise",
@@ -430,7 +430,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "pc-remote-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "pc-remote",
     "rv-brand": "morphe-rushiranpise",
@@ -458,7 +458,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "amazon-alexa-signed": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "amazon-alexa",
     "rv-brand": "signed",
     "build-mode": "apk",
