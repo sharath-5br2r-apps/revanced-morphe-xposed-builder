@@ -1,6 +1,6 @@
 {
-  "version": "v21.32.2 (patches 1.39.1.mpp)",
-  "versionCode": 260095,
-  "zipUrl": "https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/download/260095/youtube-morphe-exp-module-v21.32.2-all.zip",
+  "version": "v21.33.321 (patches dev.10.mpp)",
+  "versionCode": 260096,
+  "zipUrl": "https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/download/260096/youtube-morphe-exp-module-v21.33.321-all.zip",
   "changelog": "https://raw.githubusercontent.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/update/build.md"
 }
