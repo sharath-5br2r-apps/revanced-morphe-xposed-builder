@@ -3,20 +3,20 @@
     "dev": {},
     "stable": {
       "com.amazon.amazonvideo.livingroom": "9cdb58b4de8d15a589f57482745d4dee",
-      "com.disney.disneyplus": "b04951f8cba9a8f109c091b861f80b24",
+      "com.disney.disneyplus": "1fb808c8ceb9630e69e9f6fcad734bb7",
       "com.netflix.ninja": "c6acad764462bac7734410a807a2e21a",
       "com.peacocktv.peacockandroid": "81285dcc209ee4b9c5a3ef3fcd3b940a",
       "com.tubitv": "ad4cfa4b600c6451571625a911aace33",
       "com.univision.prendetv": "af7f8e042bd4b56df21f80a2c99ac58f",
-      "com.wbd.hbomax": "d41d8cd98f00b204e9800998ecf8427e",
-      "shared": "0931595cc31cd10fe1b11c699f35efd2",
+      "com.wbd.hbomax": "f45b816686fef3bdd5b570af9425041a",
+      "shared": "1ff06a7046fd3e27be42987d5ff8a954",
       "tv.pluto.android": "21b638f3a2c93b1afbea6acdb54d2f4f"
     }
   },
   "arandomhooman/hoomans-morphe-patches": {
     "dev": {},
     "stable": {
-      "com.adobe.reader": "a5e39148cf8fdf9706f31301c5799b20",
+      "com.adobe.reader": "eab937553954116a13d220032965c949",
       "com.camerasideas.instashot": "78c9f84c54e3f8b32ceaf574d2e6c76a",
       "com.google.android.dialer": "58a0ea1c4971e4e705d292cfceef5b3f",
       "com.maxmpz.audioplayer": "313bbba9a73ccad15b38a37d7932503d",
@@ -24,12 +24,11 @@
       "com.paget96.batteryguru": "9fad4e56a6eacf6894b23807c4106137",
       "com.realbyteapps.moneymanagerfree": "b9e5b1df052f0ce024a4baa510b9ea61",
       "com.rumble.battles": "f65a2338fdeedb636dc5a5cb61e809ae",
-      "com.snorelab.app": "d41d8cd98f00b204e9800998ecf8427e",
       "com.spocky.projengmenu": "8e90e5d4bfbfde15489f1a15b302fc39",
       "com.todoist": "e28ae4fab14ec0b4aeff0039cf37e633",
-      "com.tumblr": "076b56661c3b720fe572e5bc6b91dcac",
+      "com.tumblr": "0850547e97d26fa6cd5f55e20cfa281c",
       "shared": "419b00daa7dd52bf4dfb8d8d2f279b24",
-      "tv.twitch.android.app": "f910bc01b230dd3359baf7f7df1a4caf"
+      "tv.twitch.android.app": "3e8106c7599d420305cb11fb8d8ec5da"
     }
   },
   "crimera/piko": {
@@ -39,6 +38,15 @@
       "shared": "c7de81f0d3c5228cc4478363292ce169"
     },
     "stable": {}
+  },
+  "dh6k/morphe-patches": {
+    "dev": {},
+    "stable": {
+      "com.brave.browser": "d365506a85a1d8358e60ec94aac8beee",
+      "com.brave.browser_beta": "d41d8cd98f00b204e9800998ecf8427e",
+      "com.brave.browser_nightly": "d41d8cd98f00b204e9800998ecf8427e",
+      "shared": "620ac3dca07e53d7ea6e42b73b3eed78"
+    }
   },
   "franticg33k/morphe-patches": {
     "dev": {
@@ -104,9 +112,9 @@
   "hxreborn/morphe-patches": {
     "dev": {},
     "stable": {
-      "ch.protonmail.android": "3be879b23db01dce9816c21abcf711d6",
-      "com.michaldrabik.showly2": "6132bb2f1ff88e3ed84233accc3b1401",
-      "shared": "99cc17064137fe6cd9be9c3a702e8fee"
+      "ch.protonmail.android": "0306e795f43f390d780aec337cfc6d88",
+      "com.michaldrabik.showly2": "77faaaff80f3870170cabfed9ce9ba5d",
+      "shared": "e4103fe9f4a7c020229409fec0bb1378"
     }
   },
   "icysymmetra/tiktok-patches-for-morphe": {
@@ -116,13 +124,31 @@
     },
     "stable": {}
   },
+  "imxeren/mix-patches": {
+    "dev": {},
+    "stable": {
+      "shared": "25450fb22c2926e3a7eec683a0523e91",
+      "tv.trakt.trakt": "59f52251049f3e408956356587a5c78f"
+    }
+  },
   "morpheapp/morphe-patches": {
     "dev": {
-      "com.google.android.apps.youtube.music": "175a5233f7a080dccaaedcd42f62149c",
-      "com.google.android.youtube": "a8aa819df801edf384499857392f8976",
-      "com.reddit.frontpage": "d6dd6726ae71f6f76a106cb2be329e10",
-      "shared": "9eb7ecb88d737e7465e94aff10dfcbaf"
+      "com.google.android.apps.youtube.music": "1afdfec523e28c925aab157eee4234d4",
+      "com.google.android.youtube": "548f4efcf5efde3347ac435704de8d6b",
+      "com.reddit.frontpage": "dc4fc9ecda4551bc5bb9dffcbd2ab9e0",
+      "shared": "80c7e8fe552841a0089e242f4c08a448"
     },
+    "stable": {}
+  },
+  "quantavil/edge-morphe-patches": {
+    "dev": {},
+    "stable": {
+      "com.microsoft.emmx": "151519518665e90765b287d5e90ba3e3",
+      "shared": "0e1237ce0a45c8a07bb403c5e043d2f4"
+    }
+  },
+  "revenge-mod/revenge-xposed": {
+    "dev": {},
     "stable": {}
   },
   "rookieenough/de-vanced": {

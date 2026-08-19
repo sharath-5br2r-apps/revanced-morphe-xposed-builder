@@ -163,6 +163,7 @@ rv-brand = "ReVanced"                       # Rebrand prefix from 'ReVanced'. de
 [youtube-morphe-exp]
 app-name = "YouTube"                                       # Custom display name override for release outputs. default: table section key ('youtube-morphe-exp')
 pkg-name = "com.google.android.youtube"                    # Explicit package name override to avoid network checks during caching.
+patch-folder = "youtube"                                   # Explicit patch folder name override. Forces CI to strictly match patches inside this folder name.
 enabled = true                                             # Whether to build this app table. default: true
 build-mode = "both"                                        # 'both', 'apk', or 'module'. default: apk
 
