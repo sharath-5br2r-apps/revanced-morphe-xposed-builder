@@ -22,8 +22,24 @@ set_prebuilts
 
 vtf() { if ! isoneof "${1}" "true" "false"; then abort "ERROR: '${1}' is not a valid option for '${2}': only true or false is allowed"; fi; }
 
+for arg in "${@-}"; do
+	if [ "$arg" = "--config-update" ]; then
+		config_update
+		exit 0
+	fi
+done
+
 # -- Main config --
-toml_prep "${1:-config.toml}" || abort "could not find config file '${1:-config.toml}'\n\tUsage: $0 <config.toml>"
+cfg_file="configs/config.manual.stable.generated.toml"
+if [ -n "${1-}" ] && [ "${1-}" != "--config-update" ] && [ -f "${1-}" ]; then
+	cfg_file="${1}"
+elif [ -f "configs/config.toml" ]; then
+	cfg_file="configs/config.toml"
+elif [ -f "config.toml" ]; then
+	cfg_file="config.toml"
+fi
+
+toml_prep "$cfg_file" || abort "could not find config file '$cfg_file'\n\tUsage: $0 <config.toml>"
 main_config_t=$(toml_get_table_main)
 COMPRESSION_LEVEL=$(toml_get "$main_config_t" compression-level) || COMPRESSION_LEVEL="9"
 REMOVE_RV_INTEGRATIONS_CHECKS=$(toml_get "$main_config_t" remove-rv-integrations-checks) || REMOVE_RV_INTEGRATIONS_CHECKS="false"
@@ -35,11 +51,6 @@ DEF_CLI_SRC=$(toml_get "$main_config_t" cli-source) || DEF_CLI_SRC="MorpheApp/mo
 DEF_CLI_SRC_HOST=$(toml_get "$main_config_t" cli-source-host) || DEF_CLI_SRC_HOST="github"
 DEF_RV_BRAND=$(toml_get "$main_config_t" rv-brand) || DEF_RV_BRAND="ReVanced"
 mkdir -p "$TEMP_DIR" "$BUILD_DIR"
-last_arg="${!#}"
-if [ "${last_arg:-}" == "--config-update" ]; then
-	config_update
-	exit 0
-fi
 
 : >build.md
 ENABLE_MODULE_UPDATE=$(toml_get "$main_config_t" enable-module-update) || ENABLE_MODULE_UPDATE=true

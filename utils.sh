@@ -38,6 +38,7 @@ NEXT_VER_CODE=${NEXT_VER_CODE:-$(date +'%Y%m%d')}
 OS=$(uname -o)
 [[ $(uname -s) == *"NT"* ]] && javapathsep=";" || javapathsep=":"
 
+declare -g __TOML__=""
 declare -gA __PREBUILTS_CACHE__
 declare -gA __PATCHES_LIST_CACHE__
 declare -gA __PATCH_VER_CACHE__
