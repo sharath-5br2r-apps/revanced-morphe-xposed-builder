@@ -2688,8 +2688,8 @@ build_rv() {
 				skip_dl_source_check=true
 				version="$resolved_version"
 			fi
-		else
-			# Dynamic Cache Discovery for "latest" or empty version
+	elif [ "$version_mode" != "auto" ]; then
+		# Dynamic Cache Discovery for "latest" or empty version
 			local cached_apks=($(find "$apk_cache_dir" -name "${pkg_name}-*.apk" -type f 2>/dev/null || true))
 			if [ ${#cached_apks[@]} -gt 0 ]; then
 				local cached_versions=""
