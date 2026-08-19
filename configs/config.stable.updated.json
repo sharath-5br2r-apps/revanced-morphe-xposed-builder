@@ -203,7 +203,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "symfonium-morphe-hooman": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "symfonium",
     "rv-brand": "morphe-hooman",
     "build-mode": "apk",
@@ -217,7 +217,7 @@
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
   "adm-morphe-hooman": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "adm",
     "rv-brand": "morphe-hooman",
     "build-mode": "apk",
@@ -386,7 +386,7 @@
     "version": "latest"
   },
   "adobe-acrobat-morphe-rushiranpise": {
-    "enabled": false,
+    "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "adobe-acrobat",
     "rv-brand": "morphe-rushiranpise",
