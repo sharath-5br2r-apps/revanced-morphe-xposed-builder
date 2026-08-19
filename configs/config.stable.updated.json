@@ -354,7 +354,7 @@
     "included-patches": "'Dynamic Color'"
   },
   "discord-npatch-revenge": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "discord",
     "pkg-name": "com.discord",
     "rv-brand": "npatch-revenge",
@@ -386,7 +386,7 @@
     "version": "latest"
   },
   "adobe-acrobat-morphe-rushiranpise": {
-    "enabled": false,
+    "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "adobe-acrobat",
     "rv-brand": "morphe-rushiranpise",
