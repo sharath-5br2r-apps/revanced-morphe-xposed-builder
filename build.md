@@ -1,8 +1,7 @@
-youtube-morphe-exp (all): 21.33.321  
-youtube-music-morphe-exp (arm64-v8a): 9.33.52  
-youtube-music-morphe-exp (arm-v7a): 9.33.52  
-youtube-music-morphe-exp (x86_64): 9.33.52  
-youtube-music-morphe-exp (x86): 9.33.52  
+instagram-morphe-piko (arm64-v8a): stub(133.0.33)  
+instagram-morphe-piko (arm-v7a): stub(133.0.33)  
+instagram-morphe-piko (x86_64): stub(133.0.33)  
+instagram-morphe-piko (x86): stub(133.0.33)  
 
 **Notes:**  
 • Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
@@ -11,5 +10,5 @@ youtube-music-morphe-exp (x86): 9.33.52
 [GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Website](https://sharath-5br2r-apps.github.io)
   
 CLI: MorpheApp/morphe-desktop-1.13.1-all.jar  
-Patches: MorpheApp/patches-1.40.0-dev.12.mpp  
-[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.40.0-dev.12)  
+Patches: crimera/patches-3.9.0-dev.9.mpp  
+[Changelog](https://github.com/crimera/piko/releases/tag/v3.9.0-dev.9)  
