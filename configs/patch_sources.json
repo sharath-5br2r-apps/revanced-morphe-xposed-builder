@@ -97,10 +97,10 @@
   },
   "hooman": {
     "repo": "arandomhooman/hoomans-morphe-patches",
-    "stable": "v1.50.2",
+    "stable": "v1.50.3",
     "prerelease": "v1.44.0-dev.4",
     "blocked": false,
-    "stable_date": "2026-08-18T17:30:26Z",
+    "stable_date": "2026-08-19T00:30:47Z",
     "pre_date": "2026-08-13T04:04:19Z"
   },
   "rushiranpise": {
