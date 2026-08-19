@@ -213,7 +213,7 @@
     "patches-source": "icysymmetra/tiktok-patches-for-morphe"
   },
   "youtube-morphe-exp": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -231,7 +231,7 @@
     "included-patches": "'Theme'"
   },
   "youtube-music-morphe-exp": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "youtube-music",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
@@ -430,7 +430,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "amazon-alexa-signed": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "amazon-alexa",
     "rv-brand": "signed",
     "build-mode": "apk",
