@@ -133,5 +133,11 @@
       "beta-maniac-morphe-rushiranpise"
     ],
     "version": "latest"
+  },
+  "Duolingo": {
+    "keys": [
+      "duolingo-morphe-rushiranpise"
+    ],
+    "version": "latest"
   }
 }

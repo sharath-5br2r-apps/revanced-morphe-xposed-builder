@@ -730,6 +730,21 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-lif
 dpi = "nodpi anydpi auto"
 patches-source = "rushiranpise/morphe-patches"
 
+[duolingo-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "duolingo"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.duolingo"
+uptodown-dlurl = "https://duolingo.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
 [amazon-alexa-signed]
 enabled = true
 app-name = "amazon-alexa"
