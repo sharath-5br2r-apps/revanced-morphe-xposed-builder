@@ -125,3 +125,18 @@ uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
 dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
+
+[solid-explorer-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "solid-explorer"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "pl.solidexplorer2"
+uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/neatbytes/solid-explorer-file-manager/"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"

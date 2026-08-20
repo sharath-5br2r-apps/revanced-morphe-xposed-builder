@@ -163,5 +163,11 @@
       "sdmaid-morphe-paresh"
     ],
     "version": "latest"
+  },
+  "Solid Explorer": {
+    "keys": [
+      "solid-explorer-morphe-hoodles"
+    ],
+    "version": "latest"
   }
 }
