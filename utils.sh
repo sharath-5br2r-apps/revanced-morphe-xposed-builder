@@ -2331,6 +2331,18 @@ write_build_info() {
 	fi
 	local arch_orig="${args[arch]// /}"
 	if [ "$arch_orig" != "auto" ]; then ext="${arch}${ext}"; arch=""; fi
+
+	# Extract Android minSdkVersion using aapt2
+	local min_sdk=""
+	local target_apk="${final_apk_output:-${apk_output:-${patched_apk:-}}}"
+	if [ -z "$target_apk" ] || [ ! -f "$target_apk" ]; then
+		target_apk="${stock_apk_to_patch:-${stock_apk:-}}"
+	fi
+	local aapt_bin="${AAPT2:-$(command -v aapt2 || command -v aapt || true)}"
+	if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ] && [ -n "$target_apk" ] && [ -f "$target_apk" ]; then
+		min_sdk=$("$aapt_bin" dump badging "$target_apk" 2>/dev/null | grep -oP "(?:sdkVersion|minSdkVersion):'\K[^']+" | head -1) || true
+	fi
+
 	# extract applied patches supporting revanced, morphe-desktop, and instafel output formats
 	# revanced: INFO: "Patch Name" succeeded
 	# morphe:   INFO: Applied: Patch Name
@@ -2343,10 +2355,11 @@ write_build_info() {
 		--arg arch "$arch" \
 		--arg name "$name" \
 		--arg version "$version" \
+		--arg min_sdk "$min_sdk" \
 		--arg patches "$patches" \
 		--arg changelog "$changelog" \
 		--argjson applied "$applied_json" \
-		'if has($key) then .[$key].exts = (.[$key].exts + [$ext] | unique) else .[$key] = {exts: [$ext], name: $name, arch: $arch, version: $version, patches: $patches, changlog: $changelog, applied_patches: $applied} end' \
+		'if has($key) then .[$key].exts = (.[$key].exts + [$ext] | unique) else .[$key] = {exts: [$ext], name: $name, arch: $arch, version: $version, min_sdk: $min_sdk, patches: $patches, changlog: $changelog, applied_patches: $applied} end | if $min_sdk != "" then .[$key].min_sdk = $min_sdk else . end' \
 		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
 }
 verify_downloaded_apk() {
