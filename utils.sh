@@ -760,7 +760,7 @@ semver_validate() {
 	[ ${#ac} = 0 ]
 }
 get_patch_last_supported_ver() {
-	local cache_key="${1}_${2}_${3:-}_${4:-}_${5:-}_${6:-}"
+	local cache_key="${1}_${2}_${3:-}_${4:-}_${5:-}_${6:-}_${7:-}_${8:-}"
 	if [ -n "${__PATCH_VER_CACHE__["$cache_key"]:-}" ]; then
 		echo "${__PATCH_VER_CACHE__["$cache_key"]}"
 		return 0
@@ -772,7 +772,7 @@ get_patch_last_supported_ver() {
 }
 
 _get_patch_last_supported_ver() {
-	local list_patches=$1 pkg_name=$2 inc_sel=${3:-} _exc_sel=${4:-} _exclusive=${5:-} cli_source=${6:-} # TODO: resolve using all of these
+	local list_patches=$1 pkg_name=$2 inc_sel=${3:-} _exc_sel=${4:-} _exclusive=${5:-} cli_source=${6:-} cli_jar=${7:-${cli_jar:-}} patches_jar=${8:-${patches_jar:-}} # TODO: resolve using all of these
 	local op
 	if [ "$inc_sel" ]; then
 		if ! op=$(awk '{$1=$1}1' <<<"$list_patches"); then
@@ -797,9 +797,9 @@ _get_patch_last_supported_ver() {
 	op=$(patches_list_versions "$cli_jar" "$patches_jar" "$pkg_name" "$cli_source") || return 1
 	op=$(sed -n '/Most common compatible versions:/,$p' <<<"$op" | sed '1d' | awk '{$1=$1}1')
 	if [ "$op" = "Any" ]; then return; fi
-	pcount=$(head -1 <<<"$op") pcount=${pcount#*(} pcount=${pcount% *}
+	pcount=$(grep -oP '\(\K[0-9]+(?= patch)' <<<"$op" | head -1)
 	if [ -z "$pcount" ]; then
-		return
+		return 1
 	fi
 	grep -F "($pcount patch" <<<"$op" | sed 's/ (.* patch.*//' | get_highest_ver || return 1
 }
@@ -2665,7 +2665,8 @@ build_rv() {
 		if [ -z "$resolved_version" ]; then
 			if [ "$version_mode" = auto ]; then
 				if ! resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
-					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}"); then
+					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
+					"${cli_jar:-}" "${patches_jar:-}"); then
 					wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
 					resolved_version=""
 				fi
@@ -2821,7 +2822,8 @@ build_rv() {
 		if [ -z "$resolved_version" ]; then
 			if [ "$version_mode" = auto ]; then
 				if ! resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
-					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}"); then
+					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
+					"${cli_jar:-}" "${patches_jar:-}"); then
 					wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
 					resolved_version=""
 				fi
