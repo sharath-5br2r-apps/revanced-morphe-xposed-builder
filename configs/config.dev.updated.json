@@ -39,7 +39,7 @@
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/org.zwanoo.android.speedtest",
     "version": "latest",
     "build-mode": "apk",
-    "arch": "multi",
+    "arch": "all",
     "cli-source": "MorpheApp/morphe-desktop",
     "uptodown-dlurl": "https://speedtest-net-mobile.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/ookla/speedtest",
@@ -95,7 +95,7 @@
     "app-name": "gboard",
     "rv-brand": "morphe-jasonwu1994-adobo",
     "build-mode": "both",
-    "arch": "arm64-v8a",
+    "arch": "all",
     "pkg-name": "com.google.android.inputmethod.latin",
     "patches-source": "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'",
     "included-patches": " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'",
@@ -114,7 +114,7 @@
     "app-name": "gboard",
     "rv-brand": "morphe-jasonwu1994-adobo-clone",
     "build-mode": "apk",
-    "arch": "arm64-v8a",
+    "arch": "all",
     "patches-source": "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'",
     "included-patches": " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'",
     "exclusive-patches": "'jkennethcarino/adobo'",
@@ -140,7 +140,8 @@
     "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
     "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' ",
     "dpi": "480-640dpi",
-    "version": "latest"
+    "version": "latest",
+    "arch": "all"
   },
   "prime-video-morphe-hoodles": {
     "enabled": false,
@@ -150,7 +151,7 @@
     "build-mode": "apk",
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient",
     "version": "latest",
-    "arch": "arm64-v8a",
+    "arch": "all",
     "cli-source": "MorpheApp/morphe-desktop",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/",
     "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
@@ -166,7 +167,7 @@
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder",
     "version": "latest",
     "build-mode": "apk",
-    "arch": "both",
+    "arch": "all",
     "pkg-name": "videoeditor.videorecorder.screenrecorder",
     "uptodown-dlurl": "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder",
@@ -181,7 +182,7 @@
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.intsig.camscanner",
     "version": "auto",
     "build-mode": "apk",
-    "arch": "both",
+    "arch": "arm64-v8a",
     "pkg-name": "com.intsig.camscanner",
     "uptodown-dlurl": "https://camscanner-pdf-creator.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator",
@@ -228,7 +229,7 @@
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher",
     "version": "latest",
     "build-mode": "apk",
-    "arch": "both",
+    "arch": "all",
     "pkg-name": "com.teslacoilsw.launcher",
     "uptodown-dlurl": "https://nova-launcher.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher",
@@ -315,7 +316,7 @@
     "pkg-name": "com.zhiliaoapp.musically",
     "rv-brand": "morphe-icysymmetra",
     "build-mode": "apk",
-    "arch": "both64",
+    "arch": "all",
     "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically",
@@ -337,7 +338,8 @@
     "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
     "patches-source": "MorpheApp/morphe-patches",
     "patcher-args": "-OdarkThemeBackgroundColor=#000000 ",
-    "included-patches": "'Theme'"
+    "included-patches": "'Theme'",
+    "arch": "all"
   },
   "youtube-music-morphe-exp": {
     "enabled": false,
@@ -365,7 +367,7 @@
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.lens",
     "version": "auto",
     "build-mode": "apk",
-    "arch": "both",
+    "arch": "multi",
     "pkg-name": "com.microsoft.office.officelens",
     "uptodown-dlurl": "https://office-lens.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/microsoft-corporation/office-lens",
@@ -384,7 +386,8 @@
     "dpi": "nodpi anydpi auto",
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing",
     "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab"
+    "patches-source-host": "gitlab",
+    "arch": "all"
   },
   "proton-vpn-morphe-paresh": {
     "enabled": false,
@@ -400,7 +403,8 @@
     "prefer-dl-mode": "bundle",
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab",
-    "dpi": "120-640dpi"
+    "dpi": "120-640dpi",
+    "arch": "all"
   },
   "jiohotstar-morphe-paresh": {
     "enabled": false,
@@ -445,7 +449,8 @@
     "dpi": "nodpi anydpi auto",
     "patches-source": "crimera/piko",
     "patches-source-host": "github",
-    "included-patches": "'Dynamic Color'"
+    "included-patches": "'Dynamic Color'",
+    "arch": "all"
   },
   "discord-npatch-revenge": {
     "enabled": false,
@@ -477,7 +482,8 @@
     "excluded-patches": "'Hide Rufus Tab'",
     "custom-microg-patches": "'None'",
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping",
-    "version": "latest"
+    "version": "latest",
+    "arch": "all"
   },
   "adobe-acrobat-morphe-rushiranpise": {
     "enabled": false,
@@ -538,7 +544,8 @@
     "uptodown-dlurl": "https://monect-pc-remote.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/",
     "dpi": "nodpi anydpi auto",
-    "patches-source": "rushiranpise/morphe-patches"
+    "patches-source": "rushiranpise/morphe-patches",
+    "arch": "all"
   },
   "oxygen-updater-morphe-rushiranpise": {
     "enabled": false,
