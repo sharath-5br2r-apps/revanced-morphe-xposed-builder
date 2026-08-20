@@ -90,5 +90,11 @@
       "github-morphe-hoodles-stylus"
     ],
     "version": "1.272.0"
+  },
+  "Fing": {
+    "keys": [
+      "fing-morphe-paresh"
+    ],
+    "version": "latest"
   }
 }

@@ -334,7 +334,7 @@ changelog_merged=$(awk '
 		}
 		skip_changelog = 0
 	} else if (skip_changelog) {
-		if (line ~ /^\[Changelog\]/ || line == "" || line == "\r") {
+		if (line ~ /^\[Changelog\]/ || line ~ /^<details>/ || line ~ /^<summary>/ || line ~ /^<\/details>/ || line == "" || line == "\r") {
 			next
 		}
 		skip_changelog = 0

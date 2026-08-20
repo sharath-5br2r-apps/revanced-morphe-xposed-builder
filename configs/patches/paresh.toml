@@ -4,6 +4,7 @@ patches-version = "absolutelatest"
 enabled = true
 app-name = "fing"
 rv-brand = "morphe-paresh"
+version = "latest"
 build-mode = "apk"
 pkg-name = "com.overlook.android.fing"
 cli-source = "MorpheApp/morphe-desktop"

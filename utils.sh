@@ -568,12 +568,29 @@ _get_prebuilts() {
 		echo "$tag_name" > "${dir}/tag_name.txt"
 
 		if [ "$grab_cl" = true ]; then
+			local cl_url=""
 			if [ "$host" = github ]; then
-				echo -e "[Changelog](${host_instance:-https://github.com}/${src}/releases/tag/${tag_name})\n" >>"${cl_dir}/changelog.md"
+				cl_url="${host_instance:-https://github.com}/${src}/releases/tag/${tag_name}"
 			elif [ "$host" = gitlab ]; then
-				echo -e "[Changelog](${host_instance:-https://gitlab.com}/${src}/-/releases/${tag_name})\n" >>"${cl_dir}/changelog.md"
+				cl_url="${host_instance:-https://gitlab.com}/${src}/-/releases/${tag_name}"
 			elif [ "$host" = forgejo ] || [ "$host" = gitea ]; then
-				echo -e "[Changelog](${host_instance}/${src}/releases/tag/${tag_name})\n" >>"${cl_dir}/changelog.md"
+				cl_url="${host_instance}/${src}/releases/tag/${tag_name}"
+			fi
+			if [ -n "$cl_url" ]; then
+				echo -e "[Changelog](${cl_url})\n" >>"${cl_dir}/changelog.md"
+				local cl_body
+				cl_body=$(jq -r '.body // .description // empty' <<<"$release" 2>/dev/null || true)
+				if [ -n "$cl_body" ] && [ "$cl_body" != "null" ]; then
+					{
+						echo "<details>"
+						echo "<summary>${tag_name}</summary>"
+						echo ""
+						echo "$cl_body"
+						echo ""
+						echo "</details>"
+						echo ""
+					} >>"${cl_dir}/changelog.md"
+				fi
 			fi
 		fi
 		if [ "${REMOVE_RV_INTEGRATIONS_CHECKS:-false}" = true ]; then
