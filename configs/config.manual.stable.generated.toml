@@ -223,6 +223,21 @@ dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
 excluded-patches = "'Rename Shared Permissions'"
 
+[prime-video-morphe-hoodles-shared]
+enabled = true
+app-name = "prime-video"
+rv-brand = "morphe-hoodles-shared"
+pkg-name = "com.amazon.avod.thirdpartyclient"
+build-mode = "apk"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient"
+version = "latest"
+arch = "all"
+cli-source = "MorpheApp/morphe-desktop"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/"
+uptodown-dlurl = "https://amazon-video.en.uptodown.com/android"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
 [xrecorder-morphe-hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
