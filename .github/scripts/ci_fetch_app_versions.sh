@@ -7,11 +7,11 @@ dos2unix utils.sh 2>/dev/null || true
 source utils.sh
 set_prebuilts
 
-## Find all app configs (including single config.toml files)
-CONFIG_FILES=$(find .github/configs/patches configs/patches .github/configs configs . -maxdepth 2 -name "*.toml" 2>/dev/null | sort -u)
+# Find all app configs in configs/ directory
+CONFIG_FILES=$(find configs/patches configs -maxdepth 2 -name "*.toml" 2>/dev/null | sort -u)
 
 if [ -z "$CONFIG_FILES" ]; then
-    echo "No config files found"
+    echo "No config files found in configs/"
     exit 0
 fi
 
@@ -19,8 +19,7 @@ fi
 # shellcheck disable=SC2086
 yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $CONFIG_FILES > temp_all_configs.json
 
-APP_VERSIONS_FILE=".github/configs/app_versions.json"
-[ -f "$APP_VERSIONS_FILE" ] || APP_VERSIONS_FILE="configs/app_versions.json"
+APP_VERSIONS_FILE="configs/app_versions.json"
 [ -f "$APP_VERSIONS_FILE" ] || echo '{}' > "$APP_VERSIONS_FILE"
 
 > fetched_app_versions.jsonl

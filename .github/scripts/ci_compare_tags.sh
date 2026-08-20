@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-PATCH_FILE=".github/configs/patch_sources.json"
+PATCH_FILE="configs/patch_sources.json"
 
 OLD_JSON=$(cat "$PATCH_FILE")
 NEW_JSON=$(cat "tags_new.json")

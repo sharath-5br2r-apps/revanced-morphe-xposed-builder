@@ -6,7 +6,7 @@ def get_app_mappings():
     apps_dev = {}
     cli_sources = {}
     
-    toml_files = sorted(list(set(glob.glob('.github/configs/patches/*.toml') + glob.glob('configs/patches/*.toml'))))
+    toml_files = sorted(glob.glob('configs/patches/*.toml'))
     for toml_file in toml_files:
         is_stable_only = toml_file.endswith('.stable.toml')
         is_dev_only = toml_file.endswith('.dev.toml')
@@ -287,7 +287,7 @@ def run():
     except FileNotFoundError:
         tags_new = {}
     
-    hash_file = '.github/configs/patch_file_hashes.json'
+    hash_file = 'configs/patch_file_hashes.json'
     if os.path.exists(hash_file):
         with open(hash_file, 'r') as f:
             hashes = json.load(f)

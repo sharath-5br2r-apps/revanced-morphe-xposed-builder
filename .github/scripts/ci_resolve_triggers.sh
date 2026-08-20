@@ -14,17 +14,17 @@ TRIGGER_STABLE=0
 TRIGGER_PRERELEASE=0
 
 if [ "$RAW_TRIGGER_STABLE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
-  CFG=".github/configs/config.stable.updated.json"
+  CFG="configs/config.stable.updated.json"
   ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
   if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
     TRIGGER_STABLE=1
   else
-    echo "::notice::Skipping stable build trigger: no enabled apps in $CFG"
+    echo "::notice::Stable config has 0 enabled apps. Skipping stable build."
   fi
 fi
 
 if [ "$RAW_TRIGGER_PRERELEASE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
-  CFG=".github/configs/config.dev.updated.json"
+  CFG="configs/config.dev.updated.json"
   ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
   if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
     TRIGGER_PRERELEASE=1

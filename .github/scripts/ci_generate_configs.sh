@@ -27,7 +27,7 @@ jq -rn --argjson new "$TAGS_NEW" --argjson old "$TAGS_OLD" '
 ' > active.prerelease.json
 
 if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ]; then
-  STABLE_CONFIGS=$(find .github/configs/patches configs/patches -name "*.toml" ! -name "*.dev.toml" 2>/dev/null | sort -u)
+  STABLE_CONFIGS=$(find configs/patches -name "*.toml" ! -name "*.dev.toml" 2>/dev/null | sort -u)
   if [ -n "$STABLE_CONFIGS" ]; then
     # shellcheck disable=SC2086
     yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $STABLE_CONFIGS > config.stable.json
@@ -46,13 +46,11 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
         if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or ($activeApps[0] | index($k)) then . else (.value.enabled = false) end
       else . end
     )
-  ' config.stable.json > .github/configs/config.stable.updated.json
-  mkdir -p configs 2>/dev/null || true
-  cp -f .github/configs/config.stable.updated.json configs/config.stable.updated.json 2>/dev/null || true
+  ' config.stable.json > configs/config.stable.updated.json
 fi
 
 if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ]; then
-  DEV_CONFIGS=$(find .github/configs/patches configs/patches -name "*.toml" ! -name "*.stable.toml" 2>/dev/null | sort -u)
+  DEV_CONFIGS=$(find configs/patches -name "*.toml" ! -name "*.stable.toml" 2>/dev/null | sort -u)
   if [ -n "$DEV_CONFIGS" ]; then
     # shellcheck disable=SC2086
     yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $DEV_CONFIGS > config.dev.json
@@ -82,7 +80,5 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] 
         if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or (($activeApps[0] | index($k)) and $has_valid_dev) then . else (.value.enabled = false) end
       else . end
     )
-  ' config.dev.json > .github/configs/config.dev.updated.json
-  mkdir -p configs 2>/dev/null || true
-  cp -f .github/configs/config.dev.updated.json configs/config.dev.updated.json 2>/dev/null || true
+  ' config.dev.json > configs/config.dev.updated.json
 fi
