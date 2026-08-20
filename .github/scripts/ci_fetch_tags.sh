@@ -4,9 +4,14 @@ PATCH_FILE="configs/patch_sources.json"
 BASE_JSON=$(cat "$PATCH_FILE")
 
 fetch_gitlab_releases() {
-  local repo=$1 encoded_repo
+  local repo=$1 host_instance=$2
+  local instance="${host_instance:-gitlab.com}"
+  if [[ "$instance" != http* ]]; then
+    instance="https://${instance}"
+  fi
+  local encoded_repo
   encoded_repo=$(jq -nr --arg v "$repo" '$v | @uri')
-  curl -sS -L -w '\n%{http_code}' "https://gitlab.com/api/v4/projects/${encoded_repo}/releases?per_page=100"
+  curl -sS -L -w '\n%{http_code}' "${instance}/api/v4/projects/${encoded_repo}/releases?per_page=100"
 }
 
 fetch_forgejo_gitea_releases() {
@@ -33,7 +38,7 @@ while read -r id repo host host_instance enabled enabledStable enabledDev; do
   api_http_code="200"
 
   if [ "$host_type" = "gitlab" ]; then
-    api_response=$(fetch_gitlab_releases "$repo" 2>&1 || true)
+    api_response=$(fetch_gitlab_releases "$repo" "$host_instance" 2>&1 || true)
     api_http_code=$(printf '%s\n' "$api_response" | tail -n1)
     api_response=$(printf '%s\n' "$api_response" | sed '$d')
   elif [ "$host_type" = "forgejo" ] || [ "$host_type" = "gitea" ] || [ "$host_type" = "codeberg" ]; then
