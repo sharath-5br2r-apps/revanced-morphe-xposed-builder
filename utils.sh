@@ -2896,7 +2896,7 @@ build_rv() {
 					rm -f "$stock_apk"
 					continue
 				fi
-				if ! unzip -l "$stock_apk" 2>/dev/null | grep '^[[:space:]]*[0-9].*AndroidManifest\.xml$'; then
+				if ! unzip -l "$stock_apk" 2>/dev/null | grep -q '^[[:space:]]*[0-9].*AndroidManifest\.xml$'; then
 					pr "WARNING: ${stock_apk} does not contain AndroidManifest.xml at root. Attempting to extract as XAPK/APKS..."
 					mv "$stock_apk" "${stock_apk}.xapk"
 					if ! _apkpure_install_xapk "${stock_apk}.xapk" "$stock_apk"; then
