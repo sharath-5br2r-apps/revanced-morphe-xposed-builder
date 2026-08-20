@@ -63,6 +63,21 @@ dpi = "nodpi anydpi auto"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.flyersoft.moonreader"
 patches-source = "binarymend/morphe-patches"
 
+[pinterest-morphe-binarymend]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "pinterest"
+rv-brand = "morphe-binarymend"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.pinterest"
+uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
+dpi = "nodpi anydpi auto"
+patches-source = "binarymend/morphe-patches"
+
 [hill-climb-racing-morphe-byehi98]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"

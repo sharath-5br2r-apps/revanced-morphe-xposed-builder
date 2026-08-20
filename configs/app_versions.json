@@ -151,5 +151,11 @@
       "jetpack-joyride-morphe-byehi98"
     ],
     "version": "latest"
+  },
+  "Pinterest": {
+    "keys": [
+      "pinterest-morphe-binarymend"
+    ],
+    "version": "latest"
   }
 }
