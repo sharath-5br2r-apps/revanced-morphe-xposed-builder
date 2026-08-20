@@ -114,5 +114,11 @@
       "batteryguru-morphe-hooman"
     ],
     "version": "latest"
+  },
+  "Poweramp": {
+    "keys": [
+      "poweramp-morphe-hooman"
+    ],
+    "version": "latest"
   }
 }
