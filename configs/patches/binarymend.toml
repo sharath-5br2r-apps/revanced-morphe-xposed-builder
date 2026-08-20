@@ -26,7 +26,7 @@ build-mode = "apk"
 arch = "all"
 pkg-name = "com.pinterest"
 uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest/"
 dpi = "nodpi anydpi auto"
 patches-source = "binarymend/morphe-patches"
 
