@@ -578,6 +578,51 @@ patches-source = "MorpheApp/morphe-patches"
 patcher-args = "-OdarkThemeBackgroundColor=#000000 "
 included-patches = "'Theme'"
 
+[clash-of-clans-morphe-nulls]
+enabled = true
+cli-source = "none"
+cli-source-host = "none"
+app-name = "clash-of-clans"
+rv-brand = "nulls"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.supercell.clashofclans"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.supercell.clashofclans"
+direct-dlurl = "http://dnull.xyz/latest_coc"
+dpi = "nodpi anydpi auto"
+patches-source = "none"
+patches-source-host = "none"
+
+[clash-royale-morphe-nulls]
+enabled = true
+cli-source = "none"
+cli-source-host = "none"
+app-name = "clash-royale"
+rv-brand = "nulls"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.supercell.clashroyale"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.supercell.clashroyale"
+direct-dlurl = "http://dnull.xyz/latest_cr"
+dpi = "nodpi anydpi auto"
+patches-source = "none"
+patches-source-host = "none"
+
+[brawl-stars-morphe-nulls]
+enabled = true
+cli-source = "none"
+cli-source-host = "none"
+app-name = "brawl-stars"
+rv-brand = "nulls"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.supercell.brawlstars"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.supercell.brawlstars"
+direct-dlurl = "http://dnull.xyz/latest_bs"
+dpi = "nodpi anydpi auto"
+patches-source = "none"
+patches-source-host = "none"
+
 [fing-morphe-paresh]
 enabled = true
 app-name = "fing"
