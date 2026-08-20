@@ -96,78 +96,78 @@
     "keys": [
       "fing-morphe-paresh"
     ],
-    "version": "latest"
+    "version": "12.13.2"
   },
   "JioHotstar": {
     "keys": [
       "jiohotstar-morphe-paresh"
     ],
-    "version": "latest"
+    "version": "26.08.03.2"
   },
   "Nova Launcher": {
     "keys": [
       "nova-launcher-morphe-hoodles"
     ],
-    "version": "latest"
+    "version": "88800 (8.8.8)"
   },
   "Battery Guru": {
     "keys": [
       "batteryguru-morphe-hooman"
     ],
-    "version": "latest"
+    "version": "2.5.0.7"
   },
   "Poweramp": {
     "keys": [
       "poweramp-morphe-hooman"
     ],
-    "version": "latest"
+    "version": "build-1025-bundle-play"
   },
   "Xodo PDF": {
     "keys": [
       "xodo-morphe-hoodles"
     ],
-    "version": "latest"
+    "version": "11.0.0"
   },
   "Beta Maniac": {
     "keys": [
       "beta-maniac-morphe-rushiranpise"
     ],
-    "version": "latest"
+    "version": "0.9.4"
   },
   "Duolingo": {
     "keys": [
       "duolingo-morphe-rushiranpise"
     ],
-    "version": "latest"
+    "version": "6.93.6"
   },
   "Hill Climb Racing": {
     "keys": [
       "hill-climb-racing-morphe-byehi98"
     ],
-    "version": "latest"
+    "version": "1.71.1"
   },
   "Jetpack Joyride": {
     "keys": [
       "jetpack-joyride-morphe-byehi98"
     ],
-    "version": "latest"
+    "version": "1.104.1"
   },
   "Pinterest": {
     "keys": [
       "pinterest-morphe-binarymend"
     ],
-    "version": "latest"
+    "version": "14.32.0"
   },
   "SD Maid SE": {
     "keys": [
       "sdmaid-morphe-paresh"
     ],
-    "version": "latest"
+    "version": "2.0.3-rc0"
   },
   "Solid Explorer": {
     "keys": [
       "solid-explorer-morphe-hoodles"
     ],
-    "version": "latest"
+    "version": "3.5.19"
   }
 }
