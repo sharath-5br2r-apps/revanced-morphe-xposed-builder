@@ -7,7 +7,7 @@ fi
 if [ -z "${KEYSTORE_BASE64:-}" ] || [ -z "${KEYSTORE_PASSWORD:-}" ] || [ -z "${KEYSTORE_ALIAS:-}" ]; then
 	echo >&2 -e "\033[0;33m[!] Keystore information is not fully set. Please ensure KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS are defined in .env or environment variables.\033[0m"
 	echo >&2 -e "\033[0;33m[!] Auto generating values for KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS.\033[0m"
-	if [ ${GITHUB_REPOSITORY:-} ]; then
+	if [ -n "${GITHUB_REPOSITORY:-}" ]; then
 		echo >&2 -e "::warning::utils.sh [!] Keystore information is not fully set. Please ensure KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS are defined in .env or environment variables.\n"
 		echo >&2 -e "::warning::utils.sh [!] Auto generating values for KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS.\n"
 	fi
@@ -658,7 +658,7 @@ config_update() {
 			if [[ -v sources["$PATCHES_HOST/$PATCHES_SRC/$PATCHES_VER/$PATCHES_GITLAB_HOST"] ]]; then
 				if [ "${sources["$PATCHES_HOST/$PATCHES_SRC/$PATCHES_VER/$PATCHES_GITLAB_HOST"]}" = 1 ]; then table_updated=true; fi
 			else
-				sources["$PATCHES_HOST/$PATCHES_SRC/$PATCHES_VER/$PATCHES_GITLAB_HOST/"]=0
+				sources["$PATCHES_HOST/$PATCHES_SRC/$PATCHES_VER/$PATCHES_GITLAB_HOST"]=0
 				local rv_rel resp last_patches
 				rv_rel=$(source_release_api_base "$PATCHES_HOST" "$PATCHES_SRC" "$PATCHES_GITLAB_HOST") || continue
 				if [ "$PATCHES_VER" = "dev" ]; then
@@ -679,7 +679,7 @@ config_update() {
 				fi
 				if [ "$last_patches" ]; then
 					if ! OP=$(grep "^Patches: ${PATCHES_SRC%%/*}/" build.md | grep -m1 "$last_patches"); then
-						sources["$PATCHES_HOST/$PATCHES_SRC/$PATCHES_VER/$PATCHES_GITLAB_HOST/"]=1
+						sources["$PATCHES_HOST/$PATCHES_SRC/$PATCHES_VER/$PATCHES_GITLAB_HOST"]=1
 						prcfg=true
 						table_updated=true
 					else
