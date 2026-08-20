@@ -102,5 +102,11 @@
       "jiohotstar-morphe-paresh"
     ],
     "version": "latest"
+  },
+  "Nova Launcher": {
+    "keys": [
+      "nova-launcher-morphe-hoodles"
+    ],
+    "version": "latest"
   }
 }
