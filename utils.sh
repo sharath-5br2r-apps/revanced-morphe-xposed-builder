@@ -748,7 +748,8 @@ gh_dl() {
 log() { echo -e "$1  " >>"build.md"; }
 get_highest_ver() {
 	local vers m
-	vers=$(tee)
+	vers=$(grep -v -i "stub" | grep -v '^$' || true)
+	[ -z "$vers" ] && return 1
 	m=$(head -1 <<<"$vers")
 	if ! semver_validate "$m"; then echo "$m"; else sort -s -t- -k1,1Vr <<<"$vers" | head -1; fi
 }
@@ -2716,7 +2717,7 @@ build_rv() {
 			fi
 	elif [ "$version_mode" != "auto" ]; then
 		# Dynamic Cache Discovery for "latest" or empty version
-			local cached_apks=($(find "$apk_cache_dir" -name "${pkg_name}-*.apk" -type f 2>/dev/null || true))
+			local cached_apks=($(find "$apk_cache_dir" -name "${pkg_name}-*.apk" -type f ! -name "*stub*" 2>/dev/null || true))
 			if [ ${#cached_apks[@]} -gt 0 ]; then
 				local cached_versions=""
 				for capk in "${cached_apks[@]}"; do
