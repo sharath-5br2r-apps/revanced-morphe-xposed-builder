@@ -21,6 +21,8 @@ patches-source = "MorpheApp/morphe-patches"
 patcher-args = "-OdarkThemeBackgroundColor=#000000 "
 included-patches = "'Theme'"
 
+arch = "all"
+
 [youtube-music-morphe-exp]
 enabled = true
 app-name = "youtube-music"
@@ -49,7 +51,7 @@ rv-brand = "morphe"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.lens"
 version = "auto"
 build-mode = "apk"
-arch = "both"
+arch = "multi"
 pkg-name = "com.microsoft.office.officelens"
 uptodown-dlurl = "https://office-lens.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/office-lens"

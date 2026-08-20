@@ -12,3 +12,5 @@ patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
 included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
 dpi = "480-640dpi"
 version = "latest"
+
+arch = "all"

@@ -17,6 +17,8 @@ custom-microg-patches = "'None'"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
 version = "latest"
 
+arch = "all"
+
 [adobe-acrobat-morphe-rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
@@ -77,6 +79,8 @@ uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
 dpi = "nodpi anydpi auto"
 patches-source = "rushiranpise/morphe-patches"
+
+arch = "all"
 
 [oxygen-updater-morphe-rushiranpise]
 enabled = true

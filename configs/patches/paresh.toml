@@ -14,6 +14,8 @@ github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
+arch = "all"
+
 [proton-vpn-morphe-paresh]
 enabled = true
 app-name = "proton-vpn"
@@ -29,6 +31,8 @@ prefer-dl-mode = "bundle"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 dpi = "120-640dpi"
+
+arch = "all"
 
 [jiohotstar-morphe-paresh]
 enabled = true

@@ -33,3 +33,5 @@ dpi = "nodpi anydpi auto"
 patches-source = "crimera/piko"
 patches-source-host = "github"
 included-patches = "'Dynamic Color'"
+
+arch = "all"
