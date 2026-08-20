@@ -265,7 +265,7 @@ build-mode = "apk"
 arch = "all"
 pkg-name = "com.teslacoilsw.launcher"
 uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/teslacoil_software/nova-launcher"
 dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
 
