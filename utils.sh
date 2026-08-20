@@ -2934,8 +2934,28 @@ build_rv() {
 
 					local downloaded_pkg="" downloaded_ver=""
 					if [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
-						downloaded_pkg=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
-						downloaded_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
+						if [ -f "$stock_apk" ]; then
+							downloaded_pkg=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
+							downloaded_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
+						fi
+						if [ -z "$downloaded_pkg" ] || [ -z "$downloaded_ver" ]; then
+							local bfile=""
+							[ -f "${stock_apk%.apk}.apkm" ] && bfile="${stock_apk%.apk}.apkm"
+							[ -f "${stock_apk}.apkm" ] && bfile="${stock_apk}.apkm"
+							[ -f "${stock_apk}.xapk" ] && bfile="${stock_apk}.xapk"
+							[ -f "${stock_apk}.apks" ] && bfile="${stock_apk}.apks"
+							if [ -n "$bfile" ]; then
+								mkdir -p "${TEMP_DIR}/apkm_check_$$"
+								unzip -q -j "$bfile" "base.apk" -d "${TEMP_DIR}/apkm_check_$$" 2>/dev/null || unzip -q -j "$bfile" "*.apk" -d "${TEMP_DIR}/apkm_check_$$" 2>/dev/null || true
+								local bapk_check
+								bapk_check=$(find "${TEMP_DIR}/apkm_check_$$" -name "*.apk" 2>/dev/null | head -1)
+								if [ -n "$bapk_check" ] && [ -f "$bapk_check" ]; then
+									[ -z "$downloaded_pkg" ] && downloaded_pkg=$("$AAPT2" dump badging "$bapk_check" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
+									[ -z "$downloaded_ver" ] && downloaded_ver=$("$AAPT2" dump badging "$bapk_check" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
+								fi
+								rm -rf "${TEMP_DIR}/apkm_check_$$" 2>/dev/null || true
+							fi
+						fi
 					fi
 
 					if [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ] && [ -z "$downloaded_pkg" ]; then
