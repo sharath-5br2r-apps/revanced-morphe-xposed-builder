@@ -120,5 +120,11 @@
       "poweramp-morphe-hooman"
     ],
     "version": "latest"
+  },
+  "Xodo PDF": {
+    "keys": [
+      "xodo-morphe-hoodles"
+    ],
+    "version": "latest"
   }
 }

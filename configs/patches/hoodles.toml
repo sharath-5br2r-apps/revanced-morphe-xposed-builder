@@ -95,3 +95,18 @@ apkpure-dlurl = "https://apkpure.com/niagara-launcher-%E2%80%A7-fresh-clean/bitp
 apkcombo-dlurl = "https://apkcombo.com/niagara-launcher/bitpit.launcher"
 dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
+
+[xodo-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "xodo"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
+version = "latest"
+build-mode = "apk"
+arch = "multi"
+pkg-name = "com.xodo.pdf.reader"
+uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
