@@ -224,21 +224,6 @@ apkcombo-dlurl = "https://apkcombo.com/camscanner/com.intsig.camscanner"
 dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
 
-[soundcloud-morphe-hoodles]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "soundcloud"
-rv-brand = "morphe-hoodles"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
-version = "auto"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.soundcloud.android"
-uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
-dpi = "nodpi anydpi auto"
-patches-source = "hoo-dles/morphe-patches"
-
 [smart-launcher-6-morphe-hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
@@ -354,6 +339,23 @@ uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
 patches-source = "icysymmetra/tiktok-patches-for-morphe"
+
+[soundcloud-morphe-kondratjev]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "soundcloud"
+rv-brand = "morphe-kondratjev"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
+version = "auto"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.soundcloud.android"
+uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
+apkpure-dlurl = "https://apkpure.com/sound-cloud-android-app/com.soundcloud.android"
+apkcombo-dlurl = "https://apkcombo.com/soundcloud/com.soundcloud.android"
+dpi = "nodpi anydpi auto"
+patches-source = "kondratjev/morphe-patches"
 
 [youtube-morphe-exp]
 enabled = true
