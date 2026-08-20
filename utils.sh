@@ -120,7 +120,7 @@ parse_host_spec() {
 		host_type="$spec"
 		case "$host_type" in
 			github) host_inst="https://github.com" ;;
-			gitlab) host_inst="${host_instance:-https://gitlab.com}" ;;
+			gitlab) host_inst="https://gitlab.com" ;;
 			forgejo|gitea)
 				epr "ERROR: forgejo host requires a domain URL (e.g. 'git.example.com|forgejo')"
 				return 1
