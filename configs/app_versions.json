@@ -108,5 +108,11 @@
       "nova-launcher-morphe-hoodles"
     ],
     "version": "latest"
+  },
+  "Battery Guru": {
+    "keys": [
+      "batteryguru-morphe-hooman"
+    ],
+    "version": "latest"
   }
 }
