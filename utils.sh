@@ -2672,7 +2672,7 @@ build_rv() {
 				local t_pure="${table% (arm64-v8a)}"
 				t_pure="${t_pure% (arm-v7a)}"
 				local json_ver=$(jq -r --arg t "$t_pure" 'to_entries | map(select(.key | startswith("_") | not)) | map(select(.value.keys != null and (.value.keys | index($t)))) | .[0].value.version // empty' "$app_versions_file")
-				if [ -n "$json_ver" ]; then
+				if [ -n "$json_ver" ] && ! isoneof "$json_ver" latest auto exp beta; then
 					resolved_version="$json_ver"
 				fi
 			fi
@@ -2715,7 +2715,9 @@ build_rv() {
 			elif isoneof "$version_mode" latest beta; then
 				: # Needs latest
 			else
-				resolved_version=$version_mode
+				if ! isoneof "$version_mode" latest auto exp beta; then
+					resolved_version=$version_mode
+				fi
 			fi
 		fi
 
@@ -2873,8 +2875,14 @@ build_rv() {
 			elif isoneof "$version_mode" latest beta; then
 				:
 			else
-				resolved_version=$version_mode
+				if ! isoneof "$version_mode" latest auto exp beta; then
+					resolved_version=$version_mode
+				fi
 			fi
+		fi
+
+		if isoneof "$resolved_version" latest auto exp beta; then
+			resolved_version=""
 		fi
 		
 		version="$resolved_version"
