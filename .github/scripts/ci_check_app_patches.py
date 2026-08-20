@@ -191,7 +191,10 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
         host = new_info.get('host', 'github')
         if host == 'gitlab':
             encoded_repo = repo.replace('/', '%2F')
-            api_url = f"https://gitlab.com/api/v4/projects/{encoded_repo}/releases/{tag}"
+            instance = new_info.get('host_instance') or 'gitlab.com'
+            if not instance.startswith('http'):
+                instance = f'https://{instance}'
+            api_url = f"{instance}/api/v4/projects/{encoded_repo}/releases/{tag}"
             req = urllib.request.Request(api_url)
             with urllib.request.urlopen(req) as response:
                 release_data = json.loads(response.read().decode('utf-8'))

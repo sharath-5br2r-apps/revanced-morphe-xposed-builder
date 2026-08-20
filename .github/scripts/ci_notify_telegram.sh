@@ -10,15 +10,16 @@ MSG_BODY=$(jq -rn --argjson new "$TAGS_NEW" --argjson old "$TAGS_OLD" --argjson 
     | ($old[$e.key] // {}) as $o
     | select(($e.value.stable != "" and $e.value.stable != ($o.stable // "")) or ($e.value.prerelease != "" and $e.value.prerelease != ($o.prerelease // "")) or ($e.value.blocked == true and $o.blocked != true))
     | ($patches[$e.key].host // "github") as $host
-    | ($host == "gitlab") as $is_gitlab
-    | ($is_gitlab | if . then "https://gitlab.com/" else "https://github.com/" end) as $base
+    | ($patches[$e.key].host_instance // (if $host == "gitlab" then "https://gitlab.com" elif $host == "codeberg" then "https://codeberg.org" else "https://github.com" end)) as $inst_raw
+    | (if ($inst_raw | startswith("http://") or startswith("https://")) then $inst_raw else ("https://" + $inst_raw) end) as $host_base
+    | ($host_base + (if ($host_base | endswith("/")) then "" else "/" end)) as $base
     | "📦 [\($e.value.repo)](\($base)\($e.value.repo))" +
       (if ($e.value.blocked == true and $o.blocked != true) then "\n  ╰ 🚫 Repository access blocked." else "" end) +
       (if ($e.value.blocked != true and $e.value.stable != "" and $e.value.stable != ($o.stable // "")) then
-        (if $is_gitlab then "\n  ╰ Stable: [\($e.value.stable)](https://gitlab.com/\($e.value.repo)/-/releases/\($e.value.stable))" else "\n  ╰ Stable: [\($e.value.stable)](https://github.com/\($e.value.repo)/releases/tag/\($e.value.stable))" end)
+        (if $host == "gitlab" then "\n  ╰ Stable: [\($e.value.stable)](\($base)\($e.value.repo)/-/releases/\($e.value.stable))" else "\n  ╰ Stable: [\($e.value.stable)](\($base)\($e.value.repo)/releases/tag/\($e.value.stable))" end)
       else "" end) +
       (if ($e.value.blocked != true and $e.value.prerelease != "" and $e.value.prerelease != ($o.prerelease // "")) then
-        (if $is_gitlab then "\n  ╰ Pre-release: [\($e.value.prerelease)](https://gitlab.com/\($e.value.repo)/-/releases/\($e.value.prerelease))" else "\n  ╰ Pre-release: [\($e.value.prerelease)](https://github.com/\($e.value.repo)/releases/tag/\($e.value.prerelease))" end)
+        (if $host == "gitlab" then "\n  ╰ Pre-release: [\($e.value.prerelease)](\($base)\($e.value.repo)/-/releases/\($e.value.prerelease))" else "\n  ╰ Pre-release: [\($e.value.prerelease)](\($base)\($e.value.repo)/releases/tag/\($e.value.prerelease))" end)
       else "" end)
   ] | join("\n\n")
 ')

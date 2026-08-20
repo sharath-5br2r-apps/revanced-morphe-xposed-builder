@@ -114,7 +114,7 @@ parse_host_spec() {
 		host_type="$spec"
 		case "$host_type" in
 			github) host_inst="https://github.com" ;;
-			gitlab) host_inst="https://gitlab.com" ;;
+			gitlab) host_inst="${host_instance:-https://gitlab.com}" ;;
 			forgejo|gitea)
 				epr "ERROR: forgejo host requires a domain URL (e.g. 'git.example.com|forgejo')"
 				return 1
@@ -191,7 +191,7 @@ source_release_asset_url() {
 }
 
 source_release_pick_from_list() {
-	local host=${1,,} mode=$2 host_instance=${3:-https://gitlab.com}
+	local host=${1,,} mode=$2 host_instance=${3:-}
 	case "$host" in
 		github|forgejo|gitea)
 			if [ "$mode" = dev ]; then
