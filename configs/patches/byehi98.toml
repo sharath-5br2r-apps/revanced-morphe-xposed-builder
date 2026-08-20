@@ -30,3 +30,17 @@ uptodown-dlurl = "https://jetpack-joyride.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/"
 dpi = "nodpi anydpi auto"
 patches-source = "byehi98/okish-morphe-patches"
+
+[smash-hit-morphe-byehi98]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "smash-hit"
+rv-brand = "morphe-byehi98"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mediocre.smashhit"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.mediocre.smashhit"
+uptodown-dlurl = "https://smash-hit.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mediocre/smash-hit/"
+dpi = "nodpi anydpi auto"
+patches-source = "byehi98/okish-morphe-patches"
