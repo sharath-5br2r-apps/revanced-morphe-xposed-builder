@@ -63,6 +63,21 @@ dpi = "nodpi anydpi auto"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.flyersoft.moonreader"
 patches-source = "binarymend/morphe-patches"
 
+[hill-climb-racing-morphe-byehi98]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "hill-climb-racing"
+rv-brand = "morphe-byehi98"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.fingersoft.hillclimb"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.fingersoft.hillclimb"
+uptodown-dlurl = "https://hill-climb-racing.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
+dpi = "nodpi anydpi auto"
+patches-source = "byehi98/okish-morphe-patches"
+
 [chess-morphe-prathxm]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
