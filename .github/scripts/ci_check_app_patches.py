@@ -26,11 +26,13 @@ def get_app_mappings():
 
                 pver = m_pver.group(1).lower() if m_pver else ""
                 cver = m_cver.group(1).lower() if m_cver else ""
-                has_dev_ver = pver in ["dev", "absolutelatest"] or cver in ["dev", "absolutelatest"]
+                is_abs_latest = pver == "absolutelatest" or cver == "absolutelatest"
+                has_dev_ver = pver == "dev" or cver == "dev"
 
                 enabled = m_enabled.group(1).lower() == 'true' if m_enabled else True
-                enabledStable = m_stable.group(1).lower() == 'true' if m_stable else (not is_dev_only and not has_dev_ver)
-                enabledDev = m_dev.group(1).lower() == 'true' if m_dev else (not is_stable_only or has_dev_ver)
+                # absolutelatest is for manual/local builds only and does not trigger automated CI
+                enabledStable = m_stable.group(1).lower() == 'true' if m_stable else (not is_dev_only and not has_dev_ver and not is_abs_latest)
+                enabledDev = m_dev.group(1).lower() == 'true' if m_dev else (not is_stable_only and not is_abs_latest)
                 
                 if not enabled:
                     continue
