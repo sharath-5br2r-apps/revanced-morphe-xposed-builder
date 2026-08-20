@@ -70,7 +70,7 @@ while IFS='|' read -r group app; do
     apkcombo_url=$(jq -r ".\"$app\".\"apkcombo-dlurl\" // empty" temp_all_configs.json)
 
     version=$(jq -r ".\"$app\".\"version\" // empty" temp_all_configs.json)
-    if [ "$version" == "beta" ] || [ "$version" == "dev" ] || [ "$version" == "absolutelatest" ]; then __AAV__="true"; else __AAV__="false"; fi
+    if [ "$version" == "beta" ] || [ "$version" == "dev" ]; then __AAV__="true"; else __AAV__="false"; fi
     prefer_apk_mode=$(jq -r ".\"$app\".\"prefer-apk-mode\" // empty" temp_all_configs.json)
     prefer_dl_mode=$(jq -r ".\"$app\".\"prefer-dl-mode\" // empty" temp_all_configs.json)
     [ -n "$prefer_dl_mode" ] || prefer_dl_mode="${prefer_apk_mode:-apk}"
