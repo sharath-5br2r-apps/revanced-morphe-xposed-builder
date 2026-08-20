@@ -65,3 +65,19 @@ dpi = "nodpi anydpi auto"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
+[truecaller-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "truecaller"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.truecaller"
+version = "latest"
+build-mode = "both"
+arch = "both"
+pkg-name = "com.truecaller"
+uptodown-dlurl = "https://truecaller.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/true-software-scandinavia-ab/truecaller-caller-id-block"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
