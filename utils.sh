@@ -1133,10 +1133,6 @@ _unqueued_cf_get() {
 	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
 	local fs_base="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}"
 
-	# Try fast direct request first
-	__SILENT_CF_GET__=true _fallback_get "$@" && return 0
-
-	# If direct request failed (e.g. 403 / Cloudflare challenge), try bypass solvers
 	if [ -n "$trawl_base" ]; then
 		_trawl_get "$@" && return 0
 	fi
@@ -1148,6 +1144,8 @@ _unqueued_cf_get() {
 	if [ -n "$fs_base" ]; then
 		_fs_get "$@" && return 0
 	fi
+
+	_fallback_get "$@" && return 0
 
 	epr "All methods failed for: $1"
 	return 1
