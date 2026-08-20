@@ -157,5 +157,11 @@
       "pinterest-morphe-binarymend"
     ],
     "version": "latest"
+  },
+  "SD Maid SE": {
+    "keys": [
+      "sdmaid-morphe-paresh"
+    ],
+    "version": "latest"
   }
 }

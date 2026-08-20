@@ -568,6 +568,22 @@ github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
+[sdmaid-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "sdmaid"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "eu.darken.sdmse"
+uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
 [instagram-morphe-piko]
 enabled = true
 app-name = "instagram"
