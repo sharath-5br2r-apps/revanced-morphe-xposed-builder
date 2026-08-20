@@ -18,7 +18,18 @@ if [ -z "${KEYSTORE_KEY_PASSWORD:-}" ]; then
 	echo >&2 -e "::warning::utils.sh [!] No KEYSTORE_KEY_PASSWORD provided, using KEYSTORE_PASSWORD instead.\n"
 	KEYSTORE_KEY_PASSWORD=${KEYSTORE_PASSWORD}
 fi
-HTMLQ="${HTMLQ:-htmlq}"
+if [ -z "${HTMLQ:-}" ]; then
+	_arch=$(uname -m)
+	_kernel=$(uname -s)
+	[ "$_kernel" = Linux ] && _kernel=linux
+	if [ "$_arch" = aarch64 ]; then _arch=arm64; elif [ "${_arch:0:5}" = "armv7" ]; then _arch=arm; fi
+	if [ -f "${BIN_DIR:-bin}/htmlq/htmlq-${_kernel}-${_arch}" ]; then
+		HTMLQ="${BIN_DIR:-bin}/htmlq/htmlq-${_kernel}-${_arch}"
+	else
+		HTMLQ="htmlq"
+	fi
+	unset _arch _kernel
+fi
 
 set -u
 shopt -s nullglob extglob
@@ -565,7 +576,7 @@ _get_prebuilts() {
 				echo -e "[Changelog](${host_instance}/${src}/releases/tag/${tag_name})\n" >>"${cl_dir}/changelog.md"
 			fi
 		fi
-		if [ "$REMOVE_RV_INTEGRATIONS_CHECKS" = true ]; then
+		if [ "${REMOVE_RV_INTEGRATIONS_CHECKS:-false}" = true ]; then
 			local extensions_ext
 			extensions_ext=$(unzip -l "${file}" "extensions/shared.*" | grep -o "shared\..*") extensions_ext="${extensions_ext#*.}"
 			if ! (
@@ -1170,6 +1181,7 @@ get_apkmirror_resp() {
 
 get_apkmirror_vers() {
 	local vers apkm_resp html=""
+	[ -z "${__APKMIRROR_CAT__:-}" ] && return 1
 	_cf_get "https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}" || return 1
 	apkm_resp="$html"
 	vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
@@ -1699,7 +1711,14 @@ get_uptodown_resp() {
 	__DL_RESP_CACHE__["$key"]="$__UPTODOWN_RESP__"
 	__DL_RESP_CACHE__["pkg_$key"]="$__UPTODOWN_RESP_PKG__"
 }
-get_uptodown_vers() { $HTMLQ --text ".version" <<<"$__UPTODOWN_RESP__"; }
+get_uptodown_vers() {
+	local vers
+	vers=$($HTMLQ --text ".version" <<<"$__UPTODOWN_RESP__") || return 1
+	if [ "${__AAV__:-false}" = false ]; then
+		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
+	fi
+	echo "$vers"
+}
 dl_uptodown() {
 	local uptodown_dlurl=$1 version=$2 output=$3 arch=$4 _dpi=$5
 	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
@@ -2931,7 +2950,7 @@ build_rv() {
 						continue
 					fi
 
-				if [ -n "$downloaded_ver" ] && { [[ "$dl_p" == "direct" ]] || [[ "$dl_p" == "local" ]] || [[ "$dl_p" == "repo" ]]; }; then
+				if [ -n "$downloaded_ver" ]; then
 						if [ "$version" != "$downloaded_ver" ]; then
 							pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
 							version="$downloaded_ver"
