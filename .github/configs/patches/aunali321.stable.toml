@@ -1,0 +1,42 @@
+[telegram-revanced-gplay]
+enabled = true
+pkg-name = "org.telegram.messenger"
+app-name = "telegram"
+rv-brand = "revanced-gplay"
+build-mode = "apk"
+arch = "both"
+patches-source = "Aunali321/ReVancedExperiments"
+cli-source = "ReVanced/revanced-cli"
+uptodown-dlurl = "https://telegram-google-play-version.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/telegram-fz-llc/telegram"
+dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/org.telegram.messenger"
+
+[telegram-revanced-foss]
+enabled = true
+pkg-name = "org.telegram.messenger.web"
+app-name = "telegram"
+rv-brand = "revanced-foss"
+build-mode = "apk"
+arch = "both"
+patches-source = "Aunali321/ReVancedExperiments"
+cli-source = "ReVanced/revanced-cli"
+uptodown-dlurl = "https://telegram.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-web-version"
+dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/org.telegram.messenger.web"
+
+[instagram-revanced-exp]
+enabled = true
+pkg-name = "com.instagram.android"
+app-name = "instagram"
+rv-brand = "revanced-exp"
+build-mode = "apk"
+arch = "both"
+patches-source = "Aunali321/ReVancedExperiments"
+cli-source = "ReVanced/revanced-cli"
+uptodown-dlurl = "https://instagram.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
+dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.instagram.android"
+
