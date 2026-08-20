@@ -9,6 +9,15 @@ fetch_gitlab_releases() {
   curl -sS -L -w '\n%{http_code}' "https://gitlab.com/api/v4/projects/${encoded_repo}/releases?per_page=100"
 }
 
+fetch_forgejo_gitea_releases() {
+  local repo=$1 host_instance=$2
+  local instance="${host_instance:-codeberg.org}"
+  if [[ "$instance" != http* ]]; then
+    instance="https://${instance}"
+  fi
+  curl -sS -L -w '\n%{http_code}' "${instance}/api/v1/repos/${repo}/releases?per_page=100"
+}
+
 if echo "$BASE_JSON" | jq -e 'length == 0' >/dev/null; then
   echo "$BASE_JSON" > tags_new.json
   exit 0
@@ -16,24 +25,31 @@ fi
 
 > updates.jsonl
 
-while read -r id repo host enabled enabledStable enabledDev; do
+while read -r id repo host host_instance enabled enabledStable enabledDev; do
   if [ "$enabled" == "false" ]; then continue; fi
 
-  echo "::group::Fetching tags for $repo"
-  if [ "$host" = "gitlab" ]; then
+  echo "::group::Fetching tags for $repo (host: ${host:-github})"
+  host_type="${host:-github}"
+  api_http_code="200"
+
+  if [ "$host_type" = "gitlab" ]; then
     api_response=$(fetch_gitlab_releases "$repo" 2>&1 || true)
+    api_http_code=$(printf '%s\n' "$api_response" | tail -n1)
+    api_response=$(printf '%s\n' "$api_response" | sed '$d')
+  elif [ "$host_type" = "forgejo" ] || [ "$host_type" = "gitea" ] || [ "$host_type" = "codeberg" ]; then
+    api_response=$(fetch_forgejo_gitea_releases "$repo" "$host_instance" 2>&1 || true)
     api_http_code=$(printf '%s\n' "$api_response" | tail -n1)
     api_response=$(printf '%s\n' "$api_response" | sed '$d')
   else
     api_response=$(gh api "repos/$repo/releases?per_page=100" 2>&1 || true)
   fi
 
-  if [ "$host" = "github" ] && echo "$api_response" | grep -qiE '"message".*(Repository access blocked|Not Found)'; then
+  if [ "$host_type" = "github" ] && echo "$api_response" | grep -qiE '"message".*(Repository access blocked|Not Found)'; then
     jq -n --arg id "$id" '{($id): {"blocked": true}}' >> updates.jsonl
-  elif [ "$host" = "gitlab" ] && { [ "$api_http_code" = "403" ] || [ "$api_http_code" = "404" ]; }; then
+  elif [ "$host_type" != "github" ] && { [ "$api_http_code" = "403" ] || [ "$api_http_code" = "404" ]; }; then
     jq -n --arg id "$id" '{($id): {"blocked": true}}' >> updates.jsonl
   elif echo "$api_response" | jq -e 'type == "array"' >/dev/null 2>&1; then
-    if [ "$host" = "gitlab" ]; then
+    if [ "$host_type" = "gitlab" ]; then
       stable_obj=$(echo "$api_response" | jq -c '(map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)") | not))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty)')
       pre_obj=$(echo "$api_response" | jq -c '(map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc)")))) | sort_by(.released_at // .created_at // "") | reverse | .[0] // empty)')
       
@@ -42,13 +58,13 @@ while read -r id repo host enabled enabledStable enabledDev; do
       pre=$(echo "$pre_obj" | jq -r '.tag_name // ""')
       pre_date=$(echo "$pre_obj" | jq -r '.released_at // .created_at // ""')
     else
-      stable_obj=$(echo "$api_response" | jq -c '(map(select(.prerelease == false and .tag_name != null and .tag_name != "")) | sort_by(.published_at) | reverse | .[0] // empty)')
-      pre_obj=$(echo "$api_response" | jq -c '(map(select(.prerelease == true and .tag_name != null and .tag_name != "")) | sort_by(.published_at) | reverse | .[0] // empty)')
+      stable_obj=$(echo "$api_response" | jq -c '(map(select(.prerelease == false and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty)')
+      pre_obj=$(echo "$api_response" | jq -c '(map(select(.prerelease == true and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty)')
 
       stable=$(echo "$stable_obj" | jq -r '.tag_name // ""')
-      stable_date=$(echo "$stable_obj" | jq -r '.published_at // ""')
+      stable_date=$(echo "$stable_obj" | jq -r '.published_at // .created_at // ""')
       pre=$(echo "$pre_obj" | jq -r '.tag_name // ""')
-      pre_date=$(echo "$pre_obj" | jq -r '.published_at // ""')
+      pre_date=$(echo "$pre_obj" | jq -r '.published_at // .created_at // ""')
     fi
 
     if [ -n "$stable" ]; then echo "Found stable: $stable"; fi
@@ -70,7 +86,7 @@ while read -r id repo host enabled enabledStable enabledDev; do
   fi
   echo "::endgroup::"
 
-done < <(echo "$BASE_JSON" | jq -r 'to_entries[] | select(.value.repo != "") | "\(.key) \(.value.repo) \((.value.host // "github") | ascii_downcase) \(if .value.enabled == false then false else true end) \(if .value.enabledStable == false then false else true end) \(if .value.enabledDev == false then false else true end)"')
+done < <(echo "$BASE_JSON" | jq -r 'to_entries[] | select(.value.repo != "") | "\(.key) \(.value.repo) \((.value.host // "github") | ascii_downcase) \((.value.host_instance // "none") | ascii_downcase) \(if .value.enabled == false then false else true end) \(if .value.enabledStable == false then false else true end) \(if .value.enabledDev == false then false else true end)"')
 
 if [ -s updates.jsonl ]; then
    NEW_JSON=$(jq -s --argjson base "$BASE_JSON" 'reduce .[] as $item ($base; . * $item)' updates.jsonl)
