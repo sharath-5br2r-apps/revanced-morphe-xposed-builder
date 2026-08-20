@@ -238,6 +238,53 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundclou
 dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
 
+[smart-launcher-6-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "smart-launcher-6"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "ginlemon.flowerfree"
+uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+[nova-launcher-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "nova-launcher"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.teslacoilsw.launcher"
+uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+[niagara-launcher-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "niagara-launcher"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/bitpit.launcher"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "bitpit.launcher"
+uptodown-dlurl = "https://niagara-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mellowdrop-studio/niagara-launcher-%f0%9f%94%b9-fresh-clean"
+apkpure-dlurl = "https://apkpure.com/niagara-launcher-%E2%80%A7-fresh-clean/bitpit.launcher"
+apkcombo-dlurl = "https://apkcombo.com/niagara-launcher/bitpit.launcher"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
 [adobe-acrobat-morphe-hooman]
 enabled = false
 cli-source = "MorpheApp/morphe-desktop"
