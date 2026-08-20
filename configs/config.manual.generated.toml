@@ -191,6 +191,53 @@ dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
 excluded-patches = "'Rename Shared Permissions'"
 
+[xrecorder-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "xrecorder"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "videoeditor.videorecorder.screenrecorder"
+uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+[camscanner-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "camscanner"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.intsig.camscanner"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.intsig.camscanner"
+uptodown-dlurl = "https://camscanner-pdf-creator.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator"
+apkpure-dlurl = "https://apkpure.com/camscanner-scanner-pdf-maker/com.intsig.camscanner"
+apkcombo-dlurl = "https://apkcombo.com/camscanner/com.intsig.camscanner"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+[soundcloud-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "soundcloud"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.soundcloud.android"
+uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
 [adobe-acrobat-morphe-hooman]
 enabled = false
 cli-source = "MorpheApp/morphe-desktop"
@@ -231,6 +278,36 @@ dpi = "nodpi anydpi auto"
 uptodown-dlurl = "https://advanced-download-manager.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+[batteryguru-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "batteryguru"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.paget96.batteryguru"
+uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+[at4k-launcher-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "at4k-launcher"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overdevs.at4k"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.overdevs.at4k"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/cute-little-apps/at4k-launcher-android-tv"
+apkpure-dlurl = "https://apkpure.com/at4k-launcher/com.overdevs.at4k"
+dpi = "nodpi anydpi auto"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [tiktok-morphe-icysymmetra]
@@ -284,6 +361,21 @@ apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.you
 patches-source = "MorpheApp/morphe-patches"
 patcher-args = "-OdarkThemeBackgroundColor=#000000 "
 included-patches = "'Theme'"
+
+[microsoft-lens-morphe]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "microsoft-lens"
+rv-brand = "morphe"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.lens"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.microsoft.office.officelens"
+uptodown-dlurl = "https://office-lens.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/microsoft-lens-pdf-scanner"
+dpi = "nodpi anydpi auto"
+patches-source = "MorpheApp/morphe-patches"
 
 [fing-morphe-paresh]
 enabled = true

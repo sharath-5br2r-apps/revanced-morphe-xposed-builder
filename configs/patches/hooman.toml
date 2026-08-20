@@ -42,3 +42,33 @@ uptodown-dlurl="https://advanced-download-manager.en.uptodown.com/android"
 apkmirror-dlurl="https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm"
 patches-source = "arandomhooman/hoomans-morphe-patches"
+
+[batteryguru-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "batteryguru"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.paget96.batteryguru"
+uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+[at4k-launcher-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "at4k-launcher"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overdevs.at4k"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.overdevs.at4k"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/cute-little-apps/at4k-launcher-android-tv"
+apkpure-dlurl = "https://apkpure.com/at4k-launcher/com.overdevs.at4k"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
