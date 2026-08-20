@@ -30,13 +30,17 @@ for arg in "${@-}"; do
 done
 
 # -- Main config --
-cfg_file="configs/config.manual.stable.generated.toml"
+cfg_file=""
 if [ -n "${1-}" ] && [ "${1-}" != "--config-update" ] && [ -f "${1-}" ]; then
 	cfg_file="${1}"
 elif [ -f "configs/config.toml" ]; then
 	cfg_file="configs/config.toml"
 elif [ -f "config.toml" ]; then
 	cfg_file="config.toml"
+elif [ -f "configs/config.manual.stable.generated.toml" ]; then
+	cfg_file="configs/config.manual.stable.generated.toml"
+elif [ -f "configs/config.manual.generated.toml" ]; then
+	cfg_file="configs/config.manual.generated.toml"
 fi
 
 toml_prep "$cfg_file" || abort "could not find config file '$cfg_file'\n\tUsage: $0 <config.toml>"
