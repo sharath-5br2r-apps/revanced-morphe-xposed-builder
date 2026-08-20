@@ -122,6 +122,20 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/mediocre/smash-hit/"
 dpi = "nodpi anydpi auto"
 patches-source = "byehi98/okish-morphe-patches"
 
+[vector-morphe-byehi98]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "vector"
+rv-brand = "morphe-byehi98"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nekki.vector"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.nekki.vector"
+uptodown-dlurl = "https://vector.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/nekki/vector/"
+dpi = "nodpi anydpi auto"
+patches-source = "byehi98/okish-morphe-patches"
+
 [chess-morphe-prathxm]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
