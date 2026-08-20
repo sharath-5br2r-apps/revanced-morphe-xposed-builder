@@ -587,7 +587,7 @@
     "patches-source-host": "none"
   },
   "fing-morphe-paresh": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "fing",
     "rv-brand": "morphe-paresh",
     "version": "latest",
@@ -620,7 +620,7 @@
     "arch": "all"
   },
   "jiohotstar-morphe-paresh": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "jiohotstar",
     "rv-brand": "morphe-paresh",
@@ -634,7 +634,7 @@
     "patches-source-host": "gitlab"
   },
   "sdmaid-morphe-paresh": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "sdmaid",
     "rv-brand": "morphe-paresh",
@@ -855,7 +855,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "beta-maniac-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "beta-maniac",
     "rv-brand": "morphe-rushiranpise",
@@ -870,7 +870,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "duolingo-morphe-rushiranpise": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "duolingo",
     "rv-brand": "morphe-rushiranpise",
