@@ -13,11 +13,12 @@ IS_DEV=false
 if [[ "$CONFIG" == *"dev"* ]]; then
   IS_DEV=true
 elif [[ "$CONFIG" == *.json ]]; then
-  if [ "$(jq -r '."patches-version" // empty' "$CONFIG")" = "dev" ]; then
+  PVER=$(jq -r '."patches-version" // empty' "$CONFIG")
+  if [ "$PVER" = "dev" ] || [ "$PVER" = "absolutelatest" ]; then
     IS_DEV=true
   fi
 elif [[ "$CONFIG" == *.toml ]]; then
-  if awk '/^\[/ {exit} {print}' "$CONFIG" | grep -qE '^[[:space:]]*patches-version[[:space:]]*=[[:space:]]*"?dev"?'; then
+  if awk '/^\[/ {exit} {print}' "$CONFIG" | grep -qE '^[[:space:]]*patches-version[[:space:]]*=[[:space:]]*"?(dev|absolutelatest)"?'; then
     IS_DEV=true
   fi
 fi

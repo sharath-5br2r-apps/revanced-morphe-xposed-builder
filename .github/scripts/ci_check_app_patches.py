@@ -26,7 +26,7 @@ def get_app_mappings():
 
                 pver = m_pver.group(1).lower() if m_pver else ""
                 cver = m_cver.group(1).lower() if m_cver else ""
-                has_dev_ver = pver == "dev" or cver == "dev"
+                has_dev_ver = pver in ["dev", "absolutelatest"] or cver in ["dev", "absolutelatest"]
 
                 enabled = m_enabled.group(1).lower() == 'true' if m_enabled else True
                 enabledStable = m_stable.group(1).lower() == 'true' if m_stable else (not is_dev_only and not has_dev_ver)
