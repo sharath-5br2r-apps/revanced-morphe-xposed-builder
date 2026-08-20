@@ -6,7 +6,8 @@ def get_app_mappings():
     apps_dev = {}
     cli_sources = {}
     
-    for toml_file in glob.glob('.github/configs/patches/*.toml'):
+    toml_files = sorted(list(set(glob.glob('.github/configs/patches/*.toml') + glob.glob('configs/patches/*.toml'))))
+    for toml_file in toml_files:
         is_stable_only = toml_file.endswith('.stable.toml')
         is_dev_only = toml_file.endswith('.dev.toml')
         with open(toml_file, 'r', encoding='utf-8') as f:
@@ -20,10 +21,16 @@ def get_app_mappings():
                 m_enabled = re.search(r'^enabled\s*=\s*(true|false)', body, flags=re.MULTILINE | re.IGNORECASE)
                 m_stable = re.search(r'^enabledStable\s*=\s*(true|false)', body, flags=re.MULTILINE | re.IGNORECASE)
                 m_dev = re.search(r'^enabledDev\s*=\s*(true|false)', body, flags=re.MULTILINE | re.IGNORECASE)
-                
+                m_pver = re.search(r'patches-version\s*=\s*"([^"]+)"', body, flags=re.MULTILINE | re.IGNORECASE)
+                m_cver = re.search(r'cli-version\s*=\s*"([^"]+)"', body, flags=re.MULTILINE | re.IGNORECASE)
+
+                pver = m_pver.group(1).lower() if m_pver else ""
+                cver = m_cver.group(1).lower() if m_cver else ""
+                has_dev_ver = pver in ["dev", "absolutelatest"] or cver in ["dev", "absolutelatest"]
+
                 enabled = m_enabled.group(1).lower() == 'true' if m_enabled else True
-                enabledStable = m_stable.group(1).lower() == 'true' if m_stable else (not is_dev_only)
-                enabledDev = m_dev.group(1).lower() == 'true' if m_dev else (not is_stable_only)
+                enabledStable = m_stable.group(1).lower() == 'true' if m_stable else (not is_dev_only and not has_dev_ver)
+                enabledDev = m_dev.group(1).lower() == 'true' if m_dev else (not is_stable_only or has_dev_ver)
                 
                 if not enabled:
                     continue

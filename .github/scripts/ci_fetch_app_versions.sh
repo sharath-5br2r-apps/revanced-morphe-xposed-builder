@@ -8,10 +8,10 @@ source utils.sh
 set_prebuilts
 
 # Find all app configs
-CONFIG_FILES=$(find .github/configs/patches -name "*.toml")
+CONFIG_FILES=$(find .github/configs/patches configs/patches -name "*.toml" 2>/dev/null | sort -u)
 
 if [ -z "$CONFIG_FILES" ]; then
-    echo "No config files found in .github/configs/patches"
+    echo "No config files found in .github/configs/patches or configs/patches"
     exit 0
 fi
 
@@ -19,9 +19,12 @@ fi
 # shellcheck disable=SC2086
 yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $CONFIG_FILES > temp_all_configs.json
 
-[ -f .github/configs/app_versions.json ] || echo '{}' > .github/configs/app_versions.json
+APP_VERSIONS_FILE=".github/configs/app_versions.json"
+[ -f "$APP_VERSIONS_FILE" ] || APP_VERSIONS_FILE="configs/app_versions.json"
+[ -f "$APP_VERSIONS_FILE" ] || echo '{}' > "$APP_VERSIONS_FILE"
+
 > fetched_app_versions.jsonl
-CHECK_ONLY_LISTED=$(jq -r '."_check_only_listed" // false' .github/configs/app_versions.json)
+CHECK_ONLY_LISTED=$(jq -r '."_check_only_listed" // false' "$APP_VERSIONS_FILE")
 
 if [ "$CHECK_ONLY_LISTED" = "true" ]; then
     jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[] | "\(.key)|\(.value.keys[0])"' .github/configs/app_versions.json > check_list.txt
