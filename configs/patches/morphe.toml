@@ -42,18 +42,3 @@ apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.you
 patches-source = "MorpheApp/morphe-patches"
 patcher-args = "-OdarkThemeBackgroundColor=#000000 "
 included-patches = "'Theme'"
-
-[microsoft-lens-morphe]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "microsoft-lens"
-rv-brand = "morphe"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.lens"
-version = "auto"
-build-mode = "apk"
-arch = "multi"
-pkg-name = "com.microsoft.office.officelens"
-uptodown-dlurl = "https://office-lens.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/office-lens"
-dpi = "nodpi anydpi auto"
-patches-source = "MorpheApp/morphe-patches"
