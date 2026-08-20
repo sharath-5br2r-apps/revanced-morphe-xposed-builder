@@ -96,5 +96,11 @@
       "fing-morphe-paresh"
     ],
     "version": "latest"
+  },
+  "JioHotstar": {
+    "keys": [
+      "jiohotstar-morphe-paresh"
+    ],
+    "version": "latest"
   }
 }
