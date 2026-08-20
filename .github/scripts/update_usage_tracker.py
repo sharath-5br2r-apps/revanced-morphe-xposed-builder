@@ -4,23 +4,17 @@ import json
 import time
 import subprocess
 
-def run_cmd(cmd, check=True, sanitize=None):
+def run_cmd(cmd, check=True):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     if check and result.returncode != 0:
-        safe_cmd = cmd
-        safe_stderr = result.stderr
-        if sanitize:
-            safe_cmd = safe_cmd.replace(sanitize, "***")
-            safe_stderr = safe_stderr.replace(sanitize, "***")
-        print(f"Error running command: {safe_cmd}\n{safe_stderr}")
+        print(f"Error running command: {cmd}\n{result.stderr}")
         sys.exit(1)
     return result.stdout.strip()
 
 def main():
-    token = os.environ.get("PERSONAL_ACCESS_TOKEN")
-    apks_repo = os.environ.get("APKS_REPO") or os.environ.get("UPLOAD_APKS_REPO")
-    if not token or not apks_repo:
-        print("APKS_REPO or PERSONAL_ACCESS_TOKEN is not set. Skipping usage tracker update.")
+    token = os.environ.get("APKS_REPO_TOKEN")
+    if not token:
+        print("APKS_REPO_TOKEN is not set. Skipping usage tracker update.")
         return
 
     used_versions_file = "temp/used_versions.txt"
@@ -35,14 +29,14 @@ def main():
         print("No versions recorded. Skipping update.")
         return
 
-    repo_url = f"https://oauth2:{token}@github.com/{apks_repo}.git"
+    repo_url = f"https://oauth2:{token}@github.com/nullcpy/apks.git"
     clone_dir = "temp/apks_repo"
     
     if os.path.exists(clone_dir):
         run_cmd(f"rm -rf {clone_dir}")
 
     print("Cloning apks repository...")
-    run_cmd(f"git clone --depth 1 {repo_url} {clone_dir}", sanitize=token)
+    run_cmd(f"git clone --depth 1 {repo_url} {clone_dir}")
 
     usage_file = os.path.join(clone_dir, "usage.json")
     

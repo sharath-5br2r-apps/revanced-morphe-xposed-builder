@@ -1,12 +1,12 @@
 #!/bin/bash
 set -euo pipefail
-PATCH_FILE="configs/patch_sources.json"
+PATCH_FILE=".github/configs/patch_sources.json"
 BASE_JSON=$(cat "$PATCH_FILE")
 
 fetch_gitlab_releases() {
-  local repo=$1 encoded_repo host=${2:-https://gitlab.com}
+  local repo=$1 encoded_repo
   encoded_repo=$(jq -nr --arg v "$repo" '$v | @uri')
-  curl -sS -L -w '\n%{http_code}' "${host}/api/v4/projects/${encoded_repo}/releases?per_page=100"
+  curl -sS -L -w '\n%{http_code}' "https://gitlab.com/api/v4/projects/${encoded_repo}/releases?per_page=100"
 }
 
 if echo "$BASE_JSON" | jq -e 'length == 0' >/dev/null; then
@@ -18,16 +18,10 @@ fi
 
 while read -r id repo host enabled enabledStable enabledDev; do
   if [ "$enabled" == "false" ]; then continue; fi
-  if [[ "$host" == *"|gitlab" ]]; then
-    gitlab_host="${host%%|*}"
-    host="gitlab"
-  else
-    gitlab_host="https://gitlab.com"
-  fi
 
   echo "::group::Fetching tags for $repo"
   if [ "$host" = "gitlab" ]; then
-    api_response=$(fetch_gitlab_releases "$repo" "${gitlab_host:-https://gitlab.com}" 2>&1 || true)
+    api_response=$(fetch_gitlab_releases "$repo" 2>&1 || true)
     api_http_code=$(printf '%s\n' "$api_response" | tail -n1)
     api_response=$(printf '%s\n' "$api_response" | sed '$d')
   else
@@ -56,9 +50,6 @@ while read -r id repo host enabled enabledStable enabledDev; do
       pre=$(echo "$pre_obj" | jq -r '.tag_name // ""')
       pre_date=$(echo "$pre_obj" | jq -r '.published_at // ""')
     fi
-
-    [ "$enabledStable" = "false" ] && { stable=""; stable_date=""; }
-    [ "$enabledDev" = "false" ] && { pre=""; pre_date=""; }
 
     if [ -n "$stable" ]; then echo "Found stable: $stable"; fi
     if [ -n "$pre" ]; then echo "Found pre-release: $pre"; fi

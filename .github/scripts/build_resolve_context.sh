@@ -13,21 +13,23 @@ IS_DEV=false
 if [[ "$CONFIG" == *"dev"* ]]; then
   IS_DEV=true
 elif [[ "$CONFIG" == *.json ]]; then
-  if [ "$(jq -r '."patches-version" // empty' "$CONFIG")" = "dev" ] || [ "$(jq -r '."patches-version" // empty' "$CONFIG")" = "alwayslatest" ] || [ "$(jq -r '."patches-version" // empty' "$CONFIG")" = "absolutelatest" ]; then
+  if [ "$(jq -r '."patches-version" // empty' "$CONFIG")" = "dev" ]; then
     IS_DEV=true
   fi
 elif [[ "$CONFIG" == *.toml ]]; then
   if awk '/^\[/ {exit} {print}' "$CONFIG" | grep -qE '^[[:space:]]*patches-version[[:space:]]*=[[:space:]]*"?dev"?'; then
-    IS_DEV=true
-  elif awk '/^\[/ {exit} {print}' "$CONFIG" | grep -qE '^[[:space:]]*patches-version[[:space:]]*=[[:space:]]*"?(alwayslatest|absolutelatest)"?'; then
     IS_DEV=true
   fi
 fi
 
 if [ "$IS_DEV" = true ]; then
   echo "IS_PRERELEASE=true" >> "$GITHUB_OUTPUT"
+  echo "TG_THREAD_ID=350" >> "$GITHUB_OUTPUT"
+  echo "TITLE_SUFFIX= (Pre-release)" >> "$GITHUB_OUTPUT"
   echo "ARCHIVE_TAG=beta" >> "$GITHUB_OUTPUT"
 else
   echo "IS_PRERELEASE=false" >> "$GITHUB_OUTPUT"
+  echo "TG_THREAD_ID=262" >> "$GITHUB_OUTPUT"
+  echo "TITLE_SUFFIX=" >> "$GITHUB_OUTPUT"
   echo "ARCHIVE_TAG=stable" >> "$GITHUB_OUTPUT"
 fi
