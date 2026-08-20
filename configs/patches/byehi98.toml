@@ -15,3 +15,18 @@ uptodown-dlurl = "https://hill-climb-racing.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
 dpi = "nodpi anydpi auto"
 patches-source = "byehi98/okish-morphe-patches"
+
+[jetpack-joyride-morphe-byehi98]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "jetpack-joyride"
+rv-brand = "morphe-byehi98"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.halfbrick.jetpackjoyride"
+version = "latest"
+build-mode = "apk"
+arch = "both"
+pkg-name = "com.halfbrick.jetpackjoyride"
+uptodown-dlurl = "https://jetpack-joyride.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/"
+dpi = "nodpi anydpi auto"
+patches-source = "byehi98/okish-morphe-patches"
