@@ -126,5 +126,11 @@
       "xodo-morphe-hoodles"
     ],
     "version": "latest"
+  },
+  "Beta Maniac": {
+    "keys": [
+      "beta-maniac-morphe-rushiranpise"
+    ],
+    "version": "latest"
   }
 }

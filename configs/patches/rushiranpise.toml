@@ -143,3 +143,18 @@ uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
 dpi = "nodpi anydpi auto"
 patches-source = "rushiranpise/morphe-patches"
+
+[beta-maniac-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "beta-maniac"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "it.mirko.beta"
+uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
