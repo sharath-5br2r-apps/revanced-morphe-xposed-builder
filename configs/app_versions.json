@@ -146,12 +146,6 @@
     ],
     "version": "1.104.1"
   },
-  "Pinterest": {
-    "keys": [
-      "pinterest-morphe-binarymend"
-    ],
-    "version": "14.32.0"
-  },
   "SD Maid SE": {
     "keys": [
       "sdmaid-morphe-paresh"
