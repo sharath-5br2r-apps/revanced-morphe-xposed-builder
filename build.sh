@@ -190,6 +190,8 @@ for table_name in $(toml_get_table_names); do
 	if [ -n "${app_args[included_patches]}" ] && [[ ${app_args[included_patches]} != *'"'* ]]; then abort "patch names inside included-patches must be quoted"; fi
 	app_args[exclusive_patches]=$(toml_get "$t" exclusive-patches) || app_args[exclusive_patches]=false
 	app_args[version]=$(toml_get "$t" version) || app_args[version]="auto"
+	app_args[version_filter]=$(toml_get "$t" version-filter) || app_args[version_filter]=$(toml_get "$t" apkmirror-version-filter) || app_args[version_filter]=""
+	app_args[apkmirror_version_filter]=$(toml_get "$t" apkmirror-version-filter) || app_args[apkmirror_version_filter]="${app_args[version_filter]}"
 	app_args[app_name]=$(toml_get "$t" app-name) || app_args[app_name]=$table_name
 	app_args[patcher_args]=$(toml_get "$t" patcher-args) || app_args[patcher_args]=""
 	app_args[table]=$table_name
