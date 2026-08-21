@@ -1217,6 +1217,15 @@ get_apkmirror_vers() {
 			break
 		fi
 	done
+	local v_filter="${apkmirror_version_filter:-${args[apkmirror_version_filter]:-${version_filter:-${args[version_filter]:-}}}}"
+	if [ -n "$v_filter" ]; then
+		if [[ "$v_filter" == !* ]]; then
+			vers=$(grep -Eiv "${v_filter#!}" <<<"$vers" || true)
+		else
+			vers=$(grep -Ei "$v_filter" <<<"$vers" || true)
+		fi
+	fi
+
 	if [ "${__AAV__:-false}" = false ]; then
 		local IFS=$'\n'
 		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
@@ -3214,6 +3223,11 @@ build_rv() {
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
+		if [ "${app_name_l}" = "gboard" ] || [ "${args[app-name]:-}" = "gboard" ]; then
+			if ! isoneof "-f" "${patcher_args[@]}"; then
+				patcher_args+=("-f")
+			fi
+		fi
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")
 		pr "Building '${table}' in '$build_mode' mode"
 		if [ ${#microg_patches[@]} -gt 0 ]; then
