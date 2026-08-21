@@ -1,7 +1,7 @@
-gboard-morphe-jasonwu1994-adobo (arm64-v8a): 17.7.7.932364120-lite_release-arm64-v8a  
-gboard-morphe-jasonwu1994-adobo (arm-v7a): 17.7.7.932364120-lite_release-armeabi-v7a  
-gboard-morphe-jasonwu1994-adobo (x86_64): 17.7.7.932364120-lite_release-x86_64  
-gboard-morphe-jasonwu1994-adobo (x86): 17.7.7.932364120-lite_release-x86  
+gboard-morphe-jasonwu1994-adobo (arm64-v8a): 17.7.7.932364120-release-arm64-v8a  
+gboard-morphe-jasonwu1994-adobo (arm-v7a): 17.7.7.932364120-release-arm64-v8a  
+gboard-morphe-jasonwu1994-adobo (x86_64): 17.7.7.932364120-release-arm64-v8a  
+gboard-morphe-jasonwu1994-adobo (x86): 17.7.7.932364120-release-arm64-v8a  
 gboard-morphe-jasonwu1994-adobo-clone (arm64-v8a): 17.7.7.932364120-release-arm64-v8a  
 gboard-morphe-jasonwu1994-adobo-clone (arm-v7a): 17.7.7.932364120-release-arm64-v8a  
 gboard-morphe-jasonwu1994-adobo-clone (x86_64): 17.7.7.932364120-release-arm64-v8a  

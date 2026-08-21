@@ -1,6 +1,6 @@
 {
-  "version": "v17.7.7.932364120-lite_release-arm64-v8a (patches 2.11.0.mpp)",
-  "versionCode": 260006,
-  "zipUrl": "https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/download/260006/gboard-morphe-jasonwu1994-adobo-module-v17.7.7.932364120-lite_release-arm64-v8a-arm64-v8a.zip",
+  "version": "v17.7.7.932364120-release-arm64-v8a (patches 2.11.0.mpp)",
+  "versionCode": 260007,
+  "zipUrl": "https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/releases/download/260007/gboard-morphe-jasonwu1994-adobo-module-v17.7.7.932364120-release-arm64-v8a-arm64-v8a.zip",
   "changelog": "https://raw.githubusercontent.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/update/build.md"
 }
