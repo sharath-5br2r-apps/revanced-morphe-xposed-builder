@@ -2014,7 +2014,7 @@ get_repo_resp() {
 	local filter="${repo_dlurl_filter:-${args[repo_dlurl_filter]:-}}"
 	[ -z "$filter" ] && filter='\.(apk|apkm|xapk|apks)$'
 	local tag_filter="${repo_dlurl_tag_filter:-${args[repo_dlurl_tag_filter]:-}}"
-	local rel_name_filter="${repo_dlurl_release_name_filter:-}"
+	local rel_name_filter="${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-}}"
 	local source_host="${repo_dlurl_source:-${args[repo_dlurl_source]:-github}}"
 	[ -z "$source_host" ] && source_host="github"
 
@@ -2943,7 +2943,7 @@ build_rv() {
 		[ -z "$version" ] && get_latest_ver=true
 		if [ $get_latest_ver = true ]; then
 			if [ "$version_mode" = beta ]; then __AAV__="true"; else __AAV__="false"; fi
-			local vers_cache_key="${table:-${app_name:-}}_${dl_from}_${args[${dl_from}_dlurl]}_${__AAV__}_${repo_dlurl_release_name_filter:-}"
+			local vers_cache_key="${table:-${app_name:-}}_${dl_from}_${args[${dl_from}_dlurl]}_${__AAV__}_${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-}}"
 			if [ -n "${__PKG_VERS_CACHE__["$vers_cache_key"]:-}" ]; then
 				pkgvers="${__PKG_VERS_CACHE__["$vers_cache_key"]}"
 			else
