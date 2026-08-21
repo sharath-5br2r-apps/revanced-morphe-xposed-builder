@@ -1178,7 +1178,7 @@ _cf_get() {
 
 # -------------------- apkmirror --------------------
 get_apkmirror_resp() {
-	local url="${1}"
+	local url="${1%/}/"
 	local key="apkmirror_${url//[^a-zA-Z0-9]/_}"
 	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
 		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["$key"]}"
@@ -1207,9 +1207,14 @@ get_apkmirror_vers() {
 		fi
 		if _cf_get "$page_url"; then
 			apkm_resp="$html"
-			page_entries=$(sed -n 's;.*<a class="fontBlack" href="\([^"]*\)">\(.*\)</a>.*;\1 \2;p' <<<"$apkm_resp")
+			local list_widget
+			list_widget=$($HTMLQ "div.listWidget" <<<"$apkm_resp") || list_widget="$apkm_resp"
+			page_entries=$(sed -n 's;.*<a class="fontBlack" href="\([^"]*\)">\(.*\)</a>.*;\1 \2;p' <<<"$list_widget")
 			if [ -z "$page_entries" ]; then
-				page_entries=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
+				page_entries=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$list_widget" | awk '{$1=$1}1')
+			fi
+			if [ -n "${__APKMIRROR_CAT__:-}" ]; then
+				page_entries=$(grep -i "/${__APKMIRROR_CAT__}" <<<"$page_entries" || echo "$page_entries")
 			fi
 			if [ -n "$page_entries" ]; then
 				vers+="$page_entries"$'\n'
@@ -1222,16 +1227,23 @@ get_apkmirror_vers() {
 	done
 
 	if [ -z "$vers" ] && [ -n "${__APKMIRROR_RESP__:-}" ]; then
-		page_entries=$(sed -n 's;.*<a class="fontBlack" href="\([^"]*\)">\(.*\)</a>.*;\1 \2;p' <<<"$__APKMIRROR_RESP__")
+		local list_widget
+		list_widget=$($HTMLQ "div.listWidget" <<<"$__APKMIRROR_RESP__") || list_widget="$__APKMIRROR_RESP__"
+		page_entries=$(sed -n 's;.*<a class="fontBlack" href="\([^"]*\)">\(.*\)</a>.*;\1 \2;p' <<<"$list_widget")
 		if [ -z "$page_entries" ]; then
-			page_entries=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$__APKMIRROR_RESP__" | awk '{$1=$1}1')
+			page_entries=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$list_widget" | awk '{$1=$1}1')
+		fi
+		if [ -n "${__APKMIRROR_CAT__:-}" ]; then
+			page_entries=$(grep -i "/${__APKMIRROR_CAT__}" <<<"$page_entries" || echo "$page_entries")
 		fi
 		if [ -n "$page_entries" ]; then
 			vers+="$page_entries"$'\n'
 		fi
 	fi
 
+	set +u
 	local v_filter="${apkmirror_version_filter:-${args[apkmirror_version_filter]:-${version_filter:-${args[version_filter]:-}}}}"
+	set -u
 	if [ -n "$v_filter" ]; then
 		if [[ "$v_filter" == !* ]]; then
 			local clean_filter="${v_filter//!/}"
@@ -1253,7 +1265,9 @@ get_apkmirror_vers() {
 		local v
 		v=$(echo "$entry" | grep -oP '\d+(\.\d+)+' | head -n 1 || true)
 		if [ -n "$v" ]; then
-			clean_vers+="$v"$'\n'
+			if [[ ! "$v" =~ ^(202[4-9]|20[3-9][0-9])\. ]]; then
+				clean_vers+="$v"$'\n'
+			fi
 		fi
 	done <<<"$vers"
 
@@ -1263,7 +1277,9 @@ get_apkmirror_vers() {
 get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__"; }
 
 apkmirror_search() {
-	local resp="$1" dpi="$2" arch="$3" apk_bundle="$4" clean_search_version="$5" search_version="$6"
+	set +u
+	local resp="$1" dpi="$2" arch="$3" apk_bundle="$4" clean_search_version="$5" search_version="$6" v_filter="${7:-${v_filter:-${apkmirror_version_filter:-${version_filter:-}}}}"
+	set -u
 	local dlurl="" node app_table emptyCheck
 
 	local appdpi=("nodpi" "anydpi")
@@ -1285,6 +1301,21 @@ apkmirror_search() {
 		
 		dlurl=$($HTMLQ --base https://www.apkmirror.com --attribute href "div.table-cell:nth-child(1) > a:nth-child(1)" <<<"$node")
 		if [ -z "$dlurl" ]; then continue; fi
+
+		if [ -n "$v_filter" ]; then
+			if [[ "$v_filter" == !* ]]; then
+				local clean_filter="${v_filter//!/}"
+				clean_filter="${clean_filter#\(}"
+				clean_filter="${clean_filter%\)}"
+				if grep -qEiv "$clean_filter" <<<"$dlurl"; then :; else continue; fi
+			else
+				if grep -qEi "$v_filter" <<<"$dlurl"; then :; else continue; fi
+			fi
+		fi
+
+		if [ "${__AAV__:-false}" = false ]; then
+			if grep -qEiv "(beta|alpha)" <<<"$dlurl"; then :; else continue; fi
+		fi
 
 		local node_apk_bundle node_arch node_dpi
 		node_apk_bundle=$($HTMLQ "div.table-cell:nth-child(1) span.apkm-badge:first-of-type" --text <<<"$node" | xargs)
@@ -1524,8 +1555,9 @@ dl_apkmirror() {
 		else
 			types="APK BUNDLE"
 		fi
+		local v_filter="${apkmirror_version_filter:-${args[apkmirror_version_filter]:-${version_filter:-${args[version_filter]:-}}}}"
 		for type in $types; do
-			if dlurl=$(apkmirror_search "$resp" "$dpi" "$arch" "$type" "$clean_search_version" "$search_version"); then
+			if dlurl=$(apkmirror_search "$resp" "$dpi" "$arch" "$type" "$clean_search_version" "$search_version" "$v_filter"); then
 				[ "$type" = "BUNDLE" ] && is_bundle=true || is_bundle=false
 				break
 			fi
