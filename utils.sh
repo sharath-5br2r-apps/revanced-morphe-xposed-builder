@@ -1198,7 +1198,7 @@ get_apkmirror_resp() {
 }
 
 get_apkmirror_vers() {
-	local vers="" apkm_resp html="" page page_vers
+	local vers="" apkm_resp html="" page page_entries
 	[ -z "${__APKMIRROR_CAT__:-}" ] && return 1
 	for page in {1..5}; do
 		local page_url="https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}"
@@ -1207,9 +1207,12 @@ get_apkmirror_vers() {
 		fi
 		if _cf_get "$page_url"; then
 			apkm_resp="$html"
-			page_vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
-			if [ -n "$page_vers" ]; then
-				vers+="$page_vers"$'\n'
+			page_entries=$(sed -n 's;.*<a class="fontBlack" href="\([^"]*\)">\(.*\)</a>.*;\1 \2;p' <<<"$apkm_resp")
+			if [ -z "$page_entries" ]; then
+				page_entries=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
+			fi
+			if [ -n "$page_entries" ]; then
+				vers+="$page_entries"$'\n'
 			else
 				break
 			fi
@@ -1217,26 +1220,34 @@ get_apkmirror_vers() {
 			break
 		fi
 	done
+
 	local v_filter="${apkmirror_version_filter:-${args[apkmirror_version_filter]:-${version_filter:-${args[version_filter]:-}}}}"
 	if [ -n "$v_filter" ]; then
 		if [[ "$v_filter" == !* ]]; then
-			vers=$(grep -Eiv "${v_filter#!}" <<<"$vers" || true)
+			local clean_filter="${v_filter//!/}"
+			clean_filter="${clean_filter#\(}"
+			clean_filter="${clean_filter%\)}"
+			vers=$(grep -Eiv "$clean_filter" <<<"$vers" || true)
 		else
 			vers=$(grep -Ei "$v_filter" <<<"$vers" || true)
 		fi
 	fi
 
 	if [ "${__AAV__:-false}" = false ]; then
-		local IFS=$'\n'
-		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
-		local v r_vers=()
-		for v in $vers; do
-			grep -iq "${v} \(beta\|alpha\)" <<<"$apkm_resp" || r_vers+=("$v")
-		done
-		echo "${r_vers[*]}"
-	else
-		echo "$vers"
+		vers=$(grep -Eiv "(beta|alpha)" <<<"$vers" || true)
 	fi
+
+	local clean_vers=""
+	while IFS= read -r entry; do
+		[ -z "$entry" ] && continue
+		local v
+		v=$(echo "$entry" | grep -oP '\d+(\.\d+)+' | head -n 1 || true)
+		if [ -n "$v" ]; then
+			clean_vers+="$v"$'\n'
+		fi
+	done <<<"$vers"
+
+	echo "$clean_vers"
 }
 
 get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__"; }
