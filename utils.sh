@@ -1473,7 +1473,10 @@ dl_apkmirror() {
 		local s_name v_str cand_url
 		for s_name in "${slug_names[@]}"; do
 			for v_str in "${ver_strings[@]}"; do
-				cand_url="${url%/}/${s_name}-${v_str}-release/"
+				local clean_v_str="${v_str%-release}"
+				clean_v_str="${clean_v_str%_release}"
+
+				cand_url="${url%/}/${s_name}-${clean_v_str}-release/"
 				_cf_get "$cand_url" || true
 				resp="$html"
 				if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
@@ -1505,9 +1508,13 @@ dl_apkmirror() {
 }"
 
 			local all_links=$(echo "$html_split" | grep -oP 'href="\K/apk/[^"]+')
+			local base_search_ver="${search_version%-release}"
+			base_search_ver="${base_search_ver%_release}"
+			local base_clean_ver="${clean_search_version%-release}"
+			base_clean_ver="${base_clean_ver%_release}"
 			
 			# 1. Exact URL match (strict)
-			version_href=$(echo "$all_links" | grep -F "$search_version-release" | head -1) || true
+			version_href=$(echo "$all_links" | grep -F "$base_search_ver-release" | head -1) || true
 			
 			# 2. Exact text match
 			if [ -z "$version_href" ]; then
@@ -1520,8 +1527,8 @@ dl_apkmirror() {
 			fi
 
 			# 4. Clean URL match
-			if [ -z "$version_href" ] && [ -n "$clean_search_version" ]; then
-				version_href=$(echo "$all_links" | grep -E "${clean_search_version}(-[a-z0-9]+)*-release" | head -1) || true
+			if [ -z "$version_href" ] && [ -n "$base_clean_ver" ]; then
+				version_href=$(echo "$all_links" | grep -E "${base_clean_ver}(-[a-z0-9]+)*-release" | head -1) || true
 			fi
 
 			# 5. Safe Short URL match (for grouped versions)
