@@ -2786,6 +2786,11 @@ build_rv() {
 			fi
 		fi
 
+		# Clean resolved_version of arch and release variant suffixes (e.g. -release-arm64-v8a)
+		if [ -n "$resolved_version" ]; then
+			resolved_version=$(echo "$resolved_version" | sed -E 's/-(release|lite_release|beta|alpha)?-(arm64-v8a|arm-v7a|x86_64|x86)$//; s/-(release|lite_release)$//')
+		fi
+
 		# Cache Check
 		if [ -n "$resolved_version" ]; then
 			local version_f=${resolved_version// /}
