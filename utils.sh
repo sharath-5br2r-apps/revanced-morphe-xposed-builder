@@ -1198,14 +1198,28 @@ get_apkmirror_resp() {
 }
 
 get_apkmirror_vers() {
-	local vers apkm_resp html=""
+	local vers="" apkm_resp html="" page page_vers
 	[ -z "${__APKMIRROR_CAT__:-}" ] && return 1
-	_cf_get "https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}" || return 1
-	apkm_resp="$html"
-	vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
+	for page in {1..5}; do
+		local page_url="https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}"
+		if [ "$page" -gt 1 ]; then
+			page_url="https://www.apkmirror.com/uploads/page/${page}/?appcategory=${__APKMIRROR_CAT__}"
+		fi
+		if _cf_get "$page_url"; then
+			apkm_resp="$html"
+			page_vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
+			if [ -n "$page_vers" ]; then
+				vers+="$page_vers"$'\n'
+			else
+				break
+			fi
+		else
+			break
+		fi
+	done
 	if [ "${__AAV__:-false}" = false ]; then
 		local IFS=$'\n'
-		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers")
+		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
 		local v r_vers=()
 		for v in $vers; do
 			grep -iq "${v} \(beta\|alpha\)" <<<"$apkm_resp" || r_vers+=("$v")
