@@ -3223,11 +3223,6 @@ build_rv() {
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
-		if [ "${app_name_l}" = "gboard" ] || [ "${args[app-name]:-}" = "gboard" ]; then
-			if ! isoneof "-f" "${patcher_args[@]}"; then
-				patcher_args+=("-f")
-			fi
-		fi
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")
 		pr "Building '${table}' in '$build_mode' mode"
 		if [ ${#microg_patches[@]} -gt 0 ]; then
