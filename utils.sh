@@ -1183,6 +1183,7 @@ get_apkmirror_resp() {
 	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
 		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["$key"]}"
 		__APKMIRROR_CAT__="${__DL_RESP_CACHE__["cat_$key"]}"
+		__APKMIRROR_BASE_URL__="${__DL_RESP_CACHE__["baseurl_$key"]:-${url%/}}"
 		return 0
 	fi
 	local html=""
@@ -1190,8 +1191,10 @@ get_apkmirror_resp() {
 	__APKMIRROR_RESP__="$html"
 	local clean_url="${url%/}"
 	__APKMIRROR_CAT__="${clean_url##*/}"
+	__APKMIRROR_BASE_URL__="$clean_url"
 	__DL_RESP_CACHE__["$key"]="$__APKMIRROR_RESP__"
 	__DL_RESP_CACHE__["cat_$key"]="$__APKMIRROR_CAT__"
+	__DL_RESP_CACHE__["baseurl_$key"]="$__APKMIRROR_BASE_URL__"
 	set +u
 	__APKMIRROR_EXAMPLE_URL__="${apkmirror_example_url:-}"
 	set -u
@@ -1200,10 +1203,20 @@ get_apkmirror_resp() {
 get_apkmirror_vers() {
 	local vers="" apkm_resp html="" page page_entries
 	[ -z "${__APKMIRROR_CAT__:-}" ] && return 1
+	local base_u="${__APKMIRROR_BASE_URL__:-}"
 	for page in {1..5}; do
-		local page_url="https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}"
-		if [ "$page" -gt 1 ]; then
-			page_url="https://www.apkmirror.com/uploads/page/${page}/?appcategory=${__APKMIRROR_CAT__}"
+		local page_url=""
+		if [ -n "$base_u" ]; then
+			if [ "$page" -eq 1 ]; then
+				page_url="${base_u}/"
+			else
+				page_url="${base_u}/page/${page}/"
+			fi
+		else
+			page_url="https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}"
+			if [ "$page" -gt 1 ]; then
+				page_url="https://www.apkmirror.com/uploads/page/${page}/?appcategory=${__APKMIRROR_CAT__}"
+			fi
 		fi
 		if _cf_get "$page_url"; then
 			apkm_resp="$html"
@@ -1272,9 +1285,7 @@ get_apkmirror_vers() {
 		local v
 		v=$(echo "$entry" | grep -oP '\d+(\.\d+)+' | head -n 1 || true)
 		if [ -n "$v" ]; then
-			if [[ ! "$v" =~ ^(202[4-9]|20[3-9][0-9])\. ]]; then
-				clean_vers+="$v"$'\n'
-			fi
+			clean_vers+="$v"$'\n'
 		fi
 	done <<<"$vers"
 
