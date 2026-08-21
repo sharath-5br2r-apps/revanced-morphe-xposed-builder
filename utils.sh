@@ -1361,8 +1361,8 @@ dl_apkmirror() {
 	search_version="${search_version%-}"
 
 	if [ -z "$release_url" ]; then
-		local apkmname
-		apkmname=$($HTMLQ "h1.marginZero" --text <<<"$__APKMIRROR_RESP__")
+		local apkmname url_slug
+		apkmname=$($HTMLQ "h1.marginZero" --text <<<"$__APKMIRROR_RESP__") || true
 		apkmname="${apkmname,,}"
 		apkmname="${apkmname// /-}"
 		apkmname="${apkmname//[^a-z0-9-]/}"
@@ -1372,27 +1372,37 @@ dl_apkmirror() {
 		apkmname="${apkmname#-}"
 		apkmname="${apkmname%-}"
 
-		if [ -n "$apkmname" ]; then
-			local candidate_url="${url%/}/${apkmname}-${search_version}-release/"
-			_cf_get "$candidate_url" || true
-			resp="$html"
-			if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
-				release_url="$candidate_url"
-			fi
-		fi
-	fi
-
-	if [ -z "$release_url" ]; then
-		local url_slug="${url%/}"
+		url_slug="${url%/}"
 		url_slug="${url_slug##*/}"
-		if [ -n "$url_slug" ]; then
-			local candidate_url="${url%/}/${url_slug}-${search_version}-release/"
-			_cf_get "$candidate_url" || true
-			resp="$html"
-			if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
-				release_url="$candidate_url"
-			fi
-		fi
+
+		local slug_names=()
+		[ -n "$apkmname" ] && slug_names+=("$apkmname")
+		[ -n "$url_slug" ] && [ "$url_slug" != "$apkmname" ] && slug_names+=("$url_slug")
+
+		local ver_strings=()
+		[ -n "$search_version" ] && ver_strings+=("$search_version")
+		[ -n "$clean_search_version" ] && [ "$clean_search_version" != "$search_version" ] && ver_strings+=("$clean_search_version")
+		[ -n "$short_search_version" ] && [ "$short_search_version" != "$clean_search_version" ] && [ "$short_search_version" != "$search_version" ] && ver_strings+=("$short_search_version")
+
+		local s_name v_str cand_url
+		for s_name in "${slug_names[@]}"; do
+			for v_str in "${ver_strings[@]}"; do
+				cand_url="${url%/}/${s_name}-${v_str}-release/"
+				_cf_get "$cand_url" || true
+				resp="$html"
+				if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
+					release_url="$cand_url"
+					break 2
+				fi
+				cand_url="${url%/}/${s_name}-${v_str}/"
+				_cf_get "$cand_url" || true
+				resp="$html"
+				if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
+					release_url="$cand_url"
+					break 2
+				fi
+			done
+		done
 	fi
 
 	if [ -z "$release_url" ]; then
