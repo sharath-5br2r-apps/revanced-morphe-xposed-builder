@@ -2660,8 +2660,8 @@ build_rv() {
 
 	# 1. Resolve pkg_name early if possible and check cache
 	if [ -n "$pkg_name" ]; then
-		# Check app_versions.json for exact version if running in CI
-		if [ -n "${CI:-}${GITHUB_REPOSITORY:-}${GITHUB_ACTIONS:-}" ]; then
+		# Check app_versions.json for exact version only when invoked from ci.yml workflow
+		if [ "${GITHUB_WORKFLOW:-}" = "CI" ] || [[ "${GITHUB_WORKFLOW_REF:-}" == *"ci.yml"* ]]; then
 			local app_versions_file="configs/app_versions.json"
 			[ -f "$app_versions_file" ] || app_versions_file=".github/configs/app_versions.json"
 			if [ -f "$app_versions_file" ]; then
