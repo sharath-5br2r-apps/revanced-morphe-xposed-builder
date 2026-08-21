@@ -1314,6 +1314,12 @@ dl_apkmirror() {
 
 	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
 
+	version="${version%-arm64-v8a}"
+	version="${version%-armeabi-v7a}"
+	version="${version%-arm-v7a}"
+	version="${version%-x86_64}"
+	version="${version%-x86}"
+
 	local clean_version="${version//[^0-9.]/}"
 	local clean_search_version="${clean_version//./-}"
 
