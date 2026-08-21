@@ -86,6 +86,7 @@ jobs:
           KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
         run: |
           set -euo pipefail
+          set -x
           ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}" "${{ inputs.exclusive_apps }}"
 
       - name: Update Usage Tracker
