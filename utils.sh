@@ -2018,7 +2018,7 @@ get_repo_resp() {
 	local source_host="${repo_dlurl_source:-${args[repo_dlurl_source]:-github}}"
 	[ -z "$source_host" ] && source_host="github"
 
-	local cache_key="repo_${url}_${filter}_${tag_filter}_${rel_name_filter}_${source_host}"
+	local cache_key="repo_${table:-${app_name:-}}_${url}_${filter}_${tag_filter}_${rel_name_filter}_${source_host}"
 	if [ -n "${__DL_RESP_CACHE__["$cache_key"]:-}" ]; then
 		__REPO_RESP_JSON__="${__DL_RESP_CACHE__["$cache_key"]}"
 		return 0
