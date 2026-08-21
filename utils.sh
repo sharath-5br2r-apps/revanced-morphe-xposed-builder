@@ -1476,6 +1476,7 @@ dl_apkmirror() {
 				local clean_v_str="${v_str%-release}"
 				clean_v_str="${clean_v_str%_release}"
 
+				# Variant 1: s_name + clean_v_str + -release/
 				cand_url="${url%/}/${s_name}-${clean_v_str}-release/"
 				_cf_get "$cand_url" || true
 				resp="$html"
@@ -1483,6 +1484,19 @@ dl_apkmirror() {
 					release_url="$cand_url"
 					break 2
 				fi
+
+				# Variant 2: s_name + v_str + -release/ (supports -release-release/ if v_str already contains -release)
+				if [ "$clean_v_str" != "$v_str" ]; then
+					cand_url="${url%/}/${s_name}-${v_str}-release/"
+					_cf_get "$cand_url" || true
+					resp="$html"
+					if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
+						release_url="$cand_url"
+						break 2
+					fi
+				fi
+
+				# Variant 3: s_name + v_str /
 				cand_url="${url%/}/${s_name}-${v_str}/"
 				_cf_get "$cand_url" || true
 				resp="$html"
@@ -1513,8 +1527,13 @@ dl_apkmirror() {
 			local base_clean_ver="${clean_search_version%-release}"
 			base_clean_ver="${base_clean_ver%_release}"
 			
-			# 1. Exact URL match (strict)
+			# 1. Exact URL match (base_search_ver + -release)
 			version_href=$(echo "$all_links" | grep -F "$base_search_ver-release" | head -1) || true
+
+			# 1b. Exact URL match (full search_version + -release for release-release slugs)
+			if [ -z "$version_href" ] && [ "$base_search_ver" != "$search_version" ]; then
+				version_href=$(echo "$all_links" | grep -F "$search_version-release" | head -1) || true
+			fi
 			
 			# 2. Exact text match
 			if [ -z "$version_href" ]; then
