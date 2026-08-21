@@ -2124,6 +2124,9 @@ get_repo_resp() {
 }
 
 get_repo_vers() {
+	if [ -z "${__REPO_RESP_JSON__:-}" ]; then
+		get_repo_resp "${repo_dlurl:-${args[repo_dlurl]:-}}" || return 1
+	fi
 	jq -r '.[].tag_name // empty' <<<"${__REPO_RESP_JSON__:-[]}" | sed 's/^v//i' | sort -u
 }
 
@@ -2944,6 +2947,9 @@ build_rv() {
 			if [ -n "${__PKG_VERS_CACHE__["$vers_cache_key"]:-}" ]; then
 				pkgvers="${__PKG_VERS_CACHE__["$vers_cache_key"]}"
 			else
+				if declare -f "get_${dl_from}_resp" >/dev/null; then
+					"get_${dl_from}_resp" "${args[${dl_from}_dlurl]:-}" || true
+				fi
 				pkgvers=$(get_"${dl_from}"_vers)
 				__PKG_VERS_CACHE__["$vers_cache_key"]="$pkgvers"
 			fi
