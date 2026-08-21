@@ -230,7 +230,7 @@ cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/"
 apkmirror-example-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 version-filter = "!lite|go"
-version = "17.8.7.939743344"
+version = "auto"
 dpi = "nodpi anydpi auto"
 
 [gboard-morphe-jasonwu1994-adobo-clone]
@@ -248,7 +248,7 @@ patcher-args = "-f --continue-on-error"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/"
 apkmirror-example-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 version-filter = "!lite|go"
-version = "17.8.7.939743344"
+version = "auto"
 dpi = "nodpi anydpi auto"
 
 [github-morphe-hoodles-stylus]

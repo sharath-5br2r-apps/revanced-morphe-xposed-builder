@@ -1221,6 +1221,16 @@ get_apkmirror_vers() {
 		fi
 	done
 
+	if [ -z "$vers" ] && [ -n "${__APKMIRROR_RESP__:-}" ]; then
+		page_entries=$(sed -n 's;.*<a class="fontBlack" href="\([^"]*\)">\(.*\)</a>.*;\1 \2;p' <<<"$__APKMIRROR_RESP__")
+		if [ -z "$page_entries" ]; then
+			page_entries=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$__APKMIRROR_RESP__" | awk '{$1=$1}1')
+		fi
+		if [ -n "$page_entries" ]; then
+			vers+="$page_entries"$'\n'
+		fi
+	fi
+
 	local v_filter="${apkmirror_version_filter:-${args[apkmirror_version_filter]:-${version_filter:-${args[version_filter]:-}}}}"
 	if [ -n "$v_filter" ]; then
 		if [[ "$v_filter" == !* ]]; then
