@@ -2071,7 +2071,7 @@ get_repo_resp() {
 	fi
 
 	local mode="latest"
-	if [ "${__AAV__:-false}" = true ] || [ "${version:-}" = "beta" ] || [ "${version:-}" = "dev" ] || [ "${version:-}" = "absolutelatest" ]; then
+	if [ "${__AAV__:-false}" = true ] || [ "${version:-}" = "beta" ] || [ "${version:-}" = "dev" ] || [ "${version:-}" = "absolutelatest" ] || [ -n "$tag_filter" ] || [ -n "$rel_name_filter" ]; then
 		mode="absolutelatest"
 	fi
 
