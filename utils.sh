@@ -2445,7 +2445,18 @@ get_apk_native_arch() {
 	grep -qi "x86_64" <<<"$lib_entries" && has_x86_64=true
 	grep -qi "x86" <<<"$lib_entries" && grep -vqi "x86_64" <<<"$lib_entries" && has_x86=true
 
-	# Specific ABI detection
+	local count=0
+	[ "$has_arm64" = true ] && ((count++)) || true
+	[ "$has_armv7" = true ] && ((count++)) || true
+	[ "$has_x86_64" = true ] && ((count++)) || true
+	[ "$has_x86" = true ] && ((count++)) || true
+
+	if [ "$count" -gt 1 ]; then
+		echo "all"
+		return 0
+	fi
+
+	# Single ABI detection
 	if [ "$has_arm64" = true ]; then
 		echo "arm64-v8a"
 	elif [ "$has_armv7" = true ]; then
