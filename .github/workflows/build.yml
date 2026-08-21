@@ -66,9 +66,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: temp/apks
-          key: apks-v2-${{ hashFiles('configs/app_versions.json', 'configs/patches/**/*.toml') }}
+          key: apks-v3-${{ hashFiles('configs/app_versions.json', 'configs/patches/**/*.toml') }}
           restore-keys: |
-            apks-v2-
+            apks-v3-
 
       - name: Build modules and apks
         env:
