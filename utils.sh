@@ -2460,13 +2460,6 @@ get_apk_native_arch() {
 		return 0
 	fi
 
-	# 2. Both arm64-v8a AND armeabi-v7a exist -> return "all" (multi-arch)
-	if [ "$has_arm64" = true ] && [ "$has_armv7" = true ]; then
-		wpr "Assumed architecture 'all' based on native libraries (found arm64-v8a + armeabi-v7a)" >&2
-		echo "all"
-		return 0
-	fi
-
 	# 3. x86_64 AND x86 exist -> considered "x86_64"
 	if [ "$has_x86_64" = true ] && [ "$has_x86" = true ]; then
 		wpr "Assumed architecture 'x86_64' based on native libraries (found x86_64 + x86)" >&2
