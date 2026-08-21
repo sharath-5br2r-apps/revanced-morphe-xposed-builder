@@ -1249,9 +1249,11 @@ get_apkmirror_vers() {
 			local clean_filter="${v_filter//!/}"
 			clean_filter="${clean_filter#\(}"
 			clean_filter="${clean_filter%\)}"
-			vers=$(grep -Eiv "$clean_filter" <<<"$vers" || true)
+			local regex_filter="(-|_|\b)(${clean_filter})(-|_|\b)"
+			vers=$(grep -Eiv "$regex_filter" <<<"$vers" || true)
 		else
-			vers=$(grep -Ei "$v_filter" <<<"$vers" || true)
+			local regex_filter="(-|_|\b)(${v_filter})(-|_|\b)"
+			vers=$(grep -Ei "$regex_filter" <<<"$vers" || true)
 		fi
 	fi
 
@@ -1259,9 +1261,14 @@ get_apkmirror_vers() {
 		vers=$(grep -Eiv "(beta|alpha)" <<<"$vers" || true)
 	fi
 
+	vers=$(sed '/^$/d' <<<"$vers")
+	if [ -z "$vers" ]; then
+		return 1
+	fi
+
 	local clean_vers=""
 	while IFS= read -r entry; do
-		[ -z "$entry" ] && continue
+		if [ -z "$entry" ]; then continue; fi
 		local v
 		v=$(echo "$entry" | grep -oP '\d+(\.\d+)+' | head -n 1 || true)
 		if [ -n "$v" ]; then
@@ -1271,6 +1278,7 @@ get_apkmirror_vers() {
 		fi
 	done <<<"$vers"
 
+	clean_vers=$(sed '/^$/d' <<<"$clean_vers" | sort -s -t- -k1,1Vr | uniq)
 	echo "$clean_vers"
 }
 
@@ -1285,10 +1293,14 @@ apkmirror_search() {
 	local appdpi=("nodpi" "anydpi")
 	local match_any_dpi=false
 	if [ "$dpi" ]; then
-		appdpi+=($dpi)
-		if isoneof "auto" "${appdpi[@]}"; then
-			match_any_dpi=true
-		fi
+		local d
+		for d in $dpi; do
+			if [ "$d" = "auto" ]; then
+				match_any_dpi=true
+			elif ! isoneof "$d" "${appdpi[@]}"; then
+				appdpi+=("$d")
+			fi
+		done
 	fi
 
 	local best_fallback_url=""
@@ -1307,9 +1319,11 @@ apkmirror_search() {
 				local clean_filter="${v_filter//!/}"
 				clean_filter="${clean_filter#\(}"
 				clean_filter="${clean_filter%\)}"
-				if grep -qEiv "$clean_filter" <<<"$dlurl"; then :; else continue; fi
+				local regex_filter="(-|_|\b)(${clean_filter})(-|_|\b)"
+				if grep -qEiv "$regex_filter" <<<"$dlurl"; then :; else continue; fi
 			else
-				if grep -qEi "$v_filter" <<<"$dlurl"; then :; else continue; fi
+				local regex_filter="(-|_|\b)(${v_filter})(-|_|\b)"
+				if grep -qEi "$regex_filter" <<<"$dlurl"; then :; else continue; fi
 			fi
 		fi
 
