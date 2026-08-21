@@ -2445,29 +2445,7 @@ get_apk_native_arch() {
 	grep -qi "x86_64" <<<"$lib_entries" && has_x86_64=true
 	grep -qi "x86" <<<"$lib_entries" && grep -vqi "x86_64" <<<"$lib_entries" && has_x86=true
 
-	# 1. Output "all" if:
-	# - Both x86_64 and arm64-v8a exist
-	# - All 4 ABIs exist
-	# - Both x86 and arm (v7a) exist
-	# - x86, arm (v7a), and arm64-v8a exist
-	if [ "$has_x86_64" = true ] && [ "$has_arm64" = true ]; then
-		wpr "Assumed architecture 'all' based on native libraries (found x86_64 + arm64-v8a)" >&2
-		echo "all"
-		return 0
-	elif [ "$has_x86" = true ] && [ "$has_armv7" = true ]; then
-		wpr "Assumed architecture 'all' based on native libraries (found x86 + arm)" >&2
-		echo "all"
-		return 0
-	fi
-
-	# 3. x86_64 AND x86 exist -> considered "x86_64"
-	if [ "$has_x86_64" = true ] && [ "$has_x86" = true ]; then
-		wpr "Assumed architecture 'x86_64' based on native libraries (found x86_64 + x86)" >&2
-		echo "x86_64"
-		return 0
-	fi
-
-	# 4. Specific single ABI detection
+	# Specific ABI detection
 	if [ "$has_arm64" = true ]; then
 		echo "arm64-v8a"
 	elif [ "$has_armv7" = true ]; then
