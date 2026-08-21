@@ -1354,17 +1354,44 @@ dl_apkmirror() {
 	search_version="${search_version//_/-}"
 	search_version="${search_version,,}"
 	search_version="${search_version//[^a-z0-9-]/}"
-	search_version="${search_version//---/-}"
+	while [[ "$search_version" == *"--"* ]]; do
+		search_version="${search_version//--/-}"
+	done
+	search_version="${search_version#-}"
+	search_version="${search_version%-}"
 
 	if [ -z "$release_url" ]; then
 		local apkmname
 		apkmname=$($HTMLQ "h1.marginZero" --text <<<"$__APKMIRROR_RESP__")
-		apkmname="${apkmname,,}" apkmname="${apkmname// /-}" apkmname="${apkmname//[^a-z0-9-]/}"
-		release_url="${url%/}/${apkmname}-${search_version}-release/"
-		_cf_get "$release_url" || true
-		resp="$html"
-		if [[ "$resp" == *"Page Not Found"* ]] || [[ "$resp" == *"404 Whoops"* ]] || [ -z "$resp" ]; then
-			release_url=""
+		apkmname="${apkmname,,}"
+		apkmname="${apkmname// /-}"
+		apkmname="${apkmname//[^a-z0-9-]/}"
+		while [[ "$apkmname" == *"--"* ]]; do
+			apkmname="${apkmname//--/-}"
+		done
+		apkmname="${apkmname#-}"
+		apkmname="${apkmname%-}"
+
+		if [ -n "$apkmname" ]; then
+			local candidate_url="${url%/}/${apkmname}-${search_version}-release/"
+			_cf_get "$candidate_url" || true
+			resp="$html"
+			if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
+				release_url="$candidate_url"
+			fi
+		fi
+	fi
+
+	if [ -z "$release_url" ]; then
+		local url_slug="${url%/}"
+		url_slug="${url_slug##*/}"
+		if [ -n "$url_slug" ]; then
+			local candidate_url="${url%/}/${url_slug}-${search_version}-release/"
+			_cf_get "$candidate_url" || true
+			resp="$html"
+			if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
+				release_url="$candidate_url"
+			fi
 		fi
 	fi
 
