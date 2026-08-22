@@ -1192,7 +1192,7 @@ get_apkmirror_resp() {
 	__DL_RESP_CACHE__["apkmirror_resp_$url"]="$__APKMIRROR_RESP__"
 	__DL_RESP_CACHE__["apkmirror_cat_$url"]="$__APKMIRROR_CAT__"
 	set +u
-	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-${args[apkmirror_example_dlurl]:-}}" 
+	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-}"
 	set -u
 }
 
@@ -1736,20 +1736,23 @@ PYC
 
 # -------------------- uptodown --------------------
 get_uptodown_resp() {
-	local url="${1}"
+	local url="${1%/}"
 	if [ -n "${__DL_RESP_CACHE__["uptodown_resp_$url"]:-}" ]; then
 		__UPTODOWN_RESP__="${__DL_RESP_CACHE__["uptodown_resp_$url"]}"
 		__UPTODOWN_RESP_PKG__="${__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]}"
 		return 0
 	fi
-	__UPTODOWN_RESP__=$(req "${url}/versions" -) || return 1
-	__UPTODOWN_RESP_PKG__=$(req "${url}/download" -) || return 1
+	local html=""
+	_cf_get "${url}/versions" || return 1
+	__UPTODOWN_RESP__="$html"
+	_cf_get "${url}/download" || return 1
+	__UPTODOWN_RESP_PKG__="$html"
 	__DL_RESP_CACHE__["uptodown_resp_$url"]="$__UPTODOWN_RESP__"
 	__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]="$__UPTODOWN_RESP_PKG__"
 }
 get_uptodown_vers() { $HTMLQ --text ".version" <<<"$__UPTODOWN_RESP__"; }
 dl_uptodown() {
-	local uptodown_dlurl=$1 version=$2 output=$3 arch=$4 _dpi=$5
+	local uptodown_dlurl="${1%/}" version=$2 output=$3 arch=$4 _dpi=$5
 	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
 
 	local apparch=('arm64-v8a, armeabi-v7a, x86_64' 'arm64-v8a, armeabi-v7a, x86, x86_64' 'arm64-v8a, armeabi-v7a')
@@ -1757,12 +1760,16 @@ dl_uptodown() {
 		apparch+=("$arch")
 	fi
 
-	local op resp data_code
+	local op resp="" html="" data_code
 	data_code=$($HTMLQ "#detail-app-name" --attribute data-code <<<"$__UPTODOWN_RESP__")
 	local versionURL=""
 	local is_bundle=false
 	for i in {1..20}; do
-		resp=$(req "${uptodown_dlurl}/apps/${data_code}/versions/${i}" -)
+		if _cf_get "${uptodown_dlurl}/apps/${data_code}/versions/${i}"; then
+			resp="$html"
+		else
+			resp=$(req "${uptodown_dlurl}/apps/${data_code}/versions/${i}" -) || continue
+		fi
 		if ! op=$(jq -e -r ".data | map(select(.version == \"${version}\")) | .[0]" <<<"$resp"); then
 			continue
 		fi
@@ -1771,7 +1778,11 @@ dl_uptodown() {
 	done
 	if [ -z "$versionURL" ]; then return 1; fi
 	versionURL=$(jq -e -r '.url + "/" + .extraURL + "/" + (.versionID | tostring)' <<<"$versionURL")
-	resp=$(req "$versionURL" -) || return 1
+	if _cf_get "$versionURL"; then
+		resp="$html"
+	else
+		resp=$(req "$versionURL" -) || return 1
+	fi
 
 	local data_version files node_arch="" data_file_id node_class
 	data_version=$($HTMLQ '.button.variants' --attribute data-version <<<"$resp") || return 1
