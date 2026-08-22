@@ -1393,11 +1393,30 @@ dl_apkmirror() {
 		slug_ver=$(echo "$example_path" | grep -oP '\d+(-\d+)+' | tail -1)
 		target_ver=$(echo "$version" | tr '.' '-' | grep -oP '\d+(-\d+)+')
 		if [ -n "$slug_ver" ] && [ -n "$target_ver" ]; then
-			release_url="${base_url}${example_path/$slug_ver/$target_ver}"
+			local candidate_url="${base_url}${example_path/$slug_ver/$target_ver}"
+			set +u
+			local rel_filter="${args[apkmirror_release_filter]:-}"
+			set -u
+			local pass_filter=true
+			if [ -n "$rel_filter" ]; then
+				if [[ "$rel_filter" == !* ]]; then
+					local neg_pat="${rel_filter#!}"
+					if grep -iE "$neg_pat" <<<"$candidate_url" >/dev/null 2>&1; then
+						pass_filter=false
+					fi
+				else
+					if ! grep -iE "$rel_filter" <<<"$candidate_url" >/dev/null 2>&1; then
+						pass_filter=false
+					fi
+				fi
+			fi
+			if [ "$pass_filter" = true ]; then
+				release_url="$candidate_url"
 				__SILENT_CF_GET__=true _cf_get "$release_url" || true
-			resp="$html"
-			if [[ "$resp" == *"Page Not Found"* ]] || [[ "$resp" == *"404 Whoops"* ]] || [ -z "$resp" ]; then
+				resp="$html"
+				if [[ "$resp" == *"Page Not Found"* ]] || [[ "$resp" == *"404 Whoops"* ]] || [ -z "$resp" ]; then
 					release_url=""
+				fi
 			fi
 		fi
 	fi
