@@ -1,3 +1,11 @@
+gboard-morphe-jasonwu1994-adobo (arm64-v8a): 18.0.3.954559732  
+gboard-morphe-jasonwu1994-adobo (arm-v7a): 18.0.3.954559732  
+gboard-morphe-jasonwu1994-adobo (x86_64): 18.0.3.954559732  
+gboard-morphe-jasonwu1994-adobo (x86): 18.0.3.954559732  
+gboard-morphe-jasonwu1994-adobo-clone (arm64-v8a): 18.0.3.954559732  
+gboard-morphe-jasonwu1994-adobo-clone (arm-v7a): 18.0.3.954559732  
+gboard-morphe-jasonwu1994-adobo-clone (x86_64): 18.0.3.954559732  
+gboard-morphe-jasonwu1994-adobo-clone (x86): 18.0.3.954559732  
 camscanner-morphe-hoodles (arm64-v8a): 7.20.0.2606230000  
 soundcloud-morphe-kondratjev (arm64-v8a): 2026.07.23  
 soundcloud-morphe-kondratjev (arm-v7a): 2026.07.23  
@@ -49,6 +57,37 @@ Patches: hoo-dles/patches-1.41.0.mpp
 * **MyFitnessPal:** Update patches to support `26.31.0` ([4d50bf9](https://github.com/hoo-dles/morphe-patches/commit/4d50bf9db7d4bd1ac32f393036683090429232c2))
 * **Smart Launcher:** Update patches to support `6.6 build 016` ([1218a1d](https://github.com/hoo-dles/morphe-patches/commit/1218a1d902fd28e90528765c8e6396df28d8981e))
 * **Windy:** Update patches to support `51.0.1` ([634ad8a](https://github.com/hoo-dles/morphe-patches/commit/634ad8aa627ce3f35ecc023d0e0df0f015b4c53c))
+
+</details>
+
+Patches: jasonwu1994/patches-3.0.0-dev.1.mpp  
+[Changelog](https://github.com/jasonwu1994/Gboard-patches/releases/tag/v3.0.0-dev.1)
+
+<details>
+<summary>v3.0.0-dev.1</summary>
+
+### ✨ New Features
+
+* **Gboard:** update the supported Gboard version to `18.0.3.954559732-release-arm64-v8a`.
+
+### ✨ 新功能
+
+* **Gboard:** 更新支援的 Gboard 版本至 `18.0.3.954559732-release-arm64-v8a`。
+
+</details>
+
+Patches: jkennethcarino/patches-1.4.0-dev.2.mpp  
+[Changelog](https://github.com/jkennethcarino/adobo/releases/tag/v1.4.0-dev.2)
+
+<details>
+<summary>v1.4.0-dev.2</summary>
+
+## [1.4.0-dev.2](https://github.com/jkennethcarino/adobo/compare/v1.4.0-dev.1...v1.4.0-dev.2) (2026-08-21)
+
+### Updated App Support
+
+* **Reddit:** Add support for `2026.33.1` ([26da26a](https://github.com/jkennethcarino/adobo/commit/26da26a3b915268fa2e39fde3e157a92d33a537e))
+* **Reddit:** Add support for `2026.34.0` ([6db6319](https://github.com/jkennethcarino/adobo/commit/6db6319aa138d6589fb89c5fd224548fb652024e))
 
 </details>
 
