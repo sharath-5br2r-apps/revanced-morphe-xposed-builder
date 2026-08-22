@@ -1179,26 +1179,41 @@ _cf_get() {
 # -------------------- apkmirror --------------------
 get_apkmirror_resp() {
 	local url="${1}"
-	if [ -n "${__DL_RESP_CACHE__["apkmirror_resp_$url"]:-}" ]; then
-		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["apkmirror_resp_$url"]}"
-		__APKMIRROR_CAT__="${__DL_RESP_CACHE__["apkmirror_cat_$url"]}"
-		return 0
-	fi
-	local html=""
-	_cf_get "${url}" || return 1
-	__APKMIRROR_RESP__="$html"
 	local clean_url="${url%/}"
 	__APKMIRROR_CAT__="${clean_url##*/}"
-	__DL_RESP_CACHE__["apkmirror_resp_$url"]="$__APKMIRROR_RESP__"
-	__DL_RESP_CACHE__["apkmirror_cat_$url"]="$__APKMIRROR_CAT__"
 	set +u
 	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-}"
 	set -u
+	if [ -n "${__DL_RESP_CACHE__["apkmirror_resp_$url"]:-}" ]; then
+		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["apkmirror_resp_$url"]}"
+		return 0
+	fi
+	local html=""
+	if _cf_get "${url}"; then
+		__APKMIRROR_RESP__="$html"
+		__DL_RESP_CACHE__["apkmirror_resp_$url"]="$__APKMIRROR_RESP__"
+		return 0
+	elif [ -n "$__APKMIRROR_EXAMPLE_URL__" ]; then
+		__APKMIRROR_RESP__=""
+		return 0
+	fi
+	return 1
 }
 
 get_apkmirror_vers() {
 	local vers apkm_resp html=""
-	_cf_get "https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}" || return 1
+	if ! _cf_get "https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}"; then
+		if [ -n "${__APKMIRROR_EXAMPLE_URL__:-}" ]; then
+			local ex_slug ex_ver
+			ex_slug=$(echo "${__APKMIRROR_EXAMPLE_URL__}" | grep -oP '\d+(-\d+)+' | tail -1 || true)
+			ex_ver="${ex_slug//-/.}"
+			if [ -n "$ex_ver" ]; then
+				echo "$ex_ver"
+				return 0
+			fi
+		fi
+		return 1
+	fi
 	apkm_resp="$html"
 	
 	if [ -n "${HTMLQ:-}" ] && [ -x "$HTMLQ" ]; then
