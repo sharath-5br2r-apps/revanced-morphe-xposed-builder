@@ -75,13 +75,10 @@ jobs:
       - name: Remove specific APKs from cache
         if: ${{ inputs.remove_apks != '' }}
         run: |
-          if [ -d "temp/apks" ]; then
+           if [ -d "temp/apks" ]; then
             cd temp/apks
-            for apk in ${{ inputs.remove_apks }}; do
-              echo "Removing $apk from cache..."
-              rm -f $apk || true
-            done
-          fi
+            find . -maxdepth 1 -type f -regextype posix-extended -regex ".*/(${{ inputs.remove_apks }})" -exec rm -f {} +
+           fi
 
       - name: Build modules and apks
         env:
