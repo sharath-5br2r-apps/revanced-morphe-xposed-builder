@@ -1631,8 +1631,8 @@ _apkpure_install_xapk() {
 			epr "APKEditor m error: $OP"
 			return 1
 		fi
-		if ! apksign "${output}-unsigned" "$output"; then
-			epr "apksign error on XAPK merge"
+		if ! sign_apk "${output}-unsigned" "$output"; then
+			epr "apksigner error on XAPK merge"
 			return 1
 		fi
 		rm "${output}.idsig" "${output}-unsigned" 2>/dev/null || :
