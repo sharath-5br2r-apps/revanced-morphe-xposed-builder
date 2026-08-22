@@ -1178,12 +1178,10 @@ _cf_get() {
 
 # -------------------- apkmirror --------------------
 get_apkmirror_resp() {
-	local url="${1%/}/"
-	local key="apkmirror_${url//[^a-zA-Z0-9]/_}"
-	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
-		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["$key"]}"
-		__APKMIRROR_CAT__="${__DL_RESP_CACHE__["cat_$key"]}"
-		__APKMIRROR_BASE_URL__="${__DL_RESP_CACHE__["baseurl_$key"]:-${url%/}}"
+	local url="${1}"
+	if [ -n "${__DL_RESP_CACHE__["apkmirror_resp_$url"]:-}" ]; then
+		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["apkmirror_resp_$url"]}"
+		__APKMIRROR_CAT__="${__DL_RESP_CACHE__["apkmirror_cat_$url"]}"
 		return 0
 	fi
 	local html=""
@@ -1191,127 +1189,61 @@ get_apkmirror_resp() {
 	__APKMIRROR_RESP__="$html"
 	local clean_url="${url%/}"
 	__APKMIRROR_CAT__="${clean_url##*/}"
-	__APKMIRROR_BASE_URL__="$clean_url"
-	__DL_RESP_CACHE__["$key"]="$__APKMIRROR_RESP__"
-	__DL_RESP_CACHE__["cat_$key"]="$__APKMIRROR_CAT__"
-	__DL_RESP_CACHE__["baseurl_$key"]="$__APKMIRROR_BASE_URL__"
+	__DL_RESP_CACHE__["apkmirror_resp_$url"]="$__APKMIRROR_RESP__"
+	__DL_RESP_CACHE__["apkmirror_cat_$url"]="$__APKMIRROR_CAT__"
 	set +u
-	__APKMIRROR_EXAMPLE_URL__="${apkmirror_example_url:-}"
+	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-}" 
 	set -u
 }
 
 get_apkmirror_vers() {
-	local vers="" apkm_resp html="" page page_entries
-	[ -z "${__APKMIRROR_CAT__:-}" ] && return 1
-	local base_u="${__APKMIRROR_BASE_URL__:-}"
-	for page in {1..5}; do
-		local page_url=""
-		if [ -n "$base_u" ]; then
-			if [ "$page" -eq 1 ]; then
-				page_url="${base_u}/"
-			else
-				page_url="${base_u}/page/${page}/"
-			fi
-		else
-			page_url="https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}"
-			if [ "$page" -gt 1 ]; then
-				page_url="https://www.apkmirror.com/uploads/page/${page}/?appcategory=${__APKMIRROR_CAT__}"
-			fi
-		fi
-		if _cf_get "$page_url"; then
-			apkm_resp="$html"
-			local list_widget
-			list_widget=$($HTMLQ "div.listWidget" <<<"$apkm_resp") || list_widget="$apkm_resp"
-			page_entries=$(sed -n 's;.*<a class="fontBlack" href="\([^"]*\)">\(.*\)</a>.*;\1 \2;p' <<<"$list_widget")
-			if [ -z "$page_entries" ]; then
-				page_entries=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$list_widget" | awk '{$1=$1}1')
-			fi
-			if [ -n "${__APKMIRROR_CAT__:-}" ]; then
-				page_entries=$(grep -i "/${__APKMIRROR_CAT__}" <<<"$page_entries" || echo "$page_entries")
-			fi
-			if [ -n "$page_entries" ]; then
-				vers+="$page_entries"$'\n'
-			else
-				break
-			fi
-		else
-			break
-		fi
-	done
-
-	if [ -z "$vers" ] && [ -n "${__APKMIRROR_RESP__:-}" ]; then
-		local list_widget
-		list_widget=$($HTMLQ "div.listWidget" <<<"$__APKMIRROR_RESP__") || list_widget="$__APKMIRROR_RESP__"
-		page_entries=$(sed -n 's;.*<a class="fontBlack" href="\([^"]*\)">\(.*\)</a>.*;\1 \2;p' <<<"$list_widget")
-		if [ -z "$page_entries" ]; then
-			page_entries=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$list_widget" | awk '{$1=$1}1')
-		fi
-		if [ -n "${__APKMIRROR_CAT__:-}" ]; then
-			page_entries=$(grep -i "/${__APKMIRROR_CAT__}" <<<"$page_entries" || echo "$page_entries")
-		fi
-		if [ -n "$page_entries" ]; then
-			vers+="$page_entries"$'\n'
-		fi
+	local vers apkm_resp html=""
+	_cf_get "https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}" || return 1
+	apkm_resp="$html"
+	
+	if [ -n "${HTMLQ:-}" ] && [ -x "$HTMLQ" ]; then
+		local main_content
+		main_content=$($HTMLQ "#primary" <<<"$apkm_resp" 2>/dev/null || true)
+		[ -z "$main_content" ] && main_content=$($HTMLQ "#content" <<<"$apkm_resp" 2>/dev/null || true)
+		[ -n "$main_content" ] && apkm_resp="$main_content"
 	fi
 
-	set +u
-	local v_filter="${apkmirror_version_filter:-${args[apkmirror_version_filter]:-${version_filter:-${args[version_filter]:-}}}}"
-	set -u
-	if [ -n "$v_filter" ]; then
-		if [[ "$v_filter" == !* ]]; then
-			local clean_filter="${v_filter//!/}"
-			clean_filter="${clean_filter#\(}"
-			clean_filter="${clean_filter%\)}"
-			local regex_filter="(-|_|\b)(${clean_filter})(-|_|\b)"
-			vers=$(grep -Eiv "$regex_filter" <<<"$vers" || true)
-		else
-			local regex_filter="(-|_|\b)(${v_filter})(-|_|\b)"
-			vers=$(grep -Ei "$regex_filter" <<<"$vers" || true)
-		fi
-	fi
-
+	vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
 	if [ "${__AAV__:-false}" = false ]; then
-		vers=$(grep -Eiv "(beta|alpha)" <<<"$vers" || true)
+		local IFS=$'\n'
+		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
+		local v r_vers=()
+		for v in $vers; do
+			grep -iq "${v} \(beta\|alpha\)" <<<"$apkm_resp" || r_vers+=("$v")
+		done
+		echo "${r_vers[*]}"
+	else
+		echo "$vers"
 	fi
-
-	vers=$(sed '/^$/d' <<<"$vers")
-	if [ -z "$vers" ]; then
-		return 1
-	fi
-
-	local clean_vers=""
-	while IFS= read -r entry; do
-		if [ -z "$entry" ]; then continue; fi
-		local v
-		v=$(echo "$entry" | grep -oP '\d+(\.\d+)+' | head -n 1 || true)
-		if [ -n "$v" ]; then
-			clean_vers+="$v"$'\n'
-		fi
-	done <<<"$vers"
-
-	clean_vers=$(sed '/^$/d' <<<"$clean_vers" | sort -s -t- -k1,1Vr | uniq)
-	echo "$clean_vers"
 }
 
-get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__"; }
+get_apkmirror_pkg_name() {
+	local resp="$__APKMIRROR_RESP__"
+	if [ -n "${HTMLQ:-}" ] && [ -x "$HTMLQ" ]; then
+		local main_content
+		main_content=$($HTMLQ "#primary" <<<"$resp" 2>/dev/null || true)
+		[ -z "$main_content" ] && main_content=$($HTMLQ "#content" <<<"$resp" 2>/dev/null || true)
+		[ -n "$main_content" ] && resp="$main_content"
+	fi
+	sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$resp"
+}
 
 apkmirror_search() {
-	set +u
-	local resp="$1" dpi="$2" arch="$3" apk_bundle="$4" clean_search_version="$5" search_version="$6" v_filter="${7:-${v_filter:-${apkmirror_version_filter:-${version_filter:-}}}}"
-	set -u
+	local resp="$1" dpi="$2" arch="$3" apk_bundle="$4" clean_search_version="$5" search_version="$6"
 	local dlurl="" node app_table emptyCheck
 
 	local appdpi=("nodpi" "anydpi")
 	local match_any_dpi=false
 	if [ "$dpi" ]; then
-		local d
-		for d in $dpi; do
-			if [ "$d" = "auto" ]; then
-				match_any_dpi=true
-			elif ! isoneof "$d" "${appdpi[@]}"; then
-				appdpi+=("$d")
-			fi
-		done
+		appdpi+=($dpi)
+		if isoneof "auto" "${appdpi[@]}"; then
+			match_any_dpi=true
+		fi
 	fi
 
 	local best_fallback_url=""
@@ -1324,23 +1256,6 @@ apkmirror_search() {
 		
 		dlurl=$($HTMLQ --base https://www.apkmirror.com --attribute href "div.table-cell:nth-child(1) > a:nth-child(1)" <<<"$node")
 		if [ -z "$dlurl" ]; then continue; fi
-
-		if [ -n "$v_filter" ]; then
-			if [[ "$v_filter" == !* ]]; then
-				local clean_filter="${v_filter//!/}"
-				clean_filter="${clean_filter#\(}"
-				clean_filter="${clean_filter%\)}"
-				local regex_filter="(-|_|\b)(${clean_filter})(-|_|\b)"
-				if grep -qEiv "$regex_filter" <<<"$dlurl"; then :; else continue; fi
-			else
-				local regex_filter="(-|_|\b)(${v_filter})(-|_|\b)"
-				if grep -qEi "$regex_filter" <<<"$dlurl"; then :; else continue; fi
-			fi
-		fi
-
-		if [ "${__AAV__:-false}" = false ]; then
-			if grep -qEiv "(beta|alpha)" <<<"$dlurl"; then :; else continue; fi
-		fi
 
 		local node_apk_bundle node_arch node_dpi
 		node_apk_bundle=$($HTMLQ "div.table-cell:nth-child(1) span.apkm-badge:first-of-type" --text <<<"$node" | xargs)
@@ -1400,12 +1315,6 @@ dl_apkmirror() {
 
 	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
 
-	version="${version%-arm64-v8a}"
-	version="${version%-armeabi-v7a}"
-	version="${version%-arm-v7a}"
-	version="${version%-x86_64}"
-	version="${version%-x86}"
-
 	local clean_version="${version//[^0-9.]/}"
 	local clean_search_version="${clean_version//./-}"
 
@@ -1428,7 +1337,7 @@ dl_apkmirror() {
 		target_ver=$(echo "$version" | tr '.' '-' | grep -oP '\d+(-\d+)+')
 		if [ -n "$slug_ver" ] && [ -n "$target_ver" ]; then
 			release_url="${base_url}${example_path/$slug_ver/$target_ver}"
-				_cf_get "$release_url" || true
+				__SILENT_CF_GET__=true _cf_get "$release_url" || true
 			resp="$html"
 			if [[ "$resp" == *"Page Not Found"* ]] || [[ "$resp" == *"404 Whoops"* ]] || [ -z "$resp" ]; then
 					release_url=""
@@ -1440,72 +1349,18 @@ dl_apkmirror() {
 	search_version="${search_version//_/-}"
 	search_version="${search_version,,}"
 	search_version="${search_version//[^a-z0-9-]/}"
-	while [[ "$search_version" == *"--"* ]]; do
-		search_version="${search_version//--/-}"
-	done
-	search_version="${search_version#-}"
-	search_version="${search_version%-}"
+	search_version="${search_version//---/-}"
 
 	if [ -z "$release_url" ]; then
-		local apkmname url_slug
-		apkmname=$($HTMLQ "h1.marginZero" --text <<<"$__APKMIRROR_RESP__") || true
-		apkmname="${apkmname,,}"
-		apkmname="${apkmname// /-}"
-		apkmname="${apkmname//[^a-z0-9-]/}"
-		while [[ "$apkmname" == *"--"* ]]; do
-			apkmname="${apkmname//--/-}"
-		done
-		apkmname="${apkmname#-}"
-		apkmname="${apkmname%-}"
-
-		url_slug="${url%/}"
-		url_slug="${url_slug##*/}"
-
-		local slug_names=()
-		[ -n "$apkmname" ] && slug_names+=("$apkmname")
-		[ -n "$url_slug" ] && [ "$url_slug" != "$apkmname" ] && slug_names+=("$url_slug")
-
-		local ver_strings=()
-		[ -n "$search_version" ] && ver_strings+=("$search_version")
-		[ -n "$clean_search_version" ] && [ "$clean_search_version" != "$search_version" ] && ver_strings+=("$clean_search_version")
-		[ -n "$short_search_version" ] && [ "$short_search_version" != "$clean_search_version" ] && [ "$short_search_version" != "$search_version" ] && ver_strings+=("$short_search_version")
-
-		local s_name v_str cand_url
-		for s_name in "${slug_names[@]}"; do
-			for v_str in "${ver_strings[@]}"; do
-				local clean_v_str="${v_str%-release}"
-				clean_v_str="${clean_v_str%_release}"
-
-				# Variant 1: s_name + clean_v_str + -release/
-				cand_url="${url%/}/${s_name}-${clean_v_str}-release/"
-				_cf_get "$cand_url" || true
-				resp="$html"
-				if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
-					release_url="$cand_url"
-					break 2
-				fi
-
-				# Variant 2: s_name + v_str + -release/ (supports -release-release/ if v_str already contains -release)
-				if [ "$clean_v_str" != "$v_str" ]; then
-					cand_url="${url%/}/${s_name}-${v_str}-release/"
-					_cf_get "$cand_url" || true
-					resp="$html"
-					if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
-						release_url="$cand_url"
-						break 2
-					fi
-				fi
-
-				# Variant 3: s_name + v_str /
-				cand_url="${url%/}/${s_name}-${v_str}/"
-				_cf_get "$cand_url" || true
-				resp="$html"
-				if [[ "$resp" != *"Page Not Found"* ]] && [[ "$resp" != *"404 Whoops"* ]] && [ -n "$resp" ]; then
-					release_url="$cand_url"
-					break 2
-				fi
-			done
-		done
+		local apkmname
+		apkmname=$($HTMLQ "h1.marginZero" --text <<<"$__APKMIRROR_RESP__")
+		apkmname="${apkmname,,}" apkmname="${apkmname// /-}" apkmname="${apkmname//[^a-z0-9-]/}"
+		release_url="${url%/}/${apkmname}-${search_version}-release/"
+		__SILENT_CF_GET__=true _cf_get "$release_url" || true
+		resp="$html"
+		if [[ "$resp" == *"Page Not Found"* ]] || [[ "$resp" == *"404 Whoops"* ]] || [ -z "$resp" ]; then
+			release_url=""
+		fi
 	fi
 
 	if [ -z "$release_url" ]; then
@@ -1522,18 +1377,9 @@ dl_apkmirror() {
 }"
 
 			local all_links=$(echo "$html_split" | grep -oP 'href="\K/apk/[^"]+')
-			local base_search_ver="${search_version%-release}"
-			base_search_ver="${base_search_ver%_release}"
-			local base_clean_ver="${clean_search_version%-release}"
-			base_clean_ver="${base_clean_ver%_release}"
 			
-			# 1. Exact URL match (base_search_ver + -release)
-			version_href=$(echo "$all_links" | grep -F "$base_search_ver-release" | head -1) || true
-
-			# 1b. Exact URL match (full search_version + -release for release-release slugs)
-			if [ -z "$version_href" ] && [ "$base_search_ver" != "$search_version" ]; then
-				version_href=$(echo "$all_links" | grep -F "$search_version-release" | head -1) || true
-			fi
+			# 1. Exact URL match (strict)
+			version_href=$(echo "$all_links" | grep -F "$search_version-release" | head -1) || true
 			
 			# 2. Exact text match
 			if [ -z "$version_href" ]; then
@@ -1546,8 +1392,8 @@ dl_apkmirror() {
 			fi
 
 			# 4. Clean URL match
-			if [ -z "$version_href" ] && [ -n "$base_clean_ver" ]; then
-				version_href=$(echo "$all_links" | grep -E "${base_clean_ver}(-[a-z0-9]+)*-release" | head -1) || true
+			if [ -z "$version_href" ] && [ -n "$clean_search_version" ]; then
+				version_href=$(echo "$all_links" | grep -E "${clean_search_version}(-[a-z0-9]+)*-release" | head -1) || true
 			fi
 
 			# 5. Safe Short URL match (for grouped versions)
@@ -1566,24 +1412,21 @@ dl_apkmirror() {
 		# Fallback to direct search if not found on first 5 pages
 		if [ -z "$release_url" ]; then
 			local search_list_url="https://www.apkmirror.com/?post_type=app_release&searchtype=apk&s=${__APKMIRROR_CAT__}+${version}"
-			_cf_get "$search_list_url" || true
+			__SILENT_CF_GET__=true _cf_get "$search_list_url" || true
 			if [ -n "$html" ] && [ "$html" != "null" ]; then
 				local search_links=""
 				if [[ "$html" != *"No results found matching your query"* ]]; then
 					search_links=$($HTMLQ --attribute href "div.appRow h5 a" <<<"$html")
 				fi
 				
-				# Try to find exact version match first to be safe
+				# Try to find exact version match first to be safe, otherwise fallback to top result
 				version_href=$(echo "$search_links" | grep -F "$search_version-release" | head -1) || true
 				if [ -z "$version_href" ] && [ -n "$clean_search_version" ]; then
 					version_href=$(echo "$search_links" | grep -E "${clean_search_version}(-[a-z0-9]+)*-release" | head -1) || true
 				fi
-				if [ -z "$version_href" ] && [ -n "$clean_version" ]; then
-					version_href=$(echo "$search_links" | grep -F "$clean_version" | head -1) || true
-				fi
 				
-				# Only fall back to top search result if no specific version was requested (e.g. latest / auto / exp)
-				if [ -z "$version_href" ] && { [ -z "$version" ] || [ "${version_mode:-}" = "latest" ] || [ "${version_mode:-}" = "exp" ]; }; then
+				# Search query is exact, so the top search result is the best match if strict regexes fail
+				if [ -z "$version_href" ]; then
 					version_href=$(echo "$search_links" | head -1) || true
 				fi
 
@@ -1609,9 +1452,8 @@ dl_apkmirror() {
 		else
 			types="APK BUNDLE"
 		fi
-		local v_filter="${apkmirror_version_filter:-${args[apkmirror_version_filter]:-${version_filter:-${args[version_filter]:-}}}}"
 		for type in $types; do
-			if dlurl=$(apkmirror_search "$resp" "$dpi" "$arch" "$type" "$clean_search_version" "$search_version" "$v_filter"); then
+			if dlurl=$(apkmirror_search "$resp" "$dpi" "$arch" "$type" "$clean_search_version" "$search_version"); then
 				[ "$type" = "BUNDLE" ] && is_bundle=true || is_bundle=false
 				break
 			fi
@@ -1674,11 +1516,10 @@ dl_apkmirror() {
 # -------------------- apkpure --------------------
 get_apkpure_resp() {
 	local url="${1}"
-	local key="apkpure_${url//[^a-zA-Z0-9]/_}"
-	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
-		__APKPURE_BASE_URL__="${__DL_RESP_CACHE__["base_$key"]}"
-		__APKPURE_PKG__="${__DL_RESP_CACHE__["pkg_$key"]}"
-		__APKPURE_RESP__="${__DL_RESP_CACHE__["$key"]}"
+	if [ -n "${__DL_RESP_CACHE__["apkpure_resp_$url"]:-}" ]; then
+		__APKPURE_BASE_URL__="${__DL_RESP_CACHE__["apkpure_base_$url"]}"
+		__APKPURE_PKG__="${__DL_RESP_CACHE__["apkpure_pkg_$url"]}"
+		__APKPURE_RESP__="${__DL_RESP_CACHE__["apkpure_resp_$url"]}"
 		return 0
 	fi
 	url="${url%/downloading*}"
@@ -1689,9 +1530,9 @@ get_apkpure_resp() {
 	local html=""
 	_cf_get "${url}/downloading/" || return 1
 	__APKPURE_RESP__="$html"
-	__DL_RESP_CACHE__["base_$key"]="$__APKPURE_BASE_URL__"
-	__DL_RESP_CACHE__["pkg_$key"]="$__APKPURE_PKG__"
-	__DL_RESP_CACHE__["$key"]="$__APKPURE_RESP__"
+	__DL_RESP_CACHE__["apkpure_base_$1"]="$__APKPURE_BASE_URL__"
+	__DL_RESP_CACHE__["apkpure_pkg_$1"]="$__APKPURE_PKG__"
+	__DL_RESP_CACHE__["apkpure_resp_$1"]="$__APKPURE_RESP__"
 }
 
 get_apkpure_vers() {
@@ -1775,18 +1616,22 @@ _apkpure_install_xapk() {
 			epr "APKEditor m error: $OP"
 			return 1
 		fi
-		sign_apk "${output}-unsigned" "${output}"
+		if ! OP=$(java -jar "$APKSIGNER" sign --ks ks-p12.keystore --ks-pass pass:123456789 --key-pass pass:123456789 --ks-key-alias jhc \
+			--out "$output" "${output}-unsigned" 2>&1); then
+			epr "apksigner error: $OP"
+			return 1
+		fi
+		rm "${output}.idsig" "${output}-unsigned" 2>/dev/null || :
 	fi
 }
 
 # -------------------- apkcombo --------------------
 get_apkcombo_resp() {
 	local url="${1}"
-	local key="apkcombo_${url//[^a-zA-Z0-9]/_}"
-	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
-		__APKCOMBO_RESP__="${__DL_RESP_CACHE__["$key"]}"
-		__APKCOMBO_PKG__="${__DL_RESP_CACHE__["pkg_$key"]}"
-		__APKCOMBO_BASE_URL__="${__DL_RESP_CACHE__["base_$key"]}"
+	if [ -n "${__DL_RESP_CACHE__["apkcombo_resp_$url"]:-}" ]; then
+		__APKCOMBO_RESP__="${__DL_RESP_CACHE__["apkcombo_resp_$url"]}"
+		__APKCOMBO_PKG__="${__DL_RESP_CACHE__["apkcombo_pkg_$url"]}"
+		__APKCOMBO_BASE_URL__="${__DL_RESP_CACHE__["apkcombo_base_$url"]}"
 		return 0
 	fi
 	url="${url%/}"
@@ -1795,9 +1640,9 @@ get_apkcombo_resp() {
 	local html=""
 	_cf_get "https://apkcombo.com/search/${__APKCOMBO_PKG__}/download" || return 1
 	__APKCOMBO_RESP__="$html"
-	__DL_RESP_CACHE__["$key"]="$__APKCOMBO_RESP__"
-	__DL_RESP_CACHE__["pkg_$key"]="$__APKCOMBO_PKG__"
-	__DL_RESP_CACHE__["base_$key"]="$__APKCOMBO_BASE_URL__"
+	__DL_RESP_CACHE__["apkcombo_resp_$1"]="$__APKCOMBO_RESP__"
+	__DL_RESP_CACHE__["apkcombo_pkg_$1"]="$__APKCOMBO_PKG__"
+	__DL_RESP_CACHE__["apkcombo_base_$1"]="$__APKCOMBO_BASE_URL__"
 }
 get_apkcombo_vers() {
 	echo "$__APKCOMBO_RESP__" | grep -oP 'phone-\K[0-9][^-]+-apk' | sed 's/-apk$//' | head -1
@@ -1842,7 +1687,7 @@ dl_apkcombo() {
 	dl_url=$(echo "$dl_url" | sed 's/\\u0026/\&/g; s/&amp;/\&/g')
 
 	if [[ "$dl_url" == https://apkcombo.com/r2\?u=* ]]; then
-		final_url=$(python - "$dl_url" <<'PYC'
+		final_url=$(python - <<'PYC' "$dl_url"
 import sys, urllib.parse
 u=sys.argv[1]
 q=urllib.parse.urlparse(u).query
@@ -1851,11 +1696,11 @@ decoded=urllib.parse.unquote(raw)
 parts=urllib.parse.urlsplit(decoded)
 query=urllib.parse.parse_qsl(parts.query, keep_blank_values=True)
 encoded=urllib.parse.urlunsplit((
-	parts.scheme,
-	parts.netloc,
-	urllib.parse.quote(parts.path, safe='/'),
-	urllib.parse.urlencode(query, doseq=True, safe='/:_-.'),
-	parts.fragment,
+    parts.scheme,
+    parts.netloc,
+    urllib.parse.quote(parts.path, safe='/'),
+    urllib.parse.urlencode(query, doseq=True, safe='/:_-.'),
+    parts.fragment,
 ))
 print(encoded)
 PYC
@@ -1888,28 +1733,21 @@ PYC
 	fi
 }
 
+
 # -------------------- uptodown --------------------
 get_uptodown_resp() {
 	local url="${1}"
-	local key="uptodown_${url//[^a-zA-Z0-9]/_}"
-	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
-		__UPTODOWN_RESP__="${__DL_RESP_CACHE__["$key"]}"
-		__UPTODOWN_RESP_PKG__="${__DL_RESP_CACHE__["pkg_$key"]}"
+	if [ -n "${__DL_RESP_CACHE__["uptodown_resp_$url"]:-}" ]; then
+		__UPTODOWN_RESP__="${__DL_RESP_CACHE__["uptodown_resp_$url"]}"
+		__UPTODOWN_RESP_PKG__="${__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]}"
 		return 0
 	fi
 	__UPTODOWN_RESP__=$(req "${url}/versions" -) || return 1
 	__UPTODOWN_RESP_PKG__=$(req "${url}/download" -) || return 1
-	__DL_RESP_CACHE__["$key"]="$__UPTODOWN_RESP__"
-	__DL_RESP_CACHE__["pkg_$key"]="$__UPTODOWN_RESP_PKG__"
+	__DL_RESP_CACHE__["uptodown_resp_$url"]="$__UPTODOWN_RESP__"
+	__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]="$__UPTODOWN_RESP_PKG__"
 }
-get_uptodown_vers() {
-	local vers
-	vers=$($HTMLQ --text ".version" <<<"$__UPTODOWN_RESP__") || return 1
-	if [ "${__AAV__:-false}" = false ]; then
-		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
-	fi
-	echo "$vers"
-}
+get_uptodown_vers() { $HTMLQ --text ".version" <<<"$__UPTODOWN_RESP__"; }
 dl_uptodown() {
 	local uptodown_dlurl=$1 version=$2 output=$3 arch=$4 _dpi=$5
 	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
@@ -1988,7 +1826,7 @@ get_uptodown_pkg_name() { $HTMLQ --text "tr.full:nth-child(1) > td:nth-child(3)"
 dl_archive() {
 	local url=$1 version=$2 output=$3 arch=$4
 	local path="" version_f=${version// /}
-	for a in "${arch// /}" "common" "all"; do
+	for a in "${arch// /}" "all"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
 				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
@@ -2030,7 +1868,7 @@ get_archive_resp() {
 	__DL_RESP_CACHE__["archive_resp_$url"]="$__ARCHIVE_RESP__"
 	__DL_RESP_CACHE__["archive_pkg_$url"]="$__ARCHIVE_PKG_NAME__"
 }
-get_archive_vers() { sed 's/^[^-]*-//;s/-\(all\|common\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"; }
+get_archive_vers() { sed 's/^[^-]*-//;s/-\(all\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"; }
 get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
 
 # -------------------- github --------------------
