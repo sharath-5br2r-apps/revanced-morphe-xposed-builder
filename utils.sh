@@ -1225,6 +1225,12 @@ get_apkmirror_vers() {
 	fi
 
 	vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
+	set +u
+	local rel_filter="${args[apkmirror_release_filter]:-}"
+	set -u
+	if [ -n "$rel_filter" ]; then
+		vers=$(grep -iE "$rel_filter" <<<"$vers" || true)
+	fi
 	if [ "${__AAV__:-false}" = false ]; then
 		local IFS=$'\n'
 		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)

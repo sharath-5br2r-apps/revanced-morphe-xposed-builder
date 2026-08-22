@@ -346,12 +346,11 @@ patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
 included-patches = " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"
 exclusive-patches = "'jkennethcarino/adobo'"
 excluded-patches = "'Package Rename' | "
-patcher-args = "--continue-on-error"
+patcher-args = "-f --continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/"
 apkmirror-example-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
-version-filter = "!lite|go"
-version = "auto"
+apkmirror-release-filter = "^17\\.8\\."
 dpi = "nodpi anydpi auto"
 
 [gboard-morphe-jasonwu1994-adobo-clone]
@@ -365,11 +364,10 @@ included-patches = " | 'Enable clipboard in incognito' 'Enable voice typing in i
 exclusive-patches = "'jkennethcarino/adobo'"
 pkg-name = "com.google.android.inputmethod.latin"
 cli-source = "MorpheApp/morphe-desktop"
-patcher-args = "--continue-on-error"
+patcher-args = "-f --continue-on-error"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/"
 apkmirror-example-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
-version-filter = "!lite|go"
-version = "auto"
+apkmirror-release-filter = "^17\\.8\\."
 dpi = "nodpi anydpi auto"
 
 [github-morphe-hoodles-stylus]
@@ -825,8 +823,10 @@ cli-source = "7723mod/NPatch"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord"
 patches-source = "revenge-mod/revenge-xposed"
 patcher-args = "-l 0"
+dpi = "nodpi anydpi auto"
 uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
 
 [amazon-india-morphe-rushiranpise]
 enabled = true
