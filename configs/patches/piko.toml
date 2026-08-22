@@ -37,11 +37,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 dpi = "nodpi anydpi auto"
 
-# ── X (Twitter) morphe-piko-materialu (Material You / Dynamic Color) ──────────
-[x-morphe-piko-materialu]
+# ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
+[x-morphe-piko-materialyou]
 enabled = true
 app-name = "x"
-rv-brand = "morphe-piko-materialu"
+rv-brand = "morphe-piko-materialyou"
 build-mode = "apk"
 arch = "all"
 version = "latest"
