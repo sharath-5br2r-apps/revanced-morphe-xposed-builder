@@ -1,4 +1,20 @@
-discord-npatch-revenge (all): 341.13-Stable  
+amazon-india-morphe-rushiranpise (all): 32.15.0.300  
+adobe-acrobat-morphe-rushiranpise (arm64-v8a): 26.7.2.47372  
+adobe-acrobat-morphe-rushiranpise (x86_64): 26.7.2  
+microsoft-word-morphe-rushiranpise (arm64-v8a): 16.0.20326.20034  
+microsoft-word-morphe-rushiranpise (arm-v7a): 16.0.20326.20034  
+microsoft-word-morphe-rushiranpise (x86_64): 16.0.20326.20034  
+microsoft-excel-morphe-rushiranpise (arm64-v8a): 16.0.20326.20034  
+microsoft-excel-morphe-rushiranpise (arm-v7a): 16.0.20326.20034  
+microsoft-excel-morphe-rushiranpise (x86_64): 16.0.20326.20034  
+pc-remote-morphe-rushiranpise (all): 8.3.5  
+oxygen-updater-morphe-rushiranpise (all): 7.1.0  
+windscribe-vpn-morphe-rushiranpise (all): 4.2.2328  
+1111-warp-morphe-rushiranpise (all): 6.38.9  
+adguard-morphe-rushiranpise (all): 4.13.1  
+beta-maniac-morphe-rushiranpise (all): 0.10.0  
+duolingo-morphe-rushiranpise (arm64-v8a): 6.90.3  
+duolingo-morphe-rushiranpise (arm-v7a): 6.90.3  
 
 **Notes:**  
 • Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
@@ -6,13 +22,22 @@ discord-npatch-revenge (all): 341.13-Stable
 
 [GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Website](https://sharath-5br2r-apps.github.io)
   
-CLI: 7723mod/jar-v1.0.7-741-release.jar  
-Patches: revenge-mod/app-release.apk  
-[Changelog](https://github.com/revenge-mod/revenge-xposed/releases/tag/1602)
+CLI: MorpheApp/morphe-desktop-1.13.1-all.jar  
+Patches: rushiranpise/patches-1.20.0-dev.10.mpp  
+[Changelog](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.20.0-dev.10)
 
 <details>
-<summary>1602</summary>
+<summary>v1.20.0-dev.10</summary>
 
-**Full Changelog**: https://github.com/revenge-mod/revenge-xposed/compare/1601...1602
+## [1.20.0-dev.10](https://github.com/rushiranpise/morphe-patches/compare/v1.20.0-dev.9...v1.20.0-dev.10) (2026-08-22)
+
+### 🐛 Bug Fixes
+
+* betamaniac ([7fb8f40](https://github.com/rushiranpise/morphe-patches/commit/7fb8f401248c28ebeffbafafc9ef5de9b51a18ce)), closes [#726](https://github.com/rushiranpise/morphe-patches/issues/726)
+* telegram login ([343b189](https://github.com/rushiranpise/morphe-patches/commit/343b189e3c4f769236ac32d4fa6f0735bc85dba9))
+
+### ✨ New Features
+
+* add Octopi Launcher ([dcd78fc](https://github.com/rushiranpise/morphe-patches/commit/dcd78fc1f44a559ffd0e37a0d83666c1e3de8460))
 
 </details>  
