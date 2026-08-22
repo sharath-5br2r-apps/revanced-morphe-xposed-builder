@@ -2372,6 +2372,15 @@ write_build_info() {
 	local arch_orig="${args[arch]// /}"
 	if [ "$arch_orig" != "auto" ]; then ext="${arch}${ext}"; arch=""; fi
 
+	local entry_key=""
+	if [ -n "$target_file" ]; then
+		entry_key="${target_file##*/}"
+	else
+		entry_key="${key}"
+		[ -n "$arch" ] && entry_key="${entry_key} (${arch})"
+		[ -n "$ext" ] && entry_key="${entry_key}${ext}"
+	fi
+
 	# Extract Android minSdkVersion, densities, and native libraries using aapt2
 	local min_sdk=""
 	local target_apk="$target_file"
@@ -2415,7 +2424,7 @@ write_build_info() {
 	local applied_json
 	applied_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: ")[^"\n]+(?=" succeeded)|(?<=INFO: Applied: ).*|(?<=I: Patch \x27)[^\x27]+(?=\x27 loaded)' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
 	[[ "$applied_json" != \[* ]] && applied_json='[]'
-	jq --arg key "$key" \
+	jq --arg key "$entry_key" \
 		--arg ext "$ext" \
 		--arg arch "$arch" \
 		--arg name "$name" \
@@ -2427,33 +2436,21 @@ write_build_info() {
 		--argjson densities "$densities_json" \
 		--argjson native_libs "$native_libs_json" \
 		'
-		  $ext as $ext_str |
-		  $arch as $arch_str |
-		  {ext: $ext_str, arch: $arch_str, densities: $densities, native_libraries: $native_libs} as $build_item |
-		  if has($key) then
-		    .[$key].exts = (.[$key].exts + [$ext_str] | unique) |
-		    .[$key].builds = ((.[$key].builds // []) + [$build_item]) |
-		    if $min_sdk != "" then .[$key].min_sdk = $min_sdk else . end |
-		    if ($densities | length) > 0 then .[$key].densities = $densities else . end |
-		    if ($native_libs | length) > 0 then .[$key].native_libraries = $native_libs else . end
-		  else
-		    .[$key] = {
-		      exts: [$ext_str],
-		      name: $name,
-		      arch: $arch_str,
-		      version: $version,
-		      min_sdk: $min_sdk,
-		      densities: $densities,
-		      native_libraries: $native_libs,
-		      patches: $patches,
-		      changlog: $changelog,
-		      applied_patches: $applied,
-		      builds: [$build_item]
-		    } |
-		    if $min_sdk != "" then . else del(.[$key].min_sdk) end |
-		    if ($densities | length) > 0 then . else del(.[$key].densities) end |
-		    if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end
-		  end
+		  .[$key] = {
+		    name: $name,
+		    arch: $arch,
+		    ext: $ext,
+		    version: $version,
+		    min_sdk: $min_sdk,
+		    densities: $densities,
+		    native_libraries: $native_libs,
+		    patches: $patches,
+		    changlog: $changelog,
+		    applied_patches: $applied
+		  } |
+		  if $min_sdk != "" then . else del(.[$key].min_sdk) end |
+		  if ($densities | length) > 0 then . else del(.[$key].densities) end |
+		  if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end
 		' \
 		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
 }
