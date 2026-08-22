@@ -2883,9 +2883,9 @@ build_rv() {
 			fi
 		fi
 
-		# Clean resolved_version of arch and release variant suffixes (e.g. -release-arm64-v8a)
+		# Clean resolved_version of arch and release variant suffixes
 		if [ -n "$resolved_version" ]; then
-			resolved_version=$(echo "$resolved_version" | sed -E 's/-(release|lite_release|beta|alpha)?-(arm64-v8a|arm-v7a|x86_64|x86)$//; s/-(release|lite_release)$//')
+			resolved_version=$(echo "$resolved_version" | grep -oP '^[0-9]+(\.[0-9]+)+' || echo "$resolved_version" | sed -E 's/-[a-zA-Z0-9_]+$//')
 		fi
 
 		# Cache Check
@@ -3177,7 +3177,7 @@ build_rv() {
 					fi
 
 				if [ -n "$downloaded_ver" ]; then
-						downloaded_ver=$(echo "$downloaded_ver" | sed -E 's/-(release|lite_release|lite_beta|beta|alpha)?-(arm64-v8a|arm-v7a|x86_64|x86)$//; s/-(release|lite_release|lite_beta|lite)$//')
+						downloaded_ver=$(echo "$downloaded_ver" | grep -oP '^[0-9]+(\.[0-9]+)+' || echo "$downloaded_ver" | sed -E 's/-[a-zA-Z0-9_]+$//')
 						if [ "$version" != "$downloaded_ver" ]; then
 							pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
 							version="$downloaded_ver"
