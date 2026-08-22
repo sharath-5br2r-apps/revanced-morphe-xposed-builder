@@ -2427,8 +2427,8 @@ write_build_info() {
 		--argjson densities "$densities_json" \
 		--argjson native_libs "$native_libs_json" \
 		'
-		  ext as $ext_str |
-		  arch as $arch_str |
+		  $ext as $ext_str |
+		  $arch as $arch_str |
 		  {ext: $ext_str, arch: $arch_str, densities: $densities, native_libraries: $native_libs} as $build_item |
 		  if has($key) then
 		    .[$key].exts = (.[$key].exts + [$ext_str] | unique) |
