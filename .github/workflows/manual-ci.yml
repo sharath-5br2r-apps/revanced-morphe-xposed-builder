@@ -15,17 +15,18 @@ on:
           - "configs/config.manual.toml"
           - "configs/config.dev.updated.json"
           - "configs/config.stable.updated.json"
-          - "Enter Manually"
       manual_config_file:
-        description: "Enter the config file name(without ext) in patches or config file path(with ext)manually (only if 'Enter Manually' is selected above)"
+        description: "Optional: Enter the config file name(without ext) in patches or config file path(with ext)manually, overrides above choice"
         required: false
         type: string
+        default: ""
       exclusive_apps:
-        description: "Enter the toml table names or regex pattern of the apps you want to build. When empty, all apps are built."
+        description: "Optional: Enter the toml table names or regex pattern of the apps you want to build. When empty, all apps are built."
         required: false
         type: string
+        default: ""
       remove_apks:
-        description: "Optional: APKs to remove from cache (space-separated, e.g., com.brave.browser-1.93.138-*.apk)"
+        description: "Optional: APKs to remove from cache (regex, e.g., com.brave.browser-1.93.138-.*\\.apk)"
         required: false
         type: string
         default: ""
@@ -46,7 +47,7 @@ jobs:
       - name: Resolve config file
         id: config
         run: |
-          if [[ "${{ inputs.config_file }}" == "Enter Manually" ]]; then
+          if [[ -n  "${{ inputs.manual_config_file }}" ]]; then
             manual_input="${{ inputs.manual_config_file }}"
             if [[ -f "$manual_input" ]]; then
               echo "CONFIG_FILE=$manual_input" >> "$GITHUB_OUTPUT"
