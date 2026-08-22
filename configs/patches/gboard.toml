@@ -1,5 +1,5 @@
 enable-module-update = true
-patches-version = "latest"
+patches-version = "absolutelatest"
 
 
 [gboard-morphe-jasonwu1994-adobo]
