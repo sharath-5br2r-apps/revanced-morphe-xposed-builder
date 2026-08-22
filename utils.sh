@@ -2434,6 +2434,16 @@ write_build_info() {
 	applied_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: Applied: ).*|(?<=INFO: ")[^"\n]+(?=" succeeded)|(?<=I: Patch \x27)[^\x27]+(?=\x27 loaded)' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
 	[[ "$applied_json" != \[* ]] && applied_json='[]'
 
+	# extract failed patches: morphe "SEVERE: FAILED: <name>" or revanced "<name>" failed
+	local failed_json
+	failed_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=SEVERE: FAILED: ).*|(?<=ERROR: ")[^"\n]+(?=" failed)|(?<=WARN: Patch \x27)[^\x27]+(?=\x27 failed)' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
+	[[ "$failed_json" != \[* ]] && failed_json='[]'
+
+	# extract skipped patches: morphe "INFO: Skipping disabled: <name>" or revanced compatibility skips
+	local skipped_json
+	skipped_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: Skipping disabled: ).*|(?<=INFO: Skipping incompatible patch \x27)[^\x27]+|(?<=WARN: Skipping patch \x27)[^\x27]+' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
+	[[ "$skipped_json" != \[* ]] && skipped_json='[]'
+
 	jq --arg key "$entry_key" \
 		--arg ext "$ext" \
 		--arg arch "$arch" \
@@ -2443,6 +2453,8 @@ write_build_info() {
 		--arg patches "$patches" \
 		--arg changelog "$changelog" \
 		--argjson applied "$applied_json" \
+		--argjson failed "$failed_json" \
+		--argjson skipped "$skipped_json" \
 		--argjson densities "$densities_json" \
 		--argjson native_libs "$native_libs_json" \
 		'
@@ -2456,11 +2468,15 @@ write_build_info() {
 		    native_libraries: $native_libs,
 		    patches: $patches,
 		    changelog: $changelog,
-		    applied_patches: $applied
+		    applied_patches: $applied,
+		    failed_patches: $failed,
+		    skipped_patches: $skipped
 		  } |
 		  if $min_sdk != "" then . else del(.[$key].min_sdk) end |
 		  if ($densities | length) > 0 then . else del(.[$key].densities) end |
-		  if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end
+		  if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |
+		  if ($failed | length) > 0 then . else del(.[$key].failed_patches) end |
+		  if ($skipped | length) > 0 then . else del(.[$key].skipped_patches) end
 		' \
 		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
 }
