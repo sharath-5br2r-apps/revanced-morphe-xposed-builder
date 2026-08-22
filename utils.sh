@@ -1294,7 +1294,14 @@ apkmirror_search() {
 		if [ "$node_apk_bundle" != "$apk_bundle" ]; then continue; fi
 
 		if [ -n "$clean_search_version" ]; then
-			if [[ "$dlurl" != *"$clean_search_version"* ]] && [[ "$dlurl" != *"$search_version"* ]]; then
+			local version_digits="${clean_search_version//[^0-9]/}"
+			local url_digits
+			url_digits=$(echo "$dlurl" | grep -oP '\d+-\d+-\d+-\d+' | tr -d '-' || true)
+			if [ -n "$version_digits" ] && [ -n "$url_digits" ]; then
+				if [[ "$url_digits" != "$version_digits"* ]]; then
+					continue
+				fi
+			elif [[ "$dlurl" != *"$clean_search_version"* ]] && [[ "$dlurl" != *"${clean_search_version//./-}"* ]] && [[ "$dlurl" != *"$search_version"* ]]; then
 				continue
 			fi
 		fi
