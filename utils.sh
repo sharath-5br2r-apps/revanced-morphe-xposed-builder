@@ -1387,8 +1387,12 @@ dl_apkmirror() {
 
 	local resp release_url=""
 
-	if [ -n "${__APKMIRROR_EXAMPLE_URL__:-}" ]; then
-		local example_path="${__APKMIRROR_EXAMPLE_URL__#$base_url}"
+	set +u
+	local example_url="${__APKMIRROR_EXAMPLE_URL__:-${args[apkmirror_example_url]:-${args[apkmirror_example_dlurl]:-}}}"
+	set -u
+
+	if [ -n "$example_url" ]; then
+		local example_path="${example_url#$base_url}"
 		local slug_ver target_ver
 		slug_ver=$(echo "$example_path" | grep -oP '\d+(-\d+)+' | tail -1)
 		target_ver=$(echo "$version" | tr '.' '-' | grep -oP '\d+(-\d+)+')
