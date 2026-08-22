@@ -1225,28 +1225,32 @@ get_apkmirror_vers() {
 	fi
 
 	vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
+	local filtered_vers=()
 	set +u
 	local rel_filter="${args[apkmirror_release_filter]:-}"
 	set -u
-	if [ -n "$rel_filter" ]; then
-		if [[ "$rel_filter" == !* ]]; then
-			local neg_pat="${rel_filter#!}"
-			vers=$(grep -ivE "$neg_pat" <<<"$vers" || true)
-		else
-			vers=$(grep -iE "$rel_filter" <<<"$vers" || true)
+
+	local IFS=$'\n'
+	for v in $vers; do
+		[ -z "$v" ] && continue
+		if [ "${__AAV__:-false}" = false ]; then
+			grep -iq "\(beta\|alpha\)" <<<"$v" && continue
+			grep -iq "${v} \(beta\|alpha\)" <<<"$apkm_resp" && continue
 		fi
-	fi
-	if [ "${__AAV__:-false}" = false ]; then
-		local IFS=$'\n'
-		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
-		local v r_vers=()
-		for v in $vers; do
-			grep -iq "${v} \(beta\|alpha\)" <<<"$apkm_resp" || r_vers+=("$v")
-		done
-		echo "${r_vers[*]}"
-	else
-		echo "$vers"
-	fi
+		if [ -n "$rel_filter" ]; then
+			if [[ "$rel_filter" == !* ]]; then
+				local neg_pat="${rel_filter#!}"
+				grep -iqE "$neg_pat" <<<"$v" && continue
+				grep -iqE "${v}.*${neg_pat}|${neg_pat}.*${v}" <<<"$apkm_resp" && continue
+			else
+				if ! grep -iqE "$rel_filter" <<<"$v" && ! grep -iqE "${v}.*${rel_filter}|${rel_filter}.*${v}" <<<"$apkm_resp"; then
+					continue
+				fi
+			fi
+		fi
+		filtered_vers+=("$v")
+	done
+	echo "${filtered_vers[*]}"
 }
 
 get_apkmirror_pkg_name() {
