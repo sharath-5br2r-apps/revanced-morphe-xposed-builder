@@ -1446,11 +1446,18 @@ dl_apkmirror() {
 					search_links=$($HTMLQ --attribute href "div.appRow h5 a" <<<"$html")
 				fi
 				
-				if [ "${__AAV__:-false}" = false ]; then
-					local rel_filter="${args[apkmirror_release_filter]:-}"
-					if [[ "$rel_filter" == !*lite* ]] || [ -z "$rel_filter" ]; then
-						search_links=$(echo "$search_links" | grep -ivE "-(lite|beta|alpha)" || true)
+				set +u
+				local rel_filter="${args[apkmirror_release_filter]:-}"
+				set -u
+				if [ -n "$rel_filter" ]; then
+					if [[ "$rel_filter" == !* ]]; then
+						local neg_pat="${rel_filter#!}"
+						search_links=$(echo "$search_links" | grep -ivE "$neg_pat" || true)
+					else
+						search_links=$(echo "$search_links" | grep -iE "$rel_filter" || true)
 					fi
+				elif [ "${__AAV__:-false}" = false ]; then
+					search_links=$(echo "$search_links" | grep -ivE "-(beta|alpha)" || true)
 				fi
 				
 				# Try to find exact version match first to be safe, otherwise fallback to top result
