@@ -3177,6 +3177,7 @@ build_rv() {
 					fi
 
 				if [ -n "$downloaded_ver" ]; then
+						downloaded_ver=$(echo "$downloaded_ver" | sed -E 's/-(release|lite_release|lite_beta|beta|alpha)?-(arm64-v8a|arm-v7a|x86_64|x86)$//; s/-(release|lite_release|lite_beta|lite)$//')
 						if [ "$version" != "$downloaded_ver" ]; then
 							pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
 							version="$downloaded_ver"
