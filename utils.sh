@@ -1298,7 +1298,8 @@ apkmirror_search() {
 		set -u
 		if [ -n "$rel_filter" ]; then
 			local variant_text
-			variant_text=$($HTMLQ "div.table-cell:nth-child(1) a.accent_color" --text <<<"$node" | xargs)
+			variant_text=$($HTMLQ "a.accent_color" --text <<<"$node" 2>/dev/null | xargs || true)
+			[ -z "$variant_text" ] && variant_text="$node"
 			if [[ "$rel_filter" == !* ]]; then
 				local neg_pat="${rel_filter#!}"
 				if grep -iE "$neg_pat" <<<"$variant_text" >/dev/null 2>&1 || grep -iE "$neg_pat" <<<"$dlurl" >/dev/null 2>&1; then
