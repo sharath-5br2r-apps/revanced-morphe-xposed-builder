@@ -2365,12 +2365,10 @@ check_sig() {
 }
 
 write_build_info() {
-	local key=$1 arch=$2 ext=$3 name=$4 version=$5 patches=$6 changelog=$7 target_file=${8:-}
+	local key=$1 arch=$2 ext=$3 name=$4 version=$5 patches=$6 changelog=$7 target_file=${8:-} inspect_apk_override=${9:-}
 	if [ "$ext" = ".apk" ] || [ "$mode_arg" = module ]; then
 		log "${key} (${arch}): ${version}"
 	fi
-	local arch_orig="${args[arch]// /}"
-	if [ "$arch_orig" != "auto" ]; then ext="${arch}${ext}"; arch=""; fi
 
 	local entry_key=""
 	if [ -n "$target_file" ]; then
@@ -2381,49 +2379,61 @@ write_build_info() {
 		[ -n "$ext" ] && entry_key="${entry_key}${ext}"
 	fi
 
-	# Extract Android minSdkVersion, densities, and native libraries using aapt2
-	local min_sdk=""
-	local target_apk="$target_file"
+	# Derive arch from filename if not provided
+	if [ -z "$arch" ] && [ -n "$entry_key" ]; then
+		for _a in arm64-v8a armeabi-v7a arm-v7a x86_64 x86 all; do
+			if [[ "$entry_key" == *"-${_a}."* ]] || [[ "$entry_key" == *"-${_a}-"* ]]; then
+				arch="$_a"; break
+			fi
+		done
+	fi
+
+	# Determine APK to inspect for metadata (prefer override, then target, then patched_apk)
+	local target_apk=""
+	if [ -n "$inspect_apk_override" ] && [ -f "$inspect_apk_override" ]; then
+		target_apk="$inspect_apk_override"
+	elif [ -n "$target_file" ] && [ -f "$target_file" ]; then
+		target_apk="$target_file"
+	fi
 	if [ -z "$target_apk" ] || [ ! -f "$target_apk" ]; then
 		target_apk="${final_apk_output:-${apk_output:-${patched_apk:-${stock_apk_to_patch:-${stock_apk:-}}}}}"
 	fi
+
+	# For .zip modules, also try the companion .apk of the zip
+	local inspect_apk="$target_apk"
+	if [[ "$inspect_apk" == *.zip ]]; then
+		local zip_companion="${inspect_apk%.zip}.apk"
+		[ -f "$zip_companion" ] && inspect_apk="$zip_companion"
+	fi
+	# If still a .zip, clear so we skip aapt2 on it
+	[[ "$inspect_apk" == *.zip ]] && inspect_apk=""
+
 	local aapt_bin="${AAPT2:-$(command -v aapt2 || command -v aapt || true)}"
-	if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ] && [ -n "$target_apk" ] && [ -f "$target_apk" ]; then
-		min_sdk=$("$aapt_bin" dump badging "$target_apk" 2>/dev/null | grep -oP "(?:sdkVersion|minSdkVersion):'\K[^']+" | head -1) || true
-	fi
-
+	local min_sdk=""
 	local densities_json="[]" native_libs_json="[]"
-	if [ -n "$target_apk" ] && [ -f "$target_apk" ]; then
-		local inspect_apk="$target_apk"
-		if [[ "$inspect_apk" == *.zip ]] && [ -f "${inspect_apk%.zip}.apk" ]; then
-			inspect_apk="${inspect_apk%.zip}.apk"
+	if [ -n "$inspect_apk" ] && [ -f "$inspect_apk" ]; then
+		if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ]; then
+			local aapt_out
+			aapt_out=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null || true)
+			min_sdk=$(printf '%s' "$aapt_out" | grep -oP "(?:sdkVersion|minSdkVersion):'\K[^']+" | head -1 || true)
+			local den_raw nat_raw
+			den_raw=$(printf '%s' "$aapt_out" | grep -oP "densities: \K.*" | tr -d "'" || true)
+			[ -n "$den_raw" ] && densities_json=$(jq -n --arg d "$den_raw" '$d | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
+			nat_raw=$(printf '%s' "$aapt_out" | grep -oP "native-code: \K.*" | tr -d "'" || true)
+			[ -n "$nat_raw" ] && native_libs_json=$(jq -n --arg n "$nat_raw" '$n | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
 		fi
-		if [ -f "$inspect_apk" ] && [[ "$inspect_apk" == *.apk ]]; then
-			if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ]; then
-				local den_raw nat_raw
-				den_raw=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null | grep -oP "densities: \K.*" | tr -d "'" || true)
-				if [ -n "$den_raw" ]; then
-					densities_json=$(jq -n --arg d "$den_raw" '$d | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
-				fi
-				nat_raw=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null | grep -oP "native-code: \K.*" | tr -d "'" || true)
-				if [ -n "$nat_raw" ]; then
-					native_libs_json=$(jq -n --arg n "$nat_raw" '$n | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
-				fi
-			fi
-			if [ "$native_libs_json" = "[]" ]; then
-				local unzip_libs
-				unzip_libs=$(unzip -l "$inspect_apk" 2>/dev/null | grep -oP 'lib/\K[^/]+' | sort -u | tr '\n' ' ' || true)
-				if [ -n "$unzip_libs" ]; then
-					native_libs_json=$(jq -n --arg n "$unzip_libs" '$n | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
-				fi
-			fi
+		if [ "$native_libs_json" = "[]" ]; then
+			local unzip_libs
+			unzip_libs=$(unzip -l "$inspect_apk" 2>/dev/null | grep -oP 'lib/\K[^/]+' | sort -u | tr '\n' ' ' || true)
+			[ -n "$unzip_libs" ] && native_libs_json=$(jq -n --arg n "$unzip_libs" '$n | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
 		fi
 	fi
 
-	# extract applied patches supporting revanced, morphe-desktop, and instafel output formats
+	# extract applied patches; trim trailing whitespace from each entry
 	local applied_json
-	applied_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: ")[^"\n]+(?=" succeeded)|(?<=INFO: Applied: ).*|(?<=I: Patch \x27)[^\x27]+(?=\x27 loaded)' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
+	applied_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: Applied: ).*|(?<=INFO: ")[^"\n]+(?=" succeeded)|(?<=I: Patch \x27)[^\x27]+(?=\x27 loaded)' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
 	[[ "$applied_json" != \[* ]] && applied_json='[]'
+
 	jq --arg key "$entry_key" \
 		--arg ext "$ext" \
 		--arg arch "$arch" \
@@ -2445,7 +2455,7 @@ write_build_info() {
 		    densities: $densities,
 		    native_libraries: $native_libs,
 		    patches: $patches,
-		    changlog: $changelog,
+		    changelog: $changelog,
 		    applied_patches: $applied
 		  } |
 		  if $min_sdk != "" then . else del(.[$key].min_sdk) end |
@@ -3217,7 +3227,17 @@ build_rv() {
 		brand_display=" ${args[rv_brand]}"
 		build_info_brand="${app_name_l}-${rv_brand_f}"
 	fi
-	local patches_ref="${args[patches_ref]}"
+	# Build patches info string: "source@version" from resolved patches jar path
+	local patches_ref=""
+	if [ -n "${args[patches_source]:-}" ]; then
+		local _ptjar_base; _ptjar_base="${args[ptjar]##*/}"; _ptjar_base="${_ptjar_base%.mpp}"; _ptjar_base="${_ptjar_base%.jar}"
+		local _ptver; _ptver=$(printf '%s' "$_ptjar_base" | grep -oP '\d+\.\d+\.\d+.*$' || true)
+		if [ -n "$_ptver" ]; then
+			patches_ref="${args[patches_source]}@${_ptver}"
+		else
+			patches_ref="${args[patches_source]}"
+		fi
+	fi
 	local changelog_url="${args[changelog_url]}"
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
 	for build_mode in "${build_mode_arr[@]}"; do
@@ -3285,7 +3305,7 @@ build_rv() {
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
 			final_apk_output="$apk_output"
-			write_build_info "${table% (*}" "${arch_f}" ".apk" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "$apk_output"
+			write_build_info "${table% (*}" "${arch_f}" ".apk" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "$apk_output" ""
 			continue
 		fi
 		local base_template
@@ -3336,7 +3356,7 @@ build_rv() {
 		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
 		popd >/dev/null || :
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
-		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "${CWD}/${BUILD_DIR}/${module_output}"
+		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "${CWD}/${BUILD_DIR}/${module_output}" "$patched_apk"
 	done
 }
 
