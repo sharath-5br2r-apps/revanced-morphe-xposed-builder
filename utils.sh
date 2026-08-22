@@ -1495,8 +1495,8 @@ dl_apkmirror() {
 				fi
 			fi
 			if [ "${__AAV__:-false}" = false ]; then
-				all_links=$(echo "$all_links" | grep -ivE "-(beta|alpha)" || true)
-				html_split=$(echo "$html_split" | grep -ivE "-(beta|alpha)" || true)
+				all_links=$(echo "$all_links" | grep -ivE -- "-(beta|alpha)" || true)
+				html_split=$(echo "$html_split" | grep -ivE -- "-(beta|alpha)" || true)
 			fi
 
 			# 1. Exact URL match (strict)
@@ -1552,7 +1552,7 @@ dl_apkmirror() {
 					fi
 				fi
 				if [ "${__AAV__:-false}" = false ]; then
-					search_links=$(echo "$search_links" | grep -ivE "-(beta|alpha)" || true)
+						search_links=$(echo "$search_links" | grep -ivE -- "-(beta|alpha)" || true)
 				fi
 				
 				# Try to find exact version match first to be safe, otherwise fallback to top result
