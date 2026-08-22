@@ -2365,28 +2365,53 @@ check_sig() {
 }
 
 write_build_info() {
-	local key=$1 arch=$2 ext=$3 name=$4 version=$5 patches=$6 changelog=$7
+	local key=$1 arch=$2 ext=$3 name=$4 version=$5 patches=$6 changelog=$7 target_file=${8:-}
 	if [ "$ext" = ".apk" ] || [ "$mode_arg" = module ]; then
 		log "${key} (${arch}): ${version}"
 	fi
 	local arch_orig="${args[arch]// /}"
 	if [ "$arch_orig" != "auto" ]; then ext="${arch}${ext}"; arch=""; fi
 
-	# Extract Android minSdkVersion using aapt2
+	# Extract Android minSdkVersion, densities, and native libraries using aapt2
 	local min_sdk=""
-	local target_apk="${final_apk_output:-${apk_output:-${patched_apk:-}}}"
+	local target_apk="$target_file"
 	if [ -z "$target_apk" ] || [ ! -f "$target_apk" ]; then
-		target_apk="${stock_apk_to_patch:-${stock_apk:-}}"
+		target_apk="${final_apk_output:-${apk_output:-${patched_apk:-${stock_apk_to_patch:-${stock_apk:-}}}}}"
 	fi
 	local aapt_bin="${AAPT2:-$(command -v aapt2 || command -v aapt || true)}"
 	if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ] && [ -n "$target_apk" ] && [ -f "$target_apk" ]; then
 		min_sdk=$("$aapt_bin" dump badging "$target_apk" 2>/dev/null | grep -oP "(?:sdkVersion|minSdkVersion):'\K[^']+" | head -1) || true
 	fi
 
+	local densities_json="[]" native_libs_json="[]"
+	if [ -n "$target_apk" ] && [ -f "$target_apk" ]; then
+		local inspect_apk="$target_apk"
+		if [[ "$inspect_apk" == *.zip ]] && [ -f "${inspect_apk%.zip}.apk" ]; then
+			inspect_apk="${inspect_apk%.zip}.apk"
+		fi
+		if [ -f "$inspect_apk" ] && [[ "$inspect_apk" == *.apk ]]; then
+			if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ]; then
+				local den_raw nat_raw
+				den_raw=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null | grep -oP "densities: \K.*" | tr -d "'" || true)
+				if [ -n "$den_raw" ]; then
+					densities_json=$(jq -n --arg d "$den_raw" '$d | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
+				fi
+				nat_raw=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null | grep -oP "native-code: \K.*" | tr -d "'" || true)
+				if [ -n "$nat_raw" ]; then
+					native_libs_json=$(jq -n --arg n "$nat_raw" '$n | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
+				fi
+			fi
+			if [ "$native_libs_json" = "[]" ]; then
+				local unzip_libs
+				unzip_libs=$(unzip -l "$inspect_apk" 2>/dev/null | grep -oP 'lib/\K[^/]+' | sort -u | tr '\n' ' ' || true)
+				if [ -n "$unzip_libs" ]; then
+					native_libs_json=$(jq -n --arg n "$unzip_libs" '$n | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
+				fi
+			fi
+		fi
+	fi
+
 	# extract applied patches supporting revanced, morphe-desktop, and instafel output formats
-	# revanced: INFO: "Patch Name" succeeded
-	# morphe:   INFO: Applied: Patch Name
-	# instafel: I: Patch 'Patch Name' loaded
 	local applied_json
 	applied_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: ")[^"\n]+(?=" succeeded)|(?<=INFO: Applied: ).*|(?<=I: Patch \x27)[^\x27]+(?=\x27 loaded)' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
 	[[ "$applied_json" != \[* ]] && applied_json='[]'
@@ -2399,7 +2424,37 @@ write_build_info() {
 		--arg patches "$patches" \
 		--arg changelog "$changelog" \
 		--argjson applied "$applied_json" \
-		'if has($key) then .[$key].exts = (.[$key].exts + [$ext] | unique) else .[$key] = {exts: [$ext], name: $name, arch: $arch, version: $version, min_sdk: $min_sdk, patches: $patches, changlog: $changelog, applied_patches: $applied} end | if $min_sdk != "" then .[$key].min_sdk = $min_sdk else . end' \
+		--argjson densities "$densities_json" \
+		--argjson native_libs "$native_libs_json" \
+		'
+		  ext as $ext_str |
+		  arch as $arch_str |
+		  {ext: $ext_str, arch: $arch_str, densities: $densities, native_libraries: $native_libs} as $build_item |
+		  if has($key) then
+		    .[$key].exts = (.[$key].exts + [$ext_str] | unique) |
+		    .[$key].builds = ((.[$key].builds // []) + [$build_item]) |
+		    if $min_sdk != "" then .[$key].min_sdk = $min_sdk else . end |
+		    if ($densities | length) > 0 then .[$key].densities = $densities else . end |
+		    if ($native_libs | length) > 0 then .[$key].native_libraries = $native_libs else . end
+		  else
+		    .[$key] = {
+		      exts: [$ext_str],
+		      name: $name,
+		      arch: $arch_str,
+		      version: $version,
+		      min_sdk: $min_sdk,
+		      densities: $densities,
+		      native_libraries: $native_libs,
+		      patches: $patches,
+		      changlog: $changelog,
+		      applied_patches: $applied,
+		      builds: [$build_item]
+		    } |
+		    if $min_sdk != "" then . else del(.[$key].min_sdk) end |
+		    if ($densities | length) > 0 then . else del(.[$key].densities) end |
+		    if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end
+		  end
+		' \
 		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
 }
 verify_downloaded_apk() {
@@ -2504,36 +2559,6 @@ check_is_universal() {
 		return 0
 	fi
 	return 1
-}
-
-split_universal_apk() {
-	local input=$1 output_base=$2
-	local -a abis=(arm64-v8a armeabi-v7a x86_64 x86)
-	local abi other unsigned output
-	local found=false
-
-	for abi in "${abis[@]}"; do
-		if ! unzip -l "$input" 2>/dev/null | grep -q "lib/${abi}/"; then
-			continue
-		fi
-		found=true
-		output="${output_base}-${abi}.apk"
-		unsigned="${output}.unsigned"
-		cp -f "$input" "$unsigned"
-		for other in "${abis[@]}"; do
-			[ "$other" = "$abi" ] && continue
-			zip -dq "$unsigned" "lib/${other}/*" >/dev/null 2>&1 || :
-		done
-		if ! sign_apk "$unsigned" "$output" >/dev/null 2>&1; then
-			epr "Failed to sign architecture split: $output"
-			rm -f "$unsigned" "$output"
-			continue
-		fi
-		rm -f "$unsigned"
-		pr "Built architecture split: '$output'"
-	done
-
-	[ "$found" = true ]
 }
 
 build_rv() {
@@ -3263,7 +3288,7 @@ build_rv() {
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
 			final_apk_output="$apk_output"
-			write_build_info "${table% (*}" "${arch_f}" ".apk" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url"
+			write_build_info "${table% (*}" "${arch_f}" ".apk" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "$apk_output"
 			continue
 		fi
 		local base_template
@@ -3314,13 +3339,8 @@ build_rv() {
 		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
 		popd >/dev/null || :
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
-		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url"
+		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "${CWD}/${BUILD_DIR}/${module_output}"
 	done
-	if [ "$arch" = "all" ] && [ -n "$final_apk_output" ] && [ -f "$final_apk_output" ]; then
-		local split_output_base="${final_apk_output%-all.apk}"
-		split_universal_apk "$final_apk_output" "$split_output_base" || \
-			wpr "No native ABI splits generated for ${table}; keeping universal APK only."
-	fi
 }
 
 list_args() { tr -d '\t\r' <<<"$1" | tr -s ' ' | sed "s/' '/'\\n'/g" | sed 's/" "/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :; }
