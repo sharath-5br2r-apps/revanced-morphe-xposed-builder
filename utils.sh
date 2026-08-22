@@ -2798,13 +2798,7 @@ build_rv() {
 		# 2. Establish dl_from and fetch required HTML responses
 		for dl_p in "${DL_SRCS[@]}"; do
 			if [ -z "${args[${dl_p}_dlurl]}" ]; then continue; fi
-			
-			# If we need to find the latest version, do not use cache repositories as the source of truth
-			if [ -z "$resolved_version" ]; then
-				if [ "$dl_p" = "archive" ] || [ "$dl_p" = "github" ]; then
-					continue
-				fi
-			fi
+			if [ "$dl_p" = "archive" ] || [ "$dl_p" = "github" ]; then continue; fi
 
 			if ! get_${dl_p}_resp "${args[${dl_p}_dlurl]}"; then
 				args[${dl_p}_dlurl]=""
@@ -2953,6 +2947,7 @@ build_rv() {
 
 			for dl_p in "${DL_SRCS[@]}"; do
 				if [ -z "${args[${dl_p}_dlurl]}" ]; then continue; fi
+				if [ "$dl_p" = "archive" ] || [ "$dl_p" = "github" ]; then continue; fi
 				pr "Downloading '${table}' from '${dl_p}'"
 				if ! isoneof $dl_p "${tried_dl[@]}"; then
 					if ! get_${dl_p}_resp "${args[${dl_p}_dlurl]}"; then
