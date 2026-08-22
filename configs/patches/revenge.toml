@@ -12,4 +12,4 @@ github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com
 patches-source = "revenge-mod/revenge-xposed"
 patcher-args = "-l 0"
 uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/"
