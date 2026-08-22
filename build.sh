@@ -218,99 +218,55 @@ for table_name in $(toml_get_table_names); do
 		fi
 	done
 	if [ -z "${app_args[dl_from]-}" ]; then abort "ERROR: no 'dlurl' option was set for '$table_name'. (${DL_SRCS[*]})"; fi
-	app_args[arch]=$(toml_get "$t" arch) || app_args[arch]="auto"
-	if ! isoneof "${app_args[arch]}" "auto" "both" "multi" "both64" "both32" "all" "arm64-v8a" "arm-v7a" "x86_64" "x86"; then
-		abort "wrong arch '${app_args[arch]}' for '$table_name'"
-	fi
+
+	raw_arch=$(toml_get "$t" arch) || raw_arch="auto"
+	raw_arch=$(echo "$raw_arch" | tr ',' ' ' | tr -d '[]"'\''')
+
+	# Fallback resolution: translate legacy keywords to the new space-separated format
+	case "$raw_arch" in
+		both)   raw_arch="arm64-v8a arm-v7a" ;;
+		multi)  raw_arch="arm64-v8a arm-v7a x86_64 x86" ;;
+		both64) raw_arch="arm64-v8a x86_64" ;;
+		both32) raw_arch="arm-v7a x86" ;;
+	esac
+
+	read -r -a arch_list <<< "$raw_arch"
+	[ "${#arch_list[@]}" -eq 0 ] && arch_list=("auto")
+
+	for a in "${arch_list[@]}"; do
+		if ! isoneof "$a" "auto" "all" "arm64-v8a" "arm-v7a" "x86_64" "x86"; then
+			abort "wrong arch '$a' for '$table_name'"
+		fi
+	done
 
 	app_args[pkg_name]=$(toml_get "$t" pkg-name) || app_args[pkg_name]=""
 	app_args[dpi]=$(toml_get "$t" dpi) || app_args[dpi]=""
 	table_name_f=${table_name,,}
 	table_name_f=${table_name_f// /-}
 	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-jhc"
+	module_prop_name_b=${app_args[module_prop_name]}
 
-	if [ "${app_args[arch]}" = both ]; then
-		app_args[table]="$table_name (arm64-v8a)"
-		app_args[arch]="arm64-v8a"
-		module_prop_name_b=${app_args[module_prop_name]}
-		app_args[module_prop_name]="${module_prop_name_b}-arm64"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-		app_args[table]="$table_name (arm-v7a)"
-		app_args[arch]="arm-v7a"
-		app_args[module_prop_name]="${module_prop_name_b}-arm"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-	elif [ "${app_args[arch]}" = multi ]; then
-		app_args[table]="$table_name (arm64-v8a)"
-		app_args[arch]="arm64-v8a"
-		module_prop_name_b=${app_args[module_prop_name]}
-		app_args[module_prop_name]="${module_prop_name_b}-arm64"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-		app_args[table]="$table_name (arm-v7a)"
-		app_args[arch]="arm-v7a"
-		app_args[module_prop_name]="${module_prop_name_b}-arm"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-		app_args[table]="$table_name (x86_64)"
-		app_args[arch]="x86_64"
-		app_args[module_prop_name]="${module_prop_name_b}-x64"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-		app_args[table]="$table_name (x86)"
-		app_args[arch]="x86"
-		app_args[module_prop_name]="${module_prop_name_b}-x86"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-	elif [ "${app_args[arch]}" = "both64" ]; then
-		app_args[table]="$table_name (arm64-v8a)"
-		app_args[arch]="arm64-v8a"
-		module_prop_name_b=${app_args[module_prop_name]}
-		app_args[module_prop_name]="${module_prop_name_b}-arm64"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-		app_args[table]="$table_name (x86_64)"
-		app_args[arch]="x86_64"
-		app_args[module_prop_name]="${module_prop_name_b}-x64"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-	elif [ "${app_args[arch]}" = "both32" ]; then
-		app_args[table]="$table_name (arm-v7a)"
-		app_args[arch]="arm-v7a"
-		module_prop_name_b=${app_args[module_prop_name]}
-		app_args[module_prop_name]="${module_prop_name_b}-arm"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-		app_args[table]="$table_name (x86)"
-		app_args[arch]="x86"
-		app_args[module_prop_name]="${module_prop_name_b}-x86"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-	else
-		if [ "${app_args[arch]}" = "arm64-v8a" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-arm64"
-		elif [ "${app_args[arch]}" = "arm-v7a" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-arm"
-		elif [ "${app_args[arch]}" = "x86_64" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-x64"
-		elif [ "${app_args[arch]}" = "x86" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-x86"
+	for a in "${arch_list[@]}"; do
+		app_args[arch]="$a"
+		case "$a" in
+			arm64-v8a) arch_suffix="-arm64" ;;
+			arm-v7a)   arch_suffix="-arm" ;;
+			x86_64)    arch_suffix="-x64" ;;
+			x86)       arch_suffix="-x86" ;;
+			*)         arch_suffix="" ;;
+		esac
+		app_args[module_prop_name]="${module_prop_name_b}${arch_suffix}"
+
+		if [ "${#arch_list[@]}" -gt 1 ]; then
+			app_args[table]="$table_name ($a)"
+		else
+			app_args[table]="$table_name"
 		fi
+
 		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
 		build_rv "$(declare -p app_args)"
 		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-	fi
+	done
 done
 rm -rf temp/tmp.*
 if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then
