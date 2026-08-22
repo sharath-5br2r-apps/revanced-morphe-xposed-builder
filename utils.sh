@@ -2908,47 +2908,16 @@ build_rv() {
 				fi
 			done
 			if [ "$all_archs_found" = true ]; then
-				local cache_valid=true
-				set +u
-				local rel_filter="${args[apkmirror_release_filter]:-}"
-				set -u
-				if [ -n "$rel_filter" ] && [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
-					for arch in "${arch_list[@]}"; do
-						arch_f="${arch// /}"
-						local check_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
-						[ ! -f "$check_apk" ] && check_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
-						if [ -f "$check_apk" ]; then
-							local badging_info
-							badging_info=$("$AAPT2" dump badging "$check_apk" 2>/dev/null || true)
-							if [[ "$rel_filter" == !* ]]; then
-								local neg_pat="${rel_filter#!}"
-								if grep -iqE "$neg_pat" <<<"$badging_info"; then
-									cache_valid=false
-									rm -f "$check_apk"
-									break
-								fi
-							else
-								if ! grep -iqE "$rel_filter" <<<"$badging_info"; then
-									cache_valid=false
-									rm -f "$check_apk"
-									break
-								fi
-							fi
-						fi
-					done
-				fi
-				if [ "$cache_valid" = true ]; then
-					for arch in "${arch_list[@]}"; do
-						arch_f="${arch// /}"
-						local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
-						local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
-						[ -f "$stock_apk" ] && touch "$stock_apk" 2>/dev/null || true
-						[ -f "$all_apk" ] && touch "$all_apk" 2>/dev/null || true
-					done
-					pr "Found all required architectures for '$pkg_name' (v$version_f) in cache. Skipping download!"
-					skip_dl_source_check=true
-					version="$resolved_version"
-				fi
+				for arch in "${arch_list[@]}"; do
+					arch_f="${arch// /}"
+					local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+					local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+					[ -f "$stock_apk" ] && touch "$stock_apk" 2>/dev/null || true
+					[ -f "$all_apk" ] && touch "$all_apk" 2>/dev/null || true
+				done
+				pr "Found all required architectures for '$pkg_name' (v$version_f) in cache. Skipping download!"
+				skip_dl_source_check=true
+				version="$resolved_version"
 			fi
 	elif [ "$version_mode" != "auto" ]; then
 		# Dynamic Cache Discovery for "latest" or empty version
