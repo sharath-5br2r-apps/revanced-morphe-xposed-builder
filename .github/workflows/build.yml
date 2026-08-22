@@ -9,6 +9,26 @@ on:
       exclusive_apps:
         required: false
         type: string
+      remove_apks:
+        required: false
+        type: string
+        default: ""
+  workflow_dispatch:
+    inputs:
+      config_file:
+        description: "Select the config file to use"
+        required: true
+        type: choice
+        default: ".github/configs/config.manual.toml"
+        options:
+          - ".github/configs/config.manual.toml"
+          - ".github/configs/config.dev.updated.json"
+          - ".github/configs/config.stable.updated.json"
+      remove_apks:
+        description: "Optional: APKs to remove from cache (space-separated, e.g., com.brave.browser-1.93.138-*.apk)"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: build
@@ -55,7 +75,7 @@ jobs:
         run: |
           bash scripts/generate_manual_config.sh
           bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}"
-        
+
       - name: Resolve version code
         id: version
         env:
@@ -67,6 +87,17 @@ jobs:
         with:
           path: temp/apks
           key: apks-v4-${{ hashFiles('configs/app_versions.json', 'configs/patches/**/*.toml') }}
+
+      - name: Remove specific APKs from cache
+        if: ${{ inputs.remove_apks != '' }}
+        run: |
+          if [ -d "temp/apks" ]; then
+            cd temp/apks
+            for apk in ${{ inputs.remove_apks }}; do
+              echo "Removing $apk from cache..."
+              rm -f $apk || true
+            done
+          fi
 
       - name: Build modules and apks
         env:
@@ -96,7 +127,7 @@ jobs:
           else
             echo "APKS_REPO or PERSONAL_ACCESS_TOKEN is not present. Skipping usage tracker update."
           fi
-        
+
       - name: Cleanup old cached APKs
         run: bash .github/scripts/build_cache_cleanup.sh
 
@@ -121,7 +152,6 @@ jobs:
         run: |
           gh release upload ${{ steps.version.outputs.NEXT_VER_CODE }} build.json \
             --repo "$GITHUB_REPOSITORY" --clobber
-
 
       - name: Update changelog and module update files
         env:

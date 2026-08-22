@@ -24,8 +24,14 @@ on:
         description: "Enter the toml table names or regex pattern of the apps you want to build. When empty, all apps are built."
         required: false
         type: string
+      remove_apks:
+        description: "Optional: APKs to remove from cache (space-separated, e.g., com.brave.browser-1.93.138-*.apk)"
+        required: false
+        type: string
+        default: ""
+
 concurrency:
-  group: manual-ci-${{ inputs.manual_config_file || inputs.config_file }}
+  group: ci
   cancel-in-progress: false
 
 jobs:
@@ -36,7 +42,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-        
+
       - name: Resolve config file
         id: config
         run: |
@@ -61,6 +67,7 @@ jobs:
     with:
       config_file: ${{ needs.resolve_config.outputs.config_file }}
       exclusive_apps: ${{ inputs.exclusive_apps }}
+      remove_apks: ${{ inputs.remove_apks }}
     secrets: inherit
 
   trigger_cleanup:

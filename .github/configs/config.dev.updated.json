@@ -93,6 +93,34 @@
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.reddit.frontpage",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.reddit.frontpage"
   },
+  "instagram-instafel": {
+    "enabled": false,
+    "pkg-name": "com.instagram.android",
+    "app-name": "instagram",
+    "rv-brand": "instafel",
+    "build-mode": "apk",
+    "arch": "both",
+    "cli-source": "instafel/p-rel",
+    "patches-source": "instafel/pc-rel",
+    "included-patches": "'unlock_developer_options' 'remove_snooze_warning' 'remove_ads' 'amoled_theme' 'instafel'",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
+    "dpi": "480dpi nodpi anydpi auto",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.instagram.android"
+  },
+  "instagram-instafel-clone": {
+    "enabled": false,
+    "pkg-name": "com.instagram.android",
+    "app-name": "instagram",
+    "rv-brand": "instafel-clone",
+    "build-mode": "apk",
+    "arch": "both",
+    "cli-source": "instafel/p-rel",
+    "patches-source": "instafel/pc-rel",
+    "included-patches": "'unlock_developer_options' 'remove_snooze_warning' 'remove_ads' 'amoled_theme' 'instafel' 'clone'",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
+    "dpi": "480dpi nodpi anydpi auto",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.instagram.android"
+  },
   "gboard-morphe": {
     "enabled": false,
     "pkg-name": "com.google.android.inputmethod.latin",
@@ -123,34 +151,6 @@
     "dpi": "nodpi anydpi auto",
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
-  },
-  "instagram-instafel": {
-    "enabled": false,
-    "pkg-name": "com.instagram.android",
-    "app-name": "instagram",
-    "rv-brand": "instafel",
-    "build-mode": "apk",
-    "arch": "both",
-    "cli-source": "instafel/p-rel",
-    "patches-source": "instafel/pc-rel",
-    "included-patches": "'unlock_developer_options' 'remove_snooze_warning' 'remove_ads' 'amoled_theme' 'instafel'",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
-    "dpi": "480dpi nodpi anydpi auto",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.instagram.android"
-  },
-  "instagram-instafel-clone": {
-    "enabled": false,
-    "pkg-name": "com.instagram.android",
-    "app-name": "instagram",
-    "rv-brand": "instafel-clone",
-    "build-mode": "apk",
-    "arch": "both",
-    "cli-source": "instafel/p-rel",
-    "patches-source": "instafel/pc-rel",
-    "included-patches": "'unlock_developer_options' 'remove_snooze_warning' 'remove_ads' 'amoled_theme' 'instafel' 'clone'",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
-    "dpi": "480dpi nodpi anydpi auto",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.instagram.android"
   },
   "youtube-morphe": {
     "enabled": true,

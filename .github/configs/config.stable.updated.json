@@ -452,7 +452,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.apps.magazines"
   },
   "trakt-morphe": {
-    "enabled": true,
+    "enabled": false,
     "pkg-name": "tv.trakt.trakt",
     "app-name": "trakt",
     "rv-brand": "morphe",
@@ -679,37 +679,6 @@
     "archive-dlurl": "https://archive.org/download/geologically/apks/com.reddit.frontpage",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.reddit.frontpage"
   },
-  "gboard-morphe": {
-    "enabled": false,
-    "pkg-name": "com.google.android.inputmethod.latin",
-    "app-name": "gboard",
-    "rv-brand": "morphe",
-    "build-mode": "both",
-    "arch": "arm64-v8a",
-    "patches-source": "jasonwu1994/Gboard-patches",
-    "excluded-patches": "'Package Rename'",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://gboard-go.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
-    "dpi": "nodpi anydpi auto",
-    "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
-  },
-  "gboard-morphe-clone": {
-    "enabled": false,
-    "pkg-name": "com.google.android.inputmethod.latin",
-    "app-name": "gboard",
-    "rv-brand": "morphe-clone",
-    "build-mode": "apk",
-    "arch": "arm64-v8a",
-    "patches-source": "jasonwu1994/Gboard-patches",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://gboard-go.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
-    "dpi": "nodpi anydpi auto",
-    "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
-  },
   "photoshop-mix-morphe": {
     "enabled": false,
     "pkg-name": "com.adobe.psmobile",
@@ -802,24 +771,8 @@
     "apkcombo-dlurl": "https://apkcombo.com/it/strava/com.strava",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.strava"
   },
-  "brave-browser-morphe": {
-    "enabled": true,
-    "pkg-name": "com.brave.browser",
-    "app-name": "brave-browser",
-    "rv-brand": "morphe",
-    "build-mode": "apk",
-    "arch": "both",
-    "patches-source": "dh6k/morphe-patches",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://brave-software-brave.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/brave-software/brave-browser",
-    "dpi": "nodpi anydpi auto",
-    "apkpure-dlurl": "https://apkpure.com/brave-browser-private-ads-block/com.brave.browser",
-    "apkcombo-dlurl": "https://apkcombo.com/brave-browser/com.brave.browser",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.brave.browser"
-  },
   "brave-browser-morphe-beta": {
-    "enabled": true,
+    "enabled": false,
     "pkg-name": "com.brave.browser_beta",
     "app-name": "brave-browser",
     "rv-brand": "morphe-beta",
@@ -835,7 +788,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.brave.browser_beta"
   },
   "brave-browser-morphe-nightly": {
-    "enabled": true,
+    "enabled": false,
     "pkg-name": "com.brave.browser_nightly",
     "app-name": "brave-browser",
     "rv-brand": "morphe-nightly",
@@ -1393,6 +1346,21 @@
     "dpi": "nodpi anydpi auto",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.michaldrabik.showly2"
   },
+  "tiktok-morphe-alt": {
+    "enabled": true,
+    "pkg-name": "com.zhiliaoapp.musically",
+    "app-name": "tiktok",
+    "rv-brand": "morphe-alt",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "hxreborn/hxreborn-tiktok-patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "dpi": "nodpi anydpi auto",
+    "archive-dlurl": "https://archive.org/download/geologically/apks/com.zhiliaoapp.musically",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.zhiliaoapp.musically"
+  },
   "instagram-instafel": {
     "enabled": false,
     "pkg-name": "com.instagram.android",
@@ -1420,6 +1388,37 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
     "dpi": "480dpi nodpi anydpi auto",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.instagram.android"
+  },
+  "gboard-morphe": {
+    "enabled": false,
+    "pkg-name": "com.google.android.inputmethod.latin",
+    "app-name": "gboard",
+    "rv-brand": "morphe",
+    "build-mode": "both",
+    "arch": "arm64-v8a",
+    "patches-source": "jasonwu1994/Gboard-patches",
+    "excluded-patches": "'Package Rename'",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://gboard-go.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
+    "dpi": "nodpi anydpi auto",
+    "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
+  },
+  "gboard-morphe-clone": {
+    "enabled": false,
+    "pkg-name": "com.google.android.inputmethod.latin",
+    "app-name": "gboard",
+    "rv-brand": "morphe-clone",
+    "build-mode": "apk",
+    "arch": "arm64-v8a",
+    "patches-source": "jasonwu1994/Gboard-patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://gboard-go.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
+    "dpi": "nodpi anydpi auto",
+    "archive-dlurl": "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
   },
   "calorie-counter-morphe": {
     "enabled": false,
@@ -1452,6 +1451,22 @@
     "apkpure-dlurl": "https://apkpure.com/sound-cloud-android-app/com.soundcloud.android",
     "apkcombo-dlurl": "https://apkcombo.com/soundcloud/com.soundcloud.android",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.soundcloud.android"
+  },
+  "brave-browser-morphe": {
+    "enabled": false,
+    "pkg-name": "com.brave.browser",
+    "app-name": "brave-browser",
+    "rv-brand": "morphe",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "kveld9/kveld-morphe-patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://brave-software-brave.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/brave-software/brave-browser",
+    "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/brave-browser-private-ads-block/com.brave.browser",
+    "apkcombo-dlurl": "https://apkcombo.com/brave-browser/com.brave.browser",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.brave.browser"
   },
   "youtube-morphe-nord": {
     "enabled": false,
@@ -2201,6 +2216,7 @@
   },
   "rar-morphe": {
     "enabled": false,
+    "pkg-name": "com.rarlab.rar",
     "app-name": "rar",
     "rv-brand": "morphe",
     "build-mode": "apk",
@@ -2210,6 +2226,24 @@
     "uptodown-dlurl": "https://rar-for-android.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/rar-lab/rar-for-android",
     "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/rar-extractor-manager/com.rarlab.rar",
+    "apkcombo-dlurl": "https://apkcombo.com/rar/com.rarlab.rar",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.rarlab.rar"
+  },
+  "amazon-india-morphe": {
+    "enabled": false,
+    "pkg-name": "in.amazon.mShop.android.shopping",
+    "app-name": "amazon-india",
+    "rv-brand": "morphe",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "rushiranpise/morphe-patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://amazon-india.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay",
+    "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/amazon-india-shop-pay-minitv/in.amazon.mShop.android.shopping",
+    "apkcombo-dlurl": "https://apkcombo.com/amazon-india-shopping/in.amazon.mShop.android.shopping",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/in.amazon.mShop.android.shopping"
   }
 }
