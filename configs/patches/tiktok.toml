@@ -1,0 +1,25 @@
+enable-module-update = true
+patches-version = "absolutelatest"
+[tiktok-morphe-icysymmetra]
+enabled = true
+app-name = "tiktok"
+pkg-name = "com.zhiliaoapp.musically"
+rv-brand = "morphe-icysymmetra"
+build-mode = "apk"
+arch = "all"
+uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
+patches-source = "icysymmetra/tiktok-patches-for-morphe"
+
+[tiktok-morphe-hxreborn]
+enabled = true
+app-name = "tiktok"
+pkg-name = "com.zhiliaoapp.musically"
+rv-brand = "morphe-hxreborn"
+build-mode = "apk"
+arch = "all"
+uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
+patches-source = "hxreborn/hxreborn-tiktok-patches"
