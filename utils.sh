@@ -1456,7 +1456,8 @@ dl_apkmirror() {
 					else
 						search_links=$(echo "$search_links" | grep -iE "$rel_filter" || true)
 					fi
-				elif [ "${__AAV__:-false}" = false ]; then
+				fi
+				if [ "${__AAV__:-false}" = false ]; then
 					search_links=$(echo "$search_links" | grep -ivE "-(beta|alpha)" || true)
 				fi
 				
