@@ -1431,6 +1431,24 @@ dl_apkmirror() {
 
 			local all_links=$(echo "$html_split" | grep -oP 'href="\K/apk/[^"]+')
 			
+			set +u
+			local rel_filter="${args[apkmirror_release_filter]:-}"
+			set -u
+			if [ -n "$rel_filter" ]; then
+				if [[ "$rel_filter" == !* ]]; then
+					local neg_pat="${rel_filter#!}"
+					all_links=$(echo "$all_links" | grep -ivE "$neg_pat" || true)
+					html_split=$(echo "$html_split" | grep -ivE "$neg_pat" || true)
+				else
+					all_links=$(echo "$all_links" | grep -iE "$rel_filter" || true)
+					html_split=$(echo "$html_split" | grep -iE "$rel_filter" || true)
+				fi
+			fi
+			if [ "${__AAV__:-false}" = false ]; then
+				all_links=$(echo "$all_links" | grep -ivE "-(beta|alpha)" || true)
+				html_split=$(echo "$html_split" | grep -ivE "-(beta|alpha)" || true)
+			fi
+
 			# 1. Exact URL match (strict)
 			version_href=$(echo "$all_links" | grep -F "$search_version-release" | head -1) || true
 			
