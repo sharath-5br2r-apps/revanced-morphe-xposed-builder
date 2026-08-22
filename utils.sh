@@ -1183,7 +1183,11 @@ get_apkmirror_resp() {
 	local clean_url="${url%/}"
 	__APKMIRROR_CAT__="${clean_url##*/}"
 	set +u
-	__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-${args[apkmirror_example_dlurl]:-}}"
+	if declare -p args &>/dev/null 2>&1; then
+		__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-${args[apkmirror_example_dlurl]:-${apkmirror_example_url:-}}}"
+	else
+		__APKMIRROR_EXAMPLE_URL__="${apkmirror_example_url:-}"
+	fi
 	set -u
 	if [ -n "${__DL_RESP_CACHE__["apkmirror_resp_$url"]:-}" ]; then
 		__APKMIRROR_RESP__="${__DL_RESP_CACHE__["apkmirror_resp_$url"]}"
