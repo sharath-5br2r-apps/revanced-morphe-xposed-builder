@@ -181,7 +181,7 @@ for table_name in $(toml_get_table_names); do
 	app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-name-filter) || app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-filter) || app_args[repo_dlurl_release_name_filter]=""
 	app_args[repo_dlurl_source]=$(toml_get "$t" repo-dlurl-source) || app_args[repo_dlurl_source]=""
 	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
-	app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || app_args[apkmirror_example_url]=""
+	app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-dlurl) || app_args[apkmirror_example_url]=""
 	app_args[prefer_dl_mode]=$(toml_get "$t" prefer-dl-mode) || app_args[prefer_dl_mode]=apk
 	app_args[custom_microg_patches]=$(toml_get "$t" custom-microg-patches) || app_args[custom_microg_patches]=""
 	app_args[excluded_patches]=$(toml_get "$t" excluded-patches) || app_args[excluded_patches]=""
