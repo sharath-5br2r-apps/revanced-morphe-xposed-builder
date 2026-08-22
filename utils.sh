@@ -1005,7 +1005,8 @@ isoneof() {
 	return 1
 }
 sign_apk() {
-	get_bcprov
+	[ -z "${APKSIGNER:-}" ] && APKSIGNER="${BIN_DIR:-bin}/apksigner.jar"
+	get_bcprov || return 1
 	local input=$1 output=$2 verbose=${3:-none}
 	if ! OP=$(java -cp "$APKSIGNER$javapathsep$TEMP_DIR/bcprov.jar" com.android.apksigner.ApkSignerTool sign --ks $TEMP_DIR/ks.keystore --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks-type BKS --ks-pass "pass:$KEYSTORE_PASSWORD" --key-pass "pass:$KEYSTORE_KEY_PASSWORD" --ks-key-alias "$KEYSTORE_ALIAS" --out="${output}" "${input}" 2>&1); then
 		epr "apksigner error: $OP"
@@ -2506,7 +2507,6 @@ check_is_universal() {
 }
 
 split_universal_apk() {
-	get_bcprov
 	local input=$1 output_base=$2
 	local -a abis=(arm64-v8a armeabi-v7a x86_64 x86)
 	local abi other unsigned output
