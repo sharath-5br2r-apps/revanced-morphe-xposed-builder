@@ -2838,9 +2838,7 @@ build_rv() {
 	fi
 
 	local p_patcher_args=()
-	if isoneof "$version_mode" latest beta || [ "$version_mode" != "auto" -a "$version_mode" != "exp" ]; then
-		p_patcher_args+=("-f")
-	fi
+
 
 	local tried_dl=()
 	local list_patches=""
@@ -3377,6 +3375,11 @@ build_rv() {
 	fi
 	local changelog_url="${args[changelog_url]}"
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
+    if isoneof "$version_mode" latest beta || [ "$version_mode" != "auto" -a "$version_mode" != "exp" ]; then
+        if [[ "${args[patcher_args]}" != *"-f "* ]]; then
+           p_patcher_args+=("-f")
+        fi
+    fi
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")
