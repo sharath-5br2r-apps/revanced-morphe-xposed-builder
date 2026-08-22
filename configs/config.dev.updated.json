@@ -11,7 +11,7 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "patcher-args": "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/youtube",
     "dpi": "nodpi anydpi auto",
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
     "patches-source": "anddea/revanced-patches"
@@ -26,7 +26,7 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "patcher-args": "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error",
     "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/youtube-music",
     "dpi": "nodpi anydpi auto",
     "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music",
     "patches-source": "anddea/revanced-patches"
@@ -87,6 +87,7 @@
     "pkg-name": "com.halfbrick.jetpackjoyride",
     "uptodown-dlurl": "https://jetpack-joyride.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/",
     "dpi": "nodpi anydpi auto",
     "patches-source": "byehi98/okish-morphe-patches"
   },
@@ -130,6 +131,7 @@
     "pkg-name": "com.chess",
     "uptodown-dlurl": "https://chess.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/",
     "dpi": "nodpi anydpi auto",
     "patches-source": "PrathxmOp/Prathxm-Patches"
   },
@@ -145,6 +147,7 @@
     "pkg-name": "com.chess",
     "uptodown-dlurl": "https://chess.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/",
     "dpi": "nodpi anydpi auto",
     "patches-source": "PrathxmOp/Prathxm-Patches",
     "included-patches": "'Clone Chess.com'"
@@ -618,7 +621,7 @@
     "pkg-name": "com.google.android.youtube",
     "cli-source": "MorpheApp/morphe-desktop",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/youtube",
     "dpi": "nodpi anydpi auto",
     "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
     "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
@@ -637,7 +640,7 @@
     "version": "exp",
     "pkg-name": "com.google.android.apps.youtube.music",
     "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/youtube-music",
     "dpi": "nodpi anydpi auto",
     "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
     "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music",
@@ -738,7 +741,7 @@
     "patches-source-host": "gitlab"
   },
   "sdmaid-morphe-paresh": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "sdmaid",
     "rv-brand": "morphe-paresh",
