@@ -74,13 +74,14 @@ while IFS='|' read -r group app; do
     prefer_apk_mode=$(jq -r ".\"$app\".\"prefer-apk-mode\" // empty" temp_all_configs.json)
     prefer_dl_mode=$(jq -r ".\"$app\".\"prefer-dl-mode\" // empty" temp_all_configs.json)
     [ -n "$prefer_dl_mode" ] || prefer_dl_mode="${prefer_apk_mode:-apk}"
-    apkmirror_example_url=$(jq -r ".\"$app\".\"apkmirror-example-url\" // empty" temp_all_configs.json)
+    apkmirror_example_url=$(jq -r ".\"$app\".\"apkmirror-example-url\" // .\"$app\".\"apkmirror-example-dlurl\" // empty" temp_all_configs.json)
+    apkmirror_release_filter=$(jq -r ".\"$app\".\"apkmirror-release-filter\" // .\"$app\".\"release-filter\" // empty" temp_all_configs.json)
     dpi=$(jq -r ".\"$app\".\"dpi\" // empty" temp_all_configs.json)
     min_sdk=$(jq -r ".\"$app\".\"min-sdk\" // empty" temp_all_configs.json)
     pkg_name=$(jq -r ".\"$app\".\"pkg-name\" // empty" temp_all_configs.json)
     check_sig=$(jq -r ".\"$app\".\"check-sig\" // false" temp_all_configs.json)
     custom_microg_patches=$(jq -r ".\"$app\".\"custom-microg-patches\" // empty" temp_all_configs.json)
-    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode prefer_dl_mode apkmirror_example_url repo_dlurl_filter repo_dlurl_exclude_filter repo_dlurl_tag_filter repo_dlurl_release_name_filter repo_dlurl_release_filter repo_dlurl_source
+    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode prefer_dl_mode apkmirror_example_url apkmirror_release_filter repo_dlurl_filter repo_dlurl_exclude_filter repo_dlurl_tag_filter repo_dlurl_release_name_filter repo_dlurl_release_filter repo_dlurl_source
 
     dlurls=()
     sources=()
@@ -112,6 +113,8 @@ while IFS='|' read -r group app; do
                 vers=$(get_repo_vers) || { echo "::warning::Failed repo vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "apkmirror" ]]; then
+                __APKMIRROR_RELEASE_FILTER__="${apkmirror_release_filter:-}"
+                export __APKMIRROR_RELEASE_FILTER__
                 get_apkmirror_resp "$dlurl" || { echo "::warning::Failed apkmirror resp for $app"; continue; }
                 vers=$(get_apkmirror_vers) || { echo "::warning::Failed apkmirror vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true

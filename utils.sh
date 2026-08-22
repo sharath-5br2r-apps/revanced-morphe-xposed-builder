@@ -1227,7 +1227,7 @@ get_apkmirror_vers() {
 	vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
 	local filtered_vers=()
 	set +u
-	local rel_filter="${args[apkmirror_release_filter]:-}"
+	local rel_filter="${args[apkmirror_release_filter]:-${__APKMIRROR_RELEASE_FILTER__:-${apkmirror_release_filter:-}}}"
 	set -u
 
 	local IFS=$'\n'
