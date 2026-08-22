@@ -3230,7 +3230,7 @@ build_rv() {
 	# Build patches info string: "source@version" from resolved patches jar path
 	local patches_ref=""
 	if [ -n "${args[patches_source]:-}" ]; then
-		local _ptjar_base; _ptjar_base="${args[ptjar]##*/}"; _ptjar_base="${_ptjar_base%.mpp}"; _ptjar_base="${_ptjar_base%.jar}"
+		local _ptjar_base; _ptjar_base="${patches_jar##*/}"; _ptjar_base="${_ptjar_base%.mpp}"; _ptjar_base="${_ptjar_base%.jar}"
 		local _ptver; _ptver=$(printf '%s' "$_ptjar_base" | grep -oP '\d+\.\d+\.\d+.*$' || true)
 		if [ -n "$_ptver" ]; then
 			patches_ref="${args[patches_source]}@${_ptver}"
