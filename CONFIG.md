@@ -18,7 +18,6 @@ Secrets are **encrypted** and used for sensitive values. Set under the **Secrets
 | `KEYSTORE_PASSWORD` | ✅ Yes | Password for the keystore store. |
 | `KEYSTORE_KEY_PASSWORD` | ⚠️ Optional | Password for the keystore key entry. Defaults to `KEYSTORE_PASSWORD` if omitted. |
 | `PERSONAL_ACCESS_TOKEN` | ⚠️ Optional | GitHub Personal Access Token (PAT) with `repo` scope. Needed to push releases to other repos (e.g. `APKS_REPO`). Falls back to `GITHUB_TOKEN` (limited scope). |
-| `TG_TOKEN` | ⚠️ Optional | Telegram Bot API token for build notifications. Required only if Telegram notifications are enabled. |
 
 ### ⚙️ Variables
 
@@ -28,8 +27,6 @@ Variables are **plain text** (not encrypted). Set under the **Variables** tab.
 |----------|----------|-------------|
 | `KEYSTORE_ALIAS` | ✅ Yes | Alias/entry name inside the keystore. |
 | `APKS_REPO` | ⚠️ Optional | Target repository to upload built APKs (format: `owner/repo`). If unset, releases are uploaded to the current repository. |
-| `TG_CHAT_ID` | ⚠️ Optional | Telegram chat ID to send build notifications to. |
-| `TG_THREAD_ID` | ⚠️ Optional | Telegram message thread/topic ID (for group topics). |
 
 > **Note:** `GITHUB_TOKEN` is automatically provided by GitHub Actions and does not need to be set manually. It has limited scope (e.g. cannot push to other repositories).
 
@@ -136,12 +133,9 @@ Variables:
 ```
 Secrets:
   PERSONAL_ACCESS_TOKEN   ← for pushing to APKS_REPO
-  TG_TOKEN                ← for Telegram build notifications
 
 Variables:
   APKS_REPO               ← e.g. your-username/your-apks-repo
-  TG_CHAT_ID              ← your Telegram chat/channel ID
-  TG_THREAD_ID            ← thread ID (for supergroups with topics)
 ```
 
 ### Minimal TOML Entry
