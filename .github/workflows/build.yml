@@ -83,7 +83,7 @@ jobs:
         run: bash .github/scripts/build_resolve_version.sh
 
       - name: Cache APKs
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: temp/apks
           key: apks-v4-${{ hashFiles('configs/app_versions.json', 'configs/patches/**/*.toml') }}
