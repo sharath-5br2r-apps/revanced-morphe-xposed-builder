@@ -14,7 +14,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     env:
       TRAWL_URL: "http://localhost:8191"
       CFB_URL: "http://localhost:8000"

@@ -36,7 +36,7 @@ patches-source = "rushiranpise/morphe-patches"
 custom-microg-patches = "'None'"
 
 [microsoft-word-morphe-rushiranpise]
-enabled = true
+enabled = false
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "microsoft-word"
 rv-brand = "morphe-rushiranpise"
@@ -51,7 +51,7 @@ github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com
 patches-source = "rushiranpise/morphe-patches"
 
 [microsoft-excel-morphe-rushiranpise]
-enabled = true
+enabled = false
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "microsoft-excel"
 rv-brand = "morphe-rushiranpise"
