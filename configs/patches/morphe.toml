@@ -1,44 +1,192 @@
 enable-module-update = true
 patches-version = "absolutelatest"
 
+# ── YouTube morphe (stock/default theme) ──────────────────────────────────────
+[youtube-morphe]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe"
+build-mode = "both"
+arch = "all"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube morphe-amoled (#000000) ───────────────────────────────────────────
+[youtube-morphe-amoled]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe-amoled"
+build-mode = "both"
+arch = "all"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube morphe-mocha (Catppuccin Mocha) ───────────────────────────────────
+[youtube-morphe-mocha]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe-mocha"
+build-mode = "both"
+arch = "all"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#FF181825 -OlightThemeBackgroundColor=#E6E9EF"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube morphe-nord (Nord theme) ──────────────────────────────────────────
+[youtube-morphe-nord]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe-nord"
+build-mode = "both"
+arch = "all"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#2E3440 -OlightThemeBackgroundColor=#E5E9F0"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube morphe-exp (experimental/latest APK) ──────────────────────────────
 [youtube-morphe-exp]
 enabled = true
 app-name = "youtube"
 rv-brand = "morphe-exp"
 build-mode = "both"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+arch = "all"
 version = "exp"
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
-dpi = "nodpi anydpi auto"
-# archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
-# github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube Music morphe (stock/default theme) ────────────────────────────────
+[youtube-music-morphe]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe"
+build-mode = "both"
+arch = "multi"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
 patches-source = "MorpheApp/morphe-patches"
-patcher-args = "-OdarkThemeBackgroundColor=#000000 "
 included-patches = "'Theme'"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
 
-arch = "all"
+# ── YouTube Music morphe-amoled (#000000) ─────────────────────────────────────
+[youtube-music-morphe-amoled]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-amoled"
+build-mode = "both"
+arch = "multi"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
 
+# ── YouTube Music morphe-mocha (Catppuccin Mocha) ─────────────────────────────
+[youtube-music-morphe-mocha]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-mocha"
+build-mode = "both"
+arch = "multi"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#FF181825 -OmaterialYou=#89B4FA"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube Music morphe-nord (Nord theme) ────────────────────────────────────
+[youtube-music-morphe-nord]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-nord"
+build-mode = "both"
+arch = "multi"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#2E3440 -OmaterialYou=#5E81AC"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube Music morphe-exp (experimental/latest APK) ────────────────────────
 [youtube-music-morphe-exp]
 enabled = true
 app-name = "youtube-music"
 rv-brand = "morphe-exp"
 build-mode = "both"
 arch = "multi"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 version = "exp"
 pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
-dpi = "nodpi anydpi auto"
-# archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.youtube.music"
-# github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.google.android.apps.youtube.music"
 apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
 apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
-patches-source = "MorpheApp/morphe-patches"
-patcher-args = "-OdarkThemeBackgroundColor=#000000 "
-included-patches = "'Theme'"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
