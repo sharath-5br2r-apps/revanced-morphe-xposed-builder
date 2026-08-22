@@ -1233,10 +1233,10 @@ get_apkmirror_vers() {
 	fi
 	if [ "${__AAV__:-false}" = false ]; then
 		local IFS=$'\n'
-		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
+		vers=$(grep -iv "\(beta\|alpha\|lite\)" <<<"$vers" || true)
 		local v r_vers=()
 		for v in $vers; do
-			grep -iq "${v} \(beta\|alpha\)" <<<"$apkm_resp" || r_vers+=("$v")
+			grep -iq "${v} \(beta\|alpha\|lite\)" <<<"$apkm_resp" || r_vers+=("$v")
 		done
 		echo "${r_vers[*]}"
 	else
