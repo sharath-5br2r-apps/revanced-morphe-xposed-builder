@@ -1446,10 +1446,17 @@ dl_apkmirror() {
 					search_links=$($HTMLQ --attribute href "div.appRow h5 a" <<<"$html")
 				fi
 				
+				if [ "${__AAV__:-false}" = false ]; then
+					local rel_filter="${args[apkmirror_release_filter]:-}"
+					if [[ "$rel_filter" == !*lite* ]] || [ -z "$rel_filter" ]; then
+						search_links=$(echo "$search_links" | grep -ivE "-(lite|beta|alpha)" || true)
+					fi
+				fi
+				
 				# Try to find exact version match first to be safe, otherwise fallback to top result
 				version_href=$(echo "$search_links" | grep -F "$search_version-release" | head -1) || true
 				if [ -z "$version_href" ] && [ -n "$clean_search_version" ]; then
-					version_href=$(echo "$search_links" | grep -E "${clean_search_version}(-[a-z0-9]+)*-release" | head -1) || true
+					version_href=$(echo "$search_links" | grep -E "${clean_search_version}(-[a-z0-9_]+)*-release" | head -1) || true
 				fi
 				
 				# Search query is exact, so the top search result is the best match if strict regexes fail
