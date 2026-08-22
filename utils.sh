@@ -2710,7 +2710,7 @@ build_rv() {
 		fi
 	fi
 	local prefer_dl_mode=${args[prefer_dl_mode]}
-	local apkmirror_example_url=${args[apkmirror_example_url]}
+	local apkmirror_example_url="${args[apkmirror_example_url]:-${args[apkmirror_example_dlurl]:-}}"
 	local cli_jar="${args[cli]}"
 	local patches_jar="${args[ptjar]}"
 	local mode_arg=${args[build_mode]} version_mode=${args[version]}
