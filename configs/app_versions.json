@@ -4,14 +4,14 @@
     "keys": [
       "discord-npatch-revenge"
     ],
-    "version": "341.13 - Stable"
+    "version": "341.13"
   },
   "Prime-Video": {
     "keys": [
       "prime-video-morphe-hoodles",
       "prime-video-morphe-hoodles-shared"
     ],
-    "version": "3.0.467"
+    "version": "3.0.468"
   },
   "Amazon Alexa": {
     "keys": [
@@ -35,7 +35,7 @@
     "keys": [
       "x-morphe-piko"
     ],
-    "version": "12.17.0-release.0"
+    "version": "12.19.1"
   },
   "Speedtest": {
     "keys": [
@@ -47,7 +47,7 @@
     "keys": [
       "bitwarden-morphe-stylus"
     ],
-    "version": "2026.7.1-bwpm"
+    "version": "2026.8.0-bwpm"
   },
   "Oxygen Updater": {
     "keys": [
@@ -71,7 +71,7 @@
       "brave-beta-morphe-dh6k-x86_64",
       "brave-beta-morphe-dh6k-x86"
     ],
-    "version": "1.95.87"
+    "version": "1.95.88"
   },
   "Brave Nightly": {
     "keys": [
@@ -80,7 +80,7 @@
       "brave-nightly-morphe-dh6k-x86_64",
       "brave-nightly-morphe-dh6k-x86"
     ],
-    "version": "1.96.5"
+    "version": "1.95.88"
   },
   "PC Remote": {
     "keys": [
@@ -98,7 +98,7 @@
     "keys": [
       "github-morphe-hoodles-stylus"
     ],
-    "version": "1.272.0"
+    "version": "1.273.0"
   },
   "Fing": {
     "keys": [
@@ -116,7 +116,7 @@
     "keys": [
       "nova-launcher-morphe-hoodles"
     ],
-    "version": "88800 (8.8.8)"
+    "version": "8.8.8"
   },
   "Battery Guru": {
     "keys": [
@@ -128,7 +128,7 @@
     "keys": [
       "poweramp-morphe-hooman"
     ],
-    "version": "build-1025-bundle-play"
+    "version": "build-1028-uni"
   },
   "Xodo PDF": {
     "keys": [
@@ -158,7 +158,7 @@
     "keys": [
       "sdmaid-morphe-paresh"
     ],
-    "version": "2.0.3-rc0"
+    "version": "2.0.3"
   },
   "Solid Explorer": {
     "keys": [
