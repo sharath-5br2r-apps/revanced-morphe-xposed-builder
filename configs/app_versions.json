@@ -33,7 +33,8 @@
   },
   "X": {
     "keys": [
-      "x-morphe-piko"
+      "x-morphe-piko",
+      "x-morphe-piko-materialyou"
     ],
     "version": "12.19.1-release.0"
   },
