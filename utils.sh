@@ -2506,6 +2506,7 @@ check_is_universal() {
 }
 
 split_universal_apk() {
+	get_bcprov
 	local input=$1 output_base=$2
 	local -a abis=(arm64-v8a armeabi-v7a x86_64 x86)
 	local abi other unsigned output
