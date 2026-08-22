@@ -3045,7 +3045,7 @@ build_rv() {
 							version_f=${version// /}
 							version_f=${version_f#v}
 							
-							local new_stock_apk="${TEMP_DIR}/${pkg_name}-${version_f}-${arch_f}.apk"
+							local new_stock_apk="${apk_dl_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 							mv "$stock_apk" "$new_stock_apk"
 							stock_apk="$new_stock_apk"
 						fi
