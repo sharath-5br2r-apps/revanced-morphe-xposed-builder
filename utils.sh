@@ -1229,14 +1229,19 @@ get_apkmirror_vers() {
 	local rel_filter="${args[apkmirror_release_filter]:-}"
 	set -u
 	if [ -n "$rel_filter" ]; then
-		vers=$(grep -iE "$rel_filter" <<<"$vers" || true)
+		if [[ "$rel_filter" == !* ]]; then
+			local neg_pat="${rel_filter#!}"
+			vers=$(grep -ivE "$neg_pat" <<<"$vers" || true)
+		else
+			vers=$(grep -iE "$rel_filter" <<<"$vers" || true)
+		fi
 	fi
 	if [ "${__AAV__:-false}" = false ]; then
 		local IFS=$'\n'
-		vers=$(grep -iv "\(beta\|alpha\|lite\)" <<<"$vers" || true)
+		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
 		local v r_vers=()
 		for v in $vers; do
-			grep -iq "${v} \(beta\|alpha\|lite\)" <<<"$apkm_resp" || r_vers+=("$v")
+			grep -iq "${v} \(beta\|alpha\)" <<<"$apkm_resp" || r_vers+=("$v")
 		done
 		echo "${r_vers[*]}"
 	else
