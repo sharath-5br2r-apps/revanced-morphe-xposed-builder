@@ -1293,6 +1293,24 @@ apkmirror_search() {
 
 		if [ "$node_apk_bundle" != "$apk_bundle" ]; then continue; fi
 
+		set +u
+		local rel_filter="${args[apkmirror_release_filter]:-}"
+		set -u
+		if [ -n "$rel_filter" ]; then
+			local variant_text
+			variant_text=$($HTMLQ "div.table-cell:nth-child(1) a.accent_color" --text <<<"$node" | xargs)
+			if [[ "$rel_filter" == !* ]]; then
+				local neg_pat="${rel_filter#!}"
+				if grep -iE "$neg_pat" <<<"$variant_text" >/dev/null 2>&1 || grep -iE "$neg_pat" <<<"$dlurl" >/dev/null 2>&1; then
+					continue
+				fi
+			else
+				if ! grep -iE "$rel_filter" <<<"$variant_text" >/dev/null 2>&1 && ! grep -iE "$rel_filter" <<<"$dlurl" >/dev/null 2>&1; then
+					continue
+				fi
+			fi
+		fi
+
 		if [ -n "$clean_search_version" ]; then
 			local version_digits="${clean_search_version//[^0-9]/}"
 			local url_digits
