@@ -50,7 +50,7 @@ CWD=$(pwd)
 TEMP_DIR="temp"
 BIN_DIR="bin"
 BUILD_DIR="build"
-DL_SRCS=("local" "direct" "repo" "github" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
+DL_SRCS=("local" "direct" "github" "repo" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
 BUILD_JSON_FILE="build.json"
 PATCH_OUTPUT=""
 mkdir -p "$TEMP_DIR"
@@ -1901,23 +1901,20 @@ PYC
 
 # -------------------- uptodown --------------------
 get_uptodown_resp() {
-	local url="${1%/}"
+	local url="${1}"
 	if [ -n "${__DL_RESP_CACHE__["uptodown_resp_$url"]:-}" ]; then
 		__UPTODOWN_RESP__="${__DL_RESP_CACHE__["uptodown_resp_$url"]}"
 		__UPTODOWN_RESP_PKG__="${__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]}"
 		return 0
 	fi
-	local html=""
-	_cf_get "${url}/versions" || return 1
-	__UPTODOWN_RESP__="$html"
-	_cf_get "${url}/download" || return 1
-	__UPTODOWN_RESP_PKG__="$html"
+	__UPTODOWN_RESP__=$(req "${url}/versions" -) || return 1
+	__UPTODOWN_RESP_PKG__=$(req "${url}/download" -) || return 1
 	__DL_RESP_CACHE__["uptodown_resp_$url"]="$__UPTODOWN_RESP__"
 	__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]="$__UPTODOWN_RESP_PKG__"
 }
 get_uptodown_vers() { $HTMLQ --text ".version" <<<"$__UPTODOWN_RESP__"; }
 dl_uptodown() {
-	local uptodown_dlurl="${1%/}" version=$2 output=$3 arch=$4 _dpi=$5
+	local uptodown_dlurl=$1 version=$2 output=$3 arch=$4 _dpi=$5
 	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
 
 	local apparch=('arm64-v8a, armeabi-v7a, x86_64' 'arm64-v8a, armeabi-v7a, x86, x86_64' 'arm64-v8a, armeabi-v7a')
@@ -1925,16 +1922,12 @@ dl_uptodown() {
 		apparch+=("$arch")
 	fi
 
-	local op resp="" html="" data_code
+	local op resp data_code
 	data_code=$($HTMLQ "#detail-app-name" --attribute data-code <<<"$__UPTODOWN_RESP__")
 	local versionURL=""
 	local is_bundle=false
 	for i in {1..20}; do
-		if _cf_get "${uptodown_dlurl}/apps/${data_code}/versions/${i}"; then
-			resp="$html"
-		else
-			resp=$(req "${uptodown_dlurl}/apps/${data_code}/versions/${i}" -) || continue
-		fi
+		resp=$(req "${uptodown_dlurl}/apps/${data_code}/versions/${i}" -)
 		if ! op=$(jq -e -r ".data | map(select(.version == \"${version}\")) | .[0]" <<<"$resp"); then
 			continue
 		fi
@@ -1943,11 +1936,7 @@ dl_uptodown() {
 	done
 	if [ -z "$versionURL" ]; then return 1; fi
 	versionURL=$(jq -e -r '.url + "/" + .extraURL + "/" + (.versionID | tostring)' <<<"$versionURL")
-	if _cf_get "$versionURL"; then
-		resp="$html"
-	else
-		resp=$(req "$versionURL" -) || return 1
-	fi
+	resp=$(req "$versionURL" -) || return 1
 
 	local data_version files node_arch="" data_file_id node_class
 	data_version=$($HTMLQ '.button.variants' --attribute data-version <<<"$resp") || return 1
@@ -2052,7 +2041,7 @@ dl_github() {
 	local url=$1 version=$2 output=$3 arch=$4
 	local path="" version_f=${version// /}
 	local base_url=${__GITHUB_URL__:-$url}
-	
+
 	# Matches the exact file selection logic from dl_archive
 	for a in "${arch// /}" "common" "all"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
@@ -2064,12 +2053,12 @@ dl_github() {
 			done <<<"$__ARCHIVE_RESP__"
 		done
 	done
-	
+
 	if [ -z "$path" ]; then
 		epr "Version ${version} with arch ${arch} not found in github"
 		return 1
 	fi
-	
+
 	local ext="${path##*.}"
 	case "$ext" in
 		apk)
