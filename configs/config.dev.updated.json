@@ -1018,7 +1018,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "beta-maniac-morphe-rushiranpise": {
-    "enabled": false,
+    "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "beta-maniac",
     "rv-brand": "morphe-rushiranpise",

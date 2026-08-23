@@ -452,7 +452,7 @@
     "patches-source": "hoo-dles/morphe-patches"
   },
   "xodo-morphe-hoodles": {
-    "enabled": true,
+    "enabled": false,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "xodo",
     "rv-brand": "morphe-hoodles",
@@ -1018,7 +1018,7 @@
     "patches-source": "rushiranpise/morphe-patches"
   },
   "beta-maniac-morphe-rushiranpise": {
-    "enabled": false,
+    "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "beta-maniac",
     "rv-brand": "morphe-rushiranpise",
