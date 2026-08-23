@@ -127,6 +127,7 @@ uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
 dpi = "nodpi anydpi auto"
 patches-source = "rushiranpise/morphe-patches"
+apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
 [adguard-morphe-rushiranpise]
 enabled = true
