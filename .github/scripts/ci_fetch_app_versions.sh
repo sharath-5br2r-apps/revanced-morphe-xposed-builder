@@ -8,7 +8,7 @@ source utils.sh
 set_prebuilts
 
 # Find all app configs in configs/ directory
-CONFIG_FILES=$(find configs/patches configs -maxdepth 2 -name "*.toml" 2>/dev/null | sort -u)
+CONFIG_FILES=$(find configs/patches -maxdepth 2 -name "*.toml" 2>/dev/null | sort -u)
 
 if [ -z "$CONFIG_FILES" ]; then
     echo "No config files found in configs/"
