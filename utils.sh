@@ -1182,6 +1182,7 @@ get_apkmirror_resp() {
 	local url="${1}"
 	local clean_url="${url%/}"
 	__APKMIRROR_CAT__="${clean_url##*/}"
+	__APKMIRROR_RESP__=""
 	set +u
 	if declare -p args &>/dev/null 2>&1; then
 		__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-${args[apkmirror_example_dlurl]:-${apkmirror_example_url:-}}}"
@@ -1199,7 +1200,7 @@ get_apkmirror_resp() {
 		__DL_RESP_CACHE__["apkmirror_resp_$url"]="$__APKMIRROR_RESP__"
 		return 0
 	elif [ -n "$__APKMIRROR_EXAMPLE_URL__" ]; then
-		__APKMIRROR_RESP__=""
+		# Primary listing blocked — version list will come from uploads page fallback
 		return 0
 	fi
 	return 1
@@ -1207,8 +1208,13 @@ get_apkmirror_resp() {
 
 get_apkmirror_vers() {
 	local vers apkm_resp html=""
+	# Try primary uploads listing page
 	if ! _cf_get "https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}"; then
-		if [ -n "${__APKMIRROR_EXAMPLE_URL__:-}" ]; then
+		# Primary blocked — try the category page directly as second attempt
+		if [ -n "${__APKMIRROR_RESP__:-}" ]; then
+			apkm_resp="$__APKMIRROR_RESP__"
+		elif [ -n "${__APKMIRROR_EXAMPLE_URL__:-}" ]; then
+			# Last resort: return the version from the example URL slug
 			local ex_slug ex_ver
 			ex_slug=$(echo "${__APKMIRROR_EXAMPLE_URL__}" | grep -oP '\d+(-\d+)+' | tail -1 || true)
 			ex_ver="${ex_slug//-/.}"
@@ -1217,9 +1223,10 @@ get_apkmirror_vers() {
 				return 0
 			fi
 		fi
-		return 1
+		[ -n "${apkm_resp:-}" ] || return 1
+	else
+		apkm_resp="$html"
 	fi
-	apkm_resp="$html"
 	
 	if [ -n "${HTMLQ:-}" ] && [ -x "$HTMLQ" ]; then
 		local main_content
@@ -1424,6 +1431,9 @@ dl_apkmirror() {
 				resp="$html"
 				if [[ "$resp" == *"Page Not Found"* ]] || [[ "$resp" == *"404 Whoops"* ]] || [ -z "$resp" ]; then
 					release_url=""
+				else
+					# Store release page so downstream apkmname / apkmirror_search have content
+					__APKMIRROR_RESP__="$resp"
 				fi
 			fi
 		fi
@@ -1436,10 +1446,12 @@ dl_apkmirror() {
 	search_version="${search_version//---/-}"
 
 	if [ -z "$release_url" ]; then
-		local apkmname
-		apkmname=$($HTMLQ "h1.marginZero" --text <<<"$__APKMIRROR_RESP__")
-		apkmname="${apkmname,,}" apkmname="${apkmname// /-}" apkmname="${apkmname//[^a-z0-9-]/}"
-		local candidate_url="${url%/}/${apkmname}-${search_version}-release/"
+		local apkmname=""
+		if [ -n "${__APKMIRROR_RESP__:-}" ]; then
+			apkmname=$($HTMLQ "h1.marginZero" --text <<< "$__APKMIRROR_RESP__" 2>/dev/null || true)
+			apkmname="${apkmname,,}" apkmname="${apkmname// /-}" apkmname="${apkmname//[^a-z0-9-]/}"
+		fi
+		local candidate_url="${url%/}/${apkmname:+${apkmname}-}${search_version}-release/"
 		set +u
 		local rel_filter="${args[apkmirror_release_filter]:-}"
 		set -u
