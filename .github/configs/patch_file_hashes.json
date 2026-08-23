@@ -8,7 +8,7 @@
       "com.peacocktv.peacockandroid": "81285dcc209ee4b9c5a3ef3fcd3b940a",
       "com.tubitv": "ad4cfa4b600c6451571625a911aace33",
       "com.univision.prendetv": "af7f8e042bd4b56df21f80a2c99ac58f",
-      "com.wbd.hbomax": "f45b816686fef3bdd5b570af9425041a",
+      "com.wbd.hbomax": "72d858dc3d5b49b002d615ba9eded24a",
       "shared": "1ff06a7046fd3e27be42987d5ff8a954",
       "tv.pluto.android": "21b638f3a2c93b1afbea6acdb54d2f4f"
     }
@@ -141,10 +141,13 @@
   },
   "icysymmetra/tiktok-patches-for-morphe": {
     "dev": {
-      "com.zhiliaoapp.musically": "a2e26c9ae926d1fd7dafba158307df94",
+      "com.zhiliaoapp.musically": "d03a7642f8ae88c64c78c6f68718ce9d",
       "shared": "4c8e9750b338baa9b2956091fbe5841a"
     },
-    "stable": {}
+    "stable": {
+      "com.zhiliaoapp.musically": "d03a7642f8ae88c64c78c6f68718ce9d",
+      "shared": "4c8e9750b338baa9b2956091fbe5841a"
+    }
   },
   "imxeren/mix-patches": {
     "dev": {},
@@ -159,10 +162,13 @@
   },
   "jasonwu1994/gboard-patches": {
     "dev": {
-      "com.google.android.inputmethod.latin": "173347e874613372d5f0e2673021d65f",
-      "shared": "39fe74bc0691ddc258e6d7e5e4c193a3"
+      "com.google.android.inputmethod.latin": "675d7788509576dd582ac06c0d4d8c25",
+      "shared": "12d97a524e3d8cb13d9454139f01b3b5"
     },
-    "stable": {}
+    "stable": {
+      "com.google.android.inputmethod.latin": "044b077eeb7cd14ccb665ed4074ad085",
+      "shared": "dde709690a7b9822ebb2760d9f6f0cd9"
+    }
   },
   "jkennethcarino/adobo": {
     "dev": {
@@ -184,10 +190,10 @@
   },
   "morpheapp/morphe-patches": {
     "dev": {
-      "com.google.android.apps.youtube.music": "fc962ebb58f8972ec8f52a60c12d609e",
-      "com.google.android.youtube": "7fcd3e99611183cda94f60fad5936eb7",
-      "com.reddit.frontpage": "9e8376d341b89525a1bc50b33f2adbf1",
-      "shared": "bf76db2aeb04eb0c12d75dc28ce4f7bb"
+      "com.google.android.apps.youtube.music": "25829a58617ed29b67c853b7be279ad2",
+      "com.google.android.youtube": "c6680161d1ac186e274da54b845400ec",
+      "com.reddit.frontpage": "6b9a6347faba99f583457ac09481d085",
+      "shared": "f2762affcc54e46ded3052242b300391"
     },
     "stable": {}
   },

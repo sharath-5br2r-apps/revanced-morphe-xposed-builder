@@ -6,9 +6,8 @@ set -euo pipefail
 # while staying safely below GitHub's 10GB total repository cache limit.
 
 APK_CACHE_DIR="temp/apks"
-# Set limit to 10 GB (10 * 1024 * 1024 * 1024 bytes uncompressed)
-# Note: 10GB uncompressed is roughly 8GB compressed, well within GitHub's 10GB total limit.
-MAX_SIZE_BYTES=$((10 * 1024 * 1024 * 1024))
+# Set limit to 12 GB (12 * 1024 * 1024 * 1024 bytes uncompressed)
+MAX_SIZE_BYTES=$((12 * 1024 * 1024 * 1024))
 RETENTION_TIERS=(30 14 7 3)
 
 if [ ! -d "$APK_CACHE_DIR" ]; then
@@ -24,11 +23,11 @@ get_size() {
 current_size=$(get_size)
 
 if [ "$current_size" -lt "$MAX_SIZE_BYTES" ]; then
-    echo "Cache size is currently $current_size bytes (under 10GB). No cleanup needed!"
+    echo "Cache size is currently $current_size bytes (under 12GB). No cleanup needed!"
     exit 0
 fi
 
-echo "Cache size ($current_size bytes) exceeds 10GB limit! Initiating tiered cleanup..."
+echo "Cache size ($current_size bytes) exceeds 12GB limit! Initiating tiered cleanup..."
 
 for days in "${RETENTION_TIERS[@]}"; do
     echo "Evicting APKs older than $days days..."
