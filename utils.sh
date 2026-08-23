@@ -1047,7 +1047,7 @@ _trawl_get() {
 		local response status
 		response=$(curl -m 15 -s -X POST "$solver_url" \
 			-H 'Content-Type: application/json' \
-			-d "{\"url\":\"$url\",\"maxTimeout\":15000,\"skipHttp\":true${extra_headers}}") || true
+			-d "{\"url\":\"$url\",\"maxTimeout\":150000,\"skipHttp\":true${extra_headers}}") || true
 		status=$(echo "$response" | jq -r '.statusCode // empty')
 		if [[ "$status" =~ ^[1-3][0-9][0-9]$ ]]; then
 			html=$(echo "$response" | jq -r '.html // empty')
@@ -1061,7 +1061,7 @@ _trawl_get() {
 		wpr "Trawl attempt $attempt/$max_retries failed for: $url"
 		sleep 2
 	done
-	wpr "[!] Trawl failed after $max_retries attempts: $url"
+	wpr "Trawl failed after $max_retries attempts: $url"
 	return 1
 }
 
@@ -1101,7 +1101,7 @@ _cfb_get() {
 		sleep 2
 	done
 	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
-		wpr "[!] CFB failed after $max_retries attempts: $url"
+		wpr "CFB failed after $max_retries attempts: $url"
 	fi
 	return 1
 }
@@ -1132,7 +1132,7 @@ _fs_get() {
 		wpr "FlareSolverr attempt $attempt/$max_retries failed for: $url"
 		sleep 2
 	done
-	wpr "[!] FlareSolverr failed after $max_retries attempts: $url"
+	wpr "FlareSolverr failed after $max_retries attempts: $url"
 	return 1
 }
 
@@ -1329,17 +1329,19 @@ apkmirror_search() {
 
 		if [ -n "$clean_search_version" ]; then
 			local version_digits="${clean_search_version//[^0-9]/}"
+			local version_slug="${clean_search_version//./-}"
 			local url_digits
-			# The release URL contains the version in both the path and slug.  Only
-			# compare the first match; a newline-separated value cannot be used as a
-			# prefix in [[ ... ]].
-			url_digits=$(echo "$dlurl" | grep -oP '\d+-\d+-\d+-\d+' | head -n 1 | tr -d '-' || true)
-			if [ -n "$version_digits" ] && [ -n "$url_digits" ]; then
-				if [[ "$url_digits" != "$version_digits"* ]]; then
+			# Prefer the complete version slug. This supports versions with any
+			# number of components (for example 439.0.0.37.89).
+			if [[ "$dlurl" == *"$version_slug"* ]] || [[ "$dlurl" == *"$search_version"* ]] || [[ "$dlurl" == *"$clean_search_version"* ]]; then
+				:
+			else
+				# Keep a numeric fallback for release URLs whose slug extends the
+				# requested version with a build/variant suffix.
+				url_digits=$(echo "$dlurl" | grep -oP '[0-9]+(-[0-9]+)+' | head -n 1 | tr -d '-' || true)
+				if [ -z "$version_digits" ] || [ -z "$url_digits" ] || [[ "$url_digits" != "$version_digits"* ]]; then
 					continue
 				fi
-			elif [[ "$dlurl" != *"$clean_search_version"* ]] && [[ "$dlurl" != *"${clean_search_version//./-}"* ]] && [[ "$dlurl" != *"$search_version"* ]]; then
-				continue
 			fi
 		fi
 
