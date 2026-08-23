@@ -1,7 +1,4 @@
-xodo-morphe-hoodles (arm64-v8a): 11.0.1  
-xodo-morphe-hoodles (arm-v7a): 11.0.1  
-xodo-morphe-hoodles (x86_64): 11.0.1  
-xodo-morphe-hoodles (x86): 11.0.1  
+beta-maniac-morphe-rushiranpise (all): 0.11.0  
 
 **Notes:**  
 • Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
@@ -10,25 +7,24 @@ xodo-morphe-hoodles (x86): 11.0.1
 [GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Website](https://sharath-5br2r-apps.github.io)
   
 CLI: MorpheApp/morphe-desktop-1.13.2-all.jar  
-Patches: hoo-dles/patches-1.41.0.mpp  
-[Changelog](https://github.com/hoo-dles/morphe-patches/releases/tag/v1.41.0)
+Patches: rushiranpise/patches-1.21.0-dev.1.mpp  
+[Changelog](https://github.com/rushiranpise/morphe-patches/releases/tag/v1.21.0-dev.1)
 
 <details>
-<summary>v1.41.0</summary>
+<summary>v1.21.0-dev.1</summary>
 
-# [1.41.0](https://github.com/hoo-dles/morphe-patches/compare/v1.40.0...v1.41.0) (2026-08-18)
+## [1.21.0-dev.1](https://github.com/rushiranpise/morphe-patches/compare/v1.20.0...v1.21.0-dev.1) (2026-08-23)
 
+### 🐛 Bug Fixes
 
-### Bug Fixes
+* boldvoice ([d5223cf](https://github.com/rushiranpise/morphe-patches/commit/d5223cf5e1d48f8ddec063d3313ca1da9008c006)), closes [#735](https://github.com/rushiranpise/morphe-patches/issues/735)
+* bvm and capod ([881d815](https://github.com/rushiranpise/morphe-patches/commit/881d8155906de7db43abb12251468dea5b464109))
+* sai ([de3f5d3](https://github.com/rushiranpise/morphe-patches/commit/de3f5d3f22745b470ed255f1f9006a4d99c4f4e6))
 
-* **Duolingo:** Force max energy ([969359c](https://github.com/hoo-dles/morphe-patches/commit/969359c24d2d3ac6d75e06eb052c0f3cc7911b62))
+### ✨ New Features
 
-
-### Features
-
-* **Duolingo:** Update patches to support `6.92.5` ([dca61c3](https://github.com/hoo-dles/morphe-patches/commit/dca61c3c602aecb8c0b6fcc79a4368c4bb59cf67))
-* **MyFitnessPal:** Update patches to support `26.31.0` ([4d50bf9](https://github.com/hoo-dles/morphe-patches/commit/4d50bf9db7d4bd1ac32f393036683090429232c2))
-* **Smart Launcher:** Update patches to support `6.6 build 016` ([1218a1d](https://github.com/hoo-dles/morphe-patches/commit/1218a1d902fd28e90528765c8e6396df28d8981e))
-* **Windy:** Update patches to support `51.0.1` ([634ad8a](https://github.com/hoo-dles/morphe-patches/commit/634ad8aa627ce3f35ecc023d0e0df0f015b4c53c))
+* add dooflix ([2af855b](https://github.com/rushiranpise/morphe-patches/commit/2af855ba65b91e203967a392164b97335db74a44))
+* add moviebox ([22c95a9](https://github.com/rushiranpise/morphe-patches/commit/22c95a97dbf801a92e16085fa4840e14210c641f))
+* add nova launcher ([8eb276f](https://github.com/rushiranpise/morphe-patches/commit/8eb276fc4ae325e22c431300cabc3ed9376e30b3))
 
 </details>  
