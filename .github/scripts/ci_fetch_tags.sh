@@ -5,22 +5,30 @@ BASE_JSON=$(cat "$PATCH_FILE")
 
 fetch_gitlab_releases() {
   local repo=$1 host_instance=$2
+  [ "$host_instance" = "none" ] && host_instance=""
   local instance="${host_instance:-gitlab.com}"
   if [[ "$instance" != http* ]]; then
     instance="https://${instance}"
   fi
   local encoded_repo
   encoded_repo=$(jq -nr --arg v "$repo" '$v | @uri')
-  curl -sS -L -w '\n%{http_code}' "${instance}/api/v4/projects/${encoded_repo}/releases?per_page=100"
+  local -a curl_args=(-sS -L -w '\n%{http_code}')
+  [ -n "${GH_TOKEN:-}" ] && curl_args+=(-H "PRIVATE-TOKEN: ${GH_TOKEN}")
+  curl "${curl_args[@]}" \
+    "${instance}/api/v4/projects/${encoded_repo}/releases?per_page=100"
 }
 
 fetch_forgejo_gitea_releases() {
   local repo=$1 host_instance=$2
+  [ "$host_instance" = "none" ] && host_instance=""
   local instance="${host_instance:-codeberg.org}"
   if [[ "$instance" != http* ]]; then
     instance="https://${instance}"
   fi
-  curl -sS -L -w '\n%{http_code}' "${instance}/api/v1/repos/${repo}/releases?per_page=100"
+  local -a curl_args=(-sS -L -w '\n%{http_code}')
+  [ -n "${GH_TOKEN:-}" ] && curl_args+=(-H "Authorization: token ${GH_TOKEN}")
+  curl "${curl_args[@]}" \
+    "${instance}/api/v1/repos/${repo}/releases?per_page=100"
 }
 
 if echo "$BASE_JSON" | jq -e 'length == 0' >/dev/null; then
@@ -35,6 +43,7 @@ while read -r id repo host host_instance enabled enabledStable enabledDev; do
 
   echo "::group::Fetching tags for $repo (host: ${host:-github})"
   host_type="${host:-github}"
+  [ "$host_type" = "codeberg" ] && host_type="forgejo"
   api_http_code="200"
 
   if [ "$host_type" = "gitlab" ]; then

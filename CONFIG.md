@@ -67,7 +67,7 @@ These are set in your `.toml` config files under `configs/patches/` or `.github/
 | Key | Required | Description |
 |-----|----------|-------------|
 | `patches-source` | ✅ Yes | Space-separated list of patch source repos in `'owner/repo'` format. |
-| `patches-source-host` | ⚠️ Optional | Host for patch sources (default: `github`). |
+| `patches-source-host` | ⚠️ Optional | Host for patch sources (default: `github`). Supports `github`, `gitlab`, `https://git.example.com|gitlab`, or `https://forge.example.com|forgejo`. |
 | `patches-version` | ⚠️ Optional | Patch version to use: `latest`, `absolutelatest`, or a semver tag. |
 | `included-patches` | ⚠️ Optional | Patches to explicitly enable. Separate multi-source patches with `\|`. Names must be quoted. |
 | `excluded-patches` | ⚠️ Optional | Patches to explicitly disable. Separate multi-source patches with `\|`. Names must be quoted. |
@@ -79,7 +79,7 @@ These are set in your `.toml` config files under `configs/patches/` or `.github/
 | Key | Required | Description |
 |-----|----------|-------------|
 | `cli-source` | ✅ Yes | GitHub repo for the patcher CLI (e.g. `ReVanced/revanced-cli`, `MorpheApp/morphe-desktop`). |
-| `cli-source-host` | ⚠️ Optional | Host for the CLI source (default: `github`). |
+| `cli-source-host` | ⚠️ Optional | Host for the CLI source (default: `github`). Supports GitHub, custom GitLab, and Forgejo instances using `https://host|gitlab` or `https://host|forgejo`. |
 
 ### Download Sources
 
@@ -95,7 +95,7 @@ At least one `*-dlurl` key is required.
 | `apkcombo-dlurl` | APKCombo app page URL. |
 | `github-dlurl` | GitHub release URL to download directly from (e.g. `https://github.com/owner/repo/releases/tag/tagname`). |
 | `archive-dlurl` | Internet Archive URL to download APK from. |
-| `repo-dlurl` | Generic GitHub/GitLab release repo URL. |
+| `repo-dlurl` | Generic GitHub, GitLab, Forgejo, or Gitea release repo URL. |
 | `direct-dlurl` | Direct APK download URL (bypasses scraping). |
 
 ### Download Source Filters (for `repo-dlurl`)
@@ -105,7 +105,7 @@ At least one `*-dlurl` key is required.
 | `repo-dlurl-filter` | Regex to filter release asset filenames from `repo-dlurl`. |
 | `repo-dlurl-tag-filter` | Regex to filter release tags from `repo-dlurl`. |
 | `repo-dlurl-release-name-filter` | Regex to filter release names from `repo-dlurl`. Also accepted as `repo-dlurl-release-filter`. |
-| `repo-dlurl-source` | Override the source type for `repo-dlurl` (e.g. `github`, `gitlab`). |
+| `repo-dlurl-source` | Override the source type for `repo-dlurl` (e.g. `github`, `gitlab`, `https://host|gitlab`, or `https://host|forgejo`). |
 
 ### Other
 

@@ -161,15 +161,10 @@ for table_name in $(toml_get_table_names); do
 		patches_ref_all="${patches_ref_all}${pref},"
 		if [ "$phost_type" = "none" ]; then
 			changelog_url_all="${changelog_url_all}passthrough "
-		elif [ "$phost_type" = gitlab ]; then
-			ptag="${pref:-latest}"
-			changelog_url_all="${changelog_url_all}${phost_inst:-https://gitlab.com}/${psrc}/-/releases/${ptag} "
-		elif [ "$phost_type" = forgejo ] || [ "$phost_type" = gitea ]; then
-			ptag="${pref:-latest}"
-			changelog_url_all="${changelog_url_all}${phost_inst}/${psrc}/releases/tag/${ptag} "
 		else
 			ptag="${pref:-latest}"
-			changelog_url_all="${changelog_url_all}${phost_inst:-https://github.com}/${psrc}/releases/tag/${ptag} "
+			changelog_url=$(source_release_web_url "$phost_type" "$psrc" "$ptag" "$phost_inst" 2>/dev/null || true)
+			changelog_url_all="${changelog_url_all}${changelog_url:-passthrough} "
 		fi
 	done
 	app_args[patches_src]=${p_srcs[0]}

@@ -189,9 +189,12 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
     
     try:
         host = new_info.get('host', 'github')
+        host_instance = new_info.get('host_instance') or ''
+        if host_instance == 'none':
+            host_instance = ''
         if host == 'gitlab':
             encoded_repo = repo.replace('/', '%2F')
-            instance = new_info.get('host_instance') or 'gitlab.com'
+            instance = host_instance or 'gitlab.com'
             if not instance.startswith('http'):
                 instance = f'https://{instance}'
             api_url = f"{instance}/api/v4/projects/{encoded_repo}/releases/{tag}"
@@ -211,6 +214,29 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
             if not download_url:
                 raise Exception(f"No .mpp, .rvp, or .jar asset found in GitLab release for {repo}@{tag}")
                 
+            dl_req = urllib.request.Request(download_url, headers={'Accept': 'application/octet-stream'})
+            with urllib.request.urlopen(dl_req) as dl_resp, open(file_name, 'wb') as out_file:
+                out_file.write(dl_resp.read())
+        elif host in ('forgejo', 'gitea', 'codeberg'):
+            instance = host_instance or ('codeberg.org' if host == 'codeberg' else '')
+            if not instance:
+                raise Exception(f"A host instance is required for {host} release source {repo}")
+            if not instance.startswith('http'):
+                instance = f'https://{instance}'
+            api_url = f"{instance}/api/v1/repos/{repo}/releases/tags/{tag}"
+            req = urllib.request.Request(api_url)
+            with urllib.request.urlopen(req) as response:
+                release_data = json.loads(response.read().decode('utf-8'))
+            file_name = None
+            download_url = None
+            for asset in release_data.get('assets', []):
+                name = asset.get('name', '')
+                if name.endswith(('.mpp', '.rvp', '.jar')):
+                    file_name = name
+                    download_url = asset.get('browser_download_url') or asset.get('url')
+                    break
+            if not download_url:
+                raise Exception(f"No patch asset found in Forgejo release for {repo}@{tag}")
             dl_req = urllib.request.Request(download_url, headers={'Accept': 'application/octet-stream'})
             with urllib.request.urlopen(dl_req) as dl_resp, open(file_name, 'wb') as out_file:
                 out_file.write(dl_resp.read())

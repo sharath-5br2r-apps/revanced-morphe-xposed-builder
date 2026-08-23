@@ -292,29 +292,5 @@
     "prerelease": "v0.10.0-dev.1",
     "pre_date": "2026-08-10T09:24:21Z",
     "blocked": false
-  },
-  "prathxm": {
-    "repo": "PrathxmOp/Prathxm-Patches",
-    "stable": "v1.13.0",
-    "stable_date": "2026-07-10T09:33:46Z",
-    "prerelease": "",
-    "pre_date": "",
-    "blocked": false
-  },
-  "byehi98": {
-    "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.14.0",
-    "stable_date": "2026-08-20T11:24:45Z",
-    "prerelease": "",
-    "pre_date": "",
-    "blocked": false
-  },
-  "stylus": {
-    "repo": "ch3thanhs/stylus",
-    "stable": "v1.4.0",
-    "stable_date": "2026-08-05T17:32:27Z",
-    "prerelease": "",
-    "pre_date": "",
-    "blocked": false
   }
 }

@@ -1,21 +1,33 @@
 #!/usr/bin/env bash
 
+pr() { echo >&2 -e "\033[0;32m[+] ${1}\033[0m"; }
+epr() {
+	echo >&2 -e "\033[0;31m[-] ${1}\033[0m"
+	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::error::utils.sh [-] ${1}\n"; fi
+}
+wpr() {
+	echo >&2 -e "\033[0;33m[!] ${1}\033[0m"
+	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::warning::utils.sh [!] ${1}\n"; fi
+}
+abort() {
+	epr "ABORT: ${1-}"
+	rm -rf ./${TEMP_DIR}/*tmp.* ./${TEMP_DIR}/*/*tmp.* ./${TEMP_DIR}/*-temporary-files ./${TEMP_DIR}/*.apk-temporary-files ./*-temporary-files
+	trap - SIGTERM SIGINT EXIT
+	exit 1
+}
+
 if [ -f .env ]; then
-	echo >&2 -e "\033[0;32m[+] Using .env file for keystore and signing.\033[0m"
+	pr "Using .env file for keystore and signing."
 	source .env
 fi
 if [ -z "${KEYSTORE_BASE64:-}" ] || [ -z "${KEYSTORE_PASSWORD:-}" ] || [ -z "${KEYSTORE_ALIAS:-}" ]; then
-	echo >&2 -e "\033[0;33m[!] Keystore information is not fully set. Please ensure KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS are defined in .env or environment variables.\033[0m"
-	echo >&2 -e "\033[0;33m[!] Auto generating values for KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS.\033[0m"
-	if [ -n "${GITHUB_REPOSITORY:-}" ]; then
-		echo >&2 -e "::warning::utils.sh [!] Keystore information is not fully set. Please ensure KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS are defined in .env or environment variables.\n"
-		echo >&2 -e "::warning::utils.sh [!] Auto generating values for KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS.\n"
-	fi
+	wpr "Keystore information is not fully set. Please ensure KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS are defined in .env or environment variables."
+	wpr "Auto generating values for KEYSTORE_BASE64, KEYSTORE_PASSWORD, and KEYSTORE_ALIAS."
+	wpr "This is a public keystore and should not be used for production builds. Please provide your own keystore for safety."
 	source .env.default
 fi
 if [ -z "${KEYSTORE_KEY_PASSWORD:-}" ]; then
-	echo >&2 -e "\033[0;32m[!] No KEYSTORE_KEY_PASSWORD provided, using KEYSTORE_PASSWORD instead. \033[0m"
-	echo >&2 -e "::warning::utils.sh [!] No KEYSTORE_KEY_PASSWORD provided, using KEYSTORE_PASSWORD instead.\n"
+	pr "No KEYSTORE_KEY_PASSWORD provided, using KEYSTORE_PASSWORD instead."
 	KEYSTORE_KEY_PASSWORD=${KEYSTORE_PASSWORD}
 fi
 if [ -z "${HTMLQ:-}" ]; then
@@ -87,21 +99,7 @@ toml_get() {
 	else return 1; fi
 }
 
-pr() { echo >&2 -e "\033[0;32m[+] ${1}\033[0m"; }
-epr() {
-	echo >&2 -e "\033[0;31m[-] ${1}\033[0m"
-	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::error::utils.sh [-] ${1}\n"; fi
-}
-wpr() {
-	echo >&2 -e "\033[0;33m[!] ${1}\033[0m"
-	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::warning::utils.sh [!] ${1}\n"; fi
-}
-abort() {
-	epr "ABORT: ${1-}"
-	rm -rf ./${TEMP_DIR}/*tmp.* ./${TEMP_DIR}/*/*tmp.* ./${TEMP_DIR}/*-temporary-files ./${TEMP_DIR}/*.apk-temporary-files ./*-temporary-files
-	trap - SIGTERM SIGINT EXIT
-	exit 1
-}
+
 java() { env -i PATH="$PATH" HOME="$HOME" LANG="${LANG:-en_US.UTF-8}" java --enable-native-access=ALL-UNNAMED "$@"; }
 
 pr "Setting up Keystore"
@@ -152,6 +150,39 @@ parse_host_spec() {
 
 	eval "$host_var_name='$host_type'"
 	eval "$instance_var_name='$host_inst'"
+}
+
+# Perform an authenticated request for any supported forge. GitHub uses its
+# token header; GitLab/Forgejo instances use the normal request path.
+source_req() {
+	local host=${1,,} url=$2 output=$3
+	shift 3
+	if [ "$host" = github ]; then
+		gh_req "$url" "$output" "$@"
+	else
+		req "$url" "$output" "$@"
+	fi
+}
+
+source_dl() {
+	local host=${1,,} output=$2 url=$3
+	shift 3
+	if [ "$host" = github ]; then
+		gh_dl "$output" "$url"
+	else
+		pr "Getting '$output' from '$url'"
+		_req "$url" "$output" -H "Accept: application/octet-stream" "$@"
+	fi
+}
+
+source_release_web_url() {
+	local host=${1,,} src=$2 tag=$3 host_instance=$4
+	case "$host" in
+		github) echo "${host_instance:-https://github.com}/${src}/releases/tag/${tag}" ;;
+		gitlab) echo "${host_instance:-https://gitlab.com}/${src}/-/releases/${tag}" ;;
+		forgejo|gitea) echo "${host_instance}/${src}/releases/tag/${tag}" ;;
+		*) return 1 ;;
+	esac
 }
 
 source_release_api_base() {
@@ -337,11 +368,11 @@ _get_prebuilts() {
 	local rv_rel release resp tag_name matches asset name url
 	rv_rel=$(source_release_api_base "$host" "$src" "$host_instance") || return 1
 	if [ -n "$cli_tag_pattern" ] || [ -n "$cli_rel_name_pattern" ]; then
-		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 		resp=$(filter_releases_by_regex "$cli_tag_pattern" "$cli_rel_name_pattern" <<<"$resp")
 		release=$(source_release_pick_from_list "$host" absolutelatest "$host_instance" <<<"$resp") || return 1
 	elif [ "$ver" = "dev" ]; then
-		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 		release=$(source_release_pick_from_list "$host" dev "$host_instance" <<<"$resp") || true
 		ver=$(jq -r '.tag_name' <<<"$release") || true
 		if [ -z "$ver" ] || [ "$ver" = "null" ]; then
@@ -350,11 +381,11 @@ _get_prebuilts() {
 		fi
 	fi
 	if [ -z "${release:-}" ] && [ "$ver" = "latest" ]; then
-		resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+		resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 		release=$(source_release_pick_from_list "$host" latest "$host_instance" <<<"$resp") || return 1
 	elif [ -z "${release:-}" ]; then
 		rv_rel=$(source_release_tag_api "$host" "$src" "$ver" "$host_instance") || return 1
-		release=$({ if [ "$host" = github ]; then gh_req "$rv_rel" -; else req "$rv_rel" -; fi; }) || return 1
+		release=$(source_req "$host" "$rv_rel" -) || return 1
 	fi
 	tag_name=$(jq -r '.tag_name' <<<"$release") || return 1
 	name_ver=$tag_name
@@ -414,12 +445,7 @@ _get_prebuilts() {
 		url=$(source_release_asset_url "$host" <<<"$asset")
 		name=$(jq -r .name <<<"$asset")
 		file="${dir}/${name}"
-		if [ "$host" = github ]; then
-			gh_dl "$file" "$url" >&2 || return 1
-		else
-			pr "Getting '$file' from '$url'"
-			_req "$url" "$file" -H "Accept: application/octet-stream" >&2 || return 1
-		fi
+		source_dl "$host" "$file" "$url" >&2 || return 1
 		echo "$tag: $(cut -d/ -f1 <<<"$src")/${name}  " >>"${cl_dir}/changelog.md"
 	else
 		grab_cl=false
@@ -463,11 +489,11 @@ _get_prebuilts() {
 		local rv_rel="" release="" resp="" tag_name="" matches="" asset="" name="" url=""
 		rv_rel=$(source_release_api_base "$host" "$src" "$host_instance") || return 1
 		if [ -n "$ptf" ] || [ -n "$prnf" ]; then
-			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+			resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 			resp=$(filter_releases_by_regex "$ptf" "$prnf" <<<"$resp")
 			release=$(source_release_pick_from_list "$host" absolutelatest "$host_instance" <<<"$resp") || return 1
 		elif [ "$ver" = "dev" ]; then
-			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+			resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 			release=$(source_release_pick_from_list "$host" dev "$host_instance" <<<"$resp") || true
 			ver=$(jq -r '.tag_name' <<<"$release") || true
 			if [ -z "$ver" ] || [ "$ver" = "null" ]; then
@@ -476,7 +502,7 @@ _get_prebuilts() {
 			fi
 		fi
 		if [ -z "${release:-}" ] && [ "$ver" = "absolutelatest" ]; then
-			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+			resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 			release=$(source_release_pick_from_list "$host" absolutelatest "$host_instance" <<<"$resp") || true
 			ver=$(jq -r '.tag_name' <<<"$release") || true
 			if [ -z "$ver" ] || [ "$ver" = "null" ]; then
@@ -485,11 +511,11 @@ _get_prebuilts() {
 			fi
 		fi
 		if [ -z "${release:-}" ] && [ "$ver" = "latest" ]; then
-			resp=$({ if [ "$host" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || return 1
+			resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 			release=$(source_release_pick_from_list "$host" latest "$host_instance" <<<"$resp") || return 1
 		elif [ -z "${release:-}" ]; then
 			rv_rel=$(source_release_tag_api "$host" "$src" "$ver" "$host_instance") || return 1
-			release=$({ if [ "$host" = github ]; then gh_req "$rv_rel" -; else req "$rv_rel" -; fi; }) || return 1
+			release=$(source_req "$host" "$rv_rel" -) || return 1
 		fi
 		tag_name=$(jq -r '.tag_name' <<<"$release") || return 1
 		name_ver=$tag_name
@@ -553,12 +579,7 @@ _get_prebuilts() {
 			url=$(source_release_asset_url "$host" <<<"$asset")
 			name=$(jq -r .name <<<"$asset")
 			file="${dir}/${name}"
-			if [ "$host" = github ]; then
-				gh_dl "$file" "$url" >&2 || return 1
-			else
-				pr "Getting '$file' from '$url'"
-				_req "$url" "$file" -H "Accept: application/octet-stream" >&2 || return 1
-			fi
+			source_dl "$host" "$file" "$url" >&2 || return 1
 			echo "$tag: $(cut -d/ -f1 <<<"$src")/${name}  " >>"${cl_dir}/changelog.md"
 		else
 			grab_cl=false
@@ -569,13 +590,7 @@ _get_prebuilts() {
 
 		if [ "$grab_cl" = true ]; then
 			local cl_url=""
-			if [ "$host" = github ]; then
-				cl_url="${host_instance:-https://github.com}/${src}/releases/tag/${tag_name}"
-			elif [ "$host" = gitlab ]; then
-				cl_url="${host_instance:-https://gitlab.com}/${src}/-/releases/${tag_name}"
-			elif [ "$host" = forgejo ] || [ "$host" = gitea ]; then
-				cl_url="${host_instance}/${src}/releases/tag/${tag_name}"
-			fi
+			cl_url=$(source_release_web_url "$host" "$src" "$tag_name" "$host_instance" 2>/dev/null || true)
 			if [ -n "$cl_url" ]; then
 				echo -e "[Changelog](${cl_url})\n" >>"${cl_dir}/changelog.md"
 				local cl_body
@@ -675,13 +690,9 @@ config_update() {
 		local table_updated=false
 		for i in "${!p_srcs[@]}"; do
 			local PATCHES_SRC="${p_srcs[$i]}"
-			local PATCHES_HOST="${p_hosts[$i]:-${p_hosts[0]}}"
-			if [[ "$PATCHES_HOST" == *"|gitlab" ]]; then
-				PATCHES_GITLAB_HOST="${PATCHES_HOST%%|*}"
-				PATCHES_HOST="gitlab"
-			else
-				PATCHES_GITLAB_HOST="https://gitlab.com"
-			fi
+			local PATCHES_HOST_RAW="${p_hosts[$i]:-${p_hosts[0]}}"
+			local PATCHES_HOST="" PATCHES_GITLAB_HOST=""
+			parse_host_spec "$PATCHES_HOST_RAW" PATCHES_HOST PATCHES_GITLAB_HOST || continue
 			local PATCHES_VER="${p_vers[$i]:-${p_vers[0]}}"
 			if [[ -v sources["$PATCHES_HOST/$PATCHES_SRC/$PATCHES_VER/$PATCHES_GITLAB_HOST"] ]]; then
 				if [ "${sources["$PATCHES_HOST/$PATCHES_SRC/$PATCHES_VER/$PATCHES_GITLAB_HOST"]}" = 1 ]; then table_updated=true; fi
@@ -690,17 +701,17 @@ config_update() {
 				local rv_rel resp last_patches
 				rv_rel=$(source_release_api_base "$PATCHES_HOST" "$PATCHES_SRC" "$PATCHES_GITLAB_HOST") || continue
 				if [ "$PATCHES_VER" = "dev" ]; then
-					resp=$({ if [ "$PATCHES_HOST" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || continue
+					resp=$(source_req "$PATCHES_HOST" "$rv_rel?per_page=100" -) || continue
 					last_patches=$(source_release_pick_from_list "$PATCHES_HOST" dev <<<"$resp") || continue
 				elif [ "$PATCHES_VER" = "latest" ]; then
-					resp=$({ if [ "$PATCHES_HOST" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || continue
+					resp=$(source_req "$PATCHES_HOST" "$rv_rel?per_page=100" -) || continue
 					last_patches=$(source_release_pick_from_list "$PATCHES_HOST" latest <<<"$resp") || continue
 				elif [ "$PATCHES_VER" = "absolutelatest" ]; then
-					resp=$({ if [ "$PATCHES_HOST" = github ]; then gh_req "$rv_rel?per_page=100" -; else req "$rv_rel?per_page=100" -; fi; }) || continue
+					resp=$(source_req "$PATCHES_HOST" "$rv_rel?per_page=100" -) || continue
 					last_patches=$(source_release_pick_from_list "$PATCHES_HOST" absolutelatest <<<"$resp") || continue
 				else
 					rv_rel=$(source_release_tag_api "$PATCHES_HOST" "$PATCHES_SRC" "$PATCHES_VER" "$PATCHES_GITLAB_HOST") || continue
-					last_patches=$({ if [ "$PATCHES_HOST" = github ]; then gh_req "$rv_rel" -; else req "$rv_rel" -; fi; }) || continue
+					last_patches=$(source_req "$PATCHES_HOST" "$rv_rel" -) || continue
 				fi
 				if ! last_patches=$(source_release_assets_json "$PATCHES_HOST" <<<"$last_patches" | jq -e -r '.[0].name'); then
 					abort "config_update error: '$last_patches'"
@@ -2170,10 +2181,10 @@ get_repo_resp() {
 	if [ -n "$tag" ]; then
 		local tag_api
 		tag_api=$(source_release_tag_api "$host" "$src" "$tag" "$host_instance") || return 1
-		resp=$({ if [ "$host" = github ]; then gh_req "$tag_api" - 2>/dev/null || req "${host_instance}/api/v1/repos/${src}/releases/tags/${tag}" -; else req "$tag_api" -; fi; }) || return 1
+		resp=$(source_req "$host" "$tag_api" -) || return 1
 		release="[${resp}]"
 	else
-		resp=$({ if [ "$host" = github ]; then gh_req "${api_url}?per_page=100" - 2>/dev/null || req "${host_instance}/api/v1/repos/${src}/releases?per_page=100" -; else req "${api_url}?per_page=100" -; fi; }) || return 1
+		resp=$(source_req "$host" "${api_url}?per_page=100" -) || return 1
 		release="$resp"
 	fi
 
@@ -2184,7 +2195,7 @@ get_repo_resp() {
 	fi
 
 	local release_with_apks
-	release_with_apks=$(jq -c --arg f "$filter" 'map(select((.assets // []) + (.assets_links // []) | map(select(if ($f | startswith("!")) then ((.name // .browser_download_url // "") | test($f[1:]; "i") | not) else ((.name // .browser_download_url // "") | test($f; "i")) end)) | length > 0))' <<<"$release" 2>/dev/null)
+	release_with_apks=$(jq -c --arg f "$filter" 'map(select((((if (.assets | type) == "object" then .assets.links else .assets end) // .assets_links // []) | map(select(if ($f | startswith("!")) then ((.name // .browser_download_url // "") | test($f[1:]; "i") | not) else ((.name // .browser_download_url // "") | test($f; "i")) end)) | length > 0)))' <<<"$release" 2>/dev/null)
 	if [ -n "$release_with_apks" ] && [ "$release_with_apks" != "[]" ]; then
 		release="$release_with_apks"
 	fi
@@ -2204,7 +2215,7 @@ get_repo_resp() {
 	assets_json=$(jq -c --arg f "$filter" '
 		(if type == "array" then . else [.] end) | map(
 			. as $rel |
-			(($rel.assets // []) + ($rel.assets_links // [])) | map(
+			(((if ($rel.assets | type) == "object" then $rel.assets.links else $rel.assets end) // $rel.assets_links // [])) | map(
 				. as $asset |
 				($asset.name // $asset.browser_download_url // "") as $name |
 				select(

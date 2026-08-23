@@ -4,11 +4,12 @@ git checkout -f update || git switch --discard-changes --orphan update
 cp -f build.tmp build.md
 
 get_update_json() {
+  local raw_base="${RAW_CONTENT_BASE_URL:-https://raw.githubusercontent.com}"
   echo "{
   \"version\": \"$1\",
   \"versionCode\": $NEXT_VER_CODE,
   \"zipUrl\": \"$2\",
-  \"changelog\": \"https://raw.githubusercontent.com/$GITHUB_REPOSITORY/update/build.md\"
+  \"changelog\": \"${raw_base%/}/$GITHUB_REPOSITORY/update/build.md\"
 }"
 }
 

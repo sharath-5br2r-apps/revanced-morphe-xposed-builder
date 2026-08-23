@@ -29,7 +29,9 @@ def main():
         print("No versions recorded. Skipping update.")
         return
 
-    repo_url = f"https://oauth2:{token}@github.com/nullcpy/apks.git"
+    repo_url = os.environ.get("APKS_REPO_URL", "https://github.com/nullcpy/apks.git")
+    if repo_url.startswith("https://"):
+        repo_url = repo_url.replace("https://", f"https://oauth2:{token}@", 1)
     clone_dir = "temp/apks_repo"
     
     if os.path.exists(clone_dir):
