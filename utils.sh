@@ -1330,7 +1330,10 @@ apkmirror_search() {
 		if [ -n "$clean_search_version" ]; then
 			local version_digits="${clean_search_version//[^0-9]/}"
 			local url_digits
-			url_digits=$(echo "$dlurl" | grep -oP '\d+-\d+-\d+-\d+' | tr -d '-' || true)
+			# The release URL contains the version in both the path and slug.  Only
+			# compare the first match; a newline-separated value cannot be used as a
+			# prefix in [[ ... ]].
+			url_digits=$(echo "$dlurl" | grep -oP '\d+-\d+-\d+-\d+' | head -n 1 | tr -d '-' || true)
 			if [ -n "$version_digits" ] && [ -n "$url_digits" ]; then
 				if [[ "$url_digits" != "$version_digits"* ]]; then
 					continue
@@ -1349,7 +1352,9 @@ apkmirror_search() {
 				best_fallback_url="$dlurl"
 			fi
 		# Pass 2 Logic: If it's strictly the requested arch, save it as a fallback in case no universal is found
-		elif [ "$node_arch" = "$arch" ]; then
+		# APKMirror also labels compatible multi-ABI variants as e.g.
+		# "arm64-v8a + armeabi".  Treat these as a match for the requested ABI.
+		elif [ "$node_arch" = "$arch" ] || [[ "$node_arch" == "$arch + "* ]]; then
 			if isoneof "$node_dpi" "${appdpi[@]}"; then
 				[ -z "$specific_arch_url" ] && specific_arch_url="$dlurl"
 			elif [ "$match_any_dpi" = true ] && [ -z "$specific_arch_fallback_url" ]; then
