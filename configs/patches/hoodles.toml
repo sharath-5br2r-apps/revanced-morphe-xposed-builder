@@ -63,6 +63,7 @@ apkpure-dlurl = "https://apkpure.com/camscanner-scanner-pdf-maker/com.intsig.cam
 apkcombo-dlurl = "https://apkcombo.com/camscanner/com.intsig.camscanner"
 dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
+patcher-args = "--continue-on-error"
 
 [smart-launcher-6-morphe-hoodles]
 enabled = false

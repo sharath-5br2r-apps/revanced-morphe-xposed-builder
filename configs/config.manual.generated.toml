@@ -296,7 +296,6 @@ gboard-morphe-jasonwu1994-adobo:
   excluded-patches: '''Package Rename'' | '
   patcher-args: -f --continue-on-error
   cli-source: MorpheApp/morphe-desktop
-  version: 17.8.7.939743344
   apkmirror-dlurl: https://www.apkmirror.com/apk/google-inc/gboard/
   apkmirror-example-dlurl: https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/
   apkmirror-release-filter: '!(lite|beta)'
@@ -381,17 +380,17 @@ camscanner-morphe-hoodles:
   app-name: camscanner
   rv-brand: morphe-hoodles
   github-dlurl: https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.intsig.camscanner
-  version: latest
   build-mode: apk
   arch: arm64-v8a
   pkg-name: com.intsig.camscanner
   uptodown-dlurl: https://camscanner-pdf-creator.en.uptodown.com/android
   apkmirror-dlurl: https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator
-  apkmirror-example-url: https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator/camscanner-scanner-pdf-maker-7-23-5-2608050000-release/
+  apkmirror-example-url: https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator/camscanner-scanner-pdf-maker-7-24-0-2608130000-release/
   apkpure-dlurl: https://apkpure.com/camscanner-scanner-pdf-maker/com.intsig.camscanner
   apkcombo-dlurl: https://apkcombo.com/camscanner/com.intsig.camscanner
   dpi: nodpi anydpi auto
   patches-source: hoo-dles/morphe-patches
+  patcher-args: --continue-on-error
 smart-launcher-6-morphe-hoodles:
   enabled: false
   cli-source: MorpheApp/morphe-desktop
@@ -529,6 +528,7 @@ soundcloud-morphe-kondratjev:
   pkg-name: com.soundcloud.android
   uptodown-dlurl: https://soundcloud.en.uptodown.com/android
   apkmirror-dlurl: https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud
+  apkmirror-example-url: https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/soundcloud-the-music-you-love-2026-07-23-release-release
   apkpure-dlurl: https://apkpure.com/sound-cloud-android-app/com.soundcloud.android
   apkcombo-dlurl: https://apkcombo.com/soundcloud/com.soundcloud.android
   dpi: nodpi anydpi auto
@@ -717,8 +717,8 @@ jiohotstar-morphe-paresh:
   version: latest
   build-mode: apk
   pkg-name: in.startv.hotstar
-  apkmirror-dlurl: https://www.apkmirror.com/apk/jiostar-india-private-limited/disney-hotstar/
-  apkmirror-example-url: https://www.apkmirror.com/apk/jiostar-india-private-limited/disney-hotstar/jiohotstar-26-03-03-2-release/
+  apkmirror-dlurl: https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/
+  apkmirror-example-url: https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/
   dpi: nodpi anydpi auto
   github-dlurl: https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar
   patches-source: Paresh-Maheshwari/paresh-patches
@@ -735,6 +735,7 @@ sdmaid-morphe-paresh:
   pkg-name: eu.darken.sdmse
   uptodown-dlurl: https://sd-maid-se.en.uptodown.com/android
   apkmirror-dlurl: https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/
+  apkmirror-example-url: https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release
   dpi: nodpi anydpi auto
   patches-source: Paresh-Maheshwari/paresh-patches
   patches-source-host: gitlab
@@ -854,7 +855,7 @@ microsoft-word-morphe-rushiranpise:
   rv-brand: morphe-rushiranpise
   custom-microg-patches: '''None'''
   build-mode: apk
-  arch: multi
+  arch: arm64-v8a arm-v7a x86_64
   pkg-name: com.microsoft.office.word
   uptodown-dlurl: https://microsoft-word-preview.en.uptodown.com/android
   apkmirror-dlurl: https://www.apkmirror.com/apk/microsoft-corporation/word/
@@ -868,7 +869,7 @@ microsoft-excel-morphe-rushiranpise:
   rv-brand: morphe-rushiranpise
   custom-microg-patches: '''None'''
   build-mode: apk
-  arch: multi
+  arch: arm64-v8a arm-v7a x86_64
   pkg-name: com.microsoft.office.excel
   uptodown-dlurl: https://microsoft-excel-preview.en.uptodown.com/android
   apkmirror-dlurl: https://www.apkmirror.com/apk/microsoft-corporation/excel/
@@ -933,6 +934,7 @@ windscribe-vpn-morphe-rushiranpise:
   apkmirror-dlurl: https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet
   dpi: nodpi anydpi auto
   patches-source: rushiranpise/morphe-patches
+  apkmirror-exampls-url: https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/
 adguard-morphe-rushiranpise:
   enabled: true
   cli-source: MorpheApp/morphe-desktop
