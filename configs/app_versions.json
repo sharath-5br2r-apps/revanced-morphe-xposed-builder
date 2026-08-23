@@ -11,7 +11,7 @@
       "prime-video-morphe-hoodles",
       "prime-video-morphe-hoodles-shared"
     ],
-    "version": "3.0.468"
+    "version": "3.0.469"
   },
   "Amazon Alexa": {
     "keys": [
@@ -117,7 +117,7 @@
     "keys": [
       "nova-launcher-morphe-hoodles"
     ],
-    "version": "8.8.8"
+    "version": "88900 (8.8.9)"
   },
   "Battery Guru": {
     "keys": [
@@ -129,7 +129,7 @@
     "keys": [
       "poweramp-morphe-hooman"
     ],
-    "version": "build-1028-uni"
+    "version": "build-1025-bundle-play"
   },
   "Xodo PDF": {
     "keys": [
@@ -141,7 +141,7 @@
     "keys": [
       "beta-maniac-morphe-rushiranpise"
     ],
-    "version": "0.9.4"
+    "version": "0.10.0"
   },
   "Hill Climb Racing": {
     "keys": [
@@ -159,7 +159,7 @@
     "keys": [
       "sdmaid-morphe-paresh"
     ],
-    "version": "2.0.3"
+    "version": "2.0.3-rc0"
   },
   "Solid Explorer": {
     "keys": [
