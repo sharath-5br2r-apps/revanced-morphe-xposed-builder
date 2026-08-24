@@ -43,10 +43,10 @@
   "brosssh": {
     "repo": "brosssh/morphe-patches",
     "stable": "v2.8.1",
-    "prerelease": "",
+    "prerelease": "v2.8.2-dev.1",
     "blocked": false,
     "stable_date": "2026-07-16T08:59:03Z",
-    "pre_date": ""
+    "pre_date": "2026-08-24T20:36:58Z"
   },
   "bufferk": {
     "repo": "bufferk/morphe-patches",
