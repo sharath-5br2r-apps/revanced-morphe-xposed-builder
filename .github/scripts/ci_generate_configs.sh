@@ -67,13 +67,14 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] 
         .value as $app |
         (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
         
-        # Check if the app has any source where pre_date > stable_date
+        # Check if the app has any source where pre_date > stable_date or where no pre_date exists (fallback to stable or active)
         (
           $srcs | map(
             . as $src |
             ($tags | to_entries | map(select((.value.repo | ascii_downcase) == $src)) | .[0].value) as $t |
-            if $t == null then false
-            else ($t.pre_date // "") > ($t.stable_date // "") end
+            if $t == null then true
+            elif ($t.prerelease // "") == "" then true
+            else ($t.pre_date // "") >= ($t.stable_date // "") end
           ) | any
         ) as $has_valid_dev |
 
