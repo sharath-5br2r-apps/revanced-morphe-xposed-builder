@@ -35,6 +35,23 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
 
+# ── YouTube morphe-anddea-mocha (Catppuccin Mocha) ────────────────────────────
+[youtube-morphe-anddea-mocha]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe-anddea-mocha"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "anddea/revanced-patches"
+included-patches = "'MaterialYou'"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF181825 -OlightThemeBackgroundColor=#E6E9EF --continue-on-error"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
 # ── YouTube Music morphe-anddea (stock/AMOLED, default) ───────────────────────
 [youtube-music-morphe-anddea]
 enabled = true
