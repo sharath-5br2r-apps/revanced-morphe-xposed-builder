@@ -8,8 +8,8 @@
   },
   "Prime-Video": {
     "keys": [
-      "prime-video-morphe-hoodles",
-      "prime-video-morphe-hoodles-shared"
+      "prime-video-morphe-hoodles-exp",
+      "prime-video-morphe-hoodles-shared-exp"
     ],
     "version": "3.0.469"
   },
@@ -21,47 +21,48 @@
   },
   "Adobe Acrobat": {
     "keys": [
-      "adobe-acrobat-morphe-rushiranpise"
+      "adobe-acrobat-morphe-rushiranpise-exp"
     ],
     "version": "26.7.2"
   },
   "Proton VPN": {
     "keys": [
-      "proton-vpn-morphe-paresh"
+      "proton-vpn-morphe-paresh-exp"
     ],
     "version": "5.19.78.0"
   },
   "X": {
     "keys": [
-      "x-morphe-piko",
-      "x-morphe-piko-materialyou"
+      "x-morphe-piko-exp",
+      "x-morphe-piko-materialyou-exp"
     ],
     "version": "12.19.1-release.0"
   },
   "Speedtest": {
     "keys": [
-      "speedtest-morphe-xtra"
+      "speedtest-morphe-xtra-exp"
     ],
     "version": "7.0.7"
   },
   "Bitwarden": {
     "keys": [
-      "bitwarden-morphe-stylus"
+      "bitwarden-morphe-stylus",
+      "bitwarden-morphe-stylus-exp"
     ],
     "version": "2026.8.0-bwpm"
   },
   "Oxygen Updater": {
     "keys": [
-      "oxygen-updater-morphe-rushiranpise"
+      "oxygen-updater-morphe-rushiranpise-exp"
     ],
     "version": "7.1.0"
   },
   "Brave": {
     "keys": [
-      "brave-stable-morphe-dh6k-arm64-v8a",
-      "brave-stable-morphe-dh6k-arm-v7a",
-      "brave-stable-morphe-dh6k-x86_64",
-      "brave-stable-morphe-dh6k-x86"
+      "brave-stable-morphe-kveld9-arm64-v8a-exp",
+      "brave-stable-morphe-kveld9-arm-v7a-exp",
+      "brave-stable-morphe-kveld9-x86_64-exp",
+      "brave-stable-morphe-kveld9-x86-exp"
     ],
     "version": "1.94.115"
   },
@@ -85,86 +86,92 @@
   },
   "PC Remote": {
     "keys": [
-      "pc-remote-morphe-rushiranpise"
+      "pc-remote-morphe-rushiranpise-exp"
     ],
     "version": "8.3.5"
   },
   "Amazon India": {
     "keys": [
-      "amazon-india-morphe-rushiranpise"
+      "amazon-india-morphe-rushiranpise-exp"
     ],
     "version": "32.15.0.300"
   },
   "GitHub": {
     "keys": [
-      "github-morphe-hoodles-stylus"
+      "github-morphe-hoodles-stylus-exp"
     ],
     "version": "1.273.0"
   },
   "Fing": {
     "keys": [
-      "fing-morphe-paresh"
+      "fing-morphe-paresh-exp"
     ],
     "version": "12.13.2"
   },
   "JioHotstar": {
     "keys": [
-      "jiohotstar-morphe-paresh"
+      "jiohotstar-morphe-paresh-exp"
     ],
     "version": "26.08.03.2"
   },
   "Nova Launcher": {
     "keys": [
-      "nova-launcher-morphe-hoodles"
+      "nova-launcher-morphe-hoodles-exp"
     ],
     "version": "88900 (8.8.9)"
   },
   "Battery Guru": {
     "keys": [
-      "batteryguru-morphe-hooman"
+      "batteryguru-morphe-hooman-exp"
     ],
     "version": "2.5.0.7"
   },
   "Poweramp": {
     "keys": [
-      "poweramp-morphe-hooman"
+      "poweramp-morphe-hooman-exp"
     ],
     "version": "build-1025-bundle-play"
   },
   "Xodo PDF": {
     "keys": [
-      "xodo-morphe-hoodles"
+      "xodo-morphe-hoodles-exp"
     ],
     "version": "11.0.1"
   },
   "Beta Maniac": {
     "keys": [
-      "beta-maniac-morphe-rushiranpise"
+      "beta-maniac-morphe-rushiranpise-exp"
     ],
     "version": "0.11.0"
   },
   "Hill Climb Racing": {
     "keys": [
-      "hill-climb-racing-morphe-byehi98"
+      "hill-climb-racing-morphe-byehi98-exp"
     ],
     "version": "1.71.1"
   },
   "Jetpack Joyride": {
     "keys": [
-      "jetpack-joyride-morphe-byehi98"
+      "jetpack-joyride-morphe-byehi98-exp"
     ],
     "version": "1.104.1"
   },
   "SD Maid SE": {
     "keys": [
-      "sdmaid-morphe-paresh"
+      "sdmaid-morphe-paresh-exp"
     ],
     "version": "2.0.3-rc0"
   },
   "Solid Explorer": {
     "keys": [
-      "solid-explorer-morphe-hoodles"
+      "solid-explorer-morphe-hoodles-exp"
     ],
     "version": "3.5.19"
+  },
+  "Amazon Shopping": {
+    "keys": [
+      "amazon-shopping-morphe-rushiranpise-exp"
+    ],
+    "version": "latest"
   }
 }

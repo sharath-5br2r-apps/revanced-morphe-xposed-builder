@@ -3,6 +3,22 @@ enabled = true
 app-name = "github"
 rv-brand = "morphe-hoodles-stylus"
 build-mode = "apk"
+arch = "all"
+pkg-name = "com.github.android"
+cli-source = "MorpheApp/morphe-desktop"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
+patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
+included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
+dpi = "480-640dpi"
+
+[github-morphe-hoodles-stylus-exp]
+enabled = true
+app-name = "github"
+rv-brand = "morphe-hoodles-stylus-exp"
+build-mode = "apk"
+arch = "all"
 pkg-name = "com.github.android"
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2/"
@@ -12,5 +28,3 @@ patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
 included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
 dpi = "480-640dpi"
 version = "latest"
-
-arch = "all"

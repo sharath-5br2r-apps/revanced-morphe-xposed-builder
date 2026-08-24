@@ -23,7 +23,6 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    timeout-minutes: 240
     services:
       redis:
         image: redis:alpine
