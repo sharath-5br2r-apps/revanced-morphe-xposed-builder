@@ -1029,6 +1029,25 @@ apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
 
+# ── YouTube Music morphe-mocha (Catppuccin Mocha) ─────────────────────────────
+[youtube-music-morphe-mocha]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-mocha"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#FF181825 -OmaterialYou=#89B4FA"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
+
 # ── YouTube Music morphe-exp (exp APK, stock/default theme) ───────────────────
 [youtube-music-morphe-exp]
 enabled = true
