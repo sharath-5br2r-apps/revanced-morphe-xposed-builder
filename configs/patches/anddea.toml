@@ -83,3 +83,19 @@ uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 dpi = "nodpi anydpi auto"
+
+# ── YouTube Music morphe-anddea-mocha (Catppuccin Mocha) ─────────────────────
+[youtube-music-morphe-anddea-mocha]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-anddea-mocha"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "anddea/revanced-patches"
+patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=#FF181825 --continue-on-error"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"

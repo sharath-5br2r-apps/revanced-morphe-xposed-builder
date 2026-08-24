@@ -137,6 +137,46 @@ apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.you
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 dpi = "nodpi anydpi auto"
 
+# ── YouTube Music morphe-exp-mocha (exp APK + Catppuccin Mocha) ───────────────
+[youtube-music-morphe-exp-mocha]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-exp-mocha"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+version = "exp"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#FF181825 -OmaterialYou=#89B4FA"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube Music morphe-exp-nord (exp APK + Nord) ────────────────────────────
+[youtube-music-morphe-exp-nord]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-exp-nord"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+version = "exp"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#2E3440 -OmaterialYou=#5E81AC"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
+
 # ── YouTube Music morphe-exp-amoled (exp APK + AMOLED) ───────────────────────
 [youtube-music-morphe-exp-amoled]
 enabled = true
