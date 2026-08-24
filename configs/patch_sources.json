@@ -80,10 +80,10 @@
   },
   "dh6k": {
     "repo": "dh6k/morphe-patches",
-    "stable": "v1.3.0",
-    "stable_date": "2026-08-21T04:20:16Z",
-    "prerelease": "v1.4.0-dev.4",
-    "pre_date": "2026-08-24T08:37:54Z",
+    "stable": "v1.4.0",
+    "stable_date": "2026-08-24T09:07:19Z",
+    "prerelease": "",
+    "pre_date": "",
     "blocked": false
   },
   "docbt": {
@@ -112,10 +112,10 @@
   },
   "gboard": {
     "repo": "jasonwu1994/Gboard-patches",
-    "stable": "v3.1.0",
-    "stable_date": "2026-08-23T21:40:42Z",
-    "prerelease": "v3.2.0-dev.1",
-    "pre_date": "2026-08-24T00:47:10Z",
+    "stable": "v3.2.0",
+    "stable_date": "2026-08-24T09:31:37Z",
+    "prerelease": "",
+    "pre_date": "",
     "blocked": false
   },
   "hoodles": {

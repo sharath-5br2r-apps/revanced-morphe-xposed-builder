@@ -185,7 +185,7 @@
     "included-patches": "'Clone Chess.com'"
   },
   "brave-stable-morphe-dh6k-arm64-v8a": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "brave-stable",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -200,7 +200,7 @@
     "repo-dlurl-release-name-filter": "^Release v"
   },
   "brave-stable-morphe-dh6k-arm-v7a": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "brave-stable",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -215,7 +215,7 @@
     "repo-dlurl-release-name-filter": "^Release v"
   },
   "brave-stable-morphe-dh6k-x86_64": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "brave-stable",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -230,7 +230,7 @@
     "repo-dlurl-release-name-filter": "^Release v"
   },
   "brave-stable-morphe-dh6k-x86": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "brave-stable",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -245,7 +245,7 @@
     "repo-dlurl-release-name-filter": "^Release v"
   },
   "brave-beta-morphe-dh6k-arm64-v8a": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -260,7 +260,7 @@
     "version": "latest"
   },
   "brave-beta-morphe-dh6k-arm-v7a": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -275,7 +275,7 @@
     "version": "latest"
   },
   "brave-beta-morphe-dh6k-x86_64": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
@@ -290,7 +290,7 @@
     "version": "latest"
   },
   "brave-beta-morphe-dh6k-x86": {
-    "enabled": true,
+    "enabled": false,
     "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
