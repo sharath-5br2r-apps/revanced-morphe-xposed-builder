@@ -136,8 +136,8 @@
   },
   "hxreborn": {
     "repo": "hxreborn/morphe-patches",
-    "stable": "v1.11.0",
-    "stable_date": "2026-08-23T13:15:31Z",
+    "stable": "v1.11.1",
+    "stable_date": "2026-08-24T10:50:48Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -192,11 +192,11 @@
   },
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
-    "stable": "v1.39.1",
-    "prerelease": "v1.40.0-dev.22",
+    "stable": "v1.40.0",
+    "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-08-08T17:05:00Z",
-    "pre_date": "2026-08-24T07:13:52Z"
+    "stable_date": "2026-08-24T11:45:33Z",
+    "pre_date": ""
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
