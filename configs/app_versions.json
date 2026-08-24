@@ -29,7 +29,7 @@
     "keys": [
       "proton-vpn-morphe-paresh-exp"
     ],
-    "version": "5.19.78.0"
+    "version": "5.19.99.0"
   },
   "X": {
     "keys": [
@@ -172,6 +172,6 @@
     "keys": [
       "amazon-shopping-morphe-rushiranpise-exp"
     ],
-    "version": "latest"
+    "version": "32.13.0.100"
   }
 }

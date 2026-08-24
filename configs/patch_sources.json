@@ -121,10 +121,10 @@
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
     "stable": "v1.41.0",
-    "prerelease": "v1.42.0-dev.1",
+    "prerelease": "v1.42.0-dev.2",
     "blocked": false,
     "stable_date": "2026-08-18T04:15:22Z",
-    "pre_date": "2026-08-24T03:57:21Z"
+    "pre_date": "2026-08-24T16:56:29Z"
   },
   "hoomans": {
     "repo": "arandomhooman/hoomans-morphe-patches",
@@ -235,8 +235,8 @@
     "repo": "PrathxmOp/Prathxm-Patches",
     "stable": "v1.13.0",
     "stable_date": "2026-07-10T09:33:46Z",
-    "prerelease": "v1.13.1-dev.3",
-    "pre_date": "2026-07-14T16:29:24Z",
+    "prerelease": "v1.13.1-dev.4",
+    "pre_date": "2026-08-24T16:16:24Z",
     "blocked": false
   },
   "quantavil": {
