@@ -1,4 +1,5 @@
 #!/bin/bash
+export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
 PATCH_FILE="configs/patch_sources.json"
 

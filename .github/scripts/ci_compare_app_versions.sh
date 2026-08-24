@@ -1,4 +1,5 @@
 #!/bin/bash
+export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
 
 CURRENT_VERSIONS="configs/app_versions.json"
