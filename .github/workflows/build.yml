@@ -13,6 +13,10 @@ on:
         required: false
         type: string
         default: ""
+      patches_version:
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: build
@@ -106,6 +110,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
+          OVERRIDE_PATCHES_VERSION: ${{ inputs.patches_version }}
         run: |
           set -euo pipefail
           bash ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}" "${{ inputs.exclusive_apps }}"

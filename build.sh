@@ -107,6 +107,7 @@ for table_name in $(toml_get_table_names); do
 	patches_src=$(toml_get "$t" patches-source) || patches_src=$DEF_PATCHES_SRC
 	patches_src_host=$(toml_get "$t" patches-source-host) || patches_src_host=$DEF_PATCHES_SRC_HOST
 	patches_ver=$(toml_get "$t" patches-version) || patches_ver=$DEF_PATCHES_VER
+	[ -n "${OVERRIDE_PATCHES_VERSION:-}" ] && patches_ver="${OVERRIDE_PATCHES_VERSION}"
 	cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
 	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
 	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
@@ -168,6 +169,7 @@ for table_name in $(toml_get_table_names); do
 		fi
 	done
 	app_args[patches_src]=${p_srcs[0]}
+	app_args[patches_version]="${p_vers[0]}"
 	app_args[patches_ref]="${patches_ref_all%,}"
 	app_args[changelog_url]="${changelog_url_all% }"
 	app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"

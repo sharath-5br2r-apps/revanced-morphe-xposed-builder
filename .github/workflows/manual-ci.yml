@@ -30,6 +30,11 @@ on:
         required: false
         type: string
         default: ""
+      patches_version:
+        description: "Optional: Override patches-version (e.g. latest, auto, exp, or specific version string like 4.2.0)"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: ci
@@ -69,6 +74,7 @@ jobs:
       config_file: ${{ needs.resolve_config.outputs.config_file }}
       exclusive_apps: ${{ inputs.exclusive_apps }}
       remove_apks: ${{ inputs.remove_apks }}
+      patches_version: ${{ inputs.patches_version }}
     secrets: inherit
 
   trigger_cleanup:
