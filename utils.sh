@@ -3289,7 +3289,7 @@ build_rv() {
 		else
 			pr "Found APK in cache: ${stock_apk}. Skipping download!"
 		fi
-		[ -f "$stock_apk" ] || exit 1
+		([ -f "$stock_apk" ] || [ -f "$cached_all_apk" ]) || exit 1
 		) > "${dl_logs_dir}/dl_${arch// /}.log" 2>&1 &
 		dl_pids+=($!)
 	done
@@ -3305,6 +3305,12 @@ build_rv() {
 	rm -rf "$dl_logs_dir"
 
 	if [ "$dl_failed" = true ]; then epr "One or more architecture downloads failed for '${table}'"; return 1; fi
+	local primary_arch="${arch_list[0]// /}"
+	local check_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${primary_arch}.apk"
+	local check_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+	local stock_apk="$check_stock_apk"
+	[ -f "$check_all_apk" ] && stock_apk="$check_all_apk"
+
 	if [ ! -f "$stock_apk" ]; then
 		epr "ERROR: Could not download '${table}'"
 		return 0
@@ -3323,7 +3329,7 @@ build_rv() {
 	# Ensure the mtime is set to now so newly downloaded APKs with old server timestamps aren't purged
 	touch "$stock_apk" 2>/dev/null || true
 	[ -f "${stock_apk%.apk}.apkm" ] && touch "${stock_apk%.apk}.apkm" 2>/dev/null || true
-	[ -n "${all_apk:-}" ] && [ -f "$all_apk" ] && touch "$all_apk" 2>/dev/null || true
+	[ -f "$check_all_apk" ] && touch "$check_all_apk" 2>/dev/null || true
 
 	# Log usage for apks repo cache sync
 	echo "${pkg_name}-${version_f}" >> "$TEMP_DIR/used_versions.txt"
