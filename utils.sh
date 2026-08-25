@@ -3303,25 +3303,8 @@ build_rv() {
 	rm -rf "$dl_logs_dir"
 
 	if [ "$dl_failed" = true ]; then epr "One or more architecture downloads failed for '${table}'"; return 1; fi
-	if [ ! -f "$stock_apk" ]; then
-		epr "ERROR: Could not download '${table}'"
-		return 0
-	fi
 
-	if ! [[ "${version_f:-}" =~ ^[0-9] ]]; then
-		local apk_ver
-		apk_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-		if [ -n "$apk_ver" ]; then
-			version="$apk_ver"
-			version_f=${version// /}
-			version_f=${version_f#v}
-		fi
-	fi
-
-	# Ensure the mtime is set to now so newly downloaded APKs with old server timestamps aren't purged
-	touch "$stock_apk" 2>/dev/null || true
-	[ -f "${stock_apk%.apk}.apkm" ] && touch "${stock_apk%.apk}.apkm" 2>/dev/null || true
-	[ -n "${all_apk:-}" ] && [ -f "$all_apk" ] && touch "$all_apk" 2>/dev/null || true
+	# Log usage for apks repo cache sync
 
 	# Log usage for apks repo cache sync
 	echo "${pkg_name}-${version_f}" >> "$TEMP_DIR/used_versions.txt"
