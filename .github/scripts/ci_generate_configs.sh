@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+[ "${DISABLE_CONFIG_UPDATE:-false}" = "true" ] && { echo "::notice::Config JSON updates disabled via option."; exit 0; }
+
 [ -f tags_old.json ] && TAGS_OLD=$(cat tags_old.json) || TAGS_OLD='{}'
 [ -f tags_new.json ] && TAGS_NEW=$(cat tags_new.json) || TAGS_NEW='{}'
 [ -f active_apps.json ] || echo '[]' > active_apps.json

@@ -1,7 +1,7 @@
 #!/bin/bash
 export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
-if [ "${CREATED:-false}" = "true" ]; then
+if [ "${CREATED:-false}" = "true" ] || [ "${SKIP_BUILD:-false}" = "true" ]; then
   echo "TRIGGER_STABLE=0" >> "$GITHUB_OUTPUT"
   echo "TRIGGER_PRERELEASE=0" >> "$GITHUB_OUTPUT"
   exit 0
