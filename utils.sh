@@ -2583,41 +2583,44 @@ write_build_info() {
 	skipped_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: Skipping disabled: ).*|(?<=INFO: Skipping incompatible patch \x27)[^\x27]+|(?<=WARN: Skipping patch \x27)[^\x27]+' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
 	[[ "$skipped_json" != \[* ]] && skipped_json='[]'
 
-	jq --arg key "$entry_key" \
-		--arg ext "$ext" \
-		--arg arch "$arch" \
-		--arg name "$name" \
-		--arg version "$version" \
-		--arg min_sdk "$min_sdk" \
-		--arg patches "$patches" \
-		--arg changelog "$changelog" \
-		--argjson applied "$applied_json" \
-		--argjson failed "$failed_json" \
-		--argjson skipped "$skipped_json" \
-		--argjson densities "$densities_json" \
-		--argjson native_libs "$native_libs_json" \
-		'
-		  .[$key] = {
-		    name: $name,
-		    arch: $arch,
-		    ext: $ext,
-		    version: $version,
-		    min_sdk: $min_sdk,
-		    densities: $densities,
-		    native_libraries: $native_libs,
-		    patches: $patches,
-		    changelog: $changelog,
-		    applied_patches: $applied,
-		    failed_patches: $failed,
-		    skipped_patches: $skipped
-		  } |
-		  if $min_sdk != "" then . else del(.[$key].min_sdk) end |
-		  if ($densities | length) > 0 then . else del(.[$key].densities) end |
-		  if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |
-		  if ($failed | length) > 0 then . else del(.[$key].failed_patches) end |
-		  if ($skipped | length) > 0 then . else del(.[$key].skipped_patches) end
-		' \
-		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
+	(
+		flock -x 200
+		jq --arg key "$entry_key" \
+			--arg ext "$ext" \
+			--arg arch "$arch" \
+			--arg name "$name" \
+			--arg version "$version" \
+			--arg min_sdk "$min_sdk" \
+			--arg patches "$patches" \
+			--arg changelog "$changelog" \
+			--argjson applied "$applied_json" \
+			--argjson failed "$failed_json" \
+			--argjson skipped "$skipped_json" \
+			--argjson densities "$densities_json" \
+			--argjson native_libs "$native_libs_json" \
+			'
+			  .[$key] = {
+			    name: $name,
+			    arch: $arch,
+			    ext: $ext,
+			    version: $version,
+			    min_sdk: $min_sdk,
+			    densities: $densities,
+			    native_libraries: $native_libs,
+			    patches: $patches,
+			    changelog: $changelog,
+			    applied_patches: $applied,
+			    failed_patches: $failed,
+			    skipped_patches: $skipped
+			  } |
+			  if $min_sdk != "" then . else del(.[$key].min_sdk) end |
+			  if ($densities | length) > 0 then . else del(.[$key].densities) end |
+			  if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |
+			  if ($failed | length) > 0 then . else del(.[$key].failed_patches) end |
+			  if ($skipped | length) > 0 then . else del(.[$key].skipped_patches) end
+			' \
+			"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
+	) 200>"${BUILD_JSON_FILE}.lock"
 }
 verify_downloaded_apk() {
 	local stock_apk=$1
@@ -3130,7 +3133,12 @@ build_rv() {
 	pr "Choosing version '${version}' for ${table}"
 	local version_f=${version// /}
 	version_f=${version_f#v}
+	local -a dl_pids=()
+	local dl_logs_dir="${TEMP_DIR}/dl_logs_$$"
+	mkdir -p "$dl_logs_dir"
+
 	for arch in "${arch_list[@]}"; do
+		(
 		arch_f="${arch// /}"
 		local cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 		local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
@@ -3252,13 +3260,13 @@ build_rv() {
 				fi
 			fi
 			
-			# Sync pristine files from staging to cache
+			# Sync pristine files from staging to cache atomically
 			if [ -f "$stock_apk" ]; then
 				if [ "$stock_apk" = "$all_apk" ]; then
-					cp -f "$all_apk" "$cached_all_apk"
+					cp -f "$all_apk" "${cached_all_apk}.tmp_$$" && mv -f "${cached_all_apk}.tmp_$$" "$cached_all_apk"
 					stock_apk="$cached_all_apk"
 				else
-					cp -f "$stock_apk" "$cached_stock_apk"
+					cp -f "$stock_apk" "${cached_stock_apk}.tmp_$$" && mv -f "${cached_stock_apk}.tmp_$$" "$cached_stock_apk"
 					stock_apk="$cached_stock_apk"
 				fi
 				all_apk="$cached_all_apk"
@@ -3281,8 +3289,21 @@ build_rv() {
 		else
 			pr "Found APK in cache: ${stock_apk}. Skipping download!"
 		fi
-		if [ -f "$stock_apk" ]; then break; fi
+		) > "${dl_logs_dir}/dl_${arch// /}.log" 2>&1 &
+		dl_pids+=($!)
 	done
+
+	local dl_failed=false
+	for pid in "${dl_pids[@]}"; do
+		if ! wait "$pid"; then dl_failed=true; fi
+	done
+
+	for logfile in "${dl_logs_dir}"/dl_*.log; do
+		[ -f "$logfile" ] && cat "$logfile"
+	done
+	rm -rf "$dl_logs_dir"
+
+	if [ "$dl_failed" = true ]; then epr "One or more architecture downloads failed for '${table}'"; return 1; fi
 	if [ ! -f "$stock_apk" ]; then
 		epr "ERROR: Could not download '${table}'"
 		return 0
@@ -3398,7 +3419,18 @@ build_rv() {
            p_patcher_args+=("-f")
         fi
     fi
-	for build_mode in "${build_mode_arr[@]}"; do
+	local -a arch_build_pids=()
+	local build_logs_dir="${TEMP_DIR}/build_logs_$$"
+	mkdir -p "$build_logs_dir"
+
+	for arch in "${arch_list[@]}"; do
+		(
+		arch_f="${arch// /}"
+		local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+		local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+		[ -f "$all_apk" ] && stock_apk="$all_apk"
+
+		for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")
 		pr "Building '${table}' in '$build_mode' mode"
@@ -3428,16 +3460,21 @@ build_rv() {
 		fi
 
 		local stock_apk_to_patch="${TEMP_DIR}/${app_name_l}${brand_suffix}-${version_f}-${arch_f}.stripped.apk"
-		if [ ! -f "$stock_apk_to_patch" ]; then
-			cp -f "$stock_apk" "$stock_apk_to_patch"
-			if [ "$arch" = "arm64-v8a" ]; then
-				zip -d "$stock_apk_to_patch" "lib/armeabi-v7a/*" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
-			elif [ "$arch" = "arm-v7a" ]; then
-				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
-			elif [ "$arch" = "x86" ]; then
-				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/x86_64/*" "lib/armeabi-v7a/*" >/dev/null 2>&1 || :
-			elif [ "$arch" = "x86_64" ]; then
-				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/armeabi-v7a/*" "lib/x86/*" >/dev/null 2>&1 || :
+		if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
+			if [ "$stock_apk" = "$all_apk" ]; then
+				if [ "$arch_f" = "arm64-v8a" ]; then
+					strip_universal_apk "$stock_apk" "$stock_apk_to_patch" "armeabi-v7a" "x86" "x86_64"
+				elif [ "$arch_f" = "arm-v7a" ]; then
+					strip_universal_apk "$stock_apk" "$stock_apk_to_patch" "arm64-v8a" "x86" "x86_64"
+				elif [ "$arch_f" = "x86" ]; then
+					strip_universal_apk "$stock_apk" "$stock_apk_to_patch" "arm64-v8a" "armeabi-v7a" "x86_64"
+				elif [ "$arch_f" = "x86_64" ]; then
+					strip_universal_apk "$stock_apk" "$stock_apk_to_patch" "arm64-v8a" "armeabi-v7a" "x86"
+				else
+					stock_apk_to_patch="$stock_apk"
+				fi
+			else
+				stock_apk_to_patch="$stock_apk"
 			fi
 		fi
 
@@ -3451,7 +3488,7 @@ build_rv() {
 		if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
 			if ! patch_apk "$stock_apk_to_patch" "$patched_apk" "${patcher_args[*]}" "${args[cli]}" "${args[ptjar]}" "${args[cli_source]}" "$per_bundle_ed_joined"; then
 				epr "Building '${table}' failed!"
-				return 0
+				return 1
 			fi
 		fi
 
@@ -3480,7 +3517,7 @@ build_rv() {
 			"${app_name}${brand_display}" \
 			"${version_f} (patches ${patches_ver})" \
 			"${app_name}${brand_display} module" \
-			"https://raw.githubusercontent.com/${GITHUB_REPOSITORY-}/update/${upj}" \
+			"https://github.com/${GITHUB_REPOSITORY-}/releases/download/update/${upj}" \
 			"$base_template"
 
 		local module_output="${app_name_l}${brand_suffix}-module-v${version_f}-${arch_f}.zip"
@@ -3494,7 +3531,7 @@ build_rv() {
 			elif [ "${args[include_stock]}" = "split" ]; then
 				if [ ! -f "${stock_apk%.apk}.apkm" ]; then
 					epr "Cannot include as 'split' because stock apk of $table_name is not a bundle"
-					return 0
+					return 1
 				fi
 				if [ "$arch" = "arm64-v8a" ]; then
 					unzip -j "${stock_apk%.apk}.apkm" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
@@ -3515,7 +3552,25 @@ build_rv() {
 		popd >/dev/null || :
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
 		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "${CWD}/${BUILD_DIR}/${module_output}" "$patched_apk"
+		done
+		) > "${build_logs_dir}/build_${arch// /}.log" 2>&1 &
+		arch_build_pids+=($!)
 	done
+
+	local arch_b_failed=false
+	for pid in "${arch_build_pids[@]}"; do
+		if ! wait "$pid"; then arch_b_failed=true; fi
+	done
+
+	for logfile in "${build_logs_dir}"/build_*.log; do
+		[ -f "$logfile" ] && cat "$logfile"
+	done
+	rm -rf "$build_logs_dir"
+
+	if [ "$arch_b_failed" = true ]; then
+		epr "One or more architecture builds failed for '${table}'"
+		return 1
+	fi
 }
 
 list_args() { tr -d '\t\r' <<<"$1" | tr -s ' ' | sed "s/' '/'\\n'/g" | sed 's/" "/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :; }

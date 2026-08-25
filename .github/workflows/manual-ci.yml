@@ -29,7 +29,7 @@ on:
         type: string
         default: ""
       patches_version:
-        description: "Optional: Override patches-version (e.g. latest, auto, exp, or specific version string like 4.2.0)"
+        description: "Optional: Override patches-version (e.g. latest, auto, absolutelatest, or specific version string like 4.2.0)"
         required: false
         type: string
         default: ""

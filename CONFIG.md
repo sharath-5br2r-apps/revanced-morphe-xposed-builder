@@ -28,6 +28,19 @@ Variables are **plain text** (not encrypted). Set under the **Variables** tab.
 | `KEYSTORE_ALIAS` | ✅ Yes | Alias/entry name inside the keystore. |
 | `APKS_REPO` | ⚠️ Optional | Target repository to upload built APKs (format: `owner/repo`). If unset, releases are uploaded to the current repository. |
 
+### 🚀 Workflow Dispatch Inputs
+
+#### Manual CI Workflow (`manual-ci.yml`)
+- `config_file`: Select the generated or custom TOML/JSON config to use.
+- `manual_config_file`: Optional custom config file path override.
+- `exclusive_apps`: Regex or space-separated list of app table names to build.
+- `remove_apks`: Regex pattern of cached APKs to purge before building.
+- `patches_version`: Optional override for `patches-version` (`latest`, `auto`, `absolutelatest`, or semver tag).
+
+#### CI / Update Versions Workflow (`ci.yml`)
+- `skip_build`: Boolean option (`true`/`false`) to skip APK/module builds and only run version tracking.
+- `disable_config_update`: Boolean option (`true`/`false`) to skip updating config JSONs while still tracking version changes.
+
 > **Note:** `GITHUB_TOKEN` is automatically provided by GitHub Actions and does not need to be set manually. It has limited scope (e.g. cannot push to other repositories).
 
 > **Tip:** To generate `KEYSTORE_BASE64`, run:
@@ -57,7 +70,7 @@ These are set in your `.toml` config files under `configs/patches/` or `.github/
 | `build-mode` | ⚠️ Optional | `apk` | Build output type: `apk`, `module`, or `both`. |
 | `arch` | ⚠️ Optional | `auto` | Target architecture: `arm64-v8a`, `arm-v7a`, `x86`, `x86_64`, `all`, `multi`, or `auto`. |
 | `dpi` | ⚠️ Optional | — | Space-separated list of accepted DPI variants (e.g. `nodpi anydpi auto 480dpi`). |
-| `version` | ⚠️ Optional | `auto` | APK version to download. Use `auto` (patch-compatible), `latest`, `beta`, `exp`, or an exact version string (e.g. `17.8.7.939743344`). |
+| `version` | ⚠️ Optional | `auto` | APK version to download. Use `auto` (patch-compatible), `latest`, `beta`, `absolutelatest`, or an exact version string (e.g. `17.8.7.939743344`). |
 | `prefer-dl-mode` | ⚠️ Optional | `apk` | Prefer downloading `apk` or `bundle` (APKM split) from APKMirror. |
 | `patcher-args` | ⚠️ Optional | — | Extra arguments passed directly to the patcher CLI (e.g. `-f --continue-on-error`). |
 | `enable-module-update` | ⚠️ Optional | `false` | Enable module update checks (global key, not per-app). |
@@ -68,7 +81,7 @@ These are set in your `.toml` config files under `configs/patches/` or `.github/
 |-----|----------|-------------|
 | `patches-source` | ✅ Yes | Space-separated list of patch source repos in `'owner/repo'` format. |
 | `patches-source-host` | ⚠️ Optional | Host for patch sources (default: `github`). Supports `github`, `gitlab`, `https://git.example.com|gitlab`, or `https://forge.example.com|forgejo`. |
-| `patches-version` | ⚠️ Optional | Patch version to use: `latest`, `absolutelatest`, or a semver tag. |
+| `patches-version` | ⚠️ Optional | Patch version to use: `latest`, `absolutelatest`, `auto`, or a semver tag. |
 | `included-patches` | ⚠️ Optional | Patches to explicitly enable. Separate multi-source patches with `\|`. Names must be quoted. |
 | `excluded-patches` | ⚠️ Optional | Patches to explicitly disable. Separate multi-source patches with `\|`. Names must be quoted. |
 | `exclusive-patches` | ⚠️ Optional | Restrict a patch source to only be enabled for this app (prevents cross-source conflicts). |
