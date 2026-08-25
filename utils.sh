@@ -2113,9 +2113,9 @@ get_github_vers() {
 	sed 's/^[^-]*-//;s/-\(all\|common\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"
 }
 
-# Extracts package name by stripping everything from the first hyphen '-' onwards
+# Extracts package name by stripping everything from the version hyphen onwards (e.g. com.google.android.youtube-20.51.39-all.apk -> com.google.android.youtube)
 get_github_pkg_name() {
-	sed 's/-.*//' <<<"$__ARCHIVE_RESP__" | head -n 1
+	sed -E 's/-[0-9]+(\.[0-9]+).*/\1/' <<<"$__ARCHIVE_RESP__" | grep -v '^\s*$' | head -n 1 | sed -E 's/(-[0-9]+.*)//'
 }
 
 # -------------------- repo --------------------
