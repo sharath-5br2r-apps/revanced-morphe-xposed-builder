@@ -3289,6 +3289,7 @@ build_rv() {
 		else
 			pr "Found APK in cache: ${stock_apk}. Skipping download!"
 		fi
+		[ -f "$stock_apk" ] || exit 1
 		) > "${dl_logs_dir}/dl_${arch// /}.log" 2>&1 &
 		dl_pids+=($!)
 	done
