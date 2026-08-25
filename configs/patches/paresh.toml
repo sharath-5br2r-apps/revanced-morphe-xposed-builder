@@ -7,7 +7,7 @@ app-name = "truecaller"
 rv-brand = "morphe-paresh"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.truecaller"
 build-mode = "both"
-arch = "arm64-v8a arm-v7a"
+arch = "all arm64-v8a arm-v7a"
 pkg-name = "com.truecaller"
 uptodown-dlurl = "https://truecaller.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/true-software-scandinavia-ab/truecaller-caller-id-block"
@@ -29,7 +29,7 @@ github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-arch = "arm64-v8a arm-v7a"
+arch = "all"
 
 [fing-morphe-paresh-exp]
 enabled = true
@@ -46,7 +46,7 @@ github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-arch = "arm64-v8a arm-v7a"
+arch = "all"
 
 [proton-vpn-morphe-paresh]
 enabled = true
@@ -63,7 +63,7 @@ patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 dpi = "120-640dpi"
 
-arch = "arm64-v8a arm-v7a"
+arch = "all"
 
 [proton-vpn-morphe-paresh-exp]
 enabled = true
@@ -81,7 +81,7 @@ patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 dpi = "120-640dpi"
 
-arch = "arm64-v8a arm-v7a"
+arch = "all"
 
 [jiohotstar-morphe-paresh]
 enabled = true
@@ -119,7 +119,7 @@ app-name = "sdmaid"
 rv-brand = "morphe-paresh"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a"
+arch = "all"
 pkg-name = "eu.darken.sdmse"
 uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/"
@@ -136,7 +136,7 @@ rv-brand = "morphe-paresh-exp"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
 version = "latest"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a"
+arch = "all"
 pkg-name = "eu.darken.sdmse"
 uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/"
