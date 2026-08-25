@@ -3131,7 +3131,12 @@ build_rv() {
 	pr "Choosing version '${version}' for ${table}"
 	local version_f=${version// /}
 	version_f=${version_f#v}
+	local -a dl_pids=()
+	local dl_logs_dir="${TEMP_DIR}/dl_logs_$$"
+	mkdir -p "$dl_logs_dir"
+
 	for arch in "${arch_list[@]}"; do
+		(
 		arch_f="${arch// /}"
 		local cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 		local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
@@ -3257,10 +3262,10 @@ build_rv() {
 			# Sync pristine files from staging to cache
 			if [ -f "$stock_apk" ]; then
 				if [ "$stock_apk" = "$all_apk" ]; then
-					cp -f "$all_apk" "$cached_all_apk"
+					cp -f "$all_apk" "${cached_all_apk}.tmp_$$" && mv -f "${cached_all_apk}.tmp_$$" "$cached_all_apk"
 					stock_apk="$cached_all_apk"
 				else
-					cp -f "$stock_apk" "$cached_stock_apk"
+					cp -f "$stock_apk" "${cached_stock_apk}.tmp_$$" && mv -f "${cached_stock_apk}.tmp_$$" "$cached_stock_apk"
 					stock_apk="$cached_stock_apk"
 				fi
 				all_apk="$cached_all_apk"
@@ -3283,8 +3288,21 @@ build_rv() {
 		else
 			pr "Found APK in cache: ${stock_apk}. Skipping download!"
 		fi
-		if [ -f "$stock_apk" ]; then break; fi
+		) > "${dl_logs_dir}/dl_${arch// /}.log" 2>&1 &
+		dl_pids+=($!)
 	done
+
+	local dl_failed=false
+	for pid in "${dl_pids[@]}"; do
+		if ! wait "$pid"; then dl_failed=true; fi
+	done
+
+	for logfile in "${dl_logs_dir}"/dl_*.log; do
+		[ -f "$logfile" ] && cat "$logfile"
+	done
+	rm -rf "$dl_logs_dir"
+
+	if [ "$dl_failed" = true ]; then epr "One or more architecture downloads failed for '${table}'"; return 1; fi
 	if [ ! -f "$stock_apk" ]; then
 		epr "ERROR: Could not download '${table}'"
 		return 0
@@ -3400,7 +3418,18 @@ build_rv() {
            p_patcher_args+=("-f")
         fi
     fi
-	for build_mode in "${build_mode_arr[@]}"; do
+	local -a arch_build_pids=()
+	local build_logs_dir="${TEMP_DIR}/build_logs_$$"
+	mkdir -p "$build_logs_dir"
+
+	for arch in "${arch_list[@]}"; do
+		(
+		arch_f="${arch// /}"
+		local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+		local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+		[ -f "$all_apk" ] && stock_apk="$all_apk"
+
+		for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")
 		pr "Building '${table}' in '$build_mode' mode"
@@ -3517,7 +3546,25 @@ build_rv() {
 		popd >/dev/null || :
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
 		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "${CWD}/${BUILD_DIR}/${module_output}" "$patched_apk"
+		done
+		) > "${build_logs_dir}/build_${arch// /}.log" 2>&1 &
+		arch_build_pids+=($!)
 	done
+
+	local arch_b_failed=false
+	for pid in "${arch_build_pids[@]}"; do
+		if ! wait "$pid"; then arch_b_failed=true; fi
+	done
+
+	for logfile in "${build_logs_dir}"/build_*.log; do
+		[ -f "$logfile" ] && cat "$logfile"
+	done
+	rm -rf "$build_logs_dir"
+
+	if [ "$arch_b_failed" = true ]; then
+		epr "One or more architecture builds failed for '${table}'"
+		return 1
+	fi
 }
 
 list_args() { tr -d '\t\r' <<<"$1" | tr -s ' ' | sed "s/' '/'\\n'/g" | sed 's/" "/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :; }
