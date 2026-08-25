@@ -2909,6 +2909,7 @@ build_rv() {
 					"${cli_jar:-}" "${patches_jar:-}"); then
 					wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
 					resolved_version=""
+					version_mode="latest"
 				fi
 			elif [ "$version_mode" = exp ]; then
 				if [[ "$cli_source_l" == *"revanced/revanced-cli"* ]]; then
