@@ -26,10 +26,10 @@
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.29.2",
+    "stable": "v1.29.3",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-08-23T23:37:37Z",
+    "stable_date": "2026-08-25T20:36:13Z",
     "pre_date": ""
   },
   "binarymend": {
@@ -112,10 +112,10 @@
   },
   "gboard": {
     "repo": "jasonwu1994/Gboard-patches",
-    "stable": "v3.3.0",
-    "stable_date": "2026-08-25T03:55:57Z",
-    "prerelease": "v3.4.0-dev.1",
-    "pre_date": "2026-08-25T09:49:18Z",
+    "stable": "v3.4.0",
+    "stable_date": "2026-08-25T22:14:14Z",
+    "prerelease": "",
+    "pre_date": "",
     "blocked": false
   },
   "hoodles": {
