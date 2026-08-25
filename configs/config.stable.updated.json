@@ -1237,7 +1237,7 @@
     "dpi": "nodpi anydpi auto"
   },
   "discord-npatch-revenge": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "discord",
     "pkg-name": "com.discord",
     "rv-brand": "npatch-revenge",
