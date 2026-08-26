@@ -2940,20 +2940,16 @@ build_rv() {
 				wpr "WARNING: No exp version found for '$pkg_name', skipping build."
 				return 0
 			fi
-		elif ! isoneof "$version_mode" latest beta; then
-			local patch_ver=""
-			if patch_ver=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
+		elif [ "$version_mode" = auto ]; then
+			if ! resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
 				"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
-				"${cli_jar:-}" "${patches_jar:-}") && [ -n "$patch_ver" ]; then
-				pr "Overriding version with patch-supported version '$patch_ver' for '$pkg_name' (mode: $version_mode)"
-				resolved_version="$patch_ver"
-			elif [ "$version_mode" = auto ]; then
+				"${cli_jar:-}" "${patches_jar:-}"); then
 				wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
 				resolved_version=""
 				version_mode="latest"
-			elif [ -z "$resolved_version" ]; then
-				resolved_version=$version_mode
 			fi
+		elif ! isoneof "$version_mode" latest beta; then
+			resolved_version=$version_mode
 		fi
 
 		# Clean resolved_version of arch and release variant suffixes without clipping long version components
@@ -3109,19 +3105,15 @@ build_rv() {
 				epr "No exp version found for '$pkg_name', skipping."
 				return 0
 			fi
-		elif ! isoneof "$version_mode" latest beta; then
-			local patch_ver=""
-			if patch_ver=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
+		elif [ "$version_mode" = auto ]; then
+			if ! resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
 				"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
-				"${cli_jar:-}" "${patches_jar:-}") && [ -n "$patch_ver" ]; then
-				pr "Overriding version with patch-supported version '$patch_ver' for '$pkg_name' (mode: $version_mode)"
-				resolved_version="$patch_ver"
-			elif [ "$version_mode" = auto ]; then
+				"${cli_jar:-}" "${patches_jar:-}"); then
 				wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
 				resolved_version=""
-			elif [ -z "$resolved_version" ]; then
-				resolved_version=$version_mode
 			fi
+		elif ! isoneof "$version_mode" latest beta; then
+			resolved_version=$version_mode
 		fi
 
 		if isoneof "$resolved_version" latest auto exp beta; then
