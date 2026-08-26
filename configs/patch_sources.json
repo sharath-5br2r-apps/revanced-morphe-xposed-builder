@@ -60,8 +60,8 @@
     "repo": "byehi98/okish-morphe-patches",
     "stable": "v1.18.0",
     "stable_date": "2026-08-26T06:31:21Z",
-    "prerelease": "",
-    "pre_date": "",
+    "prerelease": "v1.19.0-dev.1",
+    "pre_date": "2026-08-26T11:14:40Z",
     "blocked": false
   },
   "cryptomator": {
@@ -136,8 +136,8 @@
   },
   "hxreborn": {
     "repo": "hxreborn/morphe-patches",
-    "stable": "v1.11.1",
-    "stable_date": "2026-08-24T10:50:48Z",
+    "stable": "v1.12.0",
+    "stable_date": "2026-08-26T10:40:59Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
