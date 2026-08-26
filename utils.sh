@@ -2068,6 +2068,12 @@ dl_github() {
 	local path="" version_f=${version// /}
 	local base_url=${__GITHUB_URL__:-$url}
 
+	local key_check="${table:-}${app_name:-}${rv_brand:-}"
+	key_check="${key_check,,}"
+	if [[ "$key_check" == *"gboard"* ]] && [[ "$key_check" == *"jasonwu"* ]]; then
+		version_f=$(echo "$version_f" | sed -E 's/-release.*//')
+	fi
+
 	local norm_arch="${arch// /}"
 	local arch_candidates=("$norm_arch")
 	for single_a in $arch; do
