@@ -1442,7 +1442,7 @@ dl_apkmirror() {
 		local example_path="${example_url#$base_url}"
 		local slug_ver target_ver
 		slug_ver=$(echo "$example_path" | grep -oP '\d+(-\d+)+' | tail -1)
-		target_ver=$(echo "$version" | tr '.' '-' | grep -oP '\d+(-\d+)+')
+		target_ver=$(echo "$version" | sed -E 's/-release.*//' | tr '.' '-' | grep -oP '\d+(-\d+)+')
 		if [ -n "$slug_ver" ] && [ -n "$target_ver" ]; then
 			local candidate_url="${base_url}${example_path/$slug_ver/$target_ver}"
 			set +u
@@ -2019,24 +2019,13 @@ dl_archive() {
 	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
-				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]] || [[ "$p" == *"${version_f#v}"*"-${a}.${ext}" ]]; then
+				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
 					path="$p"
 					break 3
 				fi
 			done <<<"$__ARCHIVE_RESP__"
 		done
 	done
-	if [ -z "$path" ]; then
-		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
-			while IFS= read -r p; do
-				if [[ "$p" == *"${version_f#v}"*".${ext}" ]]; then
-					path="$p"
-					wpr "Architecture '$arch' asset not explicitly found for version '${version}'. Falling back to available asset '${path}'"
-					break 2
-				fi
-			done <<<"$__ARCHIVE_RESP__"
-		done
-	fi
 
 	if [ -z "$path" ]; then
 		epr "Version ${version} with arch ${arch} not found in archive"
@@ -2089,25 +2078,13 @@ dl_github() {
 	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
-				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]] || [[ "$p" == *"${version_f#v}"*"-${a}.${ext}" ]]; then
+				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
 					path="$p"
 					break 3
 				fi
 			done <<<"$__ARCHIVE_RESP__"
 		done
 	done
-
-	if [ -z "$path" ]; then
-		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
-			while IFS= read -r p; do
-				if [[ "$p" == *"${version_f#v}"*".${ext}" ]]; then
-					path="$p"
-					wpr "Architecture '$arch' asset not explicitly found for version '${version}'. Falling back to available asset '${path}'"
-					break 2
-				fi
-			done <<<"$__ARCHIVE_RESP__"
-		done
-	fi
 
 	if [ -z "$path" ]; then
 		epr "Version ${version} with arch ${arch} not found in github"
