@@ -276,13 +276,19 @@ jobs:
           GITHUB_REPOSITORY: ${{{{ github.repository }}}}
         run: bash .github/scripts/build_update_changelog.sh
 
+      - name: Filter update files for release
+        run: |
+          mkdir -p update_meta/
+          [ -s build.md ] && cp -f build.md update_meta/ || true
+          for f in *-update.json; do
+            [ -f "$f" ] && [ -s "$f" ] && cp -f "$f" update_meta/ || true
+          done
+
       - name: Upload module update metadata to release (update)
         uses: softprops/action-gh-release@v3
         with:
           token: ${{{{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}}}
-          files: |
-            build.md
-            *-update.json
+          files: update_meta/*
           name: Update Metadata
           tag_name: update
           overwrite_files: true
