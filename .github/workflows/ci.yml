@@ -284,12 +284,30 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if [ -d "dev_logs/aggregated_out" ]; then
-            [ -f "dev_logs/aggregated_out/build.dev.json" ] && gh release upload update dev_logs/aggregated_out/build.dev.json --clobber || true
-            [ -f "dev_logs/aggregated_out/build.dev.md" ] && gh release upload update dev_logs/aggregated_out/build.dev.md --clobber || true
+            if [ -f "dev_logs/aggregated_out/build.dev.json" ]; then
+              cp -f dev_logs/aggregated_out/build.dev.json build.json
+              gh release upload update build.json --clobber || true
+              gh release upload beta build.json --clobber || true
+            fi
+            if [ -f "dev_logs/aggregated_out/build.dev.md" ]; then
+              cp -f dev_logs/aggregated_out/build.dev.md build.md
+              gh release upload update build.md --clobber || true
+              gh release upload beta build.md --clobber || true
+              gh release edit beta --notes-file build.md || true
+            fi
           fi
           if [ -d "stable_logs/aggregated_out" ]; then
-            [ -f "stable_logs/aggregated_out/build.stable.json" ] && gh release upload update stable_logs/aggregated_out/build.stable.json --clobber || true
-            [ -f "stable_logs/aggregated_out/build.stable.md" ] && gh release upload update stable_logs/aggregated_out/build.stable.md --clobber || true
+            if [ -f "stable_logs/aggregated_out/build.stable.json" ]; then
+              cp -f stable_logs/aggregated_out/build.stable.json build.json
+              gh release upload update build.json --clobber || true
+              gh release upload stable build.json --clobber || true
+            fi
+            if [ -f "stable_logs/aggregated_out/build.stable.md" ]; then
+              cp -f stable_logs/aggregated_out/build.stable.md build.md
+              gh release upload update build.md --clobber || true
+              gh release upload stable build.md --clobber || true
+              gh release edit stable --notes-file build.md || true
+            fi
           fi
 
   trigger_cleanup:

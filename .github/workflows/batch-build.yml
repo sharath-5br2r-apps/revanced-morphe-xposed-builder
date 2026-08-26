@@ -67,9 +67,15 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if [ -d "batch_logs/aggregated_out" ]; then
-            for f in batch_logs/aggregated_out/build.*.json batch_logs/aggregated_out/build.*.md; do
-              [ -f "$f" ] && gh release upload update "$f" --clobber || true
-            done
+            if [ -f "batch_logs/aggregated_out/build.manual.json" ]; then
+              cp -f batch_logs/aggregated_out/build.manual.json build.json
+              gh release upload update build.json --clobber || true
+            fi
+            if [ -f "batch_logs/aggregated_out/build.manual.md" ]; then
+              cp -f batch_logs/aggregated_out/build.manual.md build.md
+              gh release upload update build.md --clobber || true
+              gh release edit update --notes-file build.md || true
+            fi
           fi
 
   trigger_cleanup:
