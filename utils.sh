@@ -3337,7 +3337,11 @@ build_rv() {
 	done
 
 	for logfile in "${dl_logs_dir}"/dl_*.log; do
-		[ -f "$logfile" ] && cat "$logfile"
+		if [ -f "$logfile" ]; then
+			local log_arch="${logfile##*/dl_}"
+			log_arch="${log_arch%.log}"
+			sed "s/^/[${table}][${log_arch}] /" "$logfile"
+		fi
 	done
 	rm -rf "$dl_logs_dir"
 
@@ -3481,7 +3485,7 @@ build_rv() {
 		for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")
-		pr "Building '${table}' in '$build_mode' mode"
+		pr "Building '${table}' in '$build_mode' mode (${arch_f})"
 		if [ ${#microg_patches[@]} -gt 0 ]; then
 			patched_apk="${TEMP_DIR}/${app_name_l}${brand_suffix}-${version_f}-${arch_f}-${build_mode}.apk"
 		else
@@ -3532,7 +3536,7 @@ build_rv() {
 		local apk_output="${BUILD_DIR}/${app_name_l}${brand_suffix}-v${version_f}-${arch_f}.apk"
 		if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
 			if ! patch_apk "$stock_apk_to_patch" "$patched_apk" "${patcher_args[*]}" "${args[cli]}" "${args[ptjar]}" "${args[cli_source]}" "$per_bundle_ed_joined"; then
-				epr "Building '${table}' failed!"
+				epr "Building '${table}' (${arch_f}) failed!"
 				return 1
 			fi
 		fi
@@ -3608,7 +3612,11 @@ build_rv() {
 	done
 
 	for logfile in "${build_logs_dir}"/build_*.log; do
-		[ -f "$logfile" ] && cat "$logfile"
+		if [ -f "$logfile" ]; then
+			local log_arch="${logfile##*/build_}"
+			log_arch="${log_arch%.log}"
+			sed "s/^/[${table}][${log_arch}] /" "$logfile"
+		fi
 	done
 	rm -rf "$build_logs_dir"
 
