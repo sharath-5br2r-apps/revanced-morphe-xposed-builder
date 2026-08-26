@@ -79,6 +79,9 @@ jobs:
           fetch-depth: 0
           submodules: true
 
+      - name: Normalize patches TOMLs
+        run: python3 .github/scripts/ci_merge_patch_tomls.py
+
       - name: Resolve build context
         id: context
         run: |
