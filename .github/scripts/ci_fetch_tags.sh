@@ -13,7 +13,7 @@ fetch_gitlab_releases() {
   local encoded_repo
   encoded_repo=$(jq -nr --arg v "$repo" '$v | @uri')
   local -a curl_args=(-sS -L -w '\n%{http_code}')
-  [ -n "${GH_TOKEN:-}" ] && curl_args+=(-H "PRIVATE-TOKEN: ${GH_TOKEN}")
+  [ -n "${GITLAB_TOKEN:-}" ] && curl_args+=(-H "PRIVATE-TOKEN: ${GITLAB_TOKEN}")
   curl "${curl_args[@]}" \
     "${instance}/api/v4/projects/${encoded_repo}/releases?per_page=100"
 }
