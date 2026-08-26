@@ -2461,7 +2461,7 @@ patch_apk() {
 		fi
 	fi
 
-	local base_cmd="java -jar '$cli_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=$TEMP_DIR/ks.keystore \
+	local base_cmd="java -Xmx4096m -XX:+UseG1GC -jar '$cli_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=$TEMP_DIR/ks.keystore \
 --keystore-entry-password=\"$KEYSTORE_KEY_PASSWORD\" --keystore-password=\"$KEYSTORE_PASSWORD\" --signer=\"$KEYSTORE_ALIAS\" --keystore-entry-alias=\"$KEYSTORE_ALIAS\""
 
 	local -a ed_parts=()
