@@ -105,211 +105,54 @@ jobs:
           DISABLE_CONFIG_UPDATE: "false"
         run: bash .github/scripts/ci_generate_configs.sh
 
-      - name: Commit updated patch sources and configs
+      - name: Generate merged patch TOML configs
+        run: python3 .github/scripts/ci_merge_patch_tomls.py
+
+      - name: Commit updated patch sources, configs and merged TOMLs
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
-          file_pattern: configs/*.json
-          commit_message: "Update patch sources, app versions and generated configs [skip ci]"
+          file_pattern: configs/*.json configs/patches/merged/*.toml
+          commit_message: "Update patch sources, app versions, generated configs and merged TOMLs [skip ci]"
 
-  build_anddea:
+  build_youtube:
     needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/patches/anddea.toml"
+      config_file: "configs/patches/merged/youtube.toml"
       patches_version: ${{ inputs.patches_version }}
       artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
-  build_bholeykabhakt:
+  build_hoodles_hooman:
     needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/patches/bholeykabhakt.toml"
+      config_file: "configs/patches/merged/hoodles-hooman.toml"
       patches_version: ${{ inputs.patches_version }}
       artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
-  build_binarymend:
+  build_nulls_sign_revenge:
     needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/patches/binarymend.toml"
+      config_file: "configs/patches/merged/nulls-sign-revenge.toml"
       patches_version: ${{ inputs.patches_version }}
       artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
-  build_brave:
+  build_other_configs:
     needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/patches/brave.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_byehi98:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/byehi98.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_chess:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/chess.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_gboard:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/gboard.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_github:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/github.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_hoodles:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/hoodles.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_hooman:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/hooman.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_kondratjev:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/kondratjev.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_morphe:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/morphe.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_nulls:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/nulls.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_paresh:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/paresh.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_piko:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/piko.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_revenge:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/revenge.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_rushiranpise:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/rushiranpise.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_sign:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/sign.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_stylus:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/stylus.toml"
-      patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
-    secrets: inherit
-
-  build_tiktok:
-    needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/tiktok.toml"
+      config_file: "configs/patches/merged/other-configs.toml"
       patches_version: ${{ inputs.patches_version }}
       artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
@@ -317,26 +160,10 @@ jobs:
   aggregate_and_release:
     needs:
       - update_versions
-      - build_anddea
-      - build_bholeykabhakt
-      - build_binarymend
-      - build_brave
-      - build_byehi98
-      - build_chess
-      - build_gboard
-      - build_github
-      - build_hoodles
-      - build_hooman
-      - build_kondratjev
-      - build_morphe
-      - build_nulls
-      - build_paresh
-      - build_piko
-      - build_revenge
-      - build_rushiranpise
-      - build_sign
-      - build_stylus
-      - build_tiktok
+      - build_youtube
+      - build_hoodles_hooman
+      - build_nulls_sign_revenge
+      - build_other_configs
     if: ${{ always() && inputs.artifact_mode == true }}
     runs-on: ubuntu-latest
     permissions:

@@ -1,0 +1,87 @@
+# --- Merged from configs/patches/nulls.toml ---
+enable-module-update = true
+patches-version = "absolutelatest"
+
+[clash-of-clans-morphe-nulls]
+enabled = true
+cli-source = "none"
+cli-source-host = "none"
+app-name = "clash-of-clans"
+rv-brand = "nulls"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/nullsclash.night.rel"
+build-mode = "apk"
+arch = "all"
+pkg-name = "nullsclash.night.rel"
+direct-dlurl = "http://dnull.xyz/latest_coc"
+dpi = "nodpi anydpi auto"
+patches-source = "none"
+patches-source-host = "none"
+
+[clash-royale-morphe-nulls]
+enabled = true
+cli-source = "none"
+cli-source-host = "none"
+app-name = "clash-royale"
+rv-brand = "nulls"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/nullsroyale.rel.free"
+build-mode = "apk"
+arch = "all"
+pkg-name = "nullsroyale.rel.free"
+direct-dlurl = "http://dnull.xyz/latest_cr"
+dpi = "nodpi anydpi auto"
+patches-source = "none"
+patches-source-host = "none"
+
+[brawl-stars-morphe-nulls]
+enabled = true
+cli-source = "none"
+cli-source-host = "none"
+app-name = "brawl-stars"
+rv-brand = "nulls"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/daniillnull.nulls.brawlstars"
+build-mode = "apk"
+arch = "all"
+pkg-name = "daniillnull.nulls.brawlstars"
+direct-dlurl = "http://dnull.xyz/latest_bs"
+dpi = "nodpi anydpi auto"
+patches-source = "none"
+patches-source-host = "none"
+
+# --- Merged from configs/patches/sign.toml ---
+enable-module-update = true
+patches-version = "dev"
+[amazon-alexa-signed]
+enabled = true
+app-name = "amazon-alexa"
+rv-brand = "signed"
+build-mode = "apk"
+cli-source = "apksigner"
+pkg-name = "com.amazon.dee.app"
+cli-source-host = "none"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.dee.app"
+patches-source = "none"
+patches-source-host = "none"
+arch = "all arm64-v8a arm-v7a x86_64"
+prefer-dl-mode = "bundle"
+uptodown-dlurl = "https://alexa.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
+dpi = "120-480dpi 480-640dpi"
+
+# --- Merged from configs/patches/revenge.toml ---
+enable-module-update = true
+patches-version = "absolutelatest"
+[discord-npatch-revenge]
+enabled = true 
+app-name = "discord"
+pkg-name = "com.discord"
+rv-brand = "npatch-revenge"
+build-mode = "apk"
+arch = "all"
+cli-source = "7723mod/NPatch"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord"
+patches-source = "revenge-mod/revenge-xposed"
+patcher-args = "-l 0"
+dpi = "nodpi anydpi auto"
+uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers"
+apkmirror-example-url = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
