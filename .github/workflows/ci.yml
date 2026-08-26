@@ -19,7 +19,7 @@ on:
 
 concurrency:
   group: ci
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   check_patch:
@@ -166,6 +166,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part1.json"
+      upload_release_metadata: false
     secrets: inherit
 
   build_dev_2:
@@ -174,6 +175,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part2.json"
+      upload_release_metadata: false
     secrets: inherit
 
   build_dev_3:
@@ -182,6 +184,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part3.json"
+      upload_release_metadata: false
     secrets: inherit
 
   build_dev_4:
@@ -190,6 +193,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part4.json"
+      upload_release_metadata: false
     secrets: inherit
 
   build_dev_5:
@@ -198,6 +202,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part5.json"
+      upload_release_metadata: false
     secrets: inherit
 
   build_stable_1:
@@ -206,6 +211,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part1.json"
+      upload_release_metadata: false
     secrets: inherit
 
   build_stable_2:
@@ -214,6 +220,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part2.json"
+      upload_release_metadata: false
     secrets: inherit
 
   build_stable_3:
@@ -222,6 +229,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part3.json"
+      upload_release_metadata: false
     secrets: inherit
 
   build_stable_4:
@@ -230,6 +238,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part4.json"
+      upload_release_metadata: false
     secrets: inherit
 
   build_stable_5:
@@ -238,6 +247,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part5.json"
+      upload_release_metadata: false
     secrets: inherit
 
   aggregate_logs:
@@ -277,6 +287,19 @@ jobs:
             dev_logs/aggregated_out/*
             stable_logs/aggregated_out/*
           if-no-files-found: ignore
+
+      - name: Upload aggregated metadata to release (update)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -d "dev_logs/aggregated_out" ]; then
+            [ -f "dev_logs/aggregated_out/build.dev.json" ] && gh release upload update dev_logs/aggregated_out/build.dev.json --clobber || true
+            [ -f "dev_logs/aggregated_out/build.dev.md" ] && gh release upload update dev_logs/aggregated_out/build.dev.md --clobber || true
+          fi
+          if [ -d "stable_logs/aggregated_out" ]; then
+            [ -f "stable_logs/aggregated_out/build.stable.json" ] && gh release upload update stable_logs/aggregated_out/build.stable.json --clobber || true
+            [ -f "stable_logs/aggregated_out/build.stable.md" ] && gh release upload update stable_logs/aggregated_out/build.stable.md --clobber || true
+          fi
 
   trigger_cleanup:
     needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_logs]

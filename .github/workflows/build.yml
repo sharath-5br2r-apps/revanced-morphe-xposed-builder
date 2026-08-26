@@ -21,6 +21,11 @@ on:
         required: false
         type: string
         default: ""
+      upload_release_metadata:
+        description: "Upload build.json and build.md directly to release (set false when aggregate job handles release metadata)"
+        required: false
+        type: boolean
+        default: true
 
 concurrency:
   group: build-${{ inputs.config_file }}
@@ -159,6 +164,7 @@ jobs:
           prerelease: ${{ steps.context.outputs.IS_PRERELEASE == 'true' }}
 
       - name: Upload build.json to numbered release
+        if: ${{ inputs.upload_release_metadata != false }}
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
@@ -183,6 +189,7 @@ jobs:
         run: bash .github/scripts/build_update_changelog.sh
 
       - name: Upload module update metadata to release (update)
+        if: ${{ inputs.upload_release_metadata != false }}
         uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}

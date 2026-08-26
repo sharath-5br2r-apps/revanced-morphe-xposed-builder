@@ -94,6 +94,7 @@ def generate_workflow_yaml(jobs):
       config_file: "{config_file}"
       patches_version: ${{{{ inputs.patches_version }}}}
       release_version_code: ${{{{ needs.update_versions.outputs.NEXT_VER_CODE }}}}
+      upload_release_metadata: false
     secrets: inherit"""
         job_blocks.append(block)
 
@@ -115,7 +116,7 @@ on:
 
 concurrency:
   group: ci
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   update_versions:
