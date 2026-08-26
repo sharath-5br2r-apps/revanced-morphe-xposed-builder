@@ -5,16 +5,15 @@ on:
     - cron: "0 0/2 * * *" # Every 2 hours
   workflow_dispatch:
     inputs:
-      skip_build:
-        description: "Skip building APKs/modules and only update versions/configs"
-        required: false
-        type: boolean
-        default: false
-      disable_config_update:
-        description: "Disable generating/updating config JSONs (configs/config.*.updated.json)"
-        required: false
-        type: boolean
-        default: false
+      mode:
+        description: "Select CI execution mode"
+        required: true
+        type: choice
+        default: "Default"
+        options:
+          - "Default"
+          - "Generate Updates Only"
+          - "Build Only"
 
 concurrency:
   group: ci
@@ -108,7 +107,7 @@ jobs:
           commit_message: "Update app and patch versions [skip ci]"
 
       - name: Generate configs (JSON)
-        if: ${{ inputs.disable_config_update != true && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        if: ${{ steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' || inputs.mode == 'Generate Updates Only' || inputs.mode == 'Build Only' }}
         id: generate_configs
         env:
           TAGS_OLD: ${{ steps.compare.outputs.tags_old }}
@@ -116,14 +115,15 @@ jobs:
           TRIGGER_STABLE: ${{ steps.compare.outputs.TRIGGER_STABLE }}
           TRIGGER_PRERELEASE: ${{ steps.compare.outputs.TRIGGER_PRERELEASE }}
           TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE }}
-          DISABLE_CONFIG_UPDATE: ${{ inputs.disable_config_update || 'false' }}
+          DISABLE_CONFIG_UPDATE: "false"
+          SKIP_VERSION_CHECK: ${{ inputs.mode == 'Build Only' && 'true' || 'false' }}
         run: bash .github/scripts/ci_generate_configs.sh
 
       - name: Resolve effective triggers
         id: effective_triggers
         env:
           CREATED: ${{ steps.ensure_patch_sources.outputs.created }}
-          SKIP_BUILD: ${{ inputs.skip_build || 'false' }}
+          MODE: ${{ inputs.mode || 'Default' }}
           RAW_TRIGGER_STABLE: ${{ steps.compare.outputs.TRIGGER_STABLE || '0' }}
           RAW_TRIGGER_PRERELEASE: ${{ steps.compare.outputs.TRIGGER_PRERELEASE || '0' }}
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}

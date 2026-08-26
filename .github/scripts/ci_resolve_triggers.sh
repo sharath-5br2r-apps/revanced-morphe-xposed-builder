@@ -1,15 +1,23 @@
 #!/bin/bash
 export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
-if [ "${CREATED:-false}" = "true" ] || [ "${SKIP_BUILD:-false}" = "true" ]; then
+MODE="${MODE:-Default}"
+
+if [ "${CREATED:-false}" = "true" ] || [ "${SKIP_BUILD:-false}" = "true" ] || [ "$MODE" = "Generate Updates Only" ]; then
   echo "TRIGGER_STABLE=0" >> "$GITHUB_OUTPUT"
   echo "TRIGGER_PRERELEASE=0" >> "$GITHUB_OUTPUT"
   exit 0
 fi
 
-RAW_TRIGGER_STABLE=${RAW_TRIGGER_STABLE:-0}
-RAW_TRIGGER_PRERELEASE=${RAW_TRIGGER_PRERELEASE:-0}
-RAW_TRIGGER_APP_UPDATE=${RAW_TRIGGER_APP_UPDATE:-0}
+if [ "$MODE" = "Build Only" ]; then
+  RAW_TRIGGER_STABLE=1
+  RAW_TRIGGER_PRERELEASE=1
+  RAW_TRIGGER_APP_UPDATE=1
+else
+  RAW_TRIGGER_STABLE=${RAW_TRIGGER_STABLE:-0}
+  RAW_TRIGGER_PRERELEASE=${RAW_TRIGGER_PRERELEASE:-0}
+  RAW_TRIGGER_APP_UPDATE=${RAW_TRIGGER_APP_UPDATE:-0}
+fi
 
 TRIGGER_STABLE=0
 TRIGGER_PRERELEASE=0
