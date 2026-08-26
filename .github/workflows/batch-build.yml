@@ -52,11 +52,7 @@ jobs:
           mkdir -p batch_logs
           find logs_artifacts -exec cp -r {}/. batch_logs/ \; 2>/dev/null || true
           cd batch_logs
-          FLAVOR="stable"
-          if [ "${{ inputs.patches_version }}" = "auto" ] || [ "${{ inputs.patches_version }}" = "absolutelatest" ] || [ "${{ inputs.patches_version }}" = "dev" ]; then
-            FLAVOR="dev"
-          fi
-          bash ../.github/scripts/build_aggregate_logs.sh "$FLAVOR"
+          bash ../.github/scripts/build_aggregate_logs.sh manual
           cd ..
 
       - name: Upload aggregated logs artifact

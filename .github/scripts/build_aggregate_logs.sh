@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-FLAVOR="${1:-stable}" # dev or stable
+FLAVOR="${1:-manual}" # stable, dev, or manual
 
 echo "[+] Aggregating build logs for flavor: $FLAVOR"
 
