@@ -1,4 +1,5 @@
 name: "CI / Update Versions"
+run-name: "CI Run [Mode: ${{ inputs.mode || 'Scheduled/Default' }}]"
 permissions: write-all
 on:
   schedule:
