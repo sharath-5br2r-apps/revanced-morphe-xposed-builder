@@ -120,13 +120,13 @@ jobs:
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
         run: bash .github/scripts/ci_resolve_triggers.sh
 
-      - name: Commit updated full config JSONs
+      - name: Commit updated full config JSONs and app_versions.json
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
-          file_pattern: configs/config.*.updated.json
+          file_pattern: configs/config.*.updated.json configs/app_versions.json configs/patch_sources.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
       - name: Upload split config part artifacts
