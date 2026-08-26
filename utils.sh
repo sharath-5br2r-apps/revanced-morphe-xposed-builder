@@ -2974,7 +2974,7 @@ build_rv() {
 
 		# Clean resolved_version of arch, versionCodes, and release variant suffixes without clipping long version components
 		if [ -n "$resolved_version" ]; then
-			resolved_version=$(echo "$resolved_version" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/-[a-zA-Z0-9_.]+$//; s/^v//i; s/^[[:space:]]+|[[:space:]]+$//g')
+			resolved_version=$(echo "$resolved_version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^v//i; s/^[[:space:]]+|[[:space:]]+$//g')
 		fi
 
 		# Cache Check
