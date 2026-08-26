@@ -41,6 +41,9 @@ Variables are **plain text** (not encrypted). Set under the **Variables** tab.
 - `skip_build`: Boolean option (`true`/`false`) to skip APK/module builds and only run version tracking.
 - `disable_config_update`: Boolean option (`true`/`false`) to skip updating config JSONs while still tracking version changes.
 
+#### Batch Dispatch All Configs (`batch-dispatch.yml`)
+- `patches_version`: Select `patches-version` override (`latest`, `auto`, or `absolutelatest`). Dispatches app versions update first, then triggers `manual-ci.yml` for all TOML config files sequentially.
+
 > **Note:** `GITHUB_TOKEN` is automatically provided by GitHub Actions and does not need to be set manually. It has limited scope (e.g. cannot push to other repositories).
 
 > **Tip:** To generate `KEYSTORE_BASE64`, run:

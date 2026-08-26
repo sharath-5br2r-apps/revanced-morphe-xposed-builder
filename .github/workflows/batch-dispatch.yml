@@ -1,0 +1,38 @@
+name: "Batch Dispatch All Configs"
+
+on:
+  workflow_dispatch:
+    inputs:
+      patches_version:
+        description: "Select patches-version override (latest, auto, or absolutelatest)"
+        required: true
+        type: choice
+        default: "latest"
+        options:
+          - "latest"
+          - "auto"
+          - "absolutelatest"
+
+concurrency:
+  group: batch-dispatch
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Dispatch App Versions Update
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash scripts/dispatch_configs.sh update-versions
+
+      - name: Dispatch Manual CI for All Configs
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash scripts/dispatch_configs.sh manual "${{ inputs.patches_version }}"
