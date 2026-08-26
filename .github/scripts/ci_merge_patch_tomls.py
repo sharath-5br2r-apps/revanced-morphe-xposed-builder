@@ -118,7 +118,7 @@ on:
         default: true
 
 concurrency:
-  group: batch-build
+  group: ci
   cancel-in-progress: false
 
 jobs:
