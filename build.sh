@@ -259,7 +259,7 @@ for table_name in $(toml_get_table_names); do
 		fi
 
 		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)"
+		build_rv "$(declare -p app_args)" || epr "Build failed for ${app_args[table]}, continuing..."
 		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
 	done
 done
