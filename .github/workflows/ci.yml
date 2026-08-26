@@ -53,6 +53,16 @@ jobs:
     outputs:
       trigger_stable: ${{ steps.effective_triggers.outputs.TRIGGER_STABLE }}
       trigger_prerelease: ${{ steps.effective_triggers.outputs.TRIGGER_PRERELEASE }}
+      has_dev_1: ${{ steps.effective_triggers.outputs.HAS_DEV_1 }}
+      has_dev_2: ${{ steps.effective_triggers.outputs.HAS_DEV_2 }}
+      has_dev_3: ${{ steps.effective_triggers.outputs.HAS_DEV_3 }}
+      has_dev_4: ${{ steps.effective_triggers.outputs.HAS_DEV_4 }}
+      has_dev_5: ${{ steps.effective_triggers.outputs.HAS_DEV_5 }}
+      has_stable_1: ${{ steps.effective_triggers.outputs.HAS_STABLE_1 }}
+      has_stable_2: ${{ steps.effective_triggers.outputs.HAS_STABLE_2 }}
+      has_stable_3: ${{ steps.effective_triggers.outputs.HAS_STABLE_3 }}
+      has_stable_4: ${{ steps.effective_triggers.outputs.HAS_STABLE_4 }}
+      has_stable_5: ${{ steps.effective_triggers.outputs.HAS_STABLE_5 }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -152,7 +162,7 @@ jobs:
 
   build_dev_1:
     needs: check_patch
-    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part1.json') != '' }}
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_1 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part1.json"
@@ -160,7 +170,7 @@ jobs:
 
   build_dev_2:
     needs: check_patch
-    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part2.json') != '' }}
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_2 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part2.json"
@@ -168,7 +178,7 @@ jobs:
 
   build_dev_3:
     needs: check_patch
-    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part3.json') != '' }}
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_3 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part3.json"
@@ -176,7 +186,7 @@ jobs:
 
   build_dev_4:
     needs: check_patch
-    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part4.json') != '' }}
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_4 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part4.json"
@@ -184,7 +194,7 @@ jobs:
 
   build_dev_5:
     needs: check_patch
-    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part5.json') != '' }}
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_5 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part5.json"
@@ -192,7 +202,7 @@ jobs:
 
   build_stable_1:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part1.json') != '' }}
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_1 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part1.json"
@@ -200,7 +210,7 @@ jobs:
 
   build_stable_2:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part2.json') != '' }}
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_2 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part2.json"
@@ -208,7 +218,7 @@ jobs:
 
   build_stable_3:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part3.json') != '' }}
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_3 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part3.json"
@@ -216,7 +226,7 @@ jobs:
 
   build_stable_4:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part4.json') != '' }}
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_4 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part4.json"
@@ -224,7 +234,7 @@ jobs:
 
   build_stable_5:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part5.json') != '' }}
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_5 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part5.json"

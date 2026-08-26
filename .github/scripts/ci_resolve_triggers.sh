@@ -42,5 +42,21 @@ if [ "$RAW_TRIGGER_PRERELEASE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; t
   fi
 fi
 
+for i in {1..5}; do
+  dev_file="configs/config.dev.part${i}.json"
+  if [ -s "$dev_file" ] && [ "$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$dev_file" 2>/dev/null || echo 0)" -gt 0 ]; then
+    echo "HAS_DEV_${i}=1" >> "$GITHUB_OUTPUT"
+  else
+    echo "HAS_DEV_${i}=0" >> "$GITHUB_OUTPUT"
+  fi
+
+  stable_file="configs/config.stable.part${i}.json"
+  if [ -s "$stable_file" ] && [ "$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$stable_file" 2>/dev/null || echo 0)" -gt 0 ]; then
+    echo "HAS_STABLE_${i}=1" >> "$GITHUB_OUTPUT"
+  else
+    echo "HAS_STABLE_${i}=0" >> "$GITHUB_OUTPUT"
+  fi
+done
+
 echo "TRIGGER_STABLE=$TRIGGER_STABLE" >> "$GITHUB_OUTPUT"
 echo "TRIGGER_PRERELEASE=$TRIGGER_PRERELEASE" >> "$GITHUB_OUTPUT"
