@@ -1,0 +1,321 @@
+# --- Batch TOML Part 3/6 (21 apps) ---
+
+
+[xrecorder-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "xrecorder"
+rv-brand = "morphe-hoodles-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "videoeditor.videorecorder.screenrecorder"
+uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[smart-launcher-6-morphe-hoodles]
+enabled = false
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "smart-launcher-6"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+build-mode = "apk"
+arch = "all"
+pkg-name = "ginlemon.flowerfree"
+uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[smart-launcher-6-morphe-hoodles-exp]
+enabled = false
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "smart-launcher-6"
+rv-brand = "morphe-hoodles-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "ginlemon.flowerfree"
+uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[nova-launcher-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "nova-launcher"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.teslacoilsw.launcher"
+uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[nova-launcher-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "nova-launcher"
+rv-brand = "morphe-hoodles-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.teslacoilsw.launcher"
+uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[xodo-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "xodo"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.xodo.pdf.reader"
+uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[xodo-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "xodo"
+rv-brand = "morphe-hoodles-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
+version = "latest"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.xodo.pdf.reader"
+uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[solid-explorer-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "solid-explorer"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2"
+build-mode = "apk"
+arch = "all"
+pkg-name = "pl.solidexplorer2"
+uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[solid-explorer-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "solid-explorer"
+rv-brand = "morphe-hoodles-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "pl.solidexplorer2"
+uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+
+enable-module-update = true
+patches-version = "absolutelatest"
+
+
+[symfonium-morphe-hooman]
+enabled = true
+app-name = "symfonium"
+rv-brand = "morphe-hooman"
+build-mode = "apk"
+arch = "all"
+pkg-name = "app.symfonik.music.player"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://symfonium.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast"
+dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.symfonik.music.player"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[adm-morphe-hooman]
+enabled = true
+app-name = "adm"
+rv-brand = "morphe-hooman"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.dv.adm"
+cli-source = "MorpheApp/morphe-desktop"
+dpi = "nodpi anydpi auto"
+uptodown-dlurl="https://advanced-download-manager.en.uptodown.com/android"
+apkmirror-dlurl="https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[twitch-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "twitch"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/tv.twitch.android.app"
+build-mode = "apk"
+arch = "all"
+pkg-name = "tv.twitch.android.app"
+uptodown-dlurl = "https://twitch.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/twitch-interactive-inc/twitch"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[batteryguru-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "batteryguru"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.paget96.batteryguru"
+uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[batteryguru-morphe-hooman-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "batteryguru"
+rv-brand = "morphe-hooman-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.paget96.batteryguru"
+uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[poweramp-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "poweramp"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
+build-mode = "apk"
+arch = "all arm64-v8a"
+pkg-name = "com.maxmpz.audioplayer"
+uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp"
+apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
+apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[poweramp-morphe-hooman-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "poweramp"
+rv-brand = "morphe-hooman-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a"
+pkg-name = "com.maxmpz.audioplayer"
+uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp"
+apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
+apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+enable-module-update = true
+patches-version = "absolutelatest"
+
+
+
+[soundcloud-morphe-kondratjev]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "soundcloud"
+rv-brand = "morphe-kondratjev"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
+version = "auto"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.soundcloud.android"
+uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
+apkmirror-example-url = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/soundcloud-the-music-you-love-2026-07-23-release-release"
+apkpure-dlurl = "https://apkpure.com/sound-cloud-android-app/com.soundcloud.android"
+apkcombo-dlurl = "https://apkcombo.com/soundcloud/com.soundcloud.android"
+dpi = "nodpi anydpi auto"
+patches-source = "kondratjev/morphe-patches"
+
+
+enable-module-update = true
+patches-version = "absolutelatest"
+
+# ── YouTube morphe (stock/default theme) ──────────────────────────────────────
+
+
+[youtube-morphe]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube morphe-amoled (#000000) ───────────────────────────────────────────
+

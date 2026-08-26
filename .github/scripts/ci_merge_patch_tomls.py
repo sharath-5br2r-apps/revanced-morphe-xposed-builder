@@ -1,6 +1,6 @@
 import os
 import glob
-import re
+import math
 
 def get_tables_with_headers(filepath):
     tables = []
@@ -29,44 +29,52 @@ def main():
     
     # Remove old merged files
     for old_f in glob.glob(os.path.join(merged_dir, "*.toml")):
-        os.remove(old_f)
+        try:
+            os.remove(old_f)
+        except OSError:
+            pass
     os.makedirs(merged_dir, exist_ok=True)
 
     toml_files = sorted(glob.glob(os.path.join(base, "*.toml")))
 
-    matrix_jobs = []
-
+    # Collect all (header, table_content) blocks across all patchsets
+    all_tables = []
     for fpath in toml_files:
         fname = os.path.basename(fpath)
         patchset_name = fname.replace(".toml", "")
         tables = get_tables_with_headers(fpath)
+        for header, content in tables:
+            all_tables.append((patchset_name, header, content))
+
+    total_apps = len(all_tables)
+    NUM_OUTPUT_FILES = 6
+    apps_per_file = math.ceil(total_apps / NUM_OUTPUT_FILES)
+
+    matrix_jobs = []
+
+    for idx in range(NUM_OUTPUT_FILES):
+        start_idx = idx * apps_per_file
+        end_idx = min(start_idx + apps_per_file, total_apps)
+        chunk_items = all_tables[start_idx:end_idx]
         
-        # Split tables of this patchset into chunks of max 6 apps
-        for i in range(0, len(tables), 6):
-            chunk_tables = tables[i:i+6]
-            part_num = (i // 6) + 1
-            total_parts = ((len(tables) - 1) // 6) + 1
-            
-            if total_parts > 1:
-                chunk_name = f"{patchset_name}-part{part_num}.toml"
-                job_id = f"build_{patchset_name.replace('-', '_')}_part{part_num}"
-            else:
-                chunk_name = f"{patchset_name}.toml"
-                job_id = f"build_{patchset_name.replace('-', '_')}"
-                
-            out_file = os.path.join(merged_dir, chunk_name)
-            
-            content = [f"# --- Patchset: {patchset_name} (Part {part_num}/{total_parts}) ---\n"]
-            for header, tbl in chunk_tables:
-                if header:
-                    content.append(header)
-                content.append(tbl)
-                
-            with open(out_file, "w", encoding="utf-8") as out_fp:
-                out_fp.write("\n\n".join(content) + "\n")
-            
-            matrix_jobs.append((job_id, f"configs/patches/merged/{chunk_name}"))
-            print(f"[+] Created normalized chunk '{chunk_name}' with {len(chunk_tables)} apps")
+        if not chunk_items:
+            continue
+
+        chunk_name = f"batch-part{idx + 1}.toml"
+        job_id = f"build_batch_part{idx + 1}"
+        out_file = os.path.join(merged_dir, chunk_name)
+
+        content = [f"# --- Batch TOML Part {idx + 1}/{NUM_OUTPUT_FILES} ({len(chunk_items)} apps) ---\n"]
+        for patchset_name, header, tbl_content in chunk_items:
+            if header:
+                content.append(header)
+            content.append(tbl_content)
+
+        with open(out_file, "w", encoding="utf-8") as out_fp:
+            out_fp.write("\n\n".join(content) + "\n")
+
+        matrix_jobs.append((job_id, f"configs/patches/merged/{chunk_name}"))
+        print(f"[+] Created '{chunk_name}' with {len(chunk_items)} apps")
 
     generate_workflow_yaml(matrix_jobs)
 
@@ -195,7 +203,7 @@ jobs:
           DISABLE_CONFIG_UPDATE: "false"
         run: bash .github/scripts/ci_generate_configs.sh
 
-      - name: Generate normalized patch TOML configs
+      - name: Generate normalized 6 patch TOML configs
         run: python3 .github/scripts/ci_merge_patch_tomls.py
 
       - name: Commit updated patch sources, configs and normalized TOMLs
@@ -231,7 +239,7 @@ jobs:
       - name: Consolidate build files & Merge build.json
         run: |
           mkdir -p final_build/
-          find artifacts/ -type f \( -name "*.apk" -o -name "*.zip" \) -exec cp -f {{}} final_build/ \;
+          find artifacts/ -type f \( -name "*.apk" -o -name "*.zip" \) -exec cp -f {{{{}}}} final_build/ \;
           python3 .github/scripts/ci_aggregate_build_json.py
 
       - name: Determine next release version tag
@@ -241,7 +249,7 @@ jobs:
         run: |
           LATEST_RELEASE=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null || echo "v1.0.0")
           if [[ "$LATEST_RELEASE" =~ ^v?([0-9]+)$ ]]; then
-            VER_NUM="${{BASH_REMATCH[1]}}"
+            VER_NUM="${{{{BASH_REMATCH[1]}}}}"
             NEXT_VER=$((VER_NUM + 1))
           else
             NEXT_VER="1"
