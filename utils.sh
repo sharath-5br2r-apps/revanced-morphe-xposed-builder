@@ -2929,15 +2929,7 @@ build_rv() {
 		fi
 
 		if [ -z "$resolved_version" ]; then
-			if [ "$version_mode" = auto ]; then
-				if ! resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
-					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
-					"${cli_jar:-}" "${patches_jar:-}"); then
-					wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
-					resolved_version=""
-					version_mode="latest"
-				fi
-			elif [ "$version_mode" = exp ]; then
+			if [ "$version_mode" = exp ]; then
 				if [[ "$cli_source_l" == *"revanced/revanced-cli"* ]]; then
 					wpr "ReVanced CLI does not support experimental versions."
 					return 0
@@ -2949,11 +2941,19 @@ build_rv() {
 					wpr "WARNING: No exp version found for '$pkg_name', skipping build."
 					return 0
 				fi
-			elif isoneof "$version_mode" latest beta; then
-				: # Needs latest
-			else
-				if ! isoneof "$version_mode" latest auto exp beta; then
-					resolved_version=$version_mode
+			elif ! isoneof "$version_mode" latest beta; then
+				if resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
+					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
+					"${cli_jar:-}" "${patches_jar:-}") && [ -n "$resolved_version" ]; then
+					pr "Resolved patch-supported version '$resolved_version' for '$pkg_name' (mode: $version_mode)"
+				else
+					if [ "$version_mode" = auto ]; then
+						wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
+						resolved_version=""
+						version_mode="latest"
+					else
+						resolved_version=$version_mode
+					fi
 				fi
 			fi
 		fi
@@ -3099,14 +3099,7 @@ build_rv() {
 		fi
 
 		if [ -z "$resolved_version" ]; then
-			if [ "$version_mode" = auto ]; then
-				if ! resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
-					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
-					"${cli_jar:-}" "${patches_jar:-}"); then
-					wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
-					resolved_version=""
-				fi
-			elif [ "$version_mode" = exp ]; then
+			if [ "$version_mode" = exp ]; then
 				local cli_source_l="${args[cli_source],,}"
 				if [[ "$cli_source_l" == *"revanced/revanced-cli"* ]]; then
 					wpr "ReVanced CLI does not support experimental versions."
@@ -3119,11 +3112,18 @@ build_rv() {
 					epr "No exp version found for '$pkg_name', skipping."
 					return 0
 				fi
-			elif isoneof "$version_mode" latest beta; then
-				:
-			else
-				if ! isoneof "$version_mode" latest auto exp beta; then
-					resolved_version=$version_mode
+			elif ! isoneof "$version_mode" latest beta; then
+				if resolved_version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
+					"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
+					"${cli_jar:-}" "${patches_jar:-}") && [ -n "$resolved_version" ]; then
+					pr "Resolved patch-supported version '$resolved_version' for '$pkg_name' (mode: $version_mode)"
+				else
+					if [ "$version_mode" = auto ]; then
+						wpr "Could not resolve a patch-compatible version for '$pkg_name'; falling back to latest source version."
+						resolved_version=""
+					else
+						resolved_version=$version_mode
+					fi
 				fi
 			fi
 		fi
