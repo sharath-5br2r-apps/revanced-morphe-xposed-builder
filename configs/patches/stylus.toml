@@ -8,10 +8,8 @@ cli-source = "MorpheApp/morphe-desktop"
 repo-dlurl = "https://github.com/bitwarden/android"
 repo-dlurl-filter = "fdroid.apk"
 repo-dlurl-tag-filter = "bwpm"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden"
 version = "latest"
 patches-source = "ch3thanhs/stylus"
-
 [bitwarden-morphe-stylus]
 enabled = true
 app-name = "bitwarden"
@@ -22,9 +20,7 @@ cli-source = "MorpheApp/morphe-desktop"
 repo-dlurl = "https://github.com/bitwarden/android"
 repo-dlurl-filter = "fdroid.apk"
 repo-dlurl-tag-filter = "bwpm"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden"
 patches-source = "ch3thanhs/stylus"
-
 [bitwarden-morphe-stylus-exp]
 enabled = true
 app-name = "bitwarden"
@@ -35,6 +31,5 @@ cli-source = "MorpheApp/morphe-desktop"
 repo-dlurl = "https://github.com/bitwarden/android"
 repo-dlurl-filter = "fdroid.apk"
 repo-dlurl-tag-filter = "bwpm"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden"
 version = "latest"
 patches-source = "ch3thanhs/stylus"
