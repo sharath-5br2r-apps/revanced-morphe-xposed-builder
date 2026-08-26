@@ -832,6 +832,26 @@ _get_patch_last_supported_ver() {
 	grep -F "($pcount patch" <<<"$op" | sed 's/ (.* patch.*//' | get_highest_ver || return 1
 }
 
+check_patch_ver_compatible() {
+	local list_patches=$1 pkg_name=$2 ver=$3 inc_sel=${4:-} exc_sel=${5:-} exclusive=${6:-} cli_source=${7:-} cli_jar=${8:-} patches_jar=${9:-}
+	[ -z "$ver" ] && return 0
+	
+	local last_ver
+	last_ver=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" "$inc_sel" "$exc_sel" "$exclusive" "$cli_source" "$cli_jar" "$patches_jar") || return 0
+	[ -z "$last_ver" ] && return 0
+
+	if [ "$ver" = "$last_ver" ]; then
+		return 0
+	fi
+
+	local highest
+	highest=$(echo -e "${ver}\n${last_ver}" | get_highest_ver)
+	if [ "$highest" = "$last_ver" ]; then
+		return 0
+	fi
+	return 1
+}
+
 get_patch_exp_ver() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 cli_source=$4
 	local list_stable list_all
