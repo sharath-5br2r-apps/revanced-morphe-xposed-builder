@@ -1,4 +1,5 @@
 name: "Batch Build All Configs"
+permissions: write-all
 
 on:
   workflow_dispatch:

@@ -97,6 +97,7 @@ def generate_workflow_yaml(jobs):
     needs_list = "\n".join([f"      - {jid}" for jid in job_ids])
     
     yaml_content = f"""name: "Batch Build All Configs"
+permissions: write-all
 
 on:
   workflow_dispatch:
