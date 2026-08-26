@@ -33,11 +33,11 @@ if [[ "$CONFIG" == *"dev"* ]]; then
   IS_DEV=true
 elif [[ "$CONFIG" == *.json ]]; then
   PVER=$(jq -r '."patches-version" // empty' "$CONFIG")
-  if [ "$PVER" = "dev" ] || [ "$PVER" = "absolutelatest" ]; then
+  if [ "$PVER" = "dev" ] || [ "$PVER" = "absolutelatest" ] || [ "$PVER" = "auto" ]; then
     IS_DEV=true
   fi
 elif [[ "$CONFIG" == *.toml ]]; then
-  if awk '/^\[/ {exit} {print}' "$CONFIG" | grep -qE '^[[:space:]]*patches-version[[:space:]]*=[[:space:]]*"?(dev|absolutelatest)"?'; then
+  if awk '/^\[/ {exit} {print}' "$CONFIG" | grep -qE '^[[:space:]]*patches-version[[:space:]]*=[[:space:]]*"?(dev|absolutelatest|auto)"?'; then
     IS_DEV=true
   fi
 fi
