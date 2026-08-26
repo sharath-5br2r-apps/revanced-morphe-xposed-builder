@@ -10,6 +10,24 @@ fi
 
 echo "CONFIG_FILE=$CONFIG" >> "$GITHUB_OUTPUT"
 
+# Count enabled apps in config file (JSON or TOML)
+HAS_ENABLED=true
+if [[ "$CONFIG" == *.json ]]; then
+  ENABLED_COUNT=$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$CONFIG" 2>/dev/null || echo "0")
+  if [ "$ENABLED_COUNT" -eq 0 ]; then
+    HAS_ENABLED=false
+  fi
+elif [[ "$CONFIG" == *.toml ]]; then
+  if ! grep -iqE '^[[:space:]]*enabled[[:space:]]*=[[:space:]]*true' "$CONFIG" && ! grep -qE '^\[.+\]' "$CONFIG"; then
+    HAS_ENABLED=false
+  fi
+fi
+
+echo "HAS_ENABLED_APPS=$HAS_ENABLED" >> "$GITHUB_OUTPUT"
+if [ "$HAS_ENABLED" = false ]; then
+  echo "::notice::No enabled apps found in config file '$CONFIG'. Skipping build steps."
+fi
+
 IS_DEV=false
 if [[ "$CONFIG" == *"dev"* ]]; then
   IS_DEV=true

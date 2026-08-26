@@ -110,6 +110,7 @@ jobs:
            fi
 
       - name: Build modules and apks
+        if: ${{ steps.context.outputs.HAS_ENABLED_APPS != 'false' }}
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           APKS_REPO: ${{ vars.APKS_REPO }}
