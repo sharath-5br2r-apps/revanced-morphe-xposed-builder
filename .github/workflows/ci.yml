@@ -207,7 +207,7 @@ jobs:
 
   build_stable_1:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_1 == '1' }}
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_1 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part1.json"
@@ -216,7 +216,7 @@ jobs:
 
   build_stable_2:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_2 == '1' }}
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_2 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part2.json"
@@ -225,7 +225,7 @@ jobs:
 
   build_stable_3:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_3 == '1' }}
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_3 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part3.json"
@@ -234,7 +234,7 @@ jobs:
 
   build_stable_4:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_4 == '1' }}
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_4 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part4.json"
@@ -243,7 +243,7 @@ jobs:
 
   build_stable_5:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ always() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_5 == '1' }}
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_5 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part5.json"
@@ -252,7 +252,7 @@ jobs:
 
   aggregate_logs:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5]
-    if: ${{ always() && needs.check_patch.result == 'success' && (needs.check_patch.outputs.trigger_prerelease == '1' || needs.check_patch.outputs.trigger_stable == '1') }}
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && (needs.check_patch.outputs.trigger_prerelease == '1' || needs.check_patch.outputs.trigger_stable == '1') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -303,12 +303,12 @@ jobs:
 
   trigger_cleanup:
     needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_logs]
-    if: ${{ always() }}
+    if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
     needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_logs, trigger_cleanup]
-    if: ${{ always() }}
+    if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit

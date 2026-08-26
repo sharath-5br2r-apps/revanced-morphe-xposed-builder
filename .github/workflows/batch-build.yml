@@ -119,7 +119,7 @@ jobs:
 
   build_batch_part1:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part1.toml"
@@ -130,7 +130,7 @@ jobs:
 
   build_batch_part2:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part2.toml"
@@ -141,7 +141,7 @@ jobs:
 
   build_batch_part3:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part3.toml"
@@ -152,7 +152,7 @@ jobs:
 
   build_batch_part4:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part4.toml"
@@ -163,7 +163,7 @@ jobs:
 
   build_batch_part5:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part5.toml"
@@ -174,7 +174,7 @@ jobs:
 
   build_batch_part6:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part6.toml"
@@ -185,7 +185,7 @@ jobs:
 
   build_batch_part7:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part7.toml"
@@ -196,7 +196,7 @@ jobs:
 
   build_batch_part8:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part8.toml"
@@ -207,7 +207,7 @@ jobs:
 
   build_batch_part9:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part9.toml"
@@ -218,7 +218,7 @@ jobs:
 
   build_batch_part10:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part10.toml"
@@ -229,7 +229,7 @@ jobs:
 
   build_batch_part11:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part11.toml"
@@ -240,7 +240,7 @@ jobs:
 
   build_batch_part12:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part12.toml"
@@ -251,7 +251,7 @@ jobs:
 
   build_batch_part13:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part13.toml"
@@ -262,7 +262,7 @@ jobs:
 
   build_batch_part14:
     needs: update_versions
-    if: ${{ always() && needs.update_versions.result == 'success' }}
+    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/patches/merged/batch-part14.toml"
@@ -273,12 +273,12 @@ jobs:
 
   trigger_cleanup:
     needs: [build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5, build_batch_part6, build_batch_part7, build_batch_part8, build_batch_part9, build_batch_part10, build_batch_part11, build_batch_part12, build_batch_part13, build_batch_part14]
-    if: ${{ always() }}
+    if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
     needs: [build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5, build_batch_part6, build_batch_part7, build_batch_part8, build_batch_part9, build_batch_part10, build_batch_part11, build_batch_part12, build_batch_part13, build_batch_part14, trigger_cleanup]
-    if: ${{ always() }}
+    if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit

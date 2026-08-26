@@ -88,7 +88,7 @@ def generate_workflow_yaml(jobs):
         job_ids.append(job_id)
         block = f"""  {job_id}:
     needs: update_versions
-    if: ${{{{ always() && needs.update_versions.result == 'success' }}}}
+    if: ${{{{ !cancelled() && needs.update_versions.result == 'success' }}}}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "{config_file}"
@@ -221,13 +221,13 @@ jobs:
 
   trigger_cleanup:
     needs: [{", ".join(job_names)}]
-    if: ${{{{ always() }}}}
+    if: ${{{{ !cancelled() }}}}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
     needs: [{", ".join(job_names)}, trigger_cleanup]
-    if: ${{{{ always() }}}}
+    if: ${{{{ !cancelled() }}}}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
 """
