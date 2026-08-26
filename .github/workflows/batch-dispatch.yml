@@ -119,7 +119,7 @@ jobs:
     secrets: inherit
 
   build_bholeykabhakt:
-    needs: [update_versions, build_anddea]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -128,7 +128,7 @@ jobs:
     secrets: inherit
 
   build_binarymend:
-    needs: [update_versions, build_bholeykabhakt]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -137,7 +137,7 @@ jobs:
     secrets: inherit
 
   build_brave:
-    needs: [update_versions, build_binarymend]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -146,7 +146,7 @@ jobs:
     secrets: inherit
 
   build_byehi98:
-    needs: [update_versions, build_brave]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -155,7 +155,7 @@ jobs:
     secrets: inherit
 
   build_chess:
-    needs: [update_versions, build_byehi98]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -164,7 +164,7 @@ jobs:
     secrets: inherit
 
   build_gboard:
-    needs: [update_versions, build_chess]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -173,7 +173,7 @@ jobs:
     secrets: inherit
 
   build_github:
-    needs: [update_versions, build_gboard]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -182,7 +182,7 @@ jobs:
     secrets: inherit
 
   build_hoodles:
-    needs: [update_versions, build_github]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -191,7 +191,7 @@ jobs:
     secrets: inherit
 
   build_hooman:
-    needs: [update_versions, build_hoodles]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -200,7 +200,7 @@ jobs:
     secrets: inherit
 
   build_kondratjev:
-    needs: [update_versions, build_hooman]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -209,7 +209,7 @@ jobs:
     secrets: inherit
 
   build_morphe:
-    needs: [update_versions, build_kondratjev]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -218,7 +218,7 @@ jobs:
     secrets: inherit
 
   build_nulls:
-    needs: [update_versions, build_morphe]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -227,7 +227,7 @@ jobs:
     secrets: inherit
 
   build_paresh:
-    needs: [update_versions, build_nulls]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -236,7 +236,7 @@ jobs:
     secrets: inherit
 
   build_piko:
-    needs: [update_versions, build_paresh]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -245,7 +245,7 @@ jobs:
     secrets: inherit
 
   build_revenge:
-    needs: [update_versions, build_piko]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -254,7 +254,7 @@ jobs:
     secrets: inherit
 
   build_rushiranpise:
-    needs: [update_versions, build_revenge]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -263,7 +263,7 @@ jobs:
     secrets: inherit
 
   build_sign:
-    needs: [update_versions, build_rushiranpise]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -272,7 +272,7 @@ jobs:
     secrets: inherit
 
   build_stylus:
-    needs: [update_versions, build_sign]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -281,7 +281,7 @@ jobs:
     secrets: inherit
 
   build_tiktok:
-    needs: [update_versions, build_stylus]
+    needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
