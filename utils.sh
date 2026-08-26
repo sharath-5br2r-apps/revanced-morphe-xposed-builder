@@ -2979,16 +2979,28 @@ build_rv() {
 				fi
 			done
 			if [ "$all_archs_found" = true ]; then
-				for arch in "${arch_list[@]}"; do
-					arch_f="${arch// /}"
-					local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
-					local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
-					[ -f "$stock_apk" ] && touch "$stock_apk" 2>/dev/null || true
-					[ -f "$all_apk" ] && touch "$all_apk" 2>/dev/null || true
-				done
-				pr "Found all required architectures for '$pkg_name' (v$version_f) in cache. Skipping download!"
-				skip_dl_source_check=true
-				version="$resolved_version"
+				local is_cache_ver_compatible=true
+				if [ -n "$list_patches" ]; then
+					if ! check_patch_ver_compatible "$list_patches" "$pkg_name" "$resolved_version" \
+						"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
+						"${cli_jar:-}" "${patches_jar:-}"; then
+						wpr "WARNING: Cached APK version '$resolved_version' for '$pkg_name' is not compatible with selected patches. Invalidate cache hit."
+						is_cache_ver_compatible=false
+					fi
+				fi
+
+				if [ "$is_cache_ver_compatible" = true ]; then
+					for arch in "${arch_list[@]}"; do
+						arch_f="${arch// /}"
+						local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+						local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+						[ -f "$stock_apk" ] && touch "$stock_apk" 2>/dev/null || true
+						[ -f "$all_apk" ] && touch "$all_apk" 2>/dev/null || true
+					done
+					pr "Found all required architectures for '$pkg_name' (v$version_f) in cache. Skipping download!"
+					skip_dl_source_check=true
+					version="$resolved_version"
+				fi
 			fi
 	elif [ "$version_mode" != "auto" ]; then
 		# Dynamic Cache Discovery for "latest" or empty version
