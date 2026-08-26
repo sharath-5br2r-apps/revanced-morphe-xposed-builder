@@ -18,21 +18,273 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  dispatch:
-    runs-on: ubuntu-latest
+  update_versions:
     permissions:
       contents: write
-      actions: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TRAWL_URL: "http://localhost:8191"
+      CFB_URL: "http://localhost:8000"
+    services:
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+      trawl:
+        image: ghcr.io/germondai/trawl:latest
+        ports:
+          - 8191:8191
+        env:
+          REDIS_URL: redis://redis:6379
+        options: --shm-size=1gb
+      cfb:
+        image: ghcr.io/sarperavci/cloudflarebypassforscraping:latest
+        ports:
+          - 8000:8000
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 1
 
-      - name: Dispatch App Versions Update
+      - name: Ensure patch_sources.json exists
+        id: ensure_patch_sources
+        run: bash .github/scripts/ci_ensure_patch_sources.sh
+
+      - name: Commit dummy patch_sources.json if created
+        if: steps.ensure_patch_sources.outputs.created == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: main
+          skip_checkout: true
+          file_pattern: configs/patch_sources.json
+          commit_message: "Create dummy patch_sources.json"
+
+      - name: Fetch latest tags
+        if: steps.ensure_patch_sources.outputs.created == 'false'
+        id: fetch_tags
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: bash scripts/dispatch_configs.sh update-versions
+        run: bash .github/scripts/ci_fetch_tags.sh
 
-      - name: Dispatch Manual CI for All Configs
+      - name: Compare latest vs stored tags
+        if: steps.ensure_patch_sources.outputs.created == 'false'
+        id: compare
         env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: bash scripts/dispatch_configs.sh manual "${{ inputs.patches_version }}"
+          LATEST_TAGS: ${{ steps.fetch_tags.outputs.latest }}
+        run: bash .github/scripts/ci_compare_tags.sh
+
+      - name: Fetch App Versions
+        if: steps.ensure_patch_sources.outputs.created == 'false'
+        id: fetch_app_versions
+        run: bash .github/scripts/ci_fetch_app_versions.sh
+
+      - name: Compare App Versions
+        if: steps.ensure_patch_sources.outputs.created == 'false'
+        id: compare_apps
+        env:
+          FETCHED_APP_VERSIONS: ${{ steps.fetch_app_versions.outputs.fetched }}
+        run: bash .github/scripts/ci_compare_app_versions.sh
+
+      - name: Generate configs (JSON)
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        id: generate_configs
+        env:
+          TAGS_OLD: ${{ steps.compare.outputs.tags_old }}
+          TAGS_NEW: ${{ steps.compare.outputs.tags_new }}
+          TRIGGER_STABLE: ${{ steps.compare.outputs.TRIGGER_STABLE }}
+          TRIGGER_PRERELEASE: ${{ steps.compare.outputs.TRIGGER_PRERELEASE }}
+          TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE }}
+          DISABLE_CONFIG_UPDATE: "false"
+        run: bash .github/scripts/ci_generate_configs.sh
+
+      - name: Commit updated patch sources and configs
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: main
+          skip_checkout: true
+          file_pattern: configs/*.json
+          commit_message: "Update patch sources, app versions and generated configs [skip ci]"
+
+  build_anddea:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/anddea.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_bholeykabhakt:
+    needs: [update_versions, build_anddea]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/bholeykabhakt.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_binarymend:
+    needs: [update_versions, build_bholeykabhakt]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/binarymend.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_brave:
+    needs: [update_versions, build_binarymend]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/brave.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_byehi98:
+    needs: [update_versions, build_brave]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/byehi98.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_chess:
+    needs: [update_versions, build_byehi98]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/chess.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_gboard:
+    needs: [update_versions, build_chess]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/gboard.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_github:
+    needs: [update_versions, build_gboard]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/github.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_hoodles:
+    needs: [update_versions, build_github]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/hoodles.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_hooman:
+    needs: [update_versions, build_hoodles]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/hooman.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_kondratjev:
+    needs: [update_versions, build_hooman]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/kondratjev.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_morphe:
+    needs: [update_versions, build_kondratjev]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/morphe.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_nulls:
+    needs: [update_versions, build_morphe]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/nulls.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_paresh:
+    needs: [update_versions, build_nulls]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/paresh.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_piko:
+    needs: [update_versions, build_paresh]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/piko.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_revenge:
+    needs: [update_versions, build_piko]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/revenge.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_rushiranpise:
+    needs: [update_versions, build_revenge]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/rushiranpise.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_sign:
+    needs: [update_versions, build_rushiranpise]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/sign.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_stylus:
+    needs: [update_versions, build_sign]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/stylus.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  build_tiktok:
+    needs: [update_versions, build_stylus]
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/tiktok.toml"
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
