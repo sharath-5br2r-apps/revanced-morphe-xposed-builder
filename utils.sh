@@ -3,9 +3,11 @@
 pr() { echo >&2 -e "\033[0;32m[+] ${1}\033[0m"; }
 epr() {
 	echo >&2 -e "\033[0;31m[-] ${1}\033[0m"
+	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::error::utils.sh [-] ${1}\n"; fi
 }
 wpr() {
 	echo >&2 -e "\033[0;33m[!] ${1}\033[0m"
+	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::warning::utils.sh [!] ${1}\n"; fi
 }
 abort() {
 	epr "ABORT: ${1-}"
@@ -3373,7 +3375,7 @@ build_rv() {
 			local log_arch="${logfile##*/dl_}"
 			log_arch="${log_arch%.log}"
 			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::group::Download Logs - ${table} (${log_arch})"; fi
-			sed "s/^/[${table}][${log_arch}] /" "$logfile"
+			sed -E "s/^::error::(.*)/::error::[${table}][${log_arch}] \1/; s/^::warning::(.*)/::warning::[${table}][${log_arch}] \1/; t; s/^/[${table}][${log_arch}] /" "$logfile"
 			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::endgroup::"; fi
 		fi
 	done
@@ -3659,7 +3661,7 @@ build_rv() {
 			local log_arch="${logfile##*/build_}"
 			log_arch="${log_arch%.log}"
 			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::group::Build Logs - ${table} (${log_arch})"; fi
-			sed "s/^/[${table}][${log_arch}] /" "$logfile"
+			sed -E "s/^::error::(.*)/::error::[${table}][${log_arch}] \1/; s/^::warning::(.*)/::warning::[${table}][${log_arch}] \1/; t; s/^/[${table}][${log_arch}] /" "$logfile"
 			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::endgroup::"; fi
 		fi
 	done
