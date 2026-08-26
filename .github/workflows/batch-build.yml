@@ -5,13 +5,12 @@ on:
   workflow_dispatch:
     inputs:
       patches_version:
-        description: "Select patches-version override (latest, auto, or absolutelatest)"
+        description: "Select patches-version override (latest or absolutelatest)"
         required: true
         type: choice
         default: "latest"
         options:
           - "latest"
-          - "auto"
           - "absolutelatest"
 
 concurrency:
@@ -53,7 +52,7 @@ jobs:
           find logs_artifacts -exec cp -r {}/. batch_logs/ \; 2>/dev/null || true
           cd batch_logs
           FLAVOR="stable"
-          if [ "${{ inputs.patches_version }}" = "auto" ] || [ "${{ inputs.patches_version }}" = "absolutelatest" ] || [ "${{ inputs.patches_version }}" = "dev" ]; then
+          if [ "${{ inputs.patches_version }}" = "absolutelatest" ] || [ "${{ inputs.patches_version }}" = "dev" ]; then
             FLAVOR="dev"
           fi
           bash ../.github/scripts/build_aggregate_logs.sh "$FLAVOR"
@@ -71,7 +70,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           TARGET_TAG="stable"
-          if [ "${{ inputs.patches_version }}" = "auto" ] || [ "${{ inputs.patches_version }}" = "absolutelatest" ] || [ "${{ inputs.patches_version }}" = "dev" ]; then
+          if [ "${{ inputs.patches_version }}" = "absolutelatest" ] || [ "${{ inputs.patches_version }}" = "dev" ]; then
             TARGET_TAG="beta"
           fi
           if [ -d "batch_logs/aggregated_out" ]; then
