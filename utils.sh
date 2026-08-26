@@ -3363,7 +3363,9 @@ build_rv() {
 		if [ -f "$logfile" ]; then
 			local log_arch="${logfile##*/dl_}"
 			log_arch="${log_arch%.log}"
+			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::group::Download Logs - ${table} (${log_arch})"; fi
 			sed "s/^/[${table}][${log_arch}] /" "$logfile"
+			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::endgroup::"; fi
 		fi
 	done
 	rm -rf "$dl_logs_dir"
@@ -3638,7 +3640,9 @@ build_rv() {
 		if [ -f "$logfile" ]; then
 			local log_arch="${logfile##*/build_}"
 			log_arch="${log_arch%.log}"
+			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::group::Build Logs - ${table} (${log_arch})"; fi
 			sed "s/^/[${table}][${log_arch}] /" "$logfile"
+			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::endgroup::"; fi
 		fi
 	done
 	rm -rf "$build_logs_dir"
