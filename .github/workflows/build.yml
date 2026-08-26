@@ -23,7 +23,7 @@ on:
         default: false
 
 concurrency:
-  group: build
+  group: build-${{ inputs.config_file }}
   cancel-in-progress: false
 
 jobs:
