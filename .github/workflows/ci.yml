@@ -279,35 +279,33 @@ jobs:
             stable_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Upload aggregated metadata to release (update)
+      - name: Upload aggregated metadata to release
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if [ -d "dev_logs/aggregated_out" ]; then
             if [ -f "dev_logs/aggregated_out/build.dev.json" ]; then
               cp -f dev_logs/aggregated_out/build.dev.json build.json
-              gh release upload update build.json --clobber || true
               gh release upload beta build.json --clobber || true
             fi
             if [ -f "dev_logs/aggregated_out/build.dev.md" ]; then
               cp -f dev_logs/aggregated_out/build.dev.md build.md
-              gh release upload update build.md --clobber || true
               gh release upload beta build.md --clobber || true
               gh release edit beta --notes-file build.md || true
             fi
+            find dev_logs -name "*-update.json" -exec gh release upload update {} --clobber \; 2>/dev/null || true
           fi
           if [ -d "stable_logs/aggregated_out" ]; then
             if [ -f "stable_logs/aggregated_out/build.stable.json" ]; then
               cp -f stable_logs/aggregated_out/build.stable.json build.json
-              gh release upload update build.json --clobber || true
               gh release upload stable build.json --clobber || true
             fi
             if [ -f "stable_logs/aggregated_out/build.stable.md" ]; then
               cp -f stable_logs/aggregated_out/build.stable.md build.md
-              gh release upload update build.md --clobber || true
               gh release upload stable build.md --clobber || true
               gh release edit stable --notes-file build.md || true
             fi
+            find stable_logs -name "*-update.json" -exec gh release upload update {} --clobber \; 2>/dev/null || true
           fi
 
   trigger_cleanup:

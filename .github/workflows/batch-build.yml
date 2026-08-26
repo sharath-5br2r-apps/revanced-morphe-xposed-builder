@@ -62,20 +62,12 @@ jobs:
           path: batch_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Upload aggregated metadata to release (update)
+      - name: Upload module update metadata to release (update)
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          if [ -d "batch_logs/aggregated_out" ]; then
-            if [ -f "batch_logs/aggregated_out/build.manual.json" ]; then
-              cp -f batch_logs/aggregated_out/build.manual.json build.json
-              gh release upload update build.json --clobber || true
-            fi
-            if [ -f "batch_logs/aggregated_out/build.manual.md" ]; then
-              cp -f batch_logs/aggregated_out/build.manual.md build.md
-              gh release upload update build.md --clobber || true
-              gh release edit update --notes-file build.md || true
-            fi
+          if [ -d "batch_logs" ]; then
+            find batch_logs -name "*-update.json" -exec gh release upload update {} --clobber \; 2>/dev/null || true
           fi
 
   trigger_cleanup:
