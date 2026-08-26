@@ -252,7 +252,7 @@ jobs:
 
   aggregate_logs:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5]
-    if: ${{ !cancelled() && needs.check_patch.result == 'success' && (needs.build_dev_1.result == 'success' || needs.build_dev_2.result == 'success' || needs.build_dev_3.result == 'success' || needs.build_dev_4.result == 'success' || needs.build_dev_5.result == 'success' || needs.build_stable_1.result == 'success' || needs.build_stable_2.result == 'success' || needs.build_stable_3.result == 'success' || needs.build_stable_4.result == 'success' || needs.build_stable_5.result == 'success') }}
+    if: ${{ always() && needs.check_patch.result == 'success' && (needs.build_dev_1.result == 'success' || needs.build_dev_2.result == 'success' || needs.build_dev_3.result == 'success' || needs.build_dev_4.result == 'success' || needs.build_dev_5.result == 'success' || needs.build_stable_1.result == 'success' || needs.build_stable_2.result == 'success' || needs.build_stable_3.result == 'success' || needs.build_stable_4.result == 'success' || needs.build_stable_5.result == 'success') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
