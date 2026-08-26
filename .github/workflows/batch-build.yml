@@ -108,14 +108,14 @@ jobs:
       - name: Generate normalized 6 patch TOML configs
         run: python3 .github/scripts/ci_merge_patch_tomls.py
 
-      - name: Commit updated patch sources, configs and normalized TOMLs
+      - name: Commit updated patch sources and configs
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
-          file_pattern: configs/*.json configs/patches/merged/*.toml
-          commit_message: "Update patch sources, app versions, generated configs and normalized TOMLs [skip ci]"
+          file_pattern: configs/*.json
+          commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
   build_batch_part1:
     needs: update_versions

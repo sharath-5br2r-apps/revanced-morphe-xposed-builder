@@ -5,6 +5,7 @@
 /dist/
 /out/
 *-temporary-files/
+configs/patches/merged/
 
 # Temporary Script & CI Output Files
 temp_all_configs.json
