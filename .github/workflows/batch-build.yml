@@ -117,9 +117,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
-          file_pattern: |
-            configs/*.json
-            configs/patches/merged/*.toml
+          file_pattern: configs/*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
   build_batch:

@@ -37,14 +37,24 @@ def main():
 
     toml_files = sorted(glob.glob(os.path.join(base, "*.toml")))
 
-    # Collect all (header, table_content) blocks across all patchsets
+    # Collect all (table_key, header, table_content) blocks across all patchsets
     all_tables = []
     for fpath in toml_files:
         fname = os.path.basename(fpath)
         patchset_name = fname.replace(".toml", "")
         tables = get_tables_with_headers(fpath)
         for header, content in tables:
-            all_tables.append((patchset_name, header, content))
+            # extract table key e.g. [youtube-revanced]
+            key_line = ""
+            for l in content.splitlines():
+                if l.strip().startswith('['):
+                    key_line = l.strip().strip('[]"')
+                    break
+            sort_key = key_line if key_line else patchset_name
+            all_tables.append((sort_key, header, content))
+
+    # Standardize output by sorting deterministically by table key
+    all_tables.sort(key=lambda x: x[0])
 
     total_apps = len(all_tables)
     NUM_OUTPUT_FILES = 15
