@@ -4,19 +4,19 @@
     "keys": [
       "discord-xposed"
     ],
-    "version": "341.13 - Stable"
+    "version": "342.16 - Stable"
   },
   "Google Photos": {
     "keys": [
       "google-photos-morphe"
     ],
-    "version": "7.89.0.968035987"
+    "version": "7.90.0.970693120"
   },
   "Instagram": {
     "keys": [
       "instagram-instafel",
       "instagram-instafel-clone"
     ],
-    "version": "443.0.0.48.82"
+    "version": "444.0.0.46.85"
   }
 }
