@@ -129,30 +129,94 @@ jobs:
           file_pattern: configs/*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
-  build_stable:
-    needs: [check_patch, build_dev]
-    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && needs.build_dev.result != 'cancelled' && needs.build_dev.result != 'failure' }}
+  build_dev_1:
+    needs: check_patch
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part1.json') != '' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/config.stable.updated.json"
+      config_file: "configs/config.dev.part1.json"
     secrets: inherit
 
-  build_dev:
+  build_dev_2:
     needs: check_patch
-    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' }}
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part2.json') != '' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/config.dev.updated.json"
+      config_file: "configs/config.dev.part2.json"
+    secrets: inherit
+
+  build_dev_3:
+    needs: check_patch
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part3.json') != '' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.dev.part3.json"
+    secrets: inherit
+
+  build_dev_4:
+    needs: check_patch
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part4.json') != '' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.dev.part4.json"
+    secrets: inherit
+
+  build_dev_5:
+    needs: check_patch
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.dev.part5.json') != '' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.dev.part5.json"
+    secrets: inherit
+
+  build_stable_1:
+    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part1.json') != '' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part1.json"
+    secrets: inherit
+
+  build_stable_2:
+    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part2.json') != '' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part2.json"
+    secrets: inherit
+
+  build_stable_3:
+    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part3.json') != '' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part3.json"
+    secrets: inherit
+
+  build_stable_4:
+    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part4.json') != '' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part4.json"
+    secrets: inherit
+
+  build_stable_5:
+    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
+    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && hashFiles('configs/config.stable.part5.json') != '' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part5.json"
     secrets: inherit
 
   trigger_cleanup:
-    needs: [build_stable, build_dev]
-    if: ${{ always() && (needs.build_stable.result == 'success' || needs.build_dev.result == 'success') }}
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
+    if: ${{ always() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_stable, build_dev, trigger_cleanup]
-    if: ${{ always() && (needs.build_stable.result == 'success' || needs.build_dev.result == 'success') }}
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, trigger_cleanup]
+    if: ${{ always() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
