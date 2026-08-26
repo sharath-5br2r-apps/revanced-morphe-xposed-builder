@@ -180,7 +180,7 @@
     "repo-dlurl-release-name-filter": "^Release v"
   },
   "brave-stable-morphe-dh6k-arm64-v8a-exp": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "brave-stable",
     "rv-brand": "morphe-dh6k-exp",
     "build-mode": "apk",
@@ -195,7 +195,7 @@
     "version": "latest"
   },
   "brave-stable-morphe-dh6k-arm-v7a-exp": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "brave-stable",
     "rv-brand": "morphe-dh6k-exp",
     "build-mode": "apk",
@@ -210,7 +210,7 @@
     "version": "latest"
   },
   "brave-stable-morphe-dh6k-x86_64-exp": {
-    "enabled": false,
+    "enabled": true,
     "app-name": "brave-stable",
     "rv-brand": "morphe-dh6k-exp",
     "build-mode": "apk",
