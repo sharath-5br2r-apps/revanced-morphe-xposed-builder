@@ -36,18 +36,17 @@ split_config_json() {
   local src_json=$1
   local prefix=$2
   local max_files=${3:-5}
-  local min_apps=${4:-3}
 
   if [ ! -s "$src_json" ]; then return 0; fi
 
-  jq --arg prefix "$prefix" --argjson max_files "$max_files" --argjson min_apps "$min_apps" '
+  jq --arg prefix "$prefix" --argjson max_files "$max_files" '
     to_entries | map(select(.value | type == "object" and (.value.enabled // true) != false)) as $enabled |
     ($enabled | length) as $total |
     if $total == 0 then {} else
-      (($total / $max_files) | ceil | if . < $min_apps then $min_apps else . end) as $chunk_size |
+      (($total / $max_files) | ceil | if . < 1 then 1 else . end) as $chunk_size |
       range(0; $max_files) as $idx |
       ($enabled[$idx * $chunk_size : ($idx + 1) * $chunk_size]) as $slice |
-      select(($slice | length) >= $min_apps or ($idx == 0 and ($slice | length) > 0)) |
+      select(($slice | length) > 0) |
       {
         filename: "configs/\($prefix).part\($idx + 1).json",
         data: (
@@ -87,7 +86,7 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
     )
   ' config.stable.json > configs/config.stable.updated.json
 
-  split_config_json "configs/config.stable.updated.json" "config.stable" 5 3
+  split_config_json "configs/config.stable.updated.json" "config.stable" 5
 fi
 
 if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
@@ -124,5 +123,5 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] 
     )
   ' config.dev.json > configs/config.dev.updated.json
 
-  split_config_json "configs/config.dev.updated.json" "config.dev" 5 3
+  split_config_json "configs/config.dev.updated.json" "config.dev" 5
 fi
