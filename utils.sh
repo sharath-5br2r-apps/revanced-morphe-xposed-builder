@@ -652,7 +652,7 @@ set_prebuilts() {
 	fi
 	AAPT2=$(command -v aapt2) || true
 	if [ -z "$AAPT2" ]; then
-		wpr "aapt2 not found in PATH, searching in Android SDK..."
+		pr "aapt2 not found in PATH, searching in Android SDK..."
 		if [[ -d "${ANDROID_HOME:-}" ]]; then
 			AAPT2=$(find /usr/local/lib/android/sdk/build-tools -name aapt2 | sort -r | head -n 1)
 		else
