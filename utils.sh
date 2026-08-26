@@ -3336,9 +3336,9 @@ build_rv() {
 				pr "Uploading newly downloaded APKs to ${apks_repo}..."
 				if GH_TOKEN="$pat_token" gh release view "$pkg_name" --repo "$apks_repo" >/dev/null 2>&1 || GH_TOKEN="$pat_token" gh release create "$pkg_name" --repo "$apks_repo" --title "$pkg_name" --notes ""; then
 					if [ -f "$all_apk" ]; then
-						GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$all_apk" --repo "$apks_repo" --clobber || true
+						GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$all_apk" --repo "$apks_repo" --clobber 2>/dev/null || true
 					else
-						GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$stock_apk" --repo "$apks_repo" --clobber || true
+						GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$stock_apk" --repo "$apks_repo" --clobber 2>/dev/null || true
 					fi
 				else
 					wpr "Failed to view/create release $pkg_name on $apks_repo"
