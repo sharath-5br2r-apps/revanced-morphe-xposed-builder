@@ -90,7 +90,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: temp/apks
-          key: apks-v4-${{ hashFiles('configs/app_versions.json', 'configs/patches/**/*.toml') }}
+          key: apks-v4-${{ hashFiles(inputs.config_file, 'configs/app_versions.json') }}
+          restore-keys: |
+            apks-v4-
 
       - name: Remove specific APKs from cache
         if: ${{ inputs.remove_apks != '' }}
