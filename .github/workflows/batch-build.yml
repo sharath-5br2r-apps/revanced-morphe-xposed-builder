@@ -32,6 +32,10 @@ jobs:
     env:
       TRAWL_URL: "http://localhost:8191"
       CFB_URL: "http://localhost:8000"
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+      KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
     services:
       redis:
         image: redis:alpine
