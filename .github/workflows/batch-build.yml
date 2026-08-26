@@ -216,3 +216,43 @@ jobs:
       patches_version: ${{ inputs.patches_version }}
       release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
+
+  build_batch_part11:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/batch-part11.toml"
+      patches_version: ${{ inputs.patches_version }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
+    secrets: inherit
+
+  build_batch_part12:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/batch-part12.toml"
+      patches_version: ${{ inputs.patches_version }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
+    secrets: inherit
+
+  build_batch_part13:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/batch-part13.toml"
+      patches_version: ${{ inputs.patches_version }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
+    secrets: inherit
+
+  build_batch_part14:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/batch-part14.toml"
+      patches_version: ${{ inputs.patches_version }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
+    secrets: inherit

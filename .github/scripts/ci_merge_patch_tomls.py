@@ -47,7 +47,7 @@ def main():
             all_tables.append((patchset_name, header, content))
 
     total_apps = len(all_tables)
-    NUM_OUTPUT_FILES = 10
+    NUM_OUTPUT_FILES = 15
     apps_per_file = math.ceil(total_apps / NUM_OUTPUT_FILES)
 
     matrix_jobs = []
