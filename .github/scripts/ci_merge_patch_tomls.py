@@ -51,6 +51,7 @@ def main():
     apps_per_file = math.ceil(total_apps / NUM_OUTPUT_FILES)
 
     matrix_jobs = []
+    job_names = []
 
     for idx in range(NUM_OUTPUT_FILES):
         start_idx = idx * apps_per_file
@@ -62,6 +63,7 @@ def main():
 
         chunk_name = f"batch-part{idx + 1}.toml"
         job_id = f"build_batch_part{idx + 1}"
+        job_names.append(job_id)
         out_file = os.path.join(merged_dir, chunk_name)
 
         content = [f"# --- Batch TOML Part {idx + 1}/{NUM_OUTPUT_FILES} ({len(chunk_items)} apps) ---\n"]
@@ -79,6 +81,7 @@ def main():
     generate_workflow_yaml(matrix_jobs)
 
 def generate_workflow_yaml(jobs):
+    job_names = [j[0] for j in jobs]
     job_blocks = []
     job_ids = []
     for job_id, config_file in jobs:
@@ -214,6 +217,18 @@ jobs:
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
 {"\n\n".join(job_blocks)}
+
+  trigger_cleanup:
+    needs: [{", ".join(job_names)}]
+    if: ${{{{ always() }}}}
+    uses: ./.github/workflows/cleanup.yml
+    secrets: inherit
+
+  trigger_website_update:
+    needs: [{", ".join(job_names)}, trigger_cleanup]
+    if: ${{{{ always() }}}}
+    uses: ./.github/workflows/update-website.yml
+    secrets: inherit
 """
     with open(".github/workflows/batch-build.yml", "w", encoding="utf-8") as wf:
         wf.write(yaml_content)

@@ -256,3 +256,15 @@ jobs:
       patches_version: ${{ inputs.patches_version }}
       release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
+
+  trigger_cleanup:
+    needs: [build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5, build_batch_part6, build_batch_part7, build_batch_part8, build_batch_part9, build_batch_part10, build_batch_part11, build_batch_part12, build_batch_part13, build_batch_part14]
+    if: ${{ always() }}
+    uses: ./.github/workflows/cleanup.yml
+    secrets: inherit
+
+  trigger_website_update:
+    needs: [build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5, build_batch_part6, build_batch_part7, build_batch_part8, build_batch_part9, build_batch_part10, build_batch_part11, build_batch_part12, build_batch_part13, build_batch_part14, trigger_cleanup]
+    if: ${{ always() }}
+    uses: ./.github/workflows/update-website.yml
+    secrets: inherit
