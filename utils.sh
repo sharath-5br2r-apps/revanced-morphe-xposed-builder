@@ -3168,8 +3168,9 @@ build_rv() {
 				pkgvers=$(get_"${dl_from}"_vers)
 				__PKG_VERS_CACHE__["$vers_cache_key"]="$pkgvers"
 			fi
-			version=$(get_highest_ver <<<"$pkgvers") || version=$(head -1 <<<"$pkgvers")
-		fi
+		version=$(get_highest_ver <<<"$pkgvers") || version=$(head -1 <<<"$pkgvers")
+		resolved_version="$version"
+	fi
 	else
 		pr "Package name of '${table}' is '$pkg_name'"
 		pr "Skipping download source check, APKs for version '$version' found in cache."
