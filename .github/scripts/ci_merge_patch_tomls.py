@@ -249,7 +249,7 @@ jobs:
         run: |
           LATEST_RELEASE=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null || echo "v1.0.0")
           if [[ "$LATEST_RELEASE" =~ ^v?([0-9]+)$ ]]; then
-            VER_NUM="${{{{BASH_REMATCH[1]}}}}"
+            VER_NUM="${{BASH_REMATCH[1]}}"
             NEXT_VER=$((VER_NUM + 1))
           else
             NEXT_VER="1"
