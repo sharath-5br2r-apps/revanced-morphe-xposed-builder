@@ -109,15 +109,6 @@ jobs:
           FETCHED_APP_VERSIONS: ${{ steps.fetch_app_versions.outputs.fetched }}
         run: bash .github/scripts/ci_compare_app_versions.sh
 
-      - name: Commit updated app versions and patch sources
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' }}
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: main
-          skip_checkout: true
-          file_pattern: configs/app_versions.json configs/patch_sources.json
-          commit_message: "Update app and patch versions [skip ci]"
-
       - name: Generate configs (JSON)
         if: ${{ inputs.mode != 'Update Versions Only' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Build Only') }}
         id: generate_configs
@@ -141,14 +132,14 @@ jobs:
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
         run: bash .github/scripts/ci_resolve_triggers.sh
 
-      - name: Commit updated full config JSONs
+      - name: Commit updated version metadata and configs
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
-          file_pattern: configs/config.*.updated.json
-          commit_message: "Update generated configs [skip ci]"
+          file_pattern: configs/app_versions.json configs/patch_sources.json configs/config.*.updated.json
+          commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
       - name: Upload split config part artifacts
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
