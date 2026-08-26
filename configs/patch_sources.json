@@ -58,10 +58,10 @@
   },
   "byehi98": {
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.18.0",
-    "stable_date": "2026-08-26T06:31:21Z",
-    "prerelease": "v1.19.0-dev.1",
-    "pre_date": "2026-08-26T11:14:40Z",
+    "stable": "v1.19.0",
+    "stable_date": "2026-08-26T11:20:55Z",
+    "prerelease": "",
+    "pre_date": "",
     "blocked": false
   },
   "cryptomator": {
