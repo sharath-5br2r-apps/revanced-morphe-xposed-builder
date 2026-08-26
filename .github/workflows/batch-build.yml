@@ -17,7 +17,7 @@ on:
         description: "Use artifact mode (build as artifacts first, then aggregate build.json & release at end)"
         required: false
         type: boolean
-        default: true
+        default: false
 
 concurrency:
   group: ci
@@ -45,9 +45,6 @@ jobs:
         image: ghcr.io/germondai/trawl:latest
         ports:
           - 8191:8191
-        env:
-          REDIS_URL: redis://redis:6379
-        options: --shm-size=1gb
       cfb:
         image: ghcr.io/sarperavci/cloudflarebypassforscraping:latest
         ports:
@@ -110,15 +107,16 @@ jobs:
           DISABLE_CONFIG_UPDATE: "false"
         run: bash .github/scripts/ci_generate_configs.sh
 
-      - name: Generate normalized 6 patch TOML configs
-        run: python3 .github/scripts/ci_merge_patch_tomls.py
+      - name: Determine next release version tag
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
 
-      - name: Commit updated patch sources and configs
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+      - name: Commit updated patch_sources.json and configs
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
-          skip_checkout: true
           file_pattern: configs/*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
@@ -245,15 +243,13 @@ jobs:
         with:
           ref: main
 
-      - name: Download all build artifacts
+      - name: Download metadata & note artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts/
 
-      - name: Consolidate build files & Merge build.json
+      - name: Merge build.json and notes
         run: |
-          mkdir -p final_build/
-          find artifacts/ -type f \( -name "*.apk" -o -name "*.zip" \) -exec cp -f {{}} final_build/ \;
           python3 .github/scripts/ci_aggregate_build_json.py
 
       - name: Determine next release version tag
@@ -262,21 +258,12 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: bash .github/scripts/build_resolve_version.sh
 
-      - name: Upload to Release
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: final_build/*
-          name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
-          tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          overwrite_files: true
-
       - name: Upload aggregated build.json to release
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload ${{ steps.version.outputs.NEXT_VER_CODE }} build.json \
-            --repo "$GITHUB_REPOSITORY" --clobber
+          [ -f build.json ] && gh release upload ${{ steps.version.outputs.NEXT_VER_CODE }} build.json \
+            --repo "$GITHUB_REPOSITORY" --clobber || true
 
       - name: Update changelog and module update files
         env:
