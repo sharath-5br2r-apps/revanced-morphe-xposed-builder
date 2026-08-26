@@ -3302,6 +3302,8 @@ build_rv() {
 							local new_stock_apk="${apk_dl_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 							mv "$stock_apk" "$new_stock_apk"
 							stock_apk="$new_stock_apk"
+							cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+							cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
 						fi
 					fi
 				if ! verify_downloaded_apk "$stock_apk" "$pkg_name" "$dl_p" "${args[check_sig]:-false}"; then
@@ -3505,7 +3507,13 @@ build_rv() {
 		arch_f="${arch// /}"
 		local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 		local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
-		[ -f "$all_apk" ] && stock_apk="$all_apk"
+		if [ -f "$all_apk" ]; then
+			stock_apk="$all_apk"
+		elif [ ! -f "$stock_apk" ]; then
+			local found_any_stock
+			found_any_stock=$(find "$apk_cache_dir" "$apk_dl_dir" -name "${pkg_name}-${version_f}-*.apk" -type f 2>/dev/null | head -1)
+			[ -n "$found_any_stock" ] && stock_apk="$found_any_stock"
+		fi
 
 		for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
