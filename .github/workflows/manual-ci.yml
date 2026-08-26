@@ -33,11 +33,6 @@ on:
         required: false
         type: string
         default: ""
-      artifact_mode:
-        description: "Upload build artifacts instead of creating GitHub releases directly"
-        required: false
-        type: boolean
-        default: false
 
 concurrency:
   group: ci
@@ -78,7 +73,6 @@ jobs:
       exclusive_apps: ${{ inputs.exclusive_apps }}
       remove_apks: ${{ inputs.remove_apks }}
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   trigger_cleanup:
