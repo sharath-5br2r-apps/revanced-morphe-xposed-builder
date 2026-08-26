@@ -2019,13 +2019,25 @@ dl_archive() {
 	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
-				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
+				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]] || [[ "$p" == *"${version_f#v}"*"-${a}.${ext}" ]]; then
 					path="$p"
 					break 3
 				fi
 			done <<<"$__ARCHIVE_RESP__"
 		done
 	done
+	if [ -z "$path" ]; then
+		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
+			while IFS= read -r p; do
+				if [[ "$p" == *"${version_f#v}"*".${ext}" ]]; then
+					path="$p"
+					wpr "Architecture '$arch' asset not explicitly found for version '${version}'. Falling back to available asset '${path}'"
+					break 2
+				fi
+			done <<<"$__ARCHIVE_RESP__"
+		done
+	fi
+
 	if [ -z "$path" ]; then
 		epr "Version ${version} with arch ${arch} not found in archive"
 		return 1
@@ -2074,17 +2086,28 @@ dl_github() {
 	done
 	arch_candidates+=("common" "all")
 
-	# Matches the exact file selection logic from dl_archive
 	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
-				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
+				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]] || [[ "$p" == *"${version_f#v}"*"-${a}.${ext}" ]]; then
 					path="$p"
 					break 3
 				fi
 			done <<<"$__ARCHIVE_RESP__"
 		done
 	done
+
+	if [ -z "$path" ]; then
+		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
+			while IFS= read -r p; do
+				if [[ "$p" == *"${version_f#v}"*".${ext}" ]]; then
+					path="$p"
+					wpr "Architecture '$arch' asset not explicitly found for version '${version}'. Falling back to available asset '${path}'"
+					break 2
+				fi
+			done <<<"$__ARCHIVE_RESP__"
+		done
+	fi
 
 	if [ -z "$path" ]; then
 		epr "Version ${version} with arch ${arch} not found in github"
