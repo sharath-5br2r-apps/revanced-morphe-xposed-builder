@@ -2484,10 +2484,20 @@ patch_apk() {
 	fi
 
 	echo "$PATCH_OUTPUT"
+
+	# Check for 0 applied patches in Morphe output
+	local applied_count
+	applied_count=$(echo "$PATCH_OUTPUT" | grep -c "INFO: Applied:" || true)
+	if [[ "$cli_source" == *"morphe"* ]] && [ "$applied_count" -eq 0 ]; then
+		epr "ERROR: 0 patches applied for Morphe patcher!"
+		rm -f "$patched_apk" 2>/dev/null || :
+		return 1
+	fi
+
 	if [ $ret -eq 0 ] && [ -f "$patched_apk" ]; then
 		return 0
 	else
-		rm "$patched_apk" 2>/dev/null || :
+		rm -f "$patched_apk" 2>/dev/null || :
 		return 1
 	fi
 }
