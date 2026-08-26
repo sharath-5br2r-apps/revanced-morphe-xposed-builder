@@ -165,6 +165,16 @@ jobs:
           gh release upload ${{ steps.version.outputs.NEXT_VER_CODE }} build.json \
             --repo "$GITHUB_REPOSITORY" --clobber
 
+      - name: Upload part build logs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: part-logs-${{ steps.context.outputs.ARCHIVE_TAG }}-${{ strategy.job-index || '0' }}-${{ github.job }}
+          path: |
+            build.json
+            build.md
+            build.tmp
+          if-no-files-found: ignore
+
       - name: Update changelog and module update files
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}

@@ -240,14 +240,52 @@ jobs:
       config_file: "configs/config.stable.part5.json"
     secrets: inherit
 
+  aggregate_logs:
+    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5]
+    if: ${{ always() && needs.check_patch.result == 'success' && (needs.check_patch.outputs.trigger_prerelease == '1' || needs.check_patch.outputs.trigger_stable == '1') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download all part-logs artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: part-logs-*
+          path: logs_artifacts
+          merge-multiple: false
+
+      - name: Aggregate logs for Dev
+        if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' }}
+        run: |
+          mkdir -p dev_logs
+          find logs_artifacts -path "*part-logs-beta*" -exec cp -r {}/. dev_logs/ \; 2>/dev/null || true
+          cd dev_logs && bash ../.github/scripts/build_aggregate_logs.sh dev && cd ..
+
+      - name: Aggregate logs for Stable
+        if: ${{ needs.check_patch.outputs.trigger_stable == '1' }}
+        run: |
+          mkdir -p stable_logs
+          find logs_artifacts -path "*part-logs-stable*" -exec cp -r {}/. stable_logs/ \; 2>/dev/null || true
+          cd stable_logs && bash ../.github/scripts/build_aggregate_logs.sh stable && cd ..
+
+      - name: Upload aggregated logs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aggregated-build-logs
+          path: |
+            dev_logs/aggregated_out/*
+            stable_logs/aggregated_out/*
+          if-no-files-found: ignore
+
   trigger_cleanup:
-    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_logs]
     if: ${{ always() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, trigger_cleanup]
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_logs, trigger_cleanup]
     if: ${{ always() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
