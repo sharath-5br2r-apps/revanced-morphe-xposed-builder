@@ -2952,15 +2952,17 @@ build_rv() {
 			resolved_version=$version_mode
 		fi
 
-		# Clean resolved_version of arch and release variant suffixes without clipping long version components
+		# Clean resolved_version of arch, versionCodes, and release variant suffixes without clipping long version components
 		if [ -n "$resolved_version" ]; then
-			resolved_version=$(echo "$resolved_version" | sed -E 's/-[a-zA-Z0-9_.]+$//; s/^v//i')
+			resolved_version=$(echo "$resolved_version" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/-[a-zA-Z0-9_.]+$//; s/^v//i; s/^[[:space:]]+|[[:space:]]+$//g')
 		fi
 
 		# Cache Check
 		if [ -n "$resolved_version" ]; then
 			local version_f=${resolved_version// /}
 			version_f=${version_f#v}
+			version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
+			version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
 			local all_archs_found=true
 			for arch in "${arch_list[@]}"; do
 				arch_f="${arch// /}"
@@ -3342,6 +3344,8 @@ build_rv() {
 	if [ "$dl_failed" = true ]; then epr "One or more architecture downloads failed for '${table}'"; return 1; fi
 	version_f=${version// /}
 	version_f=${version_f#v}
+	version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
+	version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
 	local primary_arch="${arch_list[0]// /}"
 	local check_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${primary_arch}.apk"
 	local check_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
