@@ -58,8 +58,8 @@
   },
   "byehi98": {
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.17.0",
-    "stable_date": "2026-08-25T04:06:09Z",
+    "stable": "v1.18.0",
+    "stable_date": "2026-08-26T06:31:21Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -114,17 +114,17 @@
     "repo": "jasonwu1994/Gboard-patches",
     "stable": "v3.4.0",
     "stable_date": "2026-08-25T22:14:14Z",
-    "prerelease": "",
-    "pre_date": "",
+    "prerelease": "v3.5.0-dev.1",
+    "pre_date": "2026-08-26T06:43:17Z",
     "blocked": false
   },
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
     "stable": "v1.41.0",
-    "prerelease": "v1.42.0-dev.2",
+    "prerelease": "v1.42.0-dev.3",
     "blocked": false,
     "stable_date": "2026-08-18T04:15:22Z",
-    "pre_date": "2026-08-24T16:56:29Z"
+    "pre_date": "2026-08-26T06:33:13Z"
   },
   "hoomans": {
     "repo": "arandomhooman/hoomans-morphe-patches",
