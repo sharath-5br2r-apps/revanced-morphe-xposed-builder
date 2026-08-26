@@ -110,11 +110,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: bash .github/scripts/build_resolve_version.sh
 
+      - name: Normalize patches TOMLs
+        run: python3 .github/scripts/ci_merge_patch_tomls.py
+
       - name: Commit updated patch_sources.json and configs
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
-          file_pattern: configs/*.json
+          file_pattern: |
+            configs/*.json
+            configs/patches/merged/*.toml
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
   build_batch:
@@ -132,14 +137,51 @@ jobs:
       upload_release_metadata: false
     secrets: inherit
 
+  aggregate_logs:
+    needs: [update_versions, build_batch]
+    if: ${{ always() && needs.update_versions.result == 'success' && needs.build_batch.result != 'cancelled' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download all part-logs artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: part-logs-*
+          path: logs_artifacts
+          merge-multiple: false
+
+      - name: Aggregate logs
+        run: |
+          mkdir -p batch_logs
+          find logs_artifacts -exec cp -r {}/. batch_logs/ \; 2>/dev/null || true
+          cd batch_logs && bash ../.github/scripts/build_aggregate_logs.sh stable && cd ..
+
+      - name: Upload aggregated logs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aggregated-build-logs
+          path: batch_logs/aggregated_out/*
+          if-no-files-found: ignore
+
+      - name: Upload aggregated metadata to release (update)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -d "batch_logs/aggregated_out" ]; then
+            [ -f "batch_logs/aggregated_out/build.stable.json" ] && gh release upload update batch_logs/aggregated_out/build.stable.json --clobber || true
+            [ -f "batch_logs/aggregated_out/build.stable.md" ] && gh release upload update batch_logs/aggregated_out/build.stable.md --clobber || true
+          fi
+
   trigger_cleanup:
-    needs: [build_batch]
+    needs: [build_batch, aggregate_logs]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_batch, trigger_cleanup]
+    needs: [build_batch, aggregate_logs, trigger_cleanup]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
