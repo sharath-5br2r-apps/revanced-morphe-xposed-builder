@@ -3,7 +3,7 @@ export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
 
 YEAR=$(date -u +"%y")
-TAG=$( { gh release list --exclude-drafts -L 100 2>/dev/null || true; } | awk -F '\t' -v year="$YEAR" '$3 ~ "^" year "[0-9][0-9][0-9][0-9]$" {print $3}' | sort -nr | head -n1 )
+TAG=$( { gh api "repos/${GITHUB_REPOSITORY:-$1}/git/matching-refs/tags/" 2>/dev/null || true; } | jq -r '.[].ref // empty' | sed 's#refs/tags/##' | awk -v year="$YEAR" '$1 ~ "^" year "[0-9][0-9][0-9][0-9]$" {print $1}' | sort -nr | head -n1 )
 
 if [ -n "$TAG" ]; then
     BUILD_COUNT=${TAG:2:4}
