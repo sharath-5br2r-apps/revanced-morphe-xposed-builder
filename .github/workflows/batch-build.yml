@@ -52,15 +52,11 @@ jobs:
           mkdir -p batch_logs
           find logs_artifacts -exec cp -r {}/. batch_logs/ \; 2>/dev/null || true
           cd batch_logs
-          if find . -path "*part-logs-beta*" | grep -q .; then
-            bash ../.github/scripts/build_aggregate_logs.sh dev
+          FLAVOR="stable"
+          if [ "${{ inputs.patches_version }}" = "auto" ] || [ "${{ inputs.patches_version }}" = "absolutelatest" ] || [ "${{ inputs.patches_version }}" = "dev" ]; then
+            FLAVOR="dev"
           fi
-          if find . -path "*part-logs-stable*" | grep -q .; then
-            bash ../.github/scripts/build_aggregate_logs.sh stable
-          fi
-          if [ ! -d "aggregated_out" ]; then
-            bash ../.github/scripts/build_aggregate_logs.sh batch
-          fi
+          bash ../.github/scripts/build_aggregate_logs.sh "$FLAVOR"
           cd ..
 
       - name: Upload aggregated logs artifact
