@@ -1,4 +1,4 @@
-name: "Batch Dispatch All Configs"
+name: "Batch Build All Configs"
 
 on:
   workflow_dispatch:
@@ -12,9 +12,14 @@ on:
           - "latest"
           - "auto"
           - "absolutelatest"
+      artifact_mode:
+        description: "Use artifact mode (build as artifacts first, then aggregate build.json & release at end)"
+        required: false
+        type: boolean
+        default: true
 
 concurrency:
-  group: batch-dispatch
+  group: batch-build
   cancel-in-progress: false
 
 jobs:
@@ -116,6 +121,7 @@ jobs:
     with:
       config_file: "configs/patches/anddea.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_bholeykabhakt:
@@ -125,6 +131,7 @@ jobs:
     with:
       config_file: "configs/patches/bholeykabhakt.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_binarymend:
@@ -134,6 +141,7 @@ jobs:
     with:
       config_file: "configs/patches/binarymend.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_brave:
@@ -143,6 +151,7 @@ jobs:
     with:
       config_file: "configs/patches/brave.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_byehi98:
@@ -152,6 +161,7 @@ jobs:
     with:
       config_file: "configs/patches/byehi98.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_chess:
@@ -161,6 +171,7 @@ jobs:
     with:
       config_file: "configs/patches/chess.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_gboard:
@@ -170,6 +181,7 @@ jobs:
     with:
       config_file: "configs/patches/gboard.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_github:
@@ -179,6 +191,7 @@ jobs:
     with:
       config_file: "configs/patches/github.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_hoodles:
@@ -188,6 +201,7 @@ jobs:
     with:
       config_file: "configs/patches/hoodles.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_hooman:
@@ -197,6 +211,7 @@ jobs:
     with:
       config_file: "configs/patches/hooman.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_kondratjev:
@@ -206,6 +221,7 @@ jobs:
     with:
       config_file: "configs/patches/kondratjev.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_morphe:
@@ -215,6 +231,7 @@ jobs:
     with:
       config_file: "configs/patches/morphe.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_nulls:
@@ -224,6 +241,7 @@ jobs:
     with:
       config_file: "configs/patches/nulls.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_paresh:
@@ -233,6 +251,7 @@ jobs:
     with:
       config_file: "configs/patches/paresh.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_piko:
@@ -242,6 +261,7 @@ jobs:
     with:
       config_file: "configs/patches/piko.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_revenge:
@@ -251,6 +271,7 @@ jobs:
     with:
       config_file: "configs/patches/revenge.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_rushiranpise:
@@ -260,6 +281,7 @@ jobs:
     with:
       config_file: "configs/patches/rushiranpise.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_sign:
@@ -269,6 +291,7 @@ jobs:
     with:
       config_file: "configs/patches/sign.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_stylus:
@@ -278,6 +301,7 @@ jobs:
     with:
       config_file: "configs/patches/stylus.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
   build_tiktok:
@@ -287,4 +311,97 @@ jobs:
     with:
       config_file: "configs/patches/tiktok.toml"
       patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
+
+  aggregate_and_release:
+    needs:
+      - update_versions
+      - build_anddea
+      - build_bholeykabhakt
+      - build_binarymend
+      - build_brave
+      - build_byehi98
+      - build_chess
+      - build_gboard
+      - build_github
+      - build_hoodles
+      - build_hooman
+      - build_kondratjev
+      - build_morphe
+      - build_nulls
+      - build_paresh
+      - build_piko
+      - build_revenge
+      - build_rushiranpise
+      - build_sign
+      - build_stylus
+      - build_tiktok
+    if: ${{ always() && inputs.artifact_mode == true }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Consolidate build files & Merge build.json
+        run: |
+          mkdir -p final_build/
+          find artifacts/ -type f \( -name "*.apk" -o -name "*.zip" \) -exec cp -f {} final_build/ \;
+          python3 .github/scripts/ci_aggregate_build_json.py
+
+      - name: Determine next release version tag
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          LATEST_RELEASE=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null || echo "v1.0.0")
+          if [[ "$LATEST_RELEASE" =~ ^v?([0-9]+)$ ]]; then
+            VER_NUM="${BASH_REMATCH[1]}"
+            NEXT_VER=$((VER_NUM + 1))
+          else
+            NEXT_VER="1"
+          fi
+          echo "NEXT_VER_CODE=$NEXT_VER" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v3
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          files: final_build/*
+          name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
+          tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          overwrite_files: true
+
+      - name: Upload aggregated build.json to release
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ steps.version.outputs.NEXT_VER_CODE }} build.json \
+            --repo "$GITHUB_REPOSITORY" --clobber
+
+      - name: Update changelog and module update files
+        env:
+          NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: bash .github/scripts/build_update_changelog.sh
+
+      - name: Upload module update metadata to release (update)
+        uses: softprops/action-gh-release@v3
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          files: |
+            build.md
+            *-update.json
+          name: Update Metadata
+          tag_name: update
+          overwrite_files: true
