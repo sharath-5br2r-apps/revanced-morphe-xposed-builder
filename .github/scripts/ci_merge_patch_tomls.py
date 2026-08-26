@@ -116,7 +116,7 @@ on:
 
 concurrency:
   group: ci
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   update_versions:
