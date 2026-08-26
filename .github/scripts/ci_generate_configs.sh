@@ -43,24 +43,31 @@ split_config_json() {
     to_entries | map(select(.value | type == "object" and (.value.enabled // true) != false)) as $enabled |
     ($enabled | length) as $total |
     if $total == 0 then {} else
-      (($total / $max_files) | ceil | if . < 1 then 1 else . end) as $chunk_size |
+      (if $total < $max_files then 1 else (($total / $max_files) | ceil) end) as $chunk_size |
       range(0; $max_files) as $idx |
       ($enabled[$idx * $chunk_size : ($idx + 1) * $chunk_size]) as $slice |
-      select(($slice | length) > 0) |
       {
         filename: "configs/\($prefix).part\($idx + 1).json",
         data: (
-          { "patches-version": (.[ "patches-version" ] // "latest"), "enable-module-update": (.[ "enable-module-update" ] // true) } +
-          ($slice | from_entries)
+          if ($slice | length) > 0 then
+            { "patches-version": (.[ "patches-version" ] // "latest"), "enable-module-update": (.[ "enable-module-update" ] // true) } +
+            ($slice | from_entries)
+          else {} end
         )
       }
     end
   ' "$src_json" | jq -c '.' | while IFS= read -r item; do
     [ -z "$item" ] && continue
-    local fname
+    local fname data
     fname=$(jq -r '.filename' <<<"$item")
-    jq '.data' <<<"$item" > "$fname"
-    echo "[+] Split enabled apps into $fname"
+    data=$(jq '.data' <<<"$item")
+    if [ "$data" = "{}" ]; then
+      > "$fname"
+      echo "[+] Created empty part file $fname"
+    else
+      echo "$data" > "$fname"
+      echo "[+] Split enabled apps into $fname"
+    fi
   done
 }
 
