@@ -1364,10 +1364,8 @@ apkmirror_search() {
 			elif [ "$match_any_dpi" = true ] && [ -z "$best_fallback_url" ]; then
 				best_fallback_url="$dlurl"
 			fi
-		# Pass 2 Logic: If it's strictly the requested arch, save it as a fallback in case no universal is found
-		# APKMirror also labels compatible multi-ABI variants as e.g.
-		# "arm64-v8a + armeabi".  Treat these as a match for the requested ABI.
-		elif [ "$node_arch" = "$arch" ] || [[ "$node_arch" == "$arch + "* ]]; then
+		# Pass 2 Logic: If it matches the requested arch or any component ABI in a multi-arch string
+		elif [ "$node_arch" = "$arch" ] || [[ "$node_arch" == "$arch + "* ]] || [[ "$node_arch" == *" + $arch"* ]] || ( [[ "$arch" == *" "* ]] && ( echo " $arch " | grep -q " $node_arch " ) ); then
 			if isoneof "$node_dpi" "${appdpi[@]}"; then
 				[ -z "$specific_arch_url" ] && specific_arch_url="$dlurl"
 			elif [ "$match_any_dpi" = true ] && [ -z "$specific_arch_fallback_url" ]; then
@@ -1991,7 +1989,14 @@ get_uptodown_pkg_name() { $HTMLQ --text "tr.full:nth-child(1) > td:nth-child(3)"
 dl_archive() {
 	local url=$1 version=$2 output=$3 arch=$4
 	local path="" version_f=${version// /}
-	for a in "${arch// /}" "all"; do
+	local norm_arch="${arch// /}"
+	local arch_candidates=("$norm_arch")
+	for single_a in $arch; do
+		arch_candidates+=("$single_a")
+	done
+	arch_candidates+=("common" "all")
+
+	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
 				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
@@ -2042,8 +2047,15 @@ dl_github() {
 	local path="" version_f=${version// /}
 	local base_url=${__GITHUB_URL__:-$url}
 
+	local norm_arch="${arch// /}"
+	local arch_candidates=("$norm_arch")
+	for single_a in $arch; do
+		arch_candidates+=("$single_a")
+	done
+	arch_candidates+=("common" "all")
+
 	# Matches the exact file selection logic from dl_archive
-	for a in "${arch// /}" "common" "all"; do
+	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
 				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
