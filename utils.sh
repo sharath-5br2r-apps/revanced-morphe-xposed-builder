@@ -3196,9 +3196,12 @@ build_rv() {
 		build_mode_arr=(apk module)
 	fi
 
+	version=$(echo "$version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
 	pr "Choosing version '${version}' for ${table}"
 	local version_f=${version// /}
 	version_f=${version_f#v}
+	version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
+	version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
 	local -a dl_pids=()
 	local dl_logs_dir="${TEMP_DIR}/dl_logs_$$"
 	mkdir -p "$dl_logs_dir"
@@ -3399,8 +3402,11 @@ build_rv() {
 		apk_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
 		if [ -n "$apk_ver" ]; then
 			version="$apk_ver"
+			version=$(echo "$version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
 			version_f=${version// /}
 			version_f=${version_f#v}
+			version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
+			version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
 		fi
 	fi
 
