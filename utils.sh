@@ -3016,6 +3016,8 @@ build_rv() {
 					pr "Found all required architectures for '$pkg_name' (v$version_f) in cache. Skipping download!"
 					skip_dl_source_check=true
 					version="$resolved_version"
+				else
+					resolved_version=""
 				fi
 			fi
 	elif [ "$version_mode" != "auto" ]; then
