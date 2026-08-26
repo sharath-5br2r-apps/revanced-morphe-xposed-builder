@@ -19,23 +19,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  normalize_toml:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Normalize patches TOMLs
-        run: python3 .github/scripts/ci_merge_patch_tomls.py
-
-      - name: Upload normalized TOMLs artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: normalized-tomls
-          path: configs/patches/merged/*.toml
-
   build_batch:
-    needs: normalize_toml
     if: ${{ !cancelled() }}
     strategy:
       fail-fast: false
