@@ -51,7 +51,17 @@ jobs:
         run: |
           mkdir -p batch_logs
           find logs_artifacts -exec cp -r {}/. batch_logs/ \; 2>/dev/null || true
-          cd batch_logs && bash ../.github/scripts/build_aggregate_logs.sh stable && cd ..
+          cd batch_logs
+          if find . -path "*part-logs-beta*" | grep -q .; then
+            bash ../.github/scripts/build_aggregate_logs.sh dev
+          fi
+          if find . -path "*part-logs-stable*" | grep -q .; then
+            bash ../.github/scripts/build_aggregate_logs.sh stable
+          fi
+          if [ ! -d "aggregated_out" ]; then
+            bash ../.github/scripts/build_aggregate_logs.sh batch
+          fi
+          cd ..
 
       - name: Upload aggregated logs artifact
         uses: actions/upload-artifact@v4
@@ -65,8 +75,9 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if [ -d "batch_logs/aggregated_out" ]; then
-            [ -f "batch_logs/aggregated_out/build.stable.json" ] && gh release upload update batch_logs/aggregated_out/build.stable.json --clobber || true
-            [ -f "batch_logs/aggregated_out/build.stable.md" ] && gh release upload update batch_logs/aggregated_out/build.stable.md --clobber || true
+            for f in batch_logs/aggregated_out/build.*.json batch_logs/aggregated_out/build.*.md; do
+              [ -f "$f" ] && gh release upload update "$f" --clobber || true
+            done
           fi
 
   trigger_cleanup:
