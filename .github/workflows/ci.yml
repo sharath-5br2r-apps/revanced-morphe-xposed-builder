@@ -120,14 +120,24 @@ jobs:
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
         run: bash .github/scripts/ci_resolve_triggers.sh
 
-      - name: Commit updated patch sources and configs
+      - name: Commit updated full config JSONs
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
-          file_pattern: configs/*.json
+          file_pattern: configs/config.*.updated.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
+
+      - name: Upload split config part artifacts
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: split-configs
+          path: |
+            configs/config.stable.part*.json
+            configs/config.dev.part*.json
+          if-no-files-found: ignore
 
   build_dev_1:
     needs: check_patch
