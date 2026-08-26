@@ -241,27 +241,12 @@ for table_name in $(toml_get_table_names); do
 	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-jhc"
 	module_prop_name_b=${app_args[module_prop_name]}
 
-	for a in "${arch_list[@]}"; do
-		app_args[arch]="$a"
-		case "$a" in
-			arm64-v8a) arch_suffix="-arm64" ;;
-			arm-v7a)   arch_suffix="-arm" ;;
-			x86_64)    arch_suffix="-x64" ;;
-			x86)       arch_suffix="-x86" ;;
-			*)         arch_suffix="" ;;
-		esac
-		app_args[module_prop_name]="${module_prop_name_b}${arch_suffix}"
+	app_args[arch]="${arch_list[*]}"
+	app_args[table]="$table_name"
 
-		if [ "${#arch_list[@]}" -gt 1 ]; then
-			app_args[table]="$table_name ($a)"
-		else
-			app_args[table]="$table_name"
-		fi
-
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)" || epr "Build failed for ${app_args[table]}, continuing..."
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-	done
+	if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
+	build_rv "$(declare -p app_args)" || epr "Build failed for ${app_args[table]}, continuing..."
+	if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
 done
 rm -rf temp/tmp.*
 if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then
