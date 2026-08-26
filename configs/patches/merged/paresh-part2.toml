@@ -1,0 +1,71 @@
+# --- Patchset: paresh (Part 2/2) ---
+
+
+[jiohotstar-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "jiohotstar"
+rv-brand = "morphe-paresh"
+build-mode = "apk"
+pkg-name = "in.startv.hotstar"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
+dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+
+[jiohotstar-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "jiohotstar"
+rv-brand = "morphe-paresh-exp"
+version = "latest"
+build-mode = "apk"
+pkg-name = "in.startv.hotstar"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
+dpi = "nodpi anydpi auto"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+
+[sdmaid-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "sdmaid"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
+build-mode = "apk"
+arch = "all"
+pkg-name = "eu.darken.sdmse"
+uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
+apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+
+[sdmaid-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "sdmaid"
+rv-brand = "morphe-paresh-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "eu.darken.sdmse"
+uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
+apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+

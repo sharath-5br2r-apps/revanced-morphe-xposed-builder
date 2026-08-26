@@ -105,54 +105,314 @@ jobs:
           DISABLE_CONFIG_UPDATE: "false"
         run: bash .github/scripts/ci_generate_configs.sh
 
-      - name: Generate merged patch TOML configs
+      - name: Generate normalized patch TOML configs
         run: python3 .github/scripts/ci_merge_patch_tomls.py
 
-      - name: Commit updated patch sources, configs and merged TOMLs
+      - name: Commit updated patch sources, configs and normalized TOMLs
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
           file_pattern: configs/*.json configs/patches/merged/*.toml
-          commit_message: "Update patch sources, app versions, generated configs and merged TOMLs [skip ci]"
+          commit_message: "Update patch sources, app versions, generated configs and normalized TOMLs [skip ci]"
 
-  build_youtube:
+  build_anddea_part1:
     needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/patches/merged/youtube.toml"
+      config_file: "configs/patches/merged/anddea-part1.toml"
       patches_version: ${{ inputs.patches_version }}
       artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
-  build_hoodles_hooman:
+  build_anddea_part2:
     needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/patches/merged/hoodles-hooman.toml"
+      config_file: "configs/patches/merged/anddea-part2.toml"
       patches_version: ${{ inputs.patches_version }}
       artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
-  build_nulls_sign_revenge:
+  build_bholeykabhakt:
     needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/patches/merged/nulls-sign-revenge.toml"
+      config_file: "configs/patches/merged/bholeykabhakt.toml"
       patches_version: ${{ inputs.patches_version }}
       artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
-  build_other_configs:
+  build_binarymend:
     needs: update_versions
     if: ${{ always() && needs.update_versions.result == 'success' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/patches/merged/other-configs.toml"
+      config_file: "configs/patches/merged/binarymend.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_brave_part1:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/brave-part1.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_brave_part2:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/brave-part2.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_byehi98:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/byehi98.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_chess:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/chess.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_gboard:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/gboard.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_github:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/github.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_hoodles_part1:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/hoodles-part1.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_hoodles_part2:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/hoodles-part2.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_hoodles_part3:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/hoodles-part3.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_hooman_part1:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/hooman-part1.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_hooman_part2:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/hooman-part2.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_kondratjev:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/kondratjev.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_morphe_part1:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/morphe-part1.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_morphe_part2:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/morphe-part2.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_nulls:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/nulls.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_paresh_part1:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/paresh-part1.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_paresh_part2:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/paresh-part2.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_piko:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/piko.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_revenge:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/revenge.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_rushiranpise_part1:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/rushiranpise-part1.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_rushiranpise_part2:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/rushiranpise-part2.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_rushiranpise_part3:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/rushiranpise-part3.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_rushiranpise_part4:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/rushiranpise-part4.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_sign:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/sign.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_stylus:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/stylus.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_tiktok:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/tiktok.toml"
       patches_version: ${{ inputs.patches_version }}
       artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
@@ -160,10 +420,36 @@ jobs:
   aggregate_and_release:
     needs:
       - update_versions
-      - build_youtube
-      - build_hoodles_hooman
-      - build_nulls_sign_revenge
-      - build_other_configs
+      - build_anddea_part1
+      - build_anddea_part2
+      - build_bholeykabhakt
+      - build_binarymend
+      - build_brave_part1
+      - build_brave_part2
+      - build_byehi98
+      - build_chess
+      - build_gboard
+      - build_github
+      - build_hoodles_part1
+      - build_hoodles_part2
+      - build_hoodles_part3
+      - build_hooman_part1
+      - build_hooman_part2
+      - build_kondratjev
+      - build_morphe_part1
+      - build_morphe_part2
+      - build_nulls
+      - build_paresh_part1
+      - build_paresh_part2
+      - build_piko
+      - build_revenge
+      - build_rushiranpise_part1
+      - build_rushiranpise_part2
+      - build_rushiranpise_part3
+      - build_rushiranpise_part4
+      - build_sign
+      - build_stylus
+      - build_tiktok
     if: ${{ always() && inputs.artifact_mode == true }}
     runs-on: ubuntu-latest
     permissions:

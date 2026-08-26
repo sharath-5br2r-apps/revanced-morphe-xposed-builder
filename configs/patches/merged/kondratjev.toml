@@ -1,0 +1,26 @@
+# --- Patchset: kondratjev (Part 1/1) ---
+
+
+enable-module-update = true
+patches-version = "absolutelatest"
+
+
+
+[soundcloud-morphe-kondratjev]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "soundcloud"
+rv-brand = "morphe-kondratjev"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
+version = "auto"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.soundcloud.android"
+uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
+apkmirror-example-url = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/soundcloud-the-music-you-love-2026-07-23-release-release"
+apkpure-dlurl = "https://apkpure.com/sound-cloud-android-app/com.soundcloud.android"
+apkcombo-dlurl = "https://apkcombo.com/soundcloud/com.soundcloud.android"
+dpi = "nodpi anydpi auto"
+patches-source = "kondratjev/morphe-patches"
+

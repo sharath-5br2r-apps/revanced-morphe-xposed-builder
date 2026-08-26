@@ -1,0 +1,23 @@
+# --- Patchset: revenge (Part 1/1) ---
+
+
+enable-module-update = true
+patches-version = "absolutelatest"
+
+
+[discord-npatch-revenge]
+enabled = true 
+app-name = "discord"
+pkg-name = "com.discord"
+rv-brand = "npatch-revenge"
+build-mode = "apk"
+arch = "all"
+cli-source = "7723mod/NPatch"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord"
+patches-source = "revenge-mod/revenge-xposed"
+patcher-args = "-l 0"
+dpi = "nodpi anydpi auto"
+uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers"
+apkmirror-example-url = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
+
