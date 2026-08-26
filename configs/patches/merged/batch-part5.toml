@@ -1,40 +1,121 @@
-# --- Batch TOML Part 5/6 (21 apps) ---
+# --- Batch TOML Part 5/10 (13 apps) ---
 
 
-[sdmaid-morphe-paresh]
+[symfonium-morphe-hooman]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "sdmaid"
-rv-brand = "morphe-paresh"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
+app-name = "symfonium"
+rv-brand = "morphe-hooman"
 build-mode = "apk"
 arch = "all"
-pkg-name = "eu.darken.sdmse"
-uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
-apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
+pkg-name = "app.symfonik.music.player"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://symfonium.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast"
 dpi = "nodpi anydpi auto"
-patches-source = "Paresh-Maheshwari/paresh-patches"
-patches-source-host = "gitlab"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.symfonik.music.player"
+patches-source = "arandomhooman/hoomans-morphe-patches"
 
 
 
-[sdmaid-morphe-paresh-exp]
+[adm-morphe-hooman]
+enabled = true
+app-name = "adm"
+rv-brand = "morphe-hooman"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.dv.adm"
+cli-source = "MorpheApp/morphe-desktop"
+dpi = "nodpi anydpi auto"
+uptodown-dlurl="https://advanced-download-manager.en.uptodown.com/android"
+apkmirror-dlurl="https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[twitch-morphe-hooman]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "sdmaid"
-rv-brand = "morphe-paresh-exp"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
+app-name = "twitch"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/tv.twitch.android.app"
+build-mode = "apk"
+arch = "all"
+pkg-name = "tv.twitch.android.app"
+uptodown-dlurl = "https://twitch.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/twitch-interactive-inc/twitch"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[batteryguru-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "batteryguru"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.paget96.batteryguru"
+uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[batteryguru-morphe-hooman-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "batteryguru"
+rv-brand = "morphe-hooman-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
 version = "latest"
 build-mode = "apk"
 arch = "all"
-pkg-name = "eu.darken.sdmse"
-uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
-apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
+pkg-name = "com.paget96.batteryguru"
+uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
 dpi = "nodpi anydpi auto"
-patches-source = "Paresh-Maheshwari/paresh-patches"
-patches-source-host = "gitlab"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[poweramp-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "poweramp"
+rv-brand = "morphe-hooman"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
+build-mode = "apk"
+arch = "all arm64-v8a"
+pkg-name = "com.maxmpz.audioplayer"
+uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp"
+apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
+apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[poweramp-morphe-hooman-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "poweramp"
+rv-brand = "morphe-hooman-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a"
+pkg-name = "com.maxmpz.audioplayer"
+uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp"
+apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
+apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
+dpi = "nodpi anydpi auto"
+patches-source = "arandomhooman/hoomans-morphe-patches"
 
 
 enable-module-update = true
@@ -42,313 +123,90 @@ patches-version = "absolutelatest"
 
 
 
-[instagram-morphe-piko]
+[soundcloud-morphe-kondratjev]
 enabled = true
-app-name = "instagram"
-rv-brand = "morphe-piko"
-build-mode = "apk"
-arch = "all arm64-v8a x86_64"
-pkg-name = "com.instagram.android"
-patcher-args = "--continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
-apkmirror-example-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
-dpi = "nodpi anydpi auto"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android"
-patches-source = "crimera/piko"
-
-
-# ── X (Twitter) morphe-piko (no material you) ─────────────────────────────────
-
-
-
-[x-morphe-piko]
-enabled = true
-app-name = "x"
-rv-brand = "morphe-piko"
+app-name = "soundcloud"
+rv-brand = "morphe-kondratjev"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
+version = "auto"
 build-mode = "apk"
-arch = "all"
-pkg-name = "com.twitter.android"
-cli-source = "MorpheApp/morphe-desktop"
-patches-source = "crimera/piko"
-patches-source-host = "github"
-excluded-patches = "'Dynamic Color'"
-patcher-args = "--continue-on-error"
-uptodown-dlurl = "https://twitter.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.soundcloud.android"
+uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
+apkmirror-example-url = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/soundcloud-the-music-you-love-2026-07-23-release-release"
+apkpure-dlurl = "https://apkpure.com/sound-cloud-android-app/com.soundcloud.android"
+apkcombo-dlurl = "https://apkcombo.com/soundcloud/com.soundcloud.android"
 dpi = "nodpi anydpi auto"
-
-# ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
-
-
-
-[x-morphe-piko-exp]
-enabled = true
-app-name = "x"
-rv-brand = "morphe-piko-exp"
-build-mode = "apk"
-arch = "all"
-version = "latest"
-pkg-name = "com.twitter.android"
-cli-source = "MorpheApp/morphe-desktop"
-patches-source = "crimera/piko"
-patches-source-host = "github"
-excluded-patches = "'Dynamic Color'"
-patcher-args = "--continue-on-error"
-uptodown-dlurl = "https://twitter.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
-
-# ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
-
-
-
-[x-morphe-piko-materialyou]
-enabled = true
-app-name = "x"
-rv-brand = "morphe-piko-materialyou"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.twitter.android"
-cli-source = "MorpheApp/morphe-desktop"
-patches-source = "crimera/piko"
-patches-source-host = "github"
-included-patches = "'Dynamic Color'"
-patcher-args = "--continue-on-error"
-uptodown-dlurl = "https://twitter.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
-
-
-
-[x-morphe-piko-materialyou-exp]
-enabled = true
-app-name = "x"
-rv-brand = "morphe-piko-materialyou-exp"
-build-mode = "apk"
-arch = "all"
-version = "latest"
-pkg-name = "com.twitter.android"
-cli-source = "MorpheApp/morphe-desktop"
-patches-source = "crimera/piko"
-patches-source-host = "github"
-included-patches = "'Dynamic Color'"
-patcher-args = "--continue-on-error"
-uptodown-dlurl = "https://twitter.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
+patches-source = "kondratjev/morphe-patches"
 
 
 enable-module-update = true
 patches-version = "absolutelatest"
 
-
-[discord-npatch-revenge]
-enabled = true 
-app-name = "discord"
-pkg-name = "com.discord"
-rv-brand = "npatch-revenge"
-build-mode = "apk"
-arch = "all"
-cli-source = "7723mod/NPatch"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord"
-patches-source = "revenge-mod/revenge-xposed"
-patcher-args = "-l 0"
-dpi = "nodpi anydpi auto"
-uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers"
-apkmirror-example-url = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
+# ── YouTube morphe (stock/default theme) ──────────────────────────────────────
 
 
-enable-module-update = true
-patches-version = "absolutelatest"
-
-
-[microsoft-word-morphe-rushiranpise]
+[youtube-morphe]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "microsoft-word"
-rv-brand = "morphe-rushiranpise"
-custom-microg-patches = "'None'"
-build-mode = "apk"
+app-name = "youtube"
+rv-brand = "morphe"
+build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "com.microsoft.office.word"
-uptodown-dlurl = "https://microsoft-word-preview.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/word/"
-dpi = "nodpi anydpi auto"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word"
-patches-source = "rushiranpise/morphe-patches"
-
-
-
-[microsoft-excel-morphe-rushiranpise]
-enabled = true
+pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "microsoft-excel"
-rv-brand = "morphe-rushiranpise"
-custom-microg-patches = "'None'"
-build-mode = "apk"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube morphe-amoled (#000000) ───────────────────────────────────────────
+
+
+[youtube-morphe-amoled]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe-amoled"
+build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "com.microsoft.office.excel"
-uptodown-dlurl = "https://microsoft-excel-preview.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/excel/"
-dpi = "nodpi anydpi auto"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel"
-patches-source = "rushiranpise/morphe-patches"
-
-
-
-[duolingo-morphe-rushiranpise]
-enabled = true
+pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "duolingo"
-rv-brand = "morphe-rushiranpise"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo"
-build-mode = "apk"
-arch = "all arm64-v8a arm-v7a"
-pkg-name = "com.duolingo"
-uptodown-dlurl = "https://duolingo.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
+
+# ── YouTube morphe-mocha (Catppuccin Mocha) ───────────────────────────────────
 
 
-
-[amazon-india-morphe-rushiranpise]
+[youtube-morphe-mocha]
 enabled = true
-app-name = "amazon-india"
-rv-brand = "morphe-rushiranpise"
-build-mode = "apk"
-pkg-name = "in.amazon.mShop.android.shopping"
+app-name = "youtube"
+rv-brand = "morphe-mocha"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#FF181825 -OlightThemeBackgroundColor=#E6E9EF"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-included-patches = "'Dark Mode' 'Open Links in Browser'"
-excluded-patches = "'Hide Rufus Tab'"
-custom-microg-patches = "'None'"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
-
-arch = "all"
 
 
-
-[amazon-india-morphe-rushiranpise-exp]
-enabled = true
-app-name = "amazon-india"
-rv-brand = "morphe-rushiranpise-exp"
-build-mode = "apk"
-pkg-name = "in.amazon.mShop.android.shopping"
-cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-included-patches = "'Dark Mode' 'Open Links in Browser'"
-excluded-patches = "'Hide Rufus Tab'"
-custom-microg-patches = "'None'"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
-version = "latest"
-
-arch = "all"
-
-
-
-[amazon-shopping-morphe-rushiranpise]
-enabled = true
-app-name = "amazon-shopping"
-rv-brand = "morphe-rushiranpise"
-build-mode = "apk"
-pkg-name = "com.amazon.mShop.android.shopping"
-cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://amazon-shopping.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-included-patches = "'Dark Mode' 'Open Links in Browser'"
-excluded-patches = "'Hide Rufus Tab'"
-custom-microg-patches = "'None'"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
-
-arch = "all arm64-v8a arm-v7a"
-
-
-
-[amazon-shopping-morphe-rushiranpise-exp]
-enabled = true
-app-name = "amazon-shopping"
-rv-brand = "morphe-rushiranpise-exp"
-build-mode = "apk"
-pkg-name = "com.amazon.mShop.android.shopping"
-cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://amazon-shopping.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-included-patches = "'Dark Mode' 'Open Links in Browser'"
-excluded-patches = "'Hide Rufus Tab'"
-custom-microg-patches = "'None'"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
-version = "latest"
-
-arch = "all arm64-v8a arm-v7a"
-
-
-
-[adobe-acrobat-morphe-rushiranpise]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "adobe-acrobat"
-rv-brand = "morphe-rushiranpise"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
-build-mode = "apk"
-arch = "all arm64-v8a x86_64"
-pkg-name = "com.adobe.reader"
-uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-custom-microg-patches = "'None'"
-
-
-
-[adobe-acrobat-morphe-rushiranpise-exp]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "adobe-acrobat"
-rv-brand = "morphe-rushiranpise-exp"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
-version = "latest"
-build-mode = "apk"
-arch = "all arm64-v8a x86_64"
-pkg-name = "com.adobe.reader"
-uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-custom-microg-patches = "'None'"
-
-
-
-[pc-remote-morphe-rushiranpise]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "pc-remote"
-rv-brand = "morphe-rushiranpise"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-pkg-name = "com.monect.portable"
-uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-
-arch = "all"
-
+# ── YouTube morphe-exp (exp APK, stock/default theme) ─────────────────────────
 

@@ -1,0 +1,213 @@
+# --- Batch TOML Part 9/10 (13 apps) ---
+
+
+[pc-remote-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "pc-remote"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+pkg-name = "com.monect.portable"
+uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+arch = "all"
+
+
+
+[pc-remote-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "pc-remote"
+rv-brand = "morphe-rushiranpise-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
+version = "latest"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+pkg-name = "com.monect.portable"
+uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+arch = "all"
+
+
+
+[oxygen-updater-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "oxygen-updater"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arjanvlek.oxygenupdater"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+pkg-name = "com.arjanvlek.oxygenupdater"
+repo-dlurl = "https://github.com/oxygen-updater/os-updater"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[oxygen-updater-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "oxygen-updater"
+rv-brand = "morphe-rushiranpise-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arjanvlek.oxygenupdater"
+version = "latest"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+pkg-name = "com.arjanvlek.oxygenupdater"
+repo-dlurl = "https://github.com/oxygen-updater/os-updater"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[windscribe-vpn-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "windscribe-vpn"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.windscribe.vpn"
+uptodown-dlurl = "https://windscribe.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
+apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[windscribe-vpn-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "windscribe-vpn"
+rv-brand = "morphe-rushiranpise-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
+version = "latest"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.windscribe.vpn"
+uptodown-dlurl = "https://windscribe.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
+apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[1111-warp-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "1111-warp"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.cloudflare.onedotonedotonedotone"
+uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
+
+
+
+[1111-warp-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "1111-warp"
+rv-brand = "morphe-rushiranpise-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
+version = "latest"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.cloudflare.onedotonedotonedotone"
+uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
+
+
+
+[adguard-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "adguard"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.adguard.android"
+uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[adguard-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "adguard"
+rv-brand = "morphe-rushiranpise-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
+version = "latest"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.adguard.android"
+uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[beta-maniac-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "beta-maniac"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
+build-mode = "apk"
+arch = "all"
+pkg-name = "it.mirko.beta"
+uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[beta-maniac-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "beta-maniac"
+rv-brand = "morphe-rushiranpise-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "it.mirko.beta"
+uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+
+enable-module-update = true
+patches-version = "dev"
+

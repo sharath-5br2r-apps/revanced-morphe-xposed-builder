@@ -1,0 +1,97 @@
+# --- Batch TOML Part 10/10 (7 apps) ---
+
+
+[amazon-alexa-signed]
+enabled = true
+app-name = "amazon-alexa"
+rv-brand = "signed"
+build-mode = "apk"
+cli-source = "apksigner"
+pkg-name = "com.amazon.dee.app"
+cli-source-host = "none"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.dee.app"
+patches-source = "none"
+patches-source-host = "none"
+arch = "all arm64-v8a arm-v7a x86_64"
+prefer-dl-mode = "bundle"
+uptodown-dlurl = "https://alexa.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
+dpi = "120-480dpi 480-640dpi"
+
+
+[bitwarden-morphe-stylus]
+enabled = true
+app-name = "bitwarden"
+rv-brand = "morphe-stylus"
+build-mode = "apk"
+pkg-name = "com.x8bit.bitwarden"
+cli-source = "MorpheApp/morphe-desktop"
+repo-dlurl = "https://github.com/bitwarden/android"
+repo-dlurl-filter = "fdroid.apk"
+repo-dlurl-tag-filter = "bwpm"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden"
+version = "latest"
+patches-source = "ch3thanhs/stylus"
+
+
+
+[bitwarden-morphe-stylus]
+enabled = true
+app-name = "bitwarden"
+rv-brand = "morphe-stylus"
+build-mode = "apk"
+pkg-name = "com.x8bit.bitwarden"
+cli-source = "MorpheApp/morphe-desktop"
+repo-dlurl = "https://github.com/bitwarden/android"
+repo-dlurl-filter = "fdroid.apk"
+repo-dlurl-tag-filter = "bwpm"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden"
+patches-source = "ch3thanhs/stylus"
+
+
+
+[bitwarden-morphe-stylus-exp]
+enabled = true
+app-name = "bitwarden"
+rv-brand = "morphe-stylus-exp"
+build-mode = "apk"
+pkg-name = "com.x8bit.bitwarden"
+cli-source = "MorpheApp/morphe-desktop"
+repo-dlurl = "https://github.com/bitwarden/android"
+repo-dlurl-filter = "fdroid.apk"
+repo-dlurl-tag-filter = "bwpm"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden"
+version = "latest"
+patches-source = "ch3thanhs/stylus"
+
+
+enable-module-update = true
+patches-version = "absolutelatest"
+
+
+[tiktok-morphe-icysymmetra]
+enabled = true
+app-name = "tiktok"
+pkg-name = "com.zhiliaoapp.musically"
+rv-brand = "morphe-icysymmetra"
+build-mode = "apk"
+arch = "all"
+uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
+patches-source = "icysymmetra/tiktok-patches-for-morphe"
+
+
+
+[tiktok-morphe-hxreborn]
+enabled = true
+app-name = "tiktok"
+pkg-name = "com.zhiliaoapp.musically"
+rv-brand = "morphe-hxreborn"
+build-mode = "apk"
+arch = "all"
+uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
+patches-source = "hxreborn/hxreborn-tiktok-patches"
+

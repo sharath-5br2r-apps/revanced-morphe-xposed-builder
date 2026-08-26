@@ -177,6 +177,46 @@ jobs:
       artifact_mode: ${{ inputs.artifact_mode }}
     secrets: inherit
 
+  build_batch_part7:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/batch-part7.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_batch_part8:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/batch-part8.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_batch_part9:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/batch-part9.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
+  build_batch_part10:
+    needs: update_versions
+    if: ${{ always() && needs.update_versions.result == 'success' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/patches/merged/batch-part10.toml"
+      patches_version: ${{ inputs.patches_version }}
+      artifact_mode: ${{ inputs.artifact_mode }}
+    secrets: inherit
+
   aggregate_and_release:
     needs:
       - update_versions
@@ -186,6 +226,10 @@ jobs:
       - build_batch_part4
       - build_batch_part5
       - build_batch_part6
+      - build_batch_part7
+      - build_batch_part8
+      - build_batch_part9
+      - build_batch_part10
     if: ${{ always() && inputs.artifact_mode == true }}
     runs-on: ubuntu-latest
     permissions:

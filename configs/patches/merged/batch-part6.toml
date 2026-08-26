@@ -1,290 +1,228 @@
-# --- Batch TOML Part 6/6 (19 apps) ---
+# --- Batch TOML Part 6/10 (13 apps) ---
 
 
-[pc-remote-morphe-rushiranpise-exp]
+[youtube-morphe-exp]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "pc-remote"
-rv-brand = "morphe-rushiranpise-exp"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
-version = "latest"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-pkg-name = "com.monect.portable"
-uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-
-arch = "all"
-
-
-
-[oxygen-updater-morphe-rushiranpise]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "oxygen-updater"
-rv-brand = "morphe-rushiranpise"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arjanvlek.oxygenupdater"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-pkg-name = "com.arjanvlek.oxygenupdater"
-repo-dlurl = "https://github.com/oxygen-updater/os-updater"
-patches-source = "rushiranpise/morphe-patches"
-
-
-
-[oxygen-updater-morphe-rushiranpise-exp]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "oxygen-updater"
-rv-brand = "morphe-rushiranpise-exp"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arjanvlek.oxygenupdater"
-version = "latest"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-pkg-name = "com.arjanvlek.oxygenupdater"
-repo-dlurl = "https://github.com/oxygen-updater/os-updater"
-patches-source = "rushiranpise/morphe-patches"
-
-
-
-[windscribe-vpn-morphe-rushiranpise]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "windscribe-vpn"
-rv-brand = "morphe-rushiranpise"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.windscribe.vpn"
-uptodown-dlurl = "https://windscribe.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
-apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-
-
-
-[windscribe-vpn-morphe-rushiranpise-exp]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "windscribe-vpn"
-rv-brand = "morphe-rushiranpise-exp"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
-version = "latest"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.windscribe.vpn"
-uptodown-dlurl = "https://windscribe.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
-apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-
-
-
-[1111-warp-morphe-rushiranpise]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "1111-warp"
-rv-brand = "morphe-rushiranpise"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.cloudflare.onedotonedotonedotone"
-uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
-
-
-
-[1111-warp-morphe-rushiranpise-exp]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "1111-warp"
-rv-brand = "morphe-rushiranpise-exp"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
-version = "latest"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.cloudflare.onedotonedotonedotone"
-uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
-
-
-
-[adguard-morphe-rushiranpise]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "adguard"
-rv-brand = "morphe-rushiranpise"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.adguard.android"
-uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-
-
-
-[adguard-morphe-rushiranpise-exp]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "adguard"
-rv-brand = "morphe-rushiranpise-exp"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
-version = "latest"
-custom-microg-patches = "'None'"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.adguard.android"
-uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-
-
-
-[beta-maniac-morphe-rushiranpise]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "beta-maniac"
-rv-brand = "morphe-rushiranpise"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
-build-mode = "apk"
-arch = "all"
-pkg-name = "it.mirko.beta"
-uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-
-
-
-[beta-maniac-morphe-rushiranpise-exp]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "beta-maniac"
-rv-brand = "morphe-rushiranpise-exp"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
-version = "latest"
-build-mode = "apk"
-arch = "all"
-pkg-name = "it.mirko.beta"
-uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
-dpi = "nodpi anydpi auto"
-patches-source = "rushiranpise/morphe-patches"
-
-
-enable-module-update = true
-patches-version = "dev"
-
-
-[amazon-alexa-signed]
-enabled = true
-app-name = "amazon-alexa"
-rv-brand = "signed"
-build-mode = "apk"
-cli-source = "apksigner"
-pkg-name = "com.amazon.dee.app"
-cli-source-host = "none"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.dee.app"
-patches-source = "none"
-patches-source-host = "none"
+app-name = "youtube"
+rv-brand = "morphe-exp"
+build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
-prefer-dl-mode = "bundle"
-uptodown-dlurl = "https://alexa.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
-dpi = "120-480dpi 480-640dpi"
-
-
-[bitwarden-morphe-stylus]
-enabled = true
-app-name = "bitwarden"
-rv-brand = "morphe-stylus"
-build-mode = "apk"
-pkg-name = "com.x8bit.bitwarden"
+version = "exp"
+pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
-repo-dlurl = "https://github.com/bitwarden/android"
-repo-dlurl-filter = "fdroid.apk"
-repo-dlurl-tag-filter = "bwpm"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden"
-version = "latest"
-patches-source = "ch3thanhs/stylus"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube morphe-exp-mocha (exp APK + Catppuccin Mocha) ─────────────────────
 
 
-
-[bitwarden-morphe-stylus]
+[youtube-morphe-exp-mocha]
 enabled = true
-app-name = "bitwarden"
-rv-brand = "morphe-stylus"
-build-mode = "apk"
-pkg-name = "com.x8bit.bitwarden"
+app-name = "youtube"
+rv-brand = "morphe-exp-mocha"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+version = "exp"
+pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
-repo-dlurl = "https://github.com/bitwarden/android"
-repo-dlurl-filter = "fdroid.apk"
-repo-dlurl-tag-filter = "bwpm"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden"
-patches-source = "ch3thanhs/stylus"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#FF181825 -OlightThemeBackgroundColor=#E6E9EF"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube morphe-exp-amoled (exp APK + AMOLED) ─────────────────────────────
 
 
-
-[bitwarden-morphe-stylus-exp]
+[youtube-morphe-exp-amoled]
 enabled = true
-app-name = "bitwarden"
-rv-brand = "morphe-stylus-exp"
-build-mode = "apk"
-pkg-name = "com.x8bit.bitwarden"
+app-name = "youtube"
+rv-brand = "morphe-exp-amoled"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+version = "exp"
+pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
-repo-dlurl = "https://github.com/bitwarden/android"
-repo-dlurl-filter = "fdroid.apk"
-repo-dlurl-tag-filter = "bwpm"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.x8bit.bitwarden"
-version = "latest"
-patches-source = "ch3thanhs/stylus"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+dpi = "nodpi anydpi auto"
+
+
+# ── YouTube Music morphe-mocha (Catppuccin Mocha) ─────────────────────────────
+
+
+[youtube-music-morphe-mocha]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-mocha"
+build-mode = "both"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#FF181825 -OmaterialYou=#89B4FA"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube Music morphe-exp (exp APK, stock/default theme) ───────────────────
+
+
+[youtube-music-morphe-exp]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-exp"
+build-mode = "both"
+arch = "arm64-v8a arm-v7a x86_64"
+version = "exp"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube Music morphe-exp-mocha (exp APK + Catppuccin Mocha) ───────────────
+
+
+[youtube-music-morphe-exp-mocha]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-exp-mocha"
+build-mode = "both"
+arch = "arm64-v8a arm-v7a x86_64"
+version = "exp"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#FF181825 -OmaterialYou=#89B4FA"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
+
+# ── YouTube Music morphe-exp-amoled (exp APK + AMOLED) ───────────────────────
+
+
+[youtube-music-morphe-exp-amoled]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-exp-amoled"
+build-mode = "both"
+arch = "arm64-v8a arm-v7a x86_64"
+version = "exp"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
+apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
+apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+dpi = "nodpi anydpi auto"
 
 
 enable-module-update = true
 patches-version = "absolutelatest"
 
 
-[tiktok-morphe-icysymmetra]
+
+[clash-of-clans-morphe-nulls]
 enabled = true
-app-name = "tiktok"
-pkg-name = "com.zhiliaoapp.musically"
-rv-brand = "morphe-icysymmetra"
+cli-source = "none"
+cli-source-host = "none"
+app-name = "clash-of-clans"
+rv-brand = "nulls"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/nullsclash.night.rel"
 build-mode = "apk"
 arch = "all"
-uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
-patches-source = "icysymmetra/tiktok-patches-for-morphe"
+pkg-name = "nullsclash.night.rel"
+direct-dlurl = "http://dnull.xyz/latest_coc"
+dpi = "nodpi anydpi auto"
+patches-source = "none"
+patches-source-host = "none"
 
 
 
-[tiktok-morphe-hxreborn]
+[clash-royale-morphe-nulls]
 enabled = true
-app-name = "tiktok"
-pkg-name = "com.zhiliaoapp.musically"
-rv-brand = "morphe-hxreborn"
+cli-source = "none"
+cli-source-host = "none"
+app-name = "clash-royale"
+rv-brand = "nulls"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/nullsroyale.rel.free"
 build-mode = "apk"
 arch = "all"
-uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
-patches-source = "hxreborn/hxreborn-tiktok-patches"
+pkg-name = "nullsroyale.rel.free"
+direct-dlurl = "http://dnull.xyz/latest_cr"
+dpi = "nodpi anydpi auto"
+patches-source = "none"
+patches-source-host = "none"
+
+
+
+[brawl-stars-morphe-nulls]
+enabled = true
+cli-source = "none"
+cli-source-host = "none"
+app-name = "brawl-stars"
+rv-brand = "nulls"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/daniillnull.nulls.brawlstars"
+build-mode = "apk"
+arch = "all"
+pkg-name = "daniillnull.nulls.brawlstars"
+direct-dlurl = "http://dnull.xyz/latest_bs"
+dpi = "nodpi anydpi auto"
+patches-source = "none"
+patches-source-host = "none"
+
+
+enable-module-update = true
+patches-version = "absolutelatest"
+
+
+[truecaller-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "truecaller"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.truecaller"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a"
+pkg-name = "com.truecaller"
+uptodown-dlurl = "https://truecaller.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/true-software-scandinavia-ab/truecaller-caller-id-block"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
 
