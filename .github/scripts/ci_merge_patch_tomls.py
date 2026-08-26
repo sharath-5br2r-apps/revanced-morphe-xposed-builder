@@ -1,6 +1,7 @@
 import os
 import glob
 import math
+import json
 
 def get_tables_with_headers(filepath):
     tables = []
@@ -81,23 +82,8 @@ def main():
     generate_workflow_yaml(matrix_jobs)
 
 def generate_workflow_yaml(jobs):
-    job_names = [j[0] for j in jobs]
-    job_blocks = []
-    job_ids = []
-    for job_id, config_file in jobs:
-        job_ids.append(job_id)
-        block = f"""  {job_id}:
-    needs: update_versions
-    if: ${{{{ !cancelled() && needs.update_versions.result == 'success' }}}}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "{config_file}"
-      patches_version: ${{{{ inputs.patches_version }}}}
-      release_version_code: ${{{{ needs.update_versions.outputs.NEXT_VER_CODE }}}}
-      upload_release_metadata: false
-    secrets: inherit"""
-        job_blocks.append(block)
-
+    config_files = [j[1] for j in jobs]
+    
     yaml_content = f"""name: "Batch Build All Configs"
 permissions: write-all
 
@@ -217,16 +203,29 @@ jobs:
           file_pattern: configs/*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
-{"\n\n".join(job_blocks)}
+  build_batch:
+    needs: update_versions
+    if: ${{{{ !cancelled() && needs.update_versions.result == 'success' }}}}
+    strategy:
+      fail-fast: false
+      matrix:
+        config_file: {json.dumps(config_files)}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: ${{{{ matrix.config_file }}}}
+      patches_version: ${{{{ inputs.patches_version }}}}
+      release_version_code: ${{{{ needs.update_versions.outputs.NEXT_VER_CODE }}}}
+      upload_release_metadata: false
+    secrets: inherit
 
   trigger_cleanup:
-    needs: [{", ".join(job_names)}]
+    needs: [build_batch]
     if: ${{{{ !cancelled() }}}}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [{", ".join(job_names)}, trigger_cleanup]
+    needs: [build_batch, trigger_cleanup]
     if: ${{{{ !cancelled() }}}}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit

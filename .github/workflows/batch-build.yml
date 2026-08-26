@@ -117,168 +117,29 @@ jobs:
           file_pattern: configs/*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
-  build_batch_part1:
+  build_batch:
     needs: update_versions
     if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config_file: ["configs/patches/merged/batch-part1.toml", "configs/patches/merged/batch-part2.toml", "configs/patches/merged/batch-part3.toml", "configs/patches/merged/batch-part4.toml", "configs/patches/merged/batch-part5.toml", "configs/patches/merged/batch-part6.toml", "configs/patches/merged/batch-part7.toml", "configs/patches/merged/batch-part8.toml", "configs/patches/merged/batch-part9.toml", "configs/patches/merged/batch-part10.toml", "configs/patches/merged/batch-part11.toml", "configs/patches/merged/batch-part12.toml", "configs/patches/merged/batch-part13.toml", "configs/patches/merged/batch-part14.toml"]
     uses: ./.github/workflows/build.yml
     with:
-      config_file: "configs/patches/merged/batch-part1.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part2:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part2.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part3:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part3.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part4:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part4.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part5:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part5.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part6:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part6.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part7:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part7.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part8:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part8.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part9:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part9.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part10:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part10.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part11:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part11.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part12:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part12.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part13:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part13.toml"
-      patches_version: ${{ inputs.patches_version }}
-      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_batch_part14:
-    needs: update_versions
-    if: ${{ !cancelled() && needs.update_versions.result == 'success' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/patches/merged/batch-part14.toml"
+      config_file: ${{ matrix.config_file }}
       patches_version: ${{ inputs.patches_version }}
       release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
       upload_release_metadata: false
     secrets: inherit
 
   trigger_cleanup:
-    needs: [build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5, build_batch_part6, build_batch_part7, build_batch_part8, build_batch_part9, build_batch_part10, build_batch_part11, build_batch_part12, build_batch_part13, build_batch_part14]
+    needs: [build_batch]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5, build_batch_part6, build_batch_part7, build_batch_part8, build_batch_part9, build_batch_part10, build_batch_part11, build_batch_part12, build_batch_part13, build_batch_part14, trigger_cleanup]
+    needs: [build_batch, trigger_cleanup]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
