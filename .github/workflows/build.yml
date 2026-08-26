@@ -17,10 +17,10 @@ on:
         required: false
         type: string
         default: ""
-      artifact_mode:
+      release_version_code:
         required: false
-        type: boolean
-        default: false
+        type: string
+        default: ""
 
 concurrency:
   group: build-${{ inputs.config_file }}
@@ -84,7 +84,14 @@ jobs:
         id: version
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: bash .github/scripts/build_resolve_version.sh
+          PASSED_VER_CODE: ${{ inputs.release_version_code }}
+        run: |
+          if [ -n "$PASSED_VER_CODE" ]; then
+            echo "NEXT_VER_CODE=$PASSED_VER_CODE" >> "$GITHUB_OUTPUT"
+            echo "[+] Using passed release version code: $PASSED_VER_CODE"
+          else
+            bash .github/scripts/build_resolve_version.sh
+          fi
 
       - name: Cache APKs
         uses: actions/cache@v6
@@ -140,7 +147,6 @@ jobs:
         run: bash .github/scripts/build_get_output.sh
 
       - name: Upload to release
-        if: ${{ inputs.artifact_mode != true }}
         uses: softprops/action-gh-release@v3
         with:
           body: ${{ steps.get_output.outputs.BUILD_LOG }}
@@ -152,7 +158,6 @@ jobs:
           prerelease: ${{ steps.context.outputs.IS_PRERELEASE == 'true' }}
 
       - name: Upload build.json to numbered release
-        if: ${{ inputs.artifact_mode != true }}
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
@@ -160,7 +165,6 @@ jobs:
             --repo "$GITHUB_REPOSITORY" --clobber
 
       - name: Update changelog and module update files
-        if: ${{ inputs.artifact_mode != true }}
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           GITHUB_SERVER_URL: ${{ github.server_url }}
@@ -168,7 +172,6 @@ jobs:
         run: bash .github/scripts/build_update_changelog.sh
 
       - name: Upload module update metadata to release (update)
-        if: ${{ inputs.artifact_mode != true }}
         uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
@@ -180,12 +183,10 @@ jobs:
           overwrite_files: true
 
       - name: Remove frequently updated apps
-        if: ${{ inputs.artifact_mode != true }}
         run: |
           bash .github/scripts/build_exclude_from_archive.sh
 
       - name: Upload to release (Archive)
-        if: ${{ inputs.artifact_mode != true }}
         uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
@@ -193,12 +194,3 @@ jobs:
           tag_name: ${{ steps.context.outputs.ARCHIVE_TAG }}
           overwrite_files: true
           target_commitish: main
-
-      - name: Upload build artifacts (Artifact Mode)
-        if: ${{ inputs.artifact_mode == true }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact-${{ github.run_id }}-${{ strategy.job-index || '0' }}-${{ hashFiles('build.json') }}
-          path: |
-            build/*
-            build.json

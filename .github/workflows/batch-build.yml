@@ -13,11 +13,6 @@ on:
           - "latest"
           - "auto"
           - "absolutelatest"
-      artifact_mode:
-        description: "Use artifact mode (build as artifacts first, then aggregate build.json & release at end)"
-        required: false
-        type: boolean
-        default: false
 
 concurrency:
   group: ci
@@ -29,6 +24,8 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
     env:
       TRAWL_URL: "http://localhost:8191"
       CFB_URL: "http://localhost:8000"
@@ -127,7 +124,7 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part1.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
 
   build_batch_part2:
@@ -137,7 +134,7 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part2.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
 
   build_batch_part3:
@@ -147,7 +144,7 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part3.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
 
   build_batch_part4:
@@ -157,7 +154,7 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part4.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
 
   build_batch_part5:
@@ -167,7 +164,7 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part5.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
 
   build_batch_part6:
@@ -177,7 +174,7 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part6.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
 
   build_batch_part7:
@@ -187,7 +184,7 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part7.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
 
   build_batch_part8:
@@ -197,7 +194,7 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part8.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
 
   build_batch_part9:
@@ -207,7 +204,7 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part9.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
 
   build_batch_part10:
@@ -217,74 +214,5 @@ jobs:
     with:
       config_file: "configs/patches/merged/batch-part10.toml"
       patches_version: ${{ inputs.patches_version }}
-      artifact_mode: ${{ inputs.artifact_mode }}
+      release_version_code: ${{ needs.update_versions.outputs.NEXT_VER_CODE }}
     secrets: inherit
-
-  aggregate_and_release:
-    needs:
-      - update_versions
-      - build_batch_part1
-      - build_batch_part2
-      - build_batch_part3
-      - build_batch_part4
-      - build_batch_part5
-      - build_batch_part6
-      - build_batch_part7
-      - build_batch_part8
-      - build_batch_part9
-      - build_batch_part10
-    if: ${{ always() && inputs.artifact_mode == true }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          ref: main
-
-      - name: Download metadata & note artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts/
-
-      - name: Merge build.json and notes
-        run: |
-          python3 .github/scripts/ci_aggregate_build_json.py
-
-      - name: Determine next release version tag
-        id: version
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: bash .github/scripts/build_resolve_version.sh
-
-      - name: Upload aggregated build.json to release
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          [ -f build.json ] && gh release upload ${{ steps.version.outputs.NEXT_VER_CODE }} build.json \
-            --repo "$GITHUB_REPOSITORY" --clobber || true
-
-      - name: Update changelog and module update files
-        env:
-          NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          GITHUB_SERVER_URL: ${{ github.server_url }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: bash .github/scripts/build_update_changelog.sh
-
-      - name: Filter update files for release
-        run: |
-          mkdir -p update_meta/
-          [ -s build.md ] && cp -f build.md update_meta/ || true
-          for f in *-update.json; do
-            [ -f "$f" ] && [ -s "$f" ] && cp -f "$f" update_meta/ || true
-          done
-
-      - name: Upload module update metadata to release (update)
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: update_meta/*
-          name: Update Metadata
-          tag_name: update
-          overwrite_files: true

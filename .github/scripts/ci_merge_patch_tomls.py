@@ -90,12 +90,10 @@ def generate_workflow_yaml(jobs):
     with:
       config_file: "{config_file}"
       patches_version: ${{{{ inputs.patches_version }}}}
-      artifact_mode: ${{{{ inputs.artifact_mode }}}}
+      release_version_code: ${{{{ needs.update_versions.outputs.NEXT_VER_CODE }}}}
     secrets: inherit"""
         job_blocks.append(block)
 
-    needs_list = "\n".join([f"      - {jid}" for jid in job_ids])
-    
     yaml_content = f"""name: "Batch Build All Configs"
 permissions: write-all
 
@@ -111,11 +109,6 @@ on:
           - "latest"
           - "auto"
           - "absolutelatest"
-      artifact_mode:
-        description: "Use artifact mode (build as artifacts first, then aggregate build.json & release at end)"
-        required: false
-        type: boolean
-        default: false
 
 concurrency:
   group: ci
@@ -127,6 +120,8 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      NEXT_VER_CODE: ${{{{ steps.version.outputs.NEXT_VER_CODE }}}}
     env:
       TRAWL_URL: "http://localhost:8191"
       CFB_URL: "http://localhost:8000"
@@ -219,66 +214,6 @@ jobs:
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
 {"\n\n".join(job_blocks)}
-
-  aggregate_and_release:
-    needs:
-      - update_versions
-{needs_list}
-    if: ${{{{ always() && inputs.artifact_mode == true }}}}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          ref: main
-
-      - name: Download metadata & note artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts/
-
-      - name: Merge build.json and notes
-        run: |
-          python3 .github/scripts/ci_aggregate_build_json.py
-
-      - name: Determine next release version tag
-        id: version
-        env:
-          GH_TOKEN: ${{{{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}}}
-        run: bash .github/scripts/build_resolve_version.sh
-
-      - name: Upload aggregated build.json to release
-        env:
-          GH_TOKEN: ${{{{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}}}
-        run: |
-          [ -f build.json ] && gh release upload ${{{{ steps.version.outputs.NEXT_VER_CODE }}}} build.json \\
-            --repo "$GITHUB_REPOSITORY" --clobber || true
-
-      - name: Update changelog and module update files
-        env:
-          NEXT_VER_CODE: ${{{{ steps.version.outputs.NEXT_VER_CODE }}}}
-          GITHUB_SERVER_URL: ${{{{ github.server_url }}}}
-          GITHUB_REPOSITORY: ${{{{ github.repository }}}}
-        run: bash .github/scripts/build_update_changelog.sh
-
-      - name: Filter update files for release
-        run: |
-          mkdir -p update_meta/
-          [ -s build.md ] && cp -f build.md update_meta/ || true
-          for f in *-update.json; do
-            [ -f "$f" ] && [ -s "$f" ] && cp -f "$f" update_meta/ || true
-          done
-
-      - name: Upload module update metadata to release (update)
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{{{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}}}
-          files: update_meta/*
-          name: Update Metadata
-          tag_name: update
-          overwrite_files: true
 """
     with open(".github/workflows/batch-build.yml", "w", encoding="utf-8") as wf:
         wf.write(yaml_content)
