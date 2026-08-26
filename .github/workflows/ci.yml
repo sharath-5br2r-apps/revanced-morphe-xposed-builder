@@ -13,7 +13,8 @@ on:
         default: "Default"
         options:
           - "Default"
-          - "Generate Updates Only"
+          - "Update Versions Only"
+          - "Generate Configs Only (No Build)"
           - "Build Only"
 
 concurrency:
@@ -108,7 +109,7 @@ jobs:
           commit_message: "Update app and patch versions [skip ci]"
 
       - name: Generate configs (JSON)
-        if: ${{ steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' || inputs.mode == 'Generate Updates Only' || inputs.mode == 'Build Only' }}
+        if: ${{ inputs.mode != 'Update Versions Only' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Build Only') }}
         id: generate_configs
         env:
           TAGS_OLD: ${{ steps.compare.outputs.tags_old }}
