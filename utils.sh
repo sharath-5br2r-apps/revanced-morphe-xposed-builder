@@ -3577,6 +3577,16 @@ build_rv() {
 		fi
 	fi
 	local changelog_url="${args[changelog_url]}"
+	local cli_ref=""
+	if [ -n "${args[cli_source]:-}" ]; then
+		local _clijar_base; _clijar_base="${cli_jar##*/}"; _clijar_base="${_clijar_base%.jar}"
+		local _cliver; _cliver=$(printf '%s' "$_clijar_base" | grep -oP '\d+\.\d+\.\d+.*$' || true)
+		if [ -n "$_cliver" ]; then
+			cli_ref="${args[cli_source]}@${_cliver}"
+		else
+			cli_ref="${args[cli_source]}"
+		fi
+	fi
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
     if isoneof "$version_mode" latest beta || [ "$version_mode" != "auto" -a "$version_mode" != "exp" ]; then
         if [[ "${args[patcher_args]}" != *"-f "* ]]; then
