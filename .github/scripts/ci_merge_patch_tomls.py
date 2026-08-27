@@ -69,16 +69,20 @@ def main():
     for sort_app, sort_key, header, content in all_tables:
         app_groups[sort_app].append((sort_key, header, content))
 
-    distinct_apps = sorted(app_groups.keys())
+    sorted_app_keys = sorted(app_groups.keys(), key=lambda a: (len(app_groups[a]), a), reverse=True)
     NUM_OUTPUT_FILES = 15
 
     parts_apps = [[] for _ in range(NUM_OUTPUT_FILES)]
     parts_items = [[] for _ in range(NUM_OUTPUT_FILES)]
+    parts_build_count = [0] * NUM_OUTPUT_FILES
 
-    for idx, app in enumerate(distinct_apps):
-        target_part = idx % NUM_OUTPUT_FILES
-        parts_apps[target_part].append(app)
-        parts_items[target_part].extend(app_groups[app])
+    # Greedily assign each distinct app group to the batch part with the lowest current build count
+    for app in sorted_app_keys:
+        items = app_groups[app]
+        min_idx = min(range(NUM_OUTPUT_FILES), key=lambda i: (parts_build_count[i], len(parts_apps[i])))
+        parts_apps[min_idx].append(app)
+        parts_items[min_idx].extend(items)
+        parts_build_count[min_idx] += len(items)
 
     for part_idx in range(1, NUM_OUTPUT_FILES + 1):
         chunk_apps = parts_apps[part_idx - 1]
