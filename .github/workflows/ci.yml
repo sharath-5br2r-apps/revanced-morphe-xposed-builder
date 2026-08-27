@@ -482,7 +482,7 @@ jobs:
         run: |
           mkdir -p latest_logs
           cp -r logs_artifacts/* latest_logs/ 2>/dev/null || true
-          cd latest_logs && bash ../.github/scripts/build_aggregate_logs.sh dev && cd ..
+          cd latest_logs && bash ../.github/scripts/build_aggregate_logs.sh latest && cd ..
 
       - name: Upload aggregated latest logs artifact
         uses: actions/upload-artifact@v7
@@ -496,11 +496,11 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
-          if [ -n "$tag" ] && [ -f "latest_logs/aggregated_out/build.dev.json" ]; then
+          if [ -n "$tag" ] && [ -f "latest_logs/aggregated_out/build.latest.json" ]; then
             notes_arg=("--notes" "")
-            [ -f "latest_logs/aggregated_out/build.dev.md" ] && notes_arg=("--notes-file" "latest_logs/aggregated_out/build.dev.md")
+            [ -f "latest_logs/aggregated_out/build.latest.md" ] && notes_arg=("--notes-file" "latest_logs/aggregated_out/build.latest.md")
             gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
-            gh release upload "$tag" latest_logs/aggregated_out/build.dev.json --clobber 2>/dev/null || true
+            gh release upload "$tag" latest_logs/aggregated_out/build.latest.json --clobber 2>/dev/null || true
           fi
 
       - name: Upload module update metadata to update tag (Latest)
