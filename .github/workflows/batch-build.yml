@@ -34,7 +34,7 @@ jobs:
 
   prepare_context:
     needs: update_versions
-    if: ${{ !cancelled() && inputs.mode != 'Update Versions Only' }}
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     outputs:
       next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -50,7 +50,7 @@ jobs:
 
   build_batch:
     needs: [update_versions, prepare_context]
-    if: ${{ !cancelled() && inputs.mode != 'Update Versions Only' && needs.prepare_context.result == 'success' }}
+    if: ${{ !cancelled() && needs.prepare_context.result == 'success' }}
     strategy:
       fail-fast: false
       matrix:
