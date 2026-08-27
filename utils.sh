@@ -3581,6 +3581,7 @@ build_rv() {
 		elif [ ! -f "$stock_apk" ]; then
 			local found_any_stock
 			found_any_stock=$(find "$apk_cache_dir" "$apk_dl_dir" -name "${pkg_name}-${version_f}-*.apk" -type f 2>/dev/null | head -1)
+			[ -z "$found_any_stock" ] && found_any_stock=$(find "$apk_cache_dir" "$apk_dl_dir" -name "${pkg_name}-*.apk" -type f 2>/dev/null | head -1)
 			[ -n "$found_any_stock" ] && stock_apk="$found_any_stock"
 		fi
 
