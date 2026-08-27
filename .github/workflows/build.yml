@@ -36,6 +36,9 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
+    outputs:
+      next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
+      archive_tag: ${{ steps.context.outputs.ARCHIVE_TAG }}
     services:
       redis:
         image: redis:alpine
@@ -168,11 +171,13 @@ jobs:
 
       - name: Upload build.json to numbered release
         if: ${{ inputs.upload_release_metadata != false }}
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          gh release upload ${{ steps.version.outputs.NEXT_VER_CODE }} build.json \
-            --repo "$GITHUB_REPOSITORY" --clobber
+        uses: softprops/action-gh-release@v3
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          files: build.json
+          name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
+          tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          overwrite_files: true
 
       - name: Upload part build logs artifact
         uses: actions/upload-artifact@v4
