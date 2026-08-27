@@ -13,7 +13,7 @@ repo-dlurl-filter = "(BraveMonoarm64|MonoArm64)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
 version = "latest"
 
-[brave-stable-morphe-kveld9-arm-v7a]
+[brave-stable-morphe-kveld9-exp-arm-v7a]
 enabled = true
 app-name = "brave-stable"
 rv-brand = "morphe-kveld9-exp"
@@ -28,7 +28,7 @@ repo-dlurl-filter = "(BraveMonoarm|MonoArm)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
 version = "latest"
 
-[brave-stable-morphe-kveld9-x86_64]
+[brave-stable-morphe-kveld9-exp-x86_64]
 enabled = true
 app-name = "brave-stable"
 rv-brand = "morphe-kveld9-exp"
