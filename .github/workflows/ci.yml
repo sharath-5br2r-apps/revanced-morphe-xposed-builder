@@ -4,6 +4,12 @@ permissions: write-all
 on:
   schedule:
     - cron: "0 0/2 * * *" # Every 2 hours
+  workflow_call:
+    inputs:
+      mode:
+        required: false
+        type: string
+        default: "Default"
   workflow_dispatch:
     inputs:
       mode:
