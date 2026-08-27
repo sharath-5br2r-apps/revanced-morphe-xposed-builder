@@ -3399,7 +3399,7 @@ build_rv() {
 			fi
 
 			local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-}}"
-			local pat_token="${PERSONAL_ACCESS_TOKEN:-}"
+			local pat_token="${PERSONAL_ACCESS_TOKEN:-${GH_TOKEN:-${GITHUB_TOKEN:-}}}"
 			if [ -f "$stock_apk" ] && [ -n "$apks_repo" ] && [ -n "$pat_token" ] && [ "$dl_p" != "github" ] && [ "$dl_p" != "archive" ]; then
 				pr "Uploading newly downloaded APKs to ${apks_repo}..."
 				if GH_TOKEN="$pat_token" gh release view "$pkg_name" --repo "$apks_repo" >/dev/null 2>&1 || GH_TOKEN="$pat_token" gh release create "$pkg_name" --repo "$apks_repo" --title "$pkg_name" --notes ""; then
