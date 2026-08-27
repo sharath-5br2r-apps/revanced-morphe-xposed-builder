@@ -121,10 +121,10 @@
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
     "stable": "v1.41.0",
-    "prerelease": "v1.42.0-dev.4",
+    "prerelease": "v1.42.0-dev.5",
     "blocked": false,
     "stable_date": "2026-08-18T04:15:22Z",
-    "pre_date": "2026-08-26T22:53:34Z"
+    "pre_date": "2026-08-27T19:31:59Z"
   },
   "hoomans": {
     "repo": "arandomhooman/hoomans-morphe-patches",
