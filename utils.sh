@@ -2264,12 +2264,6 @@ get_repo_resp() {
 		mode="absolutelatest"
 	fi
 
-	local release_target
-	release_target=$(source_release_pick_from_list "$host" "$mode" "$host_instance" <<<"$release" 2>/dev/null || true)
-	if [ -n "$release_target" ] && [ "$release_target" != "null" ]; then
-		release="[$release_target]"
-	fi
-
 	local assets_json
 	assets_json=$(jq -c --arg f "$filter" '
 		(if type == "array" then . else [.] end) | map(
