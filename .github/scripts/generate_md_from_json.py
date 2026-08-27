@@ -21,6 +21,7 @@ def main():
     sorted_entries = sorted(data.items(), key=lambda x: (x[1].get("name", x[0]), x[1].get("arch", "")))
 
     app_lines = []
+    seen_apps = set()
     cli_set = []
     patches_dict = {}
 
@@ -33,10 +34,10 @@ def main():
         changelog = entry.get("changelog", "")
         release_notes = entry.get("release_notes", "")
 
-        if arch:
-            app_lines.append(f"{name} ({arch}): {version}  ")
-        else:
-            app_lines.append(f"{name}: {version}  ")
+        app_line = f"{name} ({arch}): {version}  " if arch else f"{name}: {version}  "
+        if app_line not in seen_apps:
+            seen_apps.add(app_line)
+            app_lines.append(app_line)
 
         if cli_info and cli_info not in cli_set:
             cli_set.append(cli_info)
