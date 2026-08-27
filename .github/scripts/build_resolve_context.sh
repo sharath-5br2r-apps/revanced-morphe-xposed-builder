@@ -42,6 +42,11 @@ elif [[ "$CONFIG" == *.toml ]]; then
   fi
 fi
 
+CONFIG_BASE=$(basename "$CONFIG")
+CONFIG_TAG="${CONFIG_BASE%.*}"
+CONFIG_TAG="${CONFIG_TAG//./-}"
+echo "CONFIG_TAG=$CONFIG_TAG" >> "$GITHUB_OUTPUT"
+
 if [ "$IS_DEV" = true ]; then
   echo "IS_PRERELEASE=true" >> "$GITHUB_OUTPUT"
   echo "TG_THREAD_ID=350" >> "$GITHUB_OUTPUT"
