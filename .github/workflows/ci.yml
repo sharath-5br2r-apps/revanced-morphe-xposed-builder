@@ -235,7 +235,7 @@ jobs:
       - name: Aggregate logs for Dev
         run: |
           mkdir -p dev_logs
-          find logs_artifacts -exec cp -r {}/. dev_logs/ \; 2>/dev/null || true
+          cp -r logs_artifacts/* dev_logs/ 2>/dev/null || true
           cd dev_logs && bash ../.github/scripts/build_aggregate_logs.sh dev && cd ..
 
       - name: Upload aggregated dev logs artifact
@@ -346,7 +346,7 @@ jobs:
       - name: Aggregate logs for Stable
         run: |
           mkdir -p stable_logs
-          find logs_artifacts -exec cp -r {}/. stable_logs/ \; 2>/dev/null || true
+          cp -r logs_artifacts/* stable_logs/ 2>/dev/null || true
           cd stable_logs && bash ../.github/scripts/build_aggregate_logs.sh stable && cd ..
 
       - name: Upload aggregated stable logs artifact

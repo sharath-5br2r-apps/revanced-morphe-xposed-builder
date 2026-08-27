@@ -84,7 +84,7 @@ jobs:
       - name: Aggregate logs
         run: |
           mkdir -p batch_logs
-          find logs_artifacts -exec cp -r {}/. batch_logs/ \; 2>/dev/null || true
+          cp -r logs_artifacts/* batch_logs/ 2>/dev/null || true
           cd batch_logs
           FLAVOR="stable"
           if [ "${{ inputs.patches_version }}" = "absolutelatest" ] || [ "${{ inputs.patches_version }}" = "dev" ]; then
