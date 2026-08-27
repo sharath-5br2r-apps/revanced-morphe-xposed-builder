@@ -44,17 +44,21 @@ def main():
         patchset_name = fname.replace(".toml", "")
         tables = get_tables_with_headers(fpath)
         for header, content in tables:
-            # extract table key e.g. [youtube-revanced]
+            # extract table key e.g. [youtube-revanced] and app-name
             key_line = ""
+            app_name = ""
             for l in content.splitlines():
                 if l.strip().startswith('['):
                     key_line = l.strip().strip('[]"')
-                    break
+                elif l.strip().startswith('app-name'):
+                    app_name = l.split('=')[1].strip().strip('\"\'')
+            
+            sort_app = app_name if app_name else (key_line if key_line else patchset_name)
             sort_key = key_line if key_line else patchset_name
-            all_tables.append((sort_key, header, content))
+            all_tables.append((sort_app, sort_key, header, content))
 
-    # Standardize output by sorting deterministically by table key
-    all_tables.sort(key=lambda x: x[0])
+    # Standardize output by sorting deterministically by app-name, then table key
+    all_tables.sort(key=lambda x: (x[0], x[1]))
 
     total_apps = len(all_tables)
     NUM_OUTPUT_FILES = 15
@@ -72,7 +76,7 @@ def main():
         out_file = os.path.join(merged_dir, chunk_name)
 
         content = [f"# --- Batch TOML Part {idx + 1}/{NUM_OUTPUT_FILES} ({len(chunk_items)} apps) ---\n"]
-        for patchset_name, header, tbl_content in chunk_items:
+        for sort_app, sort_key, header, tbl_content in chunk_items:
             if header:
                 content.append(header)
             content.append(tbl_content)
