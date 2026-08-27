@@ -27,10 +27,9 @@ concurrency:
 
 jobs:
   update_versions:
-    uses: ./.github/workflows/manual-ci.yml
+    uses: ./.github/workflows/ci.yml
     with:
-      mode: ${{ inputs.mode }}
-      patches_version: ${{ inputs.patches_version }}
+      mode: "Update Versions Only"
     secrets: inherit
 
   prepare_context:

@@ -72,14 +72,13 @@ jobs:
           bash .github/scripts/ci_fetch_tags.sh || true
           bash .github/scripts/ci_fetch_app_versions.sh || true
           bash .github/scripts/ci_generate_configs.sh || true
-          python3 .github/scripts/ci_merge_patch_tomls.py || true
 
       - name: Commit updated versions metadata and configs
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
-          file_pattern: configs/app_versions.json configs/patch_sources.json configs/config.*.updated.json configs/patches/merged/*.toml
+          file_pattern: configs/app_versions.json configs/patch_sources.json configs/config.*.updated.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
   resolve_config:
