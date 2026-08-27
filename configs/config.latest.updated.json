@@ -1,19 +1,33 @@
 {
   "patches-version": "latest",
   "enable-module-update": false,
-  "jiohotstar-morphe-paresh-exp": {
+  "proton-vpn-morphe-paresh-exp": {
     "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "jiohotstar",
+    "app-name": "proton-vpn",
     "rv-brand": "morphe-paresh-exp",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android",
     "version": "latest",
     "build-mode": "apk",
-    "pkg-name": "in.startv.hotstar",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/",
-    "dpi": "nodpi anydpi auto",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar",
+    "pkg-name": "ch.protonvpn.android",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://protonvpn.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn",
+    "prefer-dl-mode": "bundle",
     "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab"
+    "patches-source-host": "gitlab",
+    "dpi": "120-640dpi",
+    "arch": "all"
+  },
+  "oxygen-updater-morphe-rushiranpise-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "oxygen-updater",
+    "rv-brand": "morphe-rushiranpise-exp",
+    "version": "latest",
+    "custom-microg-patches": "'None'",
+    "build-mode": "apk",
+    "pkg-name": "com.arjanvlek.oxygenupdater",
+    "repo-dlurl": "https://github.com/oxygen-updater/os-updater",
+    "patches-source": "rushiranpise/morphe-patches"
   }
 }
