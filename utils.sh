@@ -3442,21 +3442,26 @@ build_rv() {
 	[ -f "$check_all_apk" ] && stock_apk="$check_all_apk"
 
 	if [ ! -f "$stock_apk" ]; then
-		epr "ERROR: Could not download '${table}'"
-		return 0
+		# If the APK version was updated dynamically during download (e.g. 3.0.469 -> 3.0.469.1947), find any downloaded file matching the package
+		local found_any
+		found_any=$(ls -1 "${apk_cache_dir}/${pkg_name}"-*.apk 2>/dev/null | head -n1 || true)
+		if [ -n "$found_any" ]; then
+			stock_apk="$found_any"
+		else
+			epr "ERROR: Could not download '${table}'"
+			return 0
+		fi
 	fi
 
-	if ! [[ "${version_f:-}" =~ ^[0-9] ]]; then
-		local apk_ver
-		apk_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-		if [ -n "$apk_ver" ]; then
-			version="$apk_ver"
-			version=$(echo "$version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
-			version_f=${version// /}
-			version_f=${version_f#v}
-			version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
-			version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
-		fi
+	local apk_ver
+	apk_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
+	if [ -n "$apk_ver" ]; then
+		version="$apk_ver"
+		version=$(echo "$version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
+		version_f=${version// /}
+		version_f=${version_f#v}
+		version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
+		version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
 	fi
 
 	# Ensure the mtime is set to now so newly downloaded APKs with old server timestamps aren't purged
