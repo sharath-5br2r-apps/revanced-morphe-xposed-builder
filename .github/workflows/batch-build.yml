@@ -66,7 +66,7 @@ jobs:
 
   aggregate_logs:
     needs: [prepare_context, build_batch]
-    if: ${{ always() && needs.build_batch.result != 'cancelled' }}
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
