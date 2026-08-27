@@ -66,7 +66,7 @@ for i in {1..5}; do
 done
 
 TRIGGER_ABSOLUTE_LATEST=0
-if [ "$RAW_TRIGGER_STABLE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
+if [ "$RAW_TRIGGER_STABLE" = "1" ] || [ "$RAW_TRIGGER_PRERELEASE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
   CFG="configs/config.latest.updated.json"
   ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" 2>/dev/null || echo 0)
   if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
