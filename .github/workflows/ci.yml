@@ -59,6 +59,7 @@ jobs:
     outputs:
       trigger_stable: ${{ steps.effective_triggers.outputs.TRIGGER_STABLE }}
       trigger_prerelease: ${{ steps.effective_triggers.outputs.TRIGGER_PRERELEASE }}
+      trigger_absolutelatest: ${{ steps.effective_triggers.outputs.TRIGGER_ABSOLUTE_LATEST }}
       has_dev_1: ${{ steps.effective_triggers.outputs.HAS_DEV_1 }}
       has_dev_2: ${{ steps.effective_triggers.outputs.HAS_DEV_2 }}
       has_dev_3: ${{ steps.effective_triggers.outputs.HAS_DEV_3 }}
@@ -69,6 +70,11 @@ jobs:
       has_stable_3: ${{ steps.effective_triggers.outputs.HAS_STABLE_3 }}
       has_stable_4: ${{ steps.effective_triggers.outputs.HAS_STABLE_4 }}
       has_stable_5: ${{ steps.effective_triggers.outputs.HAS_STABLE_5 }}
+      has_latest_1: ${{ steps.effective_triggers.outputs.HAS_LATEST_1 }}
+      has_latest_2: ${{ steps.effective_triggers.outputs.HAS_LATEST_2 }}
+      has_latest_3: ${{ steps.effective_triggers.outputs.HAS_LATEST_3 }}
+      has_latest_4: ${{ steps.effective_triggers.outputs.HAS_LATEST_4 }}
+      has_latest_5: ${{ steps.effective_triggers.outputs.HAS_LATEST_5 }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -385,14 +391,133 @@ jobs:
             find stable_logs -name "*-update.json" -exec gh release upload update {} --clobber \; 2>/dev/null || true
           fi
 
+  resolve_latest_version:
+    needs: [check_patch, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, aggregate_stable_logs]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' }}
+    runs-on: ubuntu-latest
+    outputs:
+      next_ver_code_latest: ${{ steps.version_latest.outputs.NEXT_VER_CODE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Resolve next version code (Latest)
+        id: version_latest
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
+  build_latest_1:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_1 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part1.json"
+      patches_version: "dev"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  build_latest_2:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_2 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part2.json"
+      patches_version: "dev"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  build_latest_3:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_3 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part3.json"
+      patches_version: "dev"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  build_latest_4:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_4 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part4.json"
+      patches_version: "dev"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  build_latest_5:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_5 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part5.json"
+      patches_version: "dev"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  aggregate_latest_logs:
+    needs: [check_patch, resolve_latest_version, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5]
+    if: ${{ always() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && (needs.build_latest_1.result == 'success' || needs.build_latest_2.result == 'success' || needs.build_latest_3.result == 'success' || needs.build_latest_4.result == 'success' || needs.build_latest_5.result == 'success') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download latest part-logs artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: part-logs-*
+          path: logs_artifacts
+          merge-multiple: false
+
+      - name: Aggregate logs for Absolute Latest
+        run: |
+          mkdir -p latest_logs
+          cp -r logs_artifacts/* latest_logs/ 2>/dev/null || true
+          cd latest_logs && bash ../.github/scripts/build_aggregate_logs.sh dev && cd ..
+
+      - name: Upload aggregated latest logs artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: aggregated-latest-build-logs
+          path: latest_logs/aggregated_out/*
+          if-no-files-found: ignore
+
+      - name: Upload latest build.json to numbered release via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
+          if [ -n "$tag" ] && [ -f "latest_logs/aggregated_out/build.dev.json" ]; then
+            notes_arg=("--notes" "")
+            [ -f "latest_logs/aggregated_out/build.dev.md" ] && notes_arg=("--notes-file" "latest_logs/aggregated_out/build.dev.md")
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            gh release upload "$tag" latest_logs/aggregated_out/build.dev.json --clobber 2>/dev/null || true
+          fi
+
+      - name: Upload module update metadata to update tag (Latest)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -d "latest_logs" ]; then
+            find latest_logs -name "*-update.json" -exec gh release upload update {} --clobber \; 2>/dev/null || true
+          fi
+
   trigger_cleanup:
-    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs, aggregate_stable_logs]
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs, aggregate_stable_logs, trigger_cleanup]
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, trigger_cleanup]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit

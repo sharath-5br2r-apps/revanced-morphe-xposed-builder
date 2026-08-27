@@ -56,7 +56,24 @@ for i in {1..5}; do
   else
     echo "HAS_STABLE_${i}=0" >> "$GITHUB_OUTPUT"
   fi
+
+  latest_file="configs/config.latest.part${i}.json"
+  if [ -s "$latest_file" ] && [ "$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$latest_file" 2>/dev/null || echo 0)" -gt 0 ]; then
+    echo "HAS_LATEST_${i}=1" >> "$GITHUB_OUTPUT"
+  else
+    echo "HAS_LATEST_${i}=0" >> "$GITHUB_OUTPUT"
+  fi
 done
+
+TRIGGER_ABSOLUTE_LATEST=0
+if [ "$TRIGGER_STABLE" = "1" ]; then
+  CFG="configs/config.latest.updated.json"
+  ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" 2>/dev/null || echo 0)
+  if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
+    TRIGGER_ABSOLUTE_LATEST=1
+  fi
+fi
 
 echo "TRIGGER_STABLE=$TRIGGER_STABLE" >> "$GITHUB_OUTPUT"
 echo "TRIGGER_PRERELEASE=$TRIGGER_PRERELEASE" >> "$GITHUB_OUTPUT"
+echo "TRIGGER_ABSOLUTE_LATEST=$TRIGGER_ABSOLUTE_LATEST" >> "$GITHUB_OUTPUT"
