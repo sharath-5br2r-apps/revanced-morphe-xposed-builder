@@ -169,7 +169,7 @@ with open('config.latest.json', 'w', encoding='utf-8') as out:
         if ($activeApps[0] | index($k)) then . else empty end
       else empty end
     ) |
-    { "patches-version": "latest", "enable-module-update": false } + .
+    { "patches-version": "absolutelatest", "enable-module-update": false } + .
   ' config.latest.json > configs/config.latest.updated.json
 
   split_config_json "configs/config.latest.updated.json" "config.latest" 5
