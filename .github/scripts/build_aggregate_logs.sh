@@ -12,9 +12,10 @@ mkdir -p aggregated_out
 echo "{}" > "$aggregated_json"
 > "$aggregated_md"
 
-# Collect all downloaded part-logs
-for json_file in $(find . -name "build.json" 2>/dev/null); do
-  if [ -s "$json_file" ]; then
+# Collect all downloaded part-logs (support build.json directly or inside subdirectories)
+for json_file in $(find . \( -name "build.json" -o -name "build*.json" \) 2>/dev/null); do
+  # Avoid merging output target if running in same dir
+  if [ -s "$json_file" ] && [ "$json_file" != "./$aggregated_json" ] && [ "$json_file" != "$aggregated_json" ]; then
     echo "[+] Merging $json_file into $aggregated_json"
     tmp_merged=$(mktemp)
     jq -s '.[0] * .[1]' "$aggregated_json" "$json_file" > "$tmp_merged"
