@@ -74,7 +74,7 @@ def main():
             if rel_notes:
                 p_str += f"\n\n<details>\n<summary>{tag}</summary>\n\n{rel_notes}\n\n</details>"
             elif tag:
-                p_str += f"\n\n{tag}"
+                p_str += f"\n\n<details>\n<summary>{tag}</summary>\n\n{tag}\n\n</details>"
         elif rel_notes:
             p_str += f"\n\n{rel_notes}"
         patches_lines.append(p_str)
