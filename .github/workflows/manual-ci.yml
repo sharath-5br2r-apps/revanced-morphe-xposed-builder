@@ -83,7 +83,7 @@ jobs:
 
   resolve_config:
     needs: update_versions
-    if: ${{ always() && inputs.mode != 'Update Versions Only' }}
+    if: ${{ !cancelled() && inputs.mode != 'Update Versions Only' }}
     runs-on: ubuntu-latest
     outputs:
       config_file: ${{ steps.config.outputs.config_file }}
@@ -112,7 +112,7 @@ jobs:
   build_manual:
     uses: ./.github/workflows/build.yml
     needs: [update_versions, resolve_config]
-    if: ${{ always() && inputs.mode != 'Update Versions Only' && needs.resolve_config.result == 'success' }}
+    if: ${{ !cancelled() && inputs.mode != 'Update Versions Only' && needs.resolve_config.result == 'success' }}
     with:
       config_file: ${{ needs.resolve_config.outputs.config_file }}
       exclusive_apps: ${{ inputs.exclusive_apps }}
