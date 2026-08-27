@@ -37,7 +37,7 @@ APP_VERSIONS_FILE="configs/app_versions.json"
 CHECK_ONLY_LISTED=$(jq -r '."_check_only_listed" // false' "$APP_VERSIONS_FILE")
 
 if [ "$CHECK_ONLY_LISTED" = "true" ]; then
-    jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[] | "\(.key)|\(.value.keys[0])"' "$APP_VERSIONS_FILE" > check_list.txt
+    jq -r 'to_entries | map(select((.key | startswith("_") | not) and (.value.keys[0] != null) and (.value.keys[0] != "null") and (.value.keys[0] != ""))) | .[] | "\(.key)|\(.value.keys[0])"' "$APP_VERSIONS_FILE" > check_list.txt
 else
     # All enabled apps
     ENABLED_APPS=$(jq -r 'to_entries | map(select((.value | type == "object") and .value.enabled == true)) | .[].key' temp_all_configs.json)
@@ -47,13 +47,15 @@ else
     
     > check_list.txt
     
-    # Add groups first
-    jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[] | "\(.key)|\(.value.keys[0])"' "$APP_VERSIONS_FILE" >> check_list.txt
+    # Add groups first (filtering out null app keys)
+    jq -r 'to_entries | map(select((.key | startswith("_") | not) and (.value.keys[0] != null) and (.value.keys[0] != "null") and (.value.keys[0] != ""))) | .[] | "\(.key)|\(.value.keys[0])"' "$APP_VERSIONS_FILE" >> check_list.txt
     
     # Add non-grouped enabled apps
     for app in $ENABLED_APPS; do
-        if ! echo "$GROUPED_APPS" | grep -qx "$app"; then
-            echo "$app|$app" >> check_list.txt
+        if [ -n "$app" ] && [ "$app" != "null" ]; then
+            if ! echo "$GROUPED_APPS" | grep -qx "$app"; then
+                echo "$app|$app" >> check_list.txt
+            fi
         fi
     done
 fi
