@@ -22,8 +22,19 @@ for json_file in $(find . -name "build.json" 2>/dev/null); do
   fi
 done
 
-# Generate normalized aggregated build.md from aggregated build.json
-python3 ../.github/scripts/generate_md_from_json.py "$FLAVOR" 2>/dev/null || python3 .github/scripts/generate_md_from_json.py "$FLAVOR" 2>/dev/null || true
+# Collect all downloaded part changelogs/markdown files
+for md_file in $(find . -name "build.md" -o -name "build.tmp" -o -name "changelog.md" 2>/dev/null); do
+  if [ -s "$md_file" ]; then
+    echo "[+] Appending $md_file into $aggregated_md"
+    cat "$md_file" >> "$aggregated_md"
+    echo "" >> "$aggregated_md"
+  fi
+done
+
+# Generate normalized aggregated build.md from aggregated build.json if not empty
+if [ ! -s "$aggregated_md" ]; then
+  python3 ../.github/scripts/generate_md_from_json.py "$FLAVOR" 2>/dev/null || python3 .github/scripts/generate_md_from_json.py "$FLAVOR" 2>/dev/null || true
+fi
 
 if [ -s "$aggregated_md" ]; then
   echo "[+] Aggregated changelog size: $(wc -c < "$aggregated_md") bytes"
