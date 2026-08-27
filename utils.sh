@@ -2325,7 +2325,7 @@ dl_repo() {
 	matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" --arg arch "${arch// /}" '
 		map(
 			select(
-				(.tag_name == $ver or .tag_name == ("v" + $ver_clean) or .tag_name == $ver_clean)
+				(.tag_name == $ver or .tag_name == ("v" + $ver_clean) or .tag_name == $ver_clean or (.tag_name | contains($ver_clean)))
 			)
 		) | .[0] // empty
 	' <<<"${__REPO_RESP_JSON__:-[]}")
@@ -2336,10 +2336,25 @@ dl_repo() {
 		matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" --arg arch "${arch// /}" '
 			map(
 				select(
-					(.tag_name == $ver or .tag_name == ("v" + $ver_clean) or .tag_name == $ver_clean)
+					(.tag_name == $ver or .tag_name == ("v" + $ver_clean) or .tag_name == $ver_clean or (.tag_name | contains($ver_clean)))
 				)
 			) | .[0] // empty
 		' <<<"${__REPO_RESP_JSON__:-[]}")
+	fi
+
+	# Try major.minor substring matching (e.g. 1.93 if 1.93.138 is not found)
+	if [ -z "$matching_asset" ]; then
+		local major_minor
+		major_minor=$(echo "$version_clean" | cut -d. -f1-2)
+		if [ -n "$major_minor" ] && [ "$major_minor" != "$version_clean" ]; then
+			matching_asset=$(jq -c --arg mm "$major_minor" '
+				map(
+					select(
+						(.tag_name | contains($mm)) or (.name | contains($mm))
+					)
+				) | .[0] // empty
+			' <<<"${__REPO_RESP_JSON__:-[]}")
+		fi
 	fi
 
 	if [ -z "$matching_asset" ]; then
