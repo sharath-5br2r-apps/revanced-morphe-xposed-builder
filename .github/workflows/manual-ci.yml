@@ -18,6 +18,16 @@ on:
         required: false
         type: string
         default: ""
+      mode:
+        description: "Execution mode"
+        required: false
+        type: choice
+        default: "Default"
+        options:
+          - "Default"
+          - "Update Versions Only"
+          - "Build Only"
+          - "Generate Configs Only (No Build)"
       exclusive_apps:
         description: "Optional: Enter the toml table names or regex pattern of the apps you want to build. When empty, all apps are built."
         required: false
@@ -34,12 +44,50 @@ on:
         type: string
         default: ""
 
+  workflow_call:
+    inputs:
+      mode:
+        required: false
+        type: string
+        default: "Default"
+      patches_version:
+        required: false
+        type: string
+        default: ""
+
 concurrency:
   group: ci
   cancel-in-progress: false
 
 jobs:
+  update_versions:
+    if: ${{ inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Fetch latest tags & app versions
+        id: update
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          bash .github/scripts/ci_ensure_patch_sources.sh || true
+          bash .github/scripts/ci_fetch_tags.sh || true
+          bash .github/scripts/ci_fetch_app_versions.sh || true
+          bash .github/scripts/ci_generate_configs.sh || true
+
+      - name: Commit updated versions metadata and configs
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: main
+          skip_checkout: true
+          file_pattern: configs/app_versions.json configs/patch_sources.json configs/config.*.updated.json
+          commit_message: "Update patch sources, app versions and generated configs [skip ci]"
+
   resolve_config:
+    needs: update_versions
+    if: ${{ always() && inputs.mode != 'Update Versions Only' }}
     runs-on: ubuntu-latest
     outputs:
       config_file: ${{ steps.config.outputs.config_file }}
@@ -63,11 +111,12 @@ jobs:
               exit 1
             fi
           else
-            echo "CONFIG_FILE=${{ inputs.config_file }}" >> "$GITHUB_OUTPUT"
+            echo "CONFIG_FILE=${{ inputs.config_file || 'configs/config.manual.generated.toml' }}" >> "$GITHUB_OUTPUT"
           fi
   build_manual:
     uses: ./.github/workflows/build.yml
-    needs: resolve_config
+    needs: [update_versions, resolve_config]
+    if: ${{ always() && inputs.mode != 'Update Versions Only' && needs.resolve_config.result == 'success' }}
     with:
       config_file: ${{ needs.resolve_config.outputs.config_file }}
       exclusive_apps: ${{ inputs.exclusive_apps }}
@@ -76,13 +125,13 @@ jobs:
     secrets: inherit
 
   trigger_cleanup:
-    needs: [build_manual]
+    needs: [update_versions, build_manual]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_manual, trigger_cleanup]
+    needs: [update_versions, build_manual, trigger_cleanup]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
