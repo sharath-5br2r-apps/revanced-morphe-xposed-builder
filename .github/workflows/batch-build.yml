@@ -20,8 +20,6 @@ on:
         options:
           - "Default"
           - "Update Versions Only"
-          - "Build Only"
-          - "Generate Configs Only (No Build)"
 
 concurrency:
   group: ci

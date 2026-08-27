@@ -16,16 +16,6 @@ on:
         required: false
         type: string
         default: ""
-      mode:
-        description: "Execution mode"
-        required: false
-        type: choice
-        default: "Default"
-        options:
-          - "Default"
-          - "Update Versions Only"
-          - "Build Only"
-          - "Generate Configs Only (No Build)"
       exclusive_apps:
         description: "Optional: Filter app table names/regex"
         required: false
