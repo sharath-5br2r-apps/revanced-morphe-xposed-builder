@@ -846,10 +846,11 @@ check_patch_ver_compatible() {
 
 	local highest
 	highest=$(echo -e "${ver}\n${last_ver}" | get_highest_ver)
-	if [ "$highest" = "$last_ver" ]; then
-		return 0
+	if [ "$highest" = "$ver" ]; then
+		# If target version is strictly higher than the patcher's last supported version, reject it as incompatible
+		return 1
 	fi
-	return 1
+	return 0
 }
 
 get_patch_exp_ver() {
@@ -3340,7 +3341,7 @@ build_rv() {
 
 				if [ -n "$downloaded_ver" ]; then
 						downloaded_ver=$(echo "$downloaded_ver" | sed -E 's/-[a-zA-Z0-9_.]+$//; s/^v//i')
-						if [ "$version" != "$downloaded_ver" ] && isoneof "$version_mode" latest beta; then
+						if [ "$version" != "$downloaded_ver" ] && [ "$version_mode" != "auto" ]; then
 							pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
 							version="$downloaded_ver"
 							version_f=${version// /}
@@ -3453,15 +3454,17 @@ build_rv() {
 		fi
 	fi
 
-	local apk_ver
-	apk_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-	if [ -n "$apk_ver" ]; then
-		version="$apk_ver"
-		version=$(echo "$version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
-		version_f=${version// /}
-		version_f=${version_f#v}
-		version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
-		version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
+	if [ "$version_mode" != "auto" ] || ! [[ "${version_f:-}" =~ ^[0-9] ]]; then
+		local apk_ver
+		apk_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
+		if [ -n "$apk_ver" ]; then
+			version="$apk_ver"
+			version=$(echo "$version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
+			version_f=${version// /}
+			version_f=${version_f#v}
+			version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
+			version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
+		fi
 	fi
 
 	# Ensure the mtime is set to now so newly downloaded APKs with old server timestamps aren't purged
