@@ -125,25 +125,13 @@ with open('config.dev.json', 'w', encoding='utf-8') as out:
     json.dump(merged, out, indent=2)
 "
 
-  jq --slurpfile active active.prerelease.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.dev.json --argjson tags "$TAGS_NEW" '
+  jq --slurpfile active active.prerelease.json --slurpfile activePatchApps active_patch_apps.dev.json '
     with_entries(
       if .value | type == "object" then
         .key as $k |
         .value as $app |
         (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        
-        # Check if the app has any source where pre_date > stable_date or where no pre_date exists (fallback to stable or active)
-        (
-          $srcs | map(
-            . as $src |
-            ($tags | to_entries | map(select((.value.repo | ascii_downcase) == $src)) | .[0].value) as $t |
-            if $t == null then true
-            elif ($t.prerelease // "") == "" then true
-            else ($t.pre_date // "") >= ($t.stable_date // "") end
-          ) | any
-        ) as $has_valid_dev |
-
-        if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or (($activeApps[0] | index($k)) and $has_valid_dev) then . else empty end
+        if (($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
     { "patches-version": "dev", "enable-module-update": false } + .
@@ -169,13 +157,11 @@ with open('config.latest.json', 'w', encoding='utf-8') as out:
     json.dump(merged, out, indent=2)
 "
 
-  jq --slurpfile active active.stable.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.stable.json '
+  jq --slurpfile activeApps active_apps.json '
     with_entries(
       if .value | type == "object" then
         .key as $k |
-        .value as $app |
-        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or ($activeApps[0] | index($k)) then . else empty end
+        if ($activeApps[0] | index($k)) then . else empty end
       else empty end
     ) |
     { "patches-version": "absolutelatest", "enable-module-update": false } + .
