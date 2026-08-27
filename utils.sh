@@ -2221,8 +2221,24 @@ get_repo_resp() {
 		resp=$(source_req "$host" "$tag_api" -) || return 1
 		release="[${resp}]"
 	else
-		resp=$(source_req "$host" "${api_url}?per_page=100" -) || return 1
-		release="$resp"
+		local max_p=3
+		if [ "${__FORCE_PAGINATE__:-false}" = true ]; then max_p=10; fi
+		local p_page=1 all_releases="[]"
+		for ((p_page=1; p_page<=max_p; p_page++)); do
+			resp=$(source_req "$host" "${api_url}?per_page=100&page=${p_page}" - 2>/dev/null || true)
+			if [ -z "$resp" ] || [ "$resp" = "[]" ] || [[ "$resp" != "["* ]]; then
+				break
+			fi
+			all_releases=$(jq -s 'add' <<<"${all_releases}${resp}")
+			# Stop paginating early if page has fewer than 100 releases
+			local p_count
+			p_count=$(jq 'length' <<<"$resp" 2>/dev/null || echo 0)
+			if [ "$p_count" -lt 100 ]; then
+				break
+			fi
+		done
+		release="$all_releases"
+		if [ $max_p -gt 3 ]; then __REPO_PAGINATED_ALL__=true; fi
 	fi
 
 	if [ -z "$release" ] || [ "$release" = "[]" ]; then return 1; fi
@@ -2313,6 +2329,18 @@ dl_repo() {
 			)
 		) | .[0] // empty
 	' <<<"${__REPO_RESP_JSON__:-[]}")
+
+	if [ -z "$matching_asset" ] && [ "${__REPO_PAGINATED_ALL__:-false}" != true ]; then
+		pr "Version $version not found in current cached repo releases, fetching older pages..."
+		__FORCE_PAGINATE__=true get_repo_resp "$url" || true
+		matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" --arg arch "${arch// /}" '
+			map(
+				select(
+					(.tag_name == $ver or .tag_name == ("v" + $ver_clean) or .tag_name == $ver_clean)
+				)
+			) | .[0] // empty
+		' <<<"${__REPO_RESP_JSON__:-[]}")
+	fi
 
 	if [ -z "$matching_asset" ]; then
 		matching_asset=$(jq -c '.[0] // empty' <<<"${__REPO_RESP_JSON__:-[]}")
