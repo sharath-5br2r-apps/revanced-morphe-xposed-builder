@@ -59,9 +59,9 @@
   },
   "Brave": {
     "keys": [
-      "brave-stable-morphe-dh6k-arm64-v8a-exp",
-      "brave-stable-morphe-dh6k-arm-v7a-exp",
-      "brave-stable-morphe-dh6k-x86_64-exp"
+      "brave-stable-morphe-dh6k-arm64-v8a",
+      "brave-stable-morphe-dh6k-arm-v7a",
+      "brave-stable-morphe-dh6k-x86_64"
     ],
     "version": "1.94.117"
   },
