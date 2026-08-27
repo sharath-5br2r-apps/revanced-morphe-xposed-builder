@@ -34,9 +34,9 @@ def main():
         release_notes = entry.get("release_notes", "")
 
         if arch:
-            app_lines.append(f"{name} ({arch}): {version}")
+            app_lines.append(f"{name} ({arch}): {version}  ")
         else:
-            app_lines.append(f"{name}: {version}")
+            app_lines.append(f"{name}: {version}  ")
 
         if cli_info and cli_info not in cli_set:
             cli_set.append(cli_info)
@@ -51,29 +51,31 @@ def main():
         sections.append("\n".join(app_lines))
 
     # 2. Notes block
-    notes = """Notes:
-• Install MicroG-RE or MicroG, required for Google APKs.
-• Use Zygisk Detach to stop Play Store from updating Modules.
+    notes = """**Notes:**  
+• Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  
+• Use [Zygisk Detach](https://github.com/j-hc/zygisk-detach) to stop Play Store from updating Modules.  
 
-GitHub | Website"""
+[GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Website](https://sharath-5br2r-apps.github.io)"""
     sections.append(notes)
 
     # 3. CLI block
-    cli_lines = [f"CLI: {c}" for c in cli_set]
+    cli_lines = [f"CLI: {c}  " for c in cli_set]
     if cli_lines:
         sections.append("\n".join(cli_lines))
 
     # 4. Patches & Changelog block
     patches_lines = []
     for p_info, (cl_url, rel_notes) in patches_dict.items():
-        p_str = f"Patches: {p_info}"
+        p_str = f"Patches: {p_info}  "
         if cl_url:
             p_str += f"\n[Changelog]({cl_url})"
             tag = cl_url.rstrip("/").split("/")[-1]
-            if tag:
+            if rel_notes:
+                p_str += f"\n\n<details>\n<summary>{tag}</summary>\n\n{rel_notes}\n\n</details>"
+            elif tag:
                 p_str += f"\n\n{tag}"
-        if rel_notes:
-            p_str += f"\n{rel_notes}"
+        elif rel_notes:
+            p_str += f"\n\n{rel_notes}"
         patches_lines.append(p_str)
 
     if patches_lines:
