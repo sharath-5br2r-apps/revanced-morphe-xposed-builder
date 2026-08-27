@@ -1,7 +1,7 @@
-[brave-stable-morphe-kveld9-exp-arm64-v8a]
+[brave-stable-morphe-kveld9-arm64-v8a]
 enabled = true
 app-name = "brave-stable"
-rv-brand = "morphe-kveld9-exp"
+rv-brand = "morphe-kveld9"
 build-mode = "apk"
 arch = "arm64-v8a"
 pkg-name = "com.brave.browser"
@@ -11,12 +11,11 @@ patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm64|MonoArm64)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
-version = "latest"
 
-[brave-stable-morphe-kveld9-exp-arm-v7a]
+[brave-stable-morphe-kveld9-arm-v7a]
 enabled = true
 app-name = "brave-stable"
-rv-brand = "morphe-kveld9-exp"
+rv-brand = "morphe-kveld9"
 build-mode = "apk"
 arch = "arm-v7a"
 pkg-name = "com.brave.browser"
@@ -26,12 +25,11 @@ patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm|MonoArm)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
-version = "latest"
 
-[brave-stable-morphe-kveld9-exp-x86_64]
+[brave-stable-morphe-kveld9-x86_64]
 enabled = true
 app-name = "brave-stable"
-rv-brand = "morphe-kveld9-exp"
+rv-brand = "morphe-kveld9"
 build-mode = "apk"
 arch = "x86_64"
 pkg-name = "com.brave.browser"
@@ -41,7 +39,6 @@ patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
-version = "latest"
 
 
 [brave-beta-morphe-dh6k-arm64-v8a]
