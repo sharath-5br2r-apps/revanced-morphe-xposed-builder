@@ -168,7 +168,9 @@ jobs:
           prerelease_flag=""
           [ "${{ steps.context.outputs.IS_PRERELEASE }}" = "true" ] && prerelease_flag="--prerelease"
           notes_arg=("--notes" "")
-          [ -f "build.md" ] && notes_arg=("--notes-file" "build.md")
+          if [ "${{ inputs.upload_release_metadata }}" != "false" ] && [ -f "build.md" ]; then
+            notes_arg=("--notes-file" "build.md")
+          fi
           gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" $prerelease_flag || true
           if [ -d "./build" ]; then
             find ./build -type f -exec gh release upload "$tag" {} --clobber \; 2>/dev/null || true
@@ -203,7 +205,6 @@ jobs:
         run: bash .github/scripts/build_update_changelog.sh
 
       - name: Upload module update metadata to release (update)
-        if: ${{ inputs.upload_release_metadata != false }}
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
