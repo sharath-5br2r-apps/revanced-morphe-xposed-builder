@@ -4,17 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       config_file:
-        description: "Select the config file to use"
+        description: "Config file to use"
         required: true
         type: choice
         default: "configs/config.manual.generated.toml"
         options:
           - "configs/config.manual.generated.toml"
           - "configs/config.manual.toml"
-          - "configs/config.dev.updated.json"
-          - "configs/config.stable.updated.json"
       manual_config_file:
-        description: "Optional: Enter the config file name(without ext) in patches or config file path(with ext)manually, overrides above choice"
+        description: "Optional: Custom config file path or patch name (overrides choice)"
         required: false
         type: string
         default: ""
@@ -29,17 +27,17 @@ on:
           - "Build Only"
           - "Generate Configs Only (No Build)"
       exclusive_apps:
-        description: "Optional: Enter the toml table names or regex pattern of the apps you want to build. When empty, all apps are built."
+        description: "Optional: Filter app table names/regex"
         required: false
         type: string
         default: ""
       remove_apks:
-        description: "Optional: APKs to remove from cache (regex, e.g., com.brave.browser-1.93.138-.*\\.apk)"
+        description: "Optional: Remove cached APKs (regex)"
         required: false
         type: string
         default: ""
       patches_version:
-        description: "Optional: Override patches-version (e.g. latest, auto, absolutelatest, or specific version string like 4.2.0)"
+        description: "Optional: Override patches-version"
         required: false
         type: string
         default: ""

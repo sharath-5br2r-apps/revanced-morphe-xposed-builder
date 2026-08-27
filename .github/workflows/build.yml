@@ -161,7 +161,6 @@ jobs:
       - name: Upload to release
         uses: softprops/action-gh-release@v3
         with:
-          body: ${{ steps.get_output.outputs.BUILD_LOG }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           files: ./build/*
           name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
