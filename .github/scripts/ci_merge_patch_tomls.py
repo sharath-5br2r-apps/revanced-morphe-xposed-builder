@@ -70,16 +70,19 @@ def main():
         app_groups[sort_app].append((sort_key, header, content))
 
     distinct_apps = sorted(app_groups.keys())
-    total_distinct = len(distinct_apps)
     NUM_OUTPUT_FILES = 15
-    apps_per_part = math.ceil(total_distinct / NUM_OUTPUT_FILES)
 
-    part_idx = 1
-    for i in range(0, total_distinct, apps_per_part):
-        chunk_apps = distinct_apps[i:i + apps_per_part]
-        chunk_items = []
-        for app in chunk_apps:
-            chunk_items.extend(app_groups[app])
+    parts_apps = [[] for _ in range(NUM_OUTPUT_FILES)]
+    parts_items = [[] for _ in range(NUM_OUTPUT_FILES)]
+
+    for idx, app in enumerate(distinct_apps):
+        target_part = idx % NUM_OUTPUT_FILES
+        parts_apps[target_part].append(app)
+        parts_items[target_part].extend(app_groups[app])
+
+    for part_idx in range(1, NUM_OUTPUT_FILES + 1):
+        chunk_apps = parts_apps[part_idx - 1]
+        chunk_items = parts_items[part_idx - 1]
 
         if not chunk_items:
             continue
@@ -97,7 +100,6 @@ def main():
             out_fp.write("\n\n".join(content) + "\n")
 
         print(f"[+] Created '{chunk_name}' with {len(chunk_apps)} distinct apps ({len(chunk_items)} builds)")
-        part_idx += 1
 
 if __name__ == "__main__":
     main()
