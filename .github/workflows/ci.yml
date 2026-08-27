@@ -221,96 +221,35 @@ jobs:
       upload_release_metadata: false
     secrets: inherit
 
-  build_stable_1:
+  aggregate_dev_logs:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_1 == '1' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/config.stable.part1.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_stable_2:
-    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_2 == '1' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/config.stable.part2.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_stable_3:
-    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_3 == '1' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/config.stable.part3.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_stable_4:
-    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_4 == '1' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/config.stable.part4.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  build_stable_5:
-    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
-    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_5 == '1' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: "configs/config.stable.part5.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
-      upload_release_metadata: false
-    secrets: inherit
-
-  aggregate_logs:
-    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5]
-    if: ${{ always() && needs.check_patch.result == 'success' && (needs.build_dev_1.result == 'success' || needs.build_dev_2.result == 'success' || needs.build_dev_3.result == 'success' || needs.build_dev_4.result == 'success' || needs.build_dev_5.result == 'success' || needs.build_stable_1.result == 'success' || needs.build_stable_2.result == 'success' || needs.build_stable_3.result == 'success' || needs.build_stable_4.result == 'success' || needs.build_stable_5.result == 'success') }}
+    if: ${{ always() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_prerelease == '1' && (needs.build_dev_1.result == 'success' || needs.build_dev_2.result == 'success' || needs.build_dev_3.result == 'success' || needs.build_dev_4.result == 'success' || needs.build_dev_5.result == 'success') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Download all part-logs artifacts
+      - name: Download dev part-logs artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: part-logs-*
+          pattern: part-logs-beta*
           path: logs_artifacts
           merge-multiple: false
 
       - name: Aggregate logs for Dev
-        if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' }}
         run: |
           mkdir -p dev_logs
-          find logs_artifacts -path "*part-logs-beta*" -exec cp -r {}/. dev_logs/ \; 2>/dev/null || true
+          find logs_artifacts -exec cp -r {}/. dev_logs/ \; 2>/dev/null || true
           cd dev_logs && bash ../.github/scripts/build_aggregate_logs.sh dev && cd ..
 
-      - name: Aggregate logs for Stable
-        if: ${{ needs.check_patch.outputs.trigger_stable == '1' }}
-        run: |
-          mkdir -p stable_logs
-          find logs_artifacts -path "*part-logs-stable*" -exec cp -r {}/. stable_logs/ \; 2>/dev/null || true
-          cd stable_logs && bash ../.github/scripts/build_aggregate_logs.sh stable && cd ..
-
-      - name: Upload aggregated logs artifact
+      - name: Upload aggregated dev logs artifact
         uses: actions/upload-artifact@v4
         with:
-          name: aggregated-build-logs
-          path: |
-            dev_logs/aggregated_out/*
-            stable_logs/aggregated_out/*
+          name: aggregated-dev-build-logs
+          path: dev_logs/aggregated_out/*
           if-no-files-found: ignore
 
       - name: Upload dev build.json to numbered release via softprops/action-gh-release
-        if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' }}
         uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
@@ -319,35 +258,133 @@ jobs:
           tag_name: ${{ needs.check_patch.outputs.next_ver_code_dev }}
           overwrite_files: true
 
-      - name: Upload stable build.json to numbered release via softprops/action-gh-release
-        if: ${{ needs.check_patch.outputs.trigger_stable == '1' }}
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: stable_logs/aggregated_out/build.stable.json
-          name: Build No. ${{ needs.check_patch.outputs.next_ver_code_stable }}
-          tag_name: ${{ needs.check_patch.outputs.next_ver_code_stable }}
-          overwrite_files: true
-
-      - name: Upload module update metadata to update tag
+      - name: Upload module update metadata to update tag (Dev)
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if [ -d "dev_logs" ]; then
             find dev_logs -name "*-update.json" -exec gh release upload update {} --clobber \; 2>/dev/null || true
           fi
+
+  resolve_stable_version:
+    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' }}
+    runs-on: ubuntu-latest
+    outputs:
+      next_ver_code_stable: ${{ steps.version_stable.outputs.NEXT_VER_CODE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Resolve next version code (Stable)
+        id: version_stable
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
+  build_stable_1:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_1 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part1.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  build_stable_2:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_2 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part2.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  build_stable_3:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_3 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part3.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  build_stable_4:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_4 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part4.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  build_stable_5:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_5 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part5.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+    secrets: inherit
+
+  aggregate_stable_logs:
+    needs: [check_patch, resolve_stable_version, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5]
+    if: ${{ always() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && (needs.build_stable_1.result == 'success' || needs.build_stable_2.result == 'success' || needs.build_stable_3.result == 'success' || needs.build_stable_4.result == 'success' || needs.build_stable_5.result == 'success') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download stable part-logs artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: part-logs-stable*
+          path: logs_artifacts
+          merge-multiple: false
+
+      - name: Aggregate logs for Stable
+        run: |
+          mkdir -p stable_logs
+          find logs_artifacts -exec cp -r {}/. stable_logs/ \; 2>/dev/null || true
+          cd stable_logs && bash ../.github/scripts/build_aggregate_logs.sh stable && cd ..
+
+      - name: Upload aggregated stable logs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aggregated-stable-build-logs
+          path: stable_logs/aggregated_out/*
+          if-no-files-found: ignore
+
+      - name: Upload stable build.json to numbered release via softprops/action-gh-release
+        uses: softprops/action-gh-release@v3
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          files: stable_logs/aggregated_out/build.stable.json
+          name: Build No. ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+          tag_name: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+          overwrite_files: true
+
+      - name: Upload module update metadata to update tag (Stable)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
           if [ -d "stable_logs" ]; then
             find stable_logs -name "*-update.json" -exec gh release upload update {} --clobber \; 2>/dev/null || true
           fi
 
   trigger_cleanup:
-    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_logs]
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs, aggregate_stable_logs]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_logs, trigger_cleanup]
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs, aggregate_stable_logs, trigger_cleanup]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
