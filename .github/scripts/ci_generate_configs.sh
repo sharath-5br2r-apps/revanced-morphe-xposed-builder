@@ -11,6 +11,8 @@ set -euo pipefail
 
 if [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
   echo "::notice::Skipping version check / tag comparison as SKIP_VERSION_CHECK is true."
+  [ -f active.stable.json ] || echo '[]' > active.stable.json
+  [ -f active.prerelease.json ] || echo '[]' > active.prerelease.json
 else
   jq -rn --argjson new "$TAGS_NEW" --argjson old "$TAGS_OLD" '
     [ $new | to_entries[] | . as $e
@@ -40,6 +42,7 @@ split_config_json() {
   if [ ! -s "$src_json" ]; then return 0; fi
 
   jq --arg prefix "$prefix" --argjson max_files "$max_files" '
+    . as $root |
     to_entries | map(select(.value | type == "object" and (.value.enabled // true) != false)) as $enabled |
     ($enabled | length) as $total |
     if $total == 0 then {} else
@@ -50,23 +53,25 @@ split_config_json() {
         filename: "configs/\($prefix).part\($idx + 1).json",
         data: (
           if ($slice | length) > 0 then
-            { "patches-version": (.[ "patches-version" ] // "latest"), "enable-module-update": (.[ "enable-module-update" ] // true) } +
+            { "patches-version": ($root["patches-version"] // "latest"), "enable-module-update": ($root["enable-module-update"] // true) } +
             ($slice | from_entries)
           else {} end
         )
       }
     end
   ' "$src_json" | jq -c '.' | while IFS= read -r item; do
-    [ -z "$item" ] && continue
+    [ -z "$item" ] || [ "$item" = "null" ] || [ "$item" = "{}" ] && continue
     local fname data
-    fname=$(jq -r '.filename' <<<"$item")
+    fname=$(jq -r '.filename // empty' <<<"$item")
     data=$(jq '.data' <<<"$item")
-    if [ "$data" = "{}" ]; then
-      > "$fname"
-      echo "[+] Created empty part file $fname"
-    else
-      echo "$data" > "$fname"
-      echo "[+] Split enabled apps into $fname"
+    if [ -n "$fname" ] && [ "$fname" != "null" ]; then
+      if [ "$data" = "{}" ]; then
+        > "$fname"
+        echo "[+] Created empty part file $fname"
+      else
+        echo "$data" > "$fname"
+        echo "[+] Split enabled apps into $fname"
+      fi
     fi
   done
 }
@@ -74,6 +79,7 @@ split_config_json() {
 if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
   python3 -c "
 import glob, os, tomllib, json
+
 stable_configs = [f for f in sorted(glob.glob('configs/patches/*.toml')) if not f.endswith('.dev.toml')]
 merged = {}
 for f in stable_configs:
@@ -82,21 +88,21 @@ for f in stable_configs:
         for k, v in data.items():
             if isinstance(v, dict):
                 merged[k] = v
+
 with open('config.stable.json', 'w', encoding='utf-8') as out:
     json.dump(merged, out, indent=2)
 "
 
   jq --slurpfile active active.stable.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.stable.json '
-    { "patches-version": "latest", "enable-module-update": true } as $force |
-    ($force + . + $force) |
     with_entries(
       if .value | type == "object" then
         .key as $k |
         .value as $app |
         (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
         if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or ($activeApps[0] | index($k)) then . else empty end
-      else . end
-    )
+      else empty end
+    ) |
+    { "patches-version": "latest", "enable-module-update": true } + .
   ' config.stable.json > configs/config.stable.updated.json
 
   split_config_json "configs/config.stable.updated.json" "config.stable" 5
@@ -105,6 +111,7 @@ fi
 if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
   python3 -c "
 import glob, os, tomllib, json
+
 dev_configs = [f for f in sorted(glob.glob('configs/patches/*.toml')) if not f.endswith('.stable.toml')]
 merged = {}
 for f in dev_configs:
@@ -113,13 +120,12 @@ for f in dev_configs:
         for k, v in data.items():
             if isinstance(v, dict):
                 merged[k] = v
+
 with open('config.dev.json', 'w', encoding='utf-8') as out:
     json.dump(merged, out, indent=2)
 "
 
   jq --slurpfile active active.prerelease.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.dev.json --argjson tags "$TAGS_NEW" '
-    { "patches-version": "dev", "enable-module-update": false } as $force |
-    ($force + . + $force) |
     with_entries(
       if .value | type == "object" then
         .key as $k |
@@ -138,8 +144,9 @@ with open('config.dev.json', 'w', encoding='utf-8') as out:
         ) as $has_valid_dev |
 
         if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or (($activeApps[0] | index($k)) and $has_valid_dev) then . else empty end
-      else . end
-    )
+      else empty end
+    ) |
+    { "patches-version": "dev", "enable-module-update": false } + .
   ' config.dev.json > configs/config.dev.updated.json
 
   split_config_json "configs/config.dev.updated.json" "config.dev" 5
