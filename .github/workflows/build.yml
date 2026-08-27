@@ -87,6 +87,8 @@ jobs:
 
       - name: Resolve build context
         id: context
+        env:
+          OVERRIDE_PATCHES_VERSION: ${{ inputs.patches_version }}
         run: |
           bash scripts/generate_manual_config.sh
           bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}"

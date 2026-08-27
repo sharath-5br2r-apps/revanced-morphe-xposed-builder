@@ -29,7 +29,10 @@ if [ "$HAS_ENABLED" = false ]; then
 fi
 
 IS_DEV=false
-if [[ "$CONFIG" == *"dev"* ]]; then
+P_OVERRIDE="${OVERRIDE_PATCHES_VERSION:-}"
+if [ "$P_OVERRIDE" = "dev" ] || [ "$P_OVERRIDE" = "absolutelatest" ]; then
+  IS_DEV=true
+elif [[ "$CONFIG" == *"dev"* ]]; then
   IS_DEV=true
 elif [[ "$CONFIG" == *.json ]]; then
   PVER=$(jq -r '."patches-version" // empty' "$CONFIG")
