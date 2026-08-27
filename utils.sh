@@ -1089,10 +1089,14 @@ _trawl_get() {
 				return 0
 			fi
 		fi
-		wpr "Trawl attempt $attempt/$max_retries failed for: $url"
+		if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+			wpr "Trawl attempt $attempt/$max_retries failed for: $url"
+		fi
 		sleep 2
 	done
-	wpr "Trawl failed after $max_retries attempts: $url"
+	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+		wpr "Trawl failed after $max_retries attempts: $url"
+	fi
 	return 1
 }
 
@@ -1160,10 +1164,14 @@ _fs_get() {
 				return 0
 			fi
 		fi
-		wpr "FlareSolverr attempt $attempt/$max_retries failed for: $url"
+		if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+			wpr "FlareSolverr attempt $attempt/$max_retries failed for: $url"
+		fi
 		sleep 2
 	done
-	wpr "FlareSolverr failed after $max_retries attempts: $url"
+	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+		wpr "FlareSolverr failed after $max_retries attempts: $url"
+	fi
 	return 1
 }
 
@@ -1196,7 +1204,9 @@ _unqueued_cf_get() {
 
 	_fallback_get "$@" && return 0
 
-	epr "All methods failed for: $1"
+	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+		epr "All methods failed for: $1"
+	fi
 	return 1
 }
 _cf_get() {
