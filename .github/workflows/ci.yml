@@ -251,14 +251,15 @@ jobs:
           path: dev_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Upload dev build.json to numbered release via softprops/action-gh-release
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: dev_logs/aggregated_out/build.dev.json
-          name: Build No. ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
-          tag_name: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
-          overwrite_files: true
+      - name: Upload dev build.json to numbered release via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
+          if [ -n "$tag" ] && [ -f "dev_logs/aggregated_out/build.dev.json" ]; then
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" || true
+            gh release upload "$tag" dev_logs/aggregated_out/build.dev.json --clobber 2>/dev/null || true
+          fi
 
       - name: Upload module update metadata to update tag (Dev)
         env:
@@ -362,14 +363,15 @@ jobs:
           path: stable_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Upload stable build.json to numbered release via softprops/action-gh-release
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: stable_logs/aggregated_out/build.stable.json
-          name: Build No. ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
-          tag_name: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
-          overwrite_files: true
+      - name: Upload stable build.json to numbered release via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
+          if [ -n "$tag" ] && [ -f "stable_logs/aggregated_out/build.stable.json" ]; then
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" || true
+            gh release upload "$tag" stable_logs/aggregated_out/build.stable.json --clobber 2>/dev/null || true
+          fi
 
       - name: Upload module update metadata to update tag (Stable)
         env:

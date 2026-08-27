@@ -161,24 +161,27 @@ jobs:
         run: bash .github/scripts/build_get_output.sh
 
       - name: Upload to release
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: ./build/*
-          name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
-          tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          overwrite_files: true
-          prerelease: ${{ steps.context.outputs.IS_PRERELEASE == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
+          prerelease_flag=""
+          [ "${{ steps.context.outputs.IS_PRERELEASE }}" = "true" ] && prerelease_flag="--prerelease"
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" $prerelease_flag || true
+          if [ -d "./build" ]; then
+            find ./build -type f -exec gh release upload "$tag" {} --clobber \; 2>/dev/null || true
+          fi
 
       - name: Upload build.json to numbered release
         if: ${{ inputs.upload_release_metadata != false }}
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: build.json
-          name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
-          tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          overwrite_files: true
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
+          if [ -f "build.json" ]; then
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" || true
+            gh release upload "$tag" build.json --clobber 2>/dev/null || true
+          fi
 
       - name: Upload part build logs artifact
         uses: actions/upload-artifact@v7
@@ -199,25 +202,23 @@ jobs:
 
       - name: Upload module update metadata to release (update)
         if: ${{ inputs.upload_release_metadata != false }}
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: |
-            build.md
-            *-update.json
-          name: Update Metadata
-          tag_name: update
-          overwrite_files: true
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "update" >/dev/null 2>&1 || gh release create "update" --title "Update Metadata" --notes "" || true
+          [ -f "build.md" ] && gh release upload update build.md --clobber 2>/dev/null || true
+          find . -maxdepth 1 -name "*-update.json" -exec gh release upload update {} --clobber \; 2>/dev/null || true
 
       - name: Remove frequently updated apps
         run: |
           bash .github/scripts/build_exclude_from_archive.sh
 
       - name: Upload to release (Archive)
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: ./build/*
-          tag_name: ${{ steps.context.outputs.ARCHIVE_TAG }}
-          overwrite_files: true
-          target_commitish: main
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ steps.context.outputs.ARCHIVE_TAG }}"
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "$tag" --notes "" --target main || true
+          if [ -d "./build" ]; then
+            find ./build -type f -exec gh release upload "$tag" {} --clobber \; 2>/dev/null || true
+          fi

@@ -112,14 +112,15 @@ jobs:
             done
           fi
 
-      - name: Upload build.json to numbered release via softprops/action-gh-release
-        uses: softprops/action-gh-release@v3
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: build.json
-          name: Build No. ${{ needs.prepare_context.outputs.next_ver_code }}
-          tag_name: ${{ needs.prepare_context.outputs.next_ver_code }}
-          overwrite_files: true
+      - name: Upload build.json to numbered release via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.prepare_context.outputs.next_ver_code }}"
+          if [ -n "$tag" ] && [ -f "build.json" ]; then
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" || true
+            gh release upload "$tag" build.json --clobber 2>/dev/null || true
+          fi
 
       - name: Upload module update metadata to update tag
         env:
