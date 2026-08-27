@@ -63,11 +63,11 @@ def main():
             sort_key = key_line if key_line else patchset_name
             all_tables.append((sort_app, sort_key, header, content))
 
-    # Group tables by distinct app-name
+    # Group tables by individual variant table key instead of grouping by app-name
     from collections import defaultdict
     app_groups = defaultdict(list)
     for sort_app, sort_key, header, content in all_tables:
-        app_groups[sort_app].append((sort_key, header, content))
+        app_groups[sort_key].append((sort_key, header, content))
 
     sorted_app_keys = sorted(app_groups.keys(), key=lambda a: (len(app_groups[a]), a), reverse=True)
     NUM_OUTPUT_FILES = 15
@@ -76,7 +76,7 @@ def main():
     parts_items = [[] for _ in range(NUM_OUTPUT_FILES)]
     parts_build_count = [0] * NUM_OUTPUT_FILES
 
-    # Greedily assign each distinct app group to the batch part with the lowest current build count
+    # Greedily assign each individual table variant to the batch part with the lowest current build count
     for app in sorted_app_keys:
         items = app_groups[app]
         min_idx = min(range(NUM_OUTPUT_FILES), key=lambda i: (parts_build_count[i], len(parts_apps[i])))
