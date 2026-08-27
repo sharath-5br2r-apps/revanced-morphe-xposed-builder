@@ -66,11 +66,13 @@ for i in {1..5}; do
 done
 
 TRIGGER_ABSOLUTE_LATEST=0
-CFG="configs/config.latest.updated.json"
-if [ -s "$CFG" ]; then
-  ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" 2>/dev/null || echo 0)
-  if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
-    TRIGGER_ABSOLUTE_LATEST=1
+if [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
+  CFG="configs/config.latest.updated.json"
+  if [ -s "$CFG" ]; then
+    ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" 2>/dev/null || echo 0)
+    if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
+      TRIGGER_ABSOLUTE_LATEST=1
+    fi
   fi
 fi
 

@@ -145,7 +145,7 @@ with open('config.dev.json', 'w', encoding='utf-8') as out:
   split_config_json "configs/config.dev.updated.json" "config.dev" 5
 fi
 
-if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
+if [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
   python3 -c "
 import glob, os, tomllib, json
 
@@ -162,15 +162,11 @@ with open('config.latest.json', 'w', encoding='utf-8') as out:
     json.dump(merged, out, indent=2)
 "
 
-  jq --slurpfile activeStable active.stable.json --slurpfile activePre active.prerelease.json --slurpfile activeApps active_apps.json --slurpfile activePatchAppsStable active_patch_apps.stable.json --slurpfile activePatchAppsDev active_patch_apps.dev.json '
-    (($activeStable[0] // []) + ($activePre[0] // [])) as $active |
-    (($activePatchAppsStable[0] // []) + ($activePatchAppsDev[0] // [])) as $activePatchApps |
+  jq --slurpfile activeApps active_apps.json '
     with_entries(
       if .value | type == "object" then
         .key as $k |
-        .value as $app |
-        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        if ((($srcs - $active) != $srcs) and ($activePatchApps | index($k))) or ($activeApps[0] | index($k)) then . else empty end
+        if ($activeApps[0] | index($k)) then . else empty end
       else empty end
     ) |
     { "patches-version": "latest", "enable-module-update": false } + .
