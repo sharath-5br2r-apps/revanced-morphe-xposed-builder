@@ -63,8 +63,6 @@ jobs:
       has_stable_3: ${{ steps.effective_triggers.outputs.HAS_STABLE_3 }}
       has_stable_4: ${{ steps.effective_triggers.outputs.HAS_STABLE_4 }}
       has_stable_5: ${{ steps.effective_triggers.outputs.HAS_STABLE_5 }}
-      next_ver_code_dev: ${{ steps.version_dev.outputs.NEXT_VER_CODE }}
-      next_ver_code_stable: ${{ steps.version_stable.outputs.NEXT_VER_CODE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -134,24 +132,6 @@ jobs:
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
         run: bash .github/scripts/ci_resolve_triggers.sh
 
-      - name: Resolve next version code (Dev)
-        id: version_dev
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: bash .github/scripts/build_resolve_version.sh
-
-      - name: Resolve next version code (Stable)
-        id: version_stable
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          dev_code="${{ steps.version_dev.outputs.NEXT_VER_CODE }}"
-          year="${dev_code:0:2}"
-          num="${dev_code:2:4}"
-          num=$((10#$num + 1))
-          stable_code=$(printf "%s%04d" "$year" "$num")
-          echo "NEXT_VER_CODE=$stable_code" >> "$GITHUB_OUTPUT"
-
       - name: Commit updated version metadata and configs
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
@@ -171,58 +151,74 @@ jobs:
             configs/config.dev.part*.json
           if-no-files-found: ignore
 
-  build_dev_1:
+  resolve_dev_version:
     needs: check_patch
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' }}
+    runs-on: ubuntu-latest
+    outputs:
+      next_ver_code_dev: ${{ steps.version_dev.outputs.NEXT_VER_CODE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Resolve next version code (Dev)
+        id: version_dev
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
+  build_dev_1:
+    needs: [check_patch, resolve_dev_version]
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_1 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part1.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
   build_dev_2:
-    needs: check_patch
+    needs: [check_patch, resolve_dev_version]
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_2 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part2.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
   build_dev_3:
-    needs: check_patch
+    needs: [check_patch, resolve_dev_version]
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_3 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part3.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
   build_dev_4:
-    needs: check_patch
+    needs: [check_patch, resolve_dev_version]
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_4 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part4.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
   build_dev_5:
-    needs: check_patch
+    needs: [check_patch, resolve_dev_version]
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_5 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part5.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
   aggregate_dev_logs:
-    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
+    needs: [check_patch, resolve_dev_version, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
     if: ${{ always() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_prerelease == '1' && (needs.build_dev_1.result == 'success' || needs.build_dev_2.result == 'success' || needs.build_dev_3.result == 'success' || needs.build_dev_4.result == 'success' || needs.build_dev_5.result == 'success') }}
     runs-on: ubuntu-latest
     steps:
@@ -254,8 +250,8 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           files: dev_logs/aggregated_out/build.dev.json
-          name: Build No. ${{ needs.check_patch.outputs.next_ver_code_dev }}
-          tag_name: ${{ needs.check_patch.outputs.next_ver_code_dev }}
+          name: Build No. ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
+          tag_name: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
           overwrite_files: true
 
       - name: Upload module update metadata to update tag (Dev)
