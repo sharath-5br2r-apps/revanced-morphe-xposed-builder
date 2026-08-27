@@ -150,7 +150,7 @@ jobs:
         with:
           branch: main
           skip_checkout: true
-          file_pattern: configs/app_versions.json configs/patch_sources.json configs/config.*.updated.json configs/config.stable.part*.json configs/config.dev.part*.json
+          file_pattern: configs/app_versions.json configs/patch_sources.json configs/config.*.updated.json configs/config.stable.part*.json configs/config.dev.part*.json configs/config.latest.part*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
       - name: Upload split config part artifacts
@@ -161,6 +161,7 @@ jobs:
           path: |
             configs/config.stable.part*.json
             configs/config.dev.part*.json
+            configs/config.latest.part*.json
           if-no-files-found: ignore
 
   resolve_dev_version:

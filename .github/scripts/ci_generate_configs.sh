@@ -39,6 +39,12 @@ split_config_json() {
   local prefix=$2
   local max_files=${3:-5}
 
+  # Touch all part files upfront to guarantee existence
+  for idx in $(seq 1 "$max_files"); do
+    local empty_file="configs/${prefix}.part${idx}.json"
+    [ -f "$empty_file" ] || echo "{}" > "$empty_file"
+  done
+
   if [ ! -s "$src_json" ]; then return 0; fi
 
   jq --arg prefix "$prefix" --argjson max_files "$max_files" '
@@ -66,7 +72,7 @@ split_config_json() {
     data=$(jq '.data' <<<"$item")
     if [ -n "$fname" ] && [ "$fname" != "null" ]; then
       if [ "$data" = "{}" ]; then
-        > "$fname"
+        echo "{}" > "$fname"
         echo "[+] Created empty part file $fname"
       else
         echo "$data" > "$fname"
