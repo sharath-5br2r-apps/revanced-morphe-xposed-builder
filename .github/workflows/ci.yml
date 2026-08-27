@@ -116,7 +116,7 @@ jobs:
         run: bash .github/scripts/ci_compare_app_versions.sh
 
       - name: Generate configs (JSON)
-        if: ${{ inputs.mode != 'Update Versions Only' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Build Only') }}
+        if: ${{ inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Build Only' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
         id: generate_configs
         env:
           TAGS_OLD: ${{ steps.compare.outputs.tags_old }}
@@ -139,7 +139,7 @@ jobs:
         run: bash .github/scripts/ci_resolve_triggers.sh
 
       - name: Commit updated version metadata and configs
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
