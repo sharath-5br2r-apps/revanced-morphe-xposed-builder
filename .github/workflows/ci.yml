@@ -63,7 +63,8 @@ jobs:
       has_stable_3: ${{ steps.effective_triggers.outputs.HAS_STABLE_3 }}
       has_stable_4: ${{ steps.effective_triggers.outputs.HAS_STABLE_4 }}
       has_stable_5: ${{ steps.effective_triggers.outputs.HAS_STABLE_5 }}
-      next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
+      next_ver_code_dev: ${{ steps.version_dev.outputs.NEXT_VER_CODE }}
+      next_ver_code_stable: ${{ steps.version_stable.outputs.NEXT_VER_CODE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -133,11 +134,23 @@ jobs:
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
         run: bash .github/scripts/ci_resolve_triggers.sh
 
-      - name: Resolve next version code
-        id: version
+      - name: Resolve next version code (Dev)
+        id: version_dev
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: bash .github/scripts/build_resolve_version.sh
+
+      - name: Resolve next version code (Stable)
+        id: version_stable
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          dev_code="${{ steps.version_dev.outputs.NEXT_VER_CODE }}"
+          year="${dev_code:0:2}"
+          num="${dev_code:2:4}"
+          num=$((10#$num + 1))
+          stable_code=$(printf "%s%04d" "$year" "$num")
+          echo "NEXT_VER_CODE=$stable_code" >> "$GITHUB_OUTPUT"
 
       - name: Commit updated version metadata and configs
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
@@ -164,7 +177,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part1.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -174,7 +187,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part2.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -184,7 +197,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part3.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -194,7 +207,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part4.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -204,7 +217,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part5.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_dev }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -214,7 +227,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part1.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -224,7 +237,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part2.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -234,7 +247,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part3.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -244,7 +257,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part4.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -254,7 +267,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part5.json"
-      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code_stable }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -296,26 +309,24 @@ jobs:
             stable_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Prepare build.json for release upload
-        run: |
-          if [ -d "dev_logs/aggregated_out" ]; then
-            if [ -f "dev_logs/aggregated_out/build.dev.json" ]; then
-              cp -f dev_logs/aggregated_out/build.dev.json build.json
-            fi
-          fi
-          if [ -d "stable_logs/aggregated_out" ]; then
-            if [ -f "stable_logs/aggregated_out/build.stable.json" ]; then
-              cp -f stable_logs/aggregated_out/build.stable.json build.json
-            fi
-          fi
-
-      - name: Upload build.json to numbered release via softprops/action-gh-release
+      - name: Upload dev build.json to numbered release via softprops/action-gh-release
+        if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' }}
         uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: build.json
-          name: Build No. ${{ needs.check_patch.outputs.next_ver_code }}
-          tag_name: ${{ needs.check_patch.outputs.next_ver_code }}
+          files: dev_logs/aggregated_out/build.dev.json
+          name: Build No. ${{ needs.check_patch.outputs.next_ver_code_dev }}
+          tag_name: ${{ needs.check_patch.outputs.next_ver_code_dev }}
+          overwrite_files: true
+
+      - name: Upload stable build.json to numbered release via softprops/action-gh-release
+        if: ${{ needs.check_patch.outputs.trigger_stable == '1' }}
+        uses: softprops/action-gh-release@v3
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          files: stable_logs/aggregated_out/build.stable.json
+          name: Build No. ${{ needs.check_patch.outputs.next_ver_code_stable }}
+          tag_name: ${{ needs.check_patch.outputs.next_ver_code_stable }}
           overwrite_files: true
 
       - name: Upload module update metadata to update tag
