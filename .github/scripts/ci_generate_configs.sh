@@ -157,14 +157,16 @@ with open('config.latest.json', 'w', encoding='utf-8') as out:
     json.dump(merged, out, indent=2)
 "
 
-  jq --slurpfile activeApps active_apps.json '
+  jq --slurpfile active active.stable.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.stable.json '
     with_entries(
       if .value | type == "object" then
         .key as $k |
-        if ($activeApps[0] | index($k)) then . else empty end
+        .value as $app |
+        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or ($activeApps[0] | index($k)) then . else empty end
       else empty end
     ) |
-    { "patches-version": "absolutelatest", "enable-module-update": false } + .
+    { "patches-version": "latest", "enable-module-update": false } + .
   ' config.latest.json > configs/config.latest.updated.json
 
   split_config_json "configs/config.latest.updated.json" "config.latest" 5
