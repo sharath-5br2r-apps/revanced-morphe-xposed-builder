@@ -1,6 +1,6 @@
 {
   "patches-version": "latest",
-  "enable-module-update": true,
+  "enable-module-update": false,
   "jiohotstar-morphe-paresh-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
