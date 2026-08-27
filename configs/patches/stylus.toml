@@ -10,17 +10,6 @@ repo-dlurl-filter = "fdroid.apk"
 repo-dlurl-tag-filter = "bwpm"
 version = "latest"
 patches-source = "ch3thanhs/stylus"
-[bitwarden-morphe-stylus]
-enabled = true
-app-name = "bitwarden"
-rv-brand = "morphe-stylus"
-build-mode = "apk"
-pkg-name = "com.x8bit.bitwarden"
-cli-source = "MorpheApp/morphe-desktop"
-repo-dlurl = "https://github.com/bitwarden/android"
-repo-dlurl-filter = "fdroid.apk"
-repo-dlurl-tag-filter = "bwpm"
-patches-source = "ch3thanhs/stylus"
 [bitwarden-morphe-stylus-exp]
 enabled = true
 app-name = "bitwarden"
