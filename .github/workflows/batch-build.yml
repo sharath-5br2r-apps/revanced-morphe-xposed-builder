@@ -118,7 +118,9 @@ jobs:
         run: |
           tag="${{ needs.prepare_context.outputs.next_ver_code }}"
           if [ -n "$tag" ] && [ -f "build.json" ]; then
-            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" || true
+            notes_arg=("--notes" "")
+            [ -f "build.md" ] && notes_arg=("--notes-file" "build.md")
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             gh release upload "$tag" build.json --clobber 2>/dev/null || true
           fi
 

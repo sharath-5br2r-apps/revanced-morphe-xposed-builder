@@ -167,7 +167,9 @@ jobs:
           tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
           prerelease_flag=""
           [ "${{ steps.context.outputs.IS_PRERELEASE }}" = "true" ] && prerelease_flag="--prerelease"
-          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" $prerelease_flag || true
+          notes_arg=("--notes" "")
+          [ -f "build.md" ] && notes_arg=("--notes-file" "build.md")
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" $prerelease_flag || true
           if [ -d "./build" ]; then
             find ./build -type f -exec gh release upload "$tag" {} --clobber \; 2>/dev/null || true
           fi

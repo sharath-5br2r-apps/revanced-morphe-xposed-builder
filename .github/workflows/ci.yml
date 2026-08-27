@@ -257,7 +257,9 @@ jobs:
         run: |
           tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
           if [ -n "$tag" ] && [ -f "dev_logs/aggregated_out/build.dev.json" ]; then
-            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" || true
+            notes_arg=("--notes" "")
+            [ -f "dev_logs/aggregated_out/build.dev.md" ] && notes_arg=("--notes-file" "dev_logs/aggregated_out/build.dev.md")
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             gh release upload "$tag" dev_logs/aggregated_out/build.dev.json --clobber 2>/dev/null || true
           fi
 
@@ -369,7 +371,9 @@ jobs:
         run: |
           tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
           if [ -n "$tag" ] && [ -f "stable_logs/aggregated_out/build.stable.json" ]; then
-            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" || true
+            notes_arg=("--notes" "")
+            [ -f "stable_logs/aggregated_out/build.stable.md" ] && notes_arg=("--notes-file" "stable_logs/aggregated_out/build.stable.md")
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             gh release upload "$tag" stable_logs/aggregated_out/build.stable.json --clobber 2>/dev/null || true
           fi
 
