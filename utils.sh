@@ -587,6 +587,11 @@ _get_prebuilts() {
 		fi
 
 		echo "$tag_name" > "${dir}/tag_name.txt"
+		local cl_body=""
+		cl_body=$(jq -r '.body // .description // empty' <<<"$release" 2>/dev/null || true)
+		if [ -n "$cl_body" ] && [ "$cl_body" != "null" ]; then
+			echo "$cl_body" > "${dir}/tag_notes.txt"
+		fi
 
 		if [ "$grab_cl" = true ]; then
 			local cl_url=""
@@ -2670,6 +2675,11 @@ write_build_info() {
 	skipped_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: Skipping disabled: ).*|(?<=INFO: Skipping incompatible patch \x27)[^\x27]+|(?<=WARN: Skipping patch \x27)[^\x27]+' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
 	[[ "$skipped_json" != \[* ]] && skipped_json='[]'
 
+	local release_notes=""
+	if [ -n "${patches_dir:-}" ] && [ -f "${patches_dir}/tag_notes.txt" ]; then
+		release_notes=$(cat "${patches_dir}/tag_notes.txt" 2>/dev/null || true)
+	fi
+
 	(
 		flock -x 200
 		jq --arg key "$entry_key" \
@@ -2681,6 +2691,7 @@ write_build_info() {
 			--arg cli "${cli_ref:-${cli_name_ver:-}}" \
 			--arg patches "$patches" \
 			--arg changelog "$changelog" \
+			--arg release_notes "$release_notes" \
 			--argjson applied "$applied_json" \
 			--argjson failed "$failed_json" \
 			--argjson skipped "$skipped_json" \
@@ -2698,11 +2709,13 @@ write_build_info() {
 			    cli: $cli,
 			    patches: $patches,
 			    changelog: $changelog,
+			    release_notes: $release_notes,
 			    applied_patches: $applied,
 			    failed_patches: $failed,
 			    skipped_patches: $skipped
 			  } |
 			  if $cli != "" then . else del(.[$key].cli) end |
+			  if $release_notes != "" then . else del(.[$key].release_notes) end |
 			  if $min_sdk != "" then . else del(.[$key].min_sdk) end |
 			  if ($densities | length) > 0 then . else del(.[$key].densities) end |
 			  if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |

@@ -31,6 +31,7 @@ def main():
         cli_info = entry.get("cli", "")
         patches_info = entry.get("patches", "")
         changelog = entry.get("changelog", "")
+        release_notes = entry.get("release_notes", "")
 
         if arch:
             app_lines.append(f"{name} ({arch}): {version}")
@@ -41,7 +42,7 @@ def main():
             cli_set.append(cli_info)
 
         if patches_info and patches_info not in patches_dict:
-            patches_dict[patches_info] = changelog
+            patches_dict[patches_info] = (changelog, release_notes)
 
     sections = []
 
@@ -64,13 +65,15 @@ GitHub | Website"""
 
     # 4. Patches & Changelog block
     patches_lines = []
-    for p_info, cl_url in patches_dict.items():
+    for p_info, (cl_url, rel_notes) in patches_dict.items():
         p_str = f"Patches: {p_info}"
         if cl_url:
             p_str += f"\n[Changelog]({cl_url})"
             tag = cl_url.rstrip("/").split("/")[-1]
             if tag:
                 p_str += f"\n\n{tag}"
+        if rel_notes:
+            p_str += f"\n{rel_notes}"
         patches_lines.append(p_str)
 
     if patches_lines:
