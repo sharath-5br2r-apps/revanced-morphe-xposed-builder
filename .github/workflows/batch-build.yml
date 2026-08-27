@@ -18,7 +18,22 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  prepare_context:
+    runs-on: ubuntu-latest
+    outputs:
+      next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Resolve next version code
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
   build_batch:
+    needs: prepare_context
     if: ${{ !cancelled() }}
     strategy:
       fail-fast: false
@@ -28,11 +43,12 @@ jobs:
     with:
       config_file: ${{ matrix.config_file }}
       patches_version: ${{ inputs.patches_version }}
+      release_version_code: ${{ needs.prepare_context.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
   aggregate_logs:
-    needs: [build_batch]
+    needs: [prepare_context, build_batch]
     if: ${{ always() && needs.build_batch.result != 'cancelled' }}
     runs-on: ubuntu-latest
     steps:
@@ -65,12 +81,6 @@ jobs:
           path: batch_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Resolve next version code
-        id: version
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: bash .github/scripts/build_resolve_version.sh
-
       - name: Prepare build.json for release upload
         run: |
           if [ -d "batch_logs/aggregated_out" ]; then
@@ -91,8 +101,8 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           files: build.json
-          name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
-          tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          name: Build No. ${{ needs.prepare_context.outputs.next_ver_code }}
+          tag_name: ${{ needs.prepare_context.outputs.next_ver_code }}
           overwrite_files: true
 
       - name: Upload module update metadata to update tag

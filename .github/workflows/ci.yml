@@ -63,6 +63,7 @@ jobs:
       has_stable_3: ${{ steps.effective_triggers.outputs.HAS_STABLE_3 }}
       has_stable_4: ${{ steps.effective_triggers.outputs.HAS_STABLE_4 }}
       has_stable_5: ${{ steps.effective_triggers.outputs.HAS_STABLE_5 }}
+      next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -132,6 +133,12 @@ jobs:
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
         run: bash .github/scripts/ci_resolve_triggers.sh
 
+      - name: Resolve next version code
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
       - name: Commit updated version metadata and configs
         if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
@@ -157,6 +164,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part1.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -166,6 +174,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part2.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -175,6 +184,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part3.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -184,6 +194,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part4.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -193,6 +204,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.dev.part5.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -202,6 +214,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part1.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -211,6 +224,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part2.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -220,6 +234,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part3.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -229,6 +244,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part4.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -238,6 +254,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.stable.part5.json"
+      release_version_code: ${{ needs.check_patch.outputs.next_ver_code }}
       upload_release_metadata: false
     secrets: inherit
 
@@ -279,12 +296,6 @@ jobs:
             stable_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Resolve next version code
-        id: version
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: bash .github/scripts/build_resolve_version.sh
-
       - name: Prepare build.json for release upload
         run: |
           if [ -d "dev_logs/aggregated_out" ]; then
@@ -303,8 +314,8 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           files: build.json
-          name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
-          tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          name: Build No. ${{ needs.check_patch.outputs.next_ver_code }}
+          tag_name: ${{ needs.check_patch.outputs.next_ver_code }}
           overwrite_files: true
 
       - name: Upload module update metadata to update tag
