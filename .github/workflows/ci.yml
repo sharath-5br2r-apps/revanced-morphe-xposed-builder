@@ -226,7 +226,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Download dev part-logs artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: part-logs-*
           path: logs_artifacts
@@ -337,7 +337,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Download stable part-logs artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: part-logs-*
           path: logs_artifacts
