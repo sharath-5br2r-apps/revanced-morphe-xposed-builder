@@ -228,7 +228,7 @@ jobs:
       - name: Download dev part-logs artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: part-logs-beta*
+          pattern: part-logs-*
           path: logs_artifacts
           merge-multiple: false
 
@@ -339,7 +339,7 @@ jobs:
       - name: Download stable part-logs artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: part-logs-stable*
+          pattern: part-logs-*
           path: logs_artifacts
           merge-multiple: false
 
