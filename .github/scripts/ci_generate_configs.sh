@@ -52,9 +52,8 @@ split_config_json() {
     to_entries | map(select(.value | type == "object" and (.value.enabled // true) != false)) as $enabled |
     ($enabled | length) as $total |
     if $total == 0 then {} else
-      (if $total < $max_files then 1 else (($total / $max_files) | ceil) end) as $chunk_size |
       range(0; $max_files) as $idx |
-      ($enabled[$idx * $chunk_size : ($idx + 1) * $chunk_size]) as $slice |
+      [ $enabled[range($idx; $total; $max_files)] ] as $slice |
       {
         filename: "configs/\($prefix).part\($idx + 1).json",
         data: (
