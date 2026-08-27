@@ -2591,7 +2591,7 @@ check_sig() {
 }
 
 write_build_info() {
-	local key=$1 arch=$2 ext=$3 name=$4 version=$5 patches=$6 changelog=$7 target_file=${8:-} inspect_apk_override=${9:-}
+	local key=$1 arch=$2 ext=$3 name=$4 version=$5 patches=$6 changelog=$7 target_file=${8:-} inspect_apk_override=${9:-} cli_ref=${10:-}
 	if [ "$ext" = ".apk" ] || [ "$mode_arg" = module ]; then
 		log "${key} (${arch}): ${version}"
 	fi
@@ -2678,6 +2678,7 @@ write_build_info() {
 			--arg name "$name" \
 			--arg version "$version" \
 			--arg min_sdk "$min_sdk" \
+			--arg cli "${cli_ref:-${cli_name_ver:-}}" \
 			--arg patches "$patches" \
 			--arg changelog "$changelog" \
 			--argjson applied "$applied_json" \
@@ -2694,12 +2695,14 @@ write_build_info() {
 			    min_sdk: $min_sdk,
 			    densities: $densities,
 			    native_libraries: $native_libs,
+			    cli: $cli,
 			    patches: $patches,
 			    changelog: $changelog,
 			    applied_patches: $applied,
 			    failed_patches: $failed,
 			    skipped_patches: $skipped
 			  } |
+			  if $cli != "" then . else del(.[$key].cli) end |
 			  if $min_sdk != "" then . else del(.[$key].min_sdk) end |
 			  if ($densities | length) > 0 then . else del(.[$key].densities) end |
 			  if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |
@@ -3652,7 +3655,7 @@ build_rv() {
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
 			final_apk_output="$apk_output"
-			write_build_info "${table% (*}" "${arch_f}" ".apk" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "$apk_output" ""
+			write_build_info "${table% (*}" "${arch_f}" ".apk" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "$apk_output" "" "$cli_ref"
 			continue
 		fi
 		local base_template
@@ -3703,7 +3706,7 @@ build_rv() {
 		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
 		popd >/dev/null || :
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
-		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "${CWD}/${BUILD_DIR}/${module_output}" "$patched_apk"
+		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "${CWD}/${BUILD_DIR}/${module_output}" "$patched_apk" "$cli_ref"
 		done
 		) > "${build_logs_dir}/build_${arch// /}.log" 2>&1 &
 		arch_build_pids+=($!)
