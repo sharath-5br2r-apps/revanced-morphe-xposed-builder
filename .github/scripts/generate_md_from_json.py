@@ -17,13 +17,13 @@ def main():
         print(f"No entries found in {json_path}")
         return
 
-    cli_list = []
-    patches_list = []
+    # Sort entries deterministically by app brand/name then architecture
+    sorted_entries = sorted(data.items(), key=lambda x: (x[1].get("name", x[0]), x[1].get("arch", "")))
 
-    # Sort build.json entries deterministically by app name then entry key
-    sorted_entries = sorted(data.items(), key=lambda x: (x[1].get("name", x[0]), x[0]))
+    app_lines = []
+    cli_set = []
+    patches_dict = {}
 
-    apps_lines = []
     for key, entry in sorted_entries:
         name = entry.get("name", key)
         arch = entry.get("arch", "")
@@ -32,32 +32,51 @@ def main():
         patches_info = entry.get("patches", "")
         changelog = entry.get("changelog", "")
 
-        if cli_info and cli_info not in cli_list:
-            cli_list.append(cli_info)
-        if patches_info and patches_info not in patches_list:
-            patches_list.append(patches_info)
+        if arch:
+            app_lines.append(f"{name} ({arch}): {version}")
+        else:
+            app_lines.append(f"{name}: {version}")
 
-        lines = [f"{name} ({arch}): {version}"]
-        if changelog:
-            lines.append(f"[Changelog]({changelog})")
+        if cli_info and cli_info not in cli_set:
+            cli_set.append(cli_info)
 
-        apps_lines.append("\n".join(lines))
+        if patches_info and patches_info not in patches_dict:
+            patches_dict[patches_info] = changelog
 
-    md_content = []
+    sections = []
 
-    # 1. Apps section
-    if apps_lines:
-        md_content.append("\n".join(apps_lines))
+    # 1. App builds block
+    if app_lines:
+        sections.append("\n".join(app_lines))
 
-    # 2. CLI section (single unique instances)
-    if cli_list:
-        md_content.append("CLI:\n" + "\n".join(cli_list))
+    # 2. Notes block
+    notes = """Notes:
+• Install MicroG-RE or MicroG, required for Google APKs.
+• Use Zygisk Detach to stop Play Store from updating Modules.
 
-    # 3. Patches section (single unique instances)
-    if patches_list:
-        md_content.append("Patches:\n" + "\n".join(patches_list))
+GitHub | Website"""
+    sections.append(notes)
 
-    output_str = "\n\n".join(md_content) + "\n"
+    # 3. CLI block
+    cli_lines = [f"CLI: {c}" for c in cli_set]
+    if cli_lines:
+        sections.append("\n".join(cli_lines))
+
+    # 4. Patches & Changelog block
+    patches_lines = []
+    for p_info, cl_url in patches_dict.items():
+        p_str = f"Patches: {p_info}"
+        if cl_url:
+            p_str += f"\n[Changelog]({cl_url})"
+            tag = cl_url.rstrip("/").split("/")[-1]
+            if tag:
+                p_str += f"\n\n{tag}"
+        patches_lines.append(p_str)
+
+    if patches_lines:
+        sections.append("\n\n".join(patches_lines))
+
+    output_str = "\n\n".join(sections) + "\n"
     with open(md_path, "w", encoding="utf-8") as f:
         f.write(output_str)
 
