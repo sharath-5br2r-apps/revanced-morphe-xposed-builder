@@ -19,7 +19,7 @@ on:
         default: "Default"
         options:
           - "Default"
-          - "Update Versions Only"
+          - "Build Only"
 
 concurrency:
   group: ci
