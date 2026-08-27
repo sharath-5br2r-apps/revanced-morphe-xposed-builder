@@ -65,13 +65,14 @@ jobs:
           path: batch_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Prepare build.json and build.md for release upload
+      - name: Resolve next version code
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
+      - name: Prepare build.json for release upload
         run: |
-          TARGET_TAG="stable"
-          if [ "${{ inputs.patches_version }}" = "absolutelatest" ] || [ "${{ inputs.patches_version }}" = "dev" ]; then
-            TARGET_TAG="beta"
-          fi
-          echo "TARGET_TAG=$TARGET_TAG" >> "$GITHUB_ENV"
           if [ -d "batch_logs/aggregated_out" ]; then
             for json_file in batch_logs/aggregated_out/build.*.json; do
               if [ -f "$json_file" ]; then
@@ -85,16 +86,13 @@ jobs:
             done
           fi
 
-      - name: Upload build.json and build.md to target release tag via softprops/action-gh-release
+      - name: Upload build.json to numbered release via softprops/action-gh-release
         uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          files: |
-            build.json
-            build.md
-          body_path: build.md
-          name: ${{ env.TARGET_TAG }}
-          tag_name: ${{ env.TARGET_TAG }}
+          files: build.json
+          name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
+          tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
           overwrite_files: true
 
       - name: Upload module update metadata to update tag
