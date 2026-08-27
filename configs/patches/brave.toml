@@ -53,6 +53,7 @@ repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm64|MonoArm64)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
 version = "latest"
+
 [brave-stable-morphe-dh6k-arm-v7a-exp]
 enabled = true
 app-name = "brave-stable"
@@ -66,6 +67,7 @@ repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm|MonoArm)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
 version = "latest"
+
 [brave-stable-morphe-dh6k-x86_64-exp]
 enabled = true
 app-name = "brave-stable"
@@ -79,6 +81,7 @@ repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
 version = "latest"
+
 [brave-beta-morphe-dh6k-arm64-v8a]
 enabled = true
 app-name = "brave-beta"
@@ -91,6 +94,7 @@ patches-source = "dh6k/morphe-patches"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm64|MonoArm64)\\.apk$"
 repo-dlurl-release-name-filter = "^Beta v"
+
 [brave-beta-morphe-dh6k-arm-v7a]
 enabled = true
 app-name = "brave-beta"
@@ -103,6 +107,7 @@ patches-source = "dh6k/morphe-patches"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm|MonoArm)\\.apk$"
 repo-dlurl-release-name-filter = "^Beta v"
+
 [brave-beta-morphe-dh6k-x86_64]
 enabled = true
 app-name = "brave-beta"
@@ -115,6 +120,7 @@ patches-source = "dh6k/morphe-patches"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
 repo-dlurl-release-name-filter = "^Beta v"
+
 [brave-nightly-morphe-dh6k-arm64-v8a]
 enabled = true
 app-name = "brave-nightly"
@@ -127,6 +133,7 @@ patches-source = "dh6k/morphe-patches"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm64|MonoArm64)\\.apk$"
 repo-dlurl-release-name-filter = "^Nightly v"
+
 [brave-nightly-morphe-dh6k-arm-v7a]
 enabled = true
 app-name = "brave-nightly"
@@ -139,6 +146,7 @@ patches-source = "dh6k/morphe-patches"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm|MonoArm)\\.apk$"
 repo-dlurl-release-name-filter = "^Nightly v"
+
 [brave-nightly-morphe-dh6k-x86_64]
 enabled = true
 app-name = "brave-nightly"
