@@ -2322,10 +2322,13 @@ dl_repo() {
 	local version_clean=${version#v}
 	local matching_asset="" download_url="" asset_name=""
 
-	matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" --arg arch "${arch// /}" '
+	# Substring match on tag_name or asset name using target version / version_clean
+	matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" '
 		map(
 			select(
-				(.tag_name == $ver or .tag_name == ("v" + $ver_clean) or .tag_name == $ver_clean or (.tag_name | contains($ver_clean)))
+				((.tag_name // "") | contains($ver_clean)) or
+				((.tag_name // "") | contains($ver)) or
+				((.name // "") | contains($ver_clean))
 			)
 		) | .[0] // empty
 	' <<<"${__REPO_RESP_JSON__:-[]}")
@@ -2333,16 +2336,18 @@ dl_repo() {
 	if [ -z "$matching_asset" ] && [ "${__REPO_PAGINATED_ALL__:-false}" != true ]; then
 		pr "Version $version not found in current cached repo releases, fetching older pages..."
 		__FORCE_PAGINATE__=true get_repo_resp "$url" || true
-		matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" --arg arch "${arch// /}" '
+		matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" '
 			map(
 				select(
-					(.tag_name == $ver or .tag_name == ("v" + $ver_clean) or .tag_name == $ver_clean or (.tag_name | contains($ver_clean)))
+					((.tag_name // "") | contains($ver_clean)) or
+					((.tag_name // "") | contains($ver)) or
+					((.name // "") | contains($ver_clean))
 				)
 			) | .[0] // empty
 		' <<<"${__REPO_RESP_JSON__:-[]}")
 	fi
 
-	# Try major.minor substring matching (e.g. 1.93 if 1.93.138 is not found)
+	# Fallback to major.minor substring match (e.g. "1.93" for "1.93.138")
 	if [ -z "$matching_asset" ]; then
 		local major_minor
 		major_minor=$(echo "$version_clean" | cut -d. -f1-2)
@@ -2350,7 +2355,8 @@ dl_repo() {
 			matching_asset=$(jq -c --arg mm "$major_minor" '
 				map(
 					select(
-						(.tag_name | contains($mm)) or (.name | contains($mm))
+						((.tag_name // "") | contains($mm)) or
+						((.name // "") | contains($mm))
 					)
 				) | .[0] // empty
 			' <<<"${__REPO_RESP_JSON__:-[]}")
