@@ -16,8 +16,19 @@ if [ -z "$CONFIG_FILES" ]; then
 fi
 
 # Convert all TOML files to a single JSON
-# shellcheck disable=SC2086
-yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $CONFIG_FILES > temp_all_configs.json
+python3 -c "
+import glob, os, tomllib, json
+toml_files = sorted(glob.glob('configs/patches/*.toml'))
+merged = {}
+for f in toml_files:
+    with open(f, 'rb') as fp:
+        data = tomllib.load(fp)
+        for k, v in data.items():
+            if isinstance(v, dict):
+                merged[k] = v
+with open('temp_all_configs.json', 'w', encoding='utf-8') as out:
+    json.dump(merged, out, indent=2)
+"
 
 APP_VERSIONS_FILE="configs/app_versions.json"
 [ -f "$APP_VERSIONS_FILE" ] || echo '{}' > "$APP_VERSIONS_FILE"

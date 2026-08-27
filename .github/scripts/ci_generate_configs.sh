@@ -72,13 +72,19 @@ split_config_json() {
 }
 
 if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
-  STABLE_CONFIGS=$(find configs/patches -name "*.toml" ! -name "*.dev.toml" 2>/dev/null | sort -u)
-  if [ -n "$STABLE_CONFIGS" ]; then
-    # shellcheck disable=SC2086
-    yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $STABLE_CONFIGS > config.stable.json
-  else
-    echo "{}" > config.stable.json
-  fi
+  python3 -c "
+import glob, os, tomllib, json
+stable_configs = [f for f in sorted(glob.glob('configs/patches/*.toml')) if not f.endswith('.dev.toml')]
+merged = {}
+for f in stable_configs:
+    with open(f, 'rb') as fp:
+        data = tomllib.load(fp)
+        for k, v in data.items():
+            if isinstance(v, dict):
+                merged[k] = v
+with open('config.stable.json', 'w', encoding='utf-8') as out:
+    json.dump(merged, out, indent=2)
+"
 
   jq --slurpfile active active.stable.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.stable.json '
     { "patches-version": "latest", "enable-module-update": true } as $force |
@@ -97,13 +103,19 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
 fi
 
 if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
-  DEV_CONFIGS=$(find configs/patches -name "*.toml" ! -name "*.stable.toml" 2>/dev/null | sort -u)
-  if [ -n "$DEV_CONFIGS" ]; then
-    # shellcheck disable=SC2086
-    yq -o=json eval-all '. as $item ireduce ({}; . * $item)' $DEV_CONFIGS > config.dev.json
-  else
-    echo "{}" > config.dev.json
-  fi
+  python3 -c "
+import glob, os, tomllib, json
+dev_configs = [f for f in sorted(glob.glob('configs/patches/*.toml')) if not f.endswith('.stable.toml')]
+merged = {}
+for f in dev_configs:
+    with open(f, 'rb') as fp:
+        data = tomllib.load(fp)
+        for k, v in data.items():
+            if isinstance(v, dict):
+                merged[k] = v
+with open('config.dev.json', 'w', encoding='utf-8') as out:
+    json.dump(merged, out, indent=2)
+"
 
   jq --slurpfile active active.prerelease.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.dev.json --argjson tags "$TAGS_NEW" '
     { "patches-version": "dev", "enable-module-update": false } as $force |
