@@ -3073,7 +3073,7 @@ build_rv() {
 					local bname=$(basename "$capk")
 					# extract version from format: pkg_name-version-arch.apk
 					local v=${bname#${pkg_name}-}
-					v=${v%-*}
+					v=$(echo "$v" | sed -E 's/-(all|arm64-v8a|arm-v7a|x86_64|x86|nodpi|anydpi|auto)\.apk$//i; s/\.apk$//i')
 					cached_versions+="$v"$'\n'
 				done
 				local dyn_ver
@@ -3404,8 +3404,14 @@ build_rv() {
 	done
 
 	local dl_failed=false
+	local dl_success_count=0
+	local total_dl_count=${#dl_pids[@]}
 	for pid in "${dl_pids[@]}"; do
-		if ! wait "$pid"; then dl_failed=true; fi
+		if wait "$pid"; then
+			((dl_success_count++))
+		else
+			dl_failed=true
+		fi
 	done
 
 	for logfile in "${dl_logs_dir}"/dl_*.log; do
@@ -3419,7 +3425,12 @@ build_rv() {
 	done
 	rm -rf "$dl_logs_dir"
 
-	if [ "$dl_failed" = true ]; then epr "One or more architecture downloads failed for '${table}'"; return 1; fi
+	if [ "$dl_success_count" -eq 0 ] && [ "$total_dl_count" -gt 0 ]; then
+		epr "All architecture downloads failed for '${table}'"
+		return 1
+	elif [ "$dl_failed" = true ]; then
+		wpr "One or more architecture downloads failed for '${table}', but $dl_success_count/$total_dl_count succeeded."
+	fi
 	version_f=${version// /}
 	version_f=${version_f#v}
 	version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
@@ -3690,8 +3701,14 @@ build_rv() {
 	done
 
 	local arch_b_failed=false
+	local arch_b_success_count=0
+	local total_arch_count=${#arch_build_pids[@]}
 	for pid in "${arch_build_pids[@]}"; do
-		if ! wait "$pid"; then arch_b_failed=true; fi
+		if wait "$pid"; then
+			((arch_b_success_count++))
+		else
+			arch_b_failed=true
+		fi
 	done
 
 	for logfile in "${build_logs_dir}"/build_*.log; do
@@ -3705,9 +3722,11 @@ build_rv() {
 	done
 	rm -rf "$build_logs_dir"
 
-	if [ "$arch_b_failed" = true ]; then
-		epr "One or more architecture builds failed for '${table}'"
+	if [ "$arch_b_success_count" -eq 0 ] && [ "$total_arch_count" -gt 0 ]; then
+		epr "All architecture builds failed for '${table}'"
 		return 1
+	elif [ "$arch_b_failed" = true ]; then
+		wpr "One or more architecture builds failed for '${table}', but $arch_b_success_count/$total_arch_count succeeded."
 	fi
 }
 
