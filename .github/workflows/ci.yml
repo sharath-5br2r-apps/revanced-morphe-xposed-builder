@@ -413,7 +413,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.latest.part1.json"
-      patches_version: "dev"
+      patches_version: "absolutelatest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
     secrets: inherit
@@ -424,7 +424,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.latest.part2.json"
-      patches_version: "dev"
+      patches_version: "absolutelatest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
     secrets: inherit
@@ -435,7 +435,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.latest.part3.json"
-      patches_version: "dev"
+      patches_version: "absolutelatest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
     secrets: inherit
@@ -446,7 +446,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.latest.part4.json"
-      patches_version: "dev"
+      patches_version: "absolutelatest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
     secrets: inherit
@@ -457,7 +457,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       config_file: "configs/config.latest.part5.json"
-      patches_version: "dev"
+      patches_version: "absolutelatest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
     secrets: inherit
