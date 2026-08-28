@@ -71,7 +71,7 @@
       "brave-beta-morphe-dh6k-arm-v7a",
       "brave-beta-morphe-dh6k-x86_64"
     ],
-    "version": "1.95.92"
+    "version": "1.95.93"
   },
   "Brave Nightly": {
     "keys": [
@@ -79,7 +79,7 @@
       "brave-nightly-morphe-dh6k-arm-v7a",
       "brave-nightly-morphe-dh6k-x86_64"
     ],
-    "version": "1.95.92"
+    "version": "1.95.93"
   },
   "PC Remote": {
     "keys": [
@@ -103,7 +103,7 @@
     "keys": [
       "fing-morphe-paresh-exp"
     ],
-    "version": "12.13.2"
+    "version": "12.13.3"
   },
   "JioHotstar": {
     "keys": [
@@ -171,7 +171,7 @@
     "keys": [
       "xrecorder-morphe-hoodles-exp"
     ],
-    "version": "2.5.4.1"
+    "version": "2.5.4.3"
   },
   "Smart Launcher 6": {
     "keys": [

@@ -29,21 +29,5 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder",
     "dpi": "nodpi anydpi auto",
     "patches-source": "hoo-dles/morphe-patches"
-  },
-  "adguard-morphe-rushiranpise-exp": {
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "adguard",
-    "rv-brand": "morphe-rushiranpise-exp",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android",
-    "version": "latest",
-    "custom-microg-patches": "'None'",
-    "build-mode": "apk",
-    "arch": "all",
-    "pkg-name": "com.adguard.android",
-    "uptodown-dlurl": "https://adguard-for-android.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adguard-software-limited/adguard",
-    "dpi": "nodpi anydpi auto",
-    "patches-source": "rushiranpise/morphe-patches"
   }
 }

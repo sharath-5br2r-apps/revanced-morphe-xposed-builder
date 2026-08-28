@@ -19,10 +19,10 @@
   "anddea": {
     "repo": "anddea/revanced-patches",
     "stable": "v4.2.0",
-    "prerelease": "v4.3.0-dev.2",
+    "prerelease": "v4.3.0-dev.3",
     "blocked": false,
     "stable_date": "2026-08-07T15:03:16Z",
-    "pre_date": "2026-08-21T16:24:32Z"
+    "pre_date": "2026-08-28T12:15:38Z"
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
@@ -60,8 +60,8 @@
     "repo": "byehi98/okish-morphe-patches",
     "stable": "v1.19.0",
     "stable_date": "2026-08-26T11:20:55Z",
-    "prerelease": "",
-    "pre_date": "",
+    "prerelease": "v1.19.1-dev.1",
+    "pre_date": "2026-08-28T14:35:13Z",
     "blocked": false
   },
   "cryptomator": {
@@ -121,10 +121,10 @@
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
     "stable": "v1.42.0",
-    "prerelease": "",
+    "prerelease": "v1.42.1-dev.1",
     "blocked": false,
     "stable_date": "2026-08-27T20:41:50Z",
-    "pre_date": ""
+    "pre_date": "2026-08-28T05:26:49Z"
   },
   "hoomans": {
     "repo": "arandomhooman/hoomans-morphe-patches",
@@ -193,10 +193,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.40.0",
-    "prerelease": "v1.41.0-dev.2",
+    "prerelease": "v1.41.0-dev.3",
     "blocked": false,
     "stable_date": "2026-08-24T11:45:33Z",
-    "pre_date": "2026-08-27T09:19:52Z"
+    "pre_date": "2026-08-28T11:36:48Z"
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
@@ -264,10 +264,10 @@
   "rushiranpise": {
     "repo": "rushiranpise/morphe-patches",
     "stable": "v1.20.0",
-    "prerelease": "v1.21.0-dev.2",
+    "prerelease": "v1.21.0-dev.4",
     "blocked": false,
     "stable_date": "2026-08-23T16:41:10Z",
-    "pre_date": "2026-08-26T10:18:38Z"
+    "pre_date": "2026-08-28T15:37:21Z"
   },
   "rvexp": {
     "repo": "Aunali321/ReVancedExperiments",
@@ -295,8 +295,8 @@
   },
   "stylus": {
     "repo": "ch3thanhs/stylus",
-    "stable": "v1.4.0",
-    "stable_date": "2026-08-05T17:32:27Z",
+    "stable": "v1.4.1",
+    "stable_date": "2026-08-28T12:07:51Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false

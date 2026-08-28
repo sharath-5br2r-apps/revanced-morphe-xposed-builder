@@ -15,19 +15,20 @@
     "repo-dlurl-filter": "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$",
     "repo-dlurl-release-name-filter": "^Beta v"
   },
-  "smart-launcher-6-morphe-hoodles-exp": {
-    "enabled": false,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "smart-launcher-6",
-    "rv-brand": "morphe-hoodles-exp",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
+  "fing-morphe-paresh-exp": {
+    "enabled": true,
+    "app-name": "fing",
+    "rv-brand": "morphe-paresh-exp",
     "version": "latest",
     "build-mode": "apk",
-    "arch": "all",
-    "pkg-name": "ginlemon.flowerfree",
-    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
+    "pkg-name": "com.overlook.android.fing",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://fing-network-tools.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fing-limited/fing-network-tools",
     "dpi": "nodpi anydpi auto",
-    "patches-source": "hoo-dles/morphe-patches"
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing",
+    "patches-source": "Paresh-Maheshwari/paresh-patches",
+    "patches-source-host": "gitlab",
+    "arch": "all"
   }
 }

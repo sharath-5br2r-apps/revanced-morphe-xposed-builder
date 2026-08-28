@@ -28,22 +28,5 @@
     "repo-dlurl": "https://github.com/brave/brave-browser/releases",
     "repo-dlurl-filter": "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$",
     "repo-dlurl-release-name-filter": "^Nightly v"
-  },
-  "1111-warp-morphe-rushiranpise-exp": {
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "1111-warp",
-    "rv-brand": "morphe-rushiranpise-exp",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone",
-    "version": "latest",
-    "custom-microg-patches": "'None'",
-    "build-mode": "apk",
-    "arch": "all",
-    "pkg-name": "com.cloudflare.onedotonedotonedotone",
-    "uptodown-dlurl": "https://1-1-1-1.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet",
-    "dpi": "nodpi anydpi auto",
-    "patches-source": "rushiranpise/morphe-patches",
-    "apkmirror-exampls-url": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
   }
 }
