@@ -3629,8 +3629,14 @@ build_rv() {
 		if [ -f "$all_apk" ]; then
 			stock_apk="$all_apk"
 		elif [ ! -f "$stock_apk" ]; then
-			epr "Stock APK for '${table}' (${arch_f}) was not downloaded, skipping build for ${arch_f}."
-			return 1
+			local found_arch_apk=""
+			found_arch_apk=$(find "$apk_cache_dir" "$apk_dl_dir" -name "${pkg_name}-*-${arch_f}.apk" -o -name "${pkg_name}-*-all.apk" 2>/dev/null | head -1 || true)
+			if [ -n "$found_arch_apk" ] && [ -f "$found_arch_apk" ]; then
+				stock_apk="$found_arch_apk"
+			else
+				epr "Stock APK for '${table}' (${arch_f}) was not downloaded, skipping build for ${arch_f}."
+				return 1
+			fi
 		fi
 
 		for build_mode in "${build_mode_arr[@]}"; do
