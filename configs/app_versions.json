@@ -158,5 +158,35 @@
       "amazon-shopping-morphe-rushiranpise-exp"
     ],
     "version": "32.13.0.100"
+  },
+  "XRecorder": {
+    "keys": [
+      "xrecorder-morphe-hoodles-exp"
+    ],
+    "version": ""
+  },
+  "Smart Launcher 6": {
+    "keys": [
+      "smart-launcher-6-morphe-hoodles-exp"
+    ],
+    "version": ""
+  },
+  "Windscribe": {
+    "keys": [
+      "windscribe-vpn-morphe-rushiranpise-exp"
+    ],
+    "version": ""
+  },
+  "1.1.1.1 WARP": {
+    "keys": [
+      "1111-warp-morphe-rushiranpise-exp"
+    ],
+    "version": ""
+  },
+  "AdGuard": {
+    "keys": [
+      "adguard-morphe-rushiranpise-exp"
+    ],
+    "version": ""
   }
 }
