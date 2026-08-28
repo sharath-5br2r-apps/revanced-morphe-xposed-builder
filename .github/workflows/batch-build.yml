@@ -12,29 +12,14 @@ on:
         options:
           - "latest"
           - "absolutelatest"
-      mode:
-        description: "Execution mode"
-        required: false
-        type: choice
-        default: "Default"
-        options:
-          - "Default"
-          - "Build Only"
-
+          
 concurrency:
   group: ci
   cancel-in-progress: false
 
 jobs:
-  update_versions:
-    uses: ./.github/workflows/ci.yml
-    with:
-      mode: "Update Versions Only"
-    secrets: inherit
-
   prepare_context:
-    needs: update_versions
-    if: ${{ !cancelled() && inputs.mode != 'Update Versions Only' }}
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     outputs:
       next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -49,8 +34,8 @@ jobs:
         run: bash .github/scripts/build_resolve_version.sh
 
   build_batch:
-    needs: [update_versions, prepare_context]
-    if: ${{ !cancelled() && inputs.mode != 'Update Versions Only' && needs.prepare_context.result == 'success' }}
+    needs: [prepare_context]
+    if: ${{ !cancelled() && needs.prepare_context.result == 'success' }}
     strategy:
       fail-fast: false
       matrix:
@@ -133,13 +118,13 @@ jobs:
           fi
 
   trigger_cleanup:
-    needs: [update_versions, build_batch, aggregate_logs]
+    needs: [build_batch, aggregate_logs]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [update_versions, build_batch, aggregate_logs, trigger_cleanup]
+    needs: [build_batch, aggregate_logs, trigger_cleanup]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
