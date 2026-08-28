@@ -20,8 +20,8 @@ fi
 echo "[+] Found ${#RELEASES[@]} releases to delete."
 
 for tag in "${RELEASES[@]}"; do
-    echo "[+] Deleting release and tag: $tag..."
-    gh release delete "$tag" --yes --cleanup-tag || true
+    echo "[+] Deleting release: $tag..."
+    gh release delete "$tag" --yes || true
 done
 
 echo "[+] All releases deleted successfully!"
