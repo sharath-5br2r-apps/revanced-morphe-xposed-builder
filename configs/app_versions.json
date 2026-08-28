@@ -71,7 +71,7 @@
       "brave-beta-morphe-dh6k-arm-v7a",
       "brave-beta-morphe-dh6k-x86_64"
     ],
-    "version": "1.95.89"
+    "version": "1.95.92"
   },
   "Brave Nightly": {
     "keys": [
@@ -79,7 +79,7 @@
       "brave-nightly-morphe-dh6k-arm-v7a",
       "brave-nightly-morphe-dh6k-x86_64"
     ],
-    "version": "1.95.89"
+    "version": "1.95.92"
   },
   "PC Remote": {
     "keys": [
@@ -91,7 +91,7 @@
     "keys": [
       "amazon-india-morphe-rushiranpise-exp"
     ],
-    "version": "32.15.0.300"
+    "version": "32.16.2.300"
   },
   "GitHub": {
     "keys": [
@@ -171,30 +171,30 @@
     "keys": [
       "xrecorder-morphe-hoodles-exp"
     ],
-    "version": ""
+    "version": "2.5.4.1"
   },
   "Smart Launcher 6": {
     "keys": [
       "smart-launcher-6-morphe-hoodles-exp"
     ],
-    "version": ""
+    "version": "6.6 build 017"
   },
   "Windscribe": {
     "keys": [
       "windscribe-vpn-morphe-rushiranpise-exp"
     ],
-    "version": ""
+    "version": "4.2.2328"
   },
   "1.1.1.1 WARP": {
     "keys": [
       "1111-warp-morphe-rushiranpise-exp"
     ],
-    "version": ""
+    "version": "6.38.9"
   },
   "AdGuard": {
     "keys": [
       "adguard-morphe-rushiranpise-exp"
     ],
-    "version": ""
+    "version": "4.13.2"
   }
 }
