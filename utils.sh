@@ -3470,10 +3470,19 @@ build_rv() {
 	local primary_arch="${arch_list[0]// /}"
 	local check_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${primary_arch}.apk"
 	local check_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
-	local stock_apk="$check_stock_apk"
+	local stock_apk=""
 	[ -f "$check_all_apk" ] && stock_apk="$check_all_apk"
+	if [ -z "$stock_apk" ]; then
+		for a_check in "${arch_list[@]}"; do
+			local a_check_f="${a_check// /}"
+			if [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-${a_check_f}.apk" ]; then
+				stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${a_check_f}.apk"
+				break
+			fi
+		done
+	fi
 
-	if [ ! -f "$stock_apk" ]; then
+	if [ -z "$stock_apk" ] || [ ! -f "$stock_apk" ]; then
 		# If the APK version was updated dynamically during download (e.g. 3.0.469 -> 3.0.469.1947), find any downloaded file matching the package
 		local found_any
 		found_any=$(ls -1 "${apk_cache_dir}/${pkg_name}"-*.apk 2>/dev/null | head -n1 || true)
