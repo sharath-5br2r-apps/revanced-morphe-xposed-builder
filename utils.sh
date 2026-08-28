@@ -3623,7 +3623,13 @@ build_rv() {
 			local found_any_stock
 			found_any_stock=$(find "$apk_cache_dir" "$apk_dl_dir" -name "${pkg_name}-${version_f}-*.apk" -type f 2>/dev/null | head -1)
 			[ -z "$found_any_stock" ] && found_any_stock=$(find "$apk_cache_dir" "$apk_dl_dir" -name "${pkg_name}-*.apk" -type f 2>/dev/null | head -1)
-			[ -n "$found_any_stock" ] && stock_apk="$found_any_stock"
+			if [ -n "$found_any_stock" ]; then
+				pr "Arch ${arch_f} stock APK not found for '${table}', falling back to available stock APK: ${found_any_stock}"
+				stock_apk="$found_any_stock"
+			else
+				epr "No stock APK available for '${table}' (${arch_f}), skipping arch build."
+				return 1
+			fi
 		fi
 
 		for build_mode in "${build_mode_arr[@]}"; do
