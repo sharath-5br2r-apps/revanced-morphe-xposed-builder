@@ -97,9 +97,8 @@ jobs:
         uses: actions/cache@v6
         with:
           path: temp/apks
-          key: apks-v4-${{ inputs.config_file }}-${{ hashFiles(inputs.config_file, 'configs/app_versions.json') }}
+          key: apks-v4-${{ hashFiles(inputs.config_file, 'configs/app_versions.json') }}
           restore-keys: |
-            apks-v4-${{ inputs.config_file }}-
             apks-v4-
 
       - name: Remove specific APKs from cache
