@@ -66,11 +66,19 @@
     "version": "1.94.117"
   },
   "Brave Beta": {
-    "keys": [],
+    "keys": [
+      "brave-beta-morphe-dh6k-arm64-v8a",
+      "brave-beta-morphe-dh6k-arm-v7a",
+      "brave-beta-morphe-dh6k-x86_64"
+    ],
     "version": "1.95.89"
   },
   "Brave Nightly": {
-    "keys": [],
+    "keys": [
+      "brave-nightly-morphe-dh6k-arm64-v8a",
+      "brave-nightly-morphe-dh6k-arm-v7a",
+      "brave-nightly-morphe-dh6k-x86_64"
+    ],
     "version": "1.95.89"
   },
   "PC Remote": {
