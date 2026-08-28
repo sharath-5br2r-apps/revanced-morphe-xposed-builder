@@ -3,7 +3,7 @@ run-name: "CI Run [Mode: ${{ inputs.mode || 'Scheduled/Default' }}]"
 permissions: write-all
 on:
   schedule:
-    - cron: "0 0/2 * * *" # Every 2 hours
+    - cron: "35 1/2 * * *" # Every 2 hours
   workflow_call:
     inputs:
       mode:
