@@ -1,18 +1,1 @@
-{
-  "patches-version": "absolutelatest",
-  "enable-module-update": true,
-  "brave-nightly-morphe-dh6k-arm-v7a": {
-    "enabled": true,
-    "app-name": "brave-nightly",
-    "rv-brand": "morphe-dh6k",
-    "build-mode": "apk",
-    "arch": "arm-v7a",
-    "pkg-name": "com.brave.browser_nightly",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "dh6k/morphe-patches",
-    "patcher-args": "--continue-on-error",
-    "repo-dlurl": "https://github.com/brave/brave-browser/releases",
-    "repo-dlurl-filter": "(BraveMonoarm|MonoArm)\\.apk$",
-    "repo-dlurl-release-name-filter": "^Nightly v"
-  }
-}
+{}

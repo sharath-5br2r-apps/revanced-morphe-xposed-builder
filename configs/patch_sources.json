@@ -19,17 +19,17 @@
   "anddea": {
     "repo": "anddea/revanced-patches",
     "stable": "v4.2.0",
-    "prerelease": "v4.3.0-dev.3",
+    "prerelease": "v4.3.0-dev.4",
     "blocked": false,
     "stable_date": "2026-08-07T15:03:16Z",
-    "pre_date": "2026-08-28T12:15:38Z"
+    "pre_date": "2026-08-28T17:59:02Z"
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.30.0",
+    "stable": "v1.30.1",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-08-27T01:57:48Z",
+    "stable_date": "2026-08-28T20:26:32Z",
     "pre_date": ""
   },
   "binarymend": {
@@ -121,10 +121,10 @@
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
     "stable": "v1.42.0",
-    "prerelease": "v1.42.1-dev.1",
+    "prerelease": "v1.43.0-dev.1",
     "blocked": false,
     "stable_date": "2026-08-27T20:41:50Z",
-    "pre_date": "2026-08-28T05:26:49Z"
+    "pre_date": "2026-08-28T18:07:48Z"
   },
   "hoomans": {
     "repo": "arandomhooman/hoomans-morphe-patches",
