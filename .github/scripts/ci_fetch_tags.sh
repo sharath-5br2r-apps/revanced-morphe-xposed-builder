@@ -68,11 +68,6 @@ while read -r id repo host host_instance enabled enabledStable enabledDev; do
       stable=$(echo "$stable_obj" | jq -r '.tag_name // ""')
       pre=$(echo "$pre_obj" | jq -r '.tag_name // ""')
       pre_date=$(echo "$pre_obj" | jq -r '.released_at // .created_at // ""')
-
-      if [ -z "$pre" ] && [ -n "$stable" ]; then
-        pre="$stable"
-        pre_date="$stable_date"
-      fi
     else
       stable_obj=$(echo "$api_response" | jq -c '(map(select(.prerelease == false and .tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // "") | reverse | .[0] // empty)')
       stable_date=$(echo "$stable_obj" | jq -r '.published_at // .created_at // ""')
@@ -82,11 +77,6 @@ while read -r id repo host host_instance enabled enabledStable enabledDev; do
       stable=$(echo "$stable_obj" | jq -r '.tag_name // ""')
       pre=$(echo "$pre_obj" | jq -r '.tag_name // ""')
       pre_date=$(echo "$pre_obj" | jq -r '.published_at // .created_at // ""')
-
-      if [ -z "$pre" ] && [ -n "$stable" ]; then
-        pre="$stable"
-        pre_date="$stable_date"
-      fi
     fi
 
     if [ -n "$stable" ]; then echo "Found stable: $stable"; fi

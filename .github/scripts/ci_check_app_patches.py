@@ -335,9 +335,7 @@ def run():
         
         # Determine if we need to check stable/dev
         check_stable = new_info.get('stable') != "" and new_info.get('stable') != old_info.get('stable')
-        dev_tag = new_info.get('prerelease') or new_info.get('stable')
-        old_dev_tag = old_info.get('prerelease') or old_info.get('stable')
-        check_dev = dev_tag != "" and dev_tag != old_dev_tag
+        check_dev = new_info.get('prerelease') != "" and new_info.get('prerelease') != old_info.get('prerelease')
         
         if new_info.get('enabled') is False:
             check_stable = False
@@ -363,7 +361,7 @@ def run():
             evaluate_repo_channel(repo_lower, repo, new_info.get('stable'), 'stable', new_info, hashes, active_stable, apps_stable, apps_dev, is_revanced_or_morphe)
             
         if check_dev:
-            evaluate_repo_channel(repo_lower, repo, dev_tag, 'dev', new_info, hashes, active_dev, apps_stable, apps_dev, is_revanced_or_morphe)
+            evaluate_repo_channel(repo_lower, repo, new_info.get('prerelease'), 'dev', new_info, hashes, active_dev, apps_stable, apps_dev, is_revanced_or_morphe)
 
     with open(hash_file, 'w') as f:
         json.dump(hashes, f, indent=2, sort_keys=True)
