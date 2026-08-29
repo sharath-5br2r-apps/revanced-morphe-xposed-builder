@@ -58,10 +58,10 @@
   },
   "byehi98": {
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.19.0",
-    "stable_date": "2026-08-26T11:20:55Z",
-    "prerelease": "v1.19.1-dev.1",
-    "pre_date": "2026-08-28T14:35:13Z",
+    "stable": "v1.20.0",
+    "stable_date": "2026-08-29T08:07:44Z",
+    "prerelease": "",
+    "pre_date": "",
     "blocked": false
   },
   "cryptomator": {
@@ -114,8 +114,8 @@
     "repo": "jasonwu1994/Gboard-patches",
     "stable": "v3.6.0",
     "stable_date": "2026-08-28T00:21:38Z",
-    "prerelease": "",
-    "pre_date": "",
+    "prerelease": "v3.7.0-dev.1",
+    "pre_date": "2026-08-29T06:46:53Z",
     "blocked": false
   },
   "hoodles": {
@@ -295,8 +295,8 @@
   },
   "stylus": {
     "repo": "ch3thanhs/stylus",
-    "stable": "v1.4.1",
-    "stable_date": "2026-08-28T12:07:51Z",
+    "stable": "v1.5.0",
+    "stable_date": "2026-08-29T03:28:37Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false

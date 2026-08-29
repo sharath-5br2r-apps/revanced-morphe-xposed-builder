@@ -1,22 +1,37 @@
 {
   "patches-version": "latest",
   "enable-module-update": true,
-  "amazon-shopping-morphe-rushiranpise-exp": {
+  "github-morphe-hoodles-stylus-exp": {
     "enabled": true,
-    "app-name": "amazon-shopping",
-    "rv-brand": "morphe-rushiranpise-exp",
+    "app-name": "github",
+    "rv-brand": "morphe-hoodles-stylus-exp",
     "build-mode": "apk",
-    "pkg-name": "com.amazon.mShop.android.shopping",
+    "arch": "all",
+    "pkg-name": "com.github.android",
     "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://amazon-shopping.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/",
-    "dpi": "nodpi anydpi auto",
-    "patches-source": "rushiranpise/morphe-patches",
-    "included-patches": "'Dark Mode' 'Open Links in Browser'",
-    "excluded-patches": "'Hide Rufus Tab'",
-    "custom-microg-patches": "'None'",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android",
+    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
+    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' ",
+    "dpi": "480-640dpi",
+    "version": "latest"
+  },
+  "sdmaid-morphe-paresh-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "sdmaid",
+    "rv-brand": "morphe-paresh-exp",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse",
     "version": "latest",
-    "arch": "all arm64-v8a arm-v7a"
+    "build-mode": "apk",
+    "arch": "all",
+    "pkg-name": "eu.darken.sdmse",
+    "uptodown-dlurl": "https://sd-maid-se.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release",
+    "dpi": "nodpi anydpi auto",
+    "patches-source": "Paresh-Maheshwari/paresh-patches",
+    "patches-source-host": "gitlab"
   }
 }
