@@ -103,8 +103,8 @@ with open('config.stable.json', 'w', encoding='utf-8') as out:
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or ($activeApps[0] | index($k)) then . else empty end
+        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) then . else empty end
       else empty end
     ) |
     { "patches-version": "latest", "enable-module-update": true } + .
@@ -130,13 +130,11 @@ with open('config.dev.json', 'w', encoding='utf-8') as out:
     json.dump(merged, out, indent=2)
 "
 
-  jq --slurpfile active active.prerelease.json --slurpfile activePatchApps active_patch_apps.dev.json '
+  jq --slurpfile activePatchApps active_patch_apps.dev.json '
     with_entries(
       if .value | type == "object" then
         .key as $k |
-        .value as $app |
-        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        if (($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k)) then . else empty end
+        if ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
     { "patches-version": "dev", "enable-module-update": false } + .
