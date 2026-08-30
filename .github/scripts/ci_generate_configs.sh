@@ -82,21 +82,7 @@ split_config_json() {
 }
 
 if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
-  python3 -c "
-import glob, os, tomllib, json
-
-stable_configs = [f for f in sorted(glob.glob('configs/patches/*.toml')) if not f.endswith('.dev.toml')]
-merged = {}
-for f in stable_configs:
-    with open(f, 'rb') as fp:
-        data = tomllib.load(fp)
-        for k, v in data.items():
-            if isinstance(v, dict):
-                merged[k] = v
-
-with open('config.stable.json', 'w', encoding='utf-8') as out:
-    json.dump(merged, out, indent=2)
-"
+  python3 .github/scripts/merge_toml_configs.py .dev.toml config.stable.json
 
   jq --slurpfile active active.stable.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.stable.json '
     with_entries(
@@ -114,21 +100,7 @@ with open('config.stable.json', 'w', encoding='utf-8') as out:
 fi
 
 if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
-  python3 -c "
-import glob, os, tomllib, json
-
-dev_configs = [f for f in sorted(glob.glob('configs/patches/*.toml')) if not f.endswith('.stable.toml')]
-merged = {}
-for f in dev_configs:
-    with open(f, 'rb') as fp:
-        data = tomllib.load(fp)
-        for k, v in data.items():
-            if isinstance(v, dict):
-                merged[k] = v
-
-with open('config.dev.json', 'w', encoding='utf-8') as out:
-    json.dump(merged, out, indent=2)
-"
+  python3 .github/scripts/merge_toml_configs.py .stable.toml config.dev.json
 
   jq --slurpfile activePatchApps active_patch_apps.dev.json '
     with_entries(
@@ -144,21 +116,7 @@ with open('config.dev.json', 'w', encoding='utf-8') as out:
 fi
 
 if [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
-  python3 -c "
-import glob, os, tomllib, json
-
-dev_configs = [f for f in sorted(glob.glob('configs/patches/*.toml')) if not f.endswith('.stable.toml')]
-merged = {}
-for f in dev_configs:
-    with open(f, 'rb') as fp:
-        data = tomllib.load(fp)
-        for k, v in data.items():
-            if isinstance(v, dict):
-                merged[k] = v
-
-with open('config.latest.json', 'w', encoding='utf-8') as out:
-    json.dump(merged, out, indent=2)
-"
+  python3 .github/scripts/merge_toml_configs.py .stable.toml config.latest.json
 
   jq --slurpfile activeApps active_apps.json '
     with_entries(
