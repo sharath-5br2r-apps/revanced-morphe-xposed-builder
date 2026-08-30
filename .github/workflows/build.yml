@@ -170,8 +170,11 @@ jobs:
         run: |
           tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
           if [ -f "build.json" ]; then
-            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" --notes "" || true
+            notes_arg=("--notes" "")
+            [ -f "build.md" ] && notes_arg=("--notes-file" "build.md")
+            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             gh release upload "$tag" build.json --clobber 2>/dev/null || true
+            [ -f "build.md" ] && gh release upload "$tag" build.md --clobber 2>/dev/null || true
           fi
 
       - name: Upload part build logs artifact

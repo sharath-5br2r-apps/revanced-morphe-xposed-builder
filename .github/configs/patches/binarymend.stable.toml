@@ -45,7 +45,7 @@ github-dlurl = "https://github.com/nullcpy/apks/releases/tag/app.symfonik.music.
 
 [calcnote-morphe]
 enabled = true
-pkg-name = "com.appumstudios.calcnote"
+pkg-name = "com.burton999.notecal"
 app-name = "calcnote"
 rv-brand = "morphe"
 build-mode = "apk"
