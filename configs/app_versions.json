@@ -201,7 +201,7 @@
     "keys": [
       "pinterest-morphe-browzomje-exp"
     ],
-    "version": "latest"
+    "version": "14.33.0"
   },
   "Inshorts": {
     "keys": [
@@ -219,7 +219,7 @@
     "keys": [
       "doc-scanner-morphe-paresh-exp"
     ],
-    "version": "latest"
+    "version": "6.9.9"
   },
   "MacroDroid": {
     "keys": [
@@ -231,6 +231,6 @@
     "keys": [
       "mx-player-pro-morphe-paresh-exp"
     ],
-    "version": "latest"
+    "version": "1.93.4"
   }
 }

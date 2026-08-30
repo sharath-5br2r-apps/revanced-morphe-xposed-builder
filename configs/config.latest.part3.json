@@ -1,1 +1,20 @@
-{}
+{
+  "patches-version": "absolutelatest",
+  "enable-module-update": true,
+  "doc-scanner-morphe-paresh-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "doc-scanner",
+    "rv-brand": "morphe-paresh-exp",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.handy.scanner.doc",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": "all arm64-v8a arm-v7a x86_64",
+    "pkg-name": "com.handy.scanner.doc",
+    "uptodown-dlurl": "https://doc-scanner.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/doc-scanner-llc/document-scanner-pdf-creator",
+    "dpi": "nodpi anydpi auto",
+    "patches-source": "Paresh-Maheshwari/paresh-patches",
+    "patches-source-host": "gitlab"
+  }
+}
