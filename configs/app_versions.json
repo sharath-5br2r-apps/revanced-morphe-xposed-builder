@@ -196,5 +196,41 @@
       "adguard-morphe-rushiranpise-exp"
     ],
     "version": "4.13.2"
+  },
+  "Pinterest": {
+    "keys": [
+      "pinterest-morphe-browzomje-exp"
+    ],
+    "version": "latest"
+  },
+  "Inshorts": {
+    "keys": [
+      "inshorts-morphe-xtra-exp"
+    ],
+    "version": "latest"
+  },
+  "Cricbuzz": {
+    "keys": [
+      "cricbuzz-morphe-paresh-exp"
+    ],
+    "version": "latest"
+  },
+  "Doc Scanner": {
+    "keys": [
+      "doc-scanner-morphe-paresh-exp"
+    ],
+    "version": "latest"
+  },
+  "MacroDroid": {
+    "keys": [
+      "macrodroid-morphe-rushiranpise-exp"
+    ],
+    "version": "latest"
+  },
+  "MX Player Pro": {
+    "keys": [
+      "mx-player-pro-morphe-paresh-exp"
+    ],
+    "version": "latest"
   }
 }

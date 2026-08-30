@@ -1,39 +1,22 @@
 {
   "_check_only_listed": true,
-  "Pinterest": {
+  "Discord": {
     "keys": [
-      "pinterest-morphe-browzomje-exp"
+      "discord-xposed"
     ],
-    "version": "latest"
+    "version": "342.16 - Stable"
   },
-  "Inshorts": {
+  "Google Photos": {
     "keys": [
-      "inshorts-morphe-xtra-exp"
+      "google-photos-morphe"
     ],
-    "version": "latest"
+    "version": "7.90.0.970693120"
   },
-  "Cricbuzz": {
+  "Instagram": {
     "keys": [
-      "cricbuzz-morphe-paresh-exp"
+      "instagram-instafel",
+      "instagram-instafel-clone"
     ],
-    "version": "latest"
-  },
-  "Doc Scanner": {
-    "keys": [
-      "doc-scanner-morphe-paresh-exp"
-    ],
-    "version": "latest"
-  },
-  "MacroDroid": {
-    "keys": [
-      "macrodroid-morphe-rushiranpise-exp"
-    ],
-    "version": "latest"
-  },
-  "MX Player Pro": {
-    "keys": [
-      "mx-player-pro-morphe-paresh-exp"
-    ],
-    "version": "latest"
+    "version": "444.0.0.46.85"
   }
 }
