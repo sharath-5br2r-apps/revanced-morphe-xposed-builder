@@ -1,26 +1,20 @@
-patches-version = "latest"
+# patches-version = "dev"
 # cli-version = "dev"
 enable-module-update = true
 
-[moviebox-morphe]
+[lightroom-morphe]
 enabled = true
-pkg-name = "com.community.oneroom"
-app-name = "moviebox"
+pkg-name = "com.adobe.lrmobile"
+app-name = "lightroom"
 rv-brand = "morphe"
 build-mode = "apk"
-arch = "both"
-patches-source = "rushiranpise/morphe-patches"
-patches-version = "dev"
+arch = "arm64-v8a"
+patches-source = "hoo-dles/morphe-patches"
 cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://com-community-oneroom.en.uptodown.com/android"
-# apkmirror-dlurl = ""
-# dpi = "nodpi anydpi auto"
-# archive-dlurl = ""
-github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.community.oneroom"
-
-
-
-
+uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/lightroom/"
+archive-dlurl = "https://archive.org/download/geologically/apks/com.adobe.lrmobile"
+github-dlurl = "https://github.com/nullcpy/apks/releases/tag/com.adobe.lrmobile"
 
 
 

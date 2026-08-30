@@ -452,7 +452,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.apps.magazines"
   },
   "trakt-morphe": {
-    "enabled": true,
+    "enabled": false,
     "pkg-name": "tv.trakt.trakt",
     "app-name": "trakt",
     "rv-brand": "morphe",
@@ -524,23 +524,6 @@
     "apkpure-dlurl": "https://apkpure.com/kinestop-car-sickness-aid/com.urbandroid.kinestop",
     "apkcombo-dlurl": "https://apkcombo.com/kinestop-car-sickness-aid/com.urbandroid.kinestop",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.urbandroid.kinestop"
-  },
-  "hermit-morphe": {
-    "enabled": false,
-    "pkg-name": "com.chimbori.hermitcrab",
-    "app-name": "hermit",
-    "rv-brand": "morphe",
-    "patch-folder": "hermit",
-    "build-mode": "apk",
-    "arch": "both",
-    "patches-source": "kiraio-moe/Lain-Patches",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://hermit.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/chimbori/hermit-lite-apps-browser",
-    "dpi": "nodpi anydpi auto",
-    "apkpure-dlurl": "https://apkpure.com/hermit-%E2%80%94-lite-apps-browser/com.chimbori.hermitcrab",
-    "apkcombo-dlurl": "https://apkcombo.com/hermit-lite-apps-browser/com.chimbori.hermitcrab",
-    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.chimbori.hermitcrab"
   },
   "facebook-morphe": {
     "enabled": false,
@@ -622,7 +605,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.apps.youtube.music"
   },
   "google-photos-morphe": {
-    "enabled": true,
+    "enabled": false,
     "pkg-name": "com.google.android.apps.photos",
     "app-name": "google-photos",
     "rv-brand": "morphe",
@@ -803,8 +786,22 @@
     "apkcombo-dlurl": "https://apkcombo.com/brave-nightly/com.brave.browser_nightly",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.brave.browser_nightly"
   },
-  "soundcloud-morphe": {
+  "titanium-browser-morphe": {
     "enabled": false,
+    "pkg-name": "io.github.jqssun.helium",
+    "app-name": "titanium-browser",
+    "rv-brand": "morphe",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "dh6k/morphe-patches",
+    "included-patches": "'Keep Helium Child Processes Alive'",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "apkpure-dlurl": "https://apkpure.com/helium-browser/io.github.jqssun.helium",
+    "apkcombo-dlurl": "https://apkcombo.com/titanium-browser/io.github.jqssun.helium",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/io.github.jqssun.helium"
+  },
+  "soundcloud-morphe": {
+    "enabled": true,
     "pkg-name": "com.soundcloud.android",
     "app-name": "soundcloud",
     "rv-brand": "morphe",
@@ -819,7 +816,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.soundcloud.android"
   },
   "duolingo-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.duolingo",
     "app-name": "duolingo",
     "rv-brand": "morphe",
@@ -833,7 +830,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.duolingo"
   },
   "wps-office-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "cn.wps.moffice_eng",
     "app-name": "wps-office",
     "rv-brand": "morphe",
@@ -848,7 +845,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/cn.wps.moffice_eng"
   },
   "wallcraft-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.wallpaperscraft.wallpaper",
     "app-name": "wallcraft",
     "rv-brand": "morphe",
@@ -862,7 +859,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.wallpaperscraft.wallpaper"
   },
   "solid-explorer-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "pl.solidexplorer2",
     "app-name": "solid-explorer",
     "rv-brand": "morphe",
@@ -876,7 +873,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/pl.solidexplorer2"
   },
   "icon-packer-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "cn.ommiao.iconpacker",
     "app-name": "icon-packer",
     "rv-brand": "morphe",
@@ -890,7 +887,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/cn.ommiao.iconpacker"
   },
   "podcast-addict-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.bambuna.podcastaddict",
     "app-name": "podcast-addict",
     "rv-brand": "morphe",
@@ -905,7 +902,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.bambuna.podcastaddict"
   },
   "smart-launcher-6-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "ginlemon.flowerfree",
     "app-name": "smart-launcher-6",
     "rv-brand": "morphe",
@@ -922,7 +919,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/ginlemon.flowerfree"
   },
   "merriam-webster-dictionary-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.merriamwebster",
     "app-name": "merriam-webster-dictionary",
     "rv-brand": "morphe",
@@ -938,7 +935,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.merriamwebster"
   },
   "pandora-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.pandora.android",
     "app-name": "pandora",
     "rv-brand": "morphe",
@@ -951,7 +948,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.pandora.android"
   },
   "xrecorder-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "videoeditor.videorecorder.screenrecorder",
     "app-name": "xrecorder",
     "rv-brand": "morphe",
@@ -965,7 +962,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/videoeditor.videorecorder.screenrecorder"
   },
   "adguard-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.adguard.android",
     "app-name": "adguard",
     "rv-brand": "morphe",
@@ -979,7 +976,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.adguard.android"
   },
   "nova-launcher-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.teslacoilsw.launcher",
     "app-name": "nova-launcher",
     "patch-folder": "nova",
@@ -995,7 +992,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.teslacoilsw.launcher"
   },
   "ventusky-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "cz.ackee.ventusky",
     "app-name": "ventusky",
     "rv-brand": "morphe",
@@ -1010,7 +1007,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/cz.ackee.ventusky"
   },
   "camscanner-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.intsig.camscanner",
     "app-name": "camscanner",
     "rv-brand": "morphe",
@@ -1026,7 +1023,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.intsig.camscanner"
   },
   "niagara-launcher-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "bitpit.launcher",
     "app-name": "niagara-launcher",
     "patch-folder": "niagara",
@@ -1043,7 +1040,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/bitpit.launcher"
   },
   "github-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.github.android",
     "app-name": "github",
     "rv-brand": "morphe",
@@ -1058,7 +1055,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.github.android"
   },
   "proton-vpn-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "ch.protonvpn.android",
     "app-name": "proton-vpn",
     "rv-brand": "morphe",
@@ -1073,7 +1070,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/ch.protonvpn.android"
   },
   "hellochinese-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.hellochinese",
     "app-name": "hellochinese",
     "rv-brand": "morphe",
@@ -1087,7 +1084,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.hellochinese"
   },
   "myfitnesspal-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.myfitnesspal.android",
     "app-name": "myfitnesspal",
     "rv-brand": "morphe",
@@ -1101,7 +1098,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.myfitnesspal.android"
   },
   "prime-video-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.amazon.avod.thirdpartyclient",
     "app-name": "prime-video",
     "rv-brand": "morphe",
@@ -1117,7 +1114,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.amazon.avod.thirdpartyclient"
   },
   "goodreads-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.goodreads",
     "app-name": "goodreads",
     "rv-brand": "morphe",
@@ -1131,7 +1128,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.goodreads"
   },
   "lightroom-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.adobe.lrmobile",
     "app-name": "lightroom",
     "rv-brand": "morphe",
@@ -1390,7 +1387,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.instagram.android"
   },
   "gboard-morphe": {
-    "enabled": true,
+    "enabled": false,
     "pkg-name": "com.google.android.inputmethod.latin",
     "app-name": "gboard",
     "rv-brand": "morphe",
@@ -1406,7 +1403,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.google.android.inputmethod.latin"
   },
   "gboard-morphe-clone": {
-    "enabled": true,
+    "enabled": false,
     "pkg-name": "com.google.android.inputmethod.latin",
     "app-name": "gboard",
     "rv-brand": "morphe-clone",
@@ -1453,7 +1450,7 @@
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.soundcloud.android"
   },
   "brave-browser-morphe": {
-    "enabled": false,
+    "enabled": true,
     "pkg-name": "com.brave.browser",
     "app-name": "brave-browser",
     "rv-brand": "morphe",
@@ -1467,6 +1464,53 @@
     "apkpure-dlurl": "https://apkpure.com/brave-browser-private-ads-block/com.brave.browser",
     "apkcombo-dlurl": "https://apkcombo.com/brave-browser/com.brave.browser",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.brave.browser"
+  },
+  "drofus-morphe": {
+    "enabled": false,
+    "pkg-name": "com.mixapplications.rufus",
+    "app-name": "drofus",
+    "rv-brand": "morphe",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "kiraio-moe/Lain-Patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://rufus-unofficial.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mixapplications/drofus-iso2usb/",
+    "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/rufus-unofficial/com.mixapplications.rufus",
+    "apkcombo-dlurl": "https://apkcombo.com/drofus-iso-2-usb/com.mixapplications.rufus",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.mixapplications.rufus"
+  },
+  "hermit-morphe": {
+    "enabled": false,
+    "pkg-name": "com.chimbori.hermitcrab",
+    "app-name": "hermit",
+    "rv-brand": "morphe",
+    "patch-folder": "hermit",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "kiraio-moe/Lain-Patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://hermit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/chimbori/hermit-lite-apps-browser",
+    "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/hermit-%E2%80%94-lite-apps-browser/com.chimbori.hermitcrab",
+    "apkcombo-dlurl": "https://apkcombo.com/hermit-lite-apps-browser/com.chimbori.hermitcrab",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.chimbori.hermitcrab"
+  },
+  "nuvio-morphe-androidtv": {
+    "enabled": false,
+    "pkg-name": "com.nuvio.tv",
+    "app-name": "nuvio",
+    "rv-brand": "morphe-androidtv",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "liongalahad/nuviotv-morphe-patches",
+    "included-patches": "'Allow Importing Subs from Local Storage' 'Library Mode Focus Fix' 'Local Downloads' 'Local Media' 'Mark SDH Subtitles' 'Random Episode' 'Remove SDH Annotations' 'Restore Source Selection'",
+    "excluded-patches": "'Side-by-side installation'",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "dpi": "nodpi anydpi auto",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.nuvio.tv"
   },
   "youtube-morphe-nord": {
     "enabled": false,
@@ -2257,5 +2301,85 @@
     "apkpure-dlurl": "https://apkpure.com/amazon-india-shop-pay-minitv/in.amazon.mShop.android.shopping",
     "apkcombo-dlurl": "https://apkcombo.com/amazon-india-shopping/in.amazon.mShop.android.shopping",
     "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/in.amazon.mShop.android.shopping"
+  },
+  "calm-morphe": {
+    "enabled": false,
+    "pkg-name": "com.calm.android",
+    "app-name": "calm",
+    "rv-brand": "morphe",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "rushiranpise/morphe-patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://calm.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/calm-com-inc/calm-meditate-sleep-relax/",
+    "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/calm-sleep-meditate-relax/com.calm.android",
+    "apkcombo-dlurl": "https://apkcombo.com/calm/com.calm.android",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.calm.android"
+  },
+  "bluetooth-keyboard-and-mouse-morphe": {
+    "enabled": false,
+    "pkg-name": "io.appground.blek",
+    "app-name": "bluetooth-keyboard-and-mouse",
+    "rv-brand": "morphe",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "rushiranpise/morphe-patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://bluetooth-keyboard-and-mouse.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard-mouse-2",
+    "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/bluetooth-keyboard-mouse/io.appground.blek",
+    "apkcombo-dlurl": "https://apkcombo.com/bluetooth-keyboard-mouse/io.appground.blek",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/io.appground.blek"
+  },
+  "swift-keyboard-morphe": {
+    "enabled": false,
+    "pkg-name": "com.touchtype.swiftkey",
+    "app-name": "swift-keyboard",
+    "rv-brand": "morphe",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "arandomhooman/hoomans-morphe-patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://swiftkey-keyboard.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/swiftkey/swiftkey-keyboard",
+    "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/microsoft-swiftkey-keyboard/com.touchtype.swiftkey",
+    "apkcombo-dlurl": "https://apkcombo.com/microsoft-swiftkey-ai-keyboard/com.touchtype.swiftkey",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.touchtype.swiftkey"
+  },
+  "macrodroid-morphe-alt": {
+    "enabled": false,
+    "pkg-name": "com.arlosoft.macrodroid",
+    "app-name": "macrodroid",
+    "rv-brand": "morphe-alt",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "rushiranpise/morphe-patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://macrodroid.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/",
+    "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/macrodroid-device-automation-app/com.arlosoft.macrodroid",
+    "apkcombo-dlurl": "https://apkcombo.com/macrodroid/com.arlosoft.macrodroid",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.arlosoft.macrodroid"
+  },
+  "send-files-to-tv-morphe": {
+    "enabled": false,
+    "pkg-name": "com.yablio.sendfilestotv",
+    "app-name": "send-files-to-tv",
+    "rv-brand": "morphe",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "rushiranpise/morphe-patches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://send-files-to-tv.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/yablio/send-files-to-tv/",
+    "dpi": "nodpi anydpi auto",
+    "apkpure-dlurl": "https://apkpure.com/send-files-to-tv-app/com.yablio.sendfilestotv",
+    "apkcombo-dlurl": "https://apkcombo.com/send-files-to-tv/com.yablio.sendfilestotv",
+    "github-dlurl": "https://github.com/nullcpy/apks/releases/tag/com.yablio.sendfilestotv"
   }
 }
