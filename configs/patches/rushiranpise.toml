@@ -328,3 +328,33 @@ uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
 dpi = "nodpi anydpi auto"
 patches-source = "rushiranpise/morphe-patches"
+
+# ── MacroDroid (morphe-rushiranpise) ──────────────────────────────────────────
+[macrodroid-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "macrodroid"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.arlosoft.macrodroid"
+uptodown-dlurl = "https://macrodroid-device-automation.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+[macrodroid-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "macrodroid"
+rv-brand = "morphe-rushiranpise-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.arlosoft.macrodroid"
+uptodown-dlurl = "https://macrodroid-device-automation.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"

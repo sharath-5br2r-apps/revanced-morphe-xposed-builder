@@ -144,3 +144,33 @@ apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-syste
 dpi = "nodpi anydpi auto"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
+
+# ── MX Player Pro (morphe-paresh) ─────────────────────────────────────────────
+[mx-player-pro-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "mx-player-pro"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.mxtech.videoplayer.pro"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-formerly-j2-interactive/mx-player-pro"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+[mx-player-pro-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "mx-player-pro"
+rv-brand = "morphe-paresh-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.mxtech.videoplayer.pro"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-formerly-j2-interactive/mx-player-pro"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
