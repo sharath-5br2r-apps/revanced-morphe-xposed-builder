@@ -50,7 +50,7 @@ jobs:
 
   aggregate_logs:
     needs: [prepare_context, build_batch]
-    if: ${{ always() && needs.build_batch.result != 'skipped' }}
+    if: ${{ !cancelled() && needs.build_batch.result != 'skipped' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
