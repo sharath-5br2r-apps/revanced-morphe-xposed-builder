@@ -1,5 +1,4 @@
 
-
 <div align="center"><h1><img src="https://raw.githubusercontent.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/a5af1123e55c63119c6b81be894602e2f032fe08/.github/assets/icon.png"> <img src="https://raw.githubusercontent.com/sharath-5br2r-apps/revanced-morphe-xposed-builder/a5af1123e55c63119c6b81be894602e2f032fe08/.github/assets/icon1.png"><br>ReVanced & Morphe Builder</h1></div>
 
 <p align="center"><b>Automatically builds and publishes APKs & Magisk/KernelSU Modules whenever new patches are released.</b></p>
@@ -49,6 +48,41 @@ Thank you to everyone in the open-source community who helps keep these projects
 
 ---
 
+## 🛠️ Local Building & Command Line Usage
+
+You can build APKs and Magisk/KSU modules locally on Android (Termux), Linux, or macOS.
+
+### Prerequisites
+- **Bash** (`bash` 4.4+)
+- **OpenJDK 21** (`java`)
+- **jq** (`jq`)
+- **Python 3** (`python3`)
+- **cURL** (`curl`)
+
+### Command Line Flags & Usage
+```bash
+./build.sh [config_file] [exclusive_apps] [--config-update] [clean]
+```
+
+- **Clean build artifacts**: `./build.sh clean`
+- **Update configurations**: `./build.sh --config-update`
+- **Build all stable apps**: `./build.sh configs/config.stable.updated.json`
+- **Build a specific app exclusively**: `./build.sh configs/config.stable.updated.json "YouTube"`
+
+### Optional Keystore Setup (`.env`)
+Create a `.env` file in the project root to sign APKs with a custom keystore:
+
+```bash
+KEYSTORE_BASE64="<base64_encoded_keystore>"
+KEYSTORE_PASSWORD="mysecretpassword"
+KEYSTORE_ALIAS="mykeyalias"
+KEYSTORE_KEY_PASSWORD="mykeypassword"
+```
+
+*If no `.env` or keystore environment variables are supplied, `utils.sh` automatically falls back to `.env.default` and uses the bundled debug keystore (`ks.keystore`). For complete configuration options, see [CONFIG.md](CONFIG.md).*
+
+---
+
 ## 💖 Credits & Acknowledgements
 
 This automated builder would not be possible without the incredible work and dedication of the open-source Android community. A massive thank you to:
@@ -70,5 +104,6 @@ This automated builder would not be possible without the incredible work and ded
   - **[revenge-mod](https://github.com/revenge-mod)** (Revenge Xposed)
   - **[Paresh-Maheshwari](https://gitlab.com/Paresh-Maheshwari)** (Paresh Patches)
   - **[inotia00](https://gitlab.com/inotia00)** (X-Shim)
+  - **[browzomje](https://github.com/browzomje)** (Browzomje Patches)
 
 _If you enjoy using these builds, please consider starring their upstream repositories and supporting the original patch developers!_
