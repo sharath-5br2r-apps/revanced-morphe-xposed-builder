@@ -1,20 +1,18 @@
 {
   "patches-version": "latest",
   "enable-module-update": true,
-  "doc-scanner-morphe-paresh-exp": {
+  "vector-morphe-byehi98": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "doc-scanner",
-    "rv-brand": "morphe-paresh-exp",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.handy.scanner.doc",
-    "version": "latest",
+    "app-name": "vector",
+    "rv-brand": "morphe-byehi98",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nekki.vector",
     "build-mode": "apk",
-    "arch": "all arm64-v8a arm-v7a x86_64",
-    "pkg-name": "com.handy.scanner.doc",
-    "uptodown-dlurl": "https://doc-scanner.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/doc-scanner-llc/document-scanner-pdf-creator",
+    "arch": "all",
+    "pkg-name": "com.nekki.vector",
+    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/",
     "dpi": "nodpi anydpi auto",
-    "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab"
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }
