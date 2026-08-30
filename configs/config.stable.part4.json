@@ -1,1 +1,62 @@
-{}
+{
+  "patches-version": "latest",
+  "enable-module-update": true,
+  "smash-hit-morphe-byehi98": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "smash-hit",
+    "rv-brand": "morphe-byehi98",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mediocre.smashhit",
+    "build-mode": "apk",
+    "arch": "all",
+    "pkg-name": "com.mediocre.smashhit",
+    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/",
+    "dpi": "nodpi anydpi auto",
+    "patches-source": "byehi98/okish-morphe-patches"
+  },
+  "prime-video-morphe-hoodles-exp": {
+    "enabled": true,
+    "app-name": "prime-video",
+    "rv-brand": "morphe-hoodles-exp",
+    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "build-mode": "apk",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient",
+    "version": "latest",
+    "arch": "arm64-v8a arm-v7a",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
+    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
+    "dpi": "nodpi anydpi auto",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "smart-launcher-6-morphe-hoodles-exp": {
+    "enabled": false,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "smart-launcher-6",
+    "rv-brand": "morphe-hoodles-exp",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": "all",
+    "pkg-name": "ginlemon.flowerfree",
+    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
+    "dpi": "nodpi anydpi auto",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "solid-explorer-morphe-hoodles": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "solid-explorer",
+    "rv-brand": "morphe-hoodles",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2",
+    "build-mode": "apk",
+    "arch": "all",
+    "pkg-name": "pl.solidexplorer2",
+    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager",
+    "dpi": "nodpi anydpi auto",
+    "patches-source": "hoo-dles/morphe-patches"
+  }
+}

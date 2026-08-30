@@ -26,10 +26,10 @@
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.30.1",
+    "stable": "v1.30.3",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-08-28T20:26:32Z",
+    "stable_date": "2026-08-29T16:47:02Z",
     "pre_date": ""
   },
   "binarymend": {
@@ -58,8 +58,8 @@
   },
   "byehi98": {
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.20.0",
-    "stable_date": "2026-08-29T08:07:44Z",
+    "stable": "v1.21.0",
+    "stable_date": "2026-08-30T06:23:42Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -73,10 +73,10 @@
   "devanced": {
     "repo": "RookieEnough/De-Vanced",
     "stable": "v1.2.2",
-    "prerelease": "v1.3.0-dev.4",
+    "prerelease": "v1.3.0-dev.5",
     "blocked": false,
     "stable_date": "2026-08-18T08:27:44Z",
-    "pre_date": "2026-08-27T11:37:03Z"
+    "pre_date": "2026-08-29T14:44:48Z"
   },
   "dh6k": {
     "repo": "dh6k/morphe-patches",
@@ -120,11 +120,11 @@
   },
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
-    "stable": "v1.42.0",
-    "prerelease": "v1.43.0-dev.1",
+    "stable": "v1.43.0",
+    "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-08-27T20:41:50Z",
-    "pre_date": "2026-08-28T18:07:48Z"
+    "stable_date": "2026-08-30T00:32:47Z",
+    "pre_date": ""
   },
   "hoomans": {
     "repo": "arandomhooman/hoomans-morphe-patches",
@@ -176,8 +176,8 @@
   },
   "kveld9": {
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.7.0",
-    "stable_date": "2026-08-27T21:17:46Z",
+    "stable": "v1.9.0",
+    "stable_date": "2026-08-29T23:57:10Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -193,10 +193,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.40.0",
-    "prerelease": "v1.41.0-dev.3",
+    "prerelease": "v1.41.0-dev.6",
     "blocked": false,
     "stable_date": "2026-08-24T11:45:33Z",
-    "pre_date": "2026-08-28T11:36:48Z"
+    "pre_date": "2026-08-30T07:42:07Z"
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
