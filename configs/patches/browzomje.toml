@@ -1,6 +1,7 @@
 enable-module-update = true
 patches-version = "absolutelatest"
 
+# ── Pinterest ─────────────────────────────────────────────────────────────────
 [pinterest-morphe-browzomje]
 enabled = true
 app-name = "pinterest"
@@ -30,6 +31,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest"
 dpi = "nodpi anydpi auto"
 patches-source = "browzomje/browzomje-patches"
 
+# ── Inshorts ──────────────────────────────────────────────────────────────────
 [inshorts-morphe-browzomje]
 enabled = true
 app-name = "inshorts"
@@ -59,6 +61,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts/news-in-60-words"
 dpi = "nodpi anydpi auto"
 patches-source = "browzomje/browzomje-patches"
 
+# ── Automate ──────────────────────────────────────────────────────────────────
 [automate-morphe-browzomje]
 enabled = true
 app-name = "automate"
@@ -73,21 +76,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/llama-lab/automate"
 dpi = "nodpi anydpi auto"
 patches-source = "browzomje/browzomje-patches"
 
-[automate-morphe-browzomje-exp]
-enabled = true
-app-name = "automate"
-rv-brand = "morphe-browzomje-exp"
-pkg-name = "com.llamalab.automate"
-build-mode = "apk"
-version = "latest"
-arch = "all arm64-v8a arm-v7a x86_64"
-cli-source = "MorpheApp/morphe-desktop"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.llamalab.automate"
-uptodown-dlurl = "https://automate.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/llama-lab/automate"
-dpi = "nodpi anydpi auto"
-patches-source = "browzomje/browzomje-patches"
-
+# ── AutoSync ──────────────────────────────────────────────────────────────────
 [autosync-morphe-browzomje]
 enabled = true
 app-name = "autosync"
@@ -102,21 +91,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/2ttf/autosync-for-google-drive"
 dpi = "nodpi anydpi auto"
 patches-source = "browzomje/browzomje-patches"
 
-[autosync-morphe-browzomje-exp]
-enabled = true
-app-name = "autosync"
-rv-brand = "morphe-browzomje-exp"
-pkg-name = "com.ttxapps.drivesync"
-build-mode = "apk"
-version = "latest"
-arch = "all arm64-v8a x86_64"
-cli-source = "MorpheApp/morphe-desktop"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.ttxapps.drivesync"
-uptodown-dlurl = "https://autosync-google-drive.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/2ttf/autosync-for-google-drive"
-dpi = "nodpi anydpi auto"
-patches-source = "browzomje/browzomje-patches"
-
+# ── Backdrops ─────────────────────────────────────────────────────────────────
 [backdrops-morphe-browzomje]
 enabled = true
 app-name = "backdrops"
@@ -131,21 +106,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/backdrops-beautiful-wallpapers/
 dpi = "nodpi anydpi auto"
 patches-source = "browzomje/browzomje-patches"
 
-[backdrops-morphe-browzomje-exp]
-enabled = true
-app-name = "backdrops"
-rv-brand = "morphe-browzomje-exp"
-pkg-name = "com.backdrops.wallpapers"
-build-mode = "apk"
-version = "latest"
-arch = "all arm64-v8a arm-v7a x86_64"
-cli-source = "MorpheApp/morphe-desktop"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.backdrops.wallpapers"
-uptodown-dlurl = "https://backdrops.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/backdrops-beautiful-wallpapers/backdrops-wallpapers"
-dpi = "nodpi anydpi auto"
-patches-source = "browzomje/browzomje-patches"
-
+# ── CalcNote ──────────────────────────────────────────────────────────────────
 [calcnote-morphe-browzomje]
 enabled = true
 app-name = "calcnote"
@@ -160,21 +121,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/rocketship-apps/calc-note-sprea
 dpi = "nodpi anydpi auto"
 patches-source = "browzomje/browzomje-patches"
 
-[calcnote-morphe-browzomje-exp]
-enabled = true
-app-name = "calcnote"
-rv-brand = "morphe-browzomje-exp"
-pkg-name = "com.rocketshipapps.calcnote"
-build-mode = "apk"
-version = "latest"
-arch = "all arm64-v8a arm-v7a x86_64"
-cli-source = "MorpheApp/morphe-desktop"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.rocketshipapps.calcnote"
-uptodown-dlurl = "https://calc-note.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/rocketship-apps/calc-note-spreadsheet-calculator"
-dpi = "nodpi anydpi auto"
-patches-source = "browzomje/browzomje-patches"
-
+# ── Cricbuzz ──────────────────────────────────────────────────────────────────
 [cricbuzz-morphe-browzomje]
 enabled = true
 app-name = "cricbuzz"
@@ -204,6 +151,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz/cricbuzz-cricket-score
 dpi = "nodpi anydpi auto"
 patches-source = "browzomje/browzomje-patches"
 
+# ── Doc Scanner ───────────────────────────────────────────────────────────────
 [doc-scanner-morphe-browzomje]
 enabled = true
 app-name = "doc-scanner"
@@ -233,27 +181,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/doc-scanner-llc/document-scanne
 dpi = "nodpi anydpi auto"
 patches-source = "browzomje/browzomje-patches"
 
+# ── Eyecon ────────────────────────────────────────────────────────────────────
 [eyecon-morphe-browzomje]
 enabled = true
 app-name = "eyecon"
 rv-brand = "morphe-browzomje"
 pkg-name = "com.eyecon.global"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
-cli-source = "MorpheApp/morphe-desktop"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.eyecon.global"
-uptodown-dlurl = "https://eyecon.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/eyecon/eyecon-caller-id-dialer"
-dpi = "nodpi anydpi auto"
-patches-source = "browzomje/browzomje-patches"
-
-[eyecon-morphe-browzomje-exp]
-enabled = true
-app-name = "eyecon"
-rv-brand = "morphe-browzomje-exp"
-pkg-name = "com.eyecon.global"
-build-mode = "apk"
-version = "latest"
 arch = "all arm64-v8a arm-v7a x86_64"
 cli-source = "MorpheApp/morphe-desktop"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.eyecon.global"
