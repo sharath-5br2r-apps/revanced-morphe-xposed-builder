@@ -174,3 +174,83 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-formerly
 dpi = "nodpi anydpi auto"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
+
+# ── Cricbuzz (morphe-paresh) ──────────────────────────────────────────────────
+[cricbuzz-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "cricbuzz"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.cricbuzz.android"
+uptodown-dlurl = "https://cricbuzz-cricket-live-score.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz/cricbuzz-cricket-scores-news"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+[cricbuzz-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "cricbuzz"
+rv-brand = "morphe-paresh-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.cricbuzz.android"
+uptodown-dlurl = "https://cricbuzz-cricket-live-score.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz/cricbuzz-cricket-scores-news"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+# ── Doc Scanner (morphe-paresh) ───────────────────────────────────────────────
+[doc-scanner-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "doc-scanner"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.handy.scanner.doc"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.handy.scanner.doc"
+uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/doc-scanner-llc/document-scanner-pdf-creator"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+[doc-scanner-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "doc-scanner"
+rv-brand = "morphe-paresh-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.handy.scanner.doc"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.handy.scanner.doc"
+uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/doc-scanner-llc/document-scanner-pdf-creator"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+# ── Eyecon (morphe-paresh) ────────────────────────────────────────────────────
+[eyecon-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "eyecon"
+rv-brand = "morphe-paresh"
+pkg-name = "com.eyecon.global"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.eyecon.global"
+uptodown-dlurl = "https://eyecon.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/eyecon/eyecon-caller-id-dialer"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"

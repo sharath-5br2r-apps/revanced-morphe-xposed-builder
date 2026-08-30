@@ -1,16 +1,30 @@
 enable-module-update = true
 patches-version = "absolutelatest"
-[moonplus-reader-morphe-binarymend]
+
+[pinterest-morphe-binarymend]
 enabled = true
-app-name = "moonplus-reader"
+app-name = "pinterest"
 rv-brand = "morphe-binarymend"
-pkg-name = "com.flyersoft.moonreader"
+pkg-name = "com.pinterest"
 build-mode = "apk"
-arch = "all"
+arch = "all arm64-v8a arm-v7a x86_64"
 cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://moon-reader.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/moon/moon-reader"
-# archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.photos"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
+uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest"
 dpi = "nodpi anydpi auto"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.flyersoft.moonreader"
+patches-source = "binarymend/morphe-patches"
+
+[calcnote-morphe-binarymend]
+enabled = true
+app-name = "calcnote"
+rv-brand = "morphe-binarymend"
+pkg-name = "com.rocketshipapps.calcnote"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.rocketshipapps.calcnote"
+uptodown-dlurl = "https://calc-note.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/rocketship-apps/calc-note-spreadsheet-calculator"
+dpi = "nodpi anydpi auto"
 patches-source = "binarymend/morphe-patches"
