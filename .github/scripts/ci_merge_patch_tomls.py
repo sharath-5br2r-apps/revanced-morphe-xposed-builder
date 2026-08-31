@@ -70,7 +70,7 @@ def main():
         app_groups[sort_key].append((sort_key, header, content))
 
     sorted_app_keys = sorted(app_groups.keys(), key=lambda a: (len(app_groups[a]), a), reverse=True)
-    NUM_OUTPUT_FILES = 15
+    NUM_OUTPUT_FILES = 16
 
     parts_apps = [[] for _ in range(NUM_OUTPUT_FILES)]
     parts_items = [[] for _ in range(NUM_OUTPUT_FILES)]
