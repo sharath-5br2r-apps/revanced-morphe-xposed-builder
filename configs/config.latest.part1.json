@@ -1,19 +1,48 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": true,
-  "inshorts-morphe-xtra-exp": {
+  "brave-beta-morphe-dh6k-arm64-v8a": {
     "enabled": true,
-    "app-name": "inshorts",
-    "rv-brand": "morphe-xtra-exp",
-    "pkg-name": "com.nis.android.instors",
+    "app-name": "brave-beta",
+    "rv-brand": "morphe-dh6k",
     "build-mode": "apk",
-    "version": "latest",
-    "arch": "all arm64-v8a arm-v7a x86_64",
+    "arch": "arm64-v8a",
+    "pkg-name": "com.brave.browser_beta",
     "cli-source": "MorpheApp/morphe-desktop",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nis.android.instors",
-    "uptodown-dlurl": "https://inshorts.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2",
+    "patches-source": "dh6k/morphe-patches",
+    "patcher-args": "--continue-on-error",
+    "repo-dlurl": "https://github.com/brave/brave-browser/releases",
+    "repo-dlurl-filter": "(BraveMonoarm64|MonoArm64)\\.apk$",
+    "repo-dlurl-release-name-filter": "^Beta v"
+  },
+  "brave-nightly-morphe-dh6k-x86_64": {
+    "enabled": true,
+    "app-name": "brave-nightly",
+    "rv-brand": "morphe-dh6k",
+    "build-mode": "apk",
+    "arch": "x86_64",
+    "pkg-name": "com.brave.browser_nightly",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "patches-source": "dh6k/morphe-patches",
+    "patcher-args": "--continue-on-error",
+    "repo-dlurl": "https://github.com/brave/brave-browser/releases",
+    "repo-dlurl-filter": "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$",
+    "repo-dlurl-release-name-filter": "^Nightly v"
+  },
+  "discord-npatch-revenge": {
+    "enabled": true,
+    "app-name": "discord",
+    "pkg-name": "com.discord",
+    "rv-brand": "npatch-revenge",
+    "build-mode": "apk",
+    "arch": "all",
+    "cli-source": "7723mod/NPatch",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord",
+    "patches-source": "revenge-mod/revenge-xposed",
+    "patcher-args": "-l 0",
     "dpi": "nodpi anydpi auto",
-    "patches-source": "BholeyKaBhakt/revanced-patches-xtra"
+    "uptodown-dlurl": "https://discord-chat-for-gamers.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
   }
 }

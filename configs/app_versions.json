@@ -4,7 +4,7 @@
     "keys": [
       "discord-npatch-revenge"
     ],
-    "version": "342.16 - Stable"
+    "version": "343.12 - Stable"
   },
   "Prime-Video": {
     "keys": [
@@ -71,7 +71,7 @@
       "brave-beta-morphe-dh6k-arm-v7a",
       "brave-beta-morphe-dh6k-x86_64"
     ],
-    "version": "1.95.93"
+    "version": "1.95.95"
   },
   "Brave Nightly": {
     "keys": [
@@ -79,7 +79,7 @@
       "brave-nightly-morphe-dh6k-arm-v7a",
       "brave-nightly-morphe-dh6k-x86_64"
     ],
-    "version": "1.95.93"
+    "version": "1.95.95"
   },
   "PC Remote": {
     "keys": [
@@ -213,7 +213,7 @@
     "keys": [
       "cricbuzz-morphe-paresh-exp"
     ],
-    "version": "16.08.00"
+    "version": "16.08.01"
   },
   "Doc Scanner": {
     "keys": [
@@ -237,13 +237,13 @@
     "keys": [
       "wallcraft-morphe-hoodles-exp"
     ],
-    "version": "4.15.0"
+    "version": "3.65.0"
   },
   "Podcast Addict": {
     "keys": [
       "podcast-addict-morphe-hoodles-exp"
     ],
-    "version": "2026.8"
+    "version": "2026.10.1"
   },
   "Ventusky": {
     "keys": [
@@ -267,6 +267,6 @@
     "keys": [
       "goodreads-morphe-hoodles-exp"
     ],
-    "version": "3.31.0"
+    "version": "2.76.0 Build 0"
   }
 }
