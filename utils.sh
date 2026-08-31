@@ -2655,12 +2655,13 @@ write_build_info() {
 	[[ "$inspect_apk" == *.zip ]] && inspect_apk=""
 
 	local aapt_bin="${AAPT2:-$(command -v aapt2 || command -v aapt || true)}"
-	local min_sdk=""
+	local min_sdk="" package_name=""
 	local densities_json="[]" native_libs_json="[]"
 	if [ -n "$inspect_apk" ] && [ -f "$inspect_apk" ]; then
 		if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ]; then
 			local aapt_out
 			aapt_out=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null || true)
+			package_name=$(printf '%s' "$aapt_out" | grep -oP "package: name='\K[^']+" | head -1 || true)
 			min_sdk=$(printf '%s' "$aapt_out" | grep -oP "(?:sdkVersion|minSdkVersion):'\K[^']+" | head -1 || true)
 			local den_raw nat_raw
 			den_raw=$(printf '%s' "$aapt_out" | grep -oP "densities: \K.*" | tr -d "'" || true)
@@ -2702,6 +2703,7 @@ write_build_info() {
 			--arg arch "$arch" \
 			--arg name "$name" \
 			--arg version "$version" \
+			--arg package_name "$package_name" \
 			--arg min_sdk "$min_sdk" \
 			--arg cli "${cli_ref:-${cli_name_ver:-}}" \
 			--arg patches "$patches" \
@@ -2718,6 +2720,7 @@ write_build_info() {
 			    arch: $arch,
 			    ext: $ext,
 			    version: $version,
+			    package_name: $package_name,
 			    min_sdk: $min_sdk,
 			    densities: $densities,
 			    native_libraries: $native_libs,
@@ -2730,6 +2733,7 @@ write_build_info() {
 			    skipped_patches: $skipped
 			  } |
 			  if $cli != "" then . else del(.[$key].cli) end |
+			  if $package_name != "" then . else del(.[$key].package_name) end |
 			  if $release_notes != "" then . else del(.[$key].release_notes) end |
 			  if $min_sdk != "" then . else del(.[$key].min_sdk) end |
 			  if ($densities | length) > 0 then . else del(.[$key].densities) end |
