@@ -232,5 +232,41 @@
       "mx-player-pro-morphe-paresh-exp"
     ],
     "version": "1.93.4"
+  },
+  "Wallcraft": {
+    "keys": [
+      "wallcraft-morphe-hoodles-exp"
+    ],
+    "version": "4.15.0"
+  },
+  "Podcast Addict": {
+    "keys": [
+      "podcast-addict-morphe-hoodles-exp"
+    ],
+    "version": "2026.8"
+  },
+  "Ventusky": {
+    "keys": [
+      "ventusky-morphe-hoodles-exp"
+    ],
+    "version": "42.1"
+  },
+  "Niagara Launcher": {
+    "keys": [
+      "niagara-launcher-morphe-hoodles-exp"
+    ],
+    "version": "1.12.6"
+  },
+  "MyFitnessPal": {
+    "keys": [
+      "myfitnesspal-morphe-hoodles-exp"
+    ],
+    "version": "24.32.0"
+  },
+  "Goodreads": {
+    "keys": [
+      "goodreads-morphe-hoodles-exp"
+    ],
+    "version": "3.31.0"
   }
 }
