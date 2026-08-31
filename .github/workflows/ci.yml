@@ -266,7 +266,11 @@ jobs:
           if [ -n "$tag" ] && [ -f "dev_logs/aggregated_out/build.dev.json" ]; then
             notes_arg=("--notes" "")
             [ -f "dev_logs/aggregated_out/build.dev.md" ] && notes_arg=("--notes-file" "dev_logs/aggregated_out/build.dev.md")
-            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            if gh release view "$tag" >/dev/null 2>&1; then
+              [ -f "dev_logs/aggregated_out/build.dev.md" ] && gh release edit "$tag" --notes-file "dev_logs/aggregated_out/build.dev.md" || true
+            else
+              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            fi
             gh release upload "$tag" dev_logs/aggregated_out/build.dev.json --clobber 2>/dev/null || true
             [ -f "dev_logs/aggregated_out/build.dev.md" ] && gh release upload "$tag" dev_logs/aggregated_out/build.dev.md --clobber 2>/dev/null || true
           fi
@@ -381,7 +385,11 @@ jobs:
           if [ -n "$tag" ] && [ -f "stable_logs/aggregated_out/build.stable.json" ]; then
             notes_arg=("--notes" "")
             [ -f "stable_logs/aggregated_out/build.stable.md" ] && notes_arg=("--notes-file" "stable_logs/aggregated_out/build.stable.md")
-            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            if gh release view "$tag" >/dev/null 2>&1; then
+              [ -f "stable_logs/aggregated_out/build.stable.md" ] && gh release edit "$tag" --notes-file "stable_logs/aggregated_out/build.stable.md" || true
+            else
+              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            fi
             gh release upload "$tag" stable_logs/aggregated_out/build.stable.json --clobber 2>/dev/null || true
             [ -f "stable_logs/aggregated_out/build.stable.md" ] && gh release upload "$tag" stable_logs/aggregated_out/build.stable.md --clobber 2>/dev/null || true
           fi
@@ -501,7 +509,11 @@ jobs:
           if [ -n "$tag" ] && [ -f "latest_logs/aggregated_out/build.latest.json" ]; then
             notes_arg=("--notes" "")
             [ -f "latest_logs/aggregated_out/build.latest.md" ] && notes_arg=("--notes-file" "latest_logs/aggregated_out/build.latest.md")
-            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            if gh release view "$tag" >/dev/null 2>&1; then
+              [ -f "latest_logs/aggregated_out/build.latest.md" ] && gh release edit "$tag" --notes-file "latest_logs/aggregated_out/build.latest.md" || true
+            else
+              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            fi
             gh release upload "$tag" latest_logs/aggregated_out/build.latest.json --clobber 2>/dev/null || true
             [ -f "latest_logs/aggregated_out/build.latest.md" ] && gh release upload "$tag" latest_logs/aggregated_out/build.latest.md --clobber 2>/dev/null || true
           fi

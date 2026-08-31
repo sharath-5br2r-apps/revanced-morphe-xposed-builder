@@ -158,7 +158,11 @@ jobs:
           if [ "${{ inputs.upload_release_metadata }}" != "false" ] && [ -f "build.md" ]; then
             notes_arg=("--notes-file" "build.md")
           fi
-          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" $prerelease_flag || true
+          if gh release view "$tag" >/dev/null 2>&1; then
+            [ -f "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
+          else
+            gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" $prerelease_flag || true
+          fi
           if [ -d "./build" ]; then
             find ./build -type f -exec gh release upload "$tag" {} --clobber \; 2>/dev/null || true
           fi
@@ -172,7 +176,11 @@ jobs:
           if [ -f "build.json" ]; then
             notes_arg=("--notes" "")
             [ -f "build.md" ] && notes_arg=("--notes-file" "build.md")
-            gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            if gh release view "$tag" >/dev/null 2>&1; then
+              [ -f "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
+            else
+              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            fi
             gh release upload "$tag" build.json --clobber 2>/dev/null || true
             [ -f "build.md" ] && gh release upload "$tag" build.md --clobber 2>/dev/null || true
           fi

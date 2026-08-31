@@ -3604,7 +3604,7 @@ build_rv() {
 	local cli_ref=""
 	if [ -n "${args[cli_source]:-}" ]; then
 		local _clijar_base; _clijar_base="${cli_jar##*/}"; _clijar_base="${_clijar_base%.jar}"
-		local _cliver; _cliver=$(printf '%s' "$_clijar_base" | grep -oP '\d+\.\d+\.\d+.*$' || true)
+		local _cliver; _cliver=$(printf '%s' "$_clijar_base" | grep -oP '\d+\.\d+\.\d+.*' || true)
 		if [ -n "$_cliver" ]; then
 			cli_ref="${args[cli_source]}@${_cliver}"
 		else
