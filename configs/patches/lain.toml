@@ -1,11 +1,11 @@
 enable-module-update = true
 patches-version = "absolutelatest"
 
-# ── Droufus (morphe-lain) ─────────────────────────────────────────────────────
-[droufus-morphe-lain]
+# ── Drofus (morphe-lain) ─────────────────────────────────────────────────────
+[drofus-morphe-lain]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "droufus"
+app-name = "drofus"
 rv-brand = "morphe-lain"
 github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mixapplications.rufus"
 build-mode = "apk"

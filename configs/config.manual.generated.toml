@@ -95,19 +95,93 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/ookla/speedtest"
 dpi = "nodpi anydpi auto"
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
-[moonplus-reader-morphe-binarymend]
+# ── Inshorts ──────────────────────────────────────────────────────────────────
+[inshorts-morphe-xtra]
 enabled = true
-app-name = "moonplus-reader"
-rv-brand = "morphe-binarymend"
-pkg-name = "com.flyersoft.moonreader"
+app-name = "inshorts"
+rv-brand = "morphe-xtra"
+pkg-name = "com.nis.app"
 build-mode = "apk"
-arch = "all"
+arch = "all arm64-v8a arm-v7a x86_64"
 cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://moon-reader.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/moon/moon-reader"
-# archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.photos"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nis.app"
+uptodown-dlurl = "https://inshorts.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2"
 dpi = "nodpi anydpi auto"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.flyersoft.moonreader"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+[inshorts-morphe-xtra-exp]
+enabled = true
+app-name = "inshorts"
+rv-brand = "morphe-xtra-exp"
+pkg-name = "com.nis.app"
+build-mode = "apk"
+version = "latest"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nis.app"
+uptodown-dlurl = "https://inshorts.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2"
+dpi = "nodpi anydpi auto"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+# ── Automate ──────────────────────────────────────────────────────────────────
+[automate-morphe-xtra]
+enabled = true
+app-name = "automate"
+rv-brand = "morphe-xtra"
+pkg-name = "com.llamalab.automate"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.llamalab.automate"
+uptodown-dlurl = "https://automate-beta.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/llamalab/automate-llamalab"
+dpi = "nodpi anydpi auto"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+# ── AutoSync ──────────────────────────────────────────────────────────────────
+[autosync-morphe-xtra]
+enabled = true
+app-name = "autosync"
+rv-brand = "morphe-xtra"
+pkg-name = "com.ttxapps.autosync"
+build-mode = "apk"
+arch = "all arm64-v8a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.ttxapps.autosync"
+uptodown-dlurl = "https://autosync.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/metactrl/autosync-universal-cloud-sync-and-backup"
+dpi = "nodpi anydpi auto"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+# ── Backdrops ─────────────────────────────────────────────────────────────────
+[backdrops-morphe-xtra]
+enabled = true
+app-name = "backdrops"
+rv-brand = "morphe-xtra"
+pkg-name = "com.backdrops.wallpapers"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.backdrops.wallpapers"
+uptodown-dlurl = "https://backdrops.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/backdrops/backdrops-wallpapers"
+dpi = "nodpi anydpi auto"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+[calcnote-morphe-binarymend]
+enabled = true
+app-name = "calcnote"
+rv-brand = "morphe-binarymend"
+pkg-name = "com.burton999.notecal"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.burton999.notecal"
+uptodown-dlurl = "https://calcnote-notepad-calculator.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/burton999/calcnote-notepad-calculator"
+dpi = "nodpi anydpi auto"
 patches-source = "binarymend/morphe-patches"
 
 [brave-stable-morphe-kveld9-arm64-v8a]
@@ -119,10 +193,10 @@ arch = "arm64-v8a"
 pkg-name = "com.brave.browser"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "kveld9/kveld-morphe-patches"
+patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm64|MonoArm64)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
-version = "latest"
 
 [brave-stable-morphe-kveld9-arm-v7a]
 enabled = true
@@ -133,10 +207,10 @@ arch = "arm-v7a"
 pkg-name = "com.brave.browser"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "kveld9/kveld-morphe-patches"
+patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm|MonoArm)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
-version = "latest"
 
 [brave-stable-morphe-kveld9-x86_64]
 enabled = true
@@ -147,52 +221,10 @@ arch = "x86_64"
 pkg-name = "com.brave.browser"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "kveld9/kveld-morphe-patches"
+patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
 repo-dlurl-release-name-filter = "^Release v"
-version = "latest"
-
-[brave-stable-morphe-dh6k-arm64-v8a-exp]
-enabled = true
-app-name = "brave-stable"
-rv-brand = "morphe-dh6k-exp"
-build-mode = "apk"
-arch = "arm64-v8a"
-pkg-name = "com.brave.browser"
-cli-source = "MorpheApp/morphe-desktop"
-patches-source = "dh6k/morphe-patches"
-repo-dlurl = "https://github.com/brave/brave-browser/releases"
-repo-dlurl-filter = "(BraveMonoarm64|MonoArm64)\\.apk$"
-repo-dlurl-release-name-filter = "^Release v"
-version = "latest"
-
-[brave-stable-morphe-dh6k-arm-v7a-exp]
-enabled = true
-app-name = "brave-stable"
-rv-brand = "morphe-dh6k-exp"
-build-mode = "apk"
-arch = "arm-v7a"
-pkg-name = "com.brave.browser"
-cli-source = "MorpheApp/morphe-desktop"
-patches-source = "dh6k/morphe-patches"
-repo-dlurl = "https://github.com/brave/brave-browser/releases"
-repo-dlurl-filter = "(BraveMonoarm|MonoArm)\\.apk$"
-repo-dlurl-release-name-filter = "^Release v"
-version = "latest"
-
-[brave-stable-morphe-dh6k-x86_64-exp]
-enabled = true
-app-name = "brave-stable"
-rv-brand = "morphe-dh6k-exp"
-build-mode = "apk"
-arch = "x86_64"
-pkg-name = "com.brave.browser"
-cli-source = "MorpheApp/morphe-desktop"
-patches-source = "dh6k/morphe-patches"
-repo-dlurl = "https://github.com/brave/brave-browser/releases"
-repo-dlurl-filter = "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
-repo-dlurl-release-name-filter = "^Release v"
-version = "latest"
 
 [brave-beta-morphe-dh6k-arm64-v8a]
 enabled = true
@@ -203,6 +235,7 @@ arch = "arm64-v8a"
 pkg-name = "com.brave.browser_beta"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "dh6k/morphe-patches"
+patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm64|MonoArm64)\\.apk$"
 repo-dlurl-release-name-filter = "^Beta v"
@@ -216,6 +249,7 @@ arch = "arm-v7a"
 pkg-name = "com.brave.browser_beta"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "dh6k/morphe-patches"
+patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm|MonoArm)\\.apk$"
 repo-dlurl-release-name-filter = "^Beta v"
@@ -229,6 +263,7 @@ arch = "x86_64"
 pkg-name = "com.brave.browser_beta"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "dh6k/morphe-patches"
+patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
 repo-dlurl-release-name-filter = "^Beta v"
@@ -242,6 +277,7 @@ arch = "arm64-v8a"
 pkg-name = "com.brave.browser_nightly"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "dh6k/morphe-patches"
+patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm64|MonoArm64)\\.apk$"
 repo-dlurl-release-name-filter = "^Nightly v"
@@ -255,6 +291,7 @@ arch = "arm-v7a"
 pkg-name = "com.brave.browser_nightly"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "dh6k/morphe-patches"
+patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonoarm|MonoArm)\\.apk$"
 repo-dlurl-release-name-filter = "^Nightly v"
@@ -268,9 +305,40 @@ arch = "x86_64"
 pkg-name = "com.brave.browser_nightly"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "dh6k/morphe-patches"
+patcher-args = "--continue-on-error"
 repo-dlurl = "https://github.com/brave/brave-browser/releases"
 repo-dlurl-filter = "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
 repo-dlurl-release-name-filter = "^Nightly v"
+
+# ── Pinterest (browzomje-patches) ─────────────────────────────────────────────
+[pinterest-morphe-browzomje]
+enabled = true
+app-name = "pinterest"
+rv-brand = "morphe-browzomje"
+pkg-name = "com.pinterest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
+uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest"
+dpi = "nodpi anydpi auto"
+patches-source = "browzomje/browzomje-patches"
+
+[pinterest-morphe-browzomje-exp]
+enabled = true
+app-name = "pinterest"
+rv-brand = "morphe-browzomje-exp"
+pkg-name = "com.pinterest"
+build-mode = "apk"
+version = "latest"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
+uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest"
+dpi = "nodpi anydpi auto"
+patches-source = "browzomje/browzomje-patches"
 
 [smash-hit-morphe-byehi98]
 enabled = true
@@ -399,37 +467,6 @@ apkmirror-example-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/gboar
 apkmirror-release-filter = "!(lite|beta)"
 dpi = "nodpi anydpi auto"
 
-[github-morphe-hoodles-stylus]
-enabled = true
-app-name = "github"
-rv-brand = "morphe-hoodles-stylus"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.github.android"
-cli-source = "MorpheApp/morphe-desktop"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
-apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
-patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
-included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
-dpi = "480-640dpi"
-
-[github-morphe-hoodles-stylus-exp]
-enabled = true
-app-name = "github"
-rv-brand = "morphe-hoodles-stylus-exp"
-build-mode = "apk"
-arch = "all"
-pkg-name = "com.github.android"
-cli-source = "MorpheApp/morphe-desktop"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
-apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
-patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
-included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
-dpi = "480-640dpi"
-version = "latest"
-
 [camscanner-morphe-hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
@@ -509,7 +546,7 @@ dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-6-morphe-hoodles]
-enabled = false
+enabled = true
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "smart-launcher-6"
 rv-brand = "morphe-hoodles"
@@ -523,7 +560,7 @@ dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-6-morphe-hoodles-exp]
-enabled = false
+enabled = true
 cli-source = "MorpheApp/morphe-desktop"
 app-name = "smart-launcher-6"
 rv-brand = "morphe-hoodles-exp"
@@ -623,6 +660,37 @@ uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
 dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
+
+[github-morphe-hoodles-stylus]
+enabled = true
+app-name = "github"
+rv-brand = "morphe-hoodles-stylus"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.github.android"
+cli-source = "MorpheApp/morphe-desktop"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
+apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
+patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
+included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
+dpi = "480-640dpi"
+
+[github-morphe-hoodles-stylus-exp]
+enabled = true
+app-name = "github"
+rv-brand = "morphe-hoodles-stylus-exp"
+build-mode = "apk"
+arch = "all"
+pkg-name = "com.github.android"
+cli-source = "MorpheApp/morphe-desktop"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
+apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
+patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
+included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
+dpi = "480-640dpi"
+version = "latest"
 
 [symfonium-morphe-hooman]
 enabled = true
@@ -745,6 +813,21 @@ apkpure-dlurl = "https://apkpure.com/sound-cloud-android-app/com.soundcloud.andr
 apkcombo-dlurl = "https://apkcombo.com/soundcloud/com.soundcloud.android"
 dpi = "nodpi anydpi auto"
 patches-source = "kondratjev/morphe-patches"
+
+# ── Drofus (morphe-lain) ─────────────────────────────────────────────────────
+[drofus-morphe-lain]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "drofus"
+rv-brand = "morphe-lain"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mixapplications.rufus"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a"
+pkg-name = "com.mixapplications.rufus"
+uptodown-dlurl = "https://rufus-unofficial.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mixapplications/drofus-iso2usb"
+dpi = "nodpi anydpi auto"
+patches-source = "kiraio-moe/Lain-Patches"
 
 # ── YouTube morphe (stock/default theme) ──────────────────────────────────────
 [youtube-morphe]
@@ -1040,12 +1123,124 @@ dpi = "nodpi anydpi auto"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
+# ── MX Player Pro (morphe-paresh) ─────────────────────────────────────────────
+[mx-player-pro-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "mx-player-pro"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.mxtech.videoplayer.pro"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
+uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+[mx-player-pro-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "mx-player-pro"
+rv-brand = "morphe-paresh-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.mxtech.videoplayer.pro"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
+uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+# ── Cricbuzz (morphe-paresh) ──────────────────────────────────────────────────
+[cricbuzz-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "cricbuzz"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.cricbuzz.android"
+uptodown-dlurl = "https://cricbuzz-cricket-scores-and-news.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+[cricbuzz-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "cricbuzz"
+rv-brand = "morphe-paresh-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.cricbuzz.android"
+uptodown-dlurl = "https://cricbuzz-cricket-scores-and-news.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+# ── Doc Scanner (morphe-paresh) ───────────────────────────────────────────────
+[doc-scanner-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "doc-scanner"
+rv-brand = "morphe-paresh"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.cv.docscanner"
+uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+[doc-scanner-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "doc-scanner"
+rv-brand = "morphe-paresh-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.cv.docscanner"
+uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+# ── Eyecon (morphe-paresh) ────────────────────────────────────────────────────
+[eyecon-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "eyecon"
+rv-brand = "morphe-paresh"
+pkg-name = "com.eyecon.global"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.eyecon.global"
+uptodown-dlurl = "https://eyecon-phone-dialer-and-cont-eyecon.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/eyecon-phone-dialer-contacts/eyecon-caller-id-spam-block"
+dpi = "nodpi anydpi auto"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
 [instagram-morphe-piko]
 enabled = true
 app-name = "instagram"
 rv-brand = "morphe-piko"
 build-mode = "apk"
-arch = "all arm64-v8a x86_64"
+arch = "arm64-v8a x86_64"
 pkg-name = "com.instagram.android"
 patcher-args = "--continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
@@ -1466,6 +1661,66 @@ arch = "all"
 pkg-name = "it.mirko.beta"
 uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+# ── MacroDroid (morphe-rushiranpise) ──────────────────────────────────────────
+[macrodroid-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "macrodroid"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.arlosoft.macrodroid"
+uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+[macrodroid-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "macrodroid"
+rv-brand = "morphe-rushiranpise-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.arlosoft.macrodroid"
+uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+# ── SwiftKey (morphe-rushiranpise) ──────────────────────────────────────────
+[swiftkey-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "swiftkey"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.touchtype.swiftkey"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.touchtype.swiftkey"
+uptodown-dlurl = "https://swiftkey-keyboard.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/swiftkey/swiftkey-keyboard"
+dpi = "nodpi anydpi auto"
+patches-source = "rushiranpise/morphe-patches"
+
+# ── Bluetooth Keyboard and Mouse (morphe-rushiranpise) ───────────────────────
+[bluetooth-keyboard-mouse-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "bluetooth-keyboard-mouse"
+rv-brand = "morphe-rushiranpise"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/io.appground.blek"
+build-mode = "apk"
+arch = "arm64-v8a x86_64"
+pkg-name = "io.appground.blek"
+uptodown-dlurl = "https://bluetooth-keyboard-and-mouse.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard-mouse-2"
 dpi = "nodpi anydpi auto"
 patches-source = "rushiranpise/morphe-patches"
 
