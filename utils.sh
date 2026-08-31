@@ -2097,11 +2097,10 @@ dl_github() {
 	done
 	arch_candidates+=("common" "all")
 
-	local vf="${version_f#v}"
 	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
-				if [[ "$p" == *"-v${vf}-${a}.${ext}" ]] || [[ "$p" == *"v${vf}-${a}.${ext}" ]] || [[ "$p" == *"-${vf}-${a}.${ext}" ]]; then
+				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
 					path="$p"
 					break 3
 				fi
