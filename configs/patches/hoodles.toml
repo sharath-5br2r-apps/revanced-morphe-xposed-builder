@@ -79,6 +79,35 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-vi
 dpi = "nodpi anydpi auto"
 patches-source = "hoo-dles/morphe-patches"
 
+[smart-launcher-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "smart-launcher"
+rv-brand = "morphe-hoodles"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+build-mode = "apk"
+arch = "all"
+pkg-name = "ginlemon.flowerfree"
+uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
+[smart-launcher-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "smart-launcher"
+rv-brand = "morphe-hoodles-exp"
+github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+version = "latest"
+build-mode = "apk"
+arch = "all"
+pkg-name = "ginlemon.flowerfree"
+uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+dpi = "nodpi anydpi auto"
+patches-source = "hoo-dles/morphe-patches"
+
 [smart-launcher-6-morphe-hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
