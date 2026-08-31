@@ -114,8 +114,8 @@
     "repo": "jasonwu1994/Gboard-patches",
     "stable": "v3.7.0",
     "stable_date": "2026-08-30T22:27:31Z",
-    "prerelease": "",
-    "pre_date": "",
+    "prerelease": "v3.8.0-dev.3",
+    "pre_date": "2026-08-31T07:17:06Z",
     "blocked": false
   },
   "hoodles": {
@@ -216,11 +216,11 @@
   },
   "piko": {
     "repo": "crimera/piko",
-    "stable": "v3.8.0",
-    "prerelease": "v3.9.0-dev.10",
+    "stable": "v3.9.0",
+    "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-07-24T16:32:23Z",
-    "pre_date": "2026-08-28T03:27:55Z"
+    "stable_date": "2026-08-31T02:40:04Z",
+    "pre_date": ""
   },
   "pixel": {
     "enabledDev": false,
@@ -263,10 +263,10 @@
   },
   "rushiranpise": {
     "repo": "rushiranpise/morphe-patches",
-    "stable": "v1.21.0",
+    "stable": "v1.21.1",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-08-30T16:48:17Z",
+    "stable_date": "2026-08-31T03:18:35Z",
     "pre_date": ""
   },
   "rvexp": {
