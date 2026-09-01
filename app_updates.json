@@ -1,1 +1,42 @@
-{}
+{
+  "Adobe Acrobat": {
+    "old": "26.7.2",
+    "new": "26.6.1.45942"
+  },
+  "Brave Beta": {
+    "old": "1.95.93",
+    "new": "1.95.95"
+  },
+  "Brave Nightly": {
+    "old": "1.95.93",
+    "new": "1.95.95"
+  },
+  "Cricbuzz": {
+    "old": "16.08.00",
+    "new": "16.08.01"
+  },
+  "Discord": {
+    "old": "342.16 - Stable",
+    "new": "341.13"
+  },
+  "Goodreads": {
+    "old": "3.31.0",
+    "new": "2.76.0 Build 0"
+  },
+  "JioHotstar": {
+    "old": "26.08.17.3",
+    "new": "26.08.03.2"
+  },
+  "Niagara Launcher": {
+    "old": "1.12.6",
+    "new": "1.16.26"
+  },
+  "Podcast Addict": {
+    "old": "2026.8",
+    "new": "2026.10.1"
+  },
+  "Wallcraft": {
+    "old": "4.15.0",
+    "new": "3.65.0"
+  }
+}
