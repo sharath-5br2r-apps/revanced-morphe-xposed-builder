@@ -1,21 +1,19 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": true,
-  "amazon-alexa-signed": {
+  "pinterest-morphe-browzomje-exp": {
     "enabled": true,
-    "app-name": "amazon-alexa",
-    "rv-brand": "signed",
+    "app-name": "pinterest",
+    "rv-brand": "morphe-browzomje-exp",
+    "pkg-name": "com.pinterest",
     "build-mode": "apk",
-    "cli-source": "apksigner",
-    "pkg-name": "com.amazon.dee.app",
-    "cli-source-host": "none",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.dee.app",
-    "patches-source": "none",
-    "patches-source-host": "none",
+    "version": "latest",
     "arch": "all arm64-v8a arm-v7a x86_64",
-    "prefer-dl-mode": "bundle",
-    "uptodown-dlurl": "https://alexa.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/",
-    "dpi": "120-480dpi 480-640dpi"
+    "cli-source": "MorpheApp/morphe-desktop",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest",
+    "uptodown-dlurl": "https://pinterest.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration",
+    "dpi": "nodpi anydpi auto",
+    "patches-source": "browzomje/browzomje-patches"
   }
 }
