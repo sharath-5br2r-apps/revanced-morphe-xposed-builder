@@ -1,20 +1,19 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": true,
-  "adobe-acrobat-morphe-rushiranpise-exp": {
+  "niagara-launcher-morphe-hoodles-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "adobe-acrobat",
-    "rv-brand": "morphe-rushiranpise-exp",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader",
+    "app-name": "niagara-launcher",
+    "rv-brand": "morphe-hoodles-exp",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/bitpit.launcher",
     "version": "latest",
     "build-mode": "apk",
-    "arch": "all arm64-v8a x86_64",
-    "pkg-name": "com.adobe.reader",
-    "uptodown-dlurl": "https://adobe-reader.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-acrobat",
+    "arch": "all arm64-v8a arm-v7a x86_64",
+    "pkg-name": "bitpit.launcher",
+    "uptodown-dlurl": "https://niagara-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/peter-huber/niagara-launcher-fresh-clean",
     "dpi": "nodpi anydpi auto",
-    "patches-source": "rushiranpise/morphe-patches",
-    "custom-microg-patches": "'None'"
+    "patches-source": "hoo-dles/morphe-patches"
   }
 }
