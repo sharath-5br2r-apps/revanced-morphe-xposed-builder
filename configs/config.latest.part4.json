@@ -14,5 +14,20 @@
     "repo-dlurl": "https://github.com/brave/brave-browser/releases",
     "repo-dlurl-filter": "(BraveMonoarm64|MonoArm64)\\.apk$",
     "repo-dlurl-release-name-filter": "^Nightly v"
+  },
+  "myfitnesspal-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "myfitnesspal",
+    "rv-brand": "morphe-hoodles-exp",
+    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": "all arm64-v8a arm-v7a x86_64",
+    "pkg-name": "com.myfitnesspal.android",
+    "uptodown-dlurl": "https://calorie-counter-myfitnesspal.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal",
+    "dpi": "nodpi anydpi auto",
+    "patches-source": "hoo-dles/morphe-patches"
   }
 }
