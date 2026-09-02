@@ -152,13 +152,32 @@ parse_host_spec() {
 	eval "$instance_var_name='$host_inst'"
 }
 
-# Perform an authenticated request for any supported forge. GitHub uses its
-# token header; GitLab/Forgejo instances use the normal request path.
+cf_req() {
+	local url=$1 output=$2
+	if _cf_get "$url"; then
+		if [ "$output" = "-" ]; then
+			echo "$html"
+		else
+			echo "$html" > "$output"
+		fi
+		return 0
+	else
+		return 1
+	fi
+}
+
+# Perform an authenticated/CF-bypassed request for any supported forge.
 source_req() {
 	local host=${1,,} url=$2 output=$3
 	shift 3
 	if [ "$host" = github ]; then
 		gh_req "$url" "$output" "$@"
+	elif [ "$host" = gitlab ] || [ "$host" = forgejo ] || [ "$host" = gitea ]; then
+		if cf_req "$url" "$output"; then
+			return 0
+		else
+			req "$url" "$output" "$@"
+		fi
 	else
 		req "$url" "$output" "$@"
 	fi
@@ -169,6 +188,13 @@ source_dl() {
 	shift 3
 	if [ "$host" = github ]; then
 		gh_dl "$output" "$url"
+	elif [ "$host" = gitlab ] || [ "$host" = forgejo ] || [ "$host" = gitea ]; then
+		if cf_req "$url" "$output"; then
+			return 0
+		else
+			pr "Getting '$output' from '$url'"
+			_req "$url" "$output" -H "Accept: application/octet-stream" "$@"
+		fi
 	else
 		pr "Getting '$output' from '$url'"
 		_req "$url" "$output" -H "Accept: application/octet-stream" "$@"
@@ -1213,6 +1239,8 @@ _unqueued_cf_get() {
 	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
 	local fs_base="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}"
 
+	_fallback_get "$@" && return 0
+
 	if [ -n "$trawl_base" ]; then
 		_trawl_get "$@" && return 0
 	fi
@@ -1224,8 +1252,6 @@ _unqueued_cf_get() {
 	if [ -n "$fs_base" ]; then
 		_fs_get "$@" && return 0
 	fi
-
-	_fallback_get "$@" && return 0
 
 	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
 		epr "All methods failed for: $1"
