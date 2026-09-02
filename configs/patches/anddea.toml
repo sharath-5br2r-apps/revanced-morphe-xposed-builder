@@ -11,7 +11,7 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "anddea/revanced-patches"
-included-patches = ["'MaterialYou'"]
+included-patches = ["MaterialYou"]
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
@@ -28,7 +28,7 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "anddea/revanced-patches"
-included-patches = ["'MaterialYou'"]
+included-patches = ["MaterialYou"]
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF --continue-on-error"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"

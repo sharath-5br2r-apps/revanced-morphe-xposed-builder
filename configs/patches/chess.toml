@@ -32,4 +32,4 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "PrathxmOp/Prathxm-Patches"
-included-patches = ["'Clone Chess.com'"]
+included-patches = ["Clone Chess.com"]

@@ -8,7 +8,7 @@ build-mode = "both"
 arch = ["arm64-v8a", "arm-v7a"]
 patches-source = "anddea/revanced-patches"
 cli-source = "MorpheApp/morphe-desktop"
-included-patches = ["'MaterialYou'"]
+included-patches = ["MaterialYou"]
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#2E3440 -OlightThemeBackgroundColor=#E5E9F0"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
@@ -41,7 +41,7 @@ build-mode = "both"
 arch = ["arm64-v8a", "arm-v7a"]
 patches-source = "anddea/revanced-patches"
 cli-source = "MorpheApp/morphe-desktop"
-included-patches = ["'MaterialYou'"]
+included-patches = ["MaterialYou"]
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF181825 -OlightThemeBackgroundColor=#E6E9EF"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
