@@ -160,12 +160,18 @@ parse_host_spec() {
 
 cf_req() {
 	local url=$1 output=$2
-	if _cf_get "$url"; then
-		if [ "$output" = "-" ]; then
-			echo "$html"
-		else
-			echo "$html" > "$output"
+	if [ "$output" != "-" ]; then
+		if curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 15 --retry 2 -s -f "$url" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0" -o "$output"; then
+			if is_valid_zip_or_jar "$output"; then
+				return 0
+			fi
+			rm -f "$output"
 		fi
+		return 1
+	fi
+
+	if _cf_get "$url"; then
+		echo "$html"
 		return 0
 	else
 		return 1
@@ -265,7 +271,7 @@ source_release_asset_url() {
 	local host=${1,,}
 	case "$host" in
 		github|forgejo|gitea) jq -r '.browser_download_url // .url' ;;
-		gitlab) jq -r '.direct_asset_url // .url' ;;
+		gitlab) jq -r '.url // .direct_asset_url' ;;
 		*) return 1 ;;
 	esac
 }
@@ -856,7 +862,8 @@ _req() {
 	shift 2
 	local dlp="$op"
 	if [ "$op" != - ]; then
-		if [ -f "$op" ]; then return; fi
+		if [ -f "$op" ] && is_valid_zip_or_jar "$op"; then return 0; fi
+		if [ -f "$op" ]; then rm -f "$op"; fi
 		dlp="$(dirname "$op")/tmp.$(basename "$op")"
 		if [ -f "$dlp" ]; then
 			local wait_c=0
@@ -864,7 +871,7 @@ _req() {
 				sleep 1
 				wait_c=$((wait_c+1))
 			done
-			if [ -f "$op" ]; then return 0; fi
+			if [ -f "$op" ] && is_valid_zip_or_jar "$op"; then return 0; fi
 		fi
 	fi
 	if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 --fail -s -S "$@" "$ip" -o "$dlp"; then
