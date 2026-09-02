@@ -368,6 +368,22 @@ get_prebuilts() {
 	echo "$result"
 }
 
+is_valid_zip_or_jar() {
+	local f="$1"
+	[ -f "$f" ] || return 1
+	[ -s "$f" ] || return 1
+	if command -v unzip >/dev/null 2>&1; then
+		unzip -t "$f" >/dev/null 2>&1 && return 0
+	fi
+	if command -v zip >/dev/null 2>&1; then
+		zip -t "$f" >/dev/null 2>&1 && return 0
+	fi
+	if command -v jar >/dev/null 2>&1; then
+		jar tf "$f" >/dev/null 2>&1 && return 0
+	fi
+	[ -s "$f" ]
+}
+
 _get_prebuilts() {
 	local cli_host=$1 cli_src=$2 cli_ver=$3 patches_host_list=$4 patches_src_list=$5 patches_ver_list=$6
 	local cli_filter=${7:-} patches_filter_list=${8:-} cli_tag_filter=${9:-} patches_tag_filter_list=${10:-}
@@ -424,6 +440,11 @@ _get_prebuilts() {
 
 	local file
 	file=$(find "$dir" -name "*${fprefix}-${name_ver#v}.*" -type f 2>/dev/null | head -1)
+	if [ -n "$file" ] && ! is_valid_zip_or_jar "$file"; then
+		wpr "Cached prebuilt CLI '$file' is corrupted (zip END header not found), deleting..."
+		rm -f "$file"
+		file=""
+	fi
 	if [ -z "$file" ]; then
 		matches=$(source_release_assets_json "$host" <<<"$release") || return 1
 		if [ -n "$cli_filter" ]; then
@@ -478,6 +499,11 @@ _get_prebuilts() {
 		name=$(jq -r .name <<<"$asset")
 		file="${dir}/${name}"
 		source_dl "$host" "$file" "$url" >&2 || return 1
+		if ! is_valid_zip_or_jar "$file"; then
+			wpr "Downloaded prebuilt CLI '$file' is corrupted, deleting..."
+			rm -f "$file"
+			return 1
+		fi
 		echo "$tag: $(cut -d/ -f1 <<<"$src")/${name}  " >>"${cl_dir}/changelog.md"
 	else
 		grab_cl=false
@@ -554,6 +580,11 @@ _get_prebuilts() {
 
 		local file
 		file=$(find "$dir" -name "*${fprefix}-${name_ver#v}.*" -type f 2>/dev/null | head -1)
+		if [ -n "$file" ] && ! is_valid_zip_or_jar "$file"; then
+			wpr "Cached prebuilt patches '$file' is corrupted (zip END header not found), deleting..."
+			rm -f "$file"
+			file=""
+		fi
 		if [ -z "$file" ]; then
 			matches=$(source_release_assets_json "$host" <<<"$release") || return 1
 			if [ -n "$pf" ]; then
@@ -612,6 +643,11 @@ _get_prebuilts() {
 			name=$(jq -r .name <<<"$asset")
 			file="${dir}/${name}"
 			source_dl "$host" "$file" "$url" >&2 || return 1
+			if ! is_valid_zip_or_jar "$file"; then
+				wpr "Downloaded prebuilt patches '$file' is corrupted, deleting..."
+				rm -f "$file"
+				return 1
+			fi
 			echo "$tag: $(cut -d/ -f1 <<<"$src")/${name}  " >>"${cl_dir}/changelog.md"
 		else
 			grab_cl=false
