@@ -2272,12 +2272,12 @@ get_git_repo_resp() {
 	local provider="$1"
 	local url="${2%/}"
 	local k1="${provider}_dlurl_regex" k2="${provider}_regex" k3="${provider}_dlurl_filter" k4="${provider}_filter"
-	local filter="${args["$k1"]:-${args["$k2"]:-${args["$k3"]:-${args["$k4"]:-${args["repo_dlurl_filter"]:-${repo_dlurl_filter:-}}}}}}"
+	local filter="${args["$k1"]:-${args["$k2"]:-${args["$k3"]:-${args["$k4"]:-}}}}"
 	[ -z "$filter" ] && filter='\.(apk|apkm|xapk|apks)$'
 	local tk1="${provider}_release_regex" tk2="${provider}_release_tag_regex" tk3="${provider}_dlurl_tag_filter"
-	local tag_filter="${args["$tk1"]:-${args["$tk2"]:-${args["$tk3"]:-${args["repo_dlurl_tag_filter"]:-${repo_dlurl_tag_filter:-}}}}}"
+	local tag_filter="${args["$tk1"]:-${args["$tk2"]:-${args["$tk3"]:-}}}"
 	local rk1="${provider}_release_name_regex" rk2="${provider}_release_filter" rk3="${provider}_dlurl_release_name_filter"
-	local rel_name_filter="${args["$rk1"]:-${args["$rk2"]:-${args["$rk3"]:-${args["repo_dlurl_release_name_filter"]:-${repo_dlurl_release_name_filter:-}}}}}"
+	local rel_name_filter="${args["$rk1"]:-${args["$rk2"]:-${args["$rk3"]:-}}}"
 	local host="$provider" host_instance=""
 	if [[ "$url" =~ ^(https?://[^/]+) ]]; then
 		host_instance="${BASH_REMATCH[1]}"
@@ -2287,7 +2287,7 @@ get_git_repo_resp() {
 
 	if [[ "$provider" != "gitlab" ]] && [[ "$provider" != "forgejo" ]]; then
 		local sk1="${provider}_dlurl_source"
-		local source_host="${args["$sk1"]:-${args["repo_dlurl_source"]:-${repo_dlurl_source:-${provider}}}}"
+		local source_host="${args["$sk1"]:-${provider}}"
 		[ -z "$source_host" ] && source_host="$provider"
 		if ! parse_host_spec "$source_host" host host_instance; then
 			return 1
@@ -3391,7 +3391,7 @@ build_rv() {
 		[ -z "$version" ] && get_latest_ver=true
 		if [ $get_latest_ver = true ]; then
 			if [ "$version_mode" = beta ]; then __AAV__="true"; else __AAV__="false"; fi
-			local vers_cache_key="${table:-${app_name:-}}_${dl_from}_${args[${dl_from}_dlurl]:-}_${__AAV__}_${args[repo_dlurl_release_name_filter]:-${repo_dlurl_release_name_filter:-}}"
+			local vers_cache_key="${table:-${app_name:-}}_${dl_from}_${args[${dl_from}_dlurl]:-}_${__AAV__}_${args[${dl_from}_release_name_regex]:-}"
 			if [ -n "${__PKG_VERS_CACHE__["$vers_cache_key"]:-}" ]; then
 				pkgvers="${__PKG_VERS_CACHE__["$vers_cache_key"]}"
 			else

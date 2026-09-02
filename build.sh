@@ -201,10 +201,6 @@ for table_name in $(toml_get_table_names); do
 	app_args[forgejo_dlurl_exclude_filter]=$(toml_get "$t" forgejo-dlurl-exclude-filter) || app_args[forgejo_dlurl_exclude_filter]=$(toml_get "$t" forgejo-exclude-filter) || app_args[forgejo_dlurl_exclude_filter]=""
 
 
-	app_args[repo_dlurl_filter]=$(toml_get "$t" repo-dlurl-filter) || app_args[repo_dlurl_filter]=""
-	app_args[repo_dlurl_tag_filter]=$(toml_get "$t" repo-dlurl-tag-filter) || app_args[repo_dlurl_tag_filter]=""
-	app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-name-filter) || app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-filter) || app_args[repo_dlurl_release_name_filter]=""
-	app_args[repo_dlurl_source]=$(toml_get "$t" repo-dlurl-source) || app_args[repo_dlurl_source]=""
 	app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-dlurl) || app_args[apkmirror_example_url]=""
 	app_args[apkmirror_release_filter]=$(toml_get "$t" apkmirror-release-filter) || app_args[apkmirror_release_filter]=$(toml_get "$t" release-filter) || app_args[apkmirror_release_filter]=""
 	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false

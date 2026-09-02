@@ -83,7 +83,7 @@ while IFS='|' read -r group app; do
     pkg_name=$(jq -r ".\"$app\".\"pkg-name\" // empty" temp_all_configs.json)
     check_sig=$(jq -r ".\"$app\".\"check-sig\" // false" temp_all_configs.json)
     custom_microg_patches=$(jq -r ".\"$app\".\"custom-microg-patches\" // empty" temp_all_configs.json)
-    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode prefer_dl_mode apkmirror_example_url apkmirror_release_filter repo_dlurl_filter repo_dlurl_exclude_filter repo_dlurl_tag_filter repo_dlurl_release_name_filter repo_dlurl_release_filter repo_dlurl_source
+    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode prefer_dl_mode apkmirror_example_url apkmirror_release_filter
 
     dlurls=()
     sources=()
