@@ -160,17 +160,12 @@ parse_host_spec() {
 
 cf_req() {
 	local url=$1 output=$2
-	if [ "$output" != "-" ]; then
-		curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 15 --retry 2 -s -f "$url" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0" -o "$output" || return 1
-		if ! is_valid_zip_or_jar "$output"; then
-			rm -f "$output"
-			return 1
-		fi
-		return 0
-	fi
-
 	if _cf_get "$url"; then
-		echo "$html"
+		if [ "$output" = "-" ]; then
+			echo "$html"
+		else
+			echo "$html" > "$output"
+		fi
 		return 0
 	else
 		return 1
@@ -183,7 +178,17 @@ source_req() {
 	shift 3
 	if [ "$host" = github ]; then
 		gh_req "$url" "$output" "$@"
-	elif [ "$host" = gitlab ] || [ "$host" = forgejo ] || [ "$host" = gitea ]; then
+	elif [ "$host" = gitlab ]; then
+		local headers=(-H "Accept: application/json")
+		if [ -n "${GITLAB_TOKEN:-${GITLAB_PAT:-}}" ]; then
+			headers+=(-H "PRIVATE-TOKEN: ${GITLAB_TOKEN:-${GITLAB_PAT}}")
+		fi
+		if cf_req "$url" "$output"; then
+			return 0
+		else
+			_req "$url" "$output" "${headers[@]}" "$@"
+		fi
+	elif [ "$host" = forgejo ] || [ "$host" = gitea ]; then
 		if cf_req "$url" "$output"; then
 			return 0
 		else
@@ -197,16 +202,27 @@ source_req() {
 source_dl() {
 	local host=${1,,} output=$2 url=$3
 	shift 3
-	pr "Getting '$output' from '$url'"
 	if [ "$host" = github ]; then
 		gh_dl "$output" "$url"
+	elif [ "$host" = gitlab ]; then
+		local headers=(-H "Accept: application/octet-stream")
+		if [ -n "${GITLAB_TOKEN:-${GITLAB_PAT:-}}" ]; then
+			headers+=(-H "PRIVATE-TOKEN: ${GITLAB_TOKEN:-${GITLAB_PAT}}")
+		fi
+		pr "Getting '$output' from '$url'"
+		if ! _req "$url" "$output" "${headers[@]}" "$@"; then
+			cf_req "$url" "$output"
+		fi
+	elif [ "$host" = forgejo ] || [ "$host" = gitea ]; then
+		if cf_req "$url" "$output"; then
+			return 0
+		else
+			pr "Getting '$output' from '$url'"
+			_req "$url" "$output" -H "Accept: application/octet-stream" "$@"
+		fi
 	else
-		curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 15 --retry 2 -s -f "$url" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0" -o "$output" || _req "$url" "$output" -H "Accept: application/octet-stream" "$@"
-	fi
-	if [ -f "$output" ] && ! is_valid_zip_or_jar "$output"; then
-		wpr "Downloaded binary asset '$output' from '$url' is corrupted!"
-		rm -f "$output"
-		return 1
+		pr "Getting '$output' from '$url'"
+		_req "$url" "$output" -H "Accept: application/octet-stream" "$@"
 	fi
 }
 
