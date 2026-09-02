@@ -41,6 +41,7 @@ Variables are **plain text** (not encrypted). Set under the **Variables** tab.
 - `skip_build`: Boolean option (`true`/`false`) to skip APK/module builds and only run version tracking.
 - `disable_config_update`: Boolean option (`true`/`false`) to skip updating config JSONs while still tracking version changes.
 
+
 #### Batch Dispatch All Configs (`batch-dispatch.yml`)
 - `patches_version`: Select `patches-version` override (`latest`, `auto`, or `absolutelatest`). Dispatches app versions update first, then triggers `manual-ci.yml` for all TOML config files sequentially.
 
@@ -109,19 +110,26 @@ At least one `*-dlurl` key is required.
 | `uptodown-dlurl` | Uptodown app page URL. |
 | `apkpure-dlurl` | APKPure app page URL. |
 | `apkcombo-dlurl` | APKCombo app page URL. |
-| `github-dlurl` | GitHub release URL to download directly from (e.g. `https://github.com/owner/repo/releases/tag/tagname`). |
+| `cache_repo_dlurl` | GitHub release tag URL used for downloading cached prebuilt stock APKs (e.g. `https://github.com/owner/apks/releases/tag/com.example.app`). |
+| `github-dlurl` | GitHub release repo URL to download developer releases (supports `beta` pre-releases and tag URLs). |
+| `gitlab-dlurl` | GitLab release repo URL to download developer releases. |
+| `forgejo-dlurl` | Forgejo / Gitea release repo URL to download developer releases. |
 | `archive-dlurl` | Internet Archive URL to download APK from. |
-| `repo-dlurl` | Generic GitHub, GitLab, Forgejo, or Gitea release repo URL. |
 | `direct-dlurl` | Direct APK download URL (bypasses scraping). |
 
-### Download Source Filters (for `repo-dlurl`)
+### Download Source Filters & Regex Options
 
 | Key | Description |
 |-----|-------------|
-| `repo-dlurl-filter` | Regex to filter release asset filenames from `repo-dlurl`. |
-| `repo-dlurl-tag-filter` | Regex to filter release tags from `repo-dlurl`. |
-| `repo-dlurl-release-name-filter` | Regex to filter release names from `repo-dlurl`. Also accepted as `repo-dlurl-release-filter`. |
-| `repo-dlurl-source` | Override the source type for `repo-dlurl` (e.g. `github`, `gitlab`, `https://host|gitlab`, or `https://host|forgejo`). |
+| `github-dlurl-regex` / `github-regex` | Regex or per-arch mapping (`arm64-v8a: ... \| arm-v7a: ...`) to filter release asset filenames for `github-dlurl`. |
+| `github-release-regex` | Regex to filter release tags for `github-dlurl`. |
+| `github-release-name-regex` | Regex to filter release names/titles for `github-dlurl`. |
+| `gitlab-dlurl-regex` / `gitlab-regex` | Regex or per-arch mapping to filter release asset filenames for `gitlab-dlurl`. |
+| `gitlab-release-regex` | Regex to filter release tags for `gitlab-dlurl`. |
+| `gitlab-release-name-regex` | Regex to filter release names/titles for `gitlab-dlurl`. |
+| `forgejo-dlurl-regex` / `forgejo-regex` | Regex or per-arch mapping to filter release asset filenames for `forgejo-dlurl`. |
+| `forgejo-release-regex` | Regex to filter release tags for `forgejo-dlurl`. |
+| `forgejo-release-name-regex` | Regex to filter release names/titles for `forgejo-dlurl`. |
 
 ### Other
 

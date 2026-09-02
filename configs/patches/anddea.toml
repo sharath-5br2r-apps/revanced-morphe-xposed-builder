@@ -15,7 +15,7 @@ included-patches = "'MaterialYou'"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
 
 # ── YouTube morphe-anddea-amoled (#000000 explicit) ───────────────────────────
@@ -32,7 +32,7 @@ included-patches = "'MaterialYou'"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF --continue-on-error"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
 
 [youtube-music-morphe-anddea]
@@ -47,7 +47,7 @@ patches-source = "anddea/revanced-patches"
 patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 dpi = "nodpi anydpi auto"
 
 # ── YouTube Music morphe-anddea-amoled (#000000 explicit) ─────────────────────
@@ -63,6 +63,6 @@ patches-source = "anddea/revanced-patches"
 patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=#000000 --continue-on-error"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 dpi = "nodpi anydpi auto"
 

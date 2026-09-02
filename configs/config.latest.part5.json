@@ -11,8 +11,8 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "dh6k/morphe-patches",
     "patcher-args": "--continue-on-error",
-    "repo-dlurl": "https://github.com/brave/brave-browser/releases",
-    "repo-dlurl-filter": "(BraveMonoarm|MonoArm)\\.apk$",
-    "repo-dlurl-release-name-filter": "^Nightly v"
+    "github-dlurl": "https://github.com/brave/brave-browser/releases",
+    "github-dlurl-regex": "(BraveMonoarm|MonoArm)\\.apk$",
+    "github-release-name-regex": "^Nightly v"
   }
 }

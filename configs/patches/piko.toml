@@ -13,7 +13,7 @@ cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
 apkmirror-example-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
 dpi = "nodpi anydpi auto"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android"
 patches-source = "crimera/piko"
 
 
@@ -33,7 +33,7 @@ excluded-patches = "'Dynamic Color'"
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 dpi = "nodpi anydpi auto"
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
@@ -53,7 +53,7 @@ excluded-patches = "'Dynamic Color'"
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 dpi = "nodpi anydpi auto"
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
@@ -72,7 +72,7 @@ included-patches = "'Dynamic Color'"
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 dpi = "nodpi anydpi auto"
 
 [x-morphe-piko-materialyou-exp]
@@ -90,5 +90,5 @@ included-patches = "'Dynamic Color'"
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 dpi = "nodpi anydpi auto"

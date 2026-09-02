@@ -50,7 +50,7 @@ CWD=$(pwd)
 TEMP_DIR="temp"
 BIN_DIR="bin"
 BUILD_DIR="build"
-DL_SRCS=("local" "direct" "github" "repo" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
+DL_SRCS=("local" "direct" "cache_repo" "github" "gitlab" "forgejo" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
 BUILD_JSON_FILE="build.json"
 PATCH_OUTPUT=""
 mkdir -p "$TEMP_DIR"
@@ -786,6 +786,23 @@ get_highest_ver() {
 	m=$(head -1 <<<"$vers")
 	if ! semver_validate "$m"; then echo "$m"; else sort -s -t- -k1,1Vr <<<"$vers" | head -1; fi
 }
+sort_vers() {
+	local vers valid_vers=""
+	vers=$(tee)
+	
+	# Try to find valid semvers first
+	while IFS= read -r v; do
+		if [ -n "$v" ] && semver_validate "$v"; then
+			valid_vers+="${v}"$'\n'
+		fi
+	done <<<"$vers"
+	
+	if [ -n "$valid_vers" ]; then
+		sort -s -t- -k1,1Vr <<<"$valid_vers" | head -2
+	else
+		head -2 <<<"$vers"
+	fi
+}
 semver_validate() {
 	local a="${1%-*}"
 	local a="${a#v}"
@@ -823,7 +840,7 @@ _get_patch_last_supported_ver() {
 			echo "$vers" | tr ' ' '\n' | sort | uniq -c | sort -k1,1nr | awk '
 				NR==1 { max=$1; print $2; next }
 				$1==max { print $2 }
-			' | get_highest_ver
+			' | sort_vers
 			return
 		fi
 	fi
@@ -834,7 +851,7 @@ _get_patch_last_supported_ver() {
 	if [ -z "$pcount" ]; then
 		return 1
 	fi
-	grep -F "($pcount patch" <<<"$op" | sed 's/ (.* patch.*//' | sed 's/ \[.*//' | get_highest_ver || return 1
+	grep -F "($pcount patch" <<<"$op" | sed 's/ (.* patch.*//' | sed 's/ \[.*//' | sort_vers || return 1
 }
 
 check_patch_ver_compatible() {
@@ -880,7 +897,7 @@ get_patch_exp_ver() {
 	fi
 
 	if [ -n "$exp_versions" ]; then
-		get_highest_ver <<<"$exp_versions"
+		sort_vers <<<"$exp_versions"
 	fi
 }
 
@@ -1849,7 +1866,7 @@ get_apkcombo_vers() {
 get_apkcombo_pkg_name() { echo "$__APKCOMBO_PKG__"; }
 dl_apkcombo() {
 	local _url=$1 version=$2 output=$3 _arch=$4 _dpi=$5
-	local html="" dl_url final_url checkin page_url page compact_page
+	local html="" dl_url="" final_url checkin page_url page compact_page
 
 	if [ -n "$version" ]; then
 		local sfxs=("apk" "xapk" "apks")
@@ -1868,6 +1885,15 @@ dl_apkcombo() {
 		_cf_get "$page_url" "https://apkcombo.com/" || continue
 		page="$html"
 		compact_page=$(tr '\n' ' ' <<<"$page")
+
+		if [ -n "$version" ]; then
+			local page_vername
+			page_vername=$(echo "$page" | grep -oP '<span class="vername">\K[^<]+' | head -1) || true
+			if [ -n "$page_vername" ] && ! echo "$page_vername" | grep -qFi "$version"; then
+				wpr "Version mismatch on APKCombo: requested '$version' but found '$page_vername'"
+				continue
+			fi
+		fi
 
 		dl_url=$(echo "$page" | grep -oP '(?<=a href=")https://download\.apkcombo\.com/[^"]+' | head -1) || true
 		[ -z "$dl_url" ] && dl_url=$(echo "$page" | grep -oP '(?<=a href=")/r2[^"]+' | head -1) || true
@@ -2078,11 +2104,11 @@ get_archive_resp() {
 get_archive_vers() { sed 's/^[^-]*-//;s/-\(all\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"; }
 get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
 
-# -------------------- github --------------------
-dl_github() {
+# -------------------- cache_repo --------------------
+dl_cache_repo() {
 	local url=$1 version=$2 output=$3 arch=$4
 	local path="" version_f=${version// /}
-	local base_url=${__GITHUB_URL__:-$url}
+	local base_url=${__CACHE_REPO_URL__:-${__GITHUB_URL__:-$url}}
 
 	local key_check="${table:-}${app_name:-}${rv_brand:-}"
 	key_check="${key_check,,}"
@@ -2097,19 +2123,46 @@ dl_github() {
 	done
 	arch_candidates+=("common" "all")
 
-	for a in "${arch_candidates[@]}"; do
-		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
-			while IFS= read -r p; do
-				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
-					path="$p"
-					break 3
-				fi
-			done <<<"$__ARCHIVE_RESP__"
-		done
-	done
+	local custom_regex="${args[cache_repo_regex]:-${args[cache_repo_dlurl_regex]:-}}"
+	if [ -n "$custom_regex" ]; then
+		local regex=""
+		if [[ "$custom_regex" == *":"* ]]; then
+			regex=$(echo "$custom_regex" | awk -F'|' -v a="$arch" '{
+				for(i=1;i<=NF;i++) {
+					split($i, kv, ":")
+					gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[1])
+					if(kv[1] == a) {
+						gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[2])
+						print kv[2]
+						exit
+					}
+				}
+			}')
+		else
+			regex="$custom_regex"
+		fi
+		if [ -n "$regex" ]; then
+			regex="${regex//\{version\}/${version_f#v}}"
+			regex="${regex//\{arch\}/${arch}}"
+			path=$(grep -iE "$regex" <<<"${__CACHE_REPO_RESP__:-${__ARCHIVE_RESP__:-}}" | head -1)
+		fi
+	fi
 
 	if [ -z "$path" ]; then
-		epr "Version ${version} with arch ${arch} not found in github"
+		for a in "${arch_candidates[@]}"; do
+			for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
+				while IFS= read -r p; do
+					if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
+						path="$p"
+						break 3
+					fi
+				done <<<"${__CACHE_REPO_RESP__:-${__ARCHIVE_RESP__:-}}"
+			done
+		done
+	fi
+
+	if [ -z "$path" ]; then
+		epr "Version ${version} with arch ${arch} not found in cache_repo"
 		return 1
 	fi
 
@@ -2124,67 +2177,82 @@ dl_github() {
 			merge_splits "$bundle" "$output"
 			;;
 		*)
-			epr "Unsupported github file type for ${path}"
+			epr "Unsupported cache_repo file type for ${path}"
 			return 1
 			;;
 	esac
 }
 
-get_github_resp() {
+get_cache_repo_resp() {
 	local url="${1}"
-	local key="github_archive_${url//[^a-zA-Z0-9]/_}"
+	local key="cache_repo_${url//[^a-zA-Z0-9]/_}"
 	if [ -n "${__DL_RESP_CACHE__["$key"]:-}" ]; then
-		__ARCHIVE_RESP__="${__DL_RESP_CACHE__["$key"]}"
-		__ARCHIVE_PKG_NAME__="${__DL_RESP_CACHE__["pkg_$key"]}"
-		__GITHUB_URL__="${__DL_RESP_CACHE__["ghurl_$key"]}"
+		__CACHE_REPO_RESP__="${__DL_RESP_CACHE__["$key"]}"
+		__CACHE_REPO_PKG_NAME__="${__DL_RESP_CACHE__["pkg_$key"]}"
+		__CACHE_REPO_URL__="${__DL_RESP_CACHE__["ghurl_$key"]}"
 		return 0
 	fi
-	local repo tag resp
-	
+	local repo tag resp endpoint
+
 	repo=$(cut -d/ -f4-5 <<<"$url")
 	tag=${url%/}
 	tag=${tag##*/}
-	
-	resp=$(gh_req "https://api.github.com/repos/${repo}/releases/tags/${tag}" -) || return 1
-	
-	# Extract only supported file extensions
-	__ARCHIVE_RESP__=$(jq -r '.assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$resp")
-	if [ -z "$__ARCHIVE_RESP__" ]; then return 1; fi
-	
-	# Grab the package name exactly like how get_archive_vers isolates the version
-	__ARCHIVE_PKG_NAME__=$(get_github_pkg_name)
-	if [ -z "$__ARCHIVE_PKG_NAME__" ]; then return 1; fi
-	
-	__GITHUB_URL__="https://github.com/${repo}/releases/download/${tag}"
-	
-	__DL_RESP_CACHE__["$key"]="$__ARCHIVE_RESP__"
-	__DL_RESP_CACHE__["pkg_$key"]="$__ARCHIVE_PKG_NAME__"
-	__DL_RESP_CACHE__["ghurl_$key"]="$__GITHUB_URL__"
+
+	endpoint="tags/${tag}"
+	[ "$tag" = "latest" ] && endpoint="latest"
+
+	if ! resp=$(gh_req "https://api.github.com/repos/${repo}/releases/${endpoint}" -); then
+		if [ "$tag" != "latest" ] && [[ "$tag" == v* ]]; then
+			tag="${tag#v}"
+			endpoint="tags/${tag}"
+			if ! resp=$(gh_req "https://api.github.com/repos/${repo}/releases/${endpoint}" -); then
+				return 1
+			fi
+		else
+			return 1
+		fi
+	fi
+
+	if [ "$tag" = "latest" ]; then
+		tag=$(jq -r '.tag_name' <<<"$resp")
+	fi
+
+	__CACHE_REPO_RESP__=$(jq -r '.assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$resp")
+	if [ -z "$__CACHE_REPO_RESP__" ]; then return 1; fi
+
+	__CACHE_REPO_PKG_NAME__=$(get_cache_repo_pkg_name)
+	if [ -z "$__CACHE_REPO_PKG_NAME__" ]; then return 1; fi
+
+	__CACHE_REPO_URL__="https://github.com/${repo}/releases/download/${tag}"
+
+	__DL_RESP_CACHE__["$key"]="$__CACHE_REPO_RESP__"
+	__DL_RESP_CACHE__["pkg_$key"]="$__CACHE_REPO_PKG_NAME__"
+	__DL_RESP_CACHE__["ghurl_$key"]="$__CACHE_REPO_URL__"
 }
 
-# Extracts version matching the archive logic: strips prefix (up to first '-') and suffix (arch/extension)
-get_github_vers() {
-	sed 's/^[^-]*-//;s/-\(all\|common\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"
+get_cache_repo_vers() {
+	sed 's/^[^-]*-//;s/-\(all\|common\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"${__CACHE_REPO_RESP__:-${__ARCHIVE_RESP__:-}}"
 }
 
-# Extracts package name by stripping everything from the version hyphen onwards (e.g. com.google.android.youtube-20.51.39-all.apk -> com.google.android.youtube)
-get_github_pkg_name() {
-	sed -E 's/-[0-9]+(\.[0-9]+).*/\1/' <<<"$__ARCHIVE_RESP__" | grep -v '^\s*$' | head -n 1 | sed -E 's/(-[0-9]+.*)//'
+get_cache_repo_pkg_name() {
+	sed -E 's/-[0-9]+(\.[0-9]+).*/\1/' <<<"${__CACHE_REPO_RESP__:-${__ARCHIVE_RESP__:-}}" | grep -v '^\s*$' | head -n 1 | sed -E 's/(-[0-9]+.*)//'
 }
 
-# -------------------- repo --------------------
-get_repo_resp() {
-	local url="${1%/}"
-	local filter="${repo_dlurl_filter:-${args[repo_dlurl_filter]:-}}"
+# -------------------- git release helper (github, gitlab, forgejo) --------------------
+get_git_repo_resp() {
+	local provider="$1"
+	local url="${2%/}"
+	local filter="${args[${provider}_dlurl_regex]:-${args[${provider}_regex]:-${args[${provider}_dlurl_filter]:-${args[${provider}_filter]:-${repo_dlurl_filter:-${args[repo_dlurl_filter]:-}}}}}}"
 	[ -z "$filter" ] && filter='\.(apk|apkm|xapk|apks)$'
-	local tag_filter="${repo_dlurl_tag_filter:-${args[repo_dlurl_tag_filter]:-}}"
-	local rel_name_filter="${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-}}"
-	local source_host="${repo_dlurl_source:-${args[repo_dlurl_source]:-github}}"
-	[ -z "$source_host" ] && source_host="github"
+	local tag_filter="${args[${provider}_release_regex]:-${args[${provider}_release_tag_regex]:-${args[${provider}_dlurl_tag_filter]:-${repo_dlurl_tag_filter:-${args[repo_dlurl_tag_filter]:-}}}}}"
+	local rel_name_filter="${args[${provider}_release_name_regex]:-${args[${provider}_release_filter]:-${args[${provider}_dlurl_release_name_filter]:-${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-}}}}}"
+	local source_host="${args[${provider}_dlurl_source]:-${args[repo_dlurl_source]:-${provider}}}"
+	[ -z "$source_host" ] && source_host="$provider"
 
-	local cache_key="repo_${table:-${app_name:-}}_${url}_${filter}_${tag_filter}_${rel_name_filter}_${source_host}"
+	local cache_key="${provider}_${table:-${app_name:-}}_${url}_${filter}_${tag_filter}_${rel_name_filter}_${source_host}"
 	if [ -n "${__DL_RESP_CACHE__["$cache_key"]:-}" ]; then
-		__REPO_RESP_JSON__="${__DL_RESP_CACHE__["$cache_key"]}"
+		__GIT_RESP_JSON__="${__DL_RESP_CACHE__["$cache_key"]}"
+		__DL_RESP_CACHE__["git_${provider}"]="$__GIT_RESP_JSON__"
 		return 0
 	fi
 
@@ -2201,8 +2269,9 @@ get_repo_resp() {
 		filename=$(basename "$url")
 		local assets_json
 		assets_json=$(jq -c -n --arg name "$filename" --arg url "$url" '[{name: $name, browser_download_url: $url, tag_name: "latest"}]')
-		__REPO_RESP_JSON__="$assets_json"
+		__GIT_RESP_JSON__="$assets_json"
 		__DL_RESP_CACHE__["$cache_key"]="$assets_json"
+		__DL_RESP_CACHE__["git_${provider}"]="$assets_json"
 		return 0
 	fi
 
@@ -2236,7 +2305,6 @@ get_repo_resp() {
 				break
 			fi
 			all_releases=$(jq -s 'add' <<<"${all_releases}${resp}")
-			# Stop paginating early if page has fewer than 100 releases
 			local p_count
 			p_count=$(jq 'length' <<<"$resp" 2>/dev/null || echo 0)
 			if [ "$p_count" -lt 100 ]; then
@@ -2244,7 +2312,7 @@ get_repo_resp() {
 			fi
 		done
 		release="$all_releases"
-		if [ $max_p -gt 3 ]; then __REPO_PAGINATED_ALL__=true; fi
+		if [ $max_p -gt 3 ]; then __GIT_PAGINATED_ALL__=true; fi
 	fi
 
 	if [ -z "$release" ] || [ "$release" = "[]" ]; then return 1; fi
@@ -2289,24 +2357,31 @@ get_repo_resp() {
 	' <<<"$release") || return 1
 
 	if [ -z "$assets_json" ] || [ "$assets_json" = "[]" ]; then
-		wpr "No matching APK assets found in repo releases for $url (filter: $filter)"
+		wpr "No matching APK assets found in $provider releases for $url (filter: $filter)"
 		return 1
 	fi
 
-	__REPO_RESP_JSON__="$assets_json"
+	__GIT_RESP_JSON__="$assets_json"
 	__DL_RESP_CACHE__["$cache_key"]="$assets_json"
+	__DL_RESP_CACHE__["git_${provider}"]="$assets_json"
 }
 
-get_repo_vers() {
-	if [ -z "${__REPO_RESP_JSON__:-}" ]; then
-		get_repo_resp "${repo_dlurl:-${args[repo_dlurl]:-}}" || return 1
+get_git_repo_vers() {
+	local provider="$1"
+	local assets_json="${__DL_RESP_CACHE__["git_${provider}"]:-${__GIT_RESP_JSON__:-}}"
+	if [ -z "$assets_json" ]; then
+		local url="${args[${provider}_dlurl]:-}"
+		[ -n "$url" ] && get_git_repo_resp "$provider" "$url" || return 1
+		assets_json="${__GIT_RESP_JSON__:-}"
 	fi
-	jq -r '.[].tag_name // empty' <<<"${__REPO_RESP_JSON__:-[]}" | sed 's/^v//i' | sort -u
+	jq -r '.[].tag_name // empty' <<<"${assets_json:-[]}" | sed 's/^v//i' | sort -u
 }
 
-get_repo_pkg_name() {
+get_git_repo_pkg_name() {
+	local provider="$1"
+	local assets_json="${__DL_RESP_CACHE__["git_${provider}"]:-${__GIT_RESP_JSON__:-}}"
 	local first_asset_name
-	first_asset_name=$(jq -r '.[0].name // empty' <<<"${__REPO_RESP_JSON__:-[]}")
+	first_asset_name=$(jq -r '.[0].name // empty' <<<"${assets_json:-[]}")
 	if [ -n "$first_asset_name" ]; then
 		sed 's/-.*//' <<<"$first_asset_name" | head -n 1
 	else
@@ -2314,28 +2389,43 @@ get_repo_pkg_name() {
 	fi
 }
 
-dl_repo() {
+dl_git_repo() {
+	local provider="$1"
+	shift
 	local url=$1 version=$2 output=$3 arch=$4 dpi=${5:-} get_latest_ver=${6:-false}
-	local filter="${repo_dlurl_filter:-${args[repo_dlurl_filter]:-}}"
-	local exclude_filter="${repo_dlurl_exclude_filter:-${args[repo_dlurl_exclude_filter]:-}}"
+	local assets_json="${__DL_RESP_CACHE__["git_${provider}"]:-${__GIT_RESP_JSON__:-}}"
 
+	local custom_regex="${args[${provider}_dlurl_regex]:-${args[${provider}_regex]:-}}"
 	local version_clean=${version#v}
 	local matching_asset="" download_url="" asset_name=""
 
-	# Substring match on tag_name or asset name using target version / version_clean
-	matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" '
-		map(
-			select(
-				((.tag_name // "") | contains($ver_clean)) or
-				((.tag_name // "") | contains($ver)) or
-				((.name // "") | contains($ver_clean))
-			)
-		) | .[0] // empty
-	' <<<"${__REPO_RESP_JSON__:-[]}")
+	if [ -n "$custom_regex" ]; then
+		local regex=""
+		if [[ "$custom_regex" == *":"* ]]; then
+			regex=$(echo "$custom_regex" | awk -F'|' -v a="$arch" '{
+				for(i=1;i<=NF;i++) {
+					split($i, kv, ":")
+					gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[1])
+					if(kv[1] == a) {
+						gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[2])
+						print kv[2]
+						exit
+					}
+				}
+			}')
+		else
+			regex="$custom_regex"
+		fi
+		if [ -n "$regex" ]; then
+			regex="${regex//\{version\}/${version_clean}}"
+			regex="${regex//\{arch\}/${arch}}"
+			matching_asset=$(jq -c --arg r "$regex" '
+				map(select((.name // "") | test($r; "i"))) | .[0] // empty
+			' <<<"${assets_json:-[]}")
+		fi
+	fi
 
-	if [ -z "$matching_asset" ] && [ "${__REPO_PAGINATED_ALL__:-false}" != true ]; then
-		pr "Version $version not found in current cached repo releases, fetching older pages..."
-		__FORCE_PAGINATE__=true get_repo_resp "$url" || true
+	if [ -z "$matching_asset" ]; then
 		matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" '
 			map(
 				select(
@@ -2344,10 +2434,24 @@ dl_repo() {
 					((.name // "") | contains($ver_clean))
 				)
 			) | .[0] // empty
-		' <<<"${__REPO_RESP_JSON__:-[]}")
+		' <<<"${assets_json:-[]}")
 	fi
 
-	# Fallback to major.minor substring match (e.g. "1.93" for "1.93.138")
+	if [ -z "$matching_asset" ] && [ "${__GIT_PAGINATED_ALL__:-false}" != true ]; then
+		pr "Version $version not found in current cached $provider releases, fetching older pages..."
+		__FORCE_PAGINATE__=true get_git_repo_resp "$provider" "$url" || true
+		assets_json="${__GIT_RESP_JSON__:-}"
+		matching_asset=$(jq -c --arg ver "$version" --arg ver_clean "$version_clean" '
+			map(
+				select(
+					((.tag_name // "") | contains($ver_clean)) or
+					((.tag_name // "") | contains($ver)) or
+					((.name // "") | contains($ver_clean))
+				)
+			) | .[0] // empty
+		' <<<"${assets_json:-[]}")
+	fi
+
 	if [ -z "$matching_asset" ]; then
 		local major_minor
 		major_minor=$(echo "$version_clean" | cut -d. -f1-2)
@@ -2359,16 +2463,16 @@ dl_repo() {
 						((.name // "") | contains($mm))
 					)
 				) | .[0] // empty
-			' <<<"${__REPO_RESP_JSON__:-[]}")
+			' <<<"${assets_json:-[]}")
 		fi
 	fi
 
 	if [ -z "$matching_asset" ]; then
-		matching_asset=$(jq -c '.[0] // empty' <<<"${__REPO_RESP_JSON__:-[]}")
+		matching_asset=$(jq -c '.[0] // empty' <<<"${assets_json:-[]}")
 	fi
 
 	if [ -z "$matching_asset" ]; then
-		epr "Repo asset not found for version $version (arch $arch)"
+		epr "$provider asset not found for version $version (arch $arch)"
 		return 1
 	fi
 
@@ -2377,7 +2481,7 @@ dl_repo() {
 
 	[ -z "$download_url" ] && return 1
 
-	pr "Downloading repo asset from ${url}: $asset_name ($download_url)"
+	pr "Downloading $provider asset from ${url}: $asset_name ($download_url)"
 	local ext="${asset_name##*.}"
 	case "$ext" in
 		apk)
@@ -2393,6 +2497,21 @@ dl_repo() {
 			;;
 	esac
 }
+
+dl_github() { dl_git_repo "github" "$@"; }
+get_github_resp() { get_git_repo_resp "github" "$@"; }
+get_github_vers() { get_git_repo_vers "github"; }
+get_github_pkg_name() { get_git_repo_pkg_name "github"; }
+
+dl_gitlab() { dl_git_repo "gitlab" "$@"; }
+get_gitlab_resp() { get_git_repo_resp "gitlab" "$@"; }
+get_gitlab_vers() { get_git_repo_vers "gitlab"; }
+get_gitlab_pkg_name() { get_git_repo_pkg_name "gitlab"; }
+
+dl_forgejo() { dl_git_repo "forgejo" "$@"; }
+get_forgejo_resp() { get_git_repo_resp "forgejo" "$@"; }
+get_forgejo_vers() { get_git_repo_vers "forgejo"; }
+get_forgejo_pkg_name() { get_git_repo_pkg_name "forgejo"; }
 
 
 # -------------------- direct --------------------
@@ -3052,36 +3171,42 @@ build_rv() {
 		if [ -n "$resolved_version" ]; then
 			resolved_version=$(echo "$resolved_version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^v//i; s/^[[:space:]]+|[[:space:]]+$//g')
 		fi
+	fi
 
+	local all_resolved_versions=()
+	if [ -n "$resolved_version" ]; then
+		mapfile -t all_resolved_versions <<<"$resolved_version"
+	else
+		all_resolved_versions=("")
+	fi
+
+	local final_stock_apk=""
+	local final_all_apk=""
+	local final_version=""
+	
+	for curr_resolved_version in "${all_resolved_versions[@]}"; do
+		resolved_version="$curr_resolved_version"
+		skip_dl_source_check=false
+		get_latest_ver=false
+		tried_dl=()
+		dl_from=""
 		# Cache Check
-		if [ -n "$resolved_version" ]; then
-			local version_f=${resolved_version// /}
-			version_f=${version_f#v}
-			version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
-			version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
-			local all_archs_found=true
-			for arch in "${arch_list[@]}"; do
-				arch_f="${arch// /}"
-				local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
-				local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+		if [ -n "$pkg_name" ]; then
+			if [ -n "$resolved_version" ]; then
+				local version_f=${resolved_version// /}
+				version_f=${version_f#v}
+				local all_archs_found=true
+				for arch in "${arch_list[@]}"; do
+					arch_f="${arch// /}"
+					local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+					local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
 
-				if [ ! -f "$stock_apk" ] && [ ! -f "$all_apk" ]; then
-					all_archs_found=false
-					break
-				fi
-			done
-			if [ "$all_archs_found" = true ]; then
-				local is_cache_ver_compatible=true
-				if [ -n "$list_patches" ]; then
-					if ! check_patch_ver_compatible "$list_patches" "$pkg_name" "$resolved_version" \
-						"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
-						"${cli_jar:-}" "${patches_jar:-}"; then
-						wpr "WARNING: Cached APK version '$resolved_version' for '$pkg_name' is not compatible with selected patches. Invalidate cache hit."
-						is_cache_ver_compatible=false
+					if [ ! -f "$stock_apk" ] && [ ! -f "$all_apk" ]; then
+						all_archs_found=false
+						break
 					fi
-				fi
-
-				if [ "$is_cache_ver_compatible" = true ]; then
+				done
+				if [ "$all_archs_found" = true ]; then
 					for arch in "${arch_list[@]}"; do
 						arch_f="${arch// /}"
 						local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
@@ -3092,46 +3217,38 @@ build_rv() {
 					pr "Found all required architectures for '$pkg_name' (v$version_f) in cache. Skipping download!"
 					skip_dl_source_check=true
 					version="$resolved_version"
-				else
-					resolved_version=""
 				fi
-			fi
-	elif [ "$version_mode" != "auto" ]; then
-		# Dynamic Cache Discovery for "latest" or empty version
-			local cached_apks=($(find "$apk_cache_dir" -name "${pkg_name}-*.apk" -type f ! -name "*stub*" 2>/dev/null || true))
-			if [ ${#cached_apks[@]} -gt 0 ]; then
-				local cached_versions=""
-				for capk in "${cached_apks[@]}"; do
-					local bname=$(basename "$capk")
-					# extract version from format: pkg_name-version-arch.apk
-					local v=${bname#${pkg_name}-}
-					v=$(echo "$v" | sed -E 's/-(all|arm64-v8a|arm-v7a|x86_64|x86|nodpi|anydpi|auto)\.apk$//i; s/\.apk$//i')
-					cached_versions+="$v"$'\n'
-				done
-				local dyn_ver
-				if dyn_ver=$(echo "$cached_versions" | get_highest_ver) && [ -n "$dyn_ver" ]; then
-					local all_archs_found=true
-					for arch in "${arch_list[@]}"; do
-						arch_f="${arch// /}"
-						local stock_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}-${arch_f}.apk"
-						local all_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}-all.apk"
-						if [ ! -f "$stock_apk" ] && [ ! -f "$all_apk" ]; then
-							all_archs_found=false
-							break
-						fi
+			else
+				# Dynamic Cache Discovery for "latest" or empty version
+				local cached_apks=($(find "$apk_cache_dir" -name "${pkg_name}-*.apk" -type f 2>/dev/null || true))
+				if [ ${#cached_apks[@]} -gt 0 ]; then
+					local cached_versions=""
+					for capk in "${cached_apks[@]}"; do
+						local bname=$(basename "$capk")
+						# extract version from format: pkg_name-version-arch.apk
+						local v=${bname#${pkg_name}-}
+						v=${v%.apk}
+						v=${v%-arm64-v8a}
+						v=${v%-arm-v7a}
+						v=${v%-x86_64}
+						v=${v%-x86}
+						v=${v%-all}
+						v=${v%-universal}
+						cached_versions+="$v"$'\n'
 					done
-					if [ "$all_archs_found" = true ]; then
-						local is_dyn_ver_compatible=true
-						if [ -n "$list_patches" ]; then
-							if ! check_patch_ver_compatible "$list_patches" "$pkg_name" "$dyn_ver" \
-								"${args[included_patches]:-}" "${args[excluded_patches]:-}" "${args[exclusive_patches]:-}" "${args[cli_source]:-}" \
-								"${cli_jar:-}" "${patches_jar:-}"; then
-								wpr "WARNING: Dynamically discovered cached APK version '$dyn_ver' for '$pkg_name' is not compatible with selected patches. Invalidate cache hit."
-								is_dyn_ver_compatible=false
+					local dyn_ver
+					if dyn_ver=$(echo "$cached_versions" | get_highest_ver) && [ -n "$dyn_ver" ]; then
+						local all_archs_found=true
+						for arch in "${arch_list[@]}"; do
+							arch_f="${arch// /}"
+							local stock_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}-${arch_f}.apk"
+							local all_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}-all.apk"
+							if [ ! -f "$stock_apk" ] && [ ! -f "$all_apk" ]; then
+								all_archs_found=false
+								break
 							fi
-						fi
-
-						if [ "$is_dyn_ver_compatible" = true ]; then
+						done
+						if [ "$all_archs_found" = true ]; then
 							for arch in "${arch_list[@]}"; do
 								arch_f="${arch// /}"
 								local stock_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}-${arch_f}.apk"
@@ -3148,7 +3265,6 @@ build_rv() {
 				fi
 			fi
 		fi
-	fi
 
 	if [ "$skip_dl_source_check" = false ]; then
 		# 2. Establish dl_from and fetch required HTML responses
@@ -3255,7 +3371,7 @@ build_rv() {
 	fi
 	if [ -z "$version" ]; then
 		epr "empty version, not building ${table}."
-		return 0
+		continue
 	fi
 
 	if [ "$mode_arg" = module ]; then
@@ -3277,7 +3393,6 @@ build_rv() {
 	mkdir -p "$dl_logs_dir"
 
 	for arch in "${arch_list[@]}"; do
-		(
 		arch_f="${arch// /}"
 		local cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 		local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
@@ -3397,114 +3512,31 @@ build_rv() {
 					if [ -f "${stock_apk%.apk}.apkm" ]; then
 						mv -f "${stock_apk%.apk}.apkm" "${all_apk%.apk}.apkm"
 					fi
-					stock_apk="$all_apk"
 				fi
 			fi
-			
-			# Sync pristine files from staging to cache atomically
-			if [ -f "$stock_apk" ]; then
-				if [ "$stock_apk" = "$all_apk" ]; then
-					cp -f "$all_apk" "${cached_all_apk}.tmp_$$" && mv -f "${cached_all_apk}.tmp_$$" "$cached_all_apk"
-					stock_apk="$cached_all_apk"
-				else
-					cp -f "$stock_apk" "${cached_stock_apk}.tmp_$$" && mv -f "${cached_stock_apk}.tmp_$$" "$cached_stock_apk"
-					stock_apk="$cached_stock_apk"
-				fi
-				all_apk="$cached_all_apk"
-			fi
-
-			local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-}}"
-			local pat_token="${PERSONAL_ACCESS_TOKEN:-${GH_TOKEN:-${GITHUB_TOKEN:-}}}"
-			if [ -f "$stock_apk" ] && [ -n "$apks_repo" ] && [ -n "$pat_token" ] && [ "$dl_p" != "github" ] && [ "$dl_p" != "archive" ]; then
-				pr "Uploading newly downloaded APKs to ${apks_repo}..."
-				if GH_TOKEN="$pat_token" gh release view "$pkg_name" --repo "$apks_repo" >/dev/null 2>&1 || GH_TOKEN="$pat_token" gh release create "$pkg_name" --repo "$apks_repo" --title "$pkg_name" --notes ""; then
-					if [ -f "$all_apk" ]; then
-						GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$all_apk" --repo "$apks_repo" --clobber 2>/dev/null || true
-					else
-						GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$stock_apk" --repo "$apks_repo" --clobber 2>/dev/null || true
-					fi
-				else
-					wpr "Failed to view/create release $pkg_name on $apks_repo"
-				fi
-			fi
-		else
-			pr "Found APK in cache: ${stock_apk}. Skipping download!"
 		fi
-		([ -f "$stock_apk" ] || [ -f "$cached_all_apk" ]) || exit 1
-		) > "${dl_logs_dir}/dl_${arch// /}.log" 2>&1 &
-		dl_pids+=($!)
-	done
 
-	local dl_failed=false
-	local dl_success_count=0
-	local total_dl_count=${#dl_pids[@]}
-	for pid in "${dl_pids[@]}"; do
-		if wait "$pid"; then
-			((dl_success_count++))
-		else
-			dl_failed=true
+		if [ ! -f "$stock_apk" ]; then
+			epr "ERROR: Could not download '${table}' for version $resolved_version"
+			continue
+		fi
+
+		if [ -f "$stock_apk" ]; then
+			final_stock_apk="$stock_apk"
+			final_all_apk="${all_apk:-}"
+			final_version="$version"
+			break
 		fi
 	done
-
-	for logfile in "${dl_logs_dir}"/dl_*.log; do
-		if [ -f "$logfile" ]; then
-			local log_arch="${logfile##*/dl_}"
-			log_arch="${log_arch%.log}"
-			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::group::Download Logs - ${table} (${log_arch})"; fi
-			sed -E "s/^::error::(.*)/::error::[${table}][${log_arch}] \1/; s/^::warning::(.*)/::warning::[${table}][${log_arch}] \1/; t; s/^/[${table}][${log_arch}] /" "$logfile"
-			if [ -n "${GITHUB_REPOSITORY-}" ]; then echo "::endgroup::"; fi
-		fi
 	done
-	rm -rf "$dl_logs_dir"
 
-	if [ "$dl_success_count" -eq 0 ] && [ "$total_dl_count" -gt 0 ]; then
-		epr "All architecture downloads failed for '${table}'"
-		return 1
-	elif [ "$dl_failed" = true ]; then
-		wpr "One or more architecture downloads failed for '${table}', but $dl_success_count/$total_dl_count succeeded."
-	fi
-	version_f=${version// /}
-	version_f=${version_f#v}
-	version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
-	version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
-	local primary_arch="${arch_list[0]// /}"
-	local check_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${primary_arch}.apk"
-	local check_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
-	local stock_apk=""
-	[ -f "$check_all_apk" ] && stock_apk="$check_all_apk"
-	if [ -z "$stock_apk" ]; then
-		for a_check in "${arch_list[@]}"; do
-			local a_check_f="${a_check// /}"
-			if [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-${a_check_f}.apk" ]; then
-				stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${a_check_f}.apk"
-				break
-			fi
-		done
-	fi
-
-	if [ -z "$stock_apk" ] || [ ! -f "$stock_apk" ]; then
-		# If the APK version was updated dynamically during download (e.g. 3.0.469 -> 3.0.469.1947), find any downloaded file matching the package
-		local found_any
-		found_any=$(ls -1 "${apk_cache_dir}/${pkg_name}"-*.apk 2>/dev/null | head -n1 || true)
-		if [ -n "$found_any" ]; then
-			stock_apk="$found_any"
-		else
-			epr "ERROR: Could not download '${table}'"
-			return 0
-		fi
-	fi
-
-	if [ "$version_mode" != "auto" ] || ! [[ "${version_f:-}" =~ ^[0-9] ]]; then
-		local apk_ver
-		apk_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-		if [ -n "$apk_ver" ]; then
-			version="$apk_ver"
-			version=$(echo "$version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
-			version_f=${version// /}
-			version_f=${version_f#v}
-			version_f=$(echo "$version_f" | tr -d ':"*?<>|' | tr '[\r\n]' ' ')
-			version_f=$(echo "$version_f" | sed -E 's/\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
-		fi
+	stock_apk="$final_stock_apk"
+	all_apk="$final_all_apk"
+	version="$final_version"
+	
+	if [ ! -f "$stock_apk" ]; then
+		epr "ERROR: Could not download '${table}' after trying all supported versions."
+		return 0
 	fi
 
 	# Ensure the mtime is set to now so newly downloaded APKs with old server timestamps aren't purged

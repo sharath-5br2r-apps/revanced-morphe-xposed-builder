@@ -16,7 +16,7 @@ uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
 
 # ── YouTube morphe-amoled (#000000) ───────────────────────────────────────────
@@ -35,7 +35,7 @@ uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
 
 [youtube-morphe-exp]
@@ -53,7 +53,7 @@ uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
 
 [youtube-morphe-exp-amoled]
@@ -72,7 +72,7 @@ uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 dpi = "nodpi anydpi auto"
 
 
@@ -91,7 +91,7 @@ uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
 apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 dpi = "nodpi anydpi auto"
 
 [youtube-music-morphe-exp-amoled]
@@ -110,5 +110,5 @@ uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
 apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
-github-dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 dpi = "nodpi anydpi auto"

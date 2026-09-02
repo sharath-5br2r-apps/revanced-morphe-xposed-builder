@@ -11,7 +11,7 @@
     "included-patches": " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'",
     "exclusive-patches": "'jkennethcarino/adobo'",
     "pkg-name": "com.google.android.inputmethod.latin",
-    "github-dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin",
     "cli-source": "MorpheApp/morphe-desktop",
     "patcher-args": "-f --continue-on-error",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",

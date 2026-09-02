@@ -180,6 +180,18 @@ for table_name in $(toml_get_table_names); do
 	app_args[patches_ref]="${patches_ref_all%,}"
 	app_args[changelog_url]="${changelog_url_all% }"
 	app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"
+	app_args[github_regex]=$(toml_get "$t" github-dlurl-regex) || app_args[github_regex]=$(toml_get "$t" github-regex) || app_args[github_regex]=""
+	app_args[github_release_regex]=$(toml_get "$t" github-release-regex) || app_args[github_release_regex]=""
+	app_args[github_release_name_regex]=$(toml_get "$t" github-release-name-regex) || app_args[github_release_name_regex]=""
+
+	app_args[gitlab_regex]=$(toml_get "$t" gitlab-dlurl-regex) || app_args[gitlab_regex]=$(toml_get "$t" gitlab-regex) || app_args[gitlab_regex]=""
+	app_args[gitlab_release_regex]=$(toml_get "$t" gitlab-release-regex) || app_args[gitlab_release_regex]=""
+	app_args[gitlab_release_name_regex]=$(toml_get "$t" gitlab-release-name-regex) || app_args[gitlab_release_name_regex]=""
+
+	app_args[forgejo_regex]=$(toml_get "$t" forgejo-dlurl-regex) || app_args[forgejo_regex]=$(toml_get "$t" forgejo-regex) || app_args[forgejo_regex]=""
+	app_args[forgejo_release_regex]=$(toml_get "$t" forgejo-release-regex) || app_args[forgejo_release_regex]=""
+	app_args[forgejo_release_name_regex]=$(toml_get "$t" forgejo-release-name-regex) || app_args[forgejo_release_name_regex]=""
+
 	app_args[repo_dlurl_filter]=$(toml_get "$t" repo-dlurl-filter) || app_args[repo_dlurl_filter]=""
 	app_args[repo_dlurl_tag_filter]=$(toml_get "$t" repo-dlurl-tag-filter) || app_args[repo_dlurl_tag_filter]=""
 	app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-name-filter) || app_args[repo_dlurl_release_name_filter]=$(toml_get "$t" repo-dlurl-release-filter) || app_args[repo_dlurl_release_name_filter]=""
@@ -212,7 +224,7 @@ for table_name in $(toml_get_table_names); do
 	} || app_args[include_stock]=merged
 
 	for dl_from in "${DL_SRCS[@]}"; do
-		if app_args[${dl_from}_dlurl]=$(toml_get "$t" "${dl_from}-dlurl"); then
+		if app_args[${dl_from}_dlurl]=$(toml_get "$t" "${dl_from}-dlurl") || app_args[${dl_from}_dlurl]=$(toml_get "$t" "${dl_from}_dlurl"); then
 			app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%/}
 			app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%download}
 			app_args[${dl_from}_dlurl]=${app_args[${dl_from}_dlurl]%/}
@@ -245,6 +257,8 @@ for table_name in $(toml_get_table_names); do
 
 	app_args[pkg_name]=$(toml_get "$t" pkg-name) || app_args[pkg_name]=""
 	app_args[dpi]=$(toml_get "$t" dpi) || app_args[dpi]=""
+	app_args[arch]=$(toml_get "$t" arch) || app_args[arch]="auto"
+	app_args[github_regex]=$(toml_get "$t" github-regex) || app_args[github_regex]=""
 	table_name_f=${table_name,,}
 	table_name_f=${table_name_f// /-}
 	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-jhc"
