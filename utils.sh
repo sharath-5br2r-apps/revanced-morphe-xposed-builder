@@ -859,20 +859,22 @@ get_highest_ver() {
 	fi
 }
 sort_vers() {
-	local vers valid_vers=""
-	vers=$(tee)
-	
-	# Try to find valid semvers first
+	local vers valid_vers="" v clean_v a ac
+	vers=$(cat)
 	while IFS= read -r v; do
-		if [ -n "$v" ] && semver_validate "$v"; then
-			valid_vers+="${v}"$'\n'
+		[ -z "$v" ] && continue
+		clean_v="${v#v}"
+		clean_v="${clean_v#V}"
+		a="${clean_v%-*}"
+		ac="${a//[.0-9]/}"
+		if [ ${#ac} -eq 0 ]; then
+			valid_vers="${valid_vers}${clean_v}"$'\n'
 		fi
 	done <<<"$vers"
-	
 	if [ -n "$valid_vers" ]; then
-		sort -s -t- -k1,1Vr <<<"$valid_vers" | head -2
+		sort -s -t- -k1,1Vr <<<"$valid_vers" | head -1
 	else
-		head -2 <<<"$vers"
+		sort -s -t- -k1,1Vr <<<"$vers" | head -1
 	fi
 }
 semver_validate() {
@@ -888,7 +890,7 @@ get_patch_last_supported_ver() {
 		return 0
 	fi
 	local result
-	if ! result=$(_get_patch_last_supported_ver "$@"); then return 1; fi
+	if ! result=$(_get_patch_last_supported_ver "$@" | head -1); then return 1; fi
 	__PATCH_VER_CACHE__["$cache_key"]="$result"
 	echo "$result"
 }
@@ -3458,7 +3460,7 @@ build_rv() {
 		build_mode_arr=(apk module)
 	fi
 
-	version=$(echo "$version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
+	version=$(echo "$version" | head -n 1 | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^[[:space:]]+|[[:space:]]+$//g')
 	pr "Choosing version '${version}' for ${table}"
 	local version_f=${version// /}
 	version_f=${version_f#v}
