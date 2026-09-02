@@ -3040,10 +3040,18 @@ build_rv() {
 	local exc_str="${args[excluded_patches]}"
 	local inc_str="${args[included_patches]}"
 
-	if [[ "$exc_str" == *"|"* ]] || [[ "$inc_str" == *"|"* ]]; then
+	if [[ "$exc_str" == *"|"* ]] || [[ "$inc_str" == *"|"* ]] || [[ "$exc_str" =~ ^\[\[ ]] || [[ "$inc_str" =~ ^\[\[ ]]; then
 		local -a exc_parts=() inc_parts=()
-		IFS='|' read -ra exc_parts <<< "$exc_str"
-		IFS='|' read -ra inc_parts <<< "$inc_str"
+		if [[ "$exc_str" =~ ^\[\[ ]]; then
+			readarray -t exc_parts <<<"$(list_args "$exc_str")"
+		else
+			IFS='|' read -ra exc_parts <<< "$exc_str"
+		fi
+		if [[ "$inc_str" =~ ^\[\[ ]]; then
+			readarray -t inc_parts <<<"$(list_args "$inc_str")"
+		else
+			IFS='|' read -ra inc_parts <<< "$inc_str"
+		fi
 		
 		for ((bi=0; bi<n_bundles; bi++)); do
 			local bundle_ed=""
@@ -3851,7 +3859,7 @@ list_args() {
 	local val="$1"
 	if [ -z "$val" ]; then return 0; fi
 	if [[ "$val" =~ ^\[.*\]$ ]]; then
-		jq -r ".[] | if type == \"array\" then map(if type == \"string\" then \"'\" + . + \"'\" else tostring end) | join(\" \") else . end" <<<"$val" 2>/dev/null || tr -d '\t\r' <<<"$val" | tr -s ' ' | sed "s/' '/'\n'/g" | sed 's/"/"\n"/g' | grep -v '^$' || :
+		jq -r ".[] | if type == \"array\" then (if length == 0 then \"\" else map(if type == \"string\" then \"'\" + . + \"'\" else tostring end) | join(\" \") end) else . end" <<<"$val" 2>/dev/null || tr -d '\t\r' <<<"$val" | tr -s ' ' | sed "s/' '/'\n'/g" | sed 's/"/"\n"/g' | grep -v '^$' || :
 	else
 		tr -d '\t\r' <<<"$val" | tr -s ' ' | sed "s/' '/'\n'/g" | sed 's/"/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :
 	fi

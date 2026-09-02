@@ -235,7 +235,7 @@ cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
 apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
-patches-source = ["hoo-dles/morphe-patches'", "'ch3thanhs/stylus"]
+patches-source = ["hoo-dles/morphe-patches", "ch3thanhs/stylus"]
 included-patches = [["AMOLED dark theme"], ["Force system font (including monospace) (GitHub)"]]
 dpi = "480-640dpi"
 
@@ -250,7 +250,7 @@ cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
 apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
-patches-source = ["hoo-dles/morphe-patches'", "'ch3thanhs/stylus"]
+patches-source = ["hoo-dles/morphe-patches", "ch3thanhs/stylus"]
 included-patches = [["AMOLED dark theme"], ["Force system font (including monospace) (GitHub)"]]
 dpi = "480-640dpi"
 version = "latest"
