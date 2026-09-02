@@ -15,20 +15,15 @@ if [ -z "$CONFIG_FILES" ]; then
     exit 0
 fi
 
-# Convert all TOML files to a single JSON
-python3 -c "
-import glob, os, tomllib, json
-toml_files = sorted(glob.glob('configs/patches/*.toml'))
-merged = {}
-for f in toml_files:
-    with open(f, 'rb') as fp:
-        data = tomllib.load(fp)
-        for k, v in data.items():
-            if isinstance(v, dict):
-                merged[k] = v
-with open('temp_all_configs.json', 'w', encoding='utf-8') as out:
-    json.dump(merged, out, indent=2)
-"
+# Convert all TOML files to a single JSON using yq
+yq eval-all -o=json '. as $item ireduce ({}; . * $item)' configs/patches/*.toml > temp_all_configs.json 2>/dev/null || {
+	rm -f temp_all_configs.json
+	for f in configs/patches/*.toml; do
+		[ -f "$f" ] && yq -o=json "$f" >> temp_all_configs.json.tmp
+	done
+	jq -s 'add' temp_all_configs.json.tmp > temp_all_configs.json
+	rm -f temp_all_configs.json.tmp
+}
 
 APP_VERSIONS_FILE="configs/app_versions.json"
 [ -f "$APP_VERSIONS_FILE" ] || echo '{}' > "$APP_VERSIONS_FILE"

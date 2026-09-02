@@ -71,13 +71,7 @@ declare -gA __DL_RESP_CACHE__
 toml_prep() {
 	if [ ! -f "$1" ]; then return 1; fi
 	if [ "${1##*.}" == toml ]; then
-		if command -v yq >/dev/null 2>&1; then
-			__TOML__=$(yq -o=json -I=0 "$1")
-		elif [ -n "${TOML:-}" ] && [ -x "$TOML" ]; then
-			__TOML__=$($TOML --output json --file "$1" .)
-		else
-			__TOML__=$(python3 -c 'import sys, json; import tomllib; print(json.dumps(tomllib.load(open(sys.argv[1], "rb"))))' "$1" 2>/dev/null)
-		fi
+		__TOML__=$(yq -o=json -I=0 "$1") || abort "Failed to parse TOML file '$1' with yq"
 	elif [ "${1##*.}" == json ]; then
 		__TOML__=$(cat "$1")
 	else abort "config extension not supported"; fi
