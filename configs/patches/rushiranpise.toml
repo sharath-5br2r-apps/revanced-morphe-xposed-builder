@@ -60,7 +60,7 @@ excluded-patches = ["'Hide Rufus Tab'"]
 custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
 
-arch = "all"
+arch = ["all"]
 
 [amazon-india-morphe-rushiranpise-exp]
 enabled = true
@@ -79,7 +79,7 @@ custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
 version = "latest"
 
-arch = "all"
+arch = ["all"]
 
 [amazon-shopping-morphe-rushiranpise]
 enabled = true
@@ -163,7 +163,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
-arch = "all"
+arch = ["all"]
 
 [pc-remote-morphe-rushiranpise-exp]
 enabled = true
@@ -180,7 +180,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
-arch = "all"
+arch = ["all"]
 
 [oxygen-updater-morphe-rushiranpise]
 enabled = true
@@ -211,7 +211,7 @@ rv-brand = "morphe-rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "all"
+arch = ["all"]
 pkg-name = "com.windscribe.vpn"
 uptodown-dlurl = "https://windscribe.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
@@ -228,7 +228,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 version = "latest"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "all"
+arch = ["all"]
 pkg-name = "com.windscribe.vpn"
 uptodown-dlurl = "https://windscribe.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
@@ -244,7 +244,7 @@ rv-brand = "morphe-rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "all"
+arch = ["all"]
 pkg-name = "com.cloudflare.onedotonedotonedotone"
 uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
@@ -261,7 +261,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 version = "latest"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "all"
+arch = ["all"]
 pkg-name = "com.cloudflare.onedotonedotonedotone"
 uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
@@ -277,7 +277,7 @@ rv-brand = "morphe-rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "all"
+arch = ["all"]
 pkg-name = "com.adguard.android"
 uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
@@ -293,7 +293,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 version = "latest"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "all"
+arch = ["all"]
 pkg-name = "com.adguard.android"
 uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
@@ -307,7 +307,7 @@ app-name = "beta-maniac"
 rv-brand = "morphe-rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
 build-mode = "apk"
-arch = "all"
+arch = ["all"]
 pkg-name = "it.mirko.beta"
 uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
@@ -322,7 +322,7 @@ rv-brand = "morphe-rushiranpise-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
 version = "latest"
 build-mode = "apk"
-arch = "all"
+arch = ["all"]
 pkg-name = "it.mirko.beta"
 uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"

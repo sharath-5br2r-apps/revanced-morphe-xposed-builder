@@ -4,7 +4,7 @@ pkg-name = "com.brave.browser_beta"
 app-name = "brave-browser"
 rv-brand = "morphe-beta"
 build-mode = "apk"
-arch = "both"
+arch = ["both"]
 patches-source = "dh6k/morphe-patches"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://brave-browser-beta.en.uptodown.com/android"
@@ -13,7 +13,7 @@ dpi = ["nodpi", "anydpi", "auto"]
 apkpure-dlurl = "https://apkpure.com/brave-browser-beta/com.brave.browser_beta"
 apkcombo-dlurl = "https://apkcombo.com/brave-beta/com.brave.browser_beta"
 github-dlurl = "https://github.com/brave/brave-browser"
-github-dlurl-regex = 'arm64-v8a: (BraveMonoarm64|MonoArm64)\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\.apk$'
+github-dlurl-regex = 'arm64-v8a: BraveMonoarm64\.apk | arm-v7a: BraveMonoarm\.apk'
 
 [brave-browser-morphe-nightly]
 enabled = true
@@ -21,7 +21,7 @@ pkg-name = "com.brave.browser_nightly"
 app-name = "brave-browser"
 rv-brand = "morphe-nightly"
 build-mode = "apk"
-arch = "both"
+arch = ["both"]
 patches-source = "dh6k/morphe-patches"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://brave-browser-nightly.en.uptodown.com/android"
@@ -30,7 +30,7 @@ dpi = ["nodpi", "anydpi", "auto"]
 apkpure-dlurl = "https://apkpure.com/brave-nightly/com.brave.browser_nightly"
 apkcombo-dlurl = "https://apkcombo.com/brave-nightly/com.brave.browser_nightly"
 github-dlurl = "https://github.com/brave/brave-browser"
-github-dlurl-regex = 'arm64-v8a: (BraveMonoarm64|MonoArm64)\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\.apk$'
+github-dlurl-regex = 'arm64-v8a: BraveMonoarm64\.apk | arm-v7a: BraveMonoarm\.apk'
 
 [titanium-browser-morphe]
 enabled = true
@@ -38,7 +38,7 @@ pkg-name = "io.github.jqssun.helium"
 app-name = "titanium-browser"
 rv-brand = "morphe"
 build-mode = "apk"
-arch = "both"
+arch = ["both"]
 patches-source = "dh6k/morphe-patches"
 included-patches = ["'Keep Helium Child Processes Alive'"]
 cli-source = "MorpheApp/morphe-desktop"
