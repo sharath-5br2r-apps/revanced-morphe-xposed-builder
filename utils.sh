@@ -368,11 +368,18 @@ get_prebuilts() {
 	echo "$result"
 }
 
+is_cf_challenge_page() {
+	local content="$1"
+	[[ "$content" == *"_cf_chl_opt"* || "$content" == *"challenges.cloudflare.com"* || "$content" == *"__cf_chl_"* || "$content" == *"/cdn-cgi/challenge-platform/"* ]]
+}
+
 is_valid_zip_or_jar() {
 	local f="$1"
 	[ -f "$f" ] || return 1
 	[ -s "$f" ] || return 1
-	if head -c 500 "$f" 2>/dev/null | grep -qiE "(<!DOCTYPE html|<html|Attention Required|Just a moment\.\.\.|Verify you are human)"; then
+	local header
+	header=$(head -c 2000 "$f" 2>/dev/null || true)
+	if is_cf_challenge_page "$header"; then
 		return 1
 	fi
 	if command -v unzip >/dev/null 2>&1; then
@@ -1219,7 +1226,7 @@ _trawl_get() {
 		status=$(echo "$response" | jq -r '.statusCode // empty')
 		if [[ "$status" =~ ^[1-3][0-9][0-9]$ ]]; then
 			html=$(echo "$response" | jq -r '.html // empty')
-			if [[ -n "$html" && "$html" != *"Attention Required!"* && "$html" != *"Just a moment..."* && "$html" != *"Please Wait... | Cloudflare"* && "$html" != *"Verify you are human"* ]]; then
+			if [[ -n "$html" ]] && ! is_cf_challenge_page "$html"; then
 				export CF_COOKIES
 				CF_COOKIES=$(echo "$response" | jq -r '[.cookies[] | .name + "=" + .value] | join("; ")')
 				user_agent=$(echo "$response" | jq -r '.userAgent // empty')
@@ -1256,7 +1263,7 @@ _cfb_get() {
 			"$solver_url") || true
 		if [[ "$http_code" == "200" ]]; then
 			html=$(cat "$response_file")
-			if [[ -n "$html" && "$html" != *"Attention Required!"* && "$html" != *"Just a moment..."* && "$html" != *"Please Wait... | Cloudflare"* && "$html" != *"Verify you are human"* ]]; then
+			if [[ -n "$html" ]] && ! is_cf_challenge_page "$html"; then
 				export CF_COOKIES
 				CF_COOKIES=$(grep -i '^x-cf-bypasser-cookies:' "$TEMP_DIR/cfb_response_headers.txt" 2>/dev/null | cut -d':' -f2- | xargs)
 				local cfb_ua
@@ -1294,7 +1301,7 @@ _fs_get() {
 		status=$(echo "$response" | jq -r '.status // empty')
 		if [[ "$status" == "ok" ]]; then
 			html=$(echo "$response" | jq -r '.solution.response // empty')
-			if [[ -n "$html" && "$html" != *"Attention Required!"* && "$html" != *"Just a moment..."* && "$html" != *"Please Wait... | Cloudflare"* && "$html" != *"Verify you are human"* ]]; then
+			if [[ -n "$html" ]] && ! is_cf_challenge_page "$html"; then
 				export CF_COOKIES
 				CF_COOKIES=$(echo "$response" | jq -r '[.solution.cookies[] | .name + "=" + .value] | join("; ")')
 				user_agent=$(echo "$response" | jq -r '.solution.userAgent // empty')
@@ -1315,7 +1322,7 @@ _fs_get() {
 _fallback_get(){
 	local url=$1
 	html=$(curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 -s -f "$url" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0" | tr -d '\0') || return 1
-	if [[ "$html" == *"Attention Required!"* || "$html" == *"Just a moment..."* || "$html" == *"Please Wait... | Cloudflare"* || "$html" == *"Verify you are human"* ]]; then
+	if is_cf_challenge_page "$html"; then
 		return 1
 	fi
 	CF_COOKIES=""
@@ -1355,7 +1362,7 @@ _cf_get() {
 	_unqueued_cf_get "$@"
 	local res=$?
 	if [ $res -eq 0 ]; then
-		if [ -z "${html:-}" ] || [[ "$html" == *"Attention Required!"* || "$html" == *"Just a moment..."* || "$html" == *"Please Wait... | Cloudflare"* || "$html" == *"Verify you are human"* ]]; then
+		if [ -z "${html:-}" ] || is_cf_challenge_page "$html"; then
 			return 1
 		fi
 	fi
