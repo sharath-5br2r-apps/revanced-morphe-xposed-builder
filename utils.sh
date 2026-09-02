@@ -3859,12 +3859,20 @@ list_args() {
 	local val="$1"
 	if [ -z "$val" ]; then return 0; fi
 	if [[ "$val" =~ ^\[.*\]$ ]]; then
-		jq -r ".[] | if type == \"array\" then (if length == 0 then \"\" else map(if type == \"string\" then \"'\" + . + \"'\" else tostring end) | join(\" \") end) else . end" <<<"$val" 2>/dev/null || tr -d '\t\r' <<<"$val" | tr -s ' ' | sed "s/' '/'\n'/g" | sed 's/"/"\n"/g' | grep -v '^$' || :
+		jq -r '.[] | if type == "array" then (if length == 0 then "" else map(tostring) | join(" ") end) else tostring end' <<<"$val" 2>/dev/null
 	else
-		tr -d '\t\r' <<<"$val" | tr -s ' ' | sed "s/' '/'\n'/g" | sed 's/"/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :
+		jq -R -s -r 'split("\n") | .[] | select(length > 0)' <<<"$val" 2>/dev/null || echo "$val"
 	fi
 }
-join_args() { list_args "$1" | sed "s/^/${2} /" | paste -sd " " - || :; }
+join_args() {
+	local val="$1" flag="$2"
+	if [ -z "$val" ]; then return 0; fi
+	if [[ "$val" =~ ^\[.*\]$ ]]; then
+		jq -r --arg flag "$flag" '.[] | select(length > 0) | "\($flag) \(.)"' <<<"$val" 2>/dev/null | paste -sd " " - || :
+	else
+		jq -R -s -r --arg flag "$flag" 'split(" ") | .[] | select(length > 0) | "\($flag) \(.)"' <<<"$val" 2>/dev/null | paste -sd " " - || :
+	fi
+}
 
 module_config() {
 	local ma=""
