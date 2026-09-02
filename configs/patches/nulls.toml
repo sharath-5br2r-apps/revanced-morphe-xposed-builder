@@ -11,7 +11,7 @@ build-mode = "apk"
 arch = "all"
 pkg-name = "nullsclash.night.rel"
 direct-dlurl = "http://dnull.xyz/latest_coc"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "none"
 patches-source-host = "none"
 [clash-royale-morphe-nulls]
@@ -24,7 +24,7 @@ build-mode = "apk"
 arch = "all"
 pkg-name = "nullsroyale.rel.free"
 direct-dlurl = "http://dnull.xyz/latest_cr"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "none"
 patches-source-host = "none"
 [brawl-stars-morphe-nulls]
@@ -37,6 +37,6 @@ build-mode = "apk"
 arch = "all"
 pkg-name = "daniillnull.nulls.brawlstars"
 direct-dlurl = "http://dnull.xyz/latest_bs"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "none"
 patches-source-host = "none"

@@ -6,11 +6,11 @@ rv-brand = "morphe"
 build-mode = "both"
 arch = "arm64-v8a"
 patches-source = "jasonwu1994/Gboard-patches"
-excluded-patches = "'Package Rename'"
+excluded-patches = ["'Package Rename'"]
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://gboard-go.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin"
 
 [gboard-morphe-clone]
@@ -24,5 +24,5 @@ patches-source = "jasonwu1994/Gboard-patches"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://gboard-go.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.inputmethod.latin"

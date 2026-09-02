@@ -7,16 +7,16 @@ enabled = true
 app-name = "youtube"
 rv-brand = "morphe-anddea"
 build-mode = "both"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "anddea/revanced-patches"
-included-patches = "'MaterialYou'"
+included-patches = ["'MaterialYou'"]
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 # ── YouTube morphe-anddea-amoled (#000000 explicit) ───────────────────────────
 [youtube-morphe-anddea-amoled]
@@ -24,23 +24,23 @@ enabled = true
 app-name = "youtube"
 rv-brand = "morphe-anddea-amoled"
 build-mode = "both"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "anddea/revanced-patches"
-included-patches = "'MaterialYou'"
+included-patches = ["'MaterialYou'"]
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF --continue-on-error"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [youtube-music-morphe-anddea]
 enabled = true
 app-name = "youtube-music"
 rv-brand = "morphe-anddea"
 build-mode = "both"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.google.android.apps.youtube.music"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "anddea/revanced-patches"
@@ -48,7 +48,7 @@ patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black 
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 # ── YouTube Music morphe-anddea-amoled (#000000 explicit) ─────────────────────
 [youtube-music-morphe-anddea-amoled]
@@ -56,7 +56,7 @@ enabled = true
 app-name = "youtube-music"
 rv-brand = "morphe-anddea-amoled"
 build-mode = "both"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.google.android.apps.youtube.music"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "anddea/revanced-patches"
@@ -64,7 +64,7 @@ patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=#000000 --continue-on
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [speedtest-morphe-xtra]
 enabled = true
@@ -73,11 +73,11 @@ pkg-name = "org.zwanoo.android.speedtest"
 rv-brand = "morphe-xtra"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/org.zwanoo.android.speedtest"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://speedtest-net-mobile.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/ookla/speedtest"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 [speedtest-morphe-xtra-exp]
@@ -88,11 +88,11 @@ rv-brand = "morphe-xtra-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/org.zwanoo.android.speedtest"
 version = "latest"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://speedtest-net-mobile.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/ookla/speedtest"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 # ── Inshorts ──────────────────────────────────────────────────────────────────
@@ -102,12 +102,12 @@ app-name = "inshorts"
 rv-brand = "morphe-xtra"
 pkg-name = "com.nis.app"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nis.app"
 uptodown-dlurl = "https://inshorts.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 [inshorts-morphe-xtra-exp]
@@ -117,12 +117,12 @@ rv-brand = "morphe-xtra-exp"
 pkg-name = "com.nis.app"
 build-mode = "apk"
 version = "latest"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nis.app"
 uptodown-dlurl = "https://inshorts.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 # ── Automate ──────────────────────────────────────────────────────────────────
@@ -132,12 +132,12 @@ app-name = "automate"
 rv-brand = "morphe-xtra"
 pkg-name = "com.llamalab.automate"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.llamalab.automate"
 uptodown-dlurl = "https://automate-beta.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/llamalab/automate-llamalab"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 # ── AutoSync ──────────────────────────────────────────────────────────────────
@@ -147,12 +147,12 @@ app-name = "autosync"
 rv-brand = "morphe-xtra"
 pkg-name = "com.ttxapps.autosync"
 build-mode = "apk"
-arch = "all arm64-v8a x86_64"
+arch = ["all", "arm64-v8a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.ttxapps.autosync"
 uptodown-dlurl = "https://autosync.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/metactrl/autosync-universal-cloud-sync-and-backup"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 # ── Backdrops ─────────────────────────────────────────────────────────────────
@@ -162,12 +162,12 @@ app-name = "backdrops"
 rv-brand = "morphe-xtra"
 pkg-name = "com.backdrops.wallpapers"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.backdrops.wallpapers"
 uptodown-dlurl = "https://backdrops.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/backdrops/backdrops-wallpapers"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 [calcnote-morphe-binarymend]
@@ -176,12 +176,12 @@ app-name = "calcnote"
 rv-brand = "morphe-binarymend"
 pkg-name = "com.burton999.notecal"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.burton999.notecal"
 uptodown-dlurl = "https://calcnote-notepad-calculator.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/burton999/calcnote-notepad-calculator"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "binarymend/morphe-patches"
 
 [brave-stable-morphe-kveld9]
@@ -233,12 +233,12 @@ app-name = "pinterest"
 rv-brand = "morphe-browzomje"
 pkg-name = "com.pinterest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
 uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "browzomje/browzomje-patches"
 
 [pinterest-morphe-browzomje-exp]
@@ -248,12 +248,12 @@ rv-brand = "morphe-browzomje-exp"
 pkg-name = "com.pinterest"
 build-mode = "apk"
 version = "latest"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
 uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "browzomje/browzomje-patches"
 
 [smash-hit-morphe-byehi98]
@@ -267,7 +267,7 @@ arch = "all"
 pkg-name = "com.mediocre.smashhit"
 uptodown-dlurl = "https://smash-hit.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mediocre/smash-hit/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "byehi98/okish-morphe-patches"
 
 [vector-morphe-byehi98]
@@ -281,7 +281,7 @@ arch = "all"
 pkg-name = "com.nekki.vector"
 uptodown-dlurl = "https://vector.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nekki/vector/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "byehi98/okish-morphe-patches"
 
 [hill-climb-racing-morphe-byehi98]
@@ -295,7 +295,7 @@ arch = "all"
 pkg-name = "com.fingersoft.hillclimb"
 uptodown-dlurl = "https://hill-climb-racing.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "byehi98/okish-morphe-patches"
 
 [jetpack-joyride-morphe-byehi98]
@@ -310,7 +310,7 @@ pkg-name = "com.halfbrick.jetpackjoyride"
 uptodown-dlurl = "https://jetpack-joyride.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "byehi98/okish-morphe-patches"
 
 [chess-morphe-prathxm]
@@ -326,7 +326,7 @@ pkg-name = "com.chess"
 uptodown-dlurl = "https://chess.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "PrathxmOp/Prathxm-Patches"
 
 [chess-morphe-prathxm-clone]
@@ -342,37 +342,37 @@ pkg-name = "com.chess"
 uptodown-dlurl = "https://chess.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "PrathxmOp/Prathxm-Patches"
-included-patches = "'Clone Chess.com'"
+included-patches = ["'Clone Chess.com'"]
 
 [gboard-morphe-jasonwu1994-adobo]
 enabled = true
 app-name = "gboard"
 rv-brand = "morphe-jasonwu1994-adobo"
 build-mode = "both"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.google.android.inputmethod.latin"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
-patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
-included-patches = " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"
+patches-source = ["jasonwu1994/Gboard-patches'", "'jkennethcarino/adobo"]
+included-patches = [" | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"]
 exclusive-patches = "'jkennethcarino/adobo'"
-excluded-patches = "'Package Rename' | "
+excluded-patches = ["'Package Rename' | "]
 patcher-args = "-f --continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
 apkmirror-example-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 apkmirror-release-filter = "!(lite|beta)"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [gboard-morphe-jasonwu1994-adobo-clone]
 enabled = true
 app-name = "gboard"
 rv-brand = "morphe-jasonwu1994-adobo-clone"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
-patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
-included-patches = " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
+patches-source = ["jasonwu1994/Gboard-patches'", "'jkennethcarino/adobo"]
+included-patches = [" | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"]
 exclusive-patches = "'jkennethcarino/adobo'"
 pkg-name = "com.google.android.inputmethod.latin"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
@@ -381,7 +381,7 @@ patcher-args = "-f --continue-on-error"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
 apkmirror-example-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 apkmirror-release-filter = "!(lite|beta)"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [camscanner-morphe-hoodles]
 enabled = true
@@ -390,14 +390,14 @@ app-name = "camscanner"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.intsig.camscanner"
 build-mode = "apk"
-arch = "all arm64-v8a"
+arch = ["all", "arm64-v8a"]
 pkg-name = "com.intsig.camscanner"
 uptodown-dlurl = "https://camscanner-pdf-creator.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator"
 apkmirror-example-url = "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator/camscanner-scanner-pdf-maker-7-24-0-2608130000-release/"
 apkpure-dlurl = "https://apkpure.com/camscanner-scanner-pdf-maker/com.intsig.camscanner"
 apkcombo-dlurl = "https://apkcombo.com/camscanner/com.intsig.camscanner"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 patcher-args = "--continue-on-error"
 
@@ -409,11 +409,11 @@ pkg-name = "com.amazon.avod.thirdpartyclient"
 build-mode = "apk"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient"
 version = "latest"
-arch = "arm64-v8a arm-v7a"
+arch = ["arm64-v8a", "arm-v7a"]
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video"
 uptodown-dlurl = "https://amazon-video.en.uptodown.com/android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [prime-video-morphe-hoodles-shared-exp]
@@ -424,13 +424,13 @@ pkg-name = "com.amazon.avod.thirdpartyclient"
 build-mode = "apk"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient"
 version = "latest"
-arch = "arm64-v8a arm-v7a"
+arch = ["arm64-v8a", "arm-v7a"]
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video"
 uptodown-dlurl = "https://amazon-video.en.uptodown.com/android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
-excluded-patches = "'Rename Shared Permissions'"
+excluded-patches = ["'Rename Shared Permissions'"]
 
 [xrecorder-morphe-hoodles]
 enabled = true
@@ -443,7 +443,7 @@ arch = "all"
 pkg-name = "videoeditor.videorecorder.screenrecorder"
 uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [xrecorder-morphe-hoodles-exp]
@@ -458,7 +458,7 @@ arch = "all"
 pkg-name = "videoeditor.videorecorder.screenrecorder"
 uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-morphe-hoodles]
@@ -472,7 +472,7 @@ arch = "all"
 pkg-name = "ginlemon.flowerfree"
 uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-morphe-hoodles-exp]
@@ -487,7 +487,7 @@ arch = "all"
 pkg-name = "ginlemon.flowerfree"
 uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-6-morphe-hoodles]
@@ -501,7 +501,7 @@ arch = "all"
 pkg-name = "ginlemon.flowerfree"
 uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-6-morphe-hoodles-exp]
@@ -516,7 +516,7 @@ arch = "all"
 pkg-name = "ginlemon.flowerfree"
 uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [nova-launcher-morphe-hoodles]
@@ -530,7 +530,7 @@ arch = "all"
 pkg-name = "com.teslacoilsw.launcher"
 uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [nova-launcher-morphe-hoodles-exp]
@@ -545,7 +545,7 @@ arch = "all"
 pkg-name = "com.teslacoilsw.launcher"
 uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [xodo-morphe-hoodles]
@@ -555,11 +555,11 @@ app-name = "xodo"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.xodo.pdf.reader"
 uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [xodo-morphe-hoodles-exp]
@@ -570,11 +570,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
 version = "latest"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.xodo.pdf.reader"
 uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [solid-explorer-morphe-hoodles]
@@ -588,7 +588,7 @@ arch = "all"
 pkg-name = "pl.solidexplorer2"
 uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [solid-explorer-morphe-hoodles-exp]
@@ -603,7 +603,7 @@ arch = "all"
 pkg-name = "pl.solidexplorer2"
 uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [github-morphe-hoodles-stylus]
@@ -617,8 +617,8 @@ cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
 apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
-patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
-included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
+patches-source = ["hoo-dles/morphe-patches'", "'ch3thanhs/stylus"]
+included-patches = ["'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "]
 dpi = "480-640dpi"
 
 [github-morphe-hoodles-stylus-exp]
@@ -632,8 +632,8 @@ cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
 apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
-patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
-included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
+patches-source = ["hoo-dles/morphe-patches'", "'ch3thanhs/stylus"]
+included-patches = ["'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "]
 dpi = "480-640dpi"
 version = "latest"
 
@@ -644,11 +644,11 @@ app-name = "wallcraft"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.wallpaperscraft.wallpaper"
 uptodown-dlurl = "https://wallpaperscraft.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [wallcraft-morphe-hoodles-exp]
@@ -659,11 +659,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.wallpaperscraft.wallpaper"
 uptodown-dlurl = "https://wallpaperscraft.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [wps-office-morphe-hoodles]
@@ -673,11 +673,11 @@ app-name = "wps-office"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cn.wps.moffice_eng"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a"
+arch = ["arm64-v8a", "arm-v7a"]
 pkg-name = "cn.wps.moffice_eng"
 uptodown-dlurl = "https://wps-office.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/wps-software-pte-ltd/wps-office-pdf"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [podcast-addict-morphe-hoodles]
@@ -687,11 +687,11 @@ app-name = "podcast-addict"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.bambuna.podcastaddict"
 uptodown-dlurl = "https://podcast-addict.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [podcast-addict-morphe-hoodles-exp]
@@ -702,11 +702,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.bambuna.podcastaddict"
 uptodown-dlurl = "https://podcast-addict.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [merriam-webster-morphe-hoodles]
@@ -720,7 +720,7 @@ arch = "all"
 pkg-name = "com.merriamwebster"
 uptodown-dlurl = "https://merriam-webster.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/merriam-webster-inc/dictionary-merriam-webster"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [pandora-morphe-hoodles]
@@ -730,11 +730,11 @@ app-name = "pandora"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pandora.android"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.pandora.android"
 uptodown-dlurl = "https://pandora.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pandora/pandora-music-podcasts"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [ventusky-morphe-hoodles]
@@ -744,11 +744,11 @@ app-name = "ventusky"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "cz.ackee.ventusky"
 uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [ventusky-morphe-hoodles-exp]
@@ -759,11 +759,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "cz.ackee.ventusky"
 uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [niagara-launcher-morphe-hoodles-exp]
@@ -774,11 +774,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/bitpit.launcher"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "bitpit.launcher"
 uptodown-dlurl = "https://niagara-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mellowdrop-studio/niagara-launcher-%f0%9f%94%b9-fresh-clean"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [hellochinese-morphe-hoodles]
@@ -792,7 +792,7 @@ arch = "arm64-v8a"
 pkg-name = "com.hellochinese"
 uptodown-dlurl = "https://hellochinese.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/hellochinese-learn-chinese-mandarin/hellochinese-learn-chinese"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [myfitnesspal-morphe-hoodles]
@@ -802,11 +802,11 @@ app-name = "myfitnesspal"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.myfitnesspal.android"
 uptodown-dlurl = "https://calorie-counter-myfitnesspal.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [myfitnesspal-morphe-hoodles-exp]
@@ -817,11 +817,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.myfitnesspal.android"
 uptodown-dlurl = "https://calorie-counter-myfitnesspal.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [goodreads-morphe-hoodles]
@@ -831,11 +831,11 @@ app-name = "goodreads"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.goodreads"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.goodreads"
 uptodown-dlurl = "https://goodreads.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/goodreads/goodreads"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [goodreads-morphe-hoodles-exp]
@@ -846,11 +846,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.goodreads"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.goodreads"
 uptodown-dlurl = "https://goodreads.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/goodreads/goodreads"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [lightroom-morphe-hoodles]
@@ -864,7 +864,7 @@ arch = "arm64-v8a"
 pkg-name = "com.adobe.lrmobile"
 uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-lightroom"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [symfonium-morphe-hooman]
@@ -877,7 +877,7 @@ pkg-name = "app.symfonik.music.player"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://symfonium.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.symfonik.music.player"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
@@ -889,7 +889,7 @@ build-mode = "apk"
 arch = "all"
 pkg-name = "com.dv.adm"
 cli-source = "MorpheApp/morphe-desktop"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 uptodown-dlurl = "https://advanced-download-manager.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm"
@@ -906,7 +906,7 @@ arch = "all"
 pkg-name = "tv.twitch.android.app"
 uptodown-dlurl = "https://twitch.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/twitch-interactive-inc/twitch"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [batteryguru-morphe-hooman]
@@ -920,7 +920,7 @@ arch = "all"
 pkg-name = "com.paget96.batteryguru"
 uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [batteryguru-morphe-hooman-exp]
@@ -935,7 +935,7 @@ arch = "all"
 pkg-name = "com.paget96.batteryguru"
 uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [poweramp-morphe-hooman]
@@ -945,13 +945,13 @@ app-name = "poweramp"
 rv-brand = "morphe-hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
 build-mode = "apk"
-arch = "all arm64-v8a"
+arch = ["all", "arm64-v8a"]
 pkg-name = "com.maxmpz.audioplayer"
 uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp"
 apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
 apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [poweramp-morphe-hooman-exp]
@@ -962,13 +962,13 @@ rv-brand = "morphe-hooman-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a"
+arch = ["all", "arm64-v8a"]
 pkg-name = "com.maxmpz.audioplayer"
 uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp"
 apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
 apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [soundcloud-morphe-kondratjev]
@@ -979,14 +979,14 @@ rv-brand = "morphe-kondratjev"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
 version = "auto"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.soundcloud.android"
 uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
 apkmirror-example-url = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/soundcloud-the-music-you-love-2026-07-23-release-release"
 apkpure-dlurl = "https://apkpure.com/sound-cloud-android-app/com.soundcloud.android"
 apkcombo-dlurl = "https://apkcombo.com/soundcloud/com.soundcloud.android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "kondratjev/morphe-patches"
 
 # ── Drofus (morphe-lain) ─────────────────────────────────────────────────────
@@ -997,11 +997,11 @@ app-name = "drofus"
 rv-brand = "morphe-lain"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mixapplications.rufus"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a"
+arch = ["arm64-v8a", "arm-v7a"]
 pkg-name = "com.mixapplications.rufus"
 uptodown-dlurl = "https://rufus-unofficial.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mixapplications/drofus-iso2usb"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "kiraio-moe/Lain-Patches"
 
 # ── YouTube morphe (stock/default theme) ──────────────────────────────────────
@@ -1010,17 +1010,17 @@ enabled = true
 app-name = "youtube"
 rv-brand = "morphe"
 build-mode = "both"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "MorpheApp/morphe-patches"
-included-patches = "'Theme'"
+included-patches = ["'Theme'"]
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 # ── YouTube morphe-amoled (#000000) ───────────────────────────────────────────
 [youtube-morphe-amoled]
@@ -1028,92 +1028,92 @@ enabled = true
 app-name = "youtube"
 rv-brand = "morphe-amoled"
 build-mode = "both"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "MorpheApp/morphe-patches"
-included-patches = "'Theme'"
+included-patches = ["'Theme'"]
 patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [youtube-morphe-exp]
 enabled = true
 app-name = "youtube"
 rv-brand = "morphe-exp"
 build-mode = "both"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 version = "exp"
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "MorpheApp/morphe-patches"
-included-patches = "'Theme'"
+included-patches = ["'Theme'"]
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [youtube-morphe-exp-amoled]
 enabled = true
 app-name = "youtube"
 rv-brand = "morphe-exp-amoled"
 build-mode = "both"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 version = "exp"
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "MorpheApp/morphe-patches"
-included-patches = "'Theme'"
+included-patches = ["'Theme'"]
 patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [youtube-music-morphe-exp]
 enabled = true
 app-name = "youtube-music"
 rv-brand = "morphe-exp"
 build-mode = "both"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 version = "exp"
 pkg-name = "com.google.android.apps.youtube.music"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "MorpheApp/morphe-patches"
-included-patches = "'Theme'"
+included-patches = ["'Theme'"]
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
 apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [youtube-music-morphe-exp-amoled]
 enabled = true
 app-name = "youtube-music"
 rv-brand = "morphe-exp-amoled"
 build-mode = "both"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 version = "exp"
 pkg-name = "com.google.android.apps.youtube.music"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "MorpheApp/morphe-patches"
-included-patches = "'Theme'"
+included-patches = ["'Theme'"]
 patcher-args = "-OdarkThemeBackgroundColor=#000000"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music"
 apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [clash-of-clans-morphe-nulls]
 enabled = true
@@ -1125,7 +1125,7 @@ build-mode = "apk"
 arch = "all"
 pkg-name = "nullsclash.night.rel"
 direct-dlurl = "http://dnull.xyz/latest_coc"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "none"
 patches-source-host = "none"
 
@@ -1139,7 +1139,7 @@ build-mode = "apk"
 arch = "all"
 pkg-name = "nullsroyale.rel.free"
 direct-dlurl = "http://dnull.xyz/latest_cr"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "none"
 patches-source-host = "none"
 
@@ -1153,7 +1153,7 @@ build-mode = "apk"
 arch = "all"
 pkg-name = "daniillnull.nulls.brawlstars"
 direct-dlurl = "http://dnull.xyz/latest_bs"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "none"
 patches-source-host = "none"
 
@@ -1164,11 +1164,11 @@ app-name = "truecaller"
 rv-brand = "morphe-paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.truecaller"
 build-mode = "both"
-arch = "all arm64-v8a arm-v7a"
+arch = ["all", "arm64-v8a", "arm-v7a"]
 pkg-name = "com.truecaller"
 uptodown-dlurl = "https://truecaller.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/true-software-scandinavia-ab/truecaller-caller-id-block"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1181,7 +1181,7 @@ pkg-name = "com.overlook.android.fing"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
@@ -1197,7 +1197,7 @@ pkg-name = "com.overlook.android.fing"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
@@ -1245,7 +1245,7 @@ build-mode = "apk"
 pkg-name = "in.startv.hotstar"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
@@ -1260,7 +1260,7 @@ build-mode = "apk"
 pkg-name = "in.startv.hotstar"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
@@ -1277,7 +1277,7 @@ pkg-name = "eu.darken.sdmse"
 uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
 apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1294,7 +1294,7 @@ pkg-name = "eu.darken.sdmse"
 uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
 apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1306,11 +1306,11 @@ app-name = "mx-player-pro"
 rv-brand = "morphe-paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
 build-mode = "apk"
-arch = "all arm64-v8a"
+arch = ["all", "arm64-v8a"]
 pkg-name = "com.mxtech.videoplayer.pro"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
 uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1322,11 +1322,11 @@ rv-brand = "morphe-paresh-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a"
+arch = ["all", "arm64-v8a"]
 pkg-name = "com.mxtech.videoplayer.pro"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
 uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1338,11 +1338,11 @@ app-name = "cricbuzz"
 rv-brand = "morphe-paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cricbuzz.android"
 uptodown-dlurl = "https://cricbuzz-cricket-scores-and-news.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1354,11 +1354,11 @@ rv-brand = "morphe-paresh-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cricbuzz.android"
 uptodown-dlurl = "https://cricbuzz-cricket-scores-and-news.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1370,11 +1370,11 @@ app-name = "doc-scanner"
 rv-brand = "morphe-paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cv.docscanner"
 uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1386,11 +1386,11 @@ rv-brand = "morphe-paresh-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cv.docscanner"
 uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1402,11 +1402,11 @@ app-name = "eyecon"
 rv-brand = "morphe-paresh"
 pkg-name = "com.eyecon.global"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.eyecon.global"
 uptodown-dlurl = "https://eyecon-phone-dialer-and-cont-eyecon.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/eyecon-phone-dialer-contacts/eyecon-caller-id-spam-block"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -1415,13 +1415,13 @@ enabled = true
 app-name = "instagram"
 rv-brand = "morphe-piko"
 build-mode = "apk"
-arch = "arm64-v8a x86_64"
+arch = ["arm64-v8a", "x86_64"]
 pkg-name = "com.instagram.android"
 patcher-args = "--continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
 apkmirror-example-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android"
 patches-source = "crimera/piko"
 
@@ -1436,12 +1436,12 @@ pkg-name = "com.twitter.android"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "crimera/piko"
 patches-source-host = "github"
-excluded-patches = "'Dynamic Color'"
+excluded-patches = ["'Dynamic Color'"]
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
 [x-morphe-piko-exp]
@@ -1455,12 +1455,12 @@ pkg-name = "com.twitter.android"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "crimera/piko"
 patches-source-host = "github"
-excluded-patches = "'Dynamic Color'"
+excluded-patches = ["'Dynamic Color'"]
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
 [x-morphe-piko-materialyou]
@@ -1473,12 +1473,12 @@ pkg-name = "com.twitter.android"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "crimera/piko"
 patches-source-host = "github"
-included-patches = "'Dynamic Color'"
+included-patches = ["'Dynamic Color'"]
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [x-morphe-piko-materialyou-exp]
 enabled = true
@@ -1491,12 +1491,12 @@ pkg-name = "com.twitter.android"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "crimera/piko"
 patches-source-host = "github"
-included-patches = "'Dynamic Color'"
+included-patches = ["'Dynamic Color'"]
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [discord-npatch-revenge]
 enabled = true
@@ -1509,7 +1509,7 @@ cli-source = "7723mod/NPatch"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord"
 patches-source = "revenge-mod/revenge-xposed"
 patcher-args = "-l 0"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers"
 apkmirror-example-url = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
@@ -1521,11 +1521,11 @@ app-name = "microsoft-word"
 rv-brand = "morphe-rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.microsoft.office.word"
 uptodown-dlurl = "https://microsoft-word-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/word/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word"
 patches-source = "rushiranpise/morphe-patches"
 
@@ -1536,11 +1536,11 @@ app-name = "microsoft-excel"
 rv-brand = "morphe-rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.microsoft.office.excel"
 uptodown-dlurl = "https://microsoft-excel-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/excel/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel"
 patches-source = "rushiranpise/morphe-patches"
 
@@ -1551,11 +1551,11 @@ app-name = "duolingo"
 rv-brand = "morphe-rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a"
+arch = ["all", "arm64-v8a", "arm-v7a"]
 pkg-name = "com.duolingo"
 uptodown-dlurl = "https://duolingo.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [amazon-india-morphe-rushiranpise]
@@ -1567,10 +1567,10 @@ pkg-name = "in.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
-included-patches = "'Dark Mode' 'Open Links in Browser'"
-excluded-patches = "'Hide Rufus Tab'"
+included-patches = ["'Dark Mode' 'Open Links in Browser'"]
+excluded-patches = ["'Hide Rufus Tab'"]
 custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
 arch = "all"
@@ -1584,10 +1584,10 @@ pkg-name = "in.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
-included-patches = "'Dark Mode' 'Open Links in Browser'"
-excluded-patches = "'Hide Rufus Tab'"
+included-patches = ["'Dark Mode' 'Open Links in Browser'"]
+excluded-patches = ["'Hide Rufus Tab'"]
 custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
 version = "latest"
@@ -1602,13 +1602,13 @@ pkg-name = "com.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://amazon-shopping.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
-included-patches = "'Dark Mode' 'Open Links in Browser'"
-excluded-patches = "'Hide Rufus Tab'"
+included-patches = ["'Dark Mode' 'Open Links in Browser'"]
+excluded-patches = ["'Hide Rufus Tab'"]
 custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
-arch = "all arm64-v8a arm-v7a"
+arch = ["all", "arm64-v8a", "arm-v7a"]
 
 [amazon-shopping-morphe-rushiranpise-exp]
 enabled = true
@@ -1619,14 +1619,14 @@ pkg-name = "com.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://amazon-shopping.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
-included-patches = "'Dark Mode' 'Open Links in Browser'"
-excluded-patches = "'Hide Rufus Tab'"
+included-patches = ["'Dark Mode' 'Open Links in Browser'"]
+excluded-patches = ["'Hide Rufus Tab'"]
 custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
 version = "latest"
-arch = "all arm64-v8a arm-v7a"
+arch = ["all", "arm64-v8a", "arm-v7a"]
 
 [adobe-acrobat-morphe-rushiranpise]
 enabled = true
@@ -1635,11 +1635,11 @@ app-name = "adobe-acrobat"
 rv-brand = "morphe-rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 build-mode = "apk"
-arch = "all arm64-v8a x86_64"
+arch = ["all", "arm64-v8a", "x86_64"]
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 custom-microg-patches = "'None'"
 
@@ -1651,11 +1651,11 @@ rv-brand = "morphe-rushiranpise-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a x86_64"
+arch = ["all", "arm64-v8a", "x86_64"]
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 custom-microg-patches = "'None'"
 
@@ -1670,7 +1670,7 @@ build-mode = "apk"
 pkg-name = "com.monect.portable"
 uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 arch = "all"
 
@@ -1686,7 +1686,7 @@ build-mode = "apk"
 pkg-name = "com.monect.portable"
 uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 arch = "all"
 
@@ -1726,7 +1726,7 @@ pkg-name = "com.windscribe.vpn"
 uptodown-dlurl = "https://windscribe.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
 apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [windscribe-vpn-morphe-rushiranpise-exp]
@@ -1743,7 +1743,7 @@ pkg-name = "com.windscribe.vpn"
 uptodown-dlurl = "https://windscribe.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
 apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [1111-warp-morphe-rushiranpise]
@@ -1758,7 +1758,7 @@ arch = "all"
 pkg-name = "com.cloudflare.onedotonedotonedotone"
 uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
@@ -1775,7 +1775,7 @@ arch = "all"
 pkg-name = "com.cloudflare.onedotonedotonedotone"
 uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
@@ -1791,7 +1791,7 @@ arch = "all"
 pkg-name = "com.adguard.android"
 uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [adguard-morphe-rushiranpise-exp]
@@ -1807,7 +1807,7 @@ arch = "all"
 pkg-name = "com.adguard.android"
 uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [beta-maniac-morphe-rushiranpise]
@@ -1821,7 +1821,7 @@ arch = "all"
 pkg-name = "it.mirko.beta"
 uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [beta-maniac-morphe-rushiranpise-exp]
@@ -1836,7 +1836,7 @@ arch = "all"
 pkg-name = "it.mirko.beta"
 uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 # ── MacroDroid (morphe-rushiranpise) ──────────────────────────────────────────
@@ -1847,11 +1847,11 @@ app-name = "macrodroid"
 rv-brand = "morphe-rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.arlosoft.macrodroid"
 uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [macrodroid-morphe-rushiranpise-exp]
@@ -1862,11 +1862,11 @@ rv-brand = "morphe-rushiranpise-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.arlosoft.macrodroid"
 uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 # ── SwiftKey (morphe-rushiranpise) ──────────────────────────────────────────
@@ -1877,11 +1877,11 @@ app-name = "swiftkey"
 rv-brand = "morphe-rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.touchtype.swiftkey"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.touchtype.swiftkey"
 uptodown-dlurl = "https://swiftkey-keyboard.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/swiftkey/swiftkey-keyboard"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 # ── Bluetooth Keyboard and Mouse (morphe-rushiranpise) ───────────────────────
@@ -1892,11 +1892,11 @@ app-name = "bluetooth-keyboard-mouse"
 rv-brand = "morphe-rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/io.appground.blek"
 build-mode = "apk"
-arch = "arm64-v8a x86_64"
+arch = ["arm64-v8a", "x86_64"]
 pkg-name = "io.appground.blek"
 uptodown-dlurl = "https://bluetooth-keyboard-and-mouse.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard-mouse-2"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [amazon-alexa-signed]
@@ -1910,11 +1910,11 @@ cli-source-host = "none"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.dee.app"
 patches-source = "none"
 patches-source-host = "none"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 prefer-dl-mode = "bundle"
 uptodown-dlurl = "https://alexa.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
-dpi = "120-480dpi 480-640dpi"
+dpi = ["120-480dpi", "480-640dpi"]
 
 [bitwarden-morphe-stylus]
 enabled = true

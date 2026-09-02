@@ -6,13 +6,13 @@ enabled = true
 app-name = "instagram"
 rv-brand = "morphe-piko"
 build-mode = "apk"
-arch = "arm64-v8a x86_64"
+arch = ["arm64-v8a", "x86_64"]
 pkg-name = "com.instagram.android"
 patcher-args = "--continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
 apkmirror-example-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android"
 patches-source = "crimera/piko"
 
@@ -29,12 +29,12 @@ pkg-name = "com.twitter.android"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "crimera/piko"
 patches-source-host = "github"
-excluded-patches = "'Dynamic Color'"
+excluded-patches = ["'Dynamic Color'"]
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
 
@@ -49,12 +49,12 @@ pkg-name = "com.twitter.android"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "crimera/piko"
 patches-source-host = "github"
-excluded-patches = "'Dynamic Color'"
+excluded-patches = ["'Dynamic Color'"]
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
 
@@ -68,12 +68,12 @@ pkg-name = "com.twitter.android"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "crimera/piko"
 patches-source-host = "github"
-included-patches = "'Dynamic Color'"
+included-patches = ["'Dynamic Color'"]
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 
 [x-morphe-piko-materialyou-exp]
 enabled = true
@@ -86,9 +86,9 @@ pkg-name = "com.twitter.android"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "crimera/piko"
 patches-source-host = "github"
-included-patches = "'Dynamic Color'"
+included-patches = ["'Dynamic Color'"]
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]

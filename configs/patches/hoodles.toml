@@ -8,14 +8,14 @@ app-name = "camscanner"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.intsig.camscanner"
 build-mode = "apk"
-arch = "all arm64-v8a"
+arch = ["all", "arm64-v8a"]
 pkg-name = "com.intsig.camscanner"
 uptodown-dlurl = "https://camscanner-pdf-creator.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator"
 apkmirror-example-url = "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator/camscanner-scanner-pdf-maker-7-24-0-2608130000-release/"
 apkpure-dlurl = "https://apkpure.com/camscanner-scanner-pdf-maker/com.intsig.camscanner"
 apkcombo-dlurl = "https://apkcombo.com/camscanner/com.intsig.camscanner"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 patcher-args = "--continue-on-error"
 
@@ -27,11 +27,11 @@ pkg-name = "com.amazon.avod.thirdpartyclient"
 build-mode = "apk"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient"
 version = "latest"
-arch = "arm64-v8a arm-v7a"
+arch = ["arm64-v8a", "arm-v7a"]
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video"
 uptodown-dlurl = "https://amazon-video.en.uptodown.com/android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [prime-video-morphe-hoodles-shared-exp]
@@ -42,13 +42,13 @@ pkg-name = "com.amazon.avod.thirdpartyclient"
 build-mode = "apk"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient"
 version = "latest"
-arch = "arm64-v8a arm-v7a"
+arch = ["arm64-v8a", "arm-v7a"]
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video"
 uptodown-dlurl = "https://amazon-video.en.uptodown.com/android"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
-excluded-patches = "'Rename Shared Permissions'"
+excluded-patches = ["'Rename Shared Permissions'"]
 
 [xrecorder-morphe-hoodles]
 enabled = true
@@ -61,7 +61,7 @@ arch = "all"
 pkg-name = "videoeditor.videorecorder.screenrecorder"
 uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [xrecorder-morphe-hoodles-exp]
@@ -76,7 +76,7 @@ arch = "all"
 pkg-name = "videoeditor.videorecorder.screenrecorder"
 uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-morphe-hoodles]
@@ -90,7 +90,7 @@ arch = "all"
 pkg-name = "ginlemon.flowerfree"
 uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-morphe-hoodles-exp]
@@ -105,7 +105,7 @@ arch = "all"
 pkg-name = "ginlemon.flowerfree"
 uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-6-morphe-hoodles]
@@ -119,7 +119,7 @@ arch = "all"
 pkg-name = "ginlemon.flowerfree"
 uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [smart-launcher-6-morphe-hoodles-exp]
@@ -134,7 +134,7 @@ arch = "all"
 pkg-name = "ginlemon.flowerfree"
 uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [nova-launcher-morphe-hoodles]
@@ -148,7 +148,7 @@ arch = "all"
 pkg-name = "com.teslacoilsw.launcher"
 uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [nova-launcher-morphe-hoodles-exp]
@@ -163,7 +163,7 @@ arch = "all"
 pkg-name = "com.teslacoilsw.launcher"
 uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [xodo-morphe-hoodles]
@@ -173,11 +173,11 @@ app-name = "xodo"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.xodo.pdf.reader"
 uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [xodo-morphe-hoodles-exp]
@@ -188,11 +188,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
 version = "latest"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a x86_64"
+arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.xodo.pdf.reader"
 uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [solid-explorer-morphe-hoodles]
@@ -206,7 +206,7 @@ arch = "all"
 pkg-name = "pl.solidexplorer2"
 uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [solid-explorer-morphe-hoodles-exp]
@@ -221,7 +221,7 @@ arch = "all"
 pkg-name = "pl.solidexplorer2"
 uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [github-morphe-hoodles-stylus]
@@ -235,8 +235,8 @@ cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
 apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
-patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
-included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
+patches-source = ["hoo-dles/morphe-patches'", "'ch3thanhs/stylus"]
+included-patches = ["'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "]
 dpi = "480-640dpi"
 
 [github-morphe-hoodles-stylus-exp]
@@ -250,8 +250,8 @@ cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
 apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
-patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
-included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "
+patches-source = ["hoo-dles/morphe-patches'", "'ch3thanhs/stylus"]
+included-patches = ["'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)' "]
 dpi = "480-640dpi"
 version = "latest"
 
@@ -262,11 +262,11 @@ app-name = "wallcraft"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.wallpaperscraft.wallpaper"
 uptodown-dlurl = "https://wallpaperscraft.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [wallcraft-morphe-hoodles-exp]
@@ -277,11 +277,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.wallpaperscraft.wallpaper"
 uptodown-dlurl = "https://wallpaperscraft.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [wps-office-morphe-hoodles]
@@ -291,11 +291,11 @@ app-name = "wps-office"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cn.wps.moffice_eng"
 build-mode = "apk"
-arch = "arm64-v8a arm-v7a"
+arch = ["arm64-v8a", "arm-v7a"]
 pkg-name = "cn.wps.moffice_eng"
 uptodown-dlurl = "https://wps-office.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/wps-software-pte-ltd/wps-office-pdf"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [podcast-addict-morphe-hoodles]
@@ -305,11 +305,11 @@ app-name = "podcast-addict"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.bambuna.podcastaddict"
 uptodown-dlurl = "https://podcast-addict.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [podcast-addict-morphe-hoodles-exp]
@@ -320,11 +320,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.bambuna.podcastaddict"
 uptodown-dlurl = "https://podcast-addict.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [merriam-webster-morphe-hoodles]
@@ -338,7 +338,7 @@ arch = "all"
 pkg-name = "com.merriamwebster"
 uptodown-dlurl = "https://merriam-webster.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/merriam-webster-inc/dictionary-merriam-webster"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [pandora-morphe-hoodles]
@@ -348,11 +348,11 @@ app-name = "pandora"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pandora.android"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.pandora.android"
 uptodown-dlurl = "https://pandora.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pandora/pandora-music-podcasts"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [ventusky-morphe-hoodles]
@@ -362,11 +362,11 @@ app-name = "ventusky"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "cz.ackee.ventusky"
 uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [ventusky-morphe-hoodles-exp]
@@ -377,11 +377,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "cz.ackee.ventusky"
 uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [niagara-launcher-morphe-hoodles-exp]
@@ -392,11 +392,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/bitpit.launcher"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "bitpit.launcher"
 uptodown-dlurl = "https://niagara-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mellowdrop-studio/niagara-launcher-%f0%9f%94%b9-fresh-clean"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [hellochinese-morphe-hoodles]
@@ -410,7 +410,7 @@ arch = "arm64-v8a"
 pkg-name = "com.hellochinese"
 uptodown-dlurl = "https://hellochinese.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/hellochinese-learn-chinese-mandarin/hellochinese-learn-chinese"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [myfitnesspal-morphe-hoodles]
@@ -420,11 +420,11 @@ app-name = "myfitnesspal"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.myfitnesspal.android"
 uptodown-dlurl = "https://calorie-counter-myfitnesspal.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [myfitnesspal-morphe-hoodles-exp]
@@ -435,11 +435,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.myfitnesspal.android"
 uptodown-dlurl = "https://calorie-counter-myfitnesspal.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [goodreads-morphe-hoodles]
@@ -449,11 +449,11 @@ app-name = "goodreads"
 rv-brand = "morphe-hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.goodreads"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.goodreads"
 uptodown-dlurl = "https://goodreads.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/goodreads/goodreads"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [goodreads-morphe-hoodles-exp]
@@ -464,11 +464,11 @@ rv-brand = "morphe-hoodles-exp"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.goodreads"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.goodreads"
 uptodown-dlurl = "https://goodreads.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/goodreads/goodreads"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
 [lightroom-morphe-hoodles]
@@ -482,5 +482,5 @@ arch = "arm64-v8a"
 pkg-name = "com.adobe.lrmobile"
 uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-lightroom"
-dpi = "nodpi anydpi auto"
+dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
