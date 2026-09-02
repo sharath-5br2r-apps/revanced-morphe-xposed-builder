@@ -839,11 +839,24 @@ gh_dl() {
 
 log() { echo -e "$1  " >>"build.md"; }
 get_highest_ver() {
-	local vers m
+	local vers valid_vers="" v clean_v a ac
 	vers=$(grep -v -i "stub" | grep -v '^$' || true)
 	[ -z "$vers" ] && return 1
-	m=$(head -1 <<<"$vers")
-	if ! semver_validate "$m"; then echo "$m"; else sort -s -t- -k1,1Vr <<<"$vers" | head -1; fi
+	while IFS= read -r v; do
+		[ -z "$v" ] && continue
+		clean_v="${v#v}"
+		clean_v="${clean_v#V}"
+		a="${clean_v%-*}"
+		ac="${a//[.0-9]/}"
+		if [ ${#ac} -eq 0 ]; then
+			valid_vers="${valid_vers}${clean_v}"$'\n'
+		fi
+	done <<<"$vers"
+	if [ -n "$valid_vers" ]; then
+		sort -s -t- -k1,1Vr <<<"$valid_vers" | head -1
+	else
+		sort -s -t- -k1,1Vr <<<"$vers" | head -1
+	fi
 }
 sort_vers() {
 	local vers valid_vers=""
@@ -2275,10 +2288,12 @@ get_git_repo_resp() {
 	local provider="$1"
 	local url="${2%/}"
 	local k1="${provider}_dlurl_regex" k2="${provider}_regex" k3="${provider}_dlurl_filter" k4="${provider}_filter"
-	local raw_filter="${args["$k1"]:-${args["$k2"]:-${args["$k3"]:-${args["$k4"]:-}}}}"
+	local raw_filter="" target_arch="${arch:-}"
+	if declare -p args >/dev/null 2>&1; then
+		raw_filter="${args["$k1"]:-${args["$k2"]:-${args["$k3"]:-${args["$k4"]:-}}}}"
+		[ -z "$target_arch" ] && target_arch="${args["arch"]:-}"
+	fi
 	[ -z "$raw_filter" ] && raw_filter='\.(apk|apkm|xapk|apks)$'
-
-	local target_arch="${arch:-${args["arch"]:-}}"
 	local filter="$raw_filter"
 	if [[ "$raw_filter" == *"["* ]] || [[ "$raw_filter" == *":"* ]]; then
 		filter=$(jq -r --arg arch "$target_arch" '
@@ -2291,9 +2306,12 @@ get_git_repo_resp() {
 		' <<<"$raw_filter" 2>/dev/null) || filter="$raw_filter"
 	fi
 	local tk1="${provider}_release_regex" tk2="${provider}_release_tag_regex" tk3="${provider}_dlurl_tag_filter"
-	local tag_filter="${args["$tk1"]:-${args["$tk2"]:-${args["$tk3"]:-}}}"
 	local rk1="${provider}_release_name_regex" rk2="${provider}_release_filter" rk3="${provider}_dlurl_release_name_filter"
-	local rel_name_filter="${args["$rk1"]:-${args["$rk2"]:-${args["$rk3"]:-}}}"
+	local tag_filter="" rel_name_filter=""
+	if declare -p args >/dev/null 2>&1; then
+		tag_filter="${args["$tk1"]:-${args["$tk2"]:-${args["$tk3"]:-}}}"
+		rel_name_filter="${args["$rk1"]:-${args["$rk2"]:-${args["$rk3"]:-}}}"
+	fi
 	local host="$provider" host_instance=""
 	if [[ "$url" =~ ^(https?://[^/]+) ]]; then
 		host_instance="${BASH_REMATCH[1]}"
@@ -2303,7 +2321,10 @@ get_git_repo_resp() {
 
 	if [[ "$provider" != "gitlab" ]] && [[ "$provider" != "forgejo" ]]; then
 		local sk1="${provider}_dlurl_source"
-		local source_host="${args["$sk1"]:-${provider}}"
+		local source_host="$provider"
+		if declare -p args >/dev/null 2>&1; then
+			source_host="${args["$sk1"]:-${provider}}"
+		fi
 		[ -z "$source_host" ] && source_host="$provider"
 		if ! parse_host_spec "$source_host" host host_instance; then
 			return 1
@@ -2412,7 +2433,7 @@ get_git_repo_resp() {
 					published_at: ($rel.published_at // $rel.created_at // $rel.released_at // "")
 				}
 			)
-		) | flatten
+		) | flatten | sort_by(.published_at) | reverse
 	' <<<"$release") || return 1
 
 	if [ -z "$assets_json" ] || [ "$assets_json" = "[]" ]; then

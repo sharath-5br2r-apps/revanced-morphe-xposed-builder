@@ -177,7 +177,7 @@ while IFS='|' read -r group app; do
     for i in "${!dlurls[@]}"; do
         dlurl="${dlurls[$i]}"
         source="${sources[$i]}"
-        cache_key="url_${dlurl//[^a-zA-Z0-9]/_}"
+        cache_key="url_${dlurl//[^a-zA-Z0-9]/_}_${github_release_name_regex//[^a-zA-Z0-9]/_}_${github_release_regex//[^a-zA-Z0-9]/_}_${gitlab_release_name_regex//[^a-zA-Z0-9]/_}_${forgejo_release_name_regex//[^a-zA-Z0-9]/_}"
         
         if [ -n "${cached_versions["$cache_key"]:-}" ]; then
             latest_ver="${cached_versions["$cache_key"]}"
