@@ -742,11 +742,12 @@ config_update() {
 		raw_patches_src=$(toml_get "$t" patches-source) || raw_patches_src=$DEF_PATCHES_SRC
 		raw_patches_host=$(toml_get "$t" patches-source-host) || raw_patches_host=$DEF_PATCHES_SRC_HOST
 		raw_patches_ver=$(toml_get "$t" patches-version) || raw_patches_ver=$DEF_PATCHES_VER
-		local IFS=$'\n'
-		local p_srcs=($(list_args "$raw_patches_src" | tr -d \"\')); [ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$raw_patches_src")
-		local p_hosts=($(list_args "$raw_patches_host" | tr -d \"\')); [ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$raw_patches_host")
-		local p_vers=($(list_args "$raw_patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$raw_patches_ver")
-		unset IFS
+		readarray -t p_srcs < <(list_args "$raw_patches_src")
+		[ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$raw_patches_src")
+		readarray -t p_hosts < <(list_args "$raw_patches_host")
+		[ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$raw_patches_host")
+		readarray -t p_vers < <(list_args "$raw_patches_ver")
+		[ ${#p_vers[@]} -eq 0 ] && p_vers=("$raw_patches_ver")
 		local table_updated=false
 		for i in "${!p_srcs[@]}"; do
 			local PATCHES_SRC="${p_srcs[$i]}"
@@ -3040,25 +3041,15 @@ build_rv() {
 	local exc_str="${args[excluded_patches]}"
 	local inc_str="${args[included_patches]}"
 
-	if [[ "$exc_str" == *"|"* ]] || [[ "$inc_str" == *"|"* ]] || [[ "$exc_str" =~ ^\[\[ ]] || [[ "$inc_str" =~ ^\[\[ ]]; then
+	if [ -n "$exc_str" ] || [ -n "$inc_str" ]; then
 		local -a exc_parts=() inc_parts=()
-		if [[ "$exc_str" =~ ^\[\[ ]]; then
-			readarray -t exc_parts <<<"$(list_args "$exc_str")"
-		else
-			IFS='|' read -ra exc_parts <<< "$exc_str"
-		fi
-		if [[ "$inc_str" =~ ^\[\[ ]]; then
-			readarray -t inc_parts <<<"$(list_args "$inc_str")"
-		else
-			IFS='|' read -ra inc_parts <<< "$inc_str"
-		fi
+		readarray -t exc_parts <<<"$(list_args "$exc_str")"
+		readarray -t inc_parts <<<"$(list_args "$inc_str")"
 		
 		for ((bi=0; bi<n_bundles; bi++)); do
 			local bundle_ed=""
 			local bp_exc="${exc_parts[$bi]:-}"
 			local bp_inc="${inc_parts[$bi]:-}"
-			bp_exc=$(echo "$bp_exc" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-			bp_inc=$(echo "$bp_inc" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 			if [ -n "$bp_exc" ]; then bundle_ed+=" $(join_args "$bp_exc" -d)"; fi
 			if [ -n "$bp_inc" ]; then bundle_ed+=" $(join_args "$bp_inc" -e)"; fi
 
@@ -3067,7 +3058,8 @@ build_rv() {
 				is_exclusive=true
 			elif [ "${args[exclusive_patches]}" != "false" ] && [ -n "${args[exclusive_patches]}" ]; then
 				local current_src="${p_srcs_arr[$bi]:-}"
-				local -a exc_srcs=($(list_args "${args[exclusive_patches]}" | tr -d \"\'))
+				local -a exc_srcs=()
+				readarray -t exc_srcs < <(list_args "${args[exclusive_patches]}")
 				[ ${#exc_srcs[@]} -eq 0 ] && exc_srcs=("${args[exclusive_patches]}")
 				for esrc in "${exc_srcs[@]}"; do
 					if [ "$esrc" = "$current_src" ]; then
@@ -3084,11 +3076,8 @@ build_rv() {
 					
 					local new_bp_exc="$bp_exc"
 					local -a current_bp_inc=()
-					bp_inc=$(echo "$bp_inc" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 					if [ -n "$bp_inc" ]; then
-						while IFS= read -r p; do
-							[ -n "$p" ] && current_bp_inc+=("$p")
-						done <<< "$(list_args "$bp_inc" | sed -e "s/^'//" -e "s/'$//" -e 's/^"//' -e 's/"$//')"
+						readarray -t current_bp_inc < <(list_args "$bp_inc")
 					fi
 					
 					local new_bp_exc="$bp_exc"
