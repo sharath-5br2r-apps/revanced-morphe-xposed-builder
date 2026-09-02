@@ -2220,8 +2220,10 @@ get_git_repo_resp() {
 	local tag_filter="${args[${provider}_release_regex]:-${args[${provider}_release_tag_regex]:-${args[${provider}_dlurl_tag_filter]:-${repo_dlurl_tag_filter:-${args[repo_dlurl_tag_filter]:-}}}}}"
 	local rel_name_filter="${args[${provider}_release_name_regex]:-${args[${provider}_release_filter]:-${args[${provider}_dlurl_release_name_filter]:-${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-}}}}}"
 	local host="$provider" host_instance=""
-	if [[ "$url" =~ ^https?://[^/]+ ]]; then
-		host_instance="${BASH_REMATCH[0]}"
+	if [[ "$url" =~ ^(https?://[^/]+) ]]; then
+		host_instance="${BASH_REMATCH[1]}"
+	elif [[ "$url" =~ ^([^/]+) ]]; then
+		host_instance="https://${BASH_REMATCH[1]}"
 	fi
 
 	if [[ "$provider" != "gitlab" ]] && [[ "$provider" != "forgejo" ]]; then
@@ -2230,8 +2232,8 @@ get_git_repo_resp() {
 		if ! parse_host_spec "$source_host" host host_instance; then
 			return 1
 		fi
-		if [[ "$url" =~ ^https?://[^/]+ ]]; then
-			host_instance="${BASH_REMATCH[0]}"
+		if [[ "$url" =~ ^(https?://[^/]+) ]]; then
+			host_instance="${BASH_REMATCH[1]}"
 		fi
 	fi
 
@@ -2253,8 +2255,11 @@ get_git_repo_resp() {
 		return 0
 	fi
 
+	local url_nohost="$url"
+	url_nohost="${url_nohost#http://}"
+	url_nohost="${url_nohost#https://}"
 	local src="" tag=""
-	src=$(echo "$url" | sed -E 's|https?://[^/]+/([^/]+/[^/]+).*|\1|')
+	src=$(echo "$url_nohost" | sed -E 's|^[^/]+/([^/]+/[^/]+).*|\1|')
 	src="${src%.git}"
 	src="${src%/releases}"
 	if [[ "$url" == *"/releases/tag/"* ]]; then
