@@ -380,6 +380,7 @@ is_valid_zip_or_jar() {
 	local header
 	header=$(head -c 2000 "$f" 2>/dev/null || true)
 	if is_cf_challenge_page "$header"; then
+		wpr "Cloudflare block detected in downloaded file '$f'!"
 		return 1
 	fi
 	if command -v unzip >/dev/null 2>&1; then
@@ -1362,7 +1363,12 @@ _cf_get() {
 	_unqueued_cf_get "$@"
 	local res=$?
 	if [ $res -eq 0 ]; then
-		if [ -z "${html:-}" ] || is_cf_challenge_page "$html"; then
+		if [ -z "${html:-}" ]; then
+			return 1
+		elif is_cf_challenge_page "$html"; then
+			if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+				wpr "Cloudflare block detected for: $1"
+			fi
 			return 1
 		fi
 	fi
