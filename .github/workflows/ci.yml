@@ -96,26 +96,26 @@ jobs:
           commit_message: "Create dummy patch_sources.json"
 
       - name: Fetch latest tags
-        if: steps.ensure_patch_sources.outputs.created == 'false'
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
         id: fetch_tags
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: bash .github/scripts/ci_fetch_tags.sh
 
       - name: Compare latest vs stored tags
-        if: steps.ensure_patch_sources.outputs.created == 'false'
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
         id: compare
         env:
           LATEST_TAGS: ${{ steps.fetch_tags.outputs.latest }}
         run: bash .github/scripts/ci_compare_tags.sh
 
       - name: Fetch App Versions
-        if: steps.ensure_patch_sources.outputs.created == 'false'
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
         id: fetch_app_versions
         run: bash .github/scripts/ci_fetch_app_versions.sh
         
       - name: Compare App Versions
-        if: steps.ensure_patch_sources.outputs.created == 'false'
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
         id: compare_apps
         env:
           FETCHED_APP_VERSIONS: ${{ steps.fetch_app_versions.outputs.fetched }}
@@ -145,7 +145,7 @@ jobs:
         run: bash .github/scripts/ci_resolve_triggers.sh
 
       - name: Commit updated version metadata and configs
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main

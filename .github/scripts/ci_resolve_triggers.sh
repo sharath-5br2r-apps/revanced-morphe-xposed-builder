@@ -6,6 +6,12 @@ MODE="${MODE:-Default}"
 if [ "${CREATED:-false}" = "true" ] || [ "${SKIP_BUILD:-false}" = "true" ] || [ "$MODE" = "Update Versions Only" ] || [ "$MODE" = "Generate Configs Only (No Build)" ]; then
   echo "TRIGGER_STABLE=0" >> "$GITHUB_OUTPUT"
   echo "TRIGGER_PRERELEASE=0" >> "$GITHUB_OUTPUT"
+  echo "TRIGGER_ABSOLUTE_LATEST=0" >> "$GITHUB_OUTPUT"
+  for i in {1..5}; do
+    echo "HAS_DEV_${i}=0" >> "$GITHUB_OUTPUT"
+    echo "HAS_STABLE_${i}=0" >> "$GITHUB_OUTPUT"
+    echo "HAS_LATEST_${i}=0" >> "$GITHUB_OUTPUT"
+  done
   exit 0
 fi
 
