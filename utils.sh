@@ -3581,7 +3581,7 @@ build_rv() {
 	# Ensure the mtime is set to now so newly downloaded APKs with old server timestamps aren't purged
 	touch "$stock_apk" 2>/dev/null || true
 	[ -f "${stock_apk%.apk}.apkm" ] && touch "${stock_apk%.apk}.apkm" 2>/dev/null || true
-	[ -f "$check_all_apk" ] && touch "$check_all_apk" 2>/dev/null || true
+	[ -n "${check_all_apk:-}" ] && [ -f "$check_all_apk" ] && touch "$check_all_apk" 2>/dev/null || true
 
 	# Log usage for apks repo cache sync
 	echo "${pkg_name}-${version_f}" >> "$TEMP_DIR/used_versions.txt"

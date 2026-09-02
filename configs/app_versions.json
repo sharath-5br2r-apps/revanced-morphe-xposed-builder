@@ -59,25 +59,19 @@
   },
   "Brave": {
     "keys": [
-      "brave-stable-morphe-dh6k-arm64-v8a",
-      "brave-stable-morphe-dh6k-arm-v7a",
-      "brave-stable-morphe-dh6k-x86_64"
+      "brave-stable-morphe-kveld9"
     ],
     "version": "1.94.117"
   },
   "Brave Beta": {
     "keys": [
-      "brave-beta-morphe-dh6k-arm64-v8a",
-      "brave-beta-morphe-dh6k-arm-v7a",
-      "brave-beta-morphe-dh6k-x86_64"
+      "brave-beta-morphe-dh6k"
     ],
     "version": "1.95.97"
   },
   "Brave Nightly": {
     "keys": [
-      "brave-nightly-morphe-dh6k-arm64-v8a",
-      "brave-nightly-morphe-dh6k-arm-v7a",
-      "brave-nightly-morphe-dh6k-x86_64"
+      "brave-nightly-morphe-dh6k"
     ],
     "version": "1.95.97"
   },
