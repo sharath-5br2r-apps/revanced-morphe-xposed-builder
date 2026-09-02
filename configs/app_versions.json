@@ -55,7 +55,7 @@
     "keys": [
       "oxygen-updater-morphe-rushiranpise-exp"
     ],
-    "version": "oxygen-updater-2.5.0"
+    "version": "7.1.0"
   },
   "Brave Beta": {
     "keys": [
@@ -67,7 +67,7 @@
     "keys": [
       "brave-nightly-morphe-dh6k"
     ],
-    "version": "1.95.97"
+    "version": "1.96.40"
   },
   "PC Remote": {
     "keys": [
@@ -255,6 +255,6 @@
     "keys": [
       "goodreads-morphe-hoodles-exp"
     ],
-    "version": "2.75.0Build3"
+    "version": "2.76.0Build0"
   }
 }

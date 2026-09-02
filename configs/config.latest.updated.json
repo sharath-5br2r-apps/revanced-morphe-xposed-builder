@@ -5,6 +5,7 @@
     "enabled": true,
     "app-name": "brave-nightly",
     "rv-brand": "morphe-dh6k",
+    "version": "beta",
     "build-mode": "apk",
     "arch": [
       "arm64-v8a",
@@ -32,12 +33,36 @@
     ],
     "github-release-name-regex": "^Nightly v"
   },
+  "goodreads-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "goodreads",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.goodreads",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.goodreads",
+    "uptodown-dlurl": "https://goodreads.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/goodreads/goodreads",
+    "dpi": [
+      "nodpi",
+      "anydpi",
+      "auto"
+    ],
+    "patches-source": "hoo-dles/morphe-patches"
+  },
   "oxygen-updater-morphe-rushiranpise-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "oxygen-updater",
     "rv-brand": "morphe-rushiranpise-exp",
-    "version": "latest",
+    "version": "beta",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
     "pkg-name": "com.arjanvlek.oxygenupdater",

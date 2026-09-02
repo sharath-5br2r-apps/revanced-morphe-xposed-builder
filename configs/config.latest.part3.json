@@ -1,1 +1,16 @@
-{}
+{
+  "patches-version": "absolutelatest",
+  "enable-module-update": true,
+  "oxygen-updater-morphe-rushiranpise-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "oxygen-updater",
+    "rv-brand": "morphe-rushiranpise-exp",
+    "version": "beta",
+    "custom-microg-patches": "'None'",
+    "build-mode": "apk",
+    "pkg-name": "com.arjanvlek.oxygenupdater",
+    "github-dlurl": "https://github.com/oxygen-updater/os-updater",
+    "patches-source": "rushiranpise/morphe-patches"
+  }
+}
