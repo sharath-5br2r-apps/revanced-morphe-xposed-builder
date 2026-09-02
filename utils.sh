@@ -92,7 +92,7 @@ toml_get_table_main() { jq -r -e 'to_entries | map(select(.value | type != "obje
 toml_get_table() { jq -r -e ".\"${1}\"" <<<"$__TOML__"; }
 toml_get() {
 	local op quote_placeholder=$'\001'
-	op=$(jq -r ".\"${2}\" | if . == null then empty elif type == \"array\" then (if (.[0] | type) == \"array\" then map(map(tostring) | join(\" \")) | join(\"|\") else map(if type == \"string\" and (contains(\" \") or contains(\"'\")) then (if startswith(\"'\") then . else \"'\" + . + \"'\" end) else tostring end) | join(\" \") end) else . end | values" <<<"$1")
+	op=$(jq -r ".\"${2}\" | if . == null then empty elif type == \"array\" then (if (.[0] | type) == \"array\" then map(map(if type == \"string\" and (startswith(\"'\") | not) then \"'\" + . + \"'\" else tostring end) | join(\" \")) | join(\"\n\") else map(if type == \"string\" and (contains(\" \") or contains(\"'\") or \"${2}\" == \"included-patches\" or \"${2}\" == \"excluded-patches\") then (if startswith(\"'\") then . else \"'\" + . + \"'\" end) else tostring end) | join(\" \") end) else . end | values" <<<"$1")
 	if [ "$op" ]; then
 		op="${op#"${op%%[![:space:]]*}"}"
 		op="${op%"${op##*[![:space:]]}"}"
