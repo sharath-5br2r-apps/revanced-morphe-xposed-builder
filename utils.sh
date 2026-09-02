@@ -30,18 +30,24 @@ if [ -z "${KEYSTORE_KEY_PASSWORD:-}" ]; then
 	pr "No KEYSTORE_KEY_PASSWORD provided, using KEYSTORE_PASSWORD instead."
 	KEYSTORE_KEY_PASSWORD=${KEYSTORE_PASSWORD}
 fi
-if [ -z "${HTMLQ:-}" ]; then
+if [ -n "${HTMLQ:-}" ]; then
+	if [ -f "$HTMLQ" ] || command -v "$HTMLQ" >/dev/null 2>&1; then
+		pr "Using custom HTMLQ: $HTMLQ"
+	fi
+else
 	_arch=$(uname -m)
 	_kernel=$(uname -s)
 	[ "$_kernel" = Linux ] && _kernel=linux
 	if [ "$_arch" = aarch64 ]; then _arch=arm64; elif [ "${_arch:0:5}" = "armv7" ]; then _arch=arm; fi
 	if [ -f "${BIN_DIR:-bin}/htmlq/htmlq-${_kernel}-${_arch}" ]; then
 		HTMLQ="${BIN_DIR:-bin}/htmlq/htmlq-${_kernel}-${_arch}"
-	else
+	elif command -v htmlq >/dev/null 2>&1; then
 		HTMLQ="htmlq"
 	fi
 	unset _arch _kernel
 fi
+
+YQ="${YQ:-yq}"
 
 set -u
 shopt -s nullglob extglob
@@ -71,7 +77,12 @@ declare -gA __DL_RESP_CACHE__
 toml_prep() {
 	if [ ! -f "$1" ]; then return 1; fi
 	if [ "${1##*.}" == toml ]; then
-		__TOML__=$(yq -o=json -I=0 "$1") || abort "Failed to parse TOML file '$1' with yq"
+		local yq_bin="${YQ:-yq}"
+		if ! command -v "$yq_bin" >/dev/null 2>&1 && [ ! -f "$yq_bin" ]; then
+			epr "yq not found, please install it"
+			exit 1
+		fi
+		__TOML__=$("$yq_bin" -o=json -I=0 "$1") || abort "Failed to parse TOML file '$1' with yq"
 	elif [ "${1##*.}" == json ]; then
 		__TOML__=$(cat "$1")
 	else abort "config extension not supported"; fi
@@ -670,31 +681,52 @@ set_prebuilts() {
 		kernel=windows
 		ext=.exe
 	else ext=; fi
-	HTMLQ="${BIN_DIR}/htmlq/htmlq-${kernel}-${arch}${ext}"
-	if [ ! -f "$HTMLQ" ]; then
-		epr "htmlq binary isnt currenly available for $kernel $arch. Currently not supported."
+
+	# Check HTMLQ
+	if [ -n "${HTMLQ:-}" ] && { [ -f "$HTMLQ" ] || command -v "$HTMLQ" >/dev/null 2>&1; }; then
+		pr "Using HTMLQ: $HTMLQ"
+	elif [ -f "${BIN_DIR}/htmlq/htmlq-${kernel}-${arch}${ext}" ]; then
+		HTMLQ="${BIN_DIR}/htmlq/htmlq-${kernel}-${arch}${ext}"
+	elif command -v htmlq >/dev/null 2>&1; then
+		HTMLQ="htmlq"
+	else
+		epr "htmlq binary is not available or not found in PATH. Please install htmlq."
 		exit 1
 	fi
-	AAPT2=$(command -v aapt2) || true
-	if [ -z "$AAPT2" ]; then
-		pr "aapt2 not found in PATH, searching in Android SDK..."
-		local sdk_dirs=("${ANDROID_HOME:-}" "${ANDROID_SDK_ROOT:-}" "/usr/local/lib/android/sdk" "/sdcard/Android/sdk" "$HOME/Android/Sdk")
-		for sdk_dir in "${sdk_dirs[@]}"; do
-			if [ -n "$sdk_dir" ] && [ -d "$sdk_dir/build-tools" ]; then
-				AAPT2=$(find "$sdk_dir/build-tools" -name aapt2 2>/dev/null | sort -r | head -n 1)
-				if [ -n "$AAPT2" ]; then break; fi
-			fi
-		done
-		if [ -z "$AAPT2" ]; then
-			epr "Cannot Find aapt2, please install Android SDK or add aapt2 to PATH"
-			if [ "$(uname -o 2>/dev/null)" = Android ]; then
-				epr "On Android, you can install aapt2 with 'pkg install aapt2' or 'apt install aapt2'"
-			fi
-			exit 1
-		fi
+
+	# Check YQ
+	YQ="${YQ:-yq}"
+	if [ -n "$YQ" ] && { [ -f "$YQ" ] || command -v "$YQ" >/dev/null 2>&1; }; then
+		pr "Using yq: $YQ"
+	else
+		epr "yq not found, please install it"
+		exit 1
 	fi
-	pr "Using aapt2: $AAPT2"
-	command -v yq >/dev/null 2>&1 || abort "\`yq\` is not installed. install it with 'apt install yq' or equivalent"
+
+	# Check AAPT2
+	if [ -n "${AAPT2:-}" ] && { [ -f "$AAPT2" ] || command -v "$AAPT2" >/dev/null 2>&1; }; then
+		pr "Using custom AAPT2: $AAPT2"
+	else
+		AAPT2=$(command -v aapt2) || true
+		if [ -z "$AAPT2" ]; then
+			pr "aapt2 not found in PATH, searching in Android SDK..."
+			local sdk_dirs=("${ANDROID_HOME:-}" "${ANDROID_SDK_ROOT:-}" "/usr/local/lib/android/sdk" "/sdcard/Android/sdk" "$HOME/Android/Sdk")
+			for sdk_dir in "${sdk_dirs[@]}"; do
+				if [ -n "$sdk_dir" ] && [ -d "$sdk_dir/build-tools" ]; then
+					AAPT2=$(find "$sdk_dir/build-tools" -name aapt2 2>/dev/null | sort -r | head -n 1)
+					if [ -n "$AAPT2" ]; then break; fi
+				fi
+			done
+			if [ -z "$AAPT2" ]; then
+				epr "Cannot Find aapt2, please install Android SDK or add aapt2 to PATH"
+				if [ "$(uname -o 2>/dev/null)" = Android ]; then
+					epr "On Android, you can install aapt2 with 'pkg install aapt2' or 'apt install aapt2'"
+				fi
+				exit 1
+			fi
+		fi
+		pr "Using aapt2: $AAPT2"
+	fi
 }
 
 config_update() {
