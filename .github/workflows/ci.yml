@@ -122,7 +122,7 @@ jobs:
         run: bash .github/scripts/ci_compare_app_versions.sh
 
       - name: Generate configs (JSON)
-        if: ${{ inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Build Only' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
+        if: ${{ inputs.mode != 'Build Only' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || inputs.mode == 'Generate Configs Only (No Build)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         id: generate_configs
         env:
           TAGS_OLD: ${{ steps.compare.outputs.tags_old }}
