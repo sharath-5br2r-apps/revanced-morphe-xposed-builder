@@ -378,7 +378,7 @@ is_valid_zip_or_jar() {
 	[ -f "$f" ] || return 1
 	[ -s "$f" ] || return 1
 	local header
-	header=$(head -c 2000 "$f" 2>/dev/null || true)
+	header=$(head -c 2000 "$f" 2>/dev/null | tr -d '\0' || true)
 	if is_cf_challenge_page "$header"; then
 		wpr "Cloudflare block detected in downloaded file '$f'!"
 		return 1
