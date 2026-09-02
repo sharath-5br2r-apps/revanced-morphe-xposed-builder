@@ -2272,10 +2272,10 @@ get_cache_repo_pkg_name() {
 get_git_repo_resp() {
 	local provider="$1"
 	local url="${2%/}"
-	local filter="${args[${provider}_dlurl_regex]:-${args[${provider}_regex]:-${args[${provider}_dlurl_filter]:-${args[${provider}_filter]:-${repo_dlurl_filter:-${args[repo_dlurl_filter]:-}}}}}}"
+	local filter="${args[${provider}_dlurl_regex]:-${args[${provider}_regex]:-${args[${provider}_dlurl_filter]:-${args[${provider}_filter]:-${args[repo_dlurl_filter]:-${repo_dlurl_filter:-}}}}}}"
 	[ -z "$filter" ] && filter='\.(apk|apkm|xapk|apks)$'
-	local tag_filter="${args[${provider}_release_regex]:-${args[${provider}_release_tag_regex]:-${args[${provider}_dlurl_tag_filter]:-${repo_dlurl_tag_filter:-${args[repo_dlurl_tag_filter]:-}}}}}"
-	local rel_name_filter="${args[${provider}_release_name_regex]:-${args[${provider}_release_filter]:-${args[${provider}_dlurl_release_name_filter]:-${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-}}}}}"
+	local tag_filter="${args[${provider}_release_regex]:-${args[${provider}_release_tag_regex]:-${args[${provider}_dlurl_tag_filter]:-${args[repo_dlurl_tag_filter]:-${repo_dlurl_tag_filter:-}}}}}"
+	local rel_name_filter="${args[${provider}_release_name_regex]:-${args[${provider}_release_filter]:-${args[${provider}_dlurl_release_name_filter]:-${args[repo_dlurl_release_name_filter]:-${repo_dlurl_release_name_filter:-}}}}}"
 	local host="$provider" host_instance=""
 	if [[ "$url" =~ ^(https?://[^/]+) ]]; then
 		host_instance="${BASH_REMATCH[1]}"
@@ -2284,7 +2284,7 @@ get_git_repo_resp() {
 	fi
 
 	if [[ "$provider" != "gitlab" ]] && [[ "$provider" != "forgejo" ]]; then
-		local source_host="${args[${provider}_dlurl_source]:-${args[repo_dlurl_source]:-${provider}}}"
+		local source_host="${args[${provider}_dlurl_source]:-${args[repo_dlurl_source]:-${repo_dlurl_source:-${provider}}}}"
 		[ -z "$source_host" ] && source_host="$provider"
 		if ! parse_host_spec "$source_host" host host_instance; then
 			return 1
@@ -3376,7 +3376,7 @@ build_rv() {
 		[ -z "$version" ] && get_latest_ver=true
 		if [ $get_latest_ver = true ]; then
 			if [ "$version_mode" = beta ]; then __AAV__="true"; else __AAV__="false"; fi
-			local vers_cache_key="${table:-${app_name:-}}_${dl_from}_${args[${dl_from}_dlurl]}_${__AAV__}_${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-}}"
+			local vers_cache_key="${table:-${app_name:-}}_${dl_from}_${args[${dl_from}_dlurl]:-}_${__AAV__}_${args[repo_dlurl_release_name_filter]:-${repo_dlurl_release_name_filter:-}}"
 			if [ -n "${__PKG_VERS_CACHE__["$vers_cache_key"]:-}" ]; then
 				pkgvers="${__PKG_VERS_CACHE__["$vers_cache_key"]}"
 			else
