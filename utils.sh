@@ -3757,9 +3757,10 @@ build_rv() {
 			cli_ref="${args[cli_source]}"
 		fi
 	fi
-	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
+	local custom_pa="${args[patcher_args]:-${args[patcher-args]:-}}"
+	if [ -n "$custom_pa" ]; then p_patcher_args+=("$custom_pa"); fi
     if isoneof "$version_mode" latest beta || [ "$version_mode" != "auto" -a "$version_mode" != "exp" ]; then
-        if [[ "${args[patcher_args]}" != *"-f "* ]]; then
+        if [[ "$custom_pa" != *"-f"* ]]; then
            p_patcher_args+=("-f")
         fi
     fi
