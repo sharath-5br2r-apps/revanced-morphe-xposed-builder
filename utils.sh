@@ -2853,6 +2853,20 @@ write_build_info() {
 		release_notes=$(cat "${patches_dir}/tag_notes.txt" 2>/dev/null || true)
 	fi
 
+	local patches_json
+	if [[ "$patches" =~ ^\[.*\]$ ]]; then
+		patches_json="$patches"
+	else
+		patches_json=$(jq -n --arg p "$patches" '$p | split("|") | map(split(" ")) | flatten | map(select(length > 0))' 2>/dev/null || echo '[]')
+	fi
+
+	local changelog_json
+	if [[ "$changelog" =~ ^\[.*\]$ ]]; then
+		changelog_json="$changelog"
+	else
+		changelog_json=$(jq -n --arg c "$changelog" '$c | split("|") | map(split(" ")) | flatten | map(select(length > 0))' 2>/dev/null || echo '[]')
+	fi
+
 	(
 		flock -x 200
 		jq --arg key "$entry_key" \
@@ -2862,9 +2876,9 @@ write_build_info() {
 			--arg version "$version" \
 			--arg min_sdk "$min_sdk" \
 			--arg cli "${cli_ref:-${cli_name_ver:-}}" \
-			--arg patches "$patches" \
-			--arg changelog "$changelog" \
 			--arg release_notes "$release_notes" \
+			--argjson patches "$patches_json" \
+			--argjson changelog "$changelog_json" \
 			--argjson applied "$applied_json" \
 			--argjson failed "$failed_json" \
 			--argjson skipped "$skipped_json" \
@@ -2892,6 +2906,8 @@ write_build_info() {
 			  if $min_sdk != "" then . else del(.[$key].min_sdk) end |
 			  if ($densities | length) > 0 then . else del(.[$key].densities) end |
 			  if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |
+			  if ($patches | length) > 0 then . else del(.[$key].patches) end |
+			  if ($changelog | length) > 0 then . else del(.[$key].changelog) end |
 			  if ($failed | length) > 0 then . else del(.[$key].failed_patches) end |
 			  if ($skipped | length) > 0 then . else del(.[$key].skipped_patches) end
 			' \
