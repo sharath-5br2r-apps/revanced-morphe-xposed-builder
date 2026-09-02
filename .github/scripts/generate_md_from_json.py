@@ -42,8 +42,13 @@ def main():
         if cli_info and cli_info not in cli_set:
             cli_set.append(cli_info)
 
-        if patches_info and patches_info not in patches_dict:
-            patches_dict[patches_info] = (changelog, release_notes)
+        if patches_info:
+            p_items = [p.strip() for p in patches_info.split() if p.strip()]
+            c_items = [c.strip() for c in changelog.split() if c.strip()] if changelog else []
+            for idx, p in enumerate(p_items):
+                if p not in patches_dict:
+                    c_url = c_items[idx] if idx < len(c_items) and c_items[idx] != "passthrough" else ""
+                    patches_dict[p] = (c_url, release_notes)
 
     sections = []
 
@@ -70,11 +75,9 @@ def main():
         p_str = f"Patches: {p_info}  "
         if cl_url:
             p_str += f"\n[Changelog]({cl_url})"
-            tag = cl_url.rstrip("/").split("/")[-1]
             if rel_notes:
+                tag = cl_url.rstrip("/").split("/")[-1]
                 p_str += f"\n\n<details>\n<summary>{tag}</summary>\n\n{rel_notes}\n\n</details>"
-            elif tag:
-                p_str += f"\n\n<details>\n<summary>{tag}</summary>\n\n{tag}\n\n</details>"
         elif rel_notes:
             p_str += f"\n\n{rel_notes}"
         patches_lines.append(p_str)

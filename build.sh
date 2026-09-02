@@ -158,10 +158,19 @@ for table_name in $(toml_get_table_names); do
 			pref="${pver}"
 		fi
 		patches_ref_all="${patches_ref_all}${pref},"
+		ptag="${pref}"
+		if [ -z "$ptag" ]; then
+			p_dir="${psrc%/*}"
+			p_dir="${TEMP_DIR}/${p_dir,,}-rv"
+			if [ -f "${p_dir}/tag_name.txt" ]; then
+				ptag=$(cat "${p_dir}/tag_name.txt" 2>/dev/null || echo "latest")
+			else
+				ptag="latest"
+			fi
+		fi
 		if [ "$phost_type" = "none" ]; then
 			changelog_url_all="${changelog_url_all}passthrough "
 		else
-			ptag="${pref:-latest}"
 			changelog_url=$(source_release_web_url "$phost_type" "$psrc" "$ptag" "$phost_inst" 2>/dev/null || true)
 			changelog_url_all="${changelog_url_all}${changelog_url:-passthrough} "
 		fi
