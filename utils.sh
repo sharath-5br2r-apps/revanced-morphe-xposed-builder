@@ -3129,18 +3129,10 @@ build_rv() {
 			fi
 		fi
 
-		list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
+		list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || list_patches=""
 		local cli_source_l="${args[cli_source],,}"
-		if [[ "$cli_source_l" == *"revanced"* ]] || [[ "$cli_source_l" == *"morphe"* ]]; then
-			if [[ "$cli_source_l" == *"morphe"* ]]; then
-				if [ -z "$list_patches" ] || ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
-					wpr "WARNING: No app-specific patches found for '$pkg_name', assuming universal patches apply and continuing build."
-				fi
-			else
-				if ! grep -Fq "$pkg_name" <<<"$list_patches" && ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
-					wpr "WARNING: No app-specific patches found for '$pkg_name', assuming universal patches apply and continuing build."
-				fi
-			fi
+		if [ -z "$list_patches" ] || { ! grep -Fq "$pkg_name" <<<"$list_patches" 2>/dev/null && ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches" 2>/dev/null; }; then
+			wpr "WARNING: No app-specific patches found for '$pkg_name', falling back to universal patches."
 		fi
 
 		if [ "$version_mode" = exp ]; then
@@ -3304,19 +3296,11 @@ build_rv() {
 		# If we didn't run patches_list earlier because pkg_name was empty
 		if [ -z "$list_patches" ]; then
 			pr "Package name of '${table}' is '$pkg_name'"
-			list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
+			list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || list_patches=""
 			
 			local cli_source_l="${args[cli_source],,}"
-			if [[ "$cli_source_l" == *"revanced"* ]] || [[ "$cli_source_l" == *"morphe"* ]]; then
-				if [[ "$cli_source_l" == *"morphe"* ]]; then
-					if [ -z "$list_patches" ] || ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
-						wpr "WARNING: No app-specific patches found for '$pkg_name', assuming universal patches apply and continuing build."
-					fi
-				else
-					if ! grep -Fq "$pkg_name" <<<"$list_patches" && ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches"; then
-						wpr "WARNING: No app-specific patches found for '$pkg_name', assuming universal patches apply and continuing build."
-					fi
-				fi
+			if [ -z "$list_patches" ] || { ! grep -Fq "$pkg_name" <<<"$list_patches" 2>/dev/null && ! grep -iqE "(Name:|\bIndex:)" <<<"$list_patches" 2>/dev/null; }; then
+				wpr "WARNING: No app-specific patches found for '$pkg_name', falling back to universal patches."
 			fi
 		fi
 
