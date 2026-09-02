@@ -56,11 +56,13 @@ else
 fi
 
 declare -A cached_versions
+declare -A args
 
 while IFS='|' read -r group app; do
     if [ -z "$group" ] || [ -z "$app" ]; then continue; fi
     echo "::group::Fetching version for $group ($app)..."
     
+    args=()
     cache_repo_url=$(jq -r ".\"$app\".\"cache_repo_dlurl\" // .\"$app\".\"cache-repo-dlurl\" // empty" temp_all_configs.json)
     github_url=$(jq -r ".\"$app\".\"github-dlurl\" // empty" temp_all_configs.json)
     gitlab_url=$(jq -r ".\"$app\".\"gitlab-dlurl\" // empty" temp_all_configs.json)
@@ -103,46 +105,46 @@ while IFS='|' read -r group app; do
     arch=$(jq -r ".\"$app\".\"arch\" // empty" temp_all_configs.json)
     build_mode=$(jq -r ".\"$app\".\"build-mode\" // \"apk\"" temp_all_configs.json)
 
-    args[github_dlurl]="$github_url"
-    args[github_dlurl_regex]="$github_dlurl_regex"
-    args[github_regex]="$github_regex"
-    args[github_release_regex]="$github_release_regex"
-    args[github_release_name_regex]="$github_release_name_regex"
-    args[github_dlurl_exclude_filter]="$github_dlurl_exclude_filter"
-    args[github_dlurl_source]="$github_dlurl_source"
+    args["github_dlurl"]="$github_url"
+    args["github_dlurl_regex"]="$github_dlurl_regex"
+    args["github_regex"]="$github_regex"
+    args["github_release_regex"]="$github_release_regex"
+    args["github_release_name_regex"]="$github_release_name_regex"
+    args["github_dlurl_exclude_filter"]="$github_dlurl_exclude_filter"
+    args["github_dlurl_source"]="$github_dlurl_source"
 
-    args[gitlab_dlurl]="$gitlab_url"
-    args[gitlab_dlurl_regex]="$gitlab_dlurl_regex"
-    args[gitlab_regex]="$gitlab_regex"
-    args[gitlab_release_regex]="$gitlab_release_regex"
-    args[gitlab_release_name_regex]="$gitlab_release_name_regex"
-    args[gitlab_dlurl_exclude_filter]="$gitlab_dlurl_exclude_filter"
+    args["gitlab_dlurl"]="$gitlab_url"
+    args["gitlab_dlurl_regex"]="$gitlab_dlurl_regex"
+    args["gitlab_regex"]="$gitlab_regex"
+    args["gitlab_release_regex"]="$gitlab_release_regex"
+    args["gitlab_release_name_regex"]="$gitlab_release_name_regex"
+    args["gitlab_dlurl_exclude_filter"]="$gitlab_dlurl_exclude_filter"
 
-    args[forgejo_dlurl]="$forgejo_url"
-    args[forgejo_dlurl_regex]="$forgejo_dlurl_regex"
-    args[forgejo_regex]="$forgejo_regex"
-    args[forgejo_release_regex]="$forgejo_release_regex"
-    args[forgejo_release_name_regex]="$forgejo_release_name_regex"
-    args[forgejo_dlurl_exclude_filter]="$forgejo_dlurl_exclude_filter"
+    args["forgejo_dlurl"]="$forgejo_url"
+    args["forgejo_dlurl_regex"]="$forgejo_dlurl_regex"
+    args["forgejo_regex"]="$forgejo_regex"
+    args["forgejo_release_regex"]="$forgejo_release_regex"
+    args["forgejo_release_name_regex"]="$forgejo_release_name_regex"
+    args["forgejo_dlurl_exclude_filter"]="$forgejo_dlurl_exclude_filter"
 
-    args[apkmirror_dlurl]="$apkmirror_url"
-    args[apkmirror_example_url]="$apkmirror_example_url"
-    args[apkmirror_release_filter]="$apkmirror_release_filter"
-    args[apkmirror_version_filter]="$apkmirror_version_filter"
-    args[version_filter]="$version_filter"
+    args["apkmirror_dlurl"]="$apkmirror_url"
+    args["apkmirror_example_url"]="$apkmirror_example_url"
+    args["apkmirror_release_filter"]="$apkmirror_release_filter"
+    args["apkmirror_version_filter"]="$apkmirror_version_filter"
+    args["version_filter"]="$version_filter"
 
-    args[pkg_name]="$pkg_name"
-    args[app_name]="$group"
-    args[table]="$app"
-    args[dpi]="$dpi"
-    args[min_sdk]="$min_sdk"
-    args[check_sig]="$check_sig"
-    args[custom_microg_patches]="$custom_microg_patches"
-    args[included_patches]="$included_patches"
-    args[excluded_patches]="$excluded_patches"
-    args[exclusive_patches]="$exclusive_patches"
-    args[arch]="$arch"
-    args[build_mode]="$build_mode"
+    args["pkg_name"]="$pkg_name"
+    args["app_name"]="$group"
+    args["table"]="$app"
+    args["dpi"]="$dpi"
+    args["min_sdk"]="$min_sdk"
+    args["check_sig"]="$check_sig"
+    args["custom_microg_patches"]="$custom_microg_patches"
+    args["included_patches"]="$included_patches"
+    args["excluded_patches"]="$excluded_patches"
+    args["exclusive_patches"]="$exclusive_patches"
+    args["arch"]="$arch"
+    args["build_mode"]="$build_mode"
 
     export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode prefer_dl_mode apkmirror_example_url apkmirror_release_filter apkmirror_version_filter version_filter github_dlurl_regex github_release_regex github_release_name_regex github_dlurl_exclude_filter github_dlurl_source gitlab_dlurl_regex gitlab_release_regex gitlab_release_name_regex gitlab_dlurl_exclude_filter forgejo_dlurl_regex forgejo_release_regex forgejo_release_name_regex forgejo_dlurl_exclude_filter included_patches excluded_patches exclusive_patches arch build_mode
 
