@@ -1353,6 +1353,13 @@ _cf_get() {
 	flock -x 200
 	trap 'exec 200>&-' RETURN EXIT INT TERM
 	_unqueued_cf_get "$@"
+	local res=$?
+	if [ $res -eq 0 ]; then
+		if [ -z "${html:-}" ] || [[ "$html" == *"Attention Required!"* || "$html" == *"Just a moment..."* || "$html" == *"Please Wait... | Cloudflare"* || "$html" == *"Verify you are human"* ]]; then
+			return 1
+		fi
+	fi
+	return $res
 }
 
 # -------------------- apkmirror --------------------
