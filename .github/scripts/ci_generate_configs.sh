@@ -89,8 +89,8 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) then . else empty end
+        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[^a-zA-Z0-9_/-]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) or ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
     { "patches-version": "latest", "enable-module-update": true } + .
@@ -99,14 +99,16 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
   split_config_json "configs/config.stable.updated.json" "config.stable" 5
 fi
 
-if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
+if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
   python3 .github/scripts/merge_toml_configs.py .stable.toml config.dev.json
 
-  jq --slurpfile activePatchApps active_patch_apps.dev.json '
+  jq --slurpfile active active.prerelease.json --slurpfile activePatchApps active_patch_apps.dev.json '
     with_entries(
       if .value | type == "object" then
         .key as $k |
-        if ($activePatchApps[0] | index($k)) then . else empty end
+        .value as $app |
+        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[^a-zA-Z0-9_/-]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        if (($srcs - $active[0]) != $srcs) or ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
     { "patches-version": "dev", "enable-module-update": false } + .

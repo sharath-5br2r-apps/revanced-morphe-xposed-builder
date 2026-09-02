@@ -32,7 +32,7 @@ if [ "$RAW_TRIGGER_STABLE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
   fi
 fi
 
-if [ "$RAW_TRIGGER_PRERELEASE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
+if [ "$RAW_TRIGGER_PRERELEASE" = "1" ]; then
   CFG="configs/config.dev.updated.json"
   ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
   if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
