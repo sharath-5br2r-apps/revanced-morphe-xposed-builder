@@ -372,16 +372,20 @@ is_valid_zip_or_jar() {
 	local f="$1"
 	[ -f "$f" ] || return 1
 	[ -s "$f" ] || return 1
+	if head -c 500 "$f" 2>/dev/null | grep -qiE "(<!DOCTYPE html|<html|Attention Required|Just a moment\.\.\.|Verify you are human)"; then
+		return 1
+	fi
 	if command -v unzip >/dev/null 2>&1; then
-		unzip -t "$f" >/dev/null 2>&1 && return 0
+		unzip -t "$f" >/dev/null 2>&1
+		return $?
+	elif command -v zip >/dev/null 2>&1; then
+		zip -T "$f" >/dev/null 2>&1
+		return $?
+	elif command -v jar >/dev/null 2>&1; then
+		jar tf "$f" >/dev/null 2>&1
+		return $?
 	fi
-	if command -v zip >/dev/null 2>&1; then
-		zip -t "$f" >/dev/null 2>&1 && return 0
-	fi
-	if command -v jar >/dev/null 2>&1; then
-		jar tf "$f" >/dev/null 2>&1 && return 0
-	fi
-	[ -s "$f" ]
+	return 0
 }
 
 _get_prebuilts() {
