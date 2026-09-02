@@ -4,7 +4,7 @@
     "keys": [
       "discord-npatch-revenge"
     ],
-    "version": "341.13"
+    "version": "343.12 - Stable"
   },
   "Prime-Video": {
     "keys": [
@@ -17,13 +17,13 @@
     "keys": [
       "amazon-alexa-signed"
     ],
-    "version": "2.2.704787.0"
+    "version": "2.2.706925.0"
   },
   "Adobe Acrobat": {
     "keys": [
       "adobe-acrobat-morphe-rushiranpise-exp"
     ],
-    "version": "26.6.1.45942"
+    "version": "26.8.0"
   },
   "Proton VPN": {
     "keys": [
@@ -71,7 +71,7 @@
       "brave-beta-morphe-dh6k-arm-v7a",
       "brave-beta-morphe-dh6k-x86_64"
     ],
-    "version": "1.95.95"
+    "version": "1.95.96"
   },
   "Brave Nightly": {
     "keys": [
@@ -79,7 +79,7 @@
       "brave-nightly-morphe-dh6k-arm-v7a",
       "brave-nightly-morphe-dh6k-x86_64"
     ],
-    "version": "1.95.95"
+    "version": "1.95.96"
   },
   "PC Remote": {
     "keys": [
@@ -109,7 +109,7 @@
     "keys": [
       "jiohotstar-morphe-paresh-exp"
     ],
-    "version": "26.08.03.2"
+    "version": "26.08.17.3"
   },
   "Nova Launcher": {
     "keys": [
@@ -201,7 +201,7 @@
     "keys": [
       "pinterest-morphe-browzomje-exp"
     ],
-    "version": "14.33.0"
+    "version": "14.34.0"
   },
   "Inshorts": {
     "keys": [
@@ -249,19 +249,19 @@
     "keys": [
       "ventusky-morphe-hoodles-exp"
     ],
-    "version": "42.1"
+    "version": "55.1"
   },
   "Niagara Launcher": {
     "keys": [
       "niagara-launcher-morphe-hoodles-exp"
     ],
-    "version": "1.16.26"
+    "version": "1.16.23"
   },
   "MyFitnessPal": {
     "keys": [
       "myfitnesspal-morphe-hoodles-exp"
     ],
-    "version": "24.32.0"
+    "version": "26.33.0"
   },
   "Goodreads": {
     "keys": [
