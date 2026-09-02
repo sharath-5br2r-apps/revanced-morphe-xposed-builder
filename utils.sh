@@ -91,16 +91,14 @@ toml_get_table_names() { jq -r -e 'to_entries[] | select(.value | type == "objec
 toml_get_table_main() { jq -r -e 'to_entries | map(select(.value | type != "object")) | from_entries' <<<"$__TOML__"; }
 toml_get_table() { jq -r -e ".\"${1}\"" <<<"$__TOML__"; }
 toml_get() {
-	local op quote_placeholder=$'\001'
-	op=$(jq -r ".\"${2}\" | if . == null then empty elif type == \"array\" then (if (.[0] | type) == \"array\" then map(map(if type == \"string\" and (startswith(\"'\") | not) then \"'\" + . + \"'\" else tostring end) | join(\" \")) | join(\"\n\") else map(if type == \"string\" and (contains(\" \") or contains(\"'\") or \"${2}\" == \"included-patches\" or \"${2}\" == \"excluded-patches\") then (if startswith(\"'\") then . else \"'\" + . + \"'\" end) else tostring end) | join(\" \") end) else . end | values" <<<"$1")
-	if [ "$op" ]; then
-		op="${op#"${op%%[![:space:]]*}"}"
-		op="${op%"${op##*[![:space:]]}"}"
-		op=${op//\\\'/$quote_placeholder}
-		op=${op//"''"/$quote_placeholder}
-		op=${op//"'"/'"'}
-		op=${op//$quote_placeholder/$'\''}
-		echo "$op"
+	local op
+	op=$(jq -c ".\"${2}\" | values" <<<"$1")
+	if [ -n "$op" ] && [ "$op" != "null" ]; then
+		if [[ "$op" =~ ^\"(.*)\"$ ]]; then
+			echo "${BASH_REMATCH[1]}"
+		else
+			echo "$op"
+		fi
 	else return 1; fi
 }
 
@@ -3849,7 +3847,15 @@ build_rv() {
 	fi
 }
 
-list_args() { tr -d '\t\r' <<<"$1" | tr -s ' ' | sed "s/' '/'\\n'/g" | sed 's/" "/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :; }
+list_args() {
+	local val="$1"
+	if [ -z "$val" ]; then return 0; fi
+	if [[ "$val" =~ ^\[.*\]$ ]]; then
+		jq -r ".[] | if type == \"array\" then map(if type == \"string\" then \"'\" + . + \"'\" else tostring end) | join(\" \") else . end" <<<"$val" 2>/dev/null || tr -d '\t\r' <<<"$val" | tr -s ' ' | sed "s/' '/'\n'/g" | sed 's/"/"\n"/g' | grep -v '^$' || :
+	else
+		tr -d '\t\r' <<<"$val" | tr -s ' ' | sed "s/' '/'\n'/g" | sed 's/"/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :
+	fi
+}
 join_args() { list_args "$1" | sed "s/^/${2} /" | paste -sd " " - || :; }
 
 module_config() {
