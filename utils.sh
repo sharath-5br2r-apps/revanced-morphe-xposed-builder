@@ -2261,6 +2261,11 @@ dl_cache_repo() {
 	local arch_candidates=("$norm_arch")
 	for single_a in $arch; do
 		arch_candidates+=("$single_a")
+		case "$single_a" in
+			arm-v7a) arch_candidates+=("armeabi-v7a" "arm") ;;
+			arm64-v8a) arch_candidates+=("arm64") ;;
+			x86_64) arch_candidates+=("x64") ;;
+		esac
 	done
 	arch_candidates+=("common" "all")
 
@@ -3670,17 +3675,17 @@ build_rv() {
 		fi
 
 		if [ ! -f "$stock_apk" ]; then
-			epr "ERROR: Could not download '${table}' for version $resolved_version"
-			continue
-		fi
-
-		if [ -f "$stock_apk" ]; then
+			epr "ERROR: Could not download '${table}' ($arch_f) for version $resolved_version"
+		else
+			any_arch_downloaded=true
 			final_stock_apk="$stock_apk"
 			final_all_apk="${all_apk:-}"
 			final_version="$version"
-			break
 		fi
 	done
+	if [ "$any_arch_downloaded" = true ]; then
+		break
+	fi
 	done
 
 	stock_apk="$final_stock_apk"
