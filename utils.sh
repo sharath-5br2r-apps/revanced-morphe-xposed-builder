@@ -684,11 +684,16 @@ set_prebuilts() {
 	AAPT2=$(command -v aapt2) || true
 	if [ -z "$AAPT2" ]; then
 		pr "aapt2 not found in PATH, searching in Android SDK..."
-		if [[ -d "${ANDROID_HOME:-}" ]]; then
-			AAPT2=$(find /usr/local/lib/android/sdk/build-tools -name aapt2 | sort -r | head -n 1)
-		else
+		local sdk_dirs=("${ANDROID_HOME:-}" "${ANDROID_SDK_ROOT:-}" "/usr/local/lib/android/sdk" "/sdcard/Android/sdk" "$HOME/Android/Sdk")
+		for sdk_dir in "${sdk_dirs[@]}"; do
+			if [ -n "$sdk_dir" ] && [ -d "$sdk_dir/build-tools" ]; then
+				AAPT2=$(find "$sdk_dir/build-tools" -name aapt2 2>/dev/null | sort -r | head -n 1)
+				if [ -n "$AAPT2" ]; then break; fi
+			fi
+		done
+		if [ -z "$AAPT2" ]; then
 			epr "Cannot Find aapt2, please install Android SDK or add aapt2 to PATH"
-			if [ $(uname -o) = Android ]; then
+			if [ "$(uname -o 2>/dev/null)" = Android ]; then
 				epr "On Android, you can install aapt2 with 'pkg install aapt2' or 'apt install aapt2'"
 			fi
 			exit 1
