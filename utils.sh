@@ -2123,43 +2123,16 @@ dl_cache_repo() {
 	done
 	arch_candidates+=("common" "all")
 
-	local custom_regex="${args[cache_repo_regex]:-${args[cache_repo_dlurl_regex]:-}}"
-	if [ -n "$custom_regex" ]; then
-		local regex=""
-		if [[ "$custom_regex" == *":"* ]]; then
-			regex=$(echo "$custom_regex" | awk -F'|' -v a="$arch" '{
-				for(i=1;i<=NF;i++) {
-					split($i, kv, ":")
-					gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[1])
-					if(kv[1] == a) {
-						gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[2])
-						print kv[2]
-						exit
-					}
-				}
-			}')
-		else
-			regex="$custom_regex"
-		fi
-		if [ -n "$regex" ]; then
-			regex="${regex//\{version\}/${version_f#v}}"
-			regex="${regex//\{arch\}/${arch}}"
-			path=$(grep -iE "$regex" <<<"${__CACHE_REPO_RESP__:-${__ARCHIVE_RESP__:-}}" | head -1)
-		fi
-	fi
-
-	if [ -z "$path" ]; then
-		for a in "${arch_candidates[@]}"; do
-			for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
-				while IFS= read -r p; do
-					if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
-						path="$p"
-						break 3
-					fi
-				done <<<"${__CACHE_REPO_RESP__:-${__ARCHIVE_RESP__:-}}"
-			done
+	for a in "${arch_candidates[@]}"; do
+		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
+			while IFS= read -r p; do
+				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
+					path="$p"
+					break 3
+				fi
+			done <<<"${__CACHE_REPO_RESP__:-${__ARCHIVE_RESP__:-}}"
 		done
-	fi
+	done
 
 	if [ -z "$path" ]; then
 		epr "Version ${version} with arch ${arch} not found in cache_repo"
