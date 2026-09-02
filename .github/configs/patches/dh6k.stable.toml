@@ -13,7 +13,7 @@ dpi = "nodpi anydpi auto"
 apkpure-dlurl = "https://apkpure.com/brave-browser-beta/com.brave.browser_beta"
 apkcombo-dlurl = "https://apkcombo.com/brave-beta/com.brave.browser_beta"
 github-dlurl = "https://github.com/brave/brave-browser"
-github-regex = 'arm64-v8a: BraveMonoarm64\.apk | arm-v7a: BraveMonoarm\.apk'
+github-dlurl-regex = 'arm64-v8a: (BraveMonoarm64|MonoArm64)\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\.apk$'
 
 [brave-browser-morphe-nightly]
 enabled = true
@@ -30,7 +30,7 @@ dpi = "nodpi anydpi auto"
 apkpure-dlurl = "https://apkpure.com/brave-nightly/com.brave.browser_nightly"
 apkcombo-dlurl = "https://apkcombo.com/brave-nightly/com.brave.browser_nightly"
 github-dlurl = "https://github.com/brave/brave-browser"
-github-regex = 'arm64-v8a: BraveMonoarm64\.apk | arm-v7a: BraveMonoarm\.apk'
+github-dlurl-regex = 'arm64-v8a: (BraveMonoarm64|MonoArm64)\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\.apk$'
 
 [titanium-browser-morphe]
 enabled = true
