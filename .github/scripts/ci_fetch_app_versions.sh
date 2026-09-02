@@ -97,6 +97,14 @@ while IFS='|' read -r group app; do
     forgejo_release_name_regex=$(jq -r ".\"$app\".\"forgejo-release-name-regex\" // empty" temp_all_configs.json)
     forgejo_dlurl_exclude_filter=$(jq -r ".\"$app\".\"forgejo-dlurl-exclude-filter\" // .\"$app\".\"forgejo-exclude-filter\" // empty" temp_all_configs.json)
 
+    apkmirror_example_url=$(jq -r ".\"$app\".\"apkmirror-example-url\" // .\"$app\".\"apkmirror-example-dlurl\" // empty" temp_all_configs.json)
+    apkmirror_release_filter=$(jq -r ".\"$app\".\"apkmirror-release-filter\" // .\"$app\".\"release-filter\" // empty" temp_all_configs.json)
+    dpi=$(jq -r ".\"$app\".\"dpi\" // empty" temp_all_configs.json)
+    min_sdk=$(jq -r ".\"$app\".\"min-sdk\" // empty" temp_all_configs.json)
+    pkg_name=$(jq -r ".\"$app\".\"pkg-name\" // empty" temp_all_configs.json)
+    check_sig=$(jq -r ".\"$app\".\"check-sig\" // false" temp_all_configs.json)
+    custom_microg_patches=$(jq -r ".\"$app\".\"custom-microg-patches\" // empty" temp_all_configs.json)
+
     version_filter=$(jq -r ".\"$app\".\"version-filter\" // .\"$app\".\"apkmirror-version-filter\" // empty" temp_all_configs.json)
     apkmirror_version_filter="$version_filter"
     included_patches=$(jq -r ".\"$app\".\"included-patches\" // empty" temp_all_configs.json)
