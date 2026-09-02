@@ -183,14 +183,25 @@ for table_name in $(toml_get_table_names); do
 	app_args[github_regex]=$(toml_get "$t" github-dlurl-regex) || app_args[github_regex]=$(toml_get "$t" github-regex) || app_args[github_regex]=""
 	app_args[github_release_regex]=$(toml_get "$t" github-release-regex) || app_args[github_release_regex]=""
 	app_args[github_release_name_regex]=$(toml_get "$t" github-release-name-regex) || app_args[github_release_name_regex]=""
+	app_args[github_dlurl_exclude_filter]=$(toml_get "$t" github-dlurl-exclude-filter) || app_args[github_dlurl_exclude_filter]=$(toml_get "$t" github-exclude-filter) || app_args[github_dlurl_exclude_filter]=""
+	app_args[github_dlurl_source]=$(toml_get "$t" github-dlurl-source) || app_args[github_dlurl_source]=""
 
 	app_args[gitlab_regex]=$(toml_get "$t" gitlab-dlurl-regex) || app_args[gitlab_regex]=$(toml_get "$t" gitlab-regex) || app_args[gitlab_regex]=""
 	app_args[gitlab_release_regex]=$(toml_get "$t" gitlab-release-regex) || app_args[gitlab_release_regex]=""
 	app_args[gitlab_release_name_regex]=$(toml_get "$t" gitlab-release-name-regex) || app_args[gitlab_release_name_regex]=""
+	app_args[gitlab_dlurl_exclude_filter]=$(toml_get "$t" gitlab-dlurl-exclude-filter) || app_args[gitlab_dlurl_exclude_filter]=$(toml_get "$t" gitlab-exclude-filter) || app_args[gitlab_dlurl_exclude_filter]=""
+	app_args[gitlab_dlurl_source]=$(toml_get "$t" gitlab-dlurl-source) || app_args[gitlab_dlurl_source]=""
 
 	app_args[forgejo_regex]=$(toml_get "$t" forgejo-dlurl-regex) || app_args[forgejo_regex]=$(toml_get "$t" forgejo-regex) || app_args[forgejo_regex]=""
 	app_args[forgejo_release_regex]=$(toml_get "$t" forgejo-release-regex) || app_args[forgejo_release_regex]=""
 	app_args[forgejo_release_name_regex]=$(toml_get "$t" forgejo-release-name-regex) || app_args[forgejo_release_name_regex]=""
+	app_args[forgejo_dlurl_exclude_filter]=$(toml_get "$t" forgejo-dlurl-exclude-filter) || app_args[forgejo_dlurl_exclude_filter]=$(toml_get "$t" forgejo-exclude-filter) || app_args[forgejo_dlurl_exclude_filter]=""
+	app_args[forgejo_dlurl_source]=$(toml_get "$t" forgejo-dlurl-source) || app_args[forgejo_dlurl_source]=""
+
+	app_args[cache_repo_regex]=$(toml_get "$t" cache-repo-dlurl-regex) || app_args[cache_repo_regex]=$(toml_get "$t" cache-repo-regex) || app_args[cache_repo_regex]=""
+	app_args[cache_repo_release_regex]=$(toml_get "$t" cache-repo-release-regex) || app_args[cache_repo_release_regex]=""
+	app_args[cache_repo_release_name_regex]=$(toml_get "$t" cache-repo-release-name-regex) || app_args[cache_repo_release_name_regex]=""
+	app_args[cache_repo_exclude_filter]=$(toml_get "$t" cache-repo-exclude-filter) || app_args[cache_repo_exclude_filter]=""
 
 	app_args[repo_dlurl_filter]=$(toml_get "$t" repo-dlurl-filter) || app_args[repo_dlurl_filter]=""
 	app_args[repo_dlurl_tag_filter]=$(toml_get "$t" repo-dlurl-tag-filter) || app_args[repo_dlurl_tag_filter]=""
