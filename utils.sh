@@ -62,7 +62,10 @@ PATCH_OUTPUT=""
 mkdir -p "$TEMP_DIR"
 
 GH_TOKEN="${PERSONAL_ACCESS_TOKEN:-${GH_TOKEN:-${GITHUB_TOKEN:-}}}"
-if [ "${GH_TOKEN-}" ]; then GH_HEADER="Authorization: token ${GH_TOKEN}"; else GH_HEADER=; fi
+if [ -z "${GH_TOKEN:-}" ] && command -v gh >/dev/null 2>&1; then
+	GH_TOKEN=$(gh auth token 2>/dev/null || true)
+fi
+if [ -n "${GH_TOKEN:-}" ]; then GH_HEADER="Authorization: token ${GH_TOKEN}"; else GH_HEADER=; fi
 NEXT_VER_CODE=${NEXT_VER_CODE:-$(date +'%Y%m%d')}
 OS=$(uname -o)
 [[ $(uname -s) == *"NT"* ]] && javapathsep=";" || javapathsep=":"
@@ -2272,8 +2275,33 @@ get_git_repo_resp() {
 	local provider="$1"
 	local url="${2%/}"
 	local k1="${provider}_dlurl_regex" k2="${provider}_regex" k3="${provider}_dlurl_filter" k4="${provider}_filter"
-	local filter="${args["$k1"]:-${args["$k2"]:-${args["$k3"]:-${args["$k4"]:-}}}}"
-	[ -z "$filter" ] && filter='\.(apk|apkm|xapk|apks)$'
+	local raw_filter="${args["$k1"]:-${args["$k2"]:-${args["$k3"]:-${args["$k4"]:-}}}}"
+	[ -z "$raw_filter" ] && raw_filter='\.(apk|apkm|xapk|apks)$'
+
+	local target_arch="${arch:-${args["arch"]:-}}"
+	local filter="$raw_filter"
+	if [[ "$raw_filter" == *":"* ]]; then
+		filter=$(python3 -c '
+import sys, re
+raw = sys.argv[1]
+t_arch = sys.argv[2]
+sections = re.split(r"\s*\|\s*(?=[a-zA-Z0-9_-]+\s*:)", raw)
+arch_map = {}
+fallback = []
+for sec in sections:
+    sec = sec.strip()
+    if ":" in sec:
+        k, v = sec.split(":", 1)
+        arch_map[k.strip()] = v.strip()
+    else:
+        fallback.append(sec)
+if t_arch and t_arch in arch_map:
+    print(arch_map[t_arch])
+else:
+    all_regs = list(arch_map.values()) + fallback
+    print("|".join(f"(?:{r})" for r in all_regs))
+' "$raw_filter" "$target_arch" 2>/dev/null || echo "$raw_filter")
+	fi
 	local tk1="${provider}_release_regex" tk2="${provider}_release_tag_regex" tk3="${provider}_dlurl_tag_filter"
 	local tag_filter="${args["$tk1"]:-${args["$tk2"]:-${args["$tk3"]:-}}}"
 	local rk1="${provider}_release_name_regex" rk2="${provider}_release_filter" rk3="${provider}_dlurl_release_name_filter"
