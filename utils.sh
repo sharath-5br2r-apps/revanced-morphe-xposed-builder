@@ -203,7 +203,7 @@ source_release_api_base() {
 			echo "${host_instance:-https://gitlab.com}/api/v4/projects/${encoded}/releases"
 			;;
 		forgejo|gitea)
-			[ -z "$host_instance" ] && return 1
+			[ -z "$host_instance" ] && host_instance="https://codeberg.org"
 			echo "${host_instance}/api/v1/repos/${src}/releases"
 			;;
 		*) return 1 ;;
@@ -2219,22 +2219,27 @@ get_git_repo_resp() {
 	[ -z "$filter" ] && filter='\.(apk|apkm|xapk|apks)$'
 	local tag_filter="${args[${provider}_release_regex]:-${args[${provider}_release_tag_regex]:-${args[${provider}_dlurl_tag_filter]:-${repo_dlurl_tag_filter:-${args[repo_dlurl_tag_filter]:-}}}}}"
 	local rel_name_filter="${args[${provider}_release_name_regex]:-${args[${provider}_release_filter]:-${args[${provider}_dlurl_release_name_filter]:-${repo_dlurl_release_name_filter:-${args[repo_dlurl_release_name_filter]:-}}}}}"
-	local source_host="${args[${provider}_dlurl_source]:-${args[repo_dlurl_source]:-${provider}}}"
-	[ -z "$source_host" ] && source_host="$provider"
+	local host="$provider" host_instance=""
+	if [[ "$url" =~ ^https?://[^/]+ ]]; then
+		host_instance="${BASH_REMATCH[0]}"
+	fi
 
-	local cache_key="${provider}_${table:-${app_name:-}}_${url}_${filter}_${tag_filter}_${rel_name_filter}_${source_host}"
+	if [[ "$provider" != "gitlab" ]] && [[ "$provider" != "forgejo" ]]; then
+		local source_host="${args[${provider}_dlurl_source]:-${args[repo_dlurl_source]:-${provider}}}"
+		[ -z "$source_host" ] && source_host="$provider"
+		if ! parse_host_spec "$source_host" host host_instance; then
+			return 1
+		fi
+		if [[ "$url" =~ ^https?://[^/]+ ]]; then
+			host_instance="${BASH_REMATCH[0]}"
+		fi
+	fi
+
+	local cache_key="${provider}_${table:-${app_name:-}}_${url}_${filter}_${tag_filter}_${rel_name_filter}_${host_instance}"
 	if [ -n "${__DL_RESP_CACHE__["$cache_key"]:-}" ]; then
 		__GIT_RESP_JSON__="${__DL_RESP_CACHE__["$cache_key"]}"
 		__DL_RESP_CACHE__["git_${provider}"]="$__GIT_RESP_JSON__"
 		return 0
-	fi
-
-	local host="" host_instance=""
-	if ! parse_host_spec "$source_host" host host_instance; then
-		return 1
-	fi
-	if [[ "$url" =~ ^https?://[^/]+ ]]; then
-		host_instance="${BASH_REMATCH[0]}"
 	fi
 
 	if [[ "$host" == "none" ]]; then

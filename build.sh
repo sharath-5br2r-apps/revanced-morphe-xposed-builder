@@ -190,13 +190,11 @@ for table_name in $(toml_get_table_names); do
 	app_args[gitlab_release_regex]=$(toml_get "$t" gitlab-release-regex) || app_args[gitlab_release_regex]=""
 	app_args[gitlab_release_name_regex]=$(toml_get "$t" gitlab-release-name-regex) || app_args[gitlab_release_name_regex]=""
 	app_args[gitlab_dlurl_exclude_filter]=$(toml_get "$t" gitlab-dlurl-exclude-filter) || app_args[gitlab_dlurl_exclude_filter]=$(toml_get "$t" gitlab-exclude-filter) || app_args[gitlab_dlurl_exclude_filter]=""
-	app_args[gitlab_dlurl_source]=$(toml_get "$t" gitlab-dlurl-source) || app_args[gitlab_dlurl_source]=""
 
 	app_args[forgejo_regex]=$(toml_get "$t" forgejo-dlurl-regex) || app_args[forgejo_regex]=$(toml_get "$t" forgejo-regex) || app_args[forgejo_regex]=""
 	app_args[forgejo_release_regex]=$(toml_get "$t" forgejo-release-regex) || app_args[forgejo_release_regex]=""
 	app_args[forgejo_release_name_regex]=$(toml_get "$t" forgejo-release-name-regex) || app_args[forgejo_release_name_regex]=""
 	app_args[forgejo_dlurl_exclude_filter]=$(toml_get "$t" forgejo-dlurl-exclude-filter) || app_args[forgejo_dlurl_exclude_filter]=$(toml_get "$t" forgejo-exclude-filter) || app_args[forgejo_dlurl_exclude_filter]=""
-	app_args[forgejo_dlurl_source]=$(toml_get "$t" forgejo-dlurl-source) || app_args[forgejo_dlurl_source]=""
 
 
 	app_args[repo_dlurl_filter]=$(toml_get "$t" repo-dlurl-filter) || app_args[repo_dlurl_filter]=""
