@@ -89,7 +89,7 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[^a-zA-Z0-9_/-]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        ((if ($app["patches-source"] | type) == "array" then ($app["patches-source"] | join(" ")) else ($app["patches-source"] // "morpheapp/morphe-patches") end) | ascii_downcase | gsub("[^a-zA-Z0-9_/-]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
         if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) or ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
@@ -107,7 +107,7 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || 
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[^a-zA-Z0-9_/-]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        ((if ($app["patches-source"] | type) == "array" then ($app["patches-source"] | join(" ")) else ($app["patches-source"] // "morpheapp/morphe-patches") end) | ascii_downcase | gsub("[^a-zA-Z0-9_/-]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
         if (($srcs - $active[0]) != $srcs) or ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
