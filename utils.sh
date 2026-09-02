@@ -3512,6 +3512,14 @@ build_rv() {
 		local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
 		local stock_apk="$cached_stock_apk"
 		local all_apk="$cached_all_apk"
+		if [ -f "$stock_apk" ] && ! is_valid_zip_or_jar "$stock_apk"; then
+			wpr "Cached stock APK '$stock_apk' is corrupted, removing..."
+			rm -f "$stock_apk"
+		fi
+		if [ -f "$all_apk" ] && ! is_valid_zip_or_jar "$all_apk"; then
+			wpr "Cached all-arch stock APK '$all_apk' is corrupted, removing..."
+			rm -f "$all_apk"
+		fi
 		if [ -f "$all_apk" ]; then
 			local missing_arch=false
 			if [ "$arch_f" = "arm64-v8a" ] && ! unzip -l "$all_apk" 2>/dev/null | grep -q "lib/arm64-v8a/"; then
