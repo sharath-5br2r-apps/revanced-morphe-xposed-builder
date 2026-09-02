@@ -2280,27 +2280,15 @@ get_git_repo_resp() {
 
 	local target_arch="${arch:-${args["arch"]:-}}"
 	local filter="$raw_filter"
-	if [[ "$raw_filter" == *":"* ]]; then
-		filter=$(python3 -c '
-import sys, re
-raw = sys.argv[1]
-t_arch = sys.argv[2]
-sections = re.split(r"\s*\|\s*(?=[a-zA-Z0-9_-]+\s*:)", raw)
-arch_map = {}
-fallback = []
-for sec in sections:
-    sec = sec.strip()
-    if ":" in sec:
-        k, v = sec.split(":", 1)
-        arch_map[k.strip()] = v.strip()
-    else:
-        fallback.append(sec)
-if t_arch and t_arch in arch_map:
-    print(arch_map[t_arch])
-else:
-    all_regs = list(arch_map.values()) + fallback
-    print("|".join(f"(?:{r})" for r in all_regs))
-' "$raw_filter" "$target_arch" 2>/dev/null || echo "$raw_filter")
+	if [[ "$raw_filter" == *"["* ]] || [[ "$raw_filter" == *":"* ]]; then
+		filter=$(jq -r --arg arch "$target_arch" '
+			if type == "array" then
+				(map(select(.arch == $arch or .arch == "all")) | map(.regex) | join("|")) as $matched |
+				if ($matched | length) > 0 then $matched else (map(.regex) | join("|")) end
+			else
+				tostring
+			end
+		' <<<"$raw_filter" 2>/dev/null) || filter="$raw_filter"
 	fi
 	local tk1="${provider}_release_regex" tk2="${provider}_release_tag_regex" tk3="${provider}_dlurl_tag_filter"
 	local tag_filter="${args["$tk1"]:-${args["$tk2"]:-${args["$tk3"]:-}}}"
