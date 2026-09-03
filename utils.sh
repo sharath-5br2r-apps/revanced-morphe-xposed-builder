@@ -3686,9 +3686,9 @@ build_rv() {
 			done
 			if [ -f "$stock_apk" ] && [ ! -f "$all_apk" ] && [[ "$arch" != "all" && "$arch" != "universal" && "$arch" != "common" ]]; then
 				if check_is_universal "$stock_apk"; then
-					mv -f "$stock_apk" "$all_apk"
+					cp -f "$stock_apk" "$all_apk"
 					if [ -f "${stock_apk%.apk}.apkm" ]; then
-						mv -f "${stock_apk%.apk}.apkm" "${all_apk%.apk}.apkm"
+						cp -f "${stock_apk%.apk}.apkm" "${all_apk%.apk}.apkm"
 					fi
 				fi
 			fi
