@@ -2337,7 +2337,10 @@ get_cache_repo_resp() {
 	fi
 
 	if [ "$tag" = "latest" ]; then
-		tag=$(jq -r '.tag_name' <<<"$resp")
+		tag=$(jq -r '.[].tag_name' <<<"$resp")
+		__ARCHIVE_RESP__=$(jq -r '.[].assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$resp")
+	else
+		__ARCHIVE_RESP__=$(jq -r '.assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$resp")
 	fi
 
 	__CACHE_REPO_RESP__=$(jq -r '.assets[]? | select(.name | test("\\.(apk|apkm|xapk|apks)$")) | .name' <<<"$resp")
