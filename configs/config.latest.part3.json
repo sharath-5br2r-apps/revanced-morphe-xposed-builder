@@ -1,1 +1,103 @@
-{}
+{
+  "patches-version": "absolutelatest",
+  "enable-module-update": true,
+  "prime-video-morphe-hoodles-shared-exp": {
+    "enabled": true,
+    "app-name": "prime-video",
+    "rv-brand": "morphe-hoodles-shared-exp",
+    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "build-mode": "apk",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient",
+    "version": "latest",
+    "arch": [
+      "arm64-v8a"
+    ],
+    "cli-source": "MorpheApp/morphe-desktop",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
+    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
+    "dpi": [
+      "nodpi",
+      "anydpi",
+      "auto"
+    ],
+    "patches-source": "hoo-dles/morphe-patches",
+    "excluded-patches": [
+      "Rename Shared Permissions"
+    ]
+  },
+  "wallcraft-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "wallcraft",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.wallpaperscraft.wallpaper",
+    "uptodown-dlurl": "https://wallpaperscraft.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds",
+    "dpi": [
+      "nodpi",
+      "anydpi",
+      "auto"
+    ],
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "sdmaid-morphe-paresh-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "sdmaid",
+    "rv-brand": "morphe-paresh-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "eu.darken.sdmse",
+    "uptodown-dlurl": "https://sd-maid-se.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release",
+    "dpi": [
+      "nodpi",
+      "anydpi",
+      "auto"
+    ],
+    "patches-source": "Paresh-Maheshwari/paresh-patches",
+    "patches-source-host": "gitlab"
+  },
+  "adguard-morphe-rushiranpise-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "adguard",
+    "rv-brand": "morphe-rushiranpise-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android",
+    "version": "latest",
+    "custom-microg-patches": "'None'",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.adguard.android",
+    "uptodown-dlurl": "https://adguard-for-android.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adguard-software-limited/adguard",
+    "dpi": [
+      "nodpi",
+      "anydpi",
+      "auto"
+    ],
+    "patches-source": "rushiranpise/morphe-patches"
+  }
+}

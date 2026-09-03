@@ -1,205 +1,76 @@
 {
   "patches-version": "dev",
   "enable-module-update": false,
-  "youtube-morphe": {
+  "brave-beta-morphe-dh6k": {
     "enabled": true,
-    "app-name": "youtube",
-    "rv-brand": "morphe",
-    "build-mode": "both",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "pkg-name": "com.google.android.youtube",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": [
-      "Theme"
-    ],
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ]
-  },
-  "youtube-morphe-amoled": {
-    "enabled": true,
-    "app-name": "youtube",
-    "rv-brand": "morphe-amoled",
-    "build-mode": "both",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "pkg-name": "com.google.android.youtube",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": [
-      "Theme"
-    ],
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ]
-  },
-  "youtube-morphe-exp": {
-    "enabled": true,
-    "app-name": "youtube",
-    "rv-brand": "morphe-exp",
-    "build-mode": "both",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "version": "exp",
-    "pkg-name": "com.google.android.youtube",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": [
-      "Theme"
-    ],
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ]
-  },
-  "youtube-morphe-exp-amoled": {
-    "enabled": true,
-    "app-name": "youtube",
-    "rv-brand": "morphe-exp-amoled",
-    "build-mode": "both",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "version": "exp",
-    "pkg-name": "com.google.android.youtube",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": [
-      "Theme"
-    ],
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ]
-  },
-  "youtube-music-morphe-exp": {
-    "enabled": true,
-    "app-name": "youtube-music",
-    "rv-brand": "morphe-exp",
-    "build-mode": "both",
-    "arch": [
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "version": "exp",
-    "pkg-name": "com.google.android.apps.youtube.music",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": [
-      "Theme"
-    ],
-    "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
-    "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ]
-  },
-  "youtube-music-morphe-exp-amoled": {
-    "enabled": true,
-    "app-name": "youtube-music",
-    "rv-brand": "morphe-exp-amoled",
-    "build-mode": "both",
-    "arch": [
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "version": "exp",
-    "pkg-name": "com.google.android.apps.youtube.music",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": [
-      "Theme"
-    ],
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000",
-    "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
-    "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ]
-  },
-  "instagram-morphe-piko": {
-    "enabled": true,
-    "app-name": "instagram",
-    "rv-brand": "morphe-piko",
+    "app-name": "brave-beta",
+    "rv-brand": "morphe-dh6k",
+    "version": "beta",
     "build-mode": "apk",
     "arch": [
       "arm64-v8a",
+      "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.instagram.android",
-    "patcher-args": "--continue-on-error",
+    "pkg-name": "com.brave.browser_beta",
     "cli-source": "MorpheApp/morphe-desktop",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
-    "apkmirror-example-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
+    "patches-source": "dh6k/morphe-patches",
+    "patcher-args": "--continue-on-error",
+    "github-dlurl": "https://github.com/brave/brave-browser/releases",
+    "github-dlurl-regex": [
+      {
+        "arch": "arm64-v8a",
+        "regex": "(BraveMonoarm64|MonoArm64)\\.apk$"
+      },
+      {
+        "arch": "arm-v7a",
+        "regex": "(BraveMonoarm|MonoArm)\\.apk$"
+      },
+      {
+        "arch": "x86_64",
+        "regex": "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
+      }
     ],
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android",
-    "patches-source": "crimera/piko"
+    "github-release-name-regex": "^Beta v"
   },
-  "x-morphe-piko": {
+  "brave-nightly-morphe-dh6k": {
     "enabled": true,
-    "app-name": "x",
-    "rv-brand": "morphe-piko",
+    "app-name": "brave-nightly",
+    "rv-brand": "morphe-dh6k",
+    "version": "beta",
+    "build-mode": "apk",
+    "arch": [
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.brave.browser_nightly",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "patches-source": "dh6k/morphe-patches",
+    "patcher-args": "--continue-on-error",
+    "github-dlurl": "https://github.com/brave/brave-browser/releases",
+    "github-dlurl-regex": [
+      {
+        "arch": "arm64-v8a",
+        "regex": "(BraveMonoarm64|MonoArm64)\\.apk$"
+      },
+      {
+        "arch": "arm-v7a",
+        "regex": "(BraveMonoarm|MonoArm)\\.apk$"
+      },
+      {
+        "arch": "x86_64",
+        "regex": "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
+      }
+    ],
+    "github-release-name-regex": "^Nightly v"
+  },
+  "smash-hit-morphe-byehi98": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "smash-hit",
+    "rv-brand": "morphe-byehi98",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mediocre.smashhit",
     "build-mode": "apk",
     "arch": [
       "all",
@@ -207,27 +78,22 @@
       "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.twitter.android",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "excluded-patches": [
-      "Dynamic Color"
-    ],
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android",
+    "pkg-name": "com.mediocre.smashhit",
+    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/",
     "dpi": [
       "nodpi",
       "anydpi",
       "auto"
-    ]
+    ],
+    "patches-source": "byehi98/okish-morphe-patches"
   },
-  "x-morphe-piko-exp": {
+  "vector-morphe-byehi98": {
     "enabled": true,
-    "app-name": "x",
-    "rv-brand": "morphe-piko-exp",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "vector",
+    "rv-brand": "morphe-byehi98",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nekki.vector",
     "build-mode": "apk",
     "arch": [
       "all",
@@ -235,28 +101,22 @@
       "arm-v7a",
       "x86_64"
     ],
-    "version": "latest",
-    "pkg-name": "com.twitter.android",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "excluded-patches": [
-      "Dynamic Color"
-    ],
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android",
+    "pkg-name": "com.nekki.vector",
+    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/",
     "dpi": [
       "nodpi",
       "anydpi",
       "auto"
-    ]
+    ],
+    "patches-source": "byehi98/okish-morphe-patches"
   },
-  "x-morphe-piko-materialyou": {
+  "hill-climb-racing-morphe-byehi98": {
     "enabled": true,
-    "app-name": "x",
-    "rv-brand": "morphe-piko-materialyou",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "hill-climb-racing",
+    "rv-brand": "morphe-byehi98",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.fingersoft.hillclimb",
     "build-mode": "apk",
     "arch": [
       "all",
@@ -264,27 +124,22 @@
       "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.twitter.android",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "included-patches": [
-      "Dynamic Color"
-    ],
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android",
+    "pkg-name": "com.fingersoft.hillclimb",
+    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/",
     "dpi": [
       "nodpi",
       "anydpi",
       "auto"
-    ]
+    ],
+    "patches-source": "byehi98/okish-morphe-patches"
   },
-  "x-morphe-piko-materialyou-exp": {
+  "jetpack-joyride-morphe-byehi98": {
     "enabled": true,
-    "app-name": "x",
-    "rv-brand": "morphe-piko-materialyou-exp",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "jetpack-joyride",
+    "rv-brand": "morphe-byehi98",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.halfbrick.jetpackjoyride",
     "build-mode": "apk",
     "arch": [
       "all",
@@ -292,22 +147,15 @@
       "arm-v7a",
       "x86_64"
     ],
-    "version": "latest",
-    "pkg-name": "com.twitter.android",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "included-patches": [
-      "Dynamic Color"
-    ],
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android",
+    "pkg-name": "com.halfbrick.jetpackjoyride",
+    "uptodown-dlurl": "https://jetpack-joyride.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/",
     "dpi": [
       "nodpi",
       "anydpi",
       "auto"
-    ]
+    ],
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }

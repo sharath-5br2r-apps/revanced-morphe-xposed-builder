@@ -4,39 +4,39 @@
     "keys": [
       "discord-npatch-revenge"
     ],
-    "version": "342.16"
+    "version": "343.12 - Stable"
   },
   "Prime-Video": {
     "keys": [
       "prime-video-morphe-hoodles-exp",
       "prime-video-morphe-hoodles-shared-exp"
     ],
-    "version": "3.0.470.357"
+    "version": "3.0.470"
   },
   "Amazon Alexa": {
     "keys": [
       "amazon-alexa-signed"
     ],
-    "version": "2.2.704787.0"
+    "version": "2.2.706925.0"
   },
   "Adobe Acrobat": {
     "keys": [
       "adobe-acrobat-morphe-rushiranpise-exp"
     ],
-    "version": "26.8.0.48364"
+    "version": "26.8.0"
   },
   "Proton VPN": {
     "keys": [
       "proton-vpn-morphe-paresh-exp"
     ],
-    "version": "5.20.8.0"
+    "version": "5.20.21.0"
   },
   "X": {
     "keys": [
       "x-morphe-piko-exp",
       "x-morphe-piko-materialyou-exp"
     ],
-    "version": "12.20.5"
+    "version": "12.22.0-prod.01"
   },
   "Speedtest": {
     "keys": [
@@ -67,7 +67,7 @@
     "keys": [
       "brave-nightly-morphe-dh6k"
     ],
-    "version": "1.96.43"
+    "version": "1.97.1"
   },
   "PC Remote": {
     "keys": [
@@ -103,19 +103,19 @@
     "keys": [
       "nova-launcher-morphe-hoodles-exp"
     ],
-    "version": "88900.8.8.9."
+    "version": "88900 (8.8.9)"
   },
   "Battery Guru": {
     "keys": [
       "batteryguru-morphe-hooman-exp"
     ],
-    "version": "2.5.0.7"
+    "version": "2.5.0.8"
   },
   "Poweramp": {
     "keys": [
       "poweramp-morphe-hooman-exp"
     ],
-    "version": "build-1025-bundle"
+    "version": "build-1025-bundle-play"
   },
   "Xodo PDF": {
     "keys": [
@@ -141,13 +141,13 @@
     "keys": [
       "sdmaid-morphe-paresh-exp"
     ],
-    "version": "2.0.4"
+    "version": "2.0.4-rc0"
   },
   "Solid Explorer": {
     "keys": [
       "solid-explorer-morphe-hoodles-exp"
     ],
-    "version": "3.5.19"
+    "version": "3.5.20"
   },
   "Amazon Shopping": {
     "keys": [
@@ -159,13 +159,13 @@
     "keys": [
       "xrecorder-morphe-hoodles-exp"
     ],
-    "version": "2.5.4.1"
+    "version": "2.5.4.3"
   },
   "Smart Launcher 6": {
     "keys": [
       "smart-launcher-6-morphe-hoodles-exp"
     ],
-    "version": "6.6build016"
+    "version": "6.6 build 017"
   },
   "Windscribe": {
     "keys": [
@@ -183,7 +183,7 @@
     "keys": [
       "adguard-morphe-rushiranpise-exp"
     ],
-    "version": "4.14.68"
+    "version": "4.13.2"
   },
   "Pinterest": {
     "keys": [
@@ -225,7 +225,7 @@
     "keys": [
       "wallcraft-morphe-hoodles-exp"
     ],
-    "version": "3.61.01"
+    "version": "3.65.0"
   },
   "Podcast Addict": {
     "keys": [
@@ -255,6 +255,6 @@
     "keys": [
       "goodreads-morphe-hoodles-exp"
     ],
-    "version": "2.76.0Build0"
+    "version": "2.76.0 Build 0"
   }
 }
