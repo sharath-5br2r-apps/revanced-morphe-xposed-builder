@@ -41,7 +41,7 @@ arch = ["all"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nis.app"
 uptodown-dlurl = "https://inshorts.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
@@ -56,7 +56,7 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nis.app"
 uptodown-dlurl = "https://inshorts.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 

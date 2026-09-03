@@ -2108,8 +2108,12 @@ get_uptodown_resp() {
 		__UPTODOWN_RESP_PKG__="${__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]}"
 		return 0
 	fi
-	__UPTODOWN_RESP__=$(req "${url}/versions" -) || return 1
-	__UPTODOWN_RESP_PKG__=$(req "${url}/download" -) || return 1
+	if ! __UPTODOWN_RESP__=$(req "${url}/versions" - 2>/dev/null); then
+		__UPTODOWN_RESP__=$(cf_req "${url}/versions" - 2>/dev/null) || return 1
+	fi
+	if ! __UPTODOWN_RESP_PKG__=$(req "${url}/download" - 2>/dev/null); then
+		__UPTODOWN_RESP_PKG__=$(cf_req "${url}/download" - 2>/dev/null) || return 1
+	fi
 	__DL_RESP_CACHE__["uptodown_resp_$url"]="$__UPTODOWN_RESP__"
 	__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]="$__UPTODOWN_RESP_PKG__"
 }
@@ -3995,11 +3999,15 @@ list_args() {
 join_args() {
 	local val="$1" flag="$2"
 	if [ -z "$val" ]; then return 0; fi
-	if [[ "$val" =~ ^\[.*\]$ ]]; then
-		jq -r --arg flag "$flag" '.[] | select(length > 0) | "\($flag) \(.)"' <<<"$val" 2>/dev/null | paste -sd " " - || :
-	else
-		jq -R -s -r --arg flag "$flag" 'split(" ") | .[] | select(length > 0) | "\($flag) \(.)"' <<<"$val" 2>/dev/null | paste -sd " " - || :
-	fi
+	local -a items=()
+	readarray -t items <<<"$(list_args "$val")"
+	local res=""
+	for item in "${items[@]}"; do
+		[ -z "$item" ] && continue
+		local safe_item="${item//\'/\'\\\'\'}"
+		res+="${flag} '${safe_item}' "
+	done
+	echo "${res% }"
 }
 
 module_config() {
