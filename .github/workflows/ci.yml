@@ -274,7 +274,11 @@ jobs:
             for file in dev_logs/aggregated_out/build.dev.json dev_logs/aggregated_out/build.dev.md; do
               if [ -f "$file" ]; then
                 echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber
+                gh release upload "$tag" "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release $tag, retrying..."
+                  sleep 3
+                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
+                }
               fi
             done
           fi
@@ -287,7 +291,11 @@ jobs:
             for file in $(find dev_logs -name "*-update.json"); do
               if [ -f "$file" ]; then
                 echo "Uploading $file to release update..."
-                gh release upload update "$file" --clobber
+                gh release upload update "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release update, retrying..."
+                  sleep 3
+                  gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
+                }
               fi
             done
           fi
@@ -402,7 +410,11 @@ jobs:
             for file in stable_logs/aggregated_out/build.stable.json stable_logs/aggregated_out/build.stable.md; do
               if [ -f "$file" ]; then
                 echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber
+                gh release upload "$tag" "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release $tag, retrying..."
+                  sleep 3
+                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
+                }
               fi
             done
           fi
@@ -415,7 +427,11 @@ jobs:
             for file in $(find stable_logs -name "*-update.json"); do
               if [ -f "$file" ]; then
                 echo "Uploading $file to release update..."
-                gh release upload update "$file" --clobber
+                gh release upload update "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release update, retrying..."
+                  sleep 3
+                  gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
+                }
               fi
             done
           fi
@@ -535,7 +551,11 @@ jobs:
             for file in latest_logs/aggregated_out/build.latest.json latest_logs/aggregated_out/build.latest.md; do
               if [ -f "$file" ]; then
                 echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber
+                gh release upload "$tag" "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release $tag, retrying..."
+                  sleep 3
+                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
+                }
               fi
             done
           fi
@@ -548,7 +568,11 @@ jobs:
             for file in $(find latest_logs -name "*-update.json"); do
               if [ -f "$file" ]; then
                 echo "Uploading $file to release update..."
-                gh release upload update "$file" --clobber
+                gh release upload update "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release update, retrying..."
+                  sleep 3
+                  gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
+                }
               fi
             done
           fi
