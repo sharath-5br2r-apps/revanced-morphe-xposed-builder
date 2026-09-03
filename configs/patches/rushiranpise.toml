@@ -388,3 +388,36 @@ uptodown-dlurl = "https://bluetooth-keyboard-and-mouse.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard-mouse-2/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
+
+# ── Proton VPN (morphe-rushiranpise) ─────────────────────────────────────────
+[proton-vpn-morphe-rushiranpise]
+enabled = true
+app-name = "proton-vpn"
+rv-brand = "morphe-rushiranpise"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
+build-mode = "apk"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
+pkg-name = "ch.protonvpn.android"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/"
+prefer-dl-mode = "bundle"
+patches-source = "rushiranpise/morphe-patches"
+dpi = ["nodpi", "anydpi", "auto"]
+
+[proton-vpn-morphe-rushiranpise-exp]
+enabled = true
+app-name = "proton-vpn"
+rv-brand = "morphe-rushiranpise-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
+version = "latest"
+build-mode = "apk"
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
+pkg-name = "ch.protonvpn.android"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/"
+prefer-dl-mode = "bundle"
+patches-source = "rushiranpise/morphe-patches"
+dpi = ["nodpi", "anydpi", "auto"]
+
