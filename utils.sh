@@ -3918,55 +3918,79 @@ build_rv() {
 			write_build_info "${table% (*}" "${arch_f}" ".apk" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "$apk_output" "" "$cli_ref"
 			continue
 		fi
-		local base_template
-		base_template=$(mktemp -d -p "$TEMP_DIR")
-		cp -a $MODULE_TEMPLATE_DIR/. "$base_template"
-		local upj="${args[module_prop_name],,}-update.json"
-
-		module_config "$base_template" "$pkg_name" "$version_f" "$arch"
-
+		local base_mod_id="${args[module_prop_name]}"
 		local patches_ver
 		patches_ver="${patches_jar%% *}"; patches_ver="${patches_ver##*-}"
-		module_prop \
-			"${args[module_prop_name]}" \
-			"${app_name}${brand_display}" \
-			"${version_f} (patches ${patches_ver})" \
-			"${app_name}${brand_display} module" \
-			"https://github.com/${GITHUB_REPOSITORY-}/releases/download/update/${upj}" \
-			"$base_template"
+		local check_ver_str="${patches_ver} ${patches_jar} ${patches_ref} ${args[patches_version]:-} ${DEF_PATCHES_VER:-}"
 
-		local module_output="${app_name_l}${brand_suffix}-module-v${version_f}-${arch_f}.zip"
-		pr "Packing module ${table}"
-		cp -f "$patched_apk" "${base_template}/base.apk"
-
-		if [ "${args[include_stock]}" != "disable" ]; then
-			mkdir -p "${base_template}/stock/"
-			if [ "${args[include_stock]}" = "merged" ]; then
-				cp -f "$stock_apk" "${base_template}/stock/base.apk"
-			elif [ "${args[include_stock]}" = "split" ]; then
-				if [ ! -f "${stock_apk%.apk}.apkm" ]; then
-					epr "Cannot include as 'split' because stock apk of $table_name is not a bundle"
-					return 1
-				fi
-				if [ "$arch" = "arm64-v8a" ]; then
-					unzip -j "${stock_apk%.apk}.apkm" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
-				elif [ "$arch" = "arm-v7a" ]; then
-					unzip -j "${stock_apk%.apk}.apkm" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*arm64_v8a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
-				elif [ "$arch" = "x86" ]; then
-					unzip -j "${stock_apk%.apk}.apkm" '*.apk' -x '*x86_64.apk' -x '*arm64_v8a.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
-				elif [ "$arch" = "x86_64" ]; then
-					unzip -j "${stock_apk%.apk}.apkm" '*.apk' -x '*x86.apk' -x '*arm64_v8a.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
-				else
-					unzip -j "${stock_apk%.apk}.apkm" '*.apk' -d "${base_template}/stock/" >/dev/null 2>&1
-				fi
+		local -a modules_to_build=()
+		if echo "$check_ver_str" | grep -iqE 'dev|beta|rc|alpha'; then
+			# Pre-release build: generate ONLY -beta module
+			if [[ "$base_mod_id" == *"-beta" ]]; then
+				modules_to_build+=("${base_mod_id}:${app_name_l}${brand_suffix}-module-v${version_f}-${arch_f}.zip")
+			else
+				modules_to_build+=("${base_mod_id}-beta:${app_name_l}${brand_suffix}-beta-module-v${version_f}-${arch_f}.zip")
+			fi
+		else
+			# Stable build: generate TWO modules (without -beta and with -beta)
+			modules_to_build+=("${base_mod_id}:${app_name_l}${brand_suffix}-module-v${version_f}-${arch_f}.zip")
+			if [[ "$base_mod_id" != *"-beta" ]]; then
+				modules_to_build+=("${base_mod_id}-beta:${app_name_l}${brand_suffix}-beta-module-v${version_f}-${arch_f}.zip")
 			fi
 		fi
 
-		pushd >/dev/null "$base_template" || abort "Module template dir not found"
-		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
-		popd >/dev/null || :
-		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
-		write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "${CWD}/${BUILD_DIR}/${module_output}" "$patched_apk" "$cli_ref"
+		for mod_spec in "${modules_to_build[@]}"; do
+			local curr_mod_id="${mod_spec%%:*}"
+			local curr_mod_output="${mod_spec#*:}"
+			local curr_upj="${curr_mod_id,,}-update.json"
+
+			local base_template
+			base_template=$(mktemp -d -p "$TEMP_DIR")
+			cp -a $MODULE_TEMPLATE_DIR/. "$base_template"
+
+			module_config "$base_template" "$pkg_name" "$version_f" "$arch"
+
+			module_prop \
+				"${curr_mod_id}" \
+				"${app_name}${brand_display}" \
+				"${version_f} (patches ${patches_ver})" \
+				"${app_name}${brand_display} module" \
+				"https://github.com/${GITHUB_REPOSITORY-}/releases/download/update/${curr_upj}" \
+				"$base_template"
+
+			pr "Packing module ${table} (${curr_mod_id})"
+			cp -f "$patched_apk" "${base_template}/base.apk"
+
+			if [ "${args[include_stock]}" != "disable" ]; then
+				mkdir -p "${base_template}/stock/"
+				if [ "${args[include_stock]}" = "merged" ]; then
+					cp -f "$stock_apk" "${base_template}/stock/base.apk"
+				elif [ "${args[include_stock]}" = "split" ]; then
+					if [ ! -f "${stock_apk%.apk}.apkm" ]; then
+						epr "Cannot include as 'split' because stock apk of $table_name is not a bundle"
+						return 1
+					fi
+					if [ "$arch" = "arm64-v8a" ]; then
+						unzip -j "${stock_apk%.apk}.apkm" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
+					elif [ "$arch" = "arm-v7a" ]; then
+						unzip -j "${stock_apk%.apk}.apkm" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*arm64_v8a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
+					elif [ "$arch" = "x86" ]; then
+						unzip -j "${stock_apk%.apk}.apkm" '*.apk' -x '*x86_64.apk' -x '*arm64_v8a.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
+					elif [ "$arch" = "x86_64" ]; then
+						unzip -j "${stock_apk%.apk}.apkm" '*.apk' -x '*x86.apk' -x '*arm64_v8a.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
+					else
+						unzip -j "${stock_apk%.apk}.apkm" '*.apk' -d "${base_template}/stock/" >/dev/null 2>&1
+					fi
+				fi
+			fi
+
+			pushd >/dev/null "$base_template" || abort "Module template dir not found"
+			zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${curr_mod_output}" .
+			popd >/dev/null || :
+			rm -rf "$base_template"
+			pr "Built ${table} (root): '${BUILD_DIR}/${curr_mod_output}'"
+			write_build_info "${table% (*}" "${arch_f}" ".zip" "${build_info_brand}" "$version_f" "$patches_ref" "$changelog_url" "${CWD}/${BUILD_DIR}/${curr_mod_output}" "$patched_apk" "$cli_ref"
+		done
 		done
 		) > "${build_logs_dir}/build_${arch// /}.log" 2>&1 &
 		arch_build_pids+=($!)
