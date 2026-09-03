@@ -193,10 +193,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.41.0",
-    "prerelease": "",
+    "prerelease": "v1.42.0-dev.1",
     "blocked": false,
     "stable_date": "2026-09-01T16:30:24Z",
-    "pre_date": ""
+    "pre_date": "2026-09-03T11:37:16Z"
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
@@ -217,10 +217,10 @@
   "piko": {
     "repo": "crimera/piko",
     "stable": "v3.9.0",
-    "prerelease": "",
+    "prerelease": "v3.10.0-dev.1",
     "blocked": false,
     "stable_date": "2026-08-31T02:40:04Z",
-    "pre_date": ""
+    "pre_date": "2026-09-03T07:54:33Z"
   },
   "pixel": {
     "enabledDev": false,
