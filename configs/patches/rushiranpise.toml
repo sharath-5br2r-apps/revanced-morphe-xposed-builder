@@ -385,6 +385,6 @@ build-mode = "apk"
 arch = ["arm64-v8a", "x86_64"]
 pkg-name = "io.appground.blek"
 uptodown-dlurl = "https://bluetooth-keyboard-and-mouse.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard-mouse-2"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard-mouse-2/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"

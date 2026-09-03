@@ -294,7 +294,7 @@ build-mode = "apk"
 arch = ["arm64-v8a", "arm-v7a"]
 pkg-name = "cn.wps.moffice_eng"
 uptodown-dlurl = "https://wps-office.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/wps-software-pte-ltd/wps-office-pdf"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/wps-software-pte-ltd/wps-office-pdf/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
@@ -409,7 +409,7 @@ build-mode = "apk"
 arch = ["arm64-v8a"]
 pkg-name = "com.hellochinese"
 uptodown-dlurl = "https://hellochinese.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/hellochinese-learn-chinese-mandarin/hellochinese-learn-chinese"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/hellochinese-learn-chinese-mandarin/hellochinese-learn-chinese/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
 
@@ -481,6 +481,6 @@ build-mode = "apk"
 arch = ["arm64-v8a"]
 pkg-name = "com.adobe.lrmobile"
 uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-lightroom"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-lightroom/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "hoo-dles/morphe-patches"
