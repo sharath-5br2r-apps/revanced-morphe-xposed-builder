@@ -1,17 +1,35 @@
 {
   "patches-version": "latest",
   "enable-module-update": true,
-  "bitwarden-morphe-stylus-exp": {
+  "github-morphe-hoodles-stylus-exp": {
     "enabled": true,
-    "app-name": "bitwarden",
-    "rv-brand": "morphe-stylus-exp",
+    "app-name": "github",
+    "rv-brand": "morphe-hoodles-stylus-exp",
     "build-mode": "apk",
-    "pkg-name": "com.x8bit.bitwarden",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.github.android",
     "cli-source": "MorpheApp/morphe-desktop",
-    "github-dlurl": "https://github.com/bitwarden/android",
-    "github-dlurl-regex": "fdroid.apk$",
-    "github-release-regex": "bwpm",
-    "version": "latest",
-    "patches-source": "ch3thanhs/stylus"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android",
+    "patches-source": [
+      "hoo-dles/morphe-patches",
+      "ch3thanhs/stylus"
+    ],
+    "included-patches": [
+      [
+        "AMOLED dark theme"
+      ],
+      [
+        "Force system font (including monospace) (GitHub)"
+      ]
+    ],
+    "dpi": "480-640dpi",
+    "version": "latest"
   }
 }

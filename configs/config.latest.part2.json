@@ -1,17 +1,30 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": true,
-  "bitwarden-morphe-stylus-exp": {
+  "windscribe-vpn-morphe-rushiranpise-exp": {
     "enabled": true,
-    "app-name": "bitwarden",
-    "rv-brand": "morphe-stylus-exp",
-    "build-mode": "apk",
-    "pkg-name": "com.x8bit.bitwarden",
     "cli-source": "MorpheApp/morphe-desktop",
-    "github-dlurl": "https://github.com/bitwarden/android",
-    "github-dlurl-regex": "fdroid.apk$",
-    "github-release-regex": "bwpm",
+    "app-name": "windscribe-vpn",
+    "rv-brand": "morphe-rushiranpise-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn",
     "version": "latest",
-    "patches-source": "ch3thanhs/stylus"
+    "custom-microg-patches": "'None'",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.windscribe.vpn",
+    "uptodown-dlurl": "https://windscribe.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/windscribe/windscribe-vpn",
+    "apkcombo-dlurl": "https://apkcombo.com/windscribe/com.windscribe.vpn",
+    "dpi": [
+      "nodpi",
+      "anydpi",
+      "auto"
+    ],
+    "patches-source": "rushiranpise/morphe-patches"
   }
 }

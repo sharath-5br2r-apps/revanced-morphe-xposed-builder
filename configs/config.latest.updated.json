@@ -1,30 +1,61 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": false,
-  "bitwarden-morphe-stylus": {
+  "github-morphe-hoodles-stylus-exp": {
     "enabled": true,
-    "app-name": "bitwarden",
-    "rv-brand": "morphe-stylus",
+    "app-name": "github",
+    "rv-brand": "morphe-hoodles-stylus-exp",
     "build-mode": "apk",
-    "pkg-name": "com.x8bit.bitwarden",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.github.android",
     "cli-source": "MorpheApp/morphe-desktop",
-    "github-dlurl": "https://github.com/bitwarden/android",
-    "github-dlurl-regex": "fdroid.apk$",
-    "github-release-regex": "bwpm",
-    "version": "latest",
-    "patches-source": "ch3thanhs/stylus"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android",
+    "patches-source": [
+      "hoo-dles/morphe-patches",
+      "ch3thanhs/stylus"
+    ],
+    "included-patches": [
+      [
+        "AMOLED dark theme"
+      ],
+      [
+        "Force system font (including monospace) (GitHub)"
+      ]
+    ],
+    "dpi": "480-640dpi",
+    "version": "latest"
   },
-  "bitwarden-morphe-stylus-exp": {
+  "windscribe-vpn-morphe-rushiranpise-exp": {
     "enabled": true,
-    "app-name": "bitwarden",
-    "rv-brand": "morphe-stylus-exp",
-    "build-mode": "apk",
-    "pkg-name": "com.x8bit.bitwarden",
     "cli-source": "MorpheApp/morphe-desktop",
-    "github-dlurl": "https://github.com/bitwarden/android",
-    "github-dlurl-regex": "fdroid.apk$",
-    "github-release-regex": "bwpm",
+    "app-name": "windscribe-vpn",
+    "rv-brand": "morphe-rushiranpise-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn",
     "version": "latest",
-    "patches-source": "ch3thanhs/stylus"
+    "custom-microg-patches": "'None'",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.windscribe.vpn",
+    "uptodown-dlurl": "https://windscribe.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/windscribe/windscribe-vpn",
+    "apkcombo-dlurl": "https://apkcombo.com/windscribe/com.windscribe.vpn",
+    "dpi": [
+      "nodpi",
+      "anydpi",
+      "auto"
+    ],
+    "patches-source": "rushiranpise/morphe-patches"
   }
 }
