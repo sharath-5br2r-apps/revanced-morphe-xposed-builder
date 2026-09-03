@@ -3823,7 +3823,7 @@ build_rv() {
 	fi
 	local custom_pa="${args[patcher_args]:-${args[patcher-args]:-}}"
 	if [ -n "$custom_pa" ]; then p_patcher_args+=("$custom_pa"); fi
-	if [[ "$custom_pa" != *"-f"* ]] && [[ "$custom_pa" != *"--continue-on-error"* ]]; then
+	if [[ "${p_patcher_args[*]}" != *"-f"* ]]; then
 		p_patcher_args+=("-f")
 	fi
 	local -a arch_build_pids=()
