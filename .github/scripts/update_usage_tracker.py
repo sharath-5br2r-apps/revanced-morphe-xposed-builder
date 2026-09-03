@@ -12,9 +12,14 @@ def run_cmd(cmd, check=True):
     return result.stdout.strip()
 
 def main():
-    token = os.environ.get("APKS_REPO_TOKEN")
+    token = (
+        os.environ.get("APKS_REPO_TOKEN")
+        or os.environ.get("PERSONAL_ACCESS_TOKEN")
+        or os.environ.get("GH_TOKEN")
+        or os.environ.get("GITHUB_TOKEN")
+    )
     if not token:
-        print("APKS_REPO_TOKEN is not set. Skipping usage tracker update.")
+        print("APKS_REPO_TOKEN or PERSONAL_ACCESS_TOKEN is not set. Skipping usage tracker update.")
         return
 
     used_versions_file = "temp/used_versions.txt"
@@ -29,7 +34,12 @@ def main():
         print("No versions recorded. Skipping update.")
         return
 
-    repo_url = os.environ.get("APKS_REPO_URL", "https://github.com/nullcpy/apks.git")
+    apks_repo = os.environ.get("APKS_REPO_URL") or os.environ.get("APKS_REPO") or "sharath-5br2r-apps/apks-dump"
+    if apks_repo.startswith("https://") or apks_repo.startswith("http://"):
+        repo_url = apks_repo
+    else:
+        repo_url = f"https://github.com/{apks_repo.strip('/')}.git"
+
     if repo_url.startswith("https://"):
         repo_url = repo_url.replace("https://", f"https://oauth2:{token}@", 1)
     clone_dir = "temp/apks_repo"
