@@ -535,12 +535,15 @@ _get_prebuilts() {
 		echo "none"
 	fi
 
-	local p_srcs=($(echo "$patches_src_list" | tr -d \"\' | tr -s ' \t\r' '\n' | grep -v '^$'))
-	local p_hosts=($(echo "$patches_host_list" | tr -d \"\' | tr -s ' \t\r' '\n' | grep -v '^$'))
-	local p_vers=($(echo "$patches_ver_list" | tr -d \"\' | tr -s ' \t\r' '\n' | grep -v '^$'))
-	local p_filters=($(echo "${patches_filter_list:-}" | tr -d \"\' | tr -s ' \t\r' '\n' | grep -v '^$'))
-	local p_tag_filters=($(echo "${patches_tag_filter_list:-}" | tr -d \"\' | tr -s ' \t\r' '\n' | grep -v '^$'))
-	local p_rel_name_filters=($(echo "${patches_rel_name_filter_list:-}" | tr -d \"\' | tr -s ' \t\r' '\n' | grep -v '^$'))
+	readarray -t p_srcs < <(list_args "$patches_src_list")
+	[ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$patches_src_list")
+	readarray -t p_hosts < <(list_args "$patches_host_list")
+	[ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$patches_host_list")
+	readarray -t p_vers < <(list_args "$patches_ver_list")
+	[ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver_list")
+	readarray -t p_filters < <(list_args "${patches_filter_list:-}")
+	readarray -t p_tag_filters < <(list_args "${patches_tag_filter_list:-}")
+	readarray -t p_rel_name_filters < <(list_args "${patches_rel_name_filter_list:-}")
 	for i in "${!p_srcs[@]}"; do
 		local raw_host="${p_hosts[$i]:-${p_hosts[0]}}"
 		local src="${p_srcs[$i]}"
@@ -2697,9 +2700,8 @@ patch_apk() {
 	local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5 cli_source=$6
 	local per_bundle_ed="${7:-}"
 	local tmp_dir="${CWD}/${patched_apk}-temporary-files"
-	local IFS=$'\n'
-	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
-	unset IFS
+	readarray -t p_jars < <(list_args "$patches_jar")
+	[ ${#p_jars[@]} -eq 0 ] && p_jars=("$patches_jar")
 
 	local cli_source_l="${cli_source,,}"
 	if [[ "$cli_source_l" == "none" ]]; then
@@ -3173,15 +3175,15 @@ build_rv() {
 	local dl_from=${args[dl_from]}
 	local arch=${args[arch]}
 	local -a arch_list=()
-	read -r -a arch_list <<< "$arch"
+	readarray -t arch_list < <(list_args "$arch")
 	[ "${#arch_list[@]}" -eq 0 ] && arch_list=("auto")
 	[ "${arch_list[0]}" = "auto" ] && arch_list=("all" "arm64-v8a" "arm-v7a")
 
-	local IFS=$'\n'
-	local p_jars_arr=($(echo "${args[ptjar]}" | tr ' ' '\n' | grep -v '^$'))
-	unset IFS
+	readarray -t p_jars_arr < <(list_args "${args[ptjar]}")
+	[ ${#p_jars_arr[@]} -eq 0 ] && p_jars_arr=("${args[ptjar]}")
 	local n_bundles=${#p_jars_arr[@]}
-	local -a p_srcs_arr=(${args[patches_sources_all]:-})
+	readarray -t p_srcs_arr < <(list_args "${args[patches_sources_all]:-}")
+	[ ${#p_srcs_arr[@]} -eq 0 ] && [ -n "${args[patches_sources_all]:-}" ] && p_srcs_arr=("${args[patches_sources_all]}")
 
 	local -a per_bundle_ed_args=()
 	local exc_str="${args[excluded_patches]}"
