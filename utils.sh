@@ -1489,8 +1489,10 @@ apkmirror_search() {
 
 	local appdpi=("nodpi" "anydpi")
 	local match_any_dpi=false
-	if [ "$dpi" ]; then
-		appdpi+=($dpi)
+	if [ -n "$dpi" ]; then
+		local -a extra_dpis=()
+		readarray -t extra_dpis < <(list_args "$dpi")
+		appdpi+=("${extra_dpis[@]}")
 		if isoneof "auto" "${appdpi[@]}"; then
 			match_any_dpi=true
 		fi
@@ -3360,6 +3362,7 @@ build_rv() {
 	local final_version=""
 	
 	for curr_resolved_version in "${all_resolved_versions[@]}"; do
+		local any_arch_downloaded=false
 		resolved_version="$curr_resolved_version"
 		skip_dl_source_check=false
 		get_latest_ver=false
