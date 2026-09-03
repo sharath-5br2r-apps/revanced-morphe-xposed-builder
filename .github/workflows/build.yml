@@ -166,7 +166,12 @@ jobs:
             gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" $prerelease_flag || true
           fi
           if [ -d "./build" ]; then
-            find ./build -type f -exec echo "Uploading {} to release $tag..." \; -exec gh release upload "$tag" {} --clobber \;
+            for file in ./build/*; do
+              if [ -f "$file" ]; then
+                echo "Uploading $file to release $tag..."
+                gh release upload "$tag" "$file" --clobber
+              fi
+            done
           fi
 
       - name: Upload build.json to numbered release
@@ -183,12 +188,12 @@ jobs:
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
-            echo "Uploading build.json to release $tag..."
-            gh release upload "$tag" build.json --clobber
-            if [ -f "build.md" ]; then
-              echo "Uploading build.md to release $tag..."
-              gh release upload "$tag" build.md --clobber
-            fi
+            for file in build.json build.md; do
+              if [ -f "$file" ]; then
+                echo "Uploading $file to release $tag..."
+                gh release upload "$tag" "$file" --clobber
+              fi
+            done
           fi
 
       - name: Upload part build logs artifact
@@ -213,11 +218,12 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           gh release view "update" >/dev/null 2>&1 || gh release create "update" --title "Update Metadata" --notes "" || true
-          if [ -f "build.md" ]; then
-            echo "Uploading build.md to release update..."
-            gh release upload update build.md --clobber
-          fi
-          find . -maxdepth 1 -name "*-update.json" -exec echo "Uploading {} to release update..." \; -exec gh release upload update {} --clobber \;
+          for file in build.md *-update.json; do
+            if [ -f "$file" ]; then
+              echo "Uploading $file to release update..."
+              gh release upload update "$file" --clobber
+            fi
+          done
 
       - name: Remove frequently updated apps
         run: |
@@ -230,5 +236,10 @@ jobs:
           tag="${{ steps.context.outputs.ARCHIVE_TAG }}"
           gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "$tag" --notes "" --target main || true
           if [ -d "./build" ]; then
-            find ./build -type f -exec echo "Uploading {} to release $tag..." \; -exec gh release upload "$tag" {} --clobber \;
+            for file in ./build/*; do
+              if [ -f "$file" ]; then
+                echo "Uploading $file to release $tag..."
+                gh release upload "$tag" "$file" --clobber
+              fi
+            done
           fi

@@ -271,12 +271,12 @@ jobs:
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
-            echo "Uploading build.dev.json to release $tag..."
-            gh release upload "$tag" dev_logs/aggregated_out/build.dev.json --clobber
-            if [ -f "dev_logs/aggregated_out/build.dev.md" ]; then
-              echo "Uploading build.dev.md to release $tag..."
-              gh release upload "$tag" dev_logs/aggregated_out/build.dev.md --clobber
-            fi
+            for file in dev_logs/aggregated_out/build.dev.json dev_logs/aggregated_out/build.dev.md; do
+              if [ -f "$file" ]; then
+                echo "Uploading $file to release $tag..."
+                gh release upload "$tag" "$file" --clobber
+              fi
+            done
           fi
 
       - name: Upload module update metadata to update tag (Dev)
@@ -284,7 +284,12 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if [ -d "dev_logs" ]; then
-            find dev_logs -name "*-update.json" -exec echo "Uploading {} to release update..." \; -exec gh release upload update {} --clobber \;
+            for file in $(find dev_logs -name "*-update.json"); do
+              if [ -f "$file" ]; then
+                echo "Uploading $file to release update..."
+                gh release upload update "$file" --clobber
+              fi
+            done
           fi
 
   resolve_stable_version:
@@ -394,12 +399,12 @@ jobs:
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
-            echo "Uploading build.stable.json to release $tag..."
-            gh release upload "$tag" stable_logs/aggregated_out/build.stable.json --clobber
-            if [ -f "stable_logs/aggregated_out/build.stable.md" ]; then
-              echo "Uploading build.stable.md to release $tag..."
-              gh release upload "$tag" stable_logs/aggregated_out/build.stable.md --clobber
-            fi
+            for file in stable_logs/aggregated_out/build.stable.json stable_logs/aggregated_out/build.stable.md; do
+              if [ -f "$file" ]; then
+                echo "Uploading $file to release $tag..."
+                gh release upload "$tag" "$file" --clobber
+              fi
+            done
           fi
 
       - name: Upload module update metadata to update tag (Stable)
@@ -407,7 +412,12 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if [ -d "stable_logs" ]; then
-            find stable_logs -name "*-update.json" -exec echo "Uploading {} to release update..." \; -exec gh release upload update {} --clobber \;
+            for file in $(find stable_logs -name "*-update.json"); do
+              if [ -f "$file" ]; then
+                echo "Uploading $file to release update..."
+                gh release upload update "$file" --clobber
+              fi
+            done
           fi
 
   resolve_latest_version:
@@ -522,12 +532,12 @@ jobs:
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
-            echo "Uploading build.latest.json to release $tag..."
-            gh release upload "$tag" latest_logs/aggregated_out/build.latest.json --clobber
-            if [ -f "latest_logs/aggregated_out/build.latest.md" ]; then
-              echo "Uploading build.latest.md to release $tag..."
-              gh release upload "$tag" latest_logs/aggregated_out/build.latest.md --clobber
-            fi
+            for file in latest_logs/aggregated_out/build.latest.json latest_logs/aggregated_out/build.latest.md; do
+              if [ -f "$file" ]; then
+                echo "Uploading $file to release $tag..."
+                gh release upload "$tag" "$file" --clobber
+              fi
+            done
           fi
 
       - name: Upload module update metadata to update tag (Latest)
@@ -535,7 +545,12 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if [ -d "latest_logs" ]; then
-            find latest_logs -name "*-update.json" -exec echo "Uploading {} to release update..." \; -exec gh release upload update {} --clobber \;
+            for file in $(find latest_logs -name "*-update.json"); do
+              if [ -f "$file" ]; then
+                echo "Uploading $file to release update..."
+                gh release upload update "$file" --clobber
+              fi
+            done
           fi
 
   trigger_cleanup:
