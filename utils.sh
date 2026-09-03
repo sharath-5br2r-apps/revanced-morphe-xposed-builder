@@ -3929,13 +3929,13 @@ build_rv() {
 			if [[ "$base_mod_id" == *"-beta" ]]; then
 				modules_to_build+=("${base_mod_id}:${app_name_l}${brand_suffix}-module-v${version_f}-${arch_f}.zip")
 			else
-				modules_to_build+=("${base_mod_id}-beta:${app_name_l}${brand_suffix}-beta-module-v${version_f}-${arch_f}.zip")
+				modules_to_build+=("${base_mod_id}-beta:${app_name_l}${brand_suffix}-module-beta-v${version_f}-${arch_f}.zip")
 			fi
 		else
 			# Stable build: generate TWO modules (without -beta and with -beta)
 			modules_to_build+=("${base_mod_id}:${app_name_l}${brand_suffix}-module-v${version_f}-${arch_f}.zip")
 			if [[ "$base_mod_id" != *"-beta" ]]; then
-				modules_to_build+=("${base_mod_id}-beta:${app_name_l}${brand_suffix}-beta-module-v${version_f}-${arch_f}.zip")
+				modules_to_build+=("${base_mod_id}-beta:${app_name_l}${brand_suffix}-module-beta-v${version_f}-${arch_f}.zip")
 			fi
 		fi
 
