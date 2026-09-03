@@ -81,7 +81,7 @@ patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 dpi = "120-640dpi"
 
-arch = ["all"]
+arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 
 [jiohotstar-morphe-paresh]
 enabled = true
