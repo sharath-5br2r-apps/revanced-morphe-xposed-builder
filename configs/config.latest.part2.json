@@ -1,95 +1,17 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": true,
-  "prime-video-morphe-hoodles-exp": {
+  "bitwarden-morphe-stylus-exp": {
     "enabled": true,
-    "app-name": "prime-video",
-    "rv-brand": "morphe-hoodles-exp",
-    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "app-name": "bitwarden",
+    "rv-brand": "morphe-stylus-exp",
     "build-mode": "apk",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient",
-    "version": "latest",
-    "arch": [
-      "arm64-v8a"
-    ],
+    "pkg-name": "com.x8bit.bitwarden",
     "cli-source": "MorpheApp/morphe-desktop",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
-    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ],
-    "patches-source": "hoo-dles/morphe-patches"
-  },
-  "solid-explorer-morphe-hoodles-exp": {
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "solid-explorer",
-    "rv-brand": "morphe-hoodles-exp",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2",
+    "github-dlurl": "https://github.com/bitwarden/android",
+    "github-dlurl-regex": "fdroid.apk$",
+    "github-release-regex": "bwpm",
     "version": "latest",
-    "build-mode": "apk",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "pkg-name": "pl.solidexplorer2",
-    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ],
-    "patches-source": "hoo-dles/morphe-patches"
-  },
-  "proton-vpn-morphe-paresh-exp": {
-    "enabled": true,
-    "app-name": "proton-vpn",
-    "rv-brand": "morphe-paresh-exp",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android",
-    "version": "latest",
-    "build-mode": "apk",
-    "pkg-name": "ch.protonvpn.android",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://protonvpn.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn",
-    "prefer-dl-mode": "bundle",
-    "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab",
-    "dpi": "120-640dpi",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ]
-  },
-  "adobe-acrobat-morphe-rushiranpise-exp": {
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "adobe-acrobat",
-    "rv-brand": "morphe-rushiranpise-exp",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader",
-    "version": "latest",
-    "build-mode": "apk",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "x86_64"
-    ],
-    "pkg-name": "com.adobe.reader",
-    "uptodown-dlurl": "https://adobe-reader.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-acrobat",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ],
-    "patches-source": "rushiranpise/morphe-patches",
-    "custom-microg-patches": "'None'"
+    "patches-source": "ch3thanhs/stylus"
   }
 }
