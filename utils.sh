@@ -2791,7 +2791,12 @@ patch_apk() {
 		PATCH_OUTPUT+=$'\n'"$build_op"
 
 		local built_apk
-		built_apk=$(find "$wdir/build" "$wdir" "$rel_tmp_dir" -maxdepth 5 -type f -name "*.apk" 2>/dev/null | grep -v "$stock_input" | head -n 1)
+		if echo "$patches_to_run" | grep -qwi "clone"; then
+			built_apk=$(find "$wdir/build" "$wdir" "$rel_tmp_dir" -maxdepth 5 -type f -name "*.apk" 2>/dev/null | grep -v "$stock_input" | grep -iE "clone|_c_" | head -n 1)
+		fi
+		if [ -z "$built_apk" ]; then
+			built_apk=$(find "$wdir/build" "$wdir" "$rel_tmp_dir" -maxdepth 5 -type f -name "*.apk" 2>/dev/null | grep -v "$stock_input" | head -n 1)
+		fi
 		if [ -n "$built_apk" ] && [ -f "$built_apk" ]; then
 			sign_apk "$built_apk" "$patched_apk"
 			rm -rf "$rel_tmp_dir" "$wdir" 2>/dev/null || :
