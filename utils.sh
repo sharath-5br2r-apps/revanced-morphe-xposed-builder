@@ -2672,7 +2672,6 @@ get_forgejo_resp() { get_git_repo_resp "forgejo" "$@"; }
 get_forgejo_vers() { get_git_repo_vers "forgejo"; }
 get_forgejo_pkg_name() { get_git_repo_pkg_name "forgejo"; }
 
-
 # -------------------- direct --------------------
 dl_direct() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 _dpi=$5
