@@ -255,6 +255,12 @@ for table_name in $(toml_get_table_names); do
 	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-jhc"
 	module_prop_name_b=${app_args[module_prop_name]}
 
+	# Automatically append -beta to the module ID for pre-release builds
+	# so they have an independent update channel in Magisk
+	if { [[ "${1:-}" == *"dev"* ]] || [ "${DEF_PATCHES_VER:-}" = "dev" ]; } && [[ "${app_args[module_prop_name]}" != *"-beta"* ]]; then
+		app_args[module_prop_name]="${app_args[module_prop_name]}-beta"
+	fi
+
 	app_args[arch]="${arch_list[*]}"
 	app_args[table]="$table_name"
 
