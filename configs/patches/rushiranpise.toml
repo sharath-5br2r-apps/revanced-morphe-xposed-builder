@@ -340,7 +340,7 @@ build-mode = "apk"
 arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.arlosoft.macrodroid"
 uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
@@ -355,7 +355,7 @@ build-mode = "apk"
 arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.arlosoft.macrodroid"
 uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
 dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
