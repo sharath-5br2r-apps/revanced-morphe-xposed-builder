@@ -4030,27 +4030,74 @@ build_rv() {
 	fi
 }
 
+
 list_args() {
-	local val="$1"
-	if [ -z "$val" ]; then return 0; fi
-	if [[ "$val" =~ ^\[.*\]$ ]]; then
-		jq -r '.[] | if type == "array" then (if length == 0 then "" else map(tostring) | join(" ") end) else tostring end' <<<"$val" 2>/dev/null
-	else
-		jq -R -s -r 'split("\n") | .[] | select(length > 0)' <<<"$val" 2>/dev/null || echo "$val"
+	if [ $# -eq 0 ] || [ -z "${1:-}" ]; then
+		return 0
 	fi
-}
-join_args() {
-	local val="$1" flag="$2"
-	if [ -z "$val" ]; then return 0; fi
+
 	local -a items=()
-	readarray -t items <<<"$(list_args "$val")"
-	local res=""
+	if [ $# -gt 1 ]; then
+		items=("$@")
+	elif [[ "$1" =~ ^\[.*\]$ ]]; then
+		readarray -t items < <(jq -r '.[] | if type == "array" then (if length == 0 then "" else map(tostring) | join(" ") end) else tostring end' <<<"$1" 2>/dev/null)
+	elif [[ "$1" == *$'\n'* ]]; then
+		readarray -t items <<<"$1"
+	elif [[ "$1" == *\'* || "$1" == *\"* ]]; then
+		eval "items=($1)" 2>/dev/null || read -ra items <<<"$1"
+	else
+		read -ra items <<<"$1"
+	fi
+
+	local item
 	for item in "${items[@]}"; do
-		[ -z "$item" ] && continue
-		local safe_item="${item//\'/\'\\\'\'}"
-		res+="${flag} '${safe_item}' "
+		local trimmed="${item#"${item%%[![:space:]]*}"}"
+		trimmed="${trimmed%"${trimmed##*[![:space:]]}"}"
+		[ -n "$trimmed" ] && echo "$trimmed"
 	done
-	echo "${res% }"
+}
+
+join_args() {
+	local flag=""
+	local -a items=()
+
+	if [ $# -eq 0 ]; then
+		return 0
+	elif [ $# -eq 2 ] && [[ "$2" == -* ]]; then
+		# Called with: join_args "$val" "$flag"
+		local val="$1"
+		flag="$2"
+		[ -z "$val" ] && return 0
+		readarray -t items < <(list_args "$val")
+	elif [[ "$1" == -* ]]; then
+		# Called with: join_args "$flag" "${items[@]}"
+		flag="$1"
+		shift
+		items=("$@")
+	else
+		local val="$1"
+		flag="${2:-}"
+		[ -z "$val" ] && return 0
+		readarray -t items < <(list_args "$val")
+	fi
+
+	local -a formatted=()
+	local item
+	for item in "${items[@]}"; do
+		local clean_item="${item#"${item%%[![:space:]]*}"}"
+		clean_item="${clean_item%"${clean_item##*[![:space:]]}"}"
+		[ -z "$clean_item" ] && continue
+
+		# Strip outer quotes if already quoted to prevent double-escaping
+		if [[ "$clean_item" =~ ^\'(.*)\'$ ]] || [[ "$clean_item" =~ ^\"(.*)\"$ ]]; then
+			clean_item="${BASH_REMATCH[1]}"
+		fi
+
+		local safe_item="${clean_item//\'/\'\\\'\'}"
+		formatted+=("${flag} '${safe_item}'")
+	done
+
+	echo "${formatted[*]}"
 }
 
 module_config() {
