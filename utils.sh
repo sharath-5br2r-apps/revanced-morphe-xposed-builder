@@ -3826,6 +3826,13 @@ build_rv() {
 	if [[ "${p_patcher_args[*]}" != *"-f"* ]]; then
 		p_patcher_args+=("-f")
 	fi
+	local cli_src_l="${args[cli_source]:-}"
+	cli_src_l="${cli_src_l,,}"
+	if [[ "$cli_src_l" == *"morphe-desktop"* ]] || [[ "$cli_src_l" == *"morphe"* ]]; then
+		if [[ "${p_patcher_args[*]}" != *"--continue-on-error"* ]]; then
+			p_patcher_args+=("--continue-on-error")
+		fi
+	fi
 	local -a arch_build_pids=()
 	local build_logs_dir="${TEMP_DIR}/build_logs_$$"
 	mkdir -p "$build_logs_dir"
