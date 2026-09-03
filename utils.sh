@@ -2493,6 +2493,7 @@ get_git_repo_resp() {
 			(((if ($rel.assets | type) == "object" then $rel.assets.links else $rel.assets end) // $rel.assets_links // [])) | map(
 				. as $asset |
 				($asset.name // $asset.browser_download_url // "") as $name |
+				select(($name | test("\\.(sha256|txt|asc|sig|md5)$"; "i") | not)) |
 				select(
 					if ($f | startswith("!")) then
 						($name | test($f[1:]; "i") | not)
@@ -3803,11 +3804,9 @@ build_rv() {
 	fi
 	local custom_pa="${args[patcher_args]:-${args[patcher-args]:-}}"
 	if [ -n "$custom_pa" ]; then p_patcher_args+=("$custom_pa"); fi
-    if isoneof "$version_mode" latest beta || [ "$version_mode" != "auto" -a "$version_mode" != "exp" ]; then
-        if [[ "$custom_pa" != *"-f"* ]]; then
-           p_patcher_args+=("-f")
-        fi
-    fi
+	if [[ "$custom_pa" != *"-f"* ]] && [[ "$custom_pa" != *"--continue-on-error"* ]]; then
+		p_patcher_args+=("-f")
+	fi
 	local -a arch_build_pids=()
 	local build_logs_dir="${TEMP_DIR}/build_logs_$$"
 	mkdir -p "$build_logs_dir"
