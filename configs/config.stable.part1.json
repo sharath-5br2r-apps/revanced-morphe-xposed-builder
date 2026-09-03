@@ -1,9 +1,9 @@
 {
   "patches-version": "latest",
   "enable-module-update": true,
-  "brave-nightly-morphe-dh6k": {
+  "brave-beta-morphe-dh6k": {
     "enabled": true,
-    "app-name": "brave-nightly",
+    "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "version": "beta",
     "build-mode": "apk",
@@ -12,7 +12,7 @@
       "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.brave.browser_nightly",
+    "pkg-name": "com.brave.browser_beta",
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "dh6k/morphe-patches",
     "patcher-args": "--continue-on-error",
@@ -31,6 +31,6 @@
         "regex": "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
       }
     ],
-    "github-release-name-regex": "^Nightly v"
+    "github-release-name-regex": "^Beta v"
   }
 }
