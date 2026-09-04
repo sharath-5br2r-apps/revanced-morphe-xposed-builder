@@ -3445,8 +3445,8 @@ build_rv() {
 		fi
 
 	if [ "$skip_dl_source_check" = false ]; then
-		local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-sharath-5br2r-apps/apks-dump}}"
-		if [ -n "$apks_repo" ] && [ -n "$pkg_name" ] && [ -z "${args[cache_repo_dlurl]:-}" ]; then
+		local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-}}"
+		if [ -n "$apks_repo" ] && [ -n "$pkg_name" ]; then
 			args[cache_repo_dlurl]="https://github.com/${apks_repo}/releases/tag/${pkg_name}"
 		fi
 		# 2. Establish dl_from and fetch required HTML responses
@@ -3704,7 +3704,7 @@ build_rv() {
 				cp -f "$all_apk" "$cached_all_apk" 2>/dev/null || true
 			fi
 
-			local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-sharath-5br2r-apps/apks-dump}}"
+			local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-}}"
 			local pat_token="${PERSONAL_ACCESS_TOKEN:-${APKS_REPO_TOKEN:-}}"
 			if [ -n "$apks_repo" ] && [ -n "$pat_token" ] && [ -n "${dl_p:-}" ] && [ "$dl_p" != "github" ] && [ "$dl_p" != "archive" ] && [ "$dl_p" != "cache_repo" ]; then
 				if [ -s "$stock_apk" ] || [ -s "$all_apk" ]; then

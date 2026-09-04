@@ -34,7 +34,10 @@ def main():
         print("No versions recorded. Skipping update.")
         return
 
-    apks_repo = os.environ.get("APKS_REPO_URL") or os.environ.get("APKS_REPO") or "sharath-5br2r-apps/apks-dump"
+    apks_repo = os.environ.get("APKS_REPO_URL") or os.environ.get("APKS_REPO")
+    if not apks_repo:
+        print("APKS_REPO or APKS_REPO_URL is not set. Skipping update.")
+        return
     if apks_repo.startswith("https://") or apks_repo.startswith("http://"):
         repo_url = apks_repo
     else:
