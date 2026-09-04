@@ -52,6 +52,7 @@ DEF_PATCHES_SRC_HOST=$(toml_get "$main_config_t" patches-source-host) || DEF_PAT
 DEF_CLI_SRC=$(toml_get "$main_config_t" cli-source) || DEF_CLI_SRC="MorpheApp/morphe-desktop"
 DEF_CLI_SRC_HOST=$(toml_get "$main_config_t" cli-source-host) || DEF_CLI_SRC_HOST="github"
 DEF_RV_BRAND=$(toml_get "$main_config_t" rv-brand) || DEF_RV_BRAND="ReVanced"
+DEF_DPI=$(toml_get "$main_config_t" dpi) || DEF_DPI="nodpi anydpi auto"
 mkdir -p "$TEMP_DIR" "$BUILD_DIR"
 
 : >build.md
@@ -212,6 +213,7 @@ for table_name in $(toml_get_table_names); do
 	app_args[version]=$(toml_get "$t" version) || app_args[version]="auto"
 	app_args[version_filter]=$(toml_get "$t" version-filter) || app_args[version_filter]=$(toml_get "$t" apkmirror-version-filter) || app_args[version_filter]=""
 	app_args[apkmirror_version_filter]=$(toml_get "$t" apkmirror-version-filter) || app_args[apkmirror_version_filter]="${app_args[version_filter]}"
+	app_args[version_code]=$(toml_get "$t" version-code) || app_args[version_code]=""
 	app_args[app_name]=$(toml_get "$t" app-name) || app_args[app_name]=$table_name
 	app_args[patcher_args]=$(toml_get "$t" patcher-args) || app_args[patcher_args]=""
 	app_args[table]=$table_name
@@ -249,7 +251,8 @@ for table_name in $(toml_get_table_names); do
 	done
 
 	app_args[pkg_name]=$(toml_get "$t" pkg-name) || app_args[pkg_name]=""
-	app_args[dpi]=$(toml_get "$t" dpi) || app_args[dpi]=""
+	app_args[dpi]=$(toml_get "$t" dpi) || app_args[dpi]="$DEF_DPI"
+	app_args[dpi]="${app_args[dpi]:-$DEF_DPI}"
 	table_name_f=${table_name,,}
 	table_name_f=${table_name_f// /-}
 	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-jhc"

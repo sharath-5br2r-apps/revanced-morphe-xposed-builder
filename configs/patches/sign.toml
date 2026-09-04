@@ -15,4 +15,3 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 prefer-dl-mode = "bundle"
 uptodown-dlurl = "https://alexa.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
-dpi = ["120-480dpi", "480-640dpi"]

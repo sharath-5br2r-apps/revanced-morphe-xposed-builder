@@ -490,19 +490,6 @@
     "apkpure-dlurl": "https://apkpure.com/kinestop-car-sickness-aid/com.urbandroid.kinestop",
     "apkcombo-dlurl": "https://apkcombo.com/kinestop-car-sickness-aid/com.urbandroid.kinestop"
   },
-  "facebook-morphe": {
-    "enabled": false,
-    "pkg-name": "com.facebook.katana",
-    "app-name": "facebook",
-    "rv-brand": "morphe",
-    "build-mode": "apk",
-    "arch": "both",
-    "patches-source": "MeridianFresco/morphe-meta-patches",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://facebook.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/facebook-2/facebook",
-    "dpi": "nodpi anydpi auto"
-  },
   "threads-morphe": {
     "enabled": false,
     "pkg-name": "com.instagram.barcelona",
@@ -1356,7 +1343,7 @@
     "apkcombo-dlurl": "https://apkcombo.com/soundcloud/com.soundcloud.android"
   },
   "brave-browser-morphe": {
-    "enabled": true,
+    "enabled": false,
     "pkg-name": "com.brave.browser",
     "app-name": "brave-browser",
     "rv-brand": "morphe",
@@ -2285,5 +2272,20 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "uptodown-dlurl": "https://picsart-estudio.en.uptodown.com/android",
     "apkcombo-dlurl": "https://apkcombo.com/picsart/com.picsart.studio"
+  },
+  "facebook-morphe": {
+    "enabled": true,
+    "pkg-name": "com.facebook.katana",
+    "app-name": "facebook",
+    "rv-brand": "morphe",
+    "build-mode": "apk",
+    "arch": "both",
+    "patches-source": "SapitoSucio/FroggoMorphePatches",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://facebook.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/facebook-2/facebook",
+    "apkpure-dlurl": "https://apkpure.com/facebook-app/com.facebook.katana",
+    "apkcombo-dlurl": "https://apkcombo.com/facebook/com.facebook.katana",
+    "dpi": "nodpi anydpi auto"
   }
 }

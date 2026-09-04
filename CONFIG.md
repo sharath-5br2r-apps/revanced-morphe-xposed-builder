@@ -73,8 +73,9 @@ These are set in your `.toml` config files under `configs/patches/` or `.github/
 |-----|----------|---------|-------------|
 | `build-mode` | ⚠️ Optional | `apk` | Build output type: `apk`, `module`, or `both`. |
 | `arch` | ⚠️ Optional | `auto` | Target architecture: `arm64-v8a`, `arm-v7a`, `x86`, `x86_64`, `all`, `multi`, or `auto`. |
-| `dpi` | ⚠️ Optional | — | Space-separated list of accepted DPI variants (e.g. `nodpi anydpi auto 480dpi`). |
+| `dpi` | ⚠️ Optional | `nodpi anydpi auto` | Space-separated list of accepted DPI variants. `auto` matches whatever is available. |
 | `version` | ⚠️ Optional | `auto` | APK version to download. Use `auto` (patch-compatible), `latest`, `beta`, `absolutelatest`, or an exact version string (e.g. `17.8.7.939743344`). |
+| `version-code` | ⚠️ Optional | `auto` | Target Android versionCode. `auto` automatically resolves supported versionCode from patch metadata. Can also be an explicit versionCode or mapped per-arch (`arm64-v8a: ... \| arm-v7a: ...`). |
 | `prefer-dl-mode` | ⚠️ Optional | `apk` | Prefer downloading `apk` or `bundle` (APKM split) from APKMirror. |
 | `patcher-args` | ⚠️ Optional | — | Extra arguments passed directly to the patcher CLI (e.g. `-f --continue-on-error`). |
 | `enable-module-update` | ⚠️ Optional | `false` | Enable module update checks (global key, not per-app). |

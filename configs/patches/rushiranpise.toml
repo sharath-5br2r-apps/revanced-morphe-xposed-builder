@@ -11,7 +11,6 @@ arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.microsoft.office.word"
 uptodown-dlurl = "https://microsoft-word-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/word/"
-dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word"
 patches-source = "rushiranpise/morphe-patches"
 
@@ -26,7 +25,6 @@ arch = ["arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.microsoft.office.excel"
 uptodown-dlurl = "https://microsoft-excel-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/excel/"
-dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel"
 patches-source = "rushiranpise/morphe-patches"
 
@@ -41,7 +39,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.duolingo"
 uptodown-dlurl = "https://duolingo.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [amazon-india-morphe-rushiranpise]
@@ -53,7 +50,6 @@ pkg-name = "in.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 included-patches = ["Dark Mode", "Open Links in Browser"]
 excluded-patches = ["Hide Rufus Tab"]
@@ -71,7 +67,6 @@ pkg-name = "in.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 included-patches = ["Dark Mode", "Open Links in Browser"]
 excluded-patches = ["Hide Rufus Tab"]
@@ -90,7 +85,6 @@ pkg-name = "com.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://amazon-shopping.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 included-patches = ["Dark Mode", "Open Links in Browser"]
 excluded-patches = ["Hide Rufus Tab"]
@@ -108,7 +102,6 @@ pkg-name = "com.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://amazon-shopping.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 included-patches = ["Dark Mode", "Open Links in Browser"]
 excluded-patches = ["Hide Rufus Tab"]
@@ -129,7 +122,6 @@ arch = ["all", "arm64-v8a", "x86_64"]
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 custom-microg-patches = "'None'"
 
@@ -145,7 +137,6 @@ arch = ["all", "arm64-v8a", "x86_64"]
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 custom-microg-patches = "'None'"
 
@@ -160,7 +151,6 @@ build-mode = "apk"
 pkg-name = "com.monect.portable"
 uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
@@ -177,7 +167,6 @@ build-mode = "apk"
 pkg-name = "com.monect.portable"
 uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
@@ -216,7 +205,6 @@ pkg-name = "com.windscribe.vpn"
 uptodown-dlurl = "https://windscribe.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
 apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [windscribe-vpn-morphe-rushiranpise-exp]
@@ -233,7 +221,6 @@ pkg-name = "com.windscribe.vpn"
 uptodown-dlurl = "https://windscribe.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
 apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [1111-warp-morphe-rushiranpise]
@@ -248,7 +235,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cloudflare.onedotonedotonedotone"
 uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
@@ -265,7 +251,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cloudflare.onedotonedotonedotone"
 uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
@@ -281,7 +266,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.adguard.android"
 uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [adguard-morphe-rushiranpise-exp]
@@ -297,7 +281,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.adguard.android"
 uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [beta-maniac-morphe-rushiranpise]
@@ -311,7 +294,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "it.mirko.beta"
 uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [beta-maniac-morphe-rushiranpise-exp]
@@ -326,7 +308,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "it.mirko.beta"
 uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 # ── MacroDroid (morphe-rushiranpise) ──────────────────────────────────────────
@@ -341,7 +322,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.arlosoft.macrodroid"
 uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 [macrodroid-morphe-rushiranpise-exp]
@@ -356,7 +336,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.arlosoft.macrodroid"
 uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 # ── SwiftKey (morphe-rushiranpise) ──────────────────────────────────────────
@@ -371,7 +350,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.touchtype.swiftkey"
 uptodown-dlurl = "https://swiftkey-keyboard.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/swiftkey/swiftkey-keyboard"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 # ── Bluetooth Keyboard and Mouse (morphe-rushiranpise) ───────────────────────
@@ -386,7 +364,6 @@ arch = ["arm64-v8a", "x86_64"]
 pkg-name = "io.appground.blek"
 uptodown-dlurl = "https://bluetooth-keyboard-and-mouse.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard-mouse-2/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "rushiranpise/morphe-patches"
 
 # ── Proton VPN (morphe-rushiranpise) ─────────────────────────────────────────
@@ -403,7 +380,6 @@ uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/"
 prefer-dl-mode = "bundle"
 patches-source = "rushiranpise/morphe-patches"
-dpi = ["nodpi", "anydpi", "auto"]
 
 [proton-vpn-morphe-rushiranpise-exp]
 enabled = true
@@ -419,5 +395,4 @@ uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/"
 prefer-dl-mode = "bundle"
 patches-source = "rushiranpise/morphe-patches"
-dpi = ["nodpi", "anydpi", "auto"]
 

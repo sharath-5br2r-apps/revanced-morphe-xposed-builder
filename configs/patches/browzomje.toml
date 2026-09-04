@@ -13,7 +13,6 @@ cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
 uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "browzomje/browzomje-patches"
 
 [pinterest-morphe-browzomje-exp]
@@ -28,5 +27,4 @@ cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
 uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "browzomje/browzomje-patches"

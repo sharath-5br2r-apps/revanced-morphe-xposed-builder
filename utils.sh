@@ -69,6 +69,7 @@ if [ -n "${GH_TOKEN:-}" ]; then GH_HEADER="Authorization: token ${GH_TOKEN}"; el
 NEXT_VER_CODE=${NEXT_VER_CODE:-$(date +'%Y%m%d')}
 OS=$(uname -o)
 [[ $(uname -s) == *"NT"* ]] && javapathsep=";" || javapathsep=":"
+DEFAULT_UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 
 declare -g __TOML__=""
 declare -gA __PREBUILTS_CACHE__
@@ -760,31 +761,43 @@ set_prebuilts() {
 		epr "yq not found, please install it"
 		exit 1
 	fi
-
 	# Check AAPT2
 	if [ -n "${AAPT2:-}" ] && { [ -f "$AAPT2" ] || command -v "$AAPT2" >/dev/null 2>&1; }; then
 		pr "Using custom AAPT2: $AAPT2"
+	elif [ -f "${BIN_DIR}/aapt2/aapt2-${arch}" ] && [ -x "${BIN_DIR}/aapt2/aapt2-${arch}" ]; then
+		AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}"
+	elif command -v aapt2 >/dev/null 2>&1; then
+		AAPT2="aapt2"
 	else
-		AAPT2=$(command -v aapt2) || true
-		if [ -z "$AAPT2" ]; then
-			pr "aapt2 not found in PATH, searching in Android SDK..."
-			local sdk_dirs=("${ANDROID_HOME:-}" "${ANDROID_SDK_ROOT:-}" "/usr/local/lib/android/sdk" "/sdcard/Android/sdk" "$HOME/Android/Sdk")
-			for sdk_dir in "${sdk_dirs[@]}"; do
-				if [ -n "$sdk_dir" ] && [ -d "$sdk_dir/build-tools" ]; then
-					AAPT2=$(find "$sdk_dir/build-tools" -name aapt2 2>/dev/null | sort -r | head -n 1)
-					if [ -n "$AAPT2" ]; then break; fi
+		AAPT2=""
+		local sdk_root="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
+		local sdk_dirs=()
+		[ -n "$sdk_root" ] && sdk_dirs+=("$sdk_root")
+		sdk_dirs+=("/usr/local/lib/android/sdk" "/sdcard/Android/sdk" "$HOME/Android/Sdk")
+		for sdk_dir in "${sdk_dirs[@]}"; do
+			if [ -n "$sdk_dir" ] && [ -d "$sdk_dir/build-tools" ]; then
+				local latest_bt
+				latest_bt=$(ls -1d "$sdk_dir"/build-tools/* 2>/dev/null | sort -V | tail -1)
+				if [ -n "$latest_bt" ]; then
+					if [ -f "$latest_bt/lib/apksigner.jar" ]; then
+						APKSIGNER="$latest_bt/lib/apksigner.jar"
+					fi
+					if [ -x "$latest_bt/aapt2" ]; then
+						AAPT2="$latest_bt/aapt2"
+						break
+					fi
 				fi
-			done
-			if [ -z "$AAPT2" ]; then
-				epr "Cannot Find aapt2, please install Android SDK or add aapt2 to PATH"
-				if [ "$(uname -o 2>/dev/null)" = Android ]; then
-					epr "On Android, you can install aapt2 with 'pkg install aapt2' or 'apt install aapt2'"
-				fi
-				exit 1
 			fi
+		done
+		if [ -z "$AAPT2" ]; then
+			epr "Cannot Find aapt2, please install Android SDK or add aapt2 to PATH"
+			if [ "$(uname -o 2>/dev/null)" = Android ]; then
+				epr "On Android, you can install aapt2 with 'pkg install aapt2' or 'apt install aapt2'"
+			fi
+			exit 1
 		fi
-		pr "Using aapt2: $AAPT2"
 	fi
+	pr "Using aapt2: $AAPT2"
 }
 
 config_update() {
@@ -886,7 +899,7 @@ _req() {
 		mv -f "$dlp" "$op"
 	fi
 }
-req() { _req "$1" "$2" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101 Firefox/108.0"; }
+req() { _req "$1" "$2" -H "User-Agent: ${DEFAULT_UA}"; }
 gh_req() { _req "$1" "$2" -H "$GH_HEADER"; }
 gh_dl() {
 	if [ ! -f "$1" ]; then
@@ -1033,6 +1046,64 @@ get_patch_exp_ver() {
 	fi
 }
 
+get_patch_version_code() {
+	local raw_op="$1" version="$2" arch="${3:-}"
+	local abi=""
+	case "${arch,,}" in
+		arm64-v8a|arm64) abi="ARM64_V8A" ;;
+		arm-v7a|armeabi-v7a|arm) abi="ARMEABI_V7A" ;;
+		x86_64) abi="X86_64" ;;
+		x86) abi="X86" ;;
+	esac
+
+	local line="" l
+	while IFS= read -r l; do
+		if [[ "$l" =~ ^[[:space:]]*${version//./\\.}[[:space:]] ]]; then
+			line="$l"
+			break
+		fi
+	done <<<"$raw_op"
+
+	if [[ "$line" =~ \[versionCodes:[[:space:]]*([^]]+)\] ]]; then
+		local vcodes="${BASH_REMATCH[1]}"
+		if [ -n "$abi" ]; then
+			if [[ "$vcodes" =~ ${abi}=([0-9]+) ]]; then
+				echo "${BASH_REMATCH[1]}"
+				return 0
+			fi
+			return 1
+		elif [[ "$vcodes" =~ =([0-9]+) ]]; then
+			echo "${BASH_REMATCH[1]}"
+			return 0
+		fi
+	fi
+	return 1
+}
+
+parse_arch_mapping() {
+	local mapping="${1:-}" arch="${2:-}"
+	if [[ "$mapping" != *":"* ]]; then
+		echo "$mapping"
+		return 0
+	fi
+	local matched="" entry
+	local old_ifs="$IFS"
+	IFS='|'
+	for entry in $mapping; do
+		if [[ "$entry" =~ ^[[:space:]]*([^:]+)[[:space:]]*:[[:space:]]*(.*)$ ]]; then
+			local e_arch="${BASH_REMATCH[1]//[[:space:]]/}"
+			local e_val="${BASH_REMATCH[2]}"
+			e_val="${e_val//[ \'\";\r\n]/}"
+			if [ "${e_arch,,}" = "${arch,,}" ]; then
+				matched="$e_val"
+				break
+			fi
+		fi
+	done
+	IFS="$old_ifs"
+	echo "$matched"
+}
+
 patches_list_versions() {
 	local cache_key="${1}_${2}_${3}_${4}_${5:-}"
 	if [ -n "${__PATCH_VER_CACHE__["$cache_key"]:-}" ]; then
@@ -1149,11 +1220,21 @@ _patches_list() {
 		return 0
 	fi
 	if [[ "$cli_source_l" == *"instafel"* ]]; then
-		local cli_dir
+		local cli_dir cli_commit
 		cli_dir=$(dirname "$cli_jar")
+		cli_commit=$(unzip -p "$cli_jar" META-INF/MANIFEST.MF 2>/dev/null | sed -n 's/^Patcher-Cli-Commit: //p' | tr -d '\r')
+		[ -z "$cli_commit" ] && cli_commit="8e4756f"
 		for j in "${p_jars[@]}"; do
-			cp "$j" "$cli_dir/ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
-			cp "$j" "ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
+			local j_base
+			j_base=$(basename "$j")
+			cp "$j" "$cli_dir/$j_base" 2>/dev/null || :
+			cp "$j" "$j_base" 2>/dev/null || :
+			cp "$j" "$cli_dir/ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :
+			cp "$j" "ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :
+			if [ "$cli_commit" != "8e4756f" ]; then
+				cp "$j" "$cli_dir/ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
+				cp "$j" "ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
+			fi
 		done
 		if ! op=$(eval java -jar "'$cli_jar'" list 2>&1); then
 			epr "Could not get patches list $cli_jar: '$op'"
@@ -1233,15 +1314,18 @@ _trawl_get() {
 		local response status
 		response=$(curl -m 15 -s -X POST "$solver_url" \
 			-H 'Content-Type: application/json' \
-			-d "{\"url\":\"$url\",\"maxTimeout\":15000,\"skipHttp\":true${extra_headers}}") || true
-		status=$(echo "$response" | jq -r '.statusCode // empty')
-		if [[ "$status" =~ ^[1-3][0-9][0-9]$ ]]; then
-			html=$(echo "$response" | jq -r '.html // empty')
-			if [[ -n "$html" ]] && ! is_cf_challenge_page "$html"; then
-				export CF_COOKIES
-				CF_COOKIES=$(echo "$response" | jq -r '[.cookies[] | .name + "=" + .value] | join("; ")')
-				user_agent=$(echo "$response" | jq -r '.userAgent // empty')
-				return 0
+			-d "{\"url\":\"$url\",\"maxTimeout\":60000,\"skipHttp\":true${extra_headers}}") || true
+		local parsed_meta
+		if parsed_meta=$(jq -r '[.statusCode // "", .userAgent // "", ([.cookies[]? | .name + "=" + .value] | join("; "))] | @tsv' <<<"$response" 2>/dev/null); then
+			local status ua cookies
+			IFS=$'\t' read -r status ua cookies <<<"$parsed_meta"
+			if [[ "$status" =~ ^[1-3][0-9][0-9]$ ]]; then
+				html=$(jq -r '.html // empty' <<<"$response" 2>/dev/null || true)
+				if [[ -n "$html" ]] && ! is_cf_challenge_page "$html" && [[ "$html" != *"Attention Required!"* && "$html" != *"Just a moment..."* && "$html" != *"Please Wait... | Cloudflare"* && "$html" != *"Verify you are human"* ]]; then
+					export CF_COOKIES="$cookies"
+					user_agent="$ua"
+					return 0
+				fi
 			fi
 		fi
 		if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
@@ -1261,7 +1345,6 @@ _cfb_get() {
 	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
 	[ -z "$cfb_base" ] && return 1
 	local solver_url="${cfb_base%/}/html"
-
 	for attempt in $(seq 1 $max_retries); do
 		local response_file
 		rm -f "$TEMP_DIR/cfb_response_headers.txt"
@@ -1332,15 +1415,41 @@ _fs_get() {
 
 _fallback_get(){
 	local url=$1
-	html=$(curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 -s -f "$url" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0" | tr -d '\0') || return 1
+	html=$(curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 -s -f "$url" -H "User-Agent: ${DEFAULT_UA}" | tr -d '\0') || return 1
 	if is_cf_challenge_page "$html"; then
 		return 1
 	fi
 	CF_COOKIES=""
-	user_agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0"
+	user_agent="${DEFAULT_UA}"
+}
+
+_cf_cffi_get() {
+	local url=$1
+	local py_cmd=""
+	if command -v python3 >/dev/null 2>&1; then
+		py_cmd="python3"
+	elif command -v python >/dev/null 2>&1; then
+		py_cmd="python"
+	fi
+	[ -z "$py_cmd" ] && return 2
+	local py_script="${CWD}/scripts/cf_get.py"
+	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/scripts/cf_get.py"
+	[ ! -f "$py_script" ] && return 2
+
+	local cffi_res
+	if cffi_res=$("$py_cmd" "$py_script" "$url" "$TEMP_DIR/cookie.txt" 2>/dev/null); then
+		html="$cffi_res"
+		CF_COOKIES=""
+		user_agent="${DEFAULT_UA}"
+		return 0
+	else
+		return 1
+	fi
 }
 
 _unqueued_cf_get() {
+	_cf_cffi_get "$@" && return 0
+
 	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
 	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
 	local fs_base="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}"
@@ -1368,7 +1477,9 @@ _cf_get() {
 	mkdir -p "$TEMP_DIR"
 	local lock=$TEMP_DIR/cf_get.lock
 	exec 200>"$lock"
-	flock -x 200
+	if command -v flock >/dev/null 2>&1; then
+		flock -x 200
+	fi
 	trap 'exec 200>&-' RETURN EXIT INT TERM
 	_unqueued_cf_get "$@"
 	local res=$?
@@ -1484,14 +1595,34 @@ get_apkmirror_pkg_name() {
 }
 
 apkmirror_search() {
-	local resp="$1" dpi="$2" arch="$3" apk_bundle="$4" clean_search_version="$5" search_version="$6"
+	local resp="$1" dpi="$2" arch="$3" apk_bundle="$4" clean_search_version="$5" search_version="$6" target_vc="${7:-}"
+	
+	local py_cmd=""
+	if command -v python3 >/dev/null 2>&1; then
+		py_cmd="python3"
+	elif command -v python >/dev/null 2>&1; then
+		py_cmd="python"
+	fi
+
+	local py_script="${CWD}/scripts/apkmirror_search.py"
+	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/scripts/apkmirror_search.py"
+
+	if [ -n "$py_cmd" ] && [ -f "$py_script" ]; then
+		local py_res
+		if py_res=$("$py_cmd" "$py_script" "$dpi" "$arch" "$apk_bundle" "$clean_search_version" "$search_version" "$target_vc" <<<"$resp") && [ -n "$py_res" ]; then
+			echo "$py_res"
+			return 0
+		fi
+	fi
+
 	local dlurl="" node app_table emptyCheck
 
 	local appdpi=("nodpi" "anydpi")
 	local match_any_dpi=false
-	if [ -n "$dpi" ]; then
+	local dpi_to_use="${dpi:-nodpi anydpi auto}"
+	if [ -n "$dpi_to_use" ]; then
 		local -a extra_dpis=()
-		readarray -t extra_dpis < <(list_args "$dpi")
+		readarray -t extra_dpis < <(list_args "$dpi_to_use")
 		appdpi+=("${extra_dpis[@]}")
 		if isoneof "auto" "${appdpi[@]}"; then
 			match_any_dpi=true
@@ -1502,19 +1633,31 @@ apkmirror_search() {
 	local specific_arch_url=""
 	local specific_arch_fallback_url=""
 
-	for ((n = 1; n < 40; n++)); do
+	for ((n = 1; n < 100; n++)); do
 		node=$($HTMLQ "div.table-row.headerFont:nth-last-child($n)" <<<"$resp")
 		if [ -z "$node" ]; then break; fi
 		
 		dlurl=$($HTMLQ --base https://www.apkmirror.com --attribute href "div.table-cell:nth-child(1) > a:nth-child(1)" <<<"$node")
 		if [ -z "$dlurl" ]; then continue; fi
 
-		local node_apk_bundle node_arch node_dpi
+		local node_apk_bundle node_arch node_dpi node_vc
 		node_apk_bundle=$($HTMLQ "div.table-cell:nth-child(1) span.apkm-badge:first-of-type" --text <<<"$node" | xargs)
 		[ -z "$node_apk_bundle" ] && node_apk_bundle="APK"
 
 		node_arch=$($HTMLQ "div.table-cell:nth-child(2)" --text <<<"$node" | xargs)
 		node_dpi=$($HTMLQ "div.table-cell:nth-child(4)" --text <<<"$node" | xargs)
+		node_vc=""
+		local vc_regex='class="colorLightBlack"[^>]*>([0-9]+)</span>'
+		if [[ "$node" =~ $vc_regex ]]; then
+			node_vc="${BASH_REMATCH[1]}"
+		else
+			local raw_vc
+			raw_vc=$($HTMLQ "div.table-cell:nth-child(1) span.colorLightBlack" --text <<<"$node" 2>/dev/null || true)
+			local num_regex='([0-9]+)'
+			if [[ "$raw_vc" =~ $num_regex ]]; then
+				node_vc="${BASH_REMATCH[1]}"
+			fi
+		fi
 
 		if [ "$node_apk_bundle" != "$apk_bundle" ]; then continue; fi
 
@@ -1555,6 +1698,15 @@ apkmirror_search() {
 			fi
 		fi
 
+		if [ -n "$target_vc" ]; then
+			if [ -n "$node_vc" ] && [ "$node_vc" = "$target_vc" ]; then
+				echo "$dlurl"
+				return 0
+			else
+				continue
+			fi
+		fi
+
 		# Pass 1 Logic: Return Universal/Fat Bundles immediately to optimize cache size
 		if isoneof "$node_arch" 'universal' 'noarch' 'arm64-v8a + x86_64' 'arm64-v8a + armeabi-v7a'; then
 			if isoneof "$node_dpi" "${appdpi[@]}"; then
@@ -1587,7 +1739,7 @@ apkmirror_search() {
 }
 
 dl_apkmirror() {
-	local url=$1 version=${2// /-} output=$3 arch=$4 dpi=$5 is_bundle=false
+	local url=$1 version=${2// /-} output=$3 arch=$4 dpi=$5 is_bundle=false get_latest_ver=${6:-false} version_code=${7:-}
 	local base_url="https://www.apkmirror.com"
 	local html=""
 
@@ -1696,7 +1848,27 @@ dl_apkmirror() {
 	if [ -z "$release_url" ]; then
 		local list_url="${url%/}"
 		local version_href=""
-		for page_num in $(seq 1 10); do
+
+		# 1. Targeted search query (?s=version) first as inspired by uni-apks
+		local search_target_url="${list_url}/?s=${clean_version}"
+		if _cf_get "$search_target_url" 2>/dev/null && [ -n "$html" ]; then
+			local s_flat=$(echo "$html" | tr -d '\n\r')
+			local s_split="${s_flat//<\/a>/<\/a>
+}"
+			local s_links=$(echo "$s_split" | grep -oP 'href="\K/apk/[^"]+')
+			version_href=$(echo "$s_links" | grep -F "$search_version-release" | head -1) || true
+			if [ -z "$version_href" ]; then
+				version_href=$(echo "$s_split" | grep -F "$version" | grep -oP 'href="\K/apk/[^"]+' | grep -F -- '-release/' | head -1) || true
+			fi
+			if [ -n "$version_href" ]; then
+				release_url="$base_url$version_href"
+				_cf_get "$release_url" || return 1
+				resp="$html"
+			fi
+		fi
+
+		if [ -z "$release_url" ]; then
+			for page_num in $(seq 1 10); do
 			local page_url="$list_url/"
 			[[ $page_num -gt 1 ]] && page_url="$list_url/page/$page_num/"
 			_cf_get "$page_url" || return 1
@@ -1749,13 +1921,14 @@ dl_apkmirror() {
 				version_href=$(echo "$all_links" | grep -E "${short_search_version}(-[0-9])?-release/?$" | head -1) || true
 			fi
 
-			if [ -n "$version_href" ]; then
-				release_url="$base_url$version_href"
-				_cf_get "$release_url" || return 1
-				resp="$html"
-				break
-			fi
-		done
+				if [ -n "$version_href" ]; then
+					release_url="$base_url$version_href"
+					_cf_get "$release_url" || return 1
+					resp="$html"
+					break
+				fi
+			done
+		fi
 		
 		# Fallback to direct search if not found on first 5 pages
 		if [ -z "$release_url" ]; then
@@ -1816,12 +1989,17 @@ dl_apkmirror() {
 			types="APK BUNDLE"
 		fi
 		for type in $types; do
-			if dlurl=$(apkmirror_search "$resp" "$dpi" "$arch" "$type" "$clean_search_version" "$search_version"); then
+			if dlurl=$(apkmirror_search "$resp" "$dpi" "$arch" "$type" "$clean_search_version" "$search_version" "$version_code"); then
 				[ "$type" = "BUNDLE" ] && is_bundle=true || is_bundle=false
 				break
 			fi
 		done
-		if [ -z "$dlurl" ]; then return 1; fi
+		if [ -z "$dlurl" ]; then
+			if [ -n "$version_code" ]; then
+				wpr "Could not find variant with version code '$version_code' for version '$version' on APKMirror"
+			fi
+			return 1
+		fi
 		
 		_cf_get "$dlurl" || return 1
 		resp="$html"
@@ -2199,8 +2377,9 @@ get_uptodown_pkg_name() { $HTMLQ --text "tr.full:nth-child(1) > td:nth-child(3)"
 
 # -------------------- archive --------------------
 dl_archive() {
-	local url=$1 version=$2 output=$3 arch=$4
+	local url=$1 version=$2 output=$3 arch=$4 is_bundle=${5:-false} get_latest_ver=${6:-false} version_code=${7:-}
 	local path="" version_f=${version// /}
+	local norm_resp="${__ARCHIVE_RESP__//$'\r'/}"
 	local norm_arch="${arch// /}"
 	local arch_candidates=("$norm_arch")
 	for single_a in $arch; do
@@ -2211,11 +2390,18 @@ dl_archive() {
 	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
-				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
-					path="$p"
-					break 3
+				if [ -n "$version_code" ]; then
+					if [[ "$p" == *"${version_f#v}-${version_code}-${a}.${ext}" ]]; then
+						path="$p"
+						break 3
+					fi
+				else
+					if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
+						path="$p"
+						break 3
+					fi
 				fi
-			done <<<"$__ARCHIVE_RESP__"
+			done <<<"$norm_resp"
 		done
 	done
 
@@ -2251,7 +2437,22 @@ get_archive_resp() {
 	__DL_RESP_CACHE__["archive_resp_$url"]="$__ARCHIVE_RESP__"
 	__DL_RESP_CACHE__["archive_pkg_$url"]="$__ARCHIVE_PKG_NAME__"
 }
-get_archive_vers() { sed 's/^[^-]*-//;s/-\(all\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"$__ARCHIVE_RESP__"; }
+get_archive_vers() {
+	if command -v python3 >/dev/null 2>&1 || command -v python >/dev/null 2>&1; then
+		local py_bin="python3"
+		command -v python3 >/dev/null 2>&1 || py_bin="python"
+		"$py_bin" -c "
+import sys, re
+pat = re.compile(r'^[^-]*-|(-[0-9]+)?-(all|arm64-v8a|arm-v7a|x86|x86_64)\.(apk|apkm|xapk|apks)$')
+for line in sys.stdin:
+    l = line.strip()
+    if l:
+        print(pat.sub('', l))
+" <<<"$__ARCHIVE_RESP__"
+	else
+		sed -E 's/^[^-]*-//;s/(-[0-9]+)?-(all|arm64-v8a|arm-v7a|x86|x86_64)\.(apk|apkm|xapk|apks)$//g' <<<"$__ARCHIVE_RESP__"
+	fi
+}
 get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
 
 # -------------------- cache_repo --------------------
@@ -2749,12 +2950,24 @@ patch_apk() {
 	if [[ "$cli_source_l" == *"instafel"* ]]; then
 		local rel_tmp_dir="${patched_apk}-temporary-files"
 		mkdir -p "$rel_tmp_dir"
-		local cli_dir
+		local cli_dir cli_commit
 		cli_dir=$(dirname "$cli_jar")
+		cli_commit=$(unzip -p "$cli_jar" META-INF/MANIFEST.MF 2>/dev/null | sed -n 's/^Patcher-Cli-Commit: //p' | tr -d '\r')
+		[ -z "$cli_commit" ] && cli_commit="8e4756f"
 		for j in "${p_jars[@]}"; do
-			cp "$j" "$cli_dir/ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
-			cp "$j" "ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
-			cp "$j" "$rel_tmp_dir/ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
+			local j_base
+			j_base=$(basename "$j")
+			cp "$j" "$cli_dir/$j_base" 2>/dev/null || :
+			cp "$j" "$j_base" 2>/dev/null || :
+			cp "$j" "$rel_tmp_dir/$j_base" 2>/dev/null || :
+			cp "$j" "$cli_dir/ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :
+			cp "$j" "ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :
+			cp "$j" "$rel_tmp_dir/ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :
+			if [ "$cli_commit" != "8e4756f" ]; then
+				cp "$j" "$cli_dir/ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
+				cp "$j" "ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
+				cp "$j" "$rel_tmp_dir/ifl-patcher-core-8e4756f.jar" 2>/dev/null || :
+			fi
 		done
 
 		local init_cmd="java -jar '$cli_jar' init '$stock_input'"
@@ -3380,21 +3593,70 @@ build_rv() {
 				local all_archs_found=true
 				for arch in "${arch_list[@]}"; do
 					arch_f="${arch// /}"
-					local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
-					local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+					local target_version_code
+					target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+					if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+						target_version_code=""
+						if [ -n "$resolved_version" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
+							local raw_vers
+							if raw_vers=$(patches_list_versions "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]:-}"); then
+								target_version_code=$(get_patch_version_code "$raw_vers" "$resolved_version" "$arch_f" || true)
+							fi
+						fi
+					fi
 
-					if [ ! -f "$stock_apk" ] && [ ! -f "$all_apk" ]; then
+					local vc_infix="${target_version_code:+-${target_version_code}}"
+					local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
+					local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
+					local check_apk=""
+					[ -f "$stock_apk" ] && check_apk="$stock_apk"
+					[ -z "$check_apk" ] && [ -f "$all_apk" ] && check_apk="$all_apk"
+					if [ -z "$check_apk" ] && [ -n "$target_version_code" ]; then
+						local legacy_stock="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+						local legacy_all="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+						[ -f "$legacy_stock" ] && check_apk="$legacy_stock"
+						[ -z "$check_apk" ] && [ -f "$legacy_all" ] && check_apk="$legacy_all"
+					fi
+
+					if [ -z "$check_apk" ]; then
 						all_archs_found=false
 						break
+					elif [ -n "$target_version_code" ]; then
+						local cached_vc=""
+						if command -v aapt >/dev/null 2>&1; then
+							cached_vc=$(aapt dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
+						elif [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
+							cached_vc=$("$AAPT2" dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
+						fi
+						if [ -n "$cached_vc" ] && [ "$cached_vc" != "$target_version_code" ]; then
+							pr "Cached APK for '$pkg_name' has versionCode '$cached_vc', but target requires '$target_version_code'. Cache invalidated."
+							[ "$check_apk" != "$all_apk" ] && rm -f "$check_apk"
+							all_archs_found=false
+							break
+						fi
 					fi
 				done
 				if [ "$all_archs_found" = true ]; then
 					for arch in "${arch_list[@]}"; do
 						arch_f="${arch// /}"
-						local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
-						local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+						local target_version_code
+						target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+						if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+							target_version_code=""
+							if [ -n "$resolved_version" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
+								local raw_vers
+								if raw_vers=$(patches_list_versions "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]:-}"); then
+									target_version_code=$(get_patch_version_code "$raw_vers" "$resolved_version" "$arch_f" || true)
+								fi
+							fi
+						fi
+						local vc_infix="${target_version_code:+-${target_version_code}}"
+						local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
+						local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 						[ -f "$stock_apk" ] && touch "$stock_apk" 2>/dev/null || true
 						[ -f "$all_apk" ] && touch "$all_apk" 2>/dev/null || true
+						[ -f "${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk" ] && touch "${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk" 2>/dev/null || true
+						[ -f "${apk_cache_dir}/${pkg_name}-${version_f}-all.apk" ] && touch "${apk_cache_dir}/${pkg_name}-${version_f}-all.apk" 2>/dev/null || true
 					done
 					pr "Found all required architectures for '$pkg_name' (v$version_f) in cache. Skipping download!"
 					skip_dl_source_check=true
@@ -3407,7 +3669,7 @@ build_rv() {
 					local cached_versions=""
 					for capk in "${cached_apks[@]}"; do
 						local bname=$(basename "$capk")
-						# extract version from format: pkg_name-version-arch.apk
+						# extract version from format: pkg_name-version-arch.apk or pkg_name-version-vc-arch.apk
 						local v=${bname#${pkg_name}-}
 						v=${v%.apk}
 						v=${v%-arm64-v8a}
@@ -3416,6 +3678,9 @@ build_rv() {
 						v=${v%-x86}
 						v=${v%-all}
 						v=${v%-universal}
+						if [[ "$v" =~ ^(.*)-([0-9]+)$ ]]; then
+							v="${BASH_REMATCH[1]}"
+						fi
 						cached_versions+="$v"$'\n'
 					done
 					local dyn_ver
@@ -3423,9 +3688,30 @@ build_rv() {
 						local all_archs_found=true
 						for arch in "${arch_list[@]}"; do
 							arch_f="${arch// /}"
-							local stock_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}-${arch_f}.apk"
-							local all_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}-all.apk"
-							if [ ! -f "$stock_apk" ] && [ ! -f "$all_apk" ]; then
+							local target_version_code
+							target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+							if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+								target_version_code=""
+								if [ -n "$dyn_ver" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
+									local raw_vers
+									if raw_vers=$(patches_list_versions "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]:-}"); then
+										target_version_code=$(get_patch_version_code "$raw_vers" "$dyn_ver" "$arch_f" || true)
+									fi
+								fi
+							fi
+							local vc_infix="${target_version_code:+-${target_version_code}}"
+							local stock_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}${vc_infix}-${arch_f}.apk"
+							local all_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}${vc_infix}-all.apk"
+							local check_apk=""
+							[ -f "$stock_apk" ] && check_apk="$stock_apk"
+							[ -z "$check_apk" ] && [ -f "$all_apk" ] && check_apk="$all_apk"
+							if [ -z "$check_apk" ] && [ -n "$target_version_code" ]; then
+								local legacy_stock="${apk_cache_dir}/${pkg_name}-${dyn_ver}-${arch_f}.apk"
+								local legacy_all="${apk_cache_dir}/${pkg_name}-${dyn_ver}-all.apk"
+								[ -f "$legacy_stock" ] && check_apk="$legacy_stock"
+								[ -z "$check_apk" ] && [ -f "$legacy_all" ] && check_apk="$legacy_all"
+							fi
+							if [ -z "$check_apk" ]; then
 								all_archs_found=false
 								break
 							fi
@@ -3433,10 +3719,24 @@ build_rv() {
 						if [ "$all_archs_found" = true ]; then
 							for arch in "${arch_list[@]}"; do
 								arch_f="${arch// /}"
-								local stock_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}-${arch_f}.apk"
-								local all_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}-all.apk"
+								local target_version_code
+								target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+								if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+									target_version_code=""
+									if [ -n "$dyn_ver" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
+										local raw_vers
+										if raw_vers=$(patches_list_versions "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]:-}"); then
+											target_version_code=$(get_patch_version_code "$raw_vers" "$dyn_ver" "$arch_f" || true)
+										fi
+									fi
+								fi
+								local vc_infix="${target_version_code:+-${target_version_code}}"
+								local stock_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}${vc_infix}-${arch_f}.apk"
+								local all_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}${vc_infix}-all.apk"
 								[ -f "$stock_apk" ] && touch "$stock_apk" 2>/dev/null || true
 								[ -f "$all_apk" ] && touch "$all_apk" 2>/dev/null || true
+								[ -f "${apk_cache_dir}/${pkg_name}-${dyn_ver}-${arch_f}.apk" ] && touch "${apk_cache_dir}/${pkg_name}-${dyn_ver}-${arch_f}.apk" 2>/dev/null || true
+								[ -f "${apk_cache_dir}/${pkg_name}-${dyn_ver}-all.apk" ] && touch "${apk_cache_dir}/${pkg_name}-${dyn_ver}-all.apk" 2>/dev/null || true
 							done
 							pr "Discovered highest version (v$dyn_ver) for '$pkg_name' in cache. Skipping download!"
 							skip_dl_source_check=true
@@ -3581,10 +3881,34 @@ build_rv() {
 
 	for arch in "${arch_list[@]}"; do
 		arch_f="${arch// /}"
-		local cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
-		local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+
+		local target_version_code
+		target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+		if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+			target_version_code=""
+			if [ -n "$version" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
+				local raw_vers
+				if raw_vers=$(patches_list_versions "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]:-}"); then
+					target_version_code=$(get_patch_version_code "$raw_vers" "$version" "$arch_f" || true)
+				fi
+			fi
+		fi
+		[ -n "$target_version_code" ] && pr "Target version code for '$pkg_name' (v${version}, arch: ${arch_f}): $target_version_code"
+
+		local vc_infix="${target_version_code:+-${target_version_code}}"
+		local cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
+		local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 		local stock_apk="$cached_stock_apk"
 		local all_apk="$cached_all_apk"
+
+		# Fallback to legacy cache paths without vc_infix if target_version_code was not originally part of filename
+		if [ ! -f "$stock_apk" ] && [ -n "$target_version_code" ] && [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk" ]; then
+			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+		fi
+		if [ ! -f "$all_apk" ] && [ -n "$target_version_code" ] && [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-all.apk" ]; then
+			all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+		fi
+
 		if [ -f "$stock_apk" ] && ! is_valid_zip_or_jar "$stock_apk"; then
 			wpr "Cached stock APK '$stock_apk' is corrupted, removing..."
 			rm -f "$stock_apk"
@@ -3608,10 +3932,29 @@ build_rv() {
 				stock_apk="$all_apk"
 			fi
 		fi
+
+		local check_apk=""
+		[ -f "$stock_apk" ] && check_apk="$stock_apk"
+		[ -z "$check_apk" ] && [ -f "$all_apk" ] && check_apk="$all_apk"
+		if [ -n "$check_apk" ] && [ -n "$target_version_code" ]; then
+			local cached_vc=""
+			if command -v aapt >/dev/null 2>&1; then
+				cached_vc=$(aapt dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
+			elif [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
+				cached_vc=$("$AAPT2" dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
+			fi
+			if [ -n "$cached_vc" ] && [ "$cached_vc" != "$target_version_code" ]; then
+				pr "Cached APK for '$pkg_name' has versionCode '$cached_vc', but target requires '$target_version_code'. Cache invalidated."
+				[ "$check_apk" != "$all_apk" ] && rm -f "$check_apk"
+				stock_apk=""
+				all_apk=""
+			fi
+		fi
+
 		if [ ! -f "$stock_apk" ]; then
 			# Redirect to staging directory for safe downloading and processing
-			stock_apk="${apk_dl_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
-			all_apk="${apk_dl_dir}/${pkg_name}-${version_f}-all.apk"
+			stock_apk="${apk_dl_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
+			all_apk="${apk_dl_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 
 			for dl_p in "${DL_SRCS[@]}"; do
 				if [ -z "${args[${dl_p}_dlurl]}" ]; then continue; fi
@@ -3622,7 +3965,7 @@ build_rv() {
 						continue
 					fi
 				fi
-				if ! dl_${dl_p} "${args[${dl_p}_dlurl]}" "$version" "$stock_apk" "$arch" "${args[dpi]}" "$get_latest_ver"; then
+				if ! dl_${dl_p} "${args[${dl_p}_dlurl]}" "$version" "$stock_apk" "$arch" "${args[dpi]}" "$get_latest_ver" "$target_version_code"; then
 					pr "ERROR: Could not download '${table}' from '${dl_p}' with version '${version}', arch '${arch}', dpi '${args[dpi]}'"
 					continue
 				fi
@@ -3642,34 +3985,27 @@ build_rv() {
 					rm -f "${stock_apk}.xapk"
 				fi
 
-					local downloaded_pkg="" downloaded_ver=""
-					if [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
-						if [ -f "$stock_apk" ]; then
-							downloaded_pkg=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
-							downloaded_ver=$("$AAPT2" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-						fi
-						if [ -z "$downloaded_pkg" ] || [ -z "$downloaded_ver" ]; then
-							local bfile=""
-							[ -f "${stock_apk%.apk}.apkm" ] && bfile="${stock_apk%.apk}.apkm"
-							[ -f "${stock_apk}.apkm" ] && bfile="${stock_apk}.apkm"
-							[ -f "${stock_apk}.xapk" ] && bfile="${stock_apk}.xapk"
-							[ -f "${stock_apk}.apks" ] && bfile="${stock_apk}.apks"
-							if [ -n "$bfile" ]; then
-								mkdir -p "${TEMP_DIR}/apkm_check_$$"
-								unzip -q -j "$bfile" "base.apk" -d "${TEMP_DIR}/apkm_check_$$" 2>/dev/null || unzip -q -j "$bfile" "*.apk" -d "${TEMP_DIR}/apkm_check_$$" 2>/dev/null || true
-								local bapk_check
-								bapk_check=$(find "${TEMP_DIR}/apkm_check_$$" -name "*.apk" 2>/dev/null | head -1)
-								if [ -n "$bapk_check" ] && [ -f "$bapk_check" ]; then
-									[ -z "$downloaded_pkg" ] && downloaded_pkg=$("$AAPT2" dump badging "$bapk_check" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
-									[ -z "$downloaded_ver" ] && downloaded_ver=$("$AAPT2" dump badging "$bapk_check" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-								fi
-								rm -rf "${TEMP_DIR}/apkm_check_$$" 2>/dev/null || true
-							fi
-						fi
-					fi
+				local aapt_cmd=""
+				if command -v aapt >/dev/null 2>&1; then
+					aapt_cmd="aapt"
+				elif [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
+					aapt_cmd="$AAPT2"
+				fi
 
-					if [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ] && [ -z "$downloaded_pkg" ]; then
-						epr "ERROR: Downloaded file is not a valid APK or aapt2 failed to parse it. Rejecting..."
+				local downloaded_pkg="" downloaded_ver="" downloaded_vc=""
+				if [ -n "$aapt_cmd" ]; then
+					if [[ "$aapt_cmd" == *"aapt2"* ]]; then
+						downloaded_pkg=$("$aapt_cmd" dump packagename "$stock_apk" 2>/dev/null | tr -d '\r\n') || true
+						downloaded_ver=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
+						downloaded_vc=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1) || true
+					else
+						downloaded_pkg=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
+						downloaded_ver=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
+						downloaded_vc=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1) || true
+					fi
+					
+					if [ -z "$downloaded_pkg" ]; then
+						epr "ERROR: Downloaded file is not a valid APK or aapt failed to parse it. Rejecting..."
 						rm -f "$stock_apk"
 						continue
 					fi
@@ -3680,27 +4016,54 @@ build_rv() {
 						continue
 					fi
 
-				if [ -n "$downloaded_ver" ]; then
-						downloaded_ver=$(echo "$downloaded_ver" | sed -E 's/-[a-zA-Z0-9_.]+$//; s/^v//i')
-						if [ "$version" != "$downloaded_ver" ] && [ "$version_mode" != "auto" ]; then
+					if [ -n "$target_version_code" ] && [ -n "$downloaded_vc" ]; then
+						if [ "$downloaded_vc" != "$target_version_code" ]; then
+							epr "ERROR: Downloaded APK version code ($downloaded_vc) does not match expected ($target_version_code). Rejecting..."
+							rm -f "$stock_apk" "${stock_apk%.apk}.apkm"
+							continue
+						fi
+					fi
+
+					if [ -n "$downloaded_ver" ] && [[ "$dl_p" == "direct" ]]; then
+						if [ "$version" != "$downloaded_ver" ]; then
 							pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
 							version="$downloaded_ver"
 							version_f=${version// /}
 							version_f=${version_f#v}
 							
-							local new_stock_apk="${apk_dl_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+							local new_stock_apk="${TEMP_DIR}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
 							mv "$stock_apk" "$new_stock_apk"
 							stock_apk="$new_stock_apk"
-							cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
-							cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+							cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
+							cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 						fi
 					fi
+				fi
+
+				if [ -n "$downloaded_ver" ]; then
+					downloaded_ver=$(echo "$downloaded_ver" | sed -E 's/-[a-zA-Z0-9_.]+$//; s/^v//i')
+					if [ "$version" != "$downloaded_ver" ] && [ "$version_mode" != "auto" ]; then
+						pr "Updating version from '${version}' to '${downloaded_ver}' based on APK info"
+						version="$downloaded_ver"
+						version_f=${version// /}
+						version_f=${version_f#v}
+						
+						local new_stock_apk="${apk_dl_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
+						mv "$stock_apk" "$new_stock_apk"
+						stock_apk="$new_stock_apk"
+						cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
+						cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
+					fi
+				fi
+
 				if ! verify_downloaded_apk "$stock_apk" "$pkg_name" "$dl_p" "${args[check_sig]:-false}"; then
 					rm -f "$stock_apk" "${stock_apk%.apk}.apkm"
 					continue
 				fi
+
 				break
 			done
+
 			if [ -f "$stock_apk" ] && [ ! -f "$all_apk" ] && [[ "$arch" != "all" && "$arch" != "universal" && "$arch" != "common" ]]; then
 				if check_is_universal "$stock_apk"; then
 					cp -f "$stock_apk" "$all_apk"
@@ -3710,6 +4073,7 @@ build_rv() {
 				fi
 			fi
 
+			# Sync pristine files from staging to cache
 			if [ -f "$stock_apk" ]; then
 				cp -f "$stock_apk" "$cached_stock_apk" 2>/dev/null || true
 			fi

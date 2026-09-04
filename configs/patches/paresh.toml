@@ -11,7 +11,6 @@ arch = ["all", "arm64-v8a", "arm-v7a"]
 pkg-name = "com.truecaller"
 uptodown-dlurl = "https://truecaller.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/true-software-scandinavia-ab/truecaller-caller-id-block"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -24,7 +23,6 @@ pkg-name = "com.overlook.android.fing"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
-dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
@@ -41,7 +39,6 @@ pkg-name = "com.overlook.android.fing"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
-dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
@@ -61,7 +58,6 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvp
 prefer-dl-mode = "bundle"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
-dpi = "120-640dpi"
 
 arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 
@@ -79,7 +75,6 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvp
 prefer-dl-mode = "bundle"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
-dpi = "120-640dpi"
 
 arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 
@@ -92,7 +87,6 @@ build-mode = "apk"
 pkg-name = "in.startv.hotstar"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
-dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
@@ -107,7 +101,6 @@ build-mode = "apk"
 pkg-name = "in.startv.hotstar"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
-dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
@@ -124,7 +117,6 @@ pkg-name = "eu.darken.sdmse"
 uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
 apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -141,7 +133,6 @@ pkg-name = "eu.darken.sdmse"
 uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
 apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -157,7 +148,6 @@ arch = ["all", "arm64-v8a", "arm-v7a"]
 pkg-name = "com.mxtech.videoplayer.pro"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
 uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -173,7 +163,6 @@ arch = ["all", "arm64-v8a", "arm-v7a"]
 pkg-name = "com.mxtech.videoplayer.pro"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
 uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -189,7 +178,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cricbuzz.android"
 uptodown-dlurl = "https://cricbuzz-cricket-scores-and-news.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -205,7 +193,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cricbuzz.android"
 uptodown-dlurl = "https://cricbuzz-cricket-scores-and-news.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -221,7 +208,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cv.docscanner"
 uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -237,7 +223,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.cv.docscanner"
 uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
@@ -253,6 +238,5 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.eyecon.global"
 uptodown-dlurl = "https://eyecon-phone-dialer-and-cont-eyecon.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/eyecon-phone-dialer-contacts/eyecon-caller-id-spam-block"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"

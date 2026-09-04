@@ -9,15 +9,15 @@
       "com.tubitv": "ad4cfa4b600c6451571625a911aace33",
       "com.univision.prendetv": "af7f8e042bd4b56df21f80a2c99ac58f",
       "com.wbd.hbomax": "98d6f8aece496a778e33edefaea58184",
-      "shared": "0a0b8a0ed50ebd369dd821e097a588bd",
-      "tv.pluto.android": "21b638f3a2c93b1afbea6acdb54d2f4f"
+      "shared": "d700e98c7610bc1dbc6470c84ae59d3d",
+      "tv.pluto.android": "25fe673a221a25e3a66b2c405a62b119"
     }
   },
   "anddea/revanced-patches": {
     "dev": {
-      "com.google.android.apps.youtube.music": "7c8514e8b77b917f66cb9546426ae6cc",
-      "com.google.android.youtube": "b735bd96d906870eaed0b42b95a013b2",
-      "shared": "ffdfc72a4fa4f0035180636dd9251b66"
+      "com.google.android.apps.youtube.music": "a5696f00c57bb0408877768d55ce13e5",
+      "com.google.android.youtube": "2e25e1856c5ba4a1d194cc933a461500",
+      "shared": "43e9670c90e7d1b4b3962060253ee5df"
     },
     "stable": {}
   },
@@ -52,9 +52,9 @@
   },
   "crimera/piko": {
     "dev": {
-      "com.instagram.android": "4e805e89067b1be9c2f9eaee6d96b151",
+      "com.instagram.android": "6358d74e30663cc23c1cd55dec2c8170",
       "com.twitter.android": "a90b18f719b69483ef32f9da4d063229",
-      "shared": "d5f222c6f361bf7d083990a3056bf800"
+      "shared": "57f49120c936203e94e057111cadce06"
     },
     "stable": {
       "com.instagram.android": "084b5083d2993f8e93436d3ba6df3d7d",
@@ -82,7 +82,10 @@
       "com.byairapp.android": "56242293516f595ae51b46c37d9c66b3",
       "shared": "cf16eb2095610d4843c17c9cc833b2d0"
     },
-    "stable": {}
+    "stable": {
+      "com.byairapp.android": "56242293516f595ae51b46c37d9c66b3",
+      "shared": "cf16eb2095610d4843c17c9cc833b2d0"
+    }
   },
   "hoo-dles/morphe-patches": {
     "dev": {
@@ -210,7 +213,7 @@
   "kveld9/kveld-morphe-patches": {
     "dev": {},
     "stable": {
-      "com.brave.browser": "8652f177b432cc702b4e134542f8cc74",
+      "com.brave.browser": "abaa5c1e1a214e85ebc4d001a454d75e",
       "shared": "cb5f0009e71c25a410dd697e4cf4fb38"
     }
   },
@@ -223,10 +226,10 @@
   },
   "morpheapp/morphe-patches": {
     "dev": {
-      "com.google.android.apps.youtube.music": "6273edfeb771e08e01d893091a09fbbd",
-      "com.google.android.youtube": "52d46c8f7aa4c4a083f7fb34710f30d4",
+      "com.google.android.apps.youtube.music": "779227c2c46f8efa4672e5187b8a9eae",
+      "com.google.android.youtube": "db539a06b1d199898fe603f9c47e401d",
       "com.reddit.frontpage": "61dfe9c1ad45610585ea130788620b51",
-      "shared": "8e32c9f41650312b650b91c11d0d728f"
+      "shared": "011e34a9f04529a691a4f28390032ca1"
     },
     "stable": {
       "com.google.android.apps.youtube.music": "1566688fd31cd5b4de87fc0d4c91fbf0",
@@ -321,6 +324,13 @@
       "it.mirko.beta": "7c139a1fd926a7b6b3adef3be5514769",
       "org.hola.play": "f18dc8d0279232ee4cf5f1b7c9223138",
       "shared": "3feee68e9fca7acb1461160dc0edc12a"
+    }
+  },
+  "sapitosucio/froggomorphepatches": {
+    "dev": {},
+    "stable": {
+      "com.facebook.katana": "c08748efec6831fb7ca717fce8b0ce31",
+      "shared": "b729f99c591c50dec896494ebca13344"
     }
   }
 }

@@ -13,5 +13,4 @@ cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.burton999.notecal"
 uptodown-dlurl = "https://calcnote-notepad-calculator.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/burton999/calcnote-notepad-calculator"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "binarymend/morphe-patches"

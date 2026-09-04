@@ -13,5 +13,4 @@ arch = ["arm64-v8a", "arm-v7a"]
 pkg-name = "com.mixapplications.rufus"
 uptodown-dlurl = "https://rufus-unofficial.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mixapplications/drofus-iso2usb"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "kiraio-moe/Lain-Patches"

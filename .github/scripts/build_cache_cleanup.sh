@@ -50,16 +50,17 @@ done
 
 echo "Cache size is still $current_size bytes. Initiating STRICT fallback eviction (deleting oldest files first)..."
 
-# Strictly enforce limit by deleting oldest files one by one until under limit
-while [ "$current_size" -ge "$MAX_SIZE_BYTES" ]; do
-    # Use sed instead of head: with pipefail, head exits after the first line
-    # and sort can receive SIGPIPE, causing the cleanup job to fail with 141/2.
-    # sed reads the complete sorted stream before returning the first path.
-    oldest_file=$(find "$APK_CACHE_DIR" -type f -printf '%T+ %p\n' | sort | sed -n '1s/^[^ ]* //p')
-    if [ -z "$oldest_file" ]; then break; fi
-    echo "Evicting oldest file: $oldest_file"
-    rm -f "$oldest_file"
-    current_size=$(get_size)
-done
+# Get all files sorted by modification time (oldest first) along with their size in bytes
+while IFS=' ' read -r _mtime fsize fpath; do
+    [ -z "$fpath" ] && continue
+    if [ -f "$fpath" ]; then
+        echo "Evicting oldest file: $fpath ($fsize bytes)"
+        rm -f "$fpath"
+        current_size=$((current_size - fsize))
+        if [ "$current_size" -lt "$MAX_SIZE_BYTES" ]; then
+            break
+        fi
+    fi
+done < <(find "$APK_CACHE_DIR" -type f -printf '%T+ %s %p\n' | sort)
 
 echo "Strict cleanup complete. Final cache size: $current_size bytes."

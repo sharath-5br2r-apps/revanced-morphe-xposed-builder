@@ -10,7 +10,6 @@ pkg-name = "app.symfonik.music.player"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://symfonium.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast"
-dpi = ["nodpi", "anydpi", "auto"]
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.symfonik.music.player"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
@@ -22,7 +21,6 @@ build-mode = "apk"
 arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.dv.adm"
 cli-source = "MorpheApp/morphe-desktop"
-dpi = ["nodpi", "anydpi", "auto"]
 uptodown-dlurl="https://advanced-download-manager.en.uptodown.com/android"
 apkmirror-dlurl="https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm"
@@ -39,7 +37,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "tv.twitch.android.app"
 uptodown-dlurl = "https://twitch.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/twitch-interactive-inc/twitch"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [batteryguru-morphe-hooman]
@@ -53,7 +50,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.paget96.batteryguru"
 uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [batteryguru-morphe-hooman-exp]
@@ -68,7 +64,6 @@ arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 pkg-name = "com.paget96.batteryguru"
 uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [poweramp-morphe-hooman]
@@ -84,7 +79,6 @@ uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp/"
 apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
 apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [poweramp-morphe-hooman-exp]
@@ -101,7 +95,6 @@ uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp/"
 apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
 apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [adobe-acrobat-morphe-hooman]
@@ -115,7 +108,6 @@ arch = ["all", "arm64-v8a", "x86_64"]
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [adobe-acrobat-morphe-hooman-exp]
@@ -130,6 +122,5 @@ arch = ["all", "arm64-v8a", "x86_64"]
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
-dpi = ["nodpi", "anydpi", "auto"]
 patches-source = "arandomhooman/hoomans-morphe-patches"
 

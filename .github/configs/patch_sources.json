@@ -16,26 +16,26 @@
   "anddea": {
     "repo": "anddea/revanced-patches",
     "stable": "v4.2.0",
-    "prerelease": "v4.3.0-dev.4",
+    "prerelease": "v4.3.0-dev.5",
     "blocked": false,
     "stable_date": "2026-08-07T15:03:16Z",
-    "pre_date": "2026-08-28T17:59:02Z"
+    "pre_date": "2026-09-04T15:44:14Z"
   },
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.41.0",
-    "prerelease": "v1.42.0-dev.1",
+    "prerelease": "v1.42.0-dev.2",
     "blocked": false,
     "stable_date": "2026-09-01T16:30:24Z",
-    "pre_date": "2026-09-03T11:37:16Z"
+    "pre_date": "2026-09-04T11:37:23Z"
   },
   "piko": {
     "repo": "crimera/piko",
     "stable": "v3.9.0",
-    "prerelease": "v3.10.0-dev.1",
+    "prerelease": "v3.10.0-dev.3",
     "blocked": false,
     "stable_date": "2026-08-31T02:40:04Z",
-    "pre_date": "2026-09-03T07:54:33Z"
+    "pre_date": "2026-09-04T04:50:10Z"
   },
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
@@ -166,10 +166,10 @@
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.30.3",
+    "stable": "v1.30.4",
     "prerelease": "v1.5.7-dev.3",
     "blocked": false,
-    "stable_date": "2026-08-29T16:47:02Z",
+    "stable_date": "2026-09-04T02:38:52Z",
     "pre_date": "2026-06-26T16:45:34Z"
   },
   "revenge": {
@@ -263,24 +263,24 @@
   },
   "franticg33k": {
     "repo": "franticg33k/morphe-patches",
-    "stable": "v1.3.7",
-    "stable_date": "2026-08-07T02:39:43Z",
-    "prerelease": "v1.3.8-dev.2",
-    "pre_date": "2026-09-03T04:46:27Z",
+    "stable": "v1.3.9",
+    "stable_date": "2026-09-04T08:13:16Z",
+    "prerelease": "v1.3.10-dev.2",
+    "pre_date": "2026-09-04T18:55:25Z",
     "blocked": false
   },
   "dh6k": {
     "repo": "dh6k/morphe-patches",
     "stable": "v1.4.0",
     "stable_date": "2026-08-24T09:07:19Z",
-    "prerelease": "v1.4.0-dev.4",
-    "pre_date": "2026-08-24T08:37:54Z",
+    "prerelease": "v1.5.0-dev.5",
+    "pre_date": "2026-09-04T09:26:29Z",
     "blocked": false
   },
   "kveld9": {
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.11.0",
-    "stable_date": "2026-09-02T23:00:51Z",
+    "stable": "v1.12.0",
+    "stable_date": "2026-09-03T22:07:47Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -315,6 +315,14 @@
     "stable_date": "2026-07-10T09:33:46Z",
     "prerelease": "v1.13.1-dev.4",
     "pre_date": "2026-08-24T16:16:24Z",
+    "blocked": false
+  },
+  "sapitosucio": {
+    "repo": "SapitoSucio/FroggoMorphePatches",
+    "stable": "v1.2.4",
+    "stable_date": "2026-09-02T22:03:06Z",
+    "prerelease": "v1.4.0-dev.1",
+    "pre_date": "2026-09-03T11:25:07Z",
     "blocked": false
   }
 }

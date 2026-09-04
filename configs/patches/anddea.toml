@@ -16,7 +16,6 @@ patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --con
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
-dpi = ["nodpi", "anydpi", "auto"]
 
 # ── YouTube morphe-anddea-amoled (#000000 explicit) ───────────────────────────
 [youtube-morphe-anddea-amoled]
@@ -33,7 +32,6 @@ patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#000000 -OlightThemeBackgr
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
-dpi = ["nodpi", "anydpi", "auto"]
 
 [youtube-music-morphe-anddea]
 enabled = true
@@ -48,7 +46,6 @@ patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black 
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
-dpi = ["nodpi", "anydpi", "auto"]
 
 # ── YouTube Music morphe-anddea-amoled (#000000 explicit) ─────────────────────
 [youtube-music-morphe-anddea-amoled]
@@ -64,5 +61,4 @@ patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=#000000 --continue-on
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
-dpi = ["nodpi", "anydpi", "auto"]
 

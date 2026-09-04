@@ -115,6 +115,10 @@ jobs:
             find . -maxdepth 1 -type f -regextype posix-extended -regex ".*/(${{ inputs.remove_apks }})" -exec rm -f {} +
            fi
 
+      - name: Setup Python dependencies
+        run: |
+          pip install --no-cache-dir curl_cffi || true
+
       - name: Build modules and apks
         if: ${{ steps.context.outputs.HAS_ENABLED_APPS != 'false' }}
         env:
