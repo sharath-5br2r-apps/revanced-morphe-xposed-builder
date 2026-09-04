@@ -1,10 +1,10 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "youtube-morphe-amoled": {
+  "youtube-morphe-anddea-amoled": {
     "enabled": true,
     "app-name": "youtube",
-    "rv-brand": "morphe-amoled",
+    "rv-brand": "morphe-anddea-amoled",
     "build-mode": "both",
     "arch": [
       "all",
@@ -14,15 +14,13 @@
     ],
     "pkg-name": "com.google.android.youtube",
     "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "MorpheApp/morphe-patches",
+    "patches-source": "anddea/revanced-patches",
     "included-patches": [
-      "Theme"
+      "MaterialYou"
     ],
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
+    "patcher-args": "-e 'Theme' -OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF --continue-on-error",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
     "dpi": [
       "nodpi",
