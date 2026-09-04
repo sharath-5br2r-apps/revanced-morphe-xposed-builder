@@ -1,12 +1,12 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "vector-morphe-byehi98": {
+  "jetpack-joyride-morphe-byehi98": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "vector",
+    "app-name": "jetpack-joyride",
     "rv-brand": "morphe-byehi98",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nekki.vector",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.halfbrick.jetpackjoyride",
     "build-mode": "apk",
     "arch": [
       "all",
@@ -14,14 +14,44 @@
       "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.nekki.vector",
-    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/",
+    "pkg-name": "com.halfbrick.jetpackjoyride",
+    "uptodown-dlurl": "https://jetpack-joyride.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/",
     "dpi": [
       "nodpi",
       "anydpi",
       "auto"
     ],
     "patches-source": "byehi98/okish-morphe-patches"
+  },
+  "x-morphe-piko-materialyou-exp": {
+    "enabled": true,
+    "app-name": "x",
+    "rv-brand": "morphe-piko-materialyou-exp",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "version": "latest",
+    "pkg-name": "com.twitter.android",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "patches-source": "crimera/piko",
+    "patches-source-host": "github",
+    "included-patches": [
+      "Dynamic Color"
+    ],
+    "patcher-args": "--continue-on-error",
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android",
+    "dpi": [
+      "nodpi",
+      "anydpi",
+      "auto"
+    ]
   }
 }

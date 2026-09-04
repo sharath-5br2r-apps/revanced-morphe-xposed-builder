@@ -1,35 +1,36 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": true,
-  "github-morphe-hoodles-stylus-exp": {
+  "brave-nightly-morphe-dh6k": {
     "enabled": true,
-    "app-name": "github",
-    "rv-brand": "morphe-hoodles-stylus-exp",
+    "app-name": "brave-nightly",
+    "rv-brand": "morphe-dh6k",
+    "version": "beta",
     "build-mode": "apk",
     "arch": [
-      "all",
       "arm64-v8a",
       "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.github.android",
+    "pkg-name": "com.brave.browser_nightly",
     "cli-source": "MorpheApp/morphe-desktop",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android",
-    "patches-source": [
-      "hoo-dles/morphe-patches",
-      "ch3thanhs/stylus"
+    "patches-source": "dh6k/morphe-patches",
+    "patcher-args": "--continue-on-error",
+    "github-dlurl": "https://github.com/brave/brave-browser/releases",
+    "github-dlurl-regex": [
+      {
+        "arch": "arm64-v8a",
+        "regex": "(BraveMonoarm64|MonoArm64)\\.apk$"
+      },
+      {
+        "arch": "arm-v7a",
+        "regex": "(BraveMonoarm|MonoArm)\\.apk$"
+      },
+      {
+        "arch": "x86_64",
+        "regex": "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
+      }
     ],
-    "included-patches": [
-      [
-        "AMOLED dark theme"
-      ],
-      [
-        "Force system font (including monospace) (GitHub)"
-      ]
-    ],
-    "dpi": "480-640dpi",
-    "version": "latest"
+    "github-release-name-regex": "^Nightly v"
   }
 }
