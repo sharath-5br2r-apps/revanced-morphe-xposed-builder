@@ -152,6 +152,7 @@ jobs:
         run: bash .github/scripts/build_get_output.sh
 
       - name: Generate release notes from build.json
+        if: ${{ inputs.upload_release_metadata != false }}
         run: |
           if [ -s "build.json" ]; then
             python3 .github/scripts/generate_md_from_json.py build.json release_notes.md || true

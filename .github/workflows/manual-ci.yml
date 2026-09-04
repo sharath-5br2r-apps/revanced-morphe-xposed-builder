@@ -31,6 +31,11 @@ on:
         required: false
         type: string
         default: ""
+      upload_release_metadata:
+        description: "Upload release notes and build.json to release"
+        required: false
+        type: boolean
+        default: true
 
   workflow_call:
     inputs:
@@ -42,6 +47,11 @@ on:
         required: false
         type: string
         default: ""
+      upload_release_metadata:
+        description: "Upload release notes and build.json to release"
+        required: false
+        type: boolean
+        default: true
 
 concurrency:
   group: ci
@@ -84,6 +94,7 @@ jobs:
       exclusive_apps: ${{ inputs.exclusive_apps }}
       remove_apks: ${{ inputs.remove_apks }}
       patches_version: ${{ inputs.patches_version }}
+      upload_release_metadata: ${{ inputs.upload_release_metadata }}
     secrets: inherit
 
   trigger_cleanup:
