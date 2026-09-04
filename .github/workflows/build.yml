@@ -113,8 +113,8 @@ jobs:
         if: ${{ steps.context.outputs.HAS_ENABLED_APPS != 'false' }}
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          APKS_REPO: ${{ vars.APKS_REPO }}
-          UPLOAD_APKS_REPO: ${{ vars.APKS_REPO }}
+          APKS_REPO: ${{ vars.APKS_REPO || 'sharath-5br2r-apps/apks-dump' }}
+          UPLOAD_APKS_REPO: ${{ vars.APKS_REPO || 'sharath-5br2r-apps/apks-dump' }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -133,8 +133,8 @@ jobs:
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           APKS_REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          APKS_REPO: ${{ vars.APKS_REPO }}
-          APKS_REPO_URL: ${{ vars.APKS_REPO }}
+          APKS_REPO: ${{ vars.APKS_REPO || 'sharath-5br2r-apps/apks-dump' }}
+          APKS_REPO_URL: ${{ vars.APKS_REPO || 'sharath-5br2r-apps/apks-dump' }}
         run: |
           if [ -n "${APKS_REPO:-}" ] && [ -n "${PERSONAL_ACCESS_TOKEN:-}" ]; then
             python3 .github/scripts/update_usage_tracker.py || true

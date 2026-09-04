@@ -3445,6 +3445,10 @@ build_rv() {
 		fi
 
 	if [ "$skip_dl_source_check" = false ]; then
+		local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-sharath-5br2r-apps/apks-dump}}"
+		if [ -n "$apks_repo" ] && [ -n "$pkg_name" ] && [ -z "${args[cache_repo_dlurl]:-}" ]; then
+			args[cache_repo_dlurl]="https://github.com/${apks_repo}/releases/tag/${pkg_name}"
+		fi
 		# 2. Establish dl_from and fetch required HTML responses
 		for dl_p in "${DL_SRCS[@]}"; do
 			if [ -z "${args[${dl_p}_dlurl]}" ]; then continue; fi
@@ -3689,6 +3693,36 @@ build_rv() {
 					cp -f "$stock_apk" "$all_apk"
 					if [ -f "${stock_apk%.apk}.apkm" ]; then
 						cp -f "${stock_apk%.apk}.apkm" "${all_apk%.apk}.apkm"
+					fi
+				fi
+			fi
+
+			if [ -f "$stock_apk" ]; then
+				cp -f "$stock_apk" "$cached_stock_apk" 2>/dev/null || true
+			fi
+			if [ -f "$all_apk" ]; then
+				cp -f "$all_apk" "$cached_all_apk" 2>/dev/null || true
+			fi
+
+			local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-sharath-5br2r-apps/apks-dump}}"
+			local pat_token="${PERSONAL_ACCESS_TOKEN:-${APKS_REPO_TOKEN:-}}"
+			if [ -n "$apks_repo" ] && [ -n "$pat_token" ] && [ -n "${dl_p:-}" ] && [ "$dl_p" != "github" ] && [ "$dl_p" != "archive" ] && [ "$dl_p" != "cache_repo" ]; then
+				if [ -s "$stock_apk" ] || [ -s "$all_apk" ]; then
+					pr "Uploading newly downloaded APKs to cache repo ${apks_repo} (${pkg_name})..."
+					if GH_TOKEN="$pat_token" gh release view "$pkg_name" --repo "$apks_repo" >/dev/null 2>&1 || GH_TOKEN="$pat_token" gh release create "$pkg_name" --repo "$apks_repo" --title "$pkg_name" --notes "" || GH_TOKEN="$pat_token" gh release view "$pkg_name" --repo "$apks_repo" >/dev/null 2>&1; then
+						for file_to_upload in "$all_apk" "$stock_apk"; do
+							if [ -s "$file_to_upload" ]; then
+								echo "Uploading $(basename "$file_to_upload") to ${apks_repo} release ${pkg_name}..."
+								GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$file_to_upload" --repo "$apks_repo" --clobber || {
+									echo "::warning::Failed to upload $(basename "$file_to_upload") to ${apks_repo}, retrying..."
+									sleep 3
+									GH_TOKEN="$pat_token" gh release upload "$pkg_name" "$file_to_upload" --repo "$apks_repo" --clobber || echo "::warning::Failed to upload $(basename "$file_to_upload") to ${apks_repo}"
+								}
+							fi
+							[ "$stock_apk" = "$all_apk" ] && break
+						done
+					else
+						wpr "Failed to view/create release $pkg_name on $apks_repo"
 					fi
 				fi
 			fi
