@@ -82,7 +82,7 @@ jobs:
           path: batch_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Prepare build.json for release upload
+      - name: Prepare build.json and generate release notes for release upload
         run: |
           if [ -d "batch_logs/aggregated_out" ]; then
             for json_file in batch_logs/aggregated_out/build.*.json; do
@@ -90,11 +90,9 @@ jobs:
                 cp -f "$json_file" build.json
               fi
             done
-            for md_file in batch_logs/aggregated_out/build.*.md; do
-              if [ -f "$md_file" ]; then
-                cp -f "$md_file" build.md
-              fi
-            done
+          fi
+          if [ -s "build.json" ]; then
+            python3 .github/scripts/generate_md_from_json.py build.json release_notes.md || true
           fi
 
       - name: Upload build.json to numbered release via GitHub CLI
@@ -104,22 +102,20 @@ jobs:
           tag="${{ needs.prepare_context.outputs.next_ver_code }}"
           if [ -n "$tag" ] && [ -s "build.json" ]; then
             notes_arg=("--notes" "")
-            [ -s "build.md" ] && notes_arg=("--notes-file" "build.md")
+            [ -s "release_notes.md" ] && notes_arg=("--notes-file" "release_notes.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -s "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
+              [ -s "release_notes.md" ] && gh release edit "$tag" --notes-file "release_notes.md" || true
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
-            for file in build.json build.md; do
-              if [ -s "$file" ]; then
-                echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber || {
-                  echo "::warning::Failed to upload $file to release $tag, retrying..."
-                  sleep 3
-                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
-                }
-              fi
-            done
+            if [ -s "build.json" ]; then
+              echo "Uploading build.json to release $tag..."
+              gh release upload "$tag" "build.json" --clobber || {
+                echo "::warning::Failed to upload build.json to release $tag, retrying..."
+                sleep 3
+                gh release upload "$tag" "build.json" --clobber || echo "::warning::Failed to upload build.json to release $tag"
+              }
+            fi
           fi
 
       - name: Upload module update metadata to update tag

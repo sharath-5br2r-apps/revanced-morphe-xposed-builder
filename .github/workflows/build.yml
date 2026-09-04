@@ -22,7 +22,7 @@ on:
         type: string
         default: ""
       upload_release_metadata:
-        description: "Upload build.json and build.md directly to release (set false when aggregate job handles release metadata)"
+        description: "Upload build.json directly to release (set false when aggregate job handles release metadata)"
         required: false
         type: boolean
         default: true
@@ -151,6 +151,12 @@ jobs:
         id: get_output
         run: bash .github/scripts/build_get_output.sh
 
+      - name: Generate release notes from build.json
+        run: |
+          if [ -s "build.json" ]; then
+            python3 .github/scripts/generate_md_from_json.py build.json release_notes.md || true
+          fi
+
       - name: Upload to release
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
@@ -159,11 +165,11 @@ jobs:
           prerelease_flag=""
           [ "${{ steps.context.outputs.IS_PRERELEASE }}" = "true" ] && prerelease_flag="--prerelease"
           notes_arg=("--notes" "")
-          if [ "${{ inputs.upload_release_metadata }}" != "false" ] && [ -s "build.md" ]; then
-            notes_arg=("--notes-file" "build.md")
+          if [ "${{ inputs.upload_release_metadata }}" != "false" ] && [ -s "release_notes.md" ]; then
+            notes_arg=("--notes-file" "release_notes.md")
           fi
           if gh release view "$tag" >/dev/null 2>&1; then
-            [ -s "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
+            [ -s "release_notes.md" ] && gh release edit "$tag" --notes-file "release_notes.md" || true
           else
             gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" $prerelease_flag || true
           fi
@@ -188,22 +194,20 @@ jobs:
           tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
           if [ -s "build.json" ]; then
             notes_arg=("--notes" "")
-            [ -s "build.md" ] && notes_arg=("--notes-file" "build.md")
+            [ -s "release_notes.md" ] && notes_arg=("--notes-file" "release_notes.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -s "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
+              [ -s "release_notes.md" ] && gh release edit "$tag" --notes-file "release_notes.md" || true
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
-            for file in build.json build.md; do
-              if [ -s "$file" ]; then
-                echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber || {
-                  echo "::warning::Failed to upload $file to release $tag, retrying..."
-                  sleep 3
-                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
-                }
-              fi
-            done
+            if [ -s "build.json" ]; then
+              echo "Uploading build.json to release $tag..."
+              gh release upload "$tag" "build.json" --clobber || {
+                echo "::warning::Failed to upload build.json to release $tag, retrying..."
+                sleep 3
+                gh release upload "$tag" "build.json" --clobber || echo "::warning::Failed to upload build.json to release $tag"
+              }
+            fi
           fi
 
       - name: Upload part build logs artifact
@@ -212,8 +216,7 @@ jobs:
           name: part-logs-${{ steps.context.outputs.ARCHIVE_TAG }}-${{ steps.context.outputs.CONFIG_TAG || strategy.job-index || '0' }}-${{ github.job }}
           path: |
             build.json
-            build.md
-            build.tmp
+            release_notes.md
           if-no-files-found: ignore
 
       - name: Update changelog and module update files
@@ -230,7 +233,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           gh release view "update" >/dev/null 2>&1 || gh release create "update" --title "Update Metadata" --notes "" || true
-          for file in build.md *-update.json; do
+          for file in *-update.json; do
             if [ -s "$file" ]; then
               echo "Uploading $file to release update..."
               gh release upload update "$file" --clobber || {

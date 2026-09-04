@@ -2,9 +2,13 @@ import json
 import sys
 
 def main():
-    flavor = sys.argv[1] if len(sys.argv) > 1 else "manual"
-    json_path = f"aggregated_out/build.{flavor}.json"
-    md_path = f"aggregated_out/build.{flavor}.md"
+    if len(sys.argv) > 2:
+        json_path = sys.argv[1]
+        md_path = sys.argv[2]
+    else:
+        flavor = sys.argv[1] if len(sys.argv) > 1 else "manual"
+        json_path = f"aggregated_out/build.{flavor}.json"
+        md_path = f"aggregated_out/build.{flavor}.md"
 
     try:
         with open(json_path, "r", encoding="utf-8") as f:
@@ -43,8 +47,18 @@ def main():
             cli_set.append(cli_info)
 
         if patches_info:
-            p_items = [p.strip() for p in patches_info.split() if p.strip()]
-            c_items = [c.strip() for c in changelog.split() if c.strip()] if changelog else []
+            if isinstance(patches_info, list):
+                p_items = [str(p).strip() for p in patches_info if str(p).strip()]
+            else:
+                p_items = [p.strip() for p in str(patches_info).split() if p.strip()]
+
+            if isinstance(changelog, list):
+                c_items = [str(c).strip() for c in changelog if str(c).strip()]
+            elif changelog:
+                c_items = [c.strip() for c in str(changelog).split() if c.strip()]
+            else:
+                c_items = []
+
             for idx, p in enumerate(p_items):
                 if p not in patches_dict:
                     c_url = c_items[idx] if idx < len(c_items) and c_items[idx] != "passthrough" else ""

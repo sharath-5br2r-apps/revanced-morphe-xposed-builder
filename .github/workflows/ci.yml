@@ -271,16 +271,14 @@ jobs:
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
-            for file in dev_logs/aggregated_out/build.dev.json dev_logs/aggregated_out/build.dev.md; do
-              if [ -s "$file" ]; then
-                echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber || {
-                  echo "::warning::Failed to upload $file to release $tag, retrying..."
-                  sleep 3
-                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
-                }
-              fi
-            done
+            if [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
+              echo "Uploading dev_logs/aggregated_out/build.dev.json to release $tag..."
+              gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json" --clobber || {
+                echo "::warning::Failed to upload dev_logs/aggregated_out/build.dev.json to release $tag, retrying..."
+                sleep 3
+                gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json" --clobber || echo "::warning::Failed to upload dev_logs/aggregated_out/build.dev.json to release $tag"
+              }
+            fi
           fi
 
       - name: Upload module update metadata to update tag (Dev)
@@ -407,16 +405,14 @@ jobs:
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
-            for file in stable_logs/aggregated_out/build.stable.json stable_logs/aggregated_out/build.stable.md; do
-              if [ -s "$file" ]; then
-                echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber || {
-                  echo "::warning::Failed to upload $file to release $tag, retrying..."
-                  sleep 3
-                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
-                }
-              fi
-            done
+            if [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
+              echo "Uploading stable_logs/aggregated_out/build.stable.json to release $tag..."
+              gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json" --clobber || {
+                echo "::warning::Failed to upload stable_logs/aggregated_out/build.stable.json to release $tag, retrying..."
+                sleep 3
+                gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json" --clobber || echo "::warning::Failed to upload stable_logs/aggregated_out/build.stable.json to release $tag"
+              }
+            fi
           fi
 
       - name: Upload module update metadata to update tag (Stable)
@@ -548,16 +544,14 @@ jobs:
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
-            for file in latest_logs/aggregated_out/build.latest.json latest_logs/aggregated_out/build.latest.md; do
-              if [ -s "$file" ]; then
-                echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber || {
-                  echo "::warning::Failed to upload $file to release $tag, retrying..."
-                  sleep 3
-                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
-                }
-              fi
-            done
+            if [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
+              echo "Uploading latest_logs/aggregated_out/build.latest.json to release $tag..."
+              gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json" --clobber || {
+                echo "::warning::Failed to upload latest_logs/aggregated_out/build.latest.json to release $tag, retrying..."
+                sleep 3
+                gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json" --clobber || echo "::warning::Failed to upload latest_logs/aggregated_out/build.latest.json to release $tag"
+              }
+            fi
           fi
 
       - name: Upload module update metadata to update tag (Latest)
