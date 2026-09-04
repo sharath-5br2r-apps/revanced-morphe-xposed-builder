@@ -1,29 +1,28 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "x-morphe-piko-materialyou-exp": {
+  "youtube-music-morphe-exp": {
     "enabled": true,
-    "app-name": "x",
-    "rv-brand": "morphe-piko-materialyou-exp",
-    "build-mode": "apk",
+    "app-name": "youtube-music",
+    "rv-brand": "morphe-exp",
+    "build-mode": "both",
     "arch": [
-      "all",
       "arm64-v8a",
       "arm-v7a",
       "x86_64"
     ],
-    "version": "latest",
-    "pkg-name": "com.twitter.android",
+    "version": "exp",
+    "pkg-name": "com.google.android.apps.youtube.music",
     "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
+    "patches-source": "MorpheApp/morphe-patches",
     "included-patches": [
-      "Dynamic Color"
+      "Theme"
     ],
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android",
+    "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
+    "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
+    "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music",
     "dpi": [
       "nodpi",
       "anydpi",

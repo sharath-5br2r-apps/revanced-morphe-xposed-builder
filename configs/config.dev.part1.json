@@ -1,26 +1,61 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "instagram-morphe-piko": {
+  "youtube-morphe": {
     "enabled": true,
-    "app-name": "instagram",
-    "rv-brand": "morphe-piko",
-    "build-mode": "apk",
+    "app-name": "youtube",
+    "rv-brand": "morphe",
+    "build-mode": "both",
     "arch": [
+      "all",
       "arm64-v8a",
+      "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.instagram.android",
-    "patcher-args": "--continue-on-error",
+    "pkg-name": "com.google.android.youtube",
     "cli-source": "MorpheApp/morphe-desktop",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
-    "apkmirror-example-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/",
+    "patches-source": "MorpheApp/morphe-patches",
+    "included-patches": [
+      "Theme"
+    ],
+    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
+    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
+    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
     "dpi": [
       "nodpi",
       "anydpi",
       "auto"
+    ]
+  },
+  "youtube-music-morphe-exp-amoled": {
+    "enabled": true,
+    "app-name": "youtube-music",
+    "rv-brand": "morphe-exp-amoled",
+    "build-mode": "both",
+    "arch": [
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
     ],
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android",
-    "patches-source": "crimera/piko"
+    "version": "exp",
+    "pkg-name": "com.google.android.apps.youtube.music",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "patches-source": "MorpheApp/morphe-patches",
+    "included-patches": [
+      "Theme"
+    ],
+    "patcher-args": "-OdarkThemeBackgroundColor=#000000",
+    "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
+    "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
+    "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music",
+    "dpi": [
+      "nodpi",
+      "anydpi",
+      "auto"
+    ]
   }
 }
