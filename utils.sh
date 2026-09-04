@@ -1666,7 +1666,7 @@ dl_apkmirror() {
 			apkmname=$($HTMLQ "h1.marginZero" --text <<< "$__APKMIRROR_RESP__" 2>/dev/null || true)
 			apkmname="${apkmname,,}" apkmname="${apkmname// /-}" apkmname="${apkmname//[^a-z0-9-]/}"
 		fi
-		local candidate_url="${url%/}/${apkmname:+${apkmname}-}${search_version}-release/"
+		local candidate_url="${url%/}/${apkmname:+${apkmname}-}${search_version%-release}-release/"
 		set +u
 		local rel_filter="${args[apkmirror_release_filter]:-}"
 		set -u
@@ -2281,7 +2281,7 @@ dl_cache_repo() {
 	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
-				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]]; then
+				if [[ "$p" == *"${version_f#v}-${a}.${ext}" ]] || [[ "$p" == *"${version_f#v}-"*"${a}.${ext}" ]] || [[ "$p" == *"${version_f#v}-release-"*"${a}.${ext}" ]]; then
 					path="$p"
 					break 3
 				fi
@@ -2362,7 +2362,7 @@ get_cache_repo_resp() {
 }
 
 get_cache_repo_vers() {
-	sed 's/^[^-]*-//;s/-\(all\|common\|arm64-v8a\|arm-v7a\|x86\|x86_64\)\.\(apk\|apkm\|xapk\|apks\)$//g' <<<"${__CACHE_REPO_RESP__:-${__ARCHIVE_RESP__:-}}"
+	sed -E 's/^[^-]*-//; s/-(all|common|arm64-v8a|armeabi-v7a|arm-v7a|x86_64|x86)\.(apk|apkm|xapk|apks)$//g; s/-(arm64-v8a|armeabi-v7a|arm-v7a|x86_64|x86)$//gi' <<<"${__CACHE_REPO_RESP__:-${__ARCHIVE_RESP__:-}}"
 }
 
 get_cache_repo_pkg_name() {
@@ -3346,6 +3346,10 @@ build_rv() {
 
 		# Clean resolved_version of arch, versionCodes, and release variant suffixes without clipping long version components
 		if [ -n "$resolved_version" ]; then
+			local gboard_check="${table:-}${app_name:-}${rv_brand:-}${pkg_name:-}"
+			if [[ "${gboard_check,,}" == *"gboard"* ]] || [[ "$pkg_name" == *"inputmethod.latin"* ]]; then
+				resolved_version=$(echo "$resolved_version" | sed -E 's/-(arm64-v8a|armeabi-v7a|arm-v7a|x86_64|x86)$//gi')
+			fi
 			resolved_version=$(echo "$resolved_version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^v//i; s/^[[:space:]]+|[[:space:]]+$//g')
 		fi
 	fi
@@ -3516,6 +3520,15 @@ build_rv() {
 			fi
 		elif ! isoneof "$version_mode" latest beta; then
 			resolved_version=$version_mode
+		fi
+
+		# Clean resolved_version of arch, versionCodes, and release variant suffixes without clipping long version components
+		if [ -n "$resolved_version" ]; then
+			local gboard_check="${table:-}${app_name:-}${rv_brand:-}${pkg_name:-}"
+			if [[ "${gboard_check,,}" == *"gboard"* ]] || [[ "$pkg_name" == *"inputmethod.latin"* ]]; then
+				resolved_version=$(echo "$resolved_version" | sed -E 's/-(arm64-v8a|armeabi-v7a|arm-v7a|x86_64|x86)$//gi')
+			fi
+			resolved_version=$(echo "$resolved_version" | sed -E 's/[[:space:]]*\[versionCodes:.*\]//gi; s/-\[versionCodes:.*\]//gi; s/^v//i; s/^[[:space:]]+|[[:space:]]+$//g')
 		fi
 
 		if isoneof "$resolved_version" latest auto exp beta; then
