@@ -263,16 +263,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
-          if [ -n "$tag" ] && [ -f "dev_logs/aggregated_out/build.dev.json" ]; then
+          if [ -n "$tag" ] && [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
             notes_arg=("--notes" "")
-            [ -f "dev_logs/aggregated_out/build.dev.md" ] && notes_arg=("--notes-file" "dev_logs/aggregated_out/build.dev.md")
+            [ -s "dev_logs/aggregated_out/build.dev.md" ] && notes_arg=("--notes-file" "dev_logs/aggregated_out/build.dev.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -f "dev_logs/aggregated_out/build.dev.md" ] && gh release edit "$tag" --notes-file "dev_logs/aggregated_out/build.dev.md" || true
+              [ -s "dev_logs/aggregated_out/build.dev.md" ] && gh release edit "$tag" --notes-file "dev_logs/aggregated_out/build.dev.md" || true
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
             for file in dev_logs/aggregated_out/build.dev.json dev_logs/aggregated_out/build.dev.md; do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release $tag..."
                 gh release upload "$tag" "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release $tag, retrying..."
@@ -289,7 +289,7 @@ jobs:
         run: |
           if [ -d "dev_logs" ]; then
             for file in $(find dev_logs -name "*-update.json"); do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release update..."
                 gh release upload update "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release update, retrying..."
@@ -399,16 +399,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
-          if [ -n "$tag" ] && [ -f "stable_logs/aggregated_out/build.stable.json" ]; then
+          if [ -n "$tag" ] && [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
             notes_arg=("--notes" "")
-            [ -f "stable_logs/aggregated_out/build.stable.md" ] && notes_arg=("--notes-file" "stable_logs/aggregated_out/build.stable.md")
+            [ -s "stable_logs/aggregated_out/build.stable.md" ] && notes_arg=("--notes-file" "stable_logs/aggregated_out/build.stable.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -f "stable_logs/aggregated_out/build.stable.md" ] && gh release edit "$tag" --notes-file "stable_logs/aggregated_out/build.stable.md" || true
+              [ -s "stable_logs/aggregated_out/build.stable.md" ] && gh release edit "$tag" --notes-file "stable_logs/aggregated_out/build.stable.md" || true
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
             for file in stable_logs/aggregated_out/build.stable.json stable_logs/aggregated_out/build.stable.md; do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release $tag..."
                 gh release upload "$tag" "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release $tag, retrying..."
@@ -425,7 +425,7 @@ jobs:
         run: |
           if [ -d "stable_logs" ]; then
             for file in $(find stable_logs -name "*-update.json"); do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release update..."
                 gh release upload update "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release update, retrying..."
@@ -540,16 +540,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
-          if [ -n "$tag" ] && [ -f "latest_logs/aggregated_out/build.latest.json" ]; then
+          if [ -n "$tag" ] && [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
             notes_arg=("--notes" "")
-            [ -f "latest_logs/aggregated_out/build.latest.md" ] && notes_arg=("--notes-file" "latest_logs/aggregated_out/build.latest.md")
+            [ -s "latest_logs/aggregated_out/build.latest.md" ] && notes_arg=("--notes-file" "latest_logs/aggregated_out/build.latest.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -f "latest_logs/aggregated_out/build.latest.md" ] && gh release edit "$tag" --notes-file "latest_logs/aggregated_out/build.latest.md" || true
+              [ -s "latest_logs/aggregated_out/build.latest.md" ] && gh release edit "$tag" --notes-file "latest_logs/aggregated_out/build.latest.md" || true
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
             for file in latest_logs/aggregated_out/build.latest.json latest_logs/aggregated_out/build.latest.md; do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release $tag..."
                 gh release upload "$tag" "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release $tag, retrying..."
@@ -566,7 +566,7 @@ jobs:
         run: |
           if [ -d "latest_logs" ]; then
             for file in $(find latest_logs -name "*-update.json"); do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release update..."
                 gh release upload update "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release update, retrying..."

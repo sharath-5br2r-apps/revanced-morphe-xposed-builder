@@ -102,16 +102,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.prepare_context.outputs.next_ver_code }}"
-          if [ -n "$tag" ] && [ -f "build.json" ]; then
+          if [ -n "$tag" ] && [ -s "build.json" ]; then
             notes_arg=("--notes" "")
-            [ -f "build.md" ] && notes_arg=("--notes-file" "build.md")
+            [ -s "build.md" ] && notes_arg=("--notes-file" "build.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -f "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
+              [ -s "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
             for file in build.json build.md; do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release $tag..."
                 gh release upload "$tag" "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release $tag, retrying..."
@@ -128,7 +128,7 @@ jobs:
         run: |
           if [ -d "batch_logs" ]; then
             for file in $(find batch_logs -name "*-update.json"); do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release update..."
                 gh release upload update "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release update, retrying..."

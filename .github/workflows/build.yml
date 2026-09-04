@@ -157,17 +157,17 @@ jobs:
           prerelease_flag=""
           [ "${{ steps.context.outputs.IS_PRERELEASE }}" = "true" ] && prerelease_flag="--prerelease"
           notes_arg=("--notes" "")
-          if [ "${{ inputs.upload_release_metadata }}" != "false" ] && [ -f "build.md" ]; then
+          if [ "${{ inputs.upload_release_metadata }}" != "false" ] && [ -s "build.md" ]; then
             notes_arg=("--notes-file" "build.md")
           fi
           if gh release view "$tag" >/dev/null 2>&1; then
-            [ -f "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
+            [ -s "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
           else
             gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" $prerelease_flag || true
           fi
           if [ -d "./build" ]; then
             for file in ./build/*; do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release $tag..."
                 gh release upload "$tag" "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release $tag, retrying..."
@@ -184,16 +184,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
-          if [ -f "build.json" ]; then
+          if [ -s "build.json" ]; then
             notes_arg=("--notes" "")
-            [ -f "build.md" ] && notes_arg=("--notes-file" "build.md")
+            [ -s "build.md" ] && notes_arg=("--notes-file" "build.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -f "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
+              [ -s "build.md" ] && gh release edit "$tag" --notes-file "build.md" || true
             else
               gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
             fi
             for file in build.json build.md; do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release $tag..."
                 gh release upload "$tag" "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release $tag, retrying..."
@@ -229,7 +229,7 @@ jobs:
         run: |
           gh release view "update" >/dev/null 2>&1 || gh release create "update" --title "Update Metadata" --notes "" || true
           for file in build.md *-update.json; do
-            if [ -f "$file" ]; then
+            if [ -s "$file" ]; then
               echo "Uploading $file to release update..."
               gh release upload update "$file" --clobber || {
                 echo "::warning::Failed to upload $file to release update, retrying..."
@@ -251,7 +251,7 @@ jobs:
           gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "$tag" --notes "" --target main || true
           if [ -d "./build" ]; then
             for file in ./build/*; do
-              if [ -f "$file" ]; then
+              if [ -s "$file" ]; then
                 echo "Uploading $file to release $tag..."
                 gh release upload "$tag" "$file" --clobber || {
                   echo "::warning::Failed to upload $file to release $tag, retrying..."
