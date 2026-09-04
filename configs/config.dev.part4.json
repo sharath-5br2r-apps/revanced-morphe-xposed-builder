@@ -1,34 +1,10 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "jetpack-joyride-morphe-byehi98": {
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "jetpack-joyride",
-    "rv-brand": "morphe-byehi98",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.halfbrick.jetpackjoyride",
-    "build-mode": "apk",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "pkg-name": "com.halfbrick.jetpackjoyride",
-    "uptodown-dlurl": "https://jetpack-joyride.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
-    ],
-    "patches-source": "byehi98/okish-morphe-patches"
-  },
-  "x-morphe-piko-materialyou-exp": {
+  "x-morphe-piko-materialyou": {
     "enabled": true,
     "app-name": "x",
-    "rv-brand": "morphe-piko-materialyou-exp",
+    "rv-brand": "morphe-piko-materialyou",
     "build-mode": "apk",
     "arch": [
       "all",
@@ -36,7 +12,6 @@
       "arm-v7a",
       "x86_64"
     ],
-    "version": "latest",
     "pkg-name": "com.twitter.android",
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "crimera/piko",
