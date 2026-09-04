@@ -3705,7 +3705,7 @@ build_rv() {
 			fi
 
 			local apks_repo="${APKS_REPO:-${UPLOAD_APKS_REPO:-}}"
-			local pat_token="${PERSONAL_ACCESS_TOKEN:-${APKS_REPO_TOKEN:-}}"
+			local pat_token="${APKS_REPO_TOKEN:-${PERSONAL_ACCESS_TOKEN:-}}"
 			if [ -n "$apks_repo" ] && [ -n "$pat_token" ] && [ -n "${dl_p:-}" ] && [ "$dl_p" != "github" ] && [ "$dl_p" != "archive" ] && [ "$dl_p" != "cache_repo" ]; then
 				if [ -s "$stock_apk" ] || [ -s "$all_apk" ]; then
 					pr "Uploading newly downloaded APKs to cache repo ${apks_repo} (${pkg_name})..."

@@ -16,8 +16,8 @@ Secrets are **encrypted** and used for sensitive values. Set under the **Secrets
 |--------|----------|-------------|
 | `KEYSTORE_BASE64` | ✅ Yes | Base64-encoded `.keystore` file used to sign APKs. If unset, a keystore is auto-generated (not suitable for production). |
 | `KEYSTORE_PASSWORD` | ✅ Yes | Password for the keystore store. |
-| `KEYSTORE_KEY_PASSWORD` | ⚠️ Optional | Password for the keystore key entry. Defaults to `KEYSTORE_PASSWORD` if omitted. |
 | `PERSONAL_ACCESS_TOKEN` | ⚠️ Optional | GitHub Personal Access Token (PAT) with `repo` scope. Needed to push releases to other repos (e.g. `APKS_REPO`). Falls back to `GITHUB_TOKEN` (limited scope). |
+| `APKS_REPO_TOKEN` | ⚠️ Optional | Dedicated PAT for `APKS_REPO`. Takes priority over `PERSONAL_ACCESS_TOKEN`. |
 
 ### ⚙️ Variables
 

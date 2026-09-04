@@ -115,6 +115,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           APKS_REPO: ${{ vars.APKS_REPO }}
           UPLOAD_APKS_REPO: ${{ vars.APKS_REPO }}
+          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -131,15 +132,16 @@ jobs:
 
       - name: Update Usage Tracker
         env:
+          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          APKS_REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           APKS_REPO: ${{ vars.APKS_REPO }}
           APKS_REPO_URL: ${{ vars.APKS_REPO }}
         run: |
-          if [ -n "${APKS_REPO:-}" ] && [ -n "${PERSONAL_ACCESS_TOKEN:-}" ]; then
+          TOKEN="${APKS_REPO_TOKEN:-${PERSONAL_ACCESS_TOKEN:-}}"
+          if [ -n "${APKS_REPO:-}" ] && [ -n "$TOKEN" ]; then
             python3 .github/scripts/update_usage_tracker.py || true
           else
-            echo "APKS_REPO or PERSONAL_ACCESS_TOKEN is not present. Skipping usage tracker update."
+            echo "APKS_REPO or APKS_REPO_TOKEN/PERSONAL_ACCESS_TOKEN is not present. Skipping usage tracker update."
           fi
 
       - name: Cleanup old cached APKs
