@@ -152,6 +152,7 @@ jobs:
         run: bash .github/scripts/build_get_output.sh
 
       - name: Generate release notes from build.json
+        if: ${{ inputs.upload_release_metadata != false }}
         run: |
           if [ -s "build.json" ]; then
             python3 .github/scripts/generate_md_from_json.py build.json release_notes.md || true
@@ -211,12 +212,12 @@ jobs:
           fi
 
       - name: Upload part build logs artifact
+        if: ${{ inputs.upload_release_metadata == false }}
         uses: actions/upload-artifact@v7
         with:
           name: part-logs-${{ steps.context.outputs.ARCHIVE_TAG }}-${{ steps.context.outputs.CONFIG_TAG || strategy.job-index || '0' }}-${{ github.job }}
           path: |
             build.json
-            release_notes.md
           if-no-files-found: ignore
 
       - name: Update changelog and module update files
