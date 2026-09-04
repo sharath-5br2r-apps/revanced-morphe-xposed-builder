@@ -147,7 +147,7 @@ jobs:
         run: bash .github/scripts/ci_resolve_triggers.sh
 
       - name: Commit updated version metadata and configs
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || inputs.mode == 'Batch Build (Latest)' || inputs.mode == 'Batch Build (Absolute Latest)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
