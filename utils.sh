@@ -1233,7 +1233,7 @@ _trawl_get() {
 		local response status
 		response=$(curl -m 15 -s -X POST "$solver_url" \
 			-H 'Content-Type: application/json' \
-			-d "{\"url\":\"$url\",\"maxTimeout\":150000,\"skipHttp\":true${extra_headers}}") || true
+			-d "{\"url\":\"$url\",\"maxTimeout\":15000,\"skipHttp\":true${extra_headers}}") || true
 		status=$(echo "$response" | jq -r '.statusCode // empty')
 		if [[ "$status" =~ ^[1-3][0-9][0-9]$ ]]; then
 			html=$(echo "$response" | jq -r '.html // empty')
