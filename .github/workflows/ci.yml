@@ -188,6 +188,7 @@ jobs:
       config_file: "configs/config.dev.part1.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
+      aggregate_flavor: "dev"
     secrets: inherit
 
   build_dev_2:
@@ -198,6 +199,7 @@ jobs:
       config_file: "configs/config.dev.part2.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
+      aggregate_flavor: "dev"
     secrets: inherit
 
   build_dev_3:
@@ -208,6 +210,7 @@ jobs:
       config_file: "configs/config.dev.part3.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
+      aggregate_flavor: "dev"
     secrets: inherit
 
   build_dev_4:
@@ -218,6 +221,7 @@ jobs:
       config_file: "configs/config.dev.part4.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
+      aggregate_flavor: "dev"
     secrets: inherit
 
   build_dev_5:
@@ -228,6 +232,7 @@ jobs:
       config_file: "configs/config.dev.part5.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
+      aggregate_flavor: "dev"
     secrets: inherit
 
   aggregate_dev_logs:
@@ -241,7 +246,7 @@ jobs:
       - name: Download dev part-logs artifacts
         uses: actions/download-artifact@v8
         with:
-          pattern: part-logs-*
+          pattern: part-logs-dev-*
           path: logs_artifacts
           merge-multiple: false
 
@@ -322,6 +327,7 @@ jobs:
       config_file: "configs/config.stable.part1.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
+      aggregate_flavor: "stable"
     secrets: inherit
 
   build_stable_2:
@@ -332,6 +338,7 @@ jobs:
       config_file: "configs/config.stable.part2.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
+      aggregate_flavor: "stable"
     secrets: inherit
 
   build_stable_3:
@@ -342,6 +349,7 @@ jobs:
       config_file: "configs/config.stable.part3.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
+      aggregate_flavor: "stable"
     secrets: inherit
 
   build_stable_4:
@@ -352,6 +360,7 @@ jobs:
       config_file: "configs/config.stable.part4.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
+      aggregate_flavor: "stable"
     secrets: inherit
 
   build_stable_5:
@@ -362,6 +371,7 @@ jobs:
       config_file: "configs/config.stable.part5.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
+      aggregate_flavor: "stable"
     secrets: inherit
 
   aggregate_stable_logs:
@@ -375,7 +385,7 @@ jobs:
       - name: Download stable part-logs artifacts
         uses: actions/download-artifact@v8
         with:
-          pattern: part-logs-*
+          pattern: part-logs-stable-*
           path: logs_artifacts
           merge-multiple: false
 
@@ -457,6 +467,7 @@ jobs:
       patches_version: "latest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
+      aggregate_flavor: "latest"
     secrets: inherit
 
   build_latest_2:
@@ -468,6 +479,7 @@ jobs:
       patches_version: "latest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
+      aggregate_flavor: "latest"
     secrets: inherit
 
   build_latest_3:
@@ -479,6 +491,7 @@ jobs:
       patches_version: "latest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
+      aggregate_flavor: "latest"
     secrets: inherit
 
   build_latest_4:
@@ -490,6 +503,7 @@ jobs:
       patches_version: "latest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
+      aggregate_flavor: "latest"
     secrets: inherit
 
   build_latest_5:
@@ -501,6 +515,7 @@ jobs:
       patches_version: "latest"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
+      aggregate_flavor: "latest"
     secrets: inherit
 
   aggregate_latest_logs:
@@ -514,7 +529,7 @@ jobs:
       - name: Download latest part-logs artifacts
         uses: actions/download-artifact@v8
         with:
-          pattern: part-logs-*
+          pattern: part-logs-latest-*
           path: logs_artifacts
           merge-multiple: false
 

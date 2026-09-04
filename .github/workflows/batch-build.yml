@@ -46,6 +46,7 @@ jobs:
       patches_version: ${{ inputs.patches_version }}
       release_version_code: ${{ needs.prepare_context.outputs.next_ver_code }}
       upload_release_metadata: false
+      aggregate_flavor: "batch"
     secrets: inherit
 
   aggregate_logs:
@@ -59,7 +60,7 @@ jobs:
       - name: Download all part-logs artifacts
         uses: actions/download-artifact@v8
         with:
-          pattern: part-logs-*
+          pattern: part-logs-batch-*
           path: logs_artifacts
           merge-multiple: false
 

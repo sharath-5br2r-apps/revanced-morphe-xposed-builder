@@ -26,6 +26,11 @@ on:
         required: false
         type: boolean
         default: true
+      aggregate_flavor:
+        description: "Flavor tag for artifact grouping and json aggregation (e.g. dev, stable, latest, batch)"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: build-${{ inputs.config_file }}
@@ -39,6 +44,7 @@ jobs:
     outputs:
       next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
       archive_tag: ${{ steps.context.outputs.ARCHIVE_TAG }}
+      flavor_tag: ${{ steps.context.outputs.FLAVOR_TAG }}
     services:
       redis:
         image: redis:alpine
@@ -215,7 +221,7 @@ jobs:
         if: ${{ inputs.upload_release_metadata == false }}
         uses: actions/upload-artifact@v7
         with:
-          name: part-logs-${{ steps.context.outputs.ARCHIVE_TAG }}-${{ steps.context.outputs.CONFIG_TAG || strategy.job-index || '0' }}-${{ github.job }}
+          name: part-logs-${{ inputs.aggregate_flavor || steps.context.outputs.FLAVOR_TAG || 'logs' }}-${{ steps.context.outputs.CONFIG_TAG || strategy.job-index || '0' }}-${{ github.job }}
           path: |
             build.json
           if-no-files-found: ignore

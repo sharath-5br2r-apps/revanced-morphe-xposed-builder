@@ -53,8 +53,9 @@ FLAVOR_TAG="stable"
 if [ "$PVER" = "dev" ] || [[ "$CONFIG" == *"dev"* ]]; then
   FLAVOR_TAG="dev"
 elif [ "$PVER" = "absolutelatest" ] || [[ "$CONFIG" == *"latest"* ]]; then
-  FLAVOR_TAG="absolutelatest"
+  FLAVOR_TAG="latest"
 fi
+echo "FLAVOR_TAG=$FLAVOR_TAG" >> "$GITHUB_OUTPUT"
 
 if [ "$IS_DEV" = true ]; then
   echo "IS_PRERELEASE=true" >> "$GITHUB_OUTPUT"
