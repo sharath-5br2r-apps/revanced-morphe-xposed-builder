@@ -8,10 +8,84 @@ echo '{}' > "$BUILD_JSON_FILE"
 
 trap "abort" INT
 
-if [ "${1-}" = "clean" ]; then
-	rm -r "$TEMP_DIR" "$BUILD_DIR" build.md
+# Parse command-line arguments
+DO_CLEAN=false
+DO_CONFIG_UPDATE=false
+CLI_CONFIG_FILE=""
+ALLOWED_APPS_REGEX=""
+CLI_OUTPUT_DIR=""
+POSITIONAL_ARGS=()
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		--clean|clean)
+			DO_CLEAN=true
+			shift
+			;;
+		--config-update)
+			DO_CONFIG_UPDATE=true
+			shift
+			;;
+		--config=*)
+			CLI_CONFIG_FILE="${1#*=}"
+			shift
+			;;
+		--config)
+			[ $# -lt 2 ] && abort "Missing argument for --config"
+			CLI_CONFIG_FILE="$2"
+			shift 2
+			;;
+		--allowed-apps=*)
+			ALLOWED_APPS_REGEX="${1#*=}"
+			shift
+			;;
+		--allowed-apps)
+			[ $# -lt 2 ] && abort "Missing argument for --allowed-apps"
+			ALLOWED_APPS_REGEX="$2"
+			shift 2
+			;;
+		--output=*)
+			CLI_OUTPUT_DIR="${1#*=}"
+			shift
+			;;
+		--output)
+			[ $# -lt 2 ] && abort "Missing argument for --output"
+			CLI_OUTPUT_DIR="$2"
+			shift 2
+			;;
+		--)
+			shift
+			while [ $# -gt 0 ]; do
+				POSITIONAL_ARGS+=("$1")
+				shift
+			done
+			break
+			;;
+		-*)
+			abort "Unknown option: $1"
+			;;
+		*)
+			POSITIONAL_ARGS+=("$1")
+			shift
+			;;
+	esac
+done
+
+if [ "$DO_CLEAN" = true ]; then
+	[ -n "$CLI_OUTPUT_DIR" ] && BUILD_DIR="$CLI_OUTPUT_DIR"
+	rm -rf "$TEMP_DIR" "$BUILD_DIR" build.md
 	exit 0
 fi
+
+if [ "$DO_CONFIG_UPDATE" = true ]; then
+	config_update
+	exit 0
+fi
+
+if [ -n "$CLI_OUTPUT_DIR" ]; then
+	BUILD_DIR="$CLI_OUTPUT_DIR"
+fi
+
 rm -f "$TEMP_DIR/cf_get.lock"
 
 jq --version >/dev/null || abort "\`jq\` is not installed. install it with 'apt install jq' or equivalent"
@@ -22,17 +96,13 @@ set_prebuilts
 
 vtf() { if ! isoneof "${1}" "true" "false"; then abort "ERROR: '${1}' is not a valid option for '${2}': only true or false is allowed"; fi; }
 
-for arg in "${@-}"; do
-	if [ "$arg" = "--config-update" ]; then
-		config_update
-		exit 0
-	fi
-done
-
 # -- Main config --
 cfg_file=""
-if [ -n "${1-}" ] && [ "${1-}" != "--config-update" ] && [ -f "${1-}" ]; then
-	cfg_file="${1}"
+if [ -n "$CLI_CONFIG_FILE" ]; then
+	cfg_file="$CLI_CONFIG_FILE"
+elif [ ${#POSITIONAL_ARGS[@]} -gt 0 ] && [ -f "${POSITIONAL_ARGS[0]}" ]; then
+	cfg_file="${POSITIONAL_ARGS[0]}"
+	POSITIONAL_ARGS=("${POSITIONAL_ARGS[@]:1}")
 elif [ -f "configs/config.toml" ]; then
 	cfg_file="configs/config.toml"
 elif [ -f "config.toml" ]; then
@@ -41,7 +111,7 @@ elif [ -f "configs/config.manual.generated.toml" ]; then
 	cfg_file="configs/config.manual.generated.toml"
 fi
 
-toml_prep "$cfg_file" || abort "could not find config file '$cfg_file'\n\tUsage: $0 <config.toml>"
+toml_prep "$cfg_file" || abort "could not find config file '$cfg_file'\n\tUsage: $0 [--clean] [--config-update] [--config=path/to/config] [--allowed-apps=\"regex\"] [--output=path/to/output/dir]"
 main_config_t=$(toml_get_table_main)
 COMPRESSION_LEVEL=$(toml_get "$main_config_t" compression-level) || COMPRESSION_LEVEL="9"
 REMOVE_RV_INTEGRATIONS_CHECKS=$(toml_get "$main_config_t" remove-rv-integrations-checks) || REMOVE_RV_INTEGRATIONS_CHECKS="false"
@@ -77,11 +147,25 @@ mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm ${MODUL
 for table_name in $(toml_get_table_names); do
 	if [ -z "$table_name" ]; then continue; fi
 	t=$(toml_get_table "$table_name")
-	if [ -n "${2:-}" ]; then
+
+	# Check filter via --allowed-apps regex if specified
+	if [ -n "$ALLOWED_APPS_REGEX" ]; then
+		if [[ "$ALLOWED_APPS_REGEX" == !* ]]; then
+			pat="${ALLOWED_APPS_REGEX#!}"
+			if [ -n "$pat" ] && [[ "$table_name" =~ $pat ]]; then
+				continue
+			fi
+		elif ! [[ "$table_name" =~ $ALLOWED_APPS_REGEX ]]; then
+			continue
+		fi
+	fi
+
+	# Check positional arguments for app matching/exclusion
+	if [ ${#POSITIONAL_ARGS[@]} -gt 0 ]; then
 		skip_table=false
 		has_pos_args=false
 		pos_matched=false
-		for arg in "${@:2}"; do
+		for arg in "${POSITIONAL_ARGS[@]}"; do
 			if [[ "$arg" == !* ]]; then
 				pat="${arg#!}"
 				if [ -n "$pat" ] && [[ "$table_name" =~ $pat ]]; then

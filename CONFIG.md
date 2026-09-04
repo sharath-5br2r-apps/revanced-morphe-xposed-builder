@@ -54,6 +54,22 @@ Variables are **plain text** (not encrypted). Set under the **Variables** tab.
 
 ---
 
+## CLI Usage (`build.sh`)
+
+```bash
+./build.sh [--clean] [--config-update] [--config=path/to/config] [--allowed-apps="<regex>"] [--output=path/to/output/dir]
+```
+
+| Flag / Option | Description |
+|---|---|
+| `--clean`, `clean` | Remove temporary build files, output directory, and `build.md`. |
+| `--config-update` | Fetch latest versions and update configuration files without building. |
+| `--config=<path>` | Path to the TOML or JSON configuration file to build from. |
+| `--allowed-apps="<regex>"` | Regex pattern of allowed app table names to build (supports negation with `!` prefix). |
+| `--output=<dir>` | Path to output directory for patched APKs and modules (defaults to `build`). |
+
+---
+
 ## TOML App Config Keys
 
 These are set in your `.toml` config files under `configs/patches/` or `.github/configs/patches/`.

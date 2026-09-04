@@ -61,13 +61,15 @@ You can build APKs and Magisk/KSU modules locally on Android (Termux), Linux, or
 
 ### Command Line Flags & Usage
 ```bash
-./build.sh [config_file] [exclusive_apps] [--config-update] [clean]
+./build.sh [--clean] [--config-update] [--config=path/to/config] [--allowed-apps="<regex>"] [--output=path/to/output/dir]
 ```
 
-- **Clean build artifacts**: `./build.sh clean`
+- **Clean build artifacts**: `./build.sh --clean`
 - **Update configurations**: `./build.sh --config-update`
-- **Build all stable apps**: `./build.sh configs/config.stable.updated.json`
-- **Build a specific app exclusively**: `./build.sh configs/config.stable.updated.json "YouTube"`
+- **Build with config file**: `./build.sh --config=configs/config.stable.updated.json`
+- **Filter apps by regex**: `./build.sh --config=configs/config.stable.updated.json --allowed-apps="YouTube.*"`
+- **Custom output directory**: `./build.sh --config=configs/config.stable.updated.json --output=dist/`
+- *(Positional syntax `./build.sh [config_file] [app_regex...]` remains backwards-compatible).*
 
 ### Optional Keystore Setup (`.env`)
 Create a `.env` file in the project root to sign APKs with a custom keystore:

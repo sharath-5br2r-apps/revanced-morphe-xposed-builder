@@ -138,7 +138,7 @@ jobs:
           OVERRIDE_PATCHES_VERSION: ${{ inputs.patches_version }}
         run: |
           set -euo pipefail
-          bash ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}" "${{ inputs.exclusive_apps }}"
+          bash ./build.sh --config="${{ steps.context.outputs.CONFIG_FILE }}" --allowed-apps="${{ inputs.exclusive_apps }}"
 
       - name: Update Usage Tracker
         env:
