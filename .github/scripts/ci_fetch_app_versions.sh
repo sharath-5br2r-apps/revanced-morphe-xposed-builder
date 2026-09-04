@@ -63,7 +63,6 @@ while IFS='|' read -r group app; do
     echo "::group::Fetching version for $group ($app)..."
     
     args=()
-    cache_repo_url=$(jq -r ".\"$app\".\"cache_repo_dlurl\" // .\"$app\".\"cache-repo-dlurl\" // empty" temp_all_configs.json)
     github_url=$(jq -r ".\"$app\".\"github-dlurl\" // empty" temp_all_configs.json)
     gitlab_url=$(jq -r ".\"$app\".\"gitlab-dlurl\" // empty" temp_all_configs.json)
     forgejo_url=$(jq -r ".\"$app\".\"forgejo-dlurl\" // empty" temp_all_configs.json)
@@ -158,7 +157,6 @@ while IFS='|' read -r group app; do
 
     dlurls=()
     sources=()
-    [ -n "$cache_repo_url" ] && { dlurls+=("$cache_repo_url"); sources+=("cache_repo"); }
     [ -n "$github_url" ] && { dlurls+=("$github_url"); sources+=("github"); }
     [ -n "$gitlab_url" ] && { dlurls+=("$gitlab_url"); sources+=("gitlab"); }
     [ -n "$forgejo_url" ] && { dlurls+=("$forgejo_url"); sources+=("forgejo"); }
@@ -184,11 +182,7 @@ while IFS='|' read -r group app; do
             echo "::notice::Reusing cached version for $app: $latest_ver"
             break
         else
-            if [[ "$source" == "cache_repo" ]]; then
-                get_cache_repo_resp "$dlurl" || { echo "::warning::Failed cache_repo resp for $app"; continue; }
-                vers=$(get_cache_repo_vers) || { echo "::warning::Failed cache_repo vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "github" ]]; then
+            if [[ "$source" == "github" ]]; then
                 get_github_resp "$dlurl" || { echo "::warning::Failed github resp for $app"; continue; }
                 vers=$(get_github_vers) || { echo "::warning::Failed github vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
