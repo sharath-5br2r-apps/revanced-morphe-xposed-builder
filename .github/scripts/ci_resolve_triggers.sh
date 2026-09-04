@@ -3,7 +3,7 @@ export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
 MODE="${MODE:-Default}"
 
-if [ "${CREATED:-false}" = "true" ] || [ "${SKIP_BUILD:-false}" = "true" ] || [ "$MODE" = "Update Versions Only" ] || [ "$MODE" = "Generate Configs Only (No Build)" ]; then
+if [ "${CREATED:-false}" = "true" ] || [ "${SKIP_BUILD:-false}" = "true" ] || [ "$MODE" = "Update Versions Only" ] || [ "$MODE" = "Generate Configs Only (No Build)" ] || [[ "$MODE" == "Batch Build"* ]]; then
   echo "TRIGGER_STABLE=0" >> "$GITHUB_OUTPUT"
   echo "TRIGGER_PRERELEASE=0" >> "$GITHUB_OUTPUT"
   echo "TRIGGER_ABSOLUTE_LATEST=0" >> "$GITHUB_OUTPUT"
