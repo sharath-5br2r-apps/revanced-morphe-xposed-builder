@@ -82,8 +82,8 @@
     "repo": "dh6k/morphe-patches",
     "stable": "v1.4.0",
     "stable_date": "2026-08-24T09:07:19Z",
-    "prerelease": "v1.5.0-dev.4",
-    "pre_date": "2026-09-03T14:59:37Z",
+    "prerelease": "v1.5.0-dev.5",
+    "pre_date": "2026-09-04T09:26:29Z",
     "blocked": false
   },
   "docbt": {
@@ -104,8 +104,8 @@
   },
   "franticg33k": {
     "repo": "franticg33k/morphe-patches",
-    "stable": "v1.3.8",
-    "stable_date": "2026-09-04T04:22:31Z",
+    "stable": "v1.3.9",
+    "stable_date": "2026-09-04T08:13:16Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
