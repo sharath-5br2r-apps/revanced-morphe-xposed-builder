@@ -3,13 +3,37 @@ import sys
 import re
 
 def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc):
-    dpi_str = dpi if dpi else "nodpi anydpi auto"
+    dpi_raw = dpi if dpi else "nodpi anydpi auto"
     appdpi = ["nodpi", "anydpi"]
     match_any_dpi = False
-    if dpi_str:
-        appdpi.extend(dpi_str.split())
-        if "auto" in appdpi:
-            match_any_dpi = True
+    
+    dpi_items = []
+    if isinstance(dpi_raw, str):
+        dpi_str = dpi_raw.strip()
+        if (dpi_str.startswith("[") and dpi_str.endswith("]")) or (dpi_str.startswith("{") and dpi_str.endswith("}")):
+            try:
+                import json
+                parsed = json.loads(dpi_str)
+                if isinstance(parsed, list):
+                    dpi_items = [str(x) for x in parsed]
+                elif isinstance(parsed, dict):
+                    dpi_items = [str(x) for x in parsed.values()]
+            except Exception:
+                dpi_items = dpi_str.split()
+        else:
+            dpi_items = dpi_str.split()
+    elif isinstance(dpi_raw, list):
+        dpi_items = [str(x) for x in dpi_raw]
+    elif isinstance(dpi_raw, dict):
+        dpi_items = [str(x) for x in dpi_raw.values()]
+    else:
+        dpi_items = str(dpi_raw).split()
+
+    for item in dpi_items:
+        appdpi.extend(str(item).split())
+
+    if "auto" in appdpi:
+        match_any_dpi = True
 
     best_fallback_url = ""
     specific_arch_url = ""

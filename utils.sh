@@ -1080,6 +1080,25 @@ get_patch_version_code() {
 
 parse_arch_mapping() {
 	local mapping="${1:-}" arch="${2:-}"
+	if [ -z "$mapping" ]; then
+		return 0
+	fi
+	if [[ "$mapping" == *"["* ]] || [[ "$mapping" == *"{"* ]]; then
+		local json_res
+		if json_res=$(jq -r --arg arch "$arch" '
+			if type == "array" then
+				(map(select((.arch // "") == $arch or (.arch // "") == "all")) | map(."version-code" // ."version_code" // .versionCode // .code // .regex // tostring) | join("|")) as $matched |
+				if ($matched | length) > 0 then $matched else (map(."version-code" // ."version_code" // .versionCode // .code // .regex // tostring) | join("|")) end
+			elif type == "object" then
+				.[$arch] // .all // empty
+			else
+				empty
+			end
+		' <<<"$mapping" 2>/dev/null) && [ -n "$json_res" ] && [ "$json_res" != "null" ]; then
+			echo "$json_res"
+			return 0
+		fi
+	fi
 	if [[ "$mapping" != *":"* ]]; then
 		echo "$mapping"
 		return 0

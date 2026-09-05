@@ -110,7 +110,7 @@ patches-source-host = "gitlab"
 cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn"
-dpi = "120-640dpi"
+dpi = ["120-640dpi"]
 archive-dlurl = "https://archive.org/download/geologically/apks/ch.protonvpn.android"
 
 [truecaller-morphe]
