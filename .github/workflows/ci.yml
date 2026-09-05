@@ -288,10 +288,34 @@ jobs:
             fi
           fi
 
-      - name: Upload module update metadata to update tag (Dev)
+      - name: Upload module update metadata and changelogs to releases (Dev)
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
+          tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
+          # Ensure update and update_changelog releases exist
+          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
+          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
+
+          # Upload changelog markdown files to update_changelog and update
+          if [ -s "dev_logs/aggregated_out/build.dev.md" ]; then
+            if [ -n "$tag" ]; then
+              echo "Uploading dev_logs/aggregated_out/build.dev.md as ${tag}.md to release update_changelog..."
+              cp -f "dev_logs/aggregated_out/build.dev.md" "${tag}.md"
+              gh release upload update_changelog "${tag}.md" --clobber || {
+                sleep 3
+                gh release upload update_changelog "${tag}.md" --clobber || echo "::warning::Failed to upload ${tag}.md to release update_changelog"
+              }
+            fi
+            echo "Uploading dev_logs/aggregated_out/build.dev.md as build.md to release update..."
+            cp -f "dev_logs/aggregated_out/build.dev.md" "build.md"
+            gh release upload update "build.md" --clobber || {
+              sleep 3
+              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
+            }
+          fi
+
+          # Upload module update JSON files to update release
           if [ -d "dev_logs" ]; then
             for file in $(find dev_logs -name "*-update.json"); do
               if [ -s "$file" ]; then
@@ -427,10 +451,34 @@ jobs:
             fi
           fi
 
-      - name: Upload module update metadata to update tag (Stable)
+      - name: Upload module update metadata and changelogs to releases (Stable)
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
+          tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
+          # Ensure update and update_changelog releases exist
+          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
+          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
+
+          # Upload changelog markdown files to update_changelog and update
+          if [ -s "stable_logs/aggregated_out/build.stable.md" ]; then
+            if [ -n "$tag" ]; then
+              echo "Uploading stable_logs/aggregated_out/build.stable.md as ${tag}.md to release update_changelog..."
+              cp -f "stable_logs/aggregated_out/build.stable.md" "${tag}.md"
+              gh release upload update_changelog "${tag}.md" --clobber || {
+                sleep 3
+                gh release upload update_changelog "${tag}.md" --clobber || echo "::warning::Failed to upload ${tag}.md to release update_changelog"
+              }
+            fi
+            echo "Uploading stable_logs/aggregated_out/build.stable.md as build.md to release update..."
+            cp -f "stable_logs/aggregated_out/build.stable.md" "build.md"
+            gh release upload update "build.md" --clobber || {
+              sleep 3
+              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
+            }
+          fi
+
+          # Upload module update JSON files to update release
           if [ -d "stable_logs" ]; then
             for file in $(find stable_logs -name "*-update.json"); do
               if [ -s "$file" ]; then
@@ -571,10 +619,34 @@ jobs:
             fi
           fi
 
-      - name: Upload module update metadata to update tag (Latest)
+      - name: Upload module update metadata and changelogs to releases (Latest)
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
+          tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
+          # Ensure update and update_changelog releases exist
+          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
+          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
+
+          # Upload changelog markdown files to update_changelog and update
+          if [ -s "latest_logs/aggregated_out/build.latest.md" ]; then
+            if [ -n "$tag" ]; then
+              echo "Uploading latest_logs/aggregated_out/build.latest.md as ${tag}.md to release update_changelog..."
+              cp -f "latest_logs/aggregated_out/build.latest.md" "${tag}.md"
+              gh release upload update_changelog "${tag}.md" --clobber || {
+                sleep 3
+                gh release upload update_changelog "${tag}.md" --clobber || echo "::warning::Failed to upload ${tag}.md to release update_changelog"
+              }
+            fi
+            echo "Uploading latest_logs/aggregated_out/build.latest.md as build.md to release update..."
+            cp -f "latest_logs/aggregated_out/build.latest.md" "build.md"
+            gh release upload update "build.md" --clobber || {
+              sleep 3
+              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
+            }
+          fi
+
+          # Upload module update JSON files to update release
           if [ -d "latest_logs" ]; then
             for file in $(find latest_logs -name "*-update.json"); do
               if [ -s "$file" ]; then
@@ -691,10 +763,44 @@ jobs:
             fi
           fi
 
-      - name: Upload module update metadata to update tag
+      - name: Upload module update metadata and changelogs to releases
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
+          tag="${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
+          # Ensure update and update_changelog releases exist
+          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
+          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
+
+          # Upload changelog markdown files to update_changelog and update
+          md_file="release_notes.md"
+          if [ ! -s "$md_file" ]; then
+            for f in batch_logs/aggregated_out/build.*.md; do
+              if [ -s "$f" ]; then
+                md_file="$f"
+                break
+              fi
+            done
+          fi
+
+          if [ -s "$md_file" ]; then
+            if [ -n "$tag" ]; then
+              echo "Uploading $md_file as ${tag}.md to release update_changelog..."
+              cp -f "$md_file" "${tag}.md"
+              gh release upload update_changelog "${tag}.md" --clobber || {
+                sleep 3
+                gh release upload update_changelog "${tag}.md" --clobber || echo "::warning::Failed to upload ${tag}.md to release update_changelog"
+              }
+            fi
+            echo "Uploading $md_file as build.md to release update..."
+            cp -f "$md_file" "build.md"
+            gh release upload update "build.md" --clobber || {
+              sleep 3
+              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
+            }
+          fi
+
+          # Upload module update JSON files to update release
           if [ -d "batch_logs" ]; then
             for file in $(find batch_logs -name "*-update.json"); do
               if [ -s "$file" ]; then

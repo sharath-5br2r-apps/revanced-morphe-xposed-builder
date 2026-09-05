@@ -239,13 +239,50 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: bash .github/scripts/build_update_changelog.sh
 
-      - name: Commit updated build and module update files
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: update
-          skip_checkout: true
-          file_pattern: build.md changelogs/*.md *-update.json
-          commit_message: Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}
+      - name: Upload changelog and module update files to releases
+        if: ${{ inputs.upload_release_metadata != false }}
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
+          # Ensure update and update_changelog releases exist
+          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
+          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
+
+          # Upload changelog files to update_changelog release
+          if [ -d "changelogs" ]; then
+            for file in changelogs/*.md; do
+              if [ -s "$file" ]; then
+                echo "Uploading $file to release update_changelog..."
+                gh release upload update_changelog "$file" --clobber || {
+                  sleep 3
+                  gh release upload update_changelog "$file" --clobber || echo "::warning::Failed to upload $file to release update_changelog"
+                }
+              fi
+            done
+          fi
+
+          # Upload build.md to update release
+          if [ -s "build.md" ]; then
+            echo "Uploading build.md to release update..."
+            gh release upload update "build.md" --clobber || {
+              sleep 3
+              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
+            }
+          fi
+
+          # Upload module update json files to update release
+          shopt -s nullglob
+          for file in *-update.json; do
+            if [ -s "$file" ]; then
+              echo "Uploading $file to release update..."
+              gh release upload update "$file" --clobber || {
+                sleep 3
+                gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
+              }
+            fi
+          done
+          shopt -u nullglob
 
       - name: Remove frequently updated apps
         run: |

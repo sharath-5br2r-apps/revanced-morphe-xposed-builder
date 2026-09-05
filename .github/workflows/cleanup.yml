@@ -27,7 +27,7 @@ jobs:
           releases_keep_latest: 198
           delete_workflows: true
           workflows_keep_day: 90
-          releases_keep_keyword: stable/beta/update
+          releases_keep_keyword: stable/beta/update/update_changelog
           gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Cleanup Archive Release Assets
@@ -35,7 +35,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: python3 .github/scripts/cleanup-archive-assets.py
 
-      - name: Cleanup Update Branch Changelogs
+      - name: Cleanup Changelog Release Assets
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash .github/scripts/cleanup_update_branch.sh
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/cleanup_update_changelogs.sh
