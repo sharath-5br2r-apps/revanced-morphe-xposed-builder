@@ -30,7 +30,7 @@ def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, 
         dpi_items = str(dpi_raw).split()
 
     for item in dpi_items:
-        appdpi.extend(str(item).split())
+        appdpi.append(str(item).strip())
 
     if "auto" in appdpi:
         match_any_dpi = True
@@ -98,13 +98,35 @@ def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, 
                 return dlurl
             elif match_any_dpi and not best_fallback_url:
                 best_fallback_url = dlurl
-        # Pass 2 Logic: If it's strictly the requested arch, save it as a fallback in case no universal is found
-        elif node_arch == arch:
-            if node_dpi in appdpi:
-                if not specific_arch_url:
-                    specific_arch_url = dlurl
-            elif match_any_dpi and not specific_arch_fallback_url:
-                specific_arch_fallback_url = dlurl
+        # Pass 2 Logic: If it matches the requested arch or any component ABI in a multi-arch array/string
+        else:
+            arch_matched = False
+            if node_arch == arch or node_arch.startswith(f"{arch} + ") or f" + {arch}" in node_arch:
+                arch_matched = True
+            else:
+                arch_list = []
+                if isinstance(arch, list):
+                    arch_list = [str(x) for x in arch]
+                elif isinstance(arch, str):
+                    s = arch.strip()
+                    if s.startswith("[") and s.endswith("]"):
+                        try:
+                            import json
+                            arch_list = [str(x) for x in json.loads(s)]
+                        except Exception:
+                            arch_list = [x.strip() for x in s.split() if x.strip()]
+                    else:
+                        arch_list = [x.strip() for x in s.split() if x.strip()]
+                for req_a in arch_list:
+                    if node_arch == req_a or node_arch.startswith(f"{req_a} + ") or f" + {req_a}" in node_arch:
+                        arch_matched = True
+                        break
+            if arch_matched:
+                if node_dpi in appdpi:
+                    if not specific_arch_url:
+                        specific_arch_url = dlurl
+                elif match_any_dpi and not specific_arch_fallback_url:
+                    specific_arch_fallback_url = dlurl
 
     if best_fallback_url:
         return best_fallback_url

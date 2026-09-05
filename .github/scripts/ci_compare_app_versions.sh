@@ -30,8 +30,10 @@ while IFS= read -r group; do
         TRIGGER_APP_UPDATE=1
         
         # Add all constituent keys to active_apps.json
-        keys=$(jq -r ".\"$group\".keys[]? // \"$group\"" "$CURRENT_VERSIONS")
-        for key in $keys; do
+        local -a key_list=()
+        readarray -t key_list < <(jq -r ".\"$group\".keys[]? // \"$group\"" "$CURRENT_VERSIONS")
+        for key in "${key_list[@]}"; do
+            [ -z "$key" ] && continue
             jq --arg k "$key" '. + [$k] | unique' "$ACTIVE_APPS" > tmp.json && mv tmp.json "$ACTIVE_APPS"
         done
         

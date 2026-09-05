@@ -144,7 +144,9 @@ mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm ${MODUL
 [ -f "${MODULE_TEMPLATE_DIR}/bin/x86/cmpr" ] || gh_dl "${MODULE_TEMPLATE_DIR}/bin/x86/cmpr" "https://github.com/j-hc/cmpr/releases/latest/download/cmpr-x86"
 [ -f "${MODULE_TEMPLATE_DIR}/bin/x64/cmpr" ] || gh_dl "${MODULE_TEMPLATE_DIR}/bin/x64/cmpr" "https://github.com/j-hc/cmpr/releases/latest/download/cmpr-x86_64"
 
-for table_name in $(toml_get_table_names); do
+config_tables=()
+readarray -t config_tables < <(toml_get_table_names)
+for table_name in "${config_tables[@]}"; do
 	if [ -z "$table_name" ]; then continue; fi
 	t=$(toml_get_table "$table_name")
 

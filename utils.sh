@@ -804,7 +804,9 @@ config_update() {
 	: >"$TEMP_DIR"/skipped
 	local upped=()
 	local prcfg=false
-	for table_name in $(toml_get_table_names); do
+	local -a config_tables=()
+	readarray -t config_tables < <(toml_get_table_names)
+	for table_name in "${config_tables[@]}"; do
 		if [ -z "$table_name" ]; then continue; fi
 		t=$(toml_get_table "$table_name")
 		enabled=$(toml_get "$t" enabled) || enabled=true
@@ -1028,8 +1030,10 @@ get_patch_exp_ver() {
 	list_stable=$(sed -n '/Most common compatible versions:/,$p' <<<"$list_stable" | sed '1d' | awk '{print $1}')
 	list_all=$(sed -n '/Most common compatible versions:/,$p' <<<"$list_all" | sed '1d' | awk '{print $1}')
 
+	local -a all_vers=()
+	readarray -t all_vers <<<"$list_all"
 	local exp_versions=""
-	for ver in $list_all; do
+	for ver in "${all_vers[@]}"; do
 		if [ -n "$ver" ] && ! echo "$list_stable" | grep -qFx "$ver"; then
 			exp_versions+="$ver"$'\n'
 		fi
@@ -1103,10 +1107,11 @@ parse_arch_mapping() {
 		echo "$mapping"
 		return 0
 	fi
+	local -a entries=()
+	readarray -d '|' -t entries <<<"$mapping"
 	local matched="" entry
-	local old_ifs="$IFS"
-	IFS='|'
-	for entry in $mapping; do
+	for entry in "${entries[@]}"; do
+		entry="${entry%$'\n'}"
 		if [[ "$entry" =~ ^[[:space:]]*([^:]+)[[:space:]]*:[[:space:]]*(.*)$ ]]; then
 			local e_arch="${BASH_REMATCH[1]//[[:space:]]/}"
 			local e_val="${BASH_REMATCH[2]}"
@@ -1117,7 +1122,6 @@ parse_arch_mapping() {
 			fi
 		fi
 	done
-	IFS="$old_ifs"
 	echo "$matched"
 }
 
@@ -1141,8 +1145,10 @@ _patches_list_versions() {
 		return 0
 	fi
 
+	local -a raw_pj=()
+	readarray -t raw_pj < <(list_args "$patches_jar")
 	local p_jars=()
-	for j in $(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'); do
+	for j in "${raw_pj[@]}"; do
 		local j_name=$(basename "$j")
 		if [[ "$j_name" == *"morphe-desktop"* ]] || [[ "$j_name" == *"revanced-cli"* ]]; then
 			continue
@@ -1150,7 +1156,7 @@ _patches_list_versions() {
 		p_jars+=("$j")
 	done
 	if [ ${#p_jars[@]} -eq 0 ]; then
-		for p_path in $patches_jar; do
+		for p_path in "${raw_pj[@]}"; do
 			local p_dir=$(dirname "$p_path")
 			while IFS= read -r f; do
 				[ -n "$f" ] && p_jars+=("$f")
@@ -1211,8 +1217,10 @@ _patches_list() {
 		echo "Name: passthrough-dummy"
 		return 0
 	fi
+	local -a raw_pj=()
+	readarray -t raw_pj < <(list_args "$patches_jar")
 	local p_jars=()
-	for j in $(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'); do
+	for j in "${raw_pj[@]}"; do
 		local j_name=$(basename "$j")
 		if [[ "$j_name" == *"morphe-desktop"* ]] || [[ "$j_name" == *"revanced-cli"* ]]; then
 			continue
@@ -1220,7 +1228,7 @@ _patches_list() {
 		p_jars+=("$j")
 	done
 	if [ ${#p_jars[@]} -eq 0 ]; then
-		for p_path in $patches_jar; do
+		for p_path in "${raw_pj[@]}"; do
 			local p_dir=$(dirname "$p_path")
 			while IFS= read -r f; do
 				[ -n "$f" ] && p_jars+=("$f")
@@ -1570,8 +1578,9 @@ get_apkmirror_vers() {
 	local rel_filter="${args[apkmirror_release_filter]:-${__APKMIRROR_RELEASE_FILTER__:-${apkmirror_release_filter:-}}}"
 	set -u
 
-	local IFS=$'\n'
-	for v in $vers; do
+	local -a raw_vers=()
+	readarray -t raw_vers <<<"$vers"
+	for v in "${raw_vers[@]}"; do
 		[ -z "$v" ] && continue
 		if [ "${__AAV__:-false}" = false ]; then
 			grep -iq "\(beta\|alpha\)" <<<"$v" && continue
@@ -1726,11 +1735,26 @@ apkmirror_search() {
 				best_fallback_url="$dlurl"
 			fi
 		# Pass 2 Logic: If it matches the requested arch or any component ABI in a multi-arch string
-		elif [ "$node_arch" = "$arch" ] || [[ "$node_arch" == "$arch + "* ]] || [[ "$node_arch" == *" + $arch"* ]] || ( [[ "$arch" == *" "* ]] && ( echo " $arch " | grep -q " $node_arch " ) ); then
-			if isoneof "$node_dpi" "${appdpi[@]}"; then
-				[ -z "$specific_arch_url" ] && specific_arch_url="$dlurl"
-			elif [ "$match_any_dpi" = true ] && [ -z "$specific_arch_fallback_url" ]; then
-				specific_arch_fallback_url="$dlurl"
+		else
+			local arch_matched=false
+			if [ "$node_arch" = "$arch" ] || [[ "$node_arch" == "$arch + "* ]] || [[ "$node_arch" == *" + $arch"* ]]; then
+				arch_matched=true
+			else
+				local -a requested_archs=()
+				readarray -t requested_archs < <(list_args "$arch")
+				for req_a in "${requested_archs[@]}"; do
+					if [ "$node_arch" = "$req_a" ] || [[ "$node_arch" == "$req_a + "* ]] || [[ "$node_arch" == *" + $req_a"* ]]; then
+						arch_matched=true
+						break
+					fi
+				done
+			fi
+			if [ "$arch_matched" = true ]; then
+				if isoneof "$node_dpi" "${appdpi[@]}"; then
+					[ -z "$specific_arch_url" ] && specific_arch_url="$dlurl"
+				elif [ "$match_any_dpi" = true ] && [ -z "$specific_arch_fallback_url" ]; then
+					specific_arch_fallback_url="$dlurl"
+				fi
 			fi
 		fi
 	done
@@ -1993,12 +2017,13 @@ dl_apkmirror() {
 	local node dlurl=""
 	node=$($HTMLQ "div.table-row.headerFont:nth-last-child(1)" -r "span:nth-child(n+3)" <<<"$resp")
 	if [ "$node" ]; then
+		local -a types=()
 		if [ "${args[prefer_dl_mode]:-}" = "bundle" ]; then
-			types="BUNDLE APK"
+			types=("BUNDLE" "APK")
 		else
-			types="APK BUNDLE"
+			types=("APK" "BUNDLE")
 		fi
-		for type in $types; do
+		for type in "${types[@]}"; do
 			if dlurl=$(apkmirror_search "$resp" "$dpi" "$arch" "$type" "$clean_search_version" "$search_version" "$version_code"); then
 				[ "$type" = "BUNDLE" ] && is_bundle=true || is_bundle=false
 				break
@@ -2392,7 +2417,9 @@ dl_archive() {
 	local norm_resp="${__ARCHIVE_RESP__//$'\r'/}"
 	local norm_arch="${arch// /}"
 	local arch_candidates=("$norm_arch")
-	for single_a in $arch; do
+	local -a input_archs=()
+	readarray -t input_archs < <(list_args "$arch")
+	for single_a in "${input_archs[@]}"; do
 		arch_candidates+=("$single_a")
 	done
 	arch_candidates+=("common" "all")
@@ -2479,7 +2506,9 @@ dl_cache_repo() {
 
 	local norm_arch="${arch// /}"
 	local arch_candidates=("$norm_arch")
-	for single_a in $arch; do
+	local -a input_archs=()
+	readarray -t input_archs < <(list_args "$arch")
+	for single_a in "${input_archs[@]}"; do
 		arch_candidates+=("$single_a")
 		case "$single_a" in
 			arm-v7a) arch_candidates+=("armeabi-v7a" "arm") ;;
@@ -2779,21 +2808,8 @@ dl_git_repo() {
 
 	if [ -n "$custom_regex" ]; then
 		local regex=""
-		if [[ "$custom_regex" == *":"* ]]; then
-			regex=$(echo "$custom_regex" | awk -F'|' -v a="$arch" '{
-				for(i=1;i<=NF;i++) {
-					split($i, kv, ":")
-					gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[1])
-					if(kv[1] == a) {
-						gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[2])
-						print kv[2]
-						exit
-					}
-				}
-			}')
-		else
-			regex="$custom_regex"
-		fi
+		regex=$(parse_arch_mapping "$custom_regex" "$arch")
+		[ -z "$regex" ] && regex="$custom_regex"
 		if [ -n "$regex" ]; then
 			regex="${regex//\{version\}/${version_clean}}"
 			regex="${regex//\{arch\}/${arch}}"
@@ -4189,11 +4205,11 @@ build_rv() {
 			fi
 		done <<< "$(list_args "$custom_mg_raw")"
 	else
-		local IFS=$'\n'
-		for p in $(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || :); do
-			microg_patches+=("$p")
+		local -a auto_mg=()
+		readarray -t auto_mg < <(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || true)
+		for p in "${auto_mg[@]}"; do
+			[ -n "$p" ] && microg_patches+=("$p")
 		done
-		unset IFS
 	fi
 	if [ ${#microg_patches[@]} -gt 0 ]; then
 		local found=false
