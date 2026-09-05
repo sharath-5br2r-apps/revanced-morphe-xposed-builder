@@ -122,7 +122,7 @@ At least one `*-dlurl` key is required.
 | Key | Description |
 |-----|-------------|
 | `apkmirror-dlurl` | APKMirror app listing URL (e.g. `https://www.apkmirror.com/apk/google-inc/gboard/`). |
-| `apkmirror-example-dlurl` | A specific APKMirror release URL used as a template to construct version-specific URLs. Also accepted as `apkmirror-example-url`. |
+| `apkmirror-example-url` | A specific APKMirror release URL used as a template to construct version-specific URLs. |
 | `apkmirror-release-filter` | Regex to filter APKMirror variants. Prefix with `!` to exclude. Supports alternation (e.g. `!(lite|beta)` to exclude lite and beta). |
 | `uptodown-dlurl` | Uptodown app page URL. |
 | `apkpure-dlurl` | APKPure app page URL. |
@@ -138,15 +138,18 @@ At least one `*-dlurl` key is required.
 
 | Key | Description |
 |-----|-------------|
-| `github-dlurl-regex` / `github-regex` | Regex or per-arch mapping (`arm64-v8a: ... \| arm-v7a: ...`) to filter release asset filenames for `github-dlurl`. |
+| `github-dlurl-regex` | Regex or per-arch mapping (`[{"arch": "arm64-v8a", "regex": "..."}]`) to filter release asset filenames for `github-dlurl`. |
 | `github-release-regex` | Regex to filter release tags for `github-dlurl`. |
 | `github-release-name-regex` | Regex to filter release names/titles for `github-dlurl`. |
-| `gitlab-dlurl-regex` / `gitlab-regex` | Regex or per-arch mapping to filter release asset filenames for `gitlab-dlurl`. |
+| `github-dlurl-exclude-filter` | Regex to exclude release asset filenames for `github-dlurl`. |
+| `gitlab-dlurl-regex` | Regex or per-arch mapping to filter release asset filenames for `gitlab-dlurl`. |
 | `gitlab-release-regex` | Regex to filter release tags for `gitlab-dlurl`. |
 | `gitlab-release-name-regex` | Regex to filter release names/titles for `gitlab-dlurl`. |
-| `forgejo-dlurl-regex` / `forgejo-regex` | Regex or per-arch mapping to filter release asset filenames for `forgejo-dlurl`. |
+| `gitlab-dlurl-exclude-filter` | Regex to exclude release asset filenames for `gitlab-dlurl`. |
+| `forgejo-dlurl-regex` | Regex or per-arch mapping to filter release asset filenames for `forgejo-dlurl`. |
 | `forgejo-release-regex` | Regex to filter release tags for `forgejo-dlurl`. |
 | `forgejo-release-name-regex` | Regex to filter release names/titles for `forgejo-dlurl`. |
+| `forgejo-dlurl-exclude-filter` | Regex to exclude release asset filenames for `forgejo-dlurl`. |
 
 ### Other
 

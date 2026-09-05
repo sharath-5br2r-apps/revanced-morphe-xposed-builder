@@ -11,7 +11,7 @@ pkg-name = "com.instagram.android"
 patcher-args = "--continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
-apkmirror-example-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android"
 patches-source = "crimera/piko"
 

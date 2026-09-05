@@ -215,13 +215,13 @@ for table_name in "${config_tables[@]}"; do
 		fi
 	done
 
-	cli_src_filter=$(toml_get "$t" cli-source-filter) || cli_src_filter=$(toml_get "$t" cli-filter) || cli_src_filter=""
-	cli_tag_filter=$(toml_get "$t" cli-tag-filter) || cli_tag_filter=$(toml_get "$t" cli-version-filter) || cli_tag_filter=""
-	cli_rel_name_filter=$(toml_get "$t" cli-release-name-filter) || cli_rel_name_filter=$(toml_get "$t" cli-release-filter) || cli_rel_name_filter=""
+	cli_src_filter=$(toml_get "$t" cli-source-filter) || cli_src_filter=""
+	cli_tag_filter=$(toml_get "$t" cli-tag-filter) || cli_tag_filter=""
+	cli_rel_name_filter=$(toml_get "$t" cli-release-name-filter) || cli_rel_name_filter=""
 
-	patches_src_filter=$(toml_get "$t" patches-source-filter) || patches_src_filter=$(toml_get "$t" patches-filter) || patches_src_filter=""
-	patches_tag_filter=$(toml_get "$t" patches-tag-filter) || patches_tag_filter=$(toml_get "$t" patches-version-filter) || patches_tag_filter=""
-	patches_rel_name_filter=$(toml_get "$t" patches-release-name-filter) || patches_rel_name_filter=$(toml_get "$t" patches-release-filter) || patches_rel_name_filter=""
+	patches_src_filter=$(toml_get "$t" patches-source-filter) || patches_src_filter=""
+	patches_tag_filter=$(toml_get "$t" patches-tag-filter) || patches_tag_filter=""
+	patches_rel_name_filter=$(toml_get "$t" patches-release-name-filter) || patches_rel_name_filter=""
 
 	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "${p_hosts[*]}" "${p_srcs[*]}" "${p_vers[*]}" "$cli_src_filter" "$patches_src_filter" "$cli_tag_filter" "$patches_tag_filter" "$cli_rel_name_filter" "$patches_rel_name_filter")"; then
 		epr "Could not get prebuilts"
@@ -268,28 +268,28 @@ for table_name in "${config_tables[@]}"; do
 	app_args[patches_ref]="${patches_ref_all%,}"
 	app_args[changelog_url]="${changelog_url_all% }"
 	app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"
-	app_args[github_regex]=$(toml_get "$t" github-dlurl-regex) || app_args[github_regex]=$(toml_get "$t" github-regex) || app_args[github_regex]=""
-	app_args[github_dlurl_regex]="${app_args[github_regex]}"
+	app_args[github_dlurl_regex]=$(toml_get "$t" github-dlurl-regex) || app_args[github_dlurl_regex]=""
+	app_args[github_regex]="${app_args[github_dlurl_regex]}"
 	app_args[github_release_regex]=$(toml_get "$t" github-release-regex) || app_args[github_release_regex]=""
 	app_args[github_release_name_regex]=$(toml_get "$t" github-release-name-regex) || app_args[github_release_name_regex]=""
-	app_args[github_dlurl_exclude_filter]=$(toml_get "$t" github-dlurl-exclude-filter) || app_args[github_dlurl_exclude_filter]=$(toml_get "$t" github-exclude-filter) || app_args[github_dlurl_exclude_filter]=""
+	app_args[github_dlurl_exclude_filter]=$(toml_get "$t" github-dlurl-exclude-filter) || app_args[github_dlurl_exclude_filter]=""
 	app_args[github_dlurl_source]=$(toml_get "$t" github-dlurl-source) || app_args[github_dlurl_source]=""
 
-	app_args[gitlab_regex]=$(toml_get "$t" gitlab-dlurl-regex) || app_args[gitlab_regex]=$(toml_get "$t" gitlab-regex) || app_args[gitlab_regex]=""
-	app_args[gitlab_dlurl_regex]="${app_args[gitlab_regex]}"
+	app_args[gitlab_dlurl_regex]=$(toml_get "$t" gitlab-dlurl-regex) || app_args[gitlab_dlurl_regex]=""
+	app_args[gitlab_regex]="${app_args[gitlab_dlurl_regex]}"
 	app_args[gitlab_release_regex]=$(toml_get "$t" gitlab-release-regex) || app_args[gitlab_release_regex]=""
 	app_args[gitlab_release_name_regex]=$(toml_get "$t" gitlab-release-name-regex) || app_args[gitlab_release_name_regex]=""
-	app_args[gitlab_dlurl_exclude_filter]=$(toml_get "$t" gitlab-dlurl-exclude-filter) || app_args[gitlab_dlurl_exclude_filter]=$(toml_get "$t" gitlab-exclude-filter) || app_args[gitlab_dlurl_exclude_filter]=""
+	app_args[gitlab_dlurl_exclude_filter]=$(toml_get "$t" gitlab-dlurl-exclude-filter) || app_args[gitlab_dlurl_exclude_filter]=""
 
-	app_args[forgejo_regex]=$(toml_get "$t" forgejo-dlurl-regex) || app_args[forgejo_regex]=$(toml_get "$t" forgejo-regex) || app_args[forgejo_regex]=""
-	app_args[forgejo_dlurl_regex]="${app_args[forgejo_regex]}"
+	app_args[forgejo_dlurl_regex]=$(toml_get "$t" forgejo-dlurl-regex) || app_args[forgejo_dlurl_regex]=""
+	app_args[forgejo_regex]="${app_args[forgejo_dlurl_regex]}"
 	app_args[forgejo_release_regex]=$(toml_get "$t" forgejo-release-regex) || app_args[forgejo_release_regex]=""
 	app_args[forgejo_release_name_regex]=$(toml_get "$t" forgejo-release-name-regex) || app_args[forgejo_release_name_regex]=""
-	app_args[forgejo_dlurl_exclude_filter]=$(toml_get "$t" forgejo-dlurl-exclude-filter) || app_args[forgejo_dlurl_exclude_filter]=$(toml_get "$t" forgejo-exclude-filter) || app_args[forgejo_dlurl_exclude_filter]=""
+	app_args[forgejo_dlurl_exclude_filter]=$(toml_get "$t" forgejo-dlurl-exclude-filter) || app_args[forgejo_dlurl_exclude_filter]=""
 
 
-	app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-dlurl) || app_args[apkmirror_example_url]=""
-	app_args[apkmirror_release_filter]=$(toml_get "$t" apkmirror-release-filter) || app_args[apkmirror_release_filter]=$(toml_get "$t" release-filter) || app_args[apkmirror_release_filter]=""
+	app_args[apkmirror_example_url]=$(toml_get "$t" apkmirror-example-url) || app_args[apkmirror_example_url]=""
+	app_args[apkmirror_release_filter]=$(toml_get "$t" apkmirror-release-filter) || app_args[apkmirror_release_filter]=""
 	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]=false
 	app_args[prefer_dl_mode]=$(toml_get "$t" prefer-dl-mode) || app_args[prefer_dl_mode]=apk
 	app_args[custom_microg_patches]=$(toml_get "$t" custom-microg-patches) || app_args[custom_microg_patches]=""
@@ -297,8 +297,8 @@ for table_name in "${config_tables[@]}"; do
 	app_args[included_patches]=$(toml_get "$t" included-patches) || app_args[included_patches]=""
 	app_args[exclusive_patches]=$(toml_get "$t" exclusive-patches) || app_args[exclusive_patches]=false
 	app_args[version]=$(toml_get "$t" version) || app_args[version]="auto"
-	app_args[version_filter]=$(toml_get "$t" version-filter) || app_args[version_filter]=$(toml_get "$t" apkmirror-version-filter) || app_args[version_filter]=""
-	app_args[apkmirror_version_filter]=$(toml_get "$t" apkmirror-version-filter) || app_args[apkmirror_version_filter]="${app_args[version_filter]}"
+	app_args[version_filter]=$(toml_get "$t" version-filter) || app_args[version_filter]=""
+	app_args[apkmirror_version_filter]="${app_args[version_filter]}"
 	app_args[version_code]=$(toml_get "$t" version-code) || app_args[version_code]=""
 	app_args[app_name]=$(toml_get "$t" app-name) || app_args[app_name]=$table_name
 	app_args[patcher_args]=$(toml_get "$t" patcher-args) || app_args[patcher_args]=""

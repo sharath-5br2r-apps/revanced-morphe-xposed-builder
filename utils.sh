@@ -1534,7 +1534,7 @@ get_apkmirror_resp() {
 	__APKMIRROR_RESP__=""
 	set +u
 	if declare -p args &>/dev/null 2>&1; then
-		__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-${args[apkmirror_example_dlurl]:-${apkmirror_example_url:-}}}"
+		__APKMIRROR_EXAMPLE_URL__="${args[apkmirror_example_url]:-${apkmirror_example_url:-}}"
 	else
 		__APKMIRROR_EXAMPLE_URL__="${apkmirror_example_url:-}"
 	fi
@@ -1812,7 +1812,7 @@ dl_apkmirror() {
 	local resp release_url=""
 
 	set +u
-	local example_url="${__APKMIRROR_EXAMPLE_URL__:-${args[apkmirror_example_url]:-${args[apkmirror_example_dlurl]:-}}}"
+	local example_url="${__APKMIRROR_EXAMPLE_URL__:-${args[apkmirror_example_url]:-}}"
 	set -u
 
 	if [ -n "$example_url" ]; then
@@ -2625,10 +2625,10 @@ get_cache_repo_pkg_name() {
 get_git_repo_resp() {
 	local provider="$1"
 	local url="${2%/}"
-	local k1="${provider}_dlurl_regex" k2="${provider}_regex" k3="${provider}_dlurl_filter" k4="${provider}_filter"
+	local k1="${provider}_dlurl_regex"
 	local raw_filter="" target_arch="${arch:-}"
 	if declare -p args >/dev/null 2>&1; then
-		raw_filter="${args["$k1"]:-${args["$k2"]:-${args["$k3"]:-${args["$k4"]:-}}}}"
+		raw_filter="${args["$k1"]:-}"
 		[ -z "$target_arch" ] && target_arch="${args["arch"]:-}"
 	fi
 	[ -z "$raw_filter" ] && raw_filter='\.(apk|apkm|xapk|apks)$'
@@ -2643,12 +2643,12 @@ get_git_repo_resp() {
 			end
 		' <<<"$raw_filter" 2>/dev/null) || filter="$raw_filter"
 	fi
-	local tk1="${provider}_release_regex" tk2="${provider}_release_tag_regex" tk3="${provider}_dlurl_tag_filter"
-	local rk1="${provider}_release_name_regex" rk2="${provider}_release_filter" rk3="${provider}_dlurl_release_name_filter"
+	local tk1="${provider}_release_regex"
+	local rk1="${provider}_release_name_regex"
 	local tag_filter="" rel_name_filter=""
 	if declare -p args >/dev/null 2>&1; then
-		tag_filter="${args["$tk1"]:-${args["$tk2"]:-${args["$tk3"]:-}}}"
-		rel_name_filter="${args["$rk1"]:-${args["$rk2"]:-${args["$rk3"]:-}}}"
+		tag_filter="${args["$tk1"]:-}"
+		rel_name_filter="${args["$rk1"]:-}"
 	fi
 	local host="$provider" host_instance=""
 	if [[ "$url" =~ ^(https?://[^/]+) ]]; then
@@ -2814,7 +2814,7 @@ dl_git_repo() {
 	local url=$1 version=$2 output=$3 arch=$4 dpi=${5:-} get_latest_ver=${6:-false}
 	local assets_json="${__DL_RESP_CACHE__["git_${provider}"]:-${__GIT_RESP_JSON__:-}}"
 
-	local custom_regex="${args[${provider}_dlurl_regex]:-${args[${provider}_regex]:-}}"
+	local custom_regex="${args[${provider}_dlurl_regex]:-}"
 	local version_clean=${version#v}
 	local matching_asset="" download_url="" asset_name=""
 
@@ -3417,7 +3417,7 @@ build_rv() {
 		fi
 	fi
 	local prefer_dl_mode=${args[prefer_dl_mode]}
-	local apkmirror_example_url="${args[apkmirror_example_url]:-${args[apkmirror_example_dlurl]:-}}"
+	local apkmirror_example_url="${args[apkmirror_example_url]:-}"
 	local cli_jar="${args[cli]}"
 	local patches_jar="${args[ptjar]}"
 	local mode_arg=${args[build_mode]} version_mode=${args[version]}
@@ -4272,7 +4272,7 @@ build_rv() {
 			cli_ref="${args[cli_source]}"
 		fi
 	fi
-	local custom_pa="${args[patcher_args]:-${args[patcher-args]:-}}"
+	local custom_pa="${args[patcher_args]:-}"
 	if [ -n "$custom_pa" ]; then p_patcher_args+=("$custom_pa"); fi
 	if [[ "${p_patcher_args[*]}" != *"-f"* ]]; then
 		p_patcher_args+=("-f")

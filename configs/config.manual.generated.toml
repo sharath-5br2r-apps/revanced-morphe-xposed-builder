@@ -341,7 +341,7 @@ excluded-patches = [["Package Rename"], []]
 patcher-args = "-f --continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
-apkmirror-example-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 apkmirror-release-filter = "!(lite|beta)"
 
 [gboard-morphe-jasonwu1994-adobo-clone]
@@ -359,7 +359,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 cli-source = "MorpheApp/morphe-desktop"
 patcher-args = "-f --continue-on-error"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
-apkmirror-example-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 apkmirror-release-filter = "!(lite|beta)"
 
 [camscanner-morphe-hoodles]
@@ -1334,7 +1334,7 @@ pkg-name = "com.instagram.android"
 patcher-args = "--continue-on-error"
 cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
-apkmirror-example-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android"
 patches-source = "crimera/piko"
 
