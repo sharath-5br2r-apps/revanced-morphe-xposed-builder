@@ -62,7 +62,7 @@ def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, 
             if clean_search_version not in dlurl and search_version not in dlurl:
                 continue
 
-        if target_vc:
+        if target_vc and target_vc != "bypass":
             if node_vc and node_vc == target_vc:
                 return dlurl
             else:

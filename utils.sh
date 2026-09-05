@@ -766,10 +766,6 @@ set_prebuilts() {
 		pr "Using custom AAPT2: $AAPT2"
 	elif command -v aapt2 >/dev/null 2>&1; then
 		AAPT2="aapt2"
-	elif [ -f "${BIN_DIR}/aapt2/aapt2-${kernel}-${arch}${ext}" ] && [ -x "${BIN_DIR}/aapt2/aapt2-${kernel}-${arch}${ext}" ]; then
-		AAPT2="${BIN_DIR}/aapt2/aapt2-${kernel}-${arch}${ext}"
-	elif [ -f "${BIN_DIR}/aapt2/aapt2-${arch}${ext}" ] && [ -x "${BIN_DIR}/aapt2/aapt2-${arch}${ext}" ]; then
-		AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}${ext}"
 	else
 		AAPT2=""
 		local sdk_root="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
@@ -1323,7 +1319,7 @@ _trawl_get() {
 			IFS=$'\t' read -r status ua cookies <<<"$parsed_meta"
 			if [[ "$status" =~ ^[1-3][0-9][0-9]$ ]]; then
 				html=$(jq -r '.html // empty' <<<"$response" 2>/dev/null || true)
-				if [[ -n "$html" ]] && ! is_cf_challenge_page "$html" && [[ "$html" != *"Attention Required!"* && "$html" != *"Just a moment..."* && "$html" != *"Please Wait... | Cloudflare"* && "$html" != *"Verify you are human"* ]]; then
+				if [[ -n "$html" ]] && ! is_cf_challenge_page "$html"; then
 					export CF_COOKIES="$cookies"
 					user_agent="$ua"
 					return 0
@@ -1476,13 +1472,6 @@ _unqueued_cf_get() {
 	return 1
 }
 _cf_get() {
-	mkdir -p "$TEMP_DIR"
-	local lock=$TEMP_DIR/cf_get.lock
-	exec 200>"$lock"
-	if command -v flock >/dev/null 2>&1; then
-		flock -x 200
-	fi
-	trap 'exec 200>&-' RETURN EXIT INT TERM
 	_unqueued_cf_get "$@"
 	local res=$?
 	if [ $res -eq 0 ]; then
@@ -1700,7 +1689,7 @@ apkmirror_search() {
 			fi
 		fi
 
-		if [ -n "$target_vc" ]; then
+		if [ -n "$target_vc" ] && [ "$target_vc" != "bypass" ]; then
 			if [ -n "$node_vc" ] && [ "$node_vc" = "$target_vc" ]; then
 				echo "$dlurl"
 				return 0
@@ -2392,7 +2381,7 @@ dl_archive() {
 	for a in "${arch_candidates[@]}"; do
 		for ext in "apk" "apkm" "xapk" "apks" "apk.apkm" "apk.xapk" "apk.apks"; do
 			while IFS= read -r p; do
-				if [ -n "$version_code" ]; then
+				if [ -n "$version_code" ] && [ "$version_code" != "bypass" ]; then
 					if [[ "$p" == *"${version_f#v}-${version_code}-${a}.${ext}" ]]; then
 						path="$p"
 						break 3
@@ -3161,7 +3150,7 @@ write_build_info() {
 	# If still a .zip, clear so we skip aapt2 on it
 	[[ "$inspect_apk" == *.zip ]] && inspect_apk=""
 
-	local aapt_bin="${AAPT2:-$(command -v aapt2 || command -v aapt || true)}"
+	local aapt_bin="${AAPT2:-$(command -v aapt2 || true)}"
 	local min_sdk=""
 	local densities_json="[]" native_libs_json="[]"
 	if [ -n "$inspect_apk" ] && [ -f "$inspect_apk" ]; then
@@ -3597,7 +3586,9 @@ build_rv() {
 					arch_f="${arch// /}"
 					local target_version_code
 					target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
-					if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+					if [ "$target_version_code" = "bypass" ]; then
+						:
+					elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
 						target_version_code=""
 						if [ -n "$resolved_version" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
 							local raw_vers
@@ -3607,13 +3598,14 @@ build_rv() {
 						fi
 					fi
 
-					local vc_infix="${target_version_code:+-${target_version_code}}"
+					local vc_infix=""
+					[ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ] && vc_infix="-${target_version_code}"
 					local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
 					local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 					local check_apk=""
 					[ -f "$stock_apk" ] && check_apk="$stock_apk"
 					[ -z "$check_apk" ] && [ -f "$all_apk" ] && check_apk="$all_apk"
-					if [ -z "$check_apk" ] && [ -n "$target_version_code" ]; then
+					if [ -z "$check_apk" ] && [ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ]; then
 						local legacy_stock="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 						local legacy_all="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
 						[ -f "$legacy_stock" ] && check_apk="$legacy_stock"
@@ -3623,12 +3615,11 @@ build_rv() {
 					if [ -z "$check_apk" ]; then
 						all_archs_found=false
 						break
-					elif [ -n "$target_version_code" ]; then
+					elif [ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ]; then
 						local cached_vc=""
-						if command -v aapt >/dev/null 2>&1; then
-							cached_vc=$(aapt dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
-						elif [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
-							cached_vc=$("$AAPT2" dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
+						local aapt_bin="${AAPT2:-$(command -v aapt2 || true)}"
+						if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ]; then
+							cached_vc=$("$aapt_bin" dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
 						fi
 						if [ -n "$cached_vc" ] && [ "$cached_vc" != "$target_version_code" ]; then
 							pr "Cached APK for '$pkg_name' has versionCode '$cached_vc', but target requires '$target_version_code'. Cache invalidated."
@@ -3643,7 +3634,9 @@ build_rv() {
 						arch_f="${arch// /}"
 						local target_version_code
 						target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
-						if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+						if [ "$target_version_code" = "bypass" ]; then
+							:
+						elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
 							target_version_code=""
 							if [ -n "$resolved_version" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
 								local raw_vers
@@ -3652,7 +3645,8 @@ build_rv() {
 								fi
 							fi
 						fi
-						local vc_infix="${target_version_code:+-${target_version_code}}"
+						local vc_infix=""
+						[ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ] && vc_infix="-${target_version_code}"
 						local stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
 						local all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 						[ -f "$stock_apk" ] && touch "$stock_apk" 2>/dev/null || true
@@ -3692,7 +3686,9 @@ build_rv() {
 							arch_f="${arch// /}"
 							local target_version_code
 							target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
-							if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+							if [ "$target_version_code" = "bypass" ]; then
+								:
+							elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
 								target_version_code=""
 								if [ -n "$dyn_ver" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
 									local raw_vers
@@ -3701,13 +3697,14 @@ build_rv() {
 									fi
 								fi
 							fi
-							local vc_infix="${target_version_code:+-${target_version_code}}"
+							local vc_infix=""
+							[ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ] && vc_infix="-${target_version_code}"
 							local stock_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}${vc_infix}-${arch_f}.apk"
 							local all_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}${vc_infix}-all.apk"
 							local check_apk=""
 							[ -f "$stock_apk" ] && check_apk="$stock_apk"
 							[ -z "$check_apk" ] && [ -f "$all_apk" ] && check_apk="$all_apk"
-							if [ -z "$check_apk" ] && [ -n "$target_version_code" ]; then
+							if [ -z "$check_apk" ] && [ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ]; then
 								local legacy_stock="${apk_cache_dir}/${pkg_name}-${dyn_ver}-${arch_f}.apk"
 								local legacy_all="${apk_cache_dir}/${pkg_name}-${dyn_ver}-all.apk"
 								[ -f "$legacy_stock" ] && check_apk="$legacy_stock"
@@ -3723,7 +3720,9 @@ build_rv() {
 								arch_f="${arch// /}"
 								local target_version_code
 								target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
-								if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+								if [ "$target_version_code" = "bypass" ]; then
+									:
+								elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
 									target_version_code=""
 									if [ -n "$dyn_ver" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
 										local raw_vers
@@ -3732,7 +3731,8 @@ build_rv() {
 										fi
 									fi
 								fi
-								local vc_infix="${target_version_code:+-${target_version_code}}"
+								local vc_infix=""
+								[ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ] && vc_infix="-${target_version_code}"
 								local stock_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}${vc_infix}-${arch_f}.apk"
 								local all_apk="${apk_cache_dir}/${pkg_name}-${dyn_ver}${vc_infix}-all.apk"
 								[ -f "$stock_apk" ] && touch "$stock_apk" 2>/dev/null || true
@@ -3886,7 +3886,9 @@ build_rv() {
 
 		local target_version_code
 		target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
-		if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+		if [ "$target_version_code" = "bypass" ]; then
+			:
+		elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
 			target_version_code=""
 			if [ -n "$version" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
 				local raw_vers
@@ -3895,19 +3897,20 @@ build_rv() {
 				fi
 			fi
 		fi
-		[ -n "$target_version_code" ] && pr "Target version code for '$pkg_name' (v${version}, arch: ${arch_f}): $target_version_code"
+		[ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ] && pr "Target version code for '$pkg_name' (v${version}, arch: ${arch_f}): $target_version_code"
 
-		local vc_infix="${target_version_code:+-${target_version_code}}"
+		local vc_infix=""
+		[ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ] && vc_infix="-${target_version_code}"
 		local cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
 		local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 		local stock_apk="$cached_stock_apk"
 		local all_apk="$cached_all_apk"
 
 		# Fallback to legacy cache paths without vc_infix if target_version_code was not originally part of filename
-		if [ ! -f "$stock_apk" ] && [ -n "$target_version_code" ] && [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk" ]; then
+		if [ ! -f "$stock_apk" ] && [ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ] && [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk" ]; then
 			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 		fi
-		if [ ! -f "$all_apk" ] && [ -n "$target_version_code" ] && [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-all.apk" ]; then
+		if [ ! -f "$all_apk" ] && [ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ] && [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-all.apk" ]; then
 			all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
 		fi
 
@@ -3938,12 +3941,11 @@ build_rv() {
 		local check_apk=""
 		[ -f "$stock_apk" ] && check_apk="$stock_apk"
 		[ -z "$check_apk" ] && [ -f "$all_apk" ] && check_apk="$all_apk"
-		if [ -n "$check_apk" ] && [ -n "$target_version_code" ]; then
+		if [ -n "$check_apk" ] && [ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ]; then
 			local cached_vc=""
-			if command -v aapt >/dev/null 2>&1; then
-				cached_vc=$(aapt dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
-			elif [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
-				cached_vc=$("$AAPT2" dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
+			local aapt_bin="${AAPT2:-$(command -v aapt2 || true)}"
+			if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ]; then
+				cached_vc=$("$aapt_bin" dump badging "$check_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1 || true)
 			fi
 			if [ -n "$cached_vc" ] && [ "$cached_vc" != "$target_version_code" ]; then
 				pr "Cached APK for '$pkg_name' has versionCode '$cached_vc', but target requires '$target_version_code'. Cache invalidated."
@@ -3987,27 +3989,16 @@ build_rv() {
 					rm -f "${stock_apk}.xapk"
 				fi
 
-				local aapt_cmd=""
-				if command -v aapt >/dev/null 2>&1; then
-					aapt_cmd="aapt"
-				elif [ -n "${AAPT2:-}" ] && [ -x "$AAPT2" ]; then
-					aapt_cmd="$AAPT2"
-				fi
+				local aapt_cmd="${AAPT2:-$(command -v aapt2 || true)}"
 
 				local downloaded_pkg="" downloaded_ver="" downloaded_vc=""
-				if [ -n "$aapt_cmd" ]; then
-					if [[ "$aapt_cmd" == *"aapt2"* ]]; then
-						downloaded_pkg=$("$aapt_cmd" dump packagename "$stock_apk" 2>/dev/null | tr -d '\r\n') || true
-						downloaded_ver=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-						downloaded_vc=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1) || true
-					else
-						downloaded_pkg=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1) || true
-						downloaded_ver=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
-						downloaded_vc=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1) || true
-					fi
+				if [ -n "$aapt_cmd" ] && [ -x "$aapt_cmd" ]; then
+					downloaded_pkg=$("$aapt_cmd" dump packagename "$stock_apk" 2>/dev/null | tr -d '\r\n') || true
+					downloaded_ver=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) || true
+					downloaded_vc=$("$aapt_cmd" dump badging "$stock_apk" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1) || true
 					
 					if [ -z "$downloaded_pkg" ]; then
-						epr "ERROR: Downloaded file is not a valid APK or aapt failed to parse it. Rejecting..."
+						epr "ERROR: Downloaded file is not a valid APK or aapt2 failed to parse it. Rejecting..."
 						rm -f "$stock_apk"
 						continue
 					fi
@@ -4018,7 +4009,7 @@ build_rv() {
 						continue
 					fi
 
-					if [ -n "$target_version_code" ] && [ -n "$downloaded_vc" ]; then
+					if [ -n "$target_version_code" ] && [ "$target_version_code" != "bypass" ] && [ -n "$downloaded_vc" ]; then
 						if [ "$downloaded_vc" != "$target_version_code" ]; then
 							epr "ERROR: Downloaded APK version code ($downloaded_vc) does not match expected ($target_version_code). Rejecting..."
 							rm -f "$stock_apk" "${stock_apk%.apk}.apkm"
