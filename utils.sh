@@ -1513,6 +1513,19 @@ _unqueued_cf_get() {
 	return 1
 }
 _cf_get() {
+	mkdir -p "$TEMP_DIR"
+	local lock=$TEMP_DIR/cf_get.lock
+	exec 200>"$lock"
+	local py_cmd=""
+	if command -v python3 >/dev/null 2>&1; then
+		py_cmd="python3"
+	elif command -v python >/dev/null 2>&1; then
+		py_cmd="python"
+	fi
+	if [ -n "$py_cmd" ]; then
+		"$py_cmd" -c 'import fcntl; fcntl.flock(200, fcntl.LOCK_EX)' 2>/dev/null || true
+	fi
+	trap 'exec 200>&-' RETURN EXIT INT TERM
 	_unqueued_cf_get "$@"
 	local res=$?
 	if [ $res -eq 0 ]; then
