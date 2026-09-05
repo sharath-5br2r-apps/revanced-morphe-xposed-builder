@@ -1487,8 +1487,6 @@ _cf_cffi_get() {
 }
 
 _unqueued_cf_get() {
-	_cf_cffi_get "$@" && return 0
-
 	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
 	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
 	local fs_base="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}"
@@ -1498,6 +1496,8 @@ _unqueued_cf_get() {
 	if [ -n "$trawl_base" ]; then
 		_trawl_get "$@" && return 0
 	fi
+
+	_cf_cffi_get "$@" && return 0
 
 	if [ -n "$cfb_base" ]; then
 		_cfb_get "$@" && return 0
