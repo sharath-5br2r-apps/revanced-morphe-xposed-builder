@@ -764,10 +764,12 @@ set_prebuilts() {
 	# Check AAPT2
 	if [ -n "${AAPT2:-}" ] && { [ -f "$AAPT2" ] || command -v "$AAPT2" >/dev/null 2>&1; }; then
 		pr "Using custom AAPT2: $AAPT2"
-	elif [ -f "${BIN_DIR}/aapt2/aapt2-${arch}" ] && [ -x "${BIN_DIR}/aapt2/aapt2-${arch}" ]; then
-		AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}"
 	elif command -v aapt2 >/dev/null 2>&1; then
 		AAPT2="aapt2"
+	elif [ -f "${BIN_DIR}/aapt2/aapt2-${kernel}-${arch}${ext}" ] && [ -x "${BIN_DIR}/aapt2/aapt2-${kernel}-${arch}${ext}" ]; then
+		AAPT2="${BIN_DIR}/aapt2/aapt2-${kernel}-${arch}${ext}"
+	elif [ -f "${BIN_DIR}/aapt2/aapt2-${arch}${ext}" ] && [ -x "${BIN_DIR}/aapt2/aapt2-${arch}${ext}" ]; then
+		AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}${ext}"
 	else
 		AAPT2=""
 		local sdk_root="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
