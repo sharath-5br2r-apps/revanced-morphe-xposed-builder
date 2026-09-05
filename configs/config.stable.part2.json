@@ -1,1 +1,22 @@
-{}
+{
+  "patches-version": "latest",
+  "enable-module-update": true,
+  "nova-launcher-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "nova-launcher",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a"
+    ],
+    "pkg-name": "com.teslacoilsw.launcher",
+    "uptodown-dlurl": "https://nova-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher",
+    "patches-source": "hoo-dles/morphe-patches"
+  }
+}

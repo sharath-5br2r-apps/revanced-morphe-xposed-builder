@@ -144,8 +144,8 @@
   },
   "hxreborn-tiktok": {
     "repo": "hxreborn/hxreborn-tiktok-patches",
-    "stable": "v1.0.0",
-    "stable_date": "2026-08-23T09:51:38Z",
+    "stable": "v1.1.0",
+    "stable_date": "2026-09-05T09:32:00Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -193,10 +193,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.41.0",
-    "prerelease": "v1.42.0-dev.2",
+    "prerelease": "v1.42.0-dev.3",
     "blocked": false,
     "stable_date": "2026-09-01T16:30:24Z",
-    "pre_date": "2026-09-04T11:37:23Z"
+    "pre_date": "2026-09-05T08:47:28Z"
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",

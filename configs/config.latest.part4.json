@@ -1,1 +1,24 @@
-{}
+{
+  "patches-version": "absolutelatest",
+  "enable-module-update": true,
+  "discord-npatch-revenge": {
+    "enabled": true,
+    "app-name": "discord",
+    "pkg-name": "com.discord",
+    "rv-brand": "npatch-revenge",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "cli-source": "7723mod/NPatch",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord",
+    "patches-source": "revenge-mod/revenge-xposed",
+    "patcher-args": "-l 0",
+    "uptodown-dlurl": "https://discord-chat-for-gamers.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
+  }
+}

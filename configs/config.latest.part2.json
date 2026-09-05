@@ -1,28 +1,22 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": true,
-  "prime-video-morphe-hoodles-shared-exp": {
+  "nova-launcher-morphe-hoodles-exp": {
     "enabled": true,
-    "app-name": "prime-video",
-    "rv-brand": "morphe-hoodles-shared-exp",
-    "pkg-name": "com.amazon.avod.thirdpartyclient",
-    "build-mode": "apk",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient",
-    "version": "latest",
-    "arch": [
-      "arm64-v8a"
-    ],
     "cli-source": "MorpheApp/morphe-desktop",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
-    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
-    "dpi": [
-      "nodpi",
-      "anydpi",
-      "auto"
+    "app-name": "nova-launcher",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a"
     ],
-    "patches-source": "hoo-dles/morphe-patches",
-    "excluded-patches": [
-      "Rename Shared Permissions"
-    ]
+    "pkg-name": "com.teslacoilsw.launcher",
+    "uptodown-dlurl": "https://nova-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher",
+    "patches-source": "hoo-dles/morphe-patches"
   }
 }
