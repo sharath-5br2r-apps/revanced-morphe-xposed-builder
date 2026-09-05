@@ -1523,7 +1523,17 @@ _cf_get() {
 		py_cmd="python"
 	fi
 	if [ -n "$py_cmd" ]; then
-		"$py_cmd" -c 'import fcntl; fcntl.flock(200, fcntl.LOCK_EX)' 2>/dev/null || true
+		"$py_cmd" -c '
+try:
+    import fcntl
+    fcntl.flock(200, fcntl.LOCK_EX)
+except (ImportError, OSError):
+    try:
+        import msvcrt
+        msvcrt.locking(200, msvcrt.LK_LOCK, 1)
+    except Exception:
+        pass
+' 200>/dev/null || true
 	fi
 	trap 'exec 200>&-' RETURN EXIT INT TERM
 	_unqueued_cf_get "$@"
