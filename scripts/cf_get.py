@@ -27,8 +27,17 @@ def main():
     url = sys.argv[1]
     cookie_file = sys.argv[2] if len(sys.argv) > 2 else ""
 
-    # Try modern Chrome browser fingerprints supported by curl_cffi
-    impersonate_targets = ["chrome133", "chrome124", "chrome120", "chrome110"]
+    # Try modern browser fingerprints supported by curl_cffi
+    impersonate_targets = [
+        "safari180",
+        "chrome131_android",
+        "firefox133",
+        "safari170",
+        "chrome131",
+        "chrome124",
+        "chrome120",
+        "chrome110"
+    ]
     
     for imp in impersonate_targets:
         try:

@@ -61,6 +61,11 @@ while [ $# -gt 0 ]; do
 			done
 			break
 			;;
+    --help)
+      pr "Usage: $0 [--clean] [--config-update] [--config=path/to/config] [--allowed-apps=\"regex\"] [--output=path/to/output/dir]"
+      exit 0
+      shift
+      ;;
 		-*)
 			abort "Unknown option: $1"
 			;;
@@ -98,17 +103,11 @@ vtf() { if ! isoneof "${1}" "true" "false"; then abort "ERROR: '${1}' is not a v
 
 # -- Main config --
 cfg_file=""
-if [ -n "$CLI_CONFIG_FILE" ]; then
-	cfg_file="$CLI_CONFIG_FILE"
+if [ -n "$CLI_CONFIG_FILE" ]; then                           
+  cfg_file="$CLI_CONFIG_FILE"
 elif [ ${#POSITIONAL_ARGS[@]} -gt 0 ] && [ -f "${POSITIONAL_ARGS[0]}" ]; then
 	cfg_file="${POSITIONAL_ARGS[0]}"
-	POSITIONAL_ARGS=("${POSITIONAL_ARGS[@]:1}")
-elif [ -f "configs/config.toml" ]; then
-	cfg_file="configs/config.toml"
-elif [ -f "config.toml" ]; then
-	cfg_file="config.toml"
-elif [ -f "configs/config.manual.generated.toml" ]; then
-	cfg_file="configs/config.manual.generated.toml"
+	POSITIONAL_ARGS=("${POSITIONAL_ARGS[@]:1}") 
 fi
 
 toml_prep "$cfg_file" || abort "could not find config file '$cfg_file'\n\tUsage: $0 [--clean] [--config-update] [--config=path/to/config] [--allowed-apps=\"regex\"] [--output=path/to/output/dir]"
