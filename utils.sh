@@ -911,7 +911,7 @@ gh_dl() {
 log() { echo -e "$1  " >>"build.md"; }
 get_highest_ver() {
 	local vers valid_vers="" v clean_v a ac
-	vers=$(grep -v -i "stub" | grep -v '^$' || true)
+	vers=$(tr ' ' '\n' | grep -v -i "stub" | grep -v '^$' || true)
 	[ -z "$vers" ] && return 1
 	while IFS= read -r v; do
 		[ -z "$v" ] && continue
@@ -931,7 +931,7 @@ get_highest_ver() {
 }
 sort_vers() {
 	local vers valid_vers="" v clean_v a ac
-	vers=$(cat)
+	vers=$(tr ' ' '\n')
 	while IFS= read -r v; do
 		[ -z "$v" ] && continue
 		clean_v="${v#v}"
@@ -1611,7 +1611,7 @@ get_apkmirror_vers() {
 		fi
 		filtered_vers+=("$v")
 	done
-	echo "${filtered_vers[*]}"
+	printf '%s\n' "${filtered_vers[@]}"
 }
 
 get_apkmirror_pkg_name() {

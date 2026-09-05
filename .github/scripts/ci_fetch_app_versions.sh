@@ -35,7 +35,7 @@ if [ "$CHECK_ONLY_LISTED" = "true" ]; then
     jq -r 'to_entries | map(select((.key | startswith("_") | not) and (.value.keys[0] != null) and (.value.keys[0] != "null") and (.value.keys[0] != ""))) | .[] | "\(.key)|\(.value.keys[0])"' "$APP_VERSIONS_FILE" > check_list.txt
 else
     # All enabled apps
-    local -a enabled_apps=()
+    enabled_apps=()
     readarray -t enabled_apps < <(jq -r 'to_entries | map(select((.value | type == "object") and .value.enabled == true)) | .[].key' temp_all_configs.json)
     
     # Get all grouped apps to exclude them

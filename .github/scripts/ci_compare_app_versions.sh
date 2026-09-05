@@ -7,7 +7,9 @@ ACTIVE_APPS="active_apps.json"
 
 [ -f "$CURRENT_VERSIONS" ] || echo '{}' > "$CURRENT_VERSIONS"
 
-if [ -f fetched_app_versions.json ]; then
+if [ -n "${FETCHED_APP_VERSIONS:-}" ]; then
+    :
+elif [ -f fetched_app_versions.json ]; then
     FETCHED_APP_VERSIONS=$(cat fetched_app_versions.json)
 else
     FETCHED_APP_VERSIONS="{}"
@@ -29,8 +31,7 @@ while IFS= read -r group; do
         echo "::notice::Update detected for $group: $old_ver -> $new_ver"
         TRIGGER_APP_UPDATE=1
         
-        # Add all constituent keys to active_apps.json
-        local -a key_list=()
+        key_list=()
         readarray -t key_list < <(jq -r ".\"$group\".keys[]? // \"$group\"" "$CURRENT_VERSIONS")
         for key in "${key_list[@]}"; do
             [ -z "$key" ] && continue
