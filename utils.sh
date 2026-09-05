@@ -1082,7 +1082,7 @@ get_patch_version_code() {
 	return 1
 }
 
-parse_arch_mapping() {
+parse_version_code() {
 	local mapping="${1:-}" arch="${2:-}"
 	if [ -z "$mapping" ]; then
 		return 0
@@ -1091,8 +1091,9 @@ parse_arch_mapping() {
 		local json_res
 		if json_res=$(jq -r --arg arch "$arch" '
 			if type == "array" then
-				(map(select((.arch // "") == $arch or (.arch // "") == "all")) | map(."version-code" // ."version_code" // .versionCode // .code // .regex // tostring) | join("|")) as $matched |
-				if ($matched | length) > 0 then $matched else (map(."version-code" // ."version_code" // .versionCode // .code // .regex // tostring) | join("|")) end
+				(map(select((.arch // "") == $arch)) | map(."version-code" // ."version_code" // .versionCode // .code) | .[0]) //
+				(map(select((.arch // "") == "all")) | map(."version-code" // ."version_code" // .versionCode // .code) | .[0]) //
+				empty
 			elif type == "object" then
 				.[$arch] // .all // empty
 			else
@@ -1102,27 +1103,38 @@ parse_arch_mapping() {
 			echo "$json_res"
 			return 0
 		fi
-	fi
-	if [[ "$mapping" != *":"* ]]; then
+	else
 		echo "$mapping"
 		return 0
 	fi
-	local -a entries=()
-	readarray -d '|' -t entries <<<"$mapping"
-	local matched="" entry
-	for entry in "${entries[@]}"; do
-		entry="${entry%$'\n'}"
-		if [[ "$entry" =~ ^[[:space:]]*([^:]+)[[:space:]]*:[[:space:]]*(.*)$ ]]; then
-			local e_arch="${BASH_REMATCH[1]//[[:space:]]/}"
-			local e_val="${BASH_REMATCH[2]}"
-			e_val="${e_val//[ \'\";\r\n]/}"
-			if [ "${e_arch,,}" = "${arch,,}" ]; then
-				matched="$e_val"
-				break
-			fi
+}
+
+parse_git_regex() {
+	local mapping="${1:-}" arch="${2:-}"
+	if [ -z "$mapping" ]; then
+		return 0
+	fi
+	if [[ "$mapping" == *"["* ]] || [[ "$mapping" == *"{"* ]]; then
+		local json_res
+		if json_res=$(jq -r --arg arch "$arch" '
+			if type == "array" then
+				(map(select((.arch // "") == $arch)) | map(.regex // tostring) | .[0]) //
+				(map(select((.arch // "") == "all")) | map(.regex // tostring) | .[0]) //
+				(map(.regex // tostring) | .[0]) //
+				empty
+			elif type == "object" then
+				.[$arch] // .all // empty
+			else
+				empty
+			end
+		' <<<"$mapping" 2>/dev/null) && [ -n "$json_res" ] && [ "$json_res" != "null" ]; then
+			echo "$json_res"
+			return 0
 		fi
-	done
-	echo "$matched"
+	else
+		echo "$mapping"
+		return 0
+	fi
 }
 
 patches_list_versions() {
@@ -2808,7 +2820,7 @@ dl_git_repo() {
 
 	if [ -n "$custom_regex" ]; then
 		local regex=""
-		regex=$(parse_arch_mapping "$custom_regex" "$arch")
+		regex=$(parse_git_regex "$custom_regex" "$arch")
 		[ -z "$regex" ] && regex="$custom_regex"
 		if [ -n "$regex" ]; then
 			regex="${regex//\{version\}/${version_clean}}"
@@ -3620,7 +3632,7 @@ build_rv() {
 				for arch in "${arch_list[@]}"; do
 					arch_f="${arch// /}"
 					local target_version_code
-					target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+					target_version_code=$(parse_version_code "${args[version_code]:-}" "$arch_f")
 					if [ "$target_version_code" = "bypass" ]; then
 						:
 					elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
@@ -3668,7 +3680,7 @@ build_rv() {
 					for arch in "${arch_list[@]}"; do
 						arch_f="${arch// /}"
 						local target_version_code
-						target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+						target_version_code=$(parse_version_code "${args[version_code]:-}" "$arch_f")
 						if [ "$target_version_code" = "bypass" ]; then
 							:
 						elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
@@ -3720,7 +3732,7 @@ build_rv() {
 						for arch in "${arch_list[@]}"; do
 							arch_f="${arch// /}"
 							local target_version_code
-							target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+							target_version_code=$(parse_version_code "${args[version_code]:-}" "$arch_f")
 							if [ "$target_version_code" = "bypass" ]; then
 								:
 							elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
@@ -3754,7 +3766,7 @@ build_rv() {
 							for arch in "${arch_list[@]}"; do
 								arch_f="${arch// /}"
 								local target_version_code
-								target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+								target_version_code=$(parse_version_code "${args[version_code]:-}" "$arch_f")
 								if [ "$target_version_code" = "bypass" ]; then
 									:
 								elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
@@ -3920,7 +3932,7 @@ build_rv() {
 		arch_f="${arch// /}"
 
 		local target_version_code
-		target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+		target_version_code=$(parse_version_code "${args[version_code]:-}" "$arch_f")
 		if [ "$target_version_code" = "bypass" ]; then
 			:
 		elif [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
