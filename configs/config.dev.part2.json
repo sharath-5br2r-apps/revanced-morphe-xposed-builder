@@ -1,1 +1,144 @@
-{}
+{
+  "patches-version": "dev",
+  "enable-module-update": true,
+  "prime-video-morphe-hoodles-exp": {
+    "enabled": true,
+    "app-name": "prime-video",
+    "rv-brand": "morphe-hoodles-exp",
+    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "build-mode": "apk",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient",
+    "version": "latest",
+    "arch": [
+      "arm64-v8a",
+      "arm-v7a"
+    ],
+    "cli-source": "MorpheApp/morphe-desktop",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
+    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "smart-launcher-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "smart-launcher",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "ginlemon.flowerfree",
+    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "xodo-morphe-hoodles": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "xodo",
+    "rv-brand": "morphe-hoodles",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader",
+    "build-mode": "apk",
+    "arch": [
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.xodo.pdf.reader",
+    "uptodown-dlurl": "https://xodo-pdf-reader-editor.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "github-morphe-hoodles-stylus-exp": {
+    "enabled": true,
+    "app-name": "github",
+    "rv-brand": "morphe-hoodles-stylus-exp",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.github.android",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android",
+    "patches-source": [
+      "hoo-dles/morphe-patches",
+      "ch3thanhs/stylus"
+    ],
+    "included-patches": [
+      [
+        "AMOLED dark theme"
+      ],
+      [
+        "Force system font (including monospace) (GitHub)"
+      ]
+    ],
+    "version": "latest"
+  },
+  "podcast-addict-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "podcast-addict",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.bambuna.podcastaddict",
+    "uptodown-dlurl": "https://podcast-addict.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "niagara-launcher-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "niagara-launcher",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/bitpit.launcher",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "bitpit.launcher",
+    "uptodown-dlurl": "https://niagara-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mellowdrop-studio/niagara-launcher-%f0%9f%94%b9-fresh-clean",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "goodreads-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "goodreads",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.goodreads",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.goodreads",
+    "uptodown-dlurl": "https://goodreads.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/goodreads/goodreads",
+    "patches-source": "hoo-dles/morphe-patches"
+  }
+}
