@@ -234,26 +234,18 @@ jobs:
         if: ${{ inputs.upload_release_metadata != false }}
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          ARCHIVE_TAG: ${{ steps.context.outputs.ARCHIVE_TAG }}
           GITHUB_SERVER_URL: ${{ github.server_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: bash .github/scripts/build_update_changelog.sh
 
-      - name: Upload module update metadata to release (update)
-        if: ${{ inputs.upload_release_metadata != false }}
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          gh release view "update" >/dev/null 2>&1 || gh release create "update" --title "Update Metadata" --notes "" || true
-          for file in *-update.json; do
-            if [ -s "$file" ]; then
-              echo "Uploading $file to release update..."
-              gh release upload update "$file" --clobber || {
-                echo "::warning::Failed to upload $file to release update, retrying..."
-                sleep 3
-                gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
-              }
-            fi
-          done
+      - name: Commit updated build and module update files
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: update
+          skip_checkout: true
+          file_pattern: build.md changelogs/*.md *-update.json
+          commit_message: Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}
 
       - name: Remove frequently updated apps
         run: |

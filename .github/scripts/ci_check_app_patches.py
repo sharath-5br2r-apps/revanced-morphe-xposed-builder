@@ -35,15 +35,22 @@ def get_app_mappings():
                 if not enabled:
                     continue
                 
-                # Extract patches-source
-                m_src = re.search(r'patches-source\s*=\s*"([^"]+)"', body)
-                src = m_src.group(1).lower() if m_src else "morpheapp/morphe-patches"
-                
+                # Extract patches-source (supports array or single string)
+                m_src_arr = re.search(r'patches-source\s*=\s*\[(.*?)\]', body, flags=re.DOTALL)
+                if m_src_arr:
+                    srcs = [s.strip().strip('"\'').lower() for s in m_src_arr.group(1).split(',') if s.strip().strip('"\'')]
+                else:
+                    m_src = re.search(r'patches-source\s*=\s*"([^"]+)"', body)
+                    srcs = [m_src.group(1).lower()] if m_src else ["morpheapp/morphe-patches"]
+                if not srcs:
+                    srcs = ["morpheapp/morphe-patches"]
+
                 # Extract cli-source
                 m_cli = re.search(r'cli-source\s*=\s*"([^"]+)"', body)
                 cli_src = m_cli.group(1).lower() if m_cli else "morpheapp/morphe-desktop"
                 if cli_src:
-                    cli_sources.setdefault(src, set()).add(cli_src)
+                    for src in srcs:
+                        cli_sources.setdefault(src, set()).add(cli_src)
                 
                 m_pkg = re.search(r'pkg-name\s*=\s*"([^"]+)"', body)
                 pkg_name = m_pkg.group(1) if m_pkg else ''
@@ -63,10 +70,11 @@ def get_app_mappings():
                         pkg_name = m_arch.group(1).rstrip('/').split('/')[-1]
                 
                 if pkg_name:
-                    if enabledStable:
-                        apps_stable.setdefault(src, {})[key] = {'pkg': pkg_name, 'app_name': app_name, 'patch_folder': patch_folder}
-                    if enabledDev:
-                        apps_dev.setdefault(src, {})[key] = {'pkg': pkg_name, 'app_name': app_name, 'patch_folder': patch_folder}
+                    for src in srcs:
+                        if enabledStable:
+                            apps_stable.setdefault(src, {})[key] = {'pkg': pkg_name, 'app_name': app_name, 'patch_folder': patch_folder}
+                        if enabledDev:
+                            apps_dev.setdefault(src, {})[key] = {'pkg': pkg_name, 'app_name': app_name, 'patch_folder': patch_folder}
 
     return apps_stable, apps_dev, cli_sources
 

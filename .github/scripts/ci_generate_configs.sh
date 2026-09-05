@@ -102,16 +102,16 @@ fi
 if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
   python3 .github/scripts/merge_toml_configs.py .stable.toml config.dev.json
 
-  jq --slurpfile active active.prerelease.json --slurpfile activePatchApps active_patch_apps.dev.json '
+  jq --slurpfile active active.prerelease.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.dev.json '
     with_entries(
       if .value | type == "object" then
         .key as $k |
         .value as $app |
         ((if ($app["patches-source"] | type) == "array" then ($app["patches-source"] | join(" ")) else ($app["patches-source"] // "morpheapp/morphe-patches") end) | ascii_downcase | gsub("[^a-zA-Z0-9_/-]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        if (($srcs - $active[0]) != $srcs) or ($activePatchApps[0] | index($k)) then . else empty end
+        if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) or ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
-    { "patches-version": "dev", "enable-module-update": false } + .
+    { "patches-version": "dev", "enable-module-update": true } + .
   ' config.dev.json > configs/config.dev.updated.json
 
   split_config_json "configs/config.dev.updated.json" "config.dev" 5

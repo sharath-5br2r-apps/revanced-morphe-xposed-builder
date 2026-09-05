@@ -917,9 +917,9 @@ get_highest_ver() {
 		[ -z "$v" ] && continue
 		clean_v="${v#v}"
 		clean_v="${clean_v#V}"
-		a="${clean_v%-*}"
+		a="${clean_v%%[-+_ (]*}"
 		ac="${a//[.0-9]/}"
-		if [ ${#ac} -eq 0 ]; then
+		if [ -n "$a" ] && [ ${#ac} -eq 0 ]; then
 			valid_vers="${valid_vers}${clean_v}"$'\n'
 		fi
 	done <<<"$vers"
@@ -931,28 +931,30 @@ get_highest_ver() {
 }
 sort_vers() {
 	local vers valid_vers="" v clean_v a ac
-	vers=$(tr ' ' '\n')
+	vers=$(tr ' ' '\n' | grep -v -i "stub" | grep -v '^$' || true)
+	[ -z "$vers" ] && return 1
 	while IFS= read -r v; do
 		[ -z "$v" ] && continue
 		clean_v="${v#v}"
 		clean_v="${clean_v#V}"
-		a="${clean_v%-*}"
+		a="${clean_v%%[-+_ (]*}"
 		ac="${a//[.0-9]/}"
-		if [ ${#ac} -eq 0 ]; then
+		if [ -n "$a" ] && [ ${#ac} -eq 0 ]; then
 			valid_vers="${valid_vers}${clean_v}"$'\n'
 		fi
 	done <<<"$vers"
 	if [ -n "$valid_vers" ]; then
-		sort -s -t- -k1,1Vr <<<"$valid_vers" | head -1
+		sort -s -t- -k1,1Vr <<<"$valid_vers" | head -2
 	else
-		sort -s -t- -k1,1Vr <<<"$vers" | head -1
+		sort -s -t- -k1,1Vr <<<"$vers" | head -2
 	fi
 }
 semver_validate() {
-	local a="${1%-*}"
-	local a="${a#v}"
+	local a="${1%%[-+_ (]*}"
+	a="${a#v}"
+	a="${a#V}"
 	local ac="${a//[.0-9]/}"
-	[ ${#ac} = 0 ]
+	[ -n "$a" ] && [ ${#ac} = 0 ]
 }
 get_patch_last_supported_ver() {
 	local cache_key="${1}_${2}_${3:-}_${4:-}_${5:-}_${6:-}_${7:-}_${8:-}"

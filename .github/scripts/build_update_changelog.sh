@@ -1,14 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
-cp -f build.tmp build.md 2>/dev/null || touch build.md
+git checkout -f update || git switch --discard-changes --orphan update
+mkdir -p changelogs
+cp -f build.tmp "changelogs/${NEXT_VER_CODE}.md"
+cp -f build.tmp build.md
 
 get_update_json() {
   echo "{
   \"version\": \"$1\",
   \"versionCode\": $NEXT_VER_CODE,
   \"zipUrl\": \"$2\",
-  \"changelog\": \"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/update/build.md\"
+  \"changelog\": \"https://raw.githubusercontent.com/$GITHUB_REPOSITORY/update/changelogs/$NEXT_VER_CODE.md\"
 }"
 }
 
@@ -33,7 +36,7 @@ for OUTPUT in *module*.zip; do
   UPDATE_JSON="${UPDATE_JSON##*/}"
   VER=$(echo "$ZIP_S" | grep version= || true)
   VER="${VER##*=}"
-  DLURL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$NEXT_VER_CODE/${OUTPUT}"
+  DLURL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$ARCHIVE_TAG/${OUTPUT}"
   get_update_json "$VER" "$DLURL" >"../$UPDATE_JSON"
 done
 cd - >/dev/null
