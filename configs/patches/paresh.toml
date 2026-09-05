@@ -58,6 +58,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvp
 prefer-dl-mode = "bundle"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
+dpi = "120-640dpi"
 
 arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 
@@ -75,6 +76,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvp
 prefer-dl-mode = "bundle"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
+dpi = "120-640dpi"
 
 arch = ["all", "arm64-v8a", "arm-v7a", "x86_64"]
 

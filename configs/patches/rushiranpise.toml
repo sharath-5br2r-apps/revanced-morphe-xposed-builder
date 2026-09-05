@@ -379,6 +379,7 @@ cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/"
 prefer-dl-mode = "bundle"
+dpi = "120-640dpi"
 patches-source = "rushiranpise/morphe-patches"
 
 [proton-vpn-morphe-rushiranpise-exp]
@@ -394,5 +395,6 @@ cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/"
 prefer-dl-mode = "bundle"
+dpi = "120-640dpi"
 patches-source = "rushiranpise/morphe-patches"
 
