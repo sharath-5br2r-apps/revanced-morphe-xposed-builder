@@ -1,31 +1,26 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "youtube-morphe-anddea": {
+  "instagram-morphe-piko": {
     "enabled": true,
-    "app-name": "youtube",
-    "rv-brand": "morphe-anddea",
-    "build-mode": "both",
+    "app-name": "instagram",
+    "rv-brand": "morphe-piko",
+    "build-mode": "apk",
     "arch": [
-      "all",
       "arm64-v8a",
-      "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.google.android.youtube",
+    "pkg-name": "com.instagram.android",
+    "patcher-args": "--continue-on-error",
     "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "anddea/revanced-patches",
-    "included-patches": [
-      "MaterialYou"
-    ],
-    "patcher-args": "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
+    "apkmirror-example-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/",
     "dpi": [
       "nodpi",
       "anydpi",
       "auto"
-    ]
+    ],
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android",
+    "patches-source": "crimera/piko"
   }
 }

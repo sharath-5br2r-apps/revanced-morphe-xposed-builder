@@ -11,7 +11,7 @@
       "prime-video-morphe-hoodles-exp",
       "prime-video-morphe-hoodles-shared-exp"
     ],
-    "version": "3.0.470"
+    "version": "3.0.471"
   },
   "Amazon Alexa": {
     "keys": [
@@ -67,7 +67,7 @@
     "keys": [
       "brave-nightly-morphe-dh6k"
     ],
-    "version": "1.97.5"
+    "version": "1.97.8"
   },
   "PC Remote": {
     "keys": [
