@@ -1,1 +1,44 @@
-{}
+{
+  "patches-version": "dev",
+  "enable-module-update": true,
+  "youtube-morphe-amoled": {
+    "enabled": true,
+    "app-name": "youtube",
+    "rv-brand": "morphe-amoled",
+    "build-mode": "both",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.google.android.youtube",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "patches-source": "MorpheApp/morphe-patches",
+    "included-patches": [
+      "Theme"
+    ],
+    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
+    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
+    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
+    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+  },
+  "tiktok-morphe-icysymmetra": {
+    "enabled": true,
+    "app-name": "tiktok",
+    "pkg-name": "com.zhiliaoapp.musically",
+    "rv-brand": "morphe-icysymmetra",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a"
+    ],
+    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically",
+    "patches-source": "icysymmetra/tiktok-patches-for-morphe"
+  }
+}
