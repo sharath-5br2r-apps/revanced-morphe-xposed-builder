@@ -58,8 +58,8 @@
   },
   "byehi98": {
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.22.1",
-    "stable_date": "2026-09-04T04:23:12Z",
+    "stable": "v1.23.0",
+    "stable_date": "2026-09-06T04:59:53Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -82,8 +82,8 @@
     "repo": "dh6k/morphe-patches",
     "stable": "v1.5.0",
     "stable_date": "2026-09-05T22:28:53Z",
-    "prerelease": "",
-    "pre_date": "",
+    "prerelease": "v1.6.0-dev.6",
+    "pre_date": "2026-09-06T05:21:07Z",
     "blocked": false
   },
   "docbt": {

@@ -1,36 +1,22 @@
 {
   "patches-version": "latest",
   "enable-module-update": true,
-  "brave-nightly-morphe-dh6k": {
+  "vector-morphe-byehi98": {
     "enabled": true,
-    "app-name": "brave-nightly",
-    "rv-brand": "morphe-dh6k",
-    "version": "beta",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "vector",
+    "rv-brand": "morphe-byehi98",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nekki.vector",
     "build-mode": "apk",
     "arch": [
+      "all",
       "arm64-v8a",
       "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.brave.browser_nightly",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "dh6k/morphe-patches",
-    "patcher-args": "--continue-on-error",
-    "github-dlurl": "https://github.com/brave/brave-browser/releases",
-    "github-dlurl-regex": [
-      {
-        "arch": "arm64-v8a",
-        "regex": "(BraveMonoarm64|MonoArm64)\\.apk$"
-      },
-      {
-        "arch": "arm-v7a",
-        "regex": "(BraveMonoarm|MonoArm)\\.apk$"
-      },
-      {
-        "arch": "x86_64",
-        "regex": "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
-      }
-    ],
-    "github-release-name-regex": "^Nightly v"
+    "pkg-name": "com.nekki.vector",
+    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/",
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }
