@@ -1,10 +1,46 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "youtube-morphe-exp": {
+  "gboard-morphe-jasonwu1994-adobo": {
+    "enabled": true,
+    "app-name": "gboard",
+    "rv-brand": "morphe-jasonwu1994-adobo",
+    "build-mode": "both",
+    "arch": [
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.google.android.inputmethod.latin",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin",
+    "patches-source": [
+      "jasonwu1994/Gboard-patches",
+      "jkennethcarino/adobo"
+    ],
+    "included-patches": [
+      [],
+      [
+        "Enable clipboard in incognito",
+        "Enable voice typing in incognito"
+      ]
+    ],
+    "exclusive-patches": "jkennethcarino/adobo",
+    "excluded-patches": [
+      [
+        "Package Rename"
+      ],
+      []
+    ],
+    "patcher-args": "-f --continue-on-error",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/",
+    "apkmirror-release-filter": "!(lite|beta)"
+  },
+  "youtube-morphe-exp-amoled": {
     "enabled": true,
     "app-name": "youtube",
-    "rv-brand": "morphe-exp",
+    "rv-brand": "morphe-exp-amoled",
     "build-mode": "both",
     "arch": [
       "all",
@@ -19,6 +55,7 @@
     "included-patches": [
       "Theme"
     ],
+    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
     "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",

@@ -1,46 +1,51 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "gboard-morphe-jasonwu1994-adobo-clone": {
+  "vector-morphe-byehi98": {
     "enabled": true,
-    "app-name": "gboard",
-    "rv-brand": "morphe-jasonwu1994-adobo-clone",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "vector",
+    "rv-brand": "morphe-byehi98",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nekki.vector",
     "build-mode": "apk",
     "arch": [
+      "all",
       "arm64-v8a",
       "arm-v7a",
       "x86_64"
     ],
-    "patches-source": [
-      "jasonwu1994/Gboard-patches",
-      "jkennethcarino/adobo"
-    ],
-    "included-patches": [
-      [],
-      [
-        "Enable clipboard in incognito",
-        "Enable voice typing in incognito"
-      ]
-    ],
-    "exclusive-patches": "jkennethcarino/adobo",
-    "excluded-patches": [
-      [
-        "Package Rename"
-      ],
-      []
-    ],
-    "pkg-name": "com.google.android.inputmethod.latin",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patcher-args": "-f --continue-on-error",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/",
-    "apkmirror-release-filter": "!(lite|beta)"
+    "pkg-name": "com.nekki.vector",
+    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/",
+    "patches-source": "byehi98/okish-morphe-patches"
   },
-  "youtube-music-morphe-exp": {
+  "youtube-morphe": {
+    "enabled": true,
+    "app-name": "youtube",
+    "rv-brand": "morphe",
+    "build-mode": "both",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.google.android.youtube",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "patches-source": "MorpheApp/morphe-patches",
+    "included-patches": [
+      "Theme"
+    ],
+    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
+    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
+    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+  },
+  "youtube-music-morphe-exp-amoled": {
     "enabled": true,
     "app-name": "youtube-music",
-    "rv-brand": "morphe-exp",
+    "rv-brand": "morphe-exp-amoled",
     "build-mode": "both",
     "arch": [
       "arm64-v8a",
@@ -54,6 +59,7 @@
     "included-patches": [
       "Theme"
     ],
+    "patcher-args": "-OdarkThemeBackgroundColor=#000000",
     "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
     "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
