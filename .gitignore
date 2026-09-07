@@ -57,3 +57,8 @@ Thumbs.db
 
 # Redis Data
 *.rdb
+
+# Others 
+build.json
+/test
+module/maintainer.txt

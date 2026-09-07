@@ -1332,6 +1332,7 @@ merge_splits() {
 		return 0
 	fi
 	local apk_count
+  pr "$(unzip -l \"$bundle\" 2>/dev/null)"
 	apk_count=$(unzip -l "$bundle" 2>/dev/null | grep -c '\.apk$' || true)
 	if [ "$apk_count" -le 1 ] && unzip -l "$bundle" 2>/dev/null | grep -q '^[[:space:]]*[0-9].*base\.apk$'; then
 		pr "Extracting base.apk from bundle"
@@ -1348,201 +1349,46 @@ merge_splits() {
 	sign_apk "${output}-unsigned" "${output}"
 }
 
-_trawl_get() {
+_unqueued_cf_get() {
 	local url=$1 referer=${2:-}
-	local max_retries=2 attempt
-	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
-	[ -z "$trawl_base" ] && return 1
-	local solver_url="${trawl_base%/}/scrape"
-	local extra_headers=""
-	[ -n "$referer" ] && extra_headers=",\"headers\":{\"Referer\":\"$referer\"}"
-	for attempt in $(seq 1 $max_retries); do
-		local response status
-		response=$(curl -m 15 -s -X POST "$solver_url" \
-			-H 'Content-Type: application/json' \
-			-d "{\"url\":\"$url\",\"maxTimeout\":60000,\"skipHttp\":true${extra_headers}}") || true
-		local parsed_meta
-		if parsed_meta=$(jq -r '[.statusCode // "", .userAgent // "", ([.cookies[]? | .name + "=" + .value] | join("; "))] | @tsv' <<<"$response" 2>/dev/null); then
-			local status ua cookies
-			IFS=$'\t' read -r status ua cookies <<<"$parsed_meta"
-			if [[ "$status" =~ ^[1-3][0-9][0-9]$ ]]; then
-				html=$(jq -r '.html // empty' <<<"$response" 2>/dev/null || true)
-				if [[ -n "$html" ]] && ! is_cf_challenge_page "$html"; then
-					export CF_COOKIES="$cookies"
-					user_agent="$ua"
-					return 0
-				fi
-			fi
-		fi
-		if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
-			wpr "Trawl attempt $attempt/$max_retries failed for: $url"
-		fi
-		sleep 2
-	done
-	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
-		wpr "Trawl failed after $max_retries attempts: $url"
-	fi
-	return 1
-}
-
-_cfb_get() {
-	local url=$1 referer=${2:-}
-	local max_retries=2 attempt
-	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
-	[ -z "$cfb_base" ] && return 1
-	local solver_url="${cfb_base%/}/html"
-	for attempt in $(seq 1 $max_retries); do
-		local response_file
-		rm -f "$TEMP_DIR/cfb_response_headers.txt"
-		response_file=$(mktemp)
-		local http_code
-		http_code=$(curl -s -o "$response_file" -w '%{http_code}' \
-			-D "$TEMP_DIR/cfb_response_headers.txt" \
-			-G --data-urlencode "url=$url" \
-			--max-time 15 \
-			"$solver_url") || true
-		if [[ "$http_code" == "200" ]]; then
-			html=$(cat "$response_file")
-			if [[ -n "$html" ]] && ! is_cf_challenge_page "$html"; then
-				export CF_COOKIES
-				CF_COOKIES=$(grep -i '^x-cf-bypasser-cookies:' "$TEMP_DIR/cfb_response_headers.txt" 2>/dev/null | cut -d':' -f2- | xargs)
-				local cfb_ua
-				cfb_ua=$(grep -i '^x-cf-bypasser-user-agent:' "$TEMP_DIR/cfb_response_headers.txt" 2>/dev/null | cut -d':' -f2- | xargs)
-				[[ -n "$cfb_ua" ]] && user_agent="$cfb_ua"
-				rm -f "$response_file" "$TEMP_DIR/cfb_response_headers.txt"
-				return 0
-			fi
-		fi
-		rm -f "$response_file" "$TEMP_DIR/cfb_response_headers.txt"
-		if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
-			wpr "CFB attempt $attempt/$max_retries failed for: $url"
-		fi
-		sleep 2
-	done
-	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
-		wpr "CFB failed after $max_retries attempts: $url"
-	fi
-	return 1
-}
-
-_fs_get() {
-	local url=$1 referer=${2:-}
-	local max_retries=2 attempt
-	local fs_base="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}"
-	[ -z "$fs_base" ] && return 1
-	local solver_url="${fs_base%/}/v1"
-	local extra_headers=""
-	[ -n "$referer" ] && extra_headers=",\"headers\":{\"Referer\":\"$referer\"}"
-	for attempt in $(seq 1 $max_retries); do
-		local response status
-		response=$(curl -m 15 -s -X POST "$solver_url" \
-			-H 'Content-Type: application/json' \
-			-d "{\"cmd\":\"request.get\",\"url\":\"$url\",\"maxTimeout\":15000${extra_headers}}") || true
-		status=$(echo "$response" | jq -r '.status // empty')
-		if [[ "$status" == "ok" ]]; then
-			html=$(echo "$response" | jq -r '.solution.response // empty')
-			if [[ -n "$html" ]] && ! is_cf_challenge_page "$html"; then
-				export CF_COOKIES
-				CF_COOKIES=$(echo "$response" | jq -r '[.solution.cookies[] | .name + "=" + .value] | join("; ")')
-				user_agent=$(echo "$response" | jq -r '.solution.userAgent // empty')
-				return 0
-			fi
-		fi
-		if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
-			wpr "FlareSolverr attempt $attempt/$max_retries failed for: $url"
-		fi
-		sleep 2
-	done
-	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
-		wpr "FlareSolverr failed after $max_retries attempts: $url"
-	fi
-	return 1
-}
-
-_fallback_get(){
-	local url=$1
-	html=$(curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 -s -f "$url" -H "User-Agent: ${DEFAULT_UA}" | tr -d '\0') || return 1
-	if is_cf_challenge_page "$html"; then
-		return 1
-	fi
-	CF_COOKIES=""
-	user_agent="${DEFAULT_UA}"
-}
-
-_cf_cffi_get() {
-	local url=$1
 	local py_cmd=""
 	if command -v python3 >/dev/null 2>&1; then
 		py_cmd="python3"
 	elif command -v python >/dev/null 2>&1; then
 		py_cmd="python"
 	fi
-	[ -z "$py_cmd" ] && return 2
-	local py_script="${CWD}/scripts/cf_get.py"
-	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/scripts/cf_get.py"
-	[ ! -f "$py_script" ] && return 2
-
-	local cffi_res
-	if cffi_res=$("$py_cmd" "$py_script" "$url" "$TEMP_DIR/cookie.txt" 2>/dev/null); then
-		html="$cffi_res"
-		CF_COOKIES=""
-		user_agent="${DEFAULT_UA}"
-		return 0
-	else
+	if [ -z "$py_cmd" ]; then
+		if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+			epr "Python not found, cannot run cf_get.py"
+		fi
 		return 1
 	fi
-}
-
-_unqueued_cf_get() {
-	local trawl_base="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}"
-	local cfb_base="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}"
-	local fs_base="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}"
-
-	_fallback_get "$@" && return 0
-
-	if [ -n "$trawl_base" ]; then
-		_trawl_get "$@" && return 0
+	local py_script="${CWD}/scripts/cf_get.py"
+	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/scripts/cf_get.py"
+	if [ ! -f "$py_script" ]; then
+		if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
+			epr "cf_get.py not found"
+		fi
+		return 1
 	fi
 
-	_cf_cffi_get "$@" && return 0
+	local result
+	result=$(
+		TRAWL_URL="${TRAWL_URL:-${CF_BYPASS_SOLVER_TRAWL_8191_URL:-}}" \
+		CFB_URL="${CFB_URL:-${CF_BYPASS_SOLVER_CFB_URL:-}}" \
+		FS_URL="${FS_URL:-${FLARESOLVERR_URL:-${CF_BYPASS_SOLVER_FS_URL:-}}}" \
+		"$py_cmd" "$py_script" "$url" "$TEMP_DIR/cookie.txt" "$TEMP_DIR/cf_get.lock" "$referer" 2>/dev/null
+	) || return 1
 
-	if [ -n "$cfb_base" ]; then
-		_cfb_get "$@" && return 0
-	fi
-
-	if [ -n "$fs_base" ]; then
-		_fs_get "$@" && return 0
-	fi
-
-	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
-		epr "All methods failed for: $1"
-	fi
-	return 1
+	html=$(jq -r '.html // empty' <<<"$result" 2>/dev/null) || return 1
+	export CF_COOKIES
+	CF_COOKIES=$(jq -r '.cf_cookies // empty' <<<"$result" 2>/dev/null || true)
+	user_agent=$(jq -r '.user_agent // empty' <<<"$result" 2>/dev/null || true)
+	[ -z "$user_agent" ] && user_agent="${DEFAULT_UA}"
+	return 0
 }
 _cf_get() {
 	mkdir -p "$TEMP_DIR"
-	local lock=$TEMP_DIR/cf_get.lock
-	exec 200>"$lock"
-	local py_cmd=""
-	if command -v python3 >/dev/null 2>&1; then
-		py_cmd="python3"
-	elif command -v python >/dev/null 2>&1; then
-		py_cmd="python"
-	fi
-	if [ -n "$py_cmd" ]; then
-		"$py_cmd" -c '
-try:
-    import fcntl
-    fcntl.flock(200, fcntl.LOCK_EX)
-except (ImportError, OSError):
-    try:
-        import msvcrt
-        msvcrt.locking(200, msvcrt.LK_LOCK, 1)
-    except Exception:
-        pass
-' 200>/dev/null || true
-	fi
-	trap 'exec 200>&-' RETURN EXIT INT TERM
 	_unqueued_cf_get "$@"
 	local res=$?
 	if [ $res -eq 0 ]; then
@@ -4224,22 +4070,69 @@ build_rv() {
 	fi
 
 	local microg_patches=()
-	if [[ -n ${args[custom_microg_patches]:-} ]]; then
-		local custom_mg_raw="${args[custom_microg_patches]}"
-		local p
-		while IFS= read -r p; do
-			p=$(echo "$p" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^'//" -e "s/'$//" -e 's/^"//' -e 's/"$//')
-			if [ -n "$p" ] && [ "${p,,}" != "none" ] && [ "${p,,}" != "false" ]; then
+	local microg_default_enabled=()
+
+	local custom_mg_raw="${args[custom_microg_patches]:-}"
+	local custom_mg_clean
+	custom_mg_clean=$(echo "$custom_mg_raw" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^['\"]//" -e "s/['\"]$//")
+
+	if [ -n "$custom_mg_raw" ] && {
+		[ "${custom_mg_clean,,}" = "none" ] || \
+		[ "${custom_mg_clean,,}" = "null" ] || \
+		[ "${custom_mg_clean,,}" = "false" ] || \
+		[ "$custom_mg_clean" = "[]" ];
+	}; then
+		:
+	elif [[ -n "$custom_mg_raw" ]]; then
+		local -a raw_parsed=()
+
+		if command -v jq >/dev/null 2>&1 && jq -e . >/dev/null 2>&1 <<<"$custom_mg_raw"; then
+			readarray -t raw_parsed < <(jq -r 'if type=="array" then .[] elif type=="string" then . else empty end' <<<"$custom_mg_raw" 2>/dev/null)
+		else
+			readarray -t raw_parsed < <(
+				echo "$custom_mg_raw" | tr -d '[]\r' | tr ',' '\n' | \
+				sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^['\"]//" -e "s/['\"]$//"
+			)
+		fi
+
+		for p in "${raw_parsed[@]}"; do
+			if [ -n "$p" ] && [ "${p,,}" != "none" ] && [ "${p,,}" != "null" ] && [ "${p,,}" != "false" ]; then
 				microg_patches+=("$p")
+				microg_default_enabled+=("true")
 			fi
-		done <<< "$(list_args "$custom_mg_raw")"
+		done
 	else
-		local -a auto_mg=()
-		readarray -t auto_mg < <(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || true)
-		for p in "${auto_mg[@]}"; do
-			[ -n "$p" ] && microg_patches+=("$p")
+		local -a patch_lines=()
+		readarray -t patch_lines < <(awk '
+			BEGIN { RS=""; FS="\n" }
+			{
+				pname = ""
+				enabled = ""
+				for (i=1; i<=NF; i++) {
+					if ($i ~ /^Name: /) {
+						pname = substr($i, 7)
+						gsub(/\r/, "", pname)
+					}
+					if ($i ~ /^Enabled: /) {
+						enabled = substr($i, 10)
+						gsub(/\r/, "", enabled)
+					}
+				}
+				if (tolower(pname) ~ /gmscore|microg/) {
+					print pname "\t" (enabled == "true" ? "true" : "false")
+				}
+			}
+		' <<<"$list_patches")
+
+		for line in "${patch_lines[@]}"; do
+			local p_name="${line%%$'\t'*}"
+			local p_enabled="${line##*$'\t'}"
+			[ -z "$p_name" ] && continue
+			microg_patches+=("$p_name")
+			microg_default_enabled+=("$p_enabled")
 		done
 	fi
+
 	if [ ${#microg_patches[@]} -gt 0 ]; then
 		local found=false
 		for p in "${microg_patches[@]}"; do
@@ -4327,22 +4220,43 @@ build_rv() {
 		patcher_args=("${p_patcher_args[@]}")
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")
 		pr "Building '${table}' in '$build_mode' mode (${arch_f})"
-		if [ ${#microg_patches[@]} -gt 0 ]; then
+		if [ ${#microg_patches[@]} -gt 0 ] || [ ${#build_mode_arr[@]} -gt 1 ]; then
 			patched_apk="${TEMP_DIR}/${app_name_l}${brand_suffix}-${version_f}-${arch_f}-${build_mode}.apk"
 		else
 			patched_apk="${TEMP_DIR}/${app_name_l}${brand_suffix}-${version_f}-${arch_f}.apk"
 		fi
 		if [ ${#microg_patches[@]} -gt 0 ]; then
-			for p in "${microg_patches[@]}"; do
-				local mg_arg=""
+			for idx in "${!microg_patches[@]}"; do
+				local p="${microg_patches[$idx]}"
+				local is_def_enabled="${microg_default_enabled[$idx]}"
 				if [ "$build_mode" = apk ]; then
-					mg_arg=" -e \"$p\""
+					if [ "$is_def_enabled" = "true" ]; then
+						for ((bi=0; bi<n_bundles; bi++)); do
+							if [[ "${cur_per_bundle_ed_args[$bi]}" != *"-d \"$p\""* && \
+							      "${cur_per_bundle_ed_args[$bi]}" != *"-d '$p'"* && \
+							      "${cur_per_bundle_ed_args[$bi]}" != *"-d $p"* && \
+							      "${cur_per_bundle_ed_args[$bi]}" != *"-e \"$p\""* && \
+							      "${cur_per_bundle_ed_args[$bi]}" != *"-e '$p'"* && \
+							      "${cur_per_bundle_ed_args[$bi]}" != *"-e $p"* ]]; then
+								cur_per_bundle_ed_args[$bi]+=" -e \"$p\""
+							fi
+						done
+					fi
 				elif [ "$build_mode" = module ]; then
-					mg_arg=" -d \"$p\""
+					patcher_args=("${patcher_args[@]//-[ei] \'$p\'/}")
+					patcher_args=("${patcher_args[@]//-[ei] \"$p\"/}")
+					patcher_args=("${patcher_args[@]//-[ei] $p/}")
+					for ((bi=0; bi<n_bundles; bi++)); do
+						cur_per_bundle_ed_args[$bi]="${cur_per_bundle_ed_args[$bi]//-e \'$p\'/}"
+						cur_per_bundle_ed_args[$bi]="${cur_per_bundle_ed_args[$bi]//-e \"$p\"/}"
+						cur_per_bundle_ed_args[$bi]="${cur_per_bundle_ed_args[$bi]//-e $p/}"
+						if [[ "${cur_per_bundle_ed_args[$bi]}" != *"-d \"$p\""* && \
+						      "${cur_per_bundle_ed_args[$bi]}" != *"-d '$p'"* && \
+						      "${cur_per_bundle_ed_args[$bi]}" != *"-d $p"* ]]; then
+							cur_per_bundle_ed_args[$bi]+=" -d \"$p\""
+						fi
+					done
 				fi
-				for ((bi=0; bi<n_bundles; bi++)); do
-					cur_per_bundle_ed_args[$bi]+="$mg_arg"
-				done
 			done
 		fi
 		if [ "$build_mode" = module ]; then
@@ -4425,11 +4339,13 @@ build_rv() {
 
 			module_config "$base_template" "$pkg_name" "$version_f" "$arch"
 
+
 			module_prop \
-				"${curr_mod_id}" \
-				"${app_name}${brand_display}" \
+				"${args[module_prop_name]}" \
+				"${app_name} ${args[rv_brand]}" \
 				"${version_f} (patches ${patches_ver})" \
-				"${app_name}${brand_display} module" \
+				"${DEF_AUTHOR_NAME:-nullcpy}" \
+				"${app_name} ${args[rv_brand]} module" \
 				"https://github.com/${GITHUB_REPOSITORY-}/releases/download/update/${curr_upj}" \
 				"$base_template"
 
@@ -4587,8 +4503,8 @@ module_prop() {
 name=${2}
 version=v${3}
 versionCode=${NEXT_VER_CODE}
-author=j-hc
-description=${4}" >"${6}/module.prop"
+author=${4}
+description=${5}" >"${7}/module.prop"
 
-	if [ "$ENABLE_MODULE_UPDATE" = true ]; then echo "updateJson=${5}" >>"${6}/module.prop"; fi
+	if [ "$ENABLE_MODULE_UPDATE" = true ]; then echo "updateJson=${6}" >>"${7}/module.prop"; fi
 }

@@ -122,6 +122,8 @@ DEF_CLI_SRC=$(toml_get "$main_config_t" cli-source) || DEF_CLI_SRC="MorpheApp/mo
 DEF_CLI_SRC_HOST=$(toml_get "$main_config_t" cli-source-host) || DEF_CLI_SRC_HOST="github"
 DEF_RV_BRAND=$(toml_get "$main_config_t" rv-brand) || DEF_RV_BRAND="ReVanced"
 DEF_DPI=$(toml_get "$main_config_t" dpi) || DEF_DPI="nodpi anydpi auto"
+DEF_AUTHOR_NAME=$(toml_get "$main_config_t" author) || DEF_AUTHOR_NAME="sharath-5br2r"
+DEF_AUTHOR_PAGE=$(toml_get "$main_config_t" author-page) || DEF_AUTHOR_PAGE="github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder"
 mkdir -p "$TEMP_DIR" "$BUILD_DIR"
 
 : >build.md
@@ -138,6 +140,7 @@ for file in "$TEMP_DIR"/*/changelog.md; do
 done
 
 mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm ${MODULE_TEMPLATE_DIR}/bin/x86 ${MODULE_TEMPLATE_DIR}/bin/x64
+echo "${DEF_AUTHOR_NAME}${DEF_AUTHOR_PAGE:+ ($DEF_AUTHOR_PAGE)}" > "${MODULE_TEMPLATE_DIR}/maintainer.txt"
 [ -f "${MODULE_TEMPLATE_DIR}/bin/arm64/cmpr" ] || gh_dl "${MODULE_TEMPLATE_DIR}/bin/arm64/cmpr" "https://github.com/j-hc/cmpr/releases/latest/download/cmpr-arm64-v8a"
 [ -f "${MODULE_TEMPLATE_DIR}/bin/arm/cmpr" ] || gh_dl "${MODULE_TEMPLATE_DIR}/bin/arm/cmpr" "https://github.com/j-hc/cmpr/releases/latest/download/cmpr-armeabi-v7a"
 [ -f "${MODULE_TEMPLATE_DIR}/bin/x86/cmpr" ] || gh_dl "${MODULE_TEMPLATE_DIR}/bin/x86/cmpr" "https://github.com/j-hc/cmpr/releases/latest/download/cmpr-x86"
@@ -340,7 +343,9 @@ for table_name in "${config_tables[@]}"; do
 	app_args[dpi]="${app_args[dpi]:-$DEF_DPI}"
 	table_name_f=${table_name,,}
 	table_name_f=${table_name_f// /-}
-	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-jhc"
+	
+
+	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-${DEF_AUTHOR_NAME}"
 	module_prop_name_b=${app_args[module_prop_name]}
 
 	app_args[arch]="${arch_list[*]}"

@@ -82,6 +82,9 @@ These are set in your `.toml` config files under `configs/patches/` or `.github/
 | `app-name` | ✅ Yes | Short app identifier (e.g. `youtube`, `gboard`). |
 | `rv-brand` | ✅ Yes | Brand suffix for the output APK name (e.g. `revanced`, `morphe-hoodles`). |
 | `pkg-name` | ⚠️ Optional | Android package name (e.g. `com.google.android.youtube`). If omitted, scraped automatically from the download source. |
+| `module-prop-name` | ⚠️ Optional | Module prop name. Default: `<app>-<author>`. |
+| `author` | ⚠️ Optional | Module author name. Default: "sharath-5br2r". |
+| `author-page` | ⚠️ Optional | Module author page/link printed during installation. Default: "github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder". |
 
 ### Build Options
 
