@@ -1,1 +1,113 @@
-{}
+{
+  "patches-version": "latest",
+  "enable-module-update": true,
+  "xrecorder-morphe-hoodles": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "xrecorder",
+    "rv-brand": "morphe-hoodles",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a"
+    ],
+    "pkg-name": "videoeditor.videorecorder.screenrecorder",
+    "uptodown-dlurl": "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "smart-launcher-6-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "smart-launcher-6",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "ginlemon.flowerfree",
+    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "solid-explorer-morphe-hoodles": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "solid-explorer",
+    "rv-brand": "morphe-hoodles",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "pl.solidexplorer2",
+    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "wallcraft-morphe-hoodles-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "wallcraft",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.wallpaperscraft.wallpaper",
+    "uptodown-dlurl": "https://wallpaperscraft.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "pandora-morphe-hoodles": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "pandora",
+    "rv-brand": "morphe-hoodles",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pandora.android",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.pandora.android",
+    "uptodown-dlurl": "https://pandora.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/pandora/pandora-music-podcasts",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "myfitnesspal-morphe-hoodles": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "myfitnesspal",
+    "rv-brand": "morphe-hoodles",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.myfitnesspal.android",
+    "uptodown-dlurl": "https://calorie-counter-myfitnesspal.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal",
+    "patches-source": "hoo-dles/morphe-patches"
+  }
+}
