@@ -12,6 +12,7 @@ temp_all_configs.json
 fetched_app_versions.jsonl
 check_list.txt
 build.json
+build.json.lock
 build.md
 cmpr
 *.log
