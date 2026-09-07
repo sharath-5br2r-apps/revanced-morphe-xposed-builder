@@ -7,10 +7,10 @@
   },
   "devanced": {
     "repo": "RookieEnough/De-Vanced",
-    "stable": "v1.3.1",
+    "stable": "v1.3.2",
     "prerelease": "v1.3.2-dev.1",
     "blocked": false,
-    "stable_date": "2026-08-31T19:38:15Z",
+    "stable_date": "2026-09-06T08:30:36Z",
     "pre_date": "2026-09-05T15:14:17Z"
   },
   "anddea": {
@@ -24,10 +24,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.41.0",
-    "prerelease": "v1.42.0-dev.3",
+    "prerelease": "v1.42.0-dev.6",
     "blocked": false,
     "stable_date": "2026-09-01T16:30:24Z",
-    "pre_date": "2026-09-05T08:47:28Z"
+    "pre_date": "2026-09-06T12:43:48Z"
   },
   "piko": {
     "repo": "crimera/piko",
@@ -40,18 +40,18 @@
   "hoodles": {
     "repo": "hoo-dles/morphe-patches",
     "stable": "v1.43.0",
-    "prerelease": "v1.44.0-dev.1",
+    "prerelease": "v1.44.0-dev.2",
     "blocked": false,
     "stable_date": "2026-08-30T00:32:47Z",
-    "pre_date": "2026-09-01T05:20:50Z"
+    "pre_date": "2026-09-05T20:05:00Z"
   },
   "adobo": {
     "repo": "jkennethcarino/adobo",
     "stable": "v1.4.0",
-    "prerelease": "v1.4.0-dev.6",
+    "prerelease": "v1.5.0-dev.2",
     "blocked": false,
     "stable_date": "2026-08-31T17:13:01Z",
-    "pre_date": "2026-08-31T17:05:32Z"
+    "pre_date": "2026-09-06T15:04:24Z"
   },
   "rvexp": {
     "repo": "Aunali321/ReVancedExperiments",
@@ -135,10 +135,10 @@
   "tiktok": {
     "repo": "icysymmetra/tiktok-patches-for-morphe",
     "stable": "v0.7.0",
-    "prerelease": "v0.8.0-dev.2",
+    "prerelease": "v0.8.0-dev.4",
     "blocked": false,
     "stable_date": "2026-08-23T00:36:23Z",
-    "pre_date": "2026-08-30T20:30:09Z"
+    "pre_date": "2026-09-06T11:13:42Z"
   },
   "x-shim": {
     "enabled": false,
@@ -271,10 +271,10 @@
   },
   "dh6k": {
     "repo": "dh6k/morphe-patches",
-    "stable": "v1.4.0",
-    "stable_date": "2026-08-24T09:07:19Z",
-    "prerelease": "v1.5.0-dev.5",
-    "pre_date": "2026-09-04T09:26:29Z",
+    "stable": "v1.5.0",
+    "stable_date": "2026-09-05T22:28:53Z",
+    "prerelease": "v1.6.0-dev.6",
+    "pre_date": "2026-09-06T05:21:07Z",
     "blocked": false
   },
   "kveld9": {
@@ -287,8 +287,8 @@
   },
   "hxreborn-tiktok": {
     "repo": "hxreborn/hxreborn-tiktok-patches",
-    "stable": "v1.1.0",
-    "stable_date": "2026-09-05T09:32:00Z",
+    "stable": "v1.2.0",
+    "stable_date": "2026-09-06T18:59:58Z",
     "prerelease": "v0.10.0-dev.1",
     "pre_date": "2026-08-10T09:24:21Z",
     "blocked": false
@@ -323,6 +323,14 @@
     "stable_date": "2026-09-02T22:03:06Z",
     "prerelease": "v1.4.0-dev.1",
     "pre_date": "2026-09-03T11:25:07Z",
+    "blocked": false
+  },
+  "quantro100": {
+    "repo": "Quantro100/Morphe-patches",
+    "stable": "v1.0.7",
+    "stable_date": "2026-06-02T20:22:14Z",
+    "prerelease": "",
+    "pre_date": "",
     "blocked": false
   }
 }

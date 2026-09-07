@@ -1,7 +1,3 @@
-# patches-version = "dev"
-# cli-version = "dev"
-enable-module-update = true
-
 [aliexpress-morphe]
 enabled = true
 pkg-name = "com.alibaba.aliexpresshd"
@@ -16,5 +12,4 @@ uptodown-dlurl = "https://aliexpress.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/alibaba-mobile/aliexpress-shopping-app"
 apkpure-dlurl = "https://apkpure.com/aliexpress/com.alibaba.aliexpresshd"
 apkcombo-dlurl = "https://apkcombo.com/aliexpress-shopping-app/com.alibaba.aliexpresshd"
-
 
