@@ -3,10 +3,10 @@
     "repo": "IMXEren/mix-patches",
     "host": "gitlab",
     "stable": "v1.6.0",
-    "prerelease": "v1.7.0-dev.2",
+    "prerelease": "v1.7.0-dev.4",
     "blocked": false,
     "stable_date": "2026-08-25T21:53:15.816Z",
-    "pre_date": "2026-09-02T00:30:44.187Z"
+    "pre_date": "2026-09-08T05:48:14.038Z"
   },
   "adobo": {
     "repo": "jkennethcarino/adobo",
@@ -263,10 +263,10 @@
   },
   "rushiranpise": {
     "repo": "rushiranpise/morphe-patches",
-    "stable": "v1.21.4",
+    "stable": "v1.21.5",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-09-01T12:53:18Z",
+    "stable_date": "2026-09-08T05:16:26Z",
     "pre_date": ""
   },
   "rvexp": {

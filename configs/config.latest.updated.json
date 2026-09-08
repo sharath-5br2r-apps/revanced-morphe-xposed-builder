@@ -1,9 +1,9 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": false,
-  "brave-nightly-morphe-dh6k": {
+  "brave-beta-morphe-dh6k": {
     "enabled": true,
-    "app-name": "brave-nightly",
+    "app-name": "brave-beta",
     "rv-brand": "morphe-dh6k",
     "version": "beta",
     "build-mode": "apk",
@@ -12,7 +12,7 @@
       "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.brave.browser_nightly",
+    "pkg-name": "com.brave.browser_beta",
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "dh6k/morphe-patches",
     "patcher-args": "--continue-on-error",
@@ -31,73 +31,50 @@
         "regex": "(BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
       }
     ],
-    "github-release-name-regex": "^Nightly v"
+    "github-release-name-regex": "^Beta v"
   },
-  "x-morphe-piko-exp": {
+  "xrecorder-morphe-hoodles-exp": {
     "enabled": true,
-    "app-name": "x",
-    "rv-brand": "morphe-piko-exp",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "xrecorder",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder",
+    "version": "latest",
     "build-mode": "apk",
     "arch": [
       "all",
       "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
+      "arm-v7a"
     ],
-    "version": "latest",
-    "pkg-name": "com.twitter.android",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "excluded-patches": [
-      "Dynamic Color"
-    ],
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+    "pkg-name": "videoeditor.videorecorder.screenrecorder",
+    "uptodown-dlurl": "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder",
+    "patches-source": "hoo-dles/morphe-patches"
   },
-  "x-morphe-piko-materialyou-exp": {
+  "amazon-india-morphe-rushiranpise-exp": {
     "enabled": true,
-    "app-name": "x",
-    "rv-brand": "morphe-piko-materialyou-exp",
-    "build-mode": "apk",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "version": "latest",
-    "pkg-name": "com.twitter.android",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "included-patches": [
-      "Dynamic Color"
-    ],
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
-  },
-  "macrodroid-morphe-rushiranpise-exp": {
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "macrodroid",
+    "app-name": "amazon-india",
     "rv-brand": "morphe-rushiranpise-exp",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid",
-    "version": "latest",
     "build-mode": "apk",
+    "pkg-name": "in.amazon.mShop.android.shopping",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://amazon-india.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay",
+    "patches-source": "rushiranpise/morphe-patches",
+    "included-patches": [
+      "Dark Mode",
+      "Open Links in Browser"
+    ],
+    "excluded-patches": [
+      "Hide Rufus Tab"
+    ],
+    "custom-microg-patches": "'None'",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping",
+    "version": "latest",
     "arch": [
       "all",
       "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
-    "pkg-name": "com.arlosoft.macrodroid",
-    "uptodown-dlurl": "https://macrodroid.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/",
-    "patches-source": "rushiranpise/morphe-patches"
+      "arm-v7a"
+    ]
   }
 }

@@ -1,10 +1,77 @@
 {
   "patches-version": "latest",
   "enable-module-update": true,
-  "x-morphe-piko-exp": {
+  "xrecorder-morphe-hoodles-exp": {
     "enabled": true,
-    "app-name": "x",
-    "rv-brand": "morphe-piko-exp",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "xrecorder",
+    "rv-brand": "morphe-hoodles-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a"
+    ],
+    "pkg-name": "videoeditor.videorecorder.screenrecorder",
+    "uptodown-dlurl": "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "amazon-india-morphe-rushiranpise-exp": {
+    "enabled": true,
+    "app-name": "amazon-india",
+    "rv-brand": "morphe-rushiranpise-exp",
+    "build-mode": "apk",
+    "pkg-name": "in.amazon.mShop.android.shopping",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://amazon-india.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay",
+    "patches-source": "rushiranpise/morphe-patches",
+    "included-patches": [
+      "Dark Mode",
+      "Open Links in Browser"
+    ],
+    "excluded-patches": [
+      "Hide Rufus Tab"
+    ],
+    "custom-microg-patches": "'None'",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping",
+    "version": "latest",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a"
+    ]
+  },
+  "pc-remote-morphe-rushiranpise": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "pc-remote",
+    "rv-brand": "morphe-rushiranpise",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable",
+    "custom-microg-patches": "'None'",
+    "build-mode": "apk",
+    "pkg-name": "com.monect.portable",
+    "uptodown-dlurl": "https://monect-pc-remote.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/",
+    "patches-source": "rushiranpise/morphe-patches",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ]
+  },
+  "windscribe-vpn-morphe-rushiranpise-exp": {
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "windscribe-vpn",
+    "rv-brand": "morphe-rushiranpise-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn",
+    "version": "latest",
+    "custom-microg-patches": "'None'",
     "build-mode": "apk",
     "arch": [
       "all",
@@ -12,17 +79,50 @@
       "arm-v7a",
       "x86_64"
     ],
-    "version": "latest",
-    "pkg-name": "com.twitter.android",
+    "pkg-name": "com.windscribe.vpn",
+    "uptodown-dlurl": "https://windscribe.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/windscribe/windscribe-vpn",
+    "apkcombo-dlurl": "https://apkcombo.com/windscribe/com.windscribe.vpn",
+    "patches-source": "rushiranpise/morphe-patches"
+  },
+  "beta-maniac-morphe-rushiranpise": {
+    "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "excluded-patches": [
-      "Dynamic Color"
+    "app-name": "beta-maniac",
+    "rv-brand": "morphe-rushiranpise",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
     ],
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+    "pkg-name": "it.mirko.beta",
+    "uptodown-dlurl": "https://beta-maniac.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2",
+    "patches-source": "rushiranpise/morphe-patches"
+  },
+  "proton-vpn-morphe-rushiranpise": {
+    "enabled": true,
+    "app-name": "proton-vpn",
+    "rv-brand": "morphe-rushiranpise",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android",
+    "build-mode": "apk",
+    "arch": [
+      "all",
+      "arm64-v8a",
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "ch.protonvpn.android",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "uptodown-dlurl": "https://protonvpn.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/",
+    "prefer-dl-mode": "bundle",
+    "dpi": [
+      "120-640dpi"
+    ],
+    "patches-source": "rushiranpise/morphe-patches"
   }
 }
