@@ -146,9 +146,7 @@ echo "${DEF_AUTHOR_NAME}${DEF_AUTHOR_PAGE:+ ($DEF_AUTHOR_PAGE)}" > "${MODULE_TEM
 [ -f "${MODULE_TEMPLATE_DIR}/bin/x86/cmpr" ] || gh_dl "${MODULE_TEMPLATE_DIR}/bin/x86/cmpr" "https://github.com/j-hc/cmpr/releases/latest/download/cmpr-x86"
 [ -f "${MODULE_TEMPLATE_DIR}/bin/x64/cmpr" ] || gh_dl "${MODULE_TEMPLATE_DIR}/bin/x64/cmpr" "https://github.com/j-hc/cmpr/releases/latest/download/cmpr-x86_64"
 
-config_tables=()
-readarray -t config_tables < <(toml_get_table_names)
-for table_name in "${config_tables[@]}"; do
+for table_name in $(toml_get_table_names); do
 	if [ -z "$table_name" ]; then continue; fi
 	t=$(toml_get_table "$table_name")
 

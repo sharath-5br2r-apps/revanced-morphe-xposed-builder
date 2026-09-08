@@ -30,11 +30,9 @@ while IFS= read -r group; do
     if [ "$new_ver" != "$old_ver" ] && [ "$new_ver" != "null" ] && [ -n "$new_ver" ]; then
         echo "::notice::Update detected for $group: $old_ver -> $new_ver"
         TRIGGER_APP_UPDATE=1
-        
-        key_list=()
-        readarray -t key_list < <(jq -r ".\"$group\".keys[]? // \"$group\"" "$CURRENT_VERSIONS")
-        for key in "${key_list[@]}"; do
-            [ -z "$key" ] && continue
+        # Add all constituent keys to active_apps.json
+        keys=$(jq -r ".\"$group\".keys[]? // \"$group\"" "$CURRENT_VERSIONS")
+        for key in $keys; do
             jq --arg k "$key" '. + [$k] | unique' "$ACTIVE_APPS" > tmp.json && mv tmp.json "$ACTIVE_APPS"
         done
         
