@@ -26,10 +26,10 @@
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.34.0",
+    "stable": "v1.35.0",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-09-07T22:02:15Z",
+    "stable_date": "2026-09-08T01:21:28Z",
     "pre_date": ""
   },
   "binarymend": {
@@ -304,10 +304,10 @@
   "tiktok": {
     "repo": "icysymmetra/tiktok-patches-for-morphe",
     "stable": "v0.7.0",
-    "prerelease": "v0.8.0-dev.6",
+    "prerelease": "v0.8.0-dev.7",
     "blocked": false,
     "stable_date": "2026-08-23T00:36:23Z",
-    "pre_date": "2026-09-07T10:43:47Z"
+    "pre_date": "2026-09-07T22:23:44Z"
   },
   "x-shim": {
     "enabled": false,
