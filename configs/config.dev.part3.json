@@ -1,30 +1,22 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "amazon-india-morphe-rushiranpise-exp": {
+  "hill-climb-racing-morphe-byehi98": {
     "enabled": true,
-    "app-name": "amazon-india",
-    "rv-brand": "morphe-rushiranpise-exp",
-    "build-mode": "apk",
-    "pkg-name": "in.amazon.mShop.android.shopping",
     "cli-source": "MorpheApp/morphe-desktop",
-    "uptodown-dlurl": "https://amazon-india.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay",
-    "patches-source": "rushiranpise/morphe-patches",
-    "included-patches": [
-      "Dark Mode",
-      "Open Links in Browser"
-    ],
-    "excluded-patches": [
-      "Hide Rufus Tab"
-    ],
-    "custom-microg-patches": "'None'",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping",
-    "version": "latest",
+    "app-name": "hill-climb-racing",
+    "rv-brand": "morphe-byehi98",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.fingersoft.hillclimb",
+    "build-mode": "apk",
     "arch": [
       "all",
       "arm64-v8a",
-      "arm-v7a"
-    ]
+      "arm-v7a",
+      "x86_64"
+    ],
+    "pkg-name": "com.fingersoft.hillclimb",
+    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/",
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }
