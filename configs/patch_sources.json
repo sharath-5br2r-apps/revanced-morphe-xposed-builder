@@ -26,10 +26,10 @@
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.35.0",
+    "stable": "v1.35.1",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-09-08T01:21:28Z",
+    "stable_date": "2026-09-09T01:37:24Z",
     "pre_date": ""
   },
   "binarymend": {
@@ -176,8 +176,8 @@
   },
   "kveld9": {
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.13.1",
-    "stable_date": "2026-09-07T00:44:40Z",
+    "stable": "v1.14.0",
+    "stable_date": "2026-09-09T01:48:41Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
