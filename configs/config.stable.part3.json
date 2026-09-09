@@ -1,12 +1,11 @@
 {
   "patches-version": "latest",
   "enable-module-update": true,
-  "hill-climb-racing-morphe-byehi98": {
+  "discord-npatch-revenge": {
     "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "hill-climb-racing",
-    "rv-brand": "morphe-byehi98",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.fingersoft.hillclimb",
+    "app-name": "discord",
+    "pkg-name": "com.discord",
+    "rv-brand": "npatch-revenge",
     "build-mode": "apk",
     "arch": [
       "all",
@@ -14,9 +13,12 @@
       "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.fingersoft.hillclimb",
-    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/",
-    "patches-source": "byehi98/okish-morphe-patches"
+    "cli-source": "7723mod/NPatch",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord",
+    "patches-source": "revenge-mod/revenge-xposed",
+    "patcher-args": "-l 0",
+    "uptodown-dlurl": "https://discord-chat-for-gamers.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
   }
 }

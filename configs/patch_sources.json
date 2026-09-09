@@ -176,8 +176,8 @@
   },
   "kveld9": {
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.14.0",
-    "stable_date": "2026-09-09T01:48:41Z",
+    "stable": "v1.16.0",
+    "stable_date": "2026-09-09T14:17:47Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -193,10 +193,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.41.0",
-    "prerelease": "v1.42.0-dev.9",
+    "prerelease": "v1.42.0-dev.10",
     "blocked": false,
     "stable_date": "2026-09-01T16:30:24Z",
-    "pre_date": "2026-09-09T07:46:42Z"
+    "pre_date": "2026-09-09T13:22:37Z"
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
@@ -255,10 +255,10 @@
   },
   "revenge": {
     "repo": "revenge-mod/revenge-xposed",
-    "stable": "1602",
+    "stable": "1603",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-08-18T15:15:27Z",
+    "stable_date": "2026-09-09T16:26:35Z",
     "pre_date": ""
   },
   "rushiranpise": {
