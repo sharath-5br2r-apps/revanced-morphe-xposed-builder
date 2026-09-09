@@ -25,12 +25,12 @@
     "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
   },
-  "macrodroid-morphe-rushiranpise-exp": {
+  "cricbuzz-morphe-paresh-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "macrodroid",
-    "rv-brand": "morphe-rushiranpise-exp",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid",
+    "app-name": "cricbuzz",
+    "rv-brand": "morphe-paresh-exp",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android",
     "version": "latest",
     "build-mode": "apk",
     "arch": [
@@ -39,9 +39,10 @@
       "arm-v7a",
       "x86_64"
     ],
-    "pkg-name": "com.arlosoft.macrodroid",
-    "uptodown-dlurl": "https://macrodroid.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/",
-    "patches-source": "rushiranpise/morphe-patches"
+    "pkg-name": "com.cricbuzz.android",
+    "uptodown-dlurl": "https://cricbuzz-cricket-scores-and-news.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news",
+    "patches-source": "Paresh-Maheshwari/paresh-patches",
+    "patches-source-host": "gitlab"
   }
 }

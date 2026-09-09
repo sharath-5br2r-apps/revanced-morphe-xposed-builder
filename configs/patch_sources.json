@@ -58,8 +58,8 @@
   },
   "byehi98": {
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.25.0",
-    "stable_date": "2026-09-08T16:38:38Z",
+    "stable": "v1.26.0",
+    "stable_date": "2026-09-09T12:01:53Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -193,10 +193,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.41.0",
-    "prerelease": "v1.42.0-dev.8",
+    "prerelease": "v1.42.0-dev.9",
     "blocked": false,
     "stable_date": "2026-09-01T16:30:24Z",
-    "pre_date": "2026-09-08T12:46:30Z"
+    "pre_date": "2026-09-09T07:46:42Z"
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
