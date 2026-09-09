@@ -168,8 +168,8 @@
   },
   "kondratjev": {
     "repo": "kondratjev/morphe-patches",
-    "stable": "v1.20.0",
-    "stable_date": "2026-08-31T17:34:47Z",
+    "stable": "v1.22.0",
+    "stable_date": "2026-09-09T21:24:51Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -192,11 +192,11 @@
   },
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
-    "stable": "v1.41.0",
-    "prerelease": "v1.42.0-dev.10",
+    "stable": "v1.42.0",
+    "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-09-01T16:30:24Z",
-    "pre_date": "2026-09-09T13:22:37Z"
+    "stable_date": "2026-09-09T21:01:44Z",
+    "pre_date": ""
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
