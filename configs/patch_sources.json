@@ -168,16 +168,16 @@
   },
   "kondratjev": {
     "repo": "kondratjev/morphe-patches",
-    "stable": "v1.22.0",
-    "stable_date": "2026-09-09T21:24:51Z",
+    "stable": "v1.23.0",
+    "stable_date": "2026-09-10T14:09:16Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
   },
   "kveld9": {
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.16.0",
-    "stable_date": "2026-09-09T14:17:47Z",
+    "stable": "v1.17.0",
+    "stable_date": "2026-09-10T16:26:43Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false

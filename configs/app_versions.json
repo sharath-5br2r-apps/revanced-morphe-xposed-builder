@@ -36,7 +36,7 @@
       "x-morphe-piko-exp",
       "x-morphe-piko-materialyou-exp"
     ],
-    "version": "12.24.0-prod.02"
+    "version": "12.25.0-prod.01"
   },
   "Speedtest": {
     "keys": [
@@ -67,7 +67,7 @@
     "keys": [
       "brave-nightly-morphe-dh6k"
     ],
-    "version": "1.97.21"
+    "version": "1.97.23"
   },
   "PC Remote": {
     "keys": [
@@ -183,7 +183,7 @@
     "keys": [
       "adguard-morphe-rushiranpise-exp"
     ],
-    "version": "4.13.2"
+    "version": "4.14.0"
   },
   "Pinterest": {
     "keys": [
