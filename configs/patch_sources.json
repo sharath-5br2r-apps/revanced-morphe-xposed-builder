@@ -217,10 +217,10 @@
   "piko": {
     "repo": "crimera/piko",
     "stable": "v3.9.0",
-    "prerelease": "v3.10.0-dev.5",
+    "prerelease": "v3.10.0-dev.6",
     "blocked": false,
     "stable_date": "2026-08-31T02:40:04Z",
-    "pre_date": "2026-09-07T01:37:01Z"
+    "pre_date": "2026-09-10T01:22:23Z"
   },
   "pixel": {
     "enabledDev": false,
