@@ -72,10 +72,10 @@
   },
   "devanced": {
     "repo": "RookieEnough/De-Vanced",
-    "stable": "v1.3.2",
+    "stable": "v1.3.3",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-09-06T08:30:36Z",
+    "stable_date": "2026-09-10T22:05:54Z",
     "pre_date": ""
   },
   "dh6k": {
@@ -176,8 +176,8 @@
   },
   "kveld9": {
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.17.0",
-    "stable_date": "2026-09-10T16:26:43Z",
+    "stable": "v1.18.0",
+    "stable_date": "2026-09-10T21:36:32Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -193,10 +193,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.42.0",
-    "prerelease": "",
+    "prerelease": "v1.42.1-dev.1",
     "blocked": false,
     "stable_date": "2026-09-09T21:01:44Z",
-    "pre_date": ""
+    "pre_date": "2026-09-10T21:27:59Z"
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
