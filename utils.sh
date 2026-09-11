@@ -2281,55 +2281,198 @@ write_build_info() {
 	local brand=${11:-${args[brand]:-}}
 	local variant=${12:-${args[variant]:-}}
 	local sub_variant=${13:-${args[sub_variant]:-}}
+	local target_file=${14:-}
+	local inspect_apk_override=${15:-}
+	local cli_ref=${16:-${args[cli_source]:-${args[cli]:-}}}
+
 	local arch_orig="${args[arch]// /}"
 	if [ "$arch_orig" != "auto" ]; then ext="${arch}${ext}"; arch=""; fi
-	# extract applied patches supporting revanced, morphe-desktop, and instafel output formats
-	# revanced: INFO: "Patch Name" succeeded
-	# morphe:   INFO: Applied: Patch Name
-	# instafel: I: Patch 'Patch Name' loaded
-	local applied_json
-	applied_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: ")[^"\n]+(?=" succeeded)|(?<=INFO: Applied: ).*|(?<=I: Patch \x27)[^\x27]+(?=\x27 loaded)' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
-	[[ "$applied_json" != \[* ]] && applied_json='[]'
-	jq --arg key "$key" \
-		--arg ext "$ext" \
-		--arg arch "$arch" \
-		--arg name "$name" \
-		--arg version "$version" \
-		--arg patches "$patches" \
-		--arg changelog "$changelog" \
-		--arg pkg_name "$pkg_name" \
-		--arg display_name "$display_name" \
-		--arg patches_source "$patches_source" \
-		--arg brand "$brand" \
-		--arg variant "$variant" \
-		--arg sub_variant "$sub_variant" \
-		--argjson applied "$applied_json" \
-		'if has($key) then
-			.[$key].exts = (.[$key].exts + [$ext] | unique) |
-			(if ($ext == ".apk" and $pkg_name != "") or ((.[$key].package_name // "") == "" and $pkg_name != "") then .[$key].package_name = $pkg_name else . end) |
-			(if $display_name != "" then .[$key].display_name = $display_name else . end) |
-			(if $patches_source != "" then .[$key].patches_source = $patches_source else . end) |
-			(if $brand != "" then .[$key].brand = $brand else . end) |
-			(if $variant != "" then .[$key].variant = $variant else . end) |
-			(if $sub_variant != "" then .[$key].sub_variant = $sub_variant else . end)
+
+	# Determine entry key (artifact filename if known)
+	local entry_key=""
+	if [ -n "$target_file" ]; then
+		entry_key="${target_file##*/}"
+	fi
+
+	# Determine APK to inspect for metadata (prefer override, then target, then patched_apk)
+	local target_apk=""
+	if [ -n "$inspect_apk_override" ] && [ -f "$inspect_apk_override" ]; then
+		target_apk="$inspect_apk_override"
+	elif [ -n "$target_file" ] && [ -f "$target_file" ]; then
+		target_apk="$target_file"
+	fi
+	if [ -z "$target_apk" ] || [ ! -f "$target_apk" ]; then
+		target_apk="${final_apk_output:-${apk_output:-${patched_apk:-${stock_apk_to_patch:-${stock_apk:-}}}}}"
+	fi
+
+	# For .zip modules, check companion .apk or inspect base.apk inside
+	local inspect_apk="$target_apk"
+	if [[ "$inspect_apk" == *.zip ]]; then
+		local zip_companion="${inspect_apk%.zip}.apk"
+		if [ -f "$zip_companion" ]; then
+			inspect_apk="$zip_companion"
 		else
-			.[$key] = {
-				exts: [$ext],
-				name: $name,
-				arch: $arch,
-				version: $version,
-				patches: $patches,
-				changelog: $changelog,
-				package_name: $pkg_name,
-				display_name: $display_name,
-				patches_source: $patches_source,
-				brand: $brand,
-				variant: $variant,
-				sub_variant: $sub_variant,
-				applied_patches: $applied
-			}
-		end' \
-		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
+			inspect_apk=""
+		fi
+	fi
+
+	local aapt_bin="${AAPT2:-$(command -v aapt2 2>/dev/null || command -v aapt 2>/dev/null || true)}"
+	local min_sdk=""
+	local densities_json="[]" native_libs_json="[]"
+	if [ -n "$inspect_apk" ] && [ -f "$inspect_apk" ]; then
+		if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ]; then
+			local aapt_out
+			aapt_out=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null || true)
+			min_sdk=$(printf '%s' "$aapt_out" | grep -oP "(?:sdkVersion|minSdkVersion):'\K[^']+" | head -1 || true)
+			local den_raw nat_raw
+			den_raw=$(printf '%s' "$aapt_out" | grep -oP "densities: \K.*" | tr -d "'" || true)
+			[ -n "$den_raw" ] && densities_json=$(jq -n --arg d "$den_raw" '$d | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
+			nat_raw=$(printf '%s' "$aapt_out" | grep -oP "native-code: \K.*" | tr -d "'" || true)
+			[ -n "$nat_raw" ] && native_libs_json=$(jq -n --arg n "$nat_raw" '$n | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
+		fi
+		if [ "$native_libs_json" = "[]" ]; then
+			local unzip_libs
+			unzip_libs=$(unzip -l "$inspect_apk" 2>/dev/null | grep -oP 'lib/\K[^/]+' | sort -u | tr '\n' ' ' || true)
+			[ -n "$unzip_libs" ] && native_libs_json=$(jq -n --arg n "$unzip_libs" '$n | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
+		fi
+	fi
+
+	# extract applied patches supporting revanced, morphe-desktop, and instafel output formats
+	local applied_json
+	applied_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: ")[^"\n]+(?=" succeeded)|(?<=INFO: Applied: ).*|(?<=I: Patch \x27)[^\x27]+(?=\x27 loaded)' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
+	[[ "$applied_json" != \[* ]] && applied_json='[]'
+
+	# extract failed patches
+	local failed_json
+	failed_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=SEVERE: FAILED: ).*|(?<=ERROR: ")[^"\n]+(?=" failed)|(?<=WARN: Patch \x27)[^\x27]+(?=\x27 failed)' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
+	[[ "$failed_json" != \[* ]] && failed_json='[]'
+
+	# extract skipped patches
+	local skipped_json
+	skipped_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: Skipping disabled: ).*|(?<=INFO: Skipping incompatible patch \x27)[^\x27]+|(?<=WARN: Skipping patch \x27)[^\x27]+' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
+	[[ "$skipped_json" != \[* ]] && skipped_json='[]'
+
+	local release_notes=""
+	if [ -n "${patches_dir:-}" ] && [ -f "${patches_dir}/tag_notes.txt" ]; then
+		release_notes=$(cat "${patches_dir}/tag_notes.txt" 2>/dev/null || true)
+	fi
+
+	local patches_json
+	if [[ "$patches" =~ ^\[.*\]$ ]]; then
+		patches_json="$patches"
+	else
+		patches_json=$(jq -n --arg p "$patches" '$p | split("|") | map(split(" ")) | flatten | map(select(length > 0))' 2>/dev/null || echo '[]')
+	fi
+
+	local changelog_json
+	if [[ "$changelog" =~ ^\[.*\]$ ]]; then
+		changelog_json="$changelog"
+	else
+		changelog_json=$(jq -n --arg c "$changelog" '$c | split("|") | map(split(" ")) | flatten | map(select(length > 0))' 2>/dev/null || echo '[]')
+	fi
+
+	(
+		flock -x 200 2>/dev/null || true
+		jq --arg key "$key" \
+			--arg file_key "$entry_key" \
+			--arg ext "$ext" \
+			--arg arch "$arch" \
+			--arg name "$name" \
+			--arg version "$version" \
+			--arg min_sdk "$min_sdk" \
+			--arg cli "${cli_ref:-${cli_name_ver:-}}" \
+			--arg release_notes "$release_notes" \
+			--arg patches "$patches" \
+			--arg changelog "$changelog" \
+			--arg pkg_name "$pkg_name" \
+			--arg display_name "$display_name" \
+			--arg patches_source "$patches_source" \
+			--arg brand "$brand" \
+			--arg variant "$variant" \
+			--arg sub_variant "$sub_variant" \
+			--argjson patches_arr "$patches_json" \
+			--argjson changelog_arr "$changelog_json" \
+			--argjson applied "$applied_json" \
+			--argjson failed "$failed_json" \
+			--argjson skipped "$skipped_json" \
+			--argjson densities "$densities_json" \
+			--argjson native_libs "$native_libs_json" \
+			'
+			# 1. Update target_key record for builder scripts
+			(if has($key) then
+				.[$key].exts = (.[$key].exts + [$ext] | unique) |
+				(if ($ext == ".apk" and $pkg_name != "") or ((.[$key].package_name // "") == "" and $pkg_name != "") then .[$key].package_name = $pkg_name else . end) |
+				(if $display_name != "" then .[$key].display_name = $display_name else . end) |
+				(if $patches_source != "" then .[$key].patches_source = $patches_source else . end) |
+				(if $brand != "" then .[$key].brand = $brand else . end) |
+				(if $variant != "" then .[$key].variant = $variant else . end) |
+				(if $sub_variant != "" then .[$key].sub_variant = $sub_variant else . end) |
+				(if $min_sdk != "" then .[$key].min_sdk = $min_sdk else . end) |
+				(if ($densities | length) > 0 then .[$key].densities = $densities else . end) |
+				(if ($native_libs | length) > 0 then .[$key].native_libraries = $native_libs else . end) |
+				(if $cli != "" then .[$key].cli = $cli else . end)
+			else
+				.[$key] = {
+					exts: [$ext],
+					name: $name,
+					arch: $arch,
+					version: $version,
+					min_sdk: $min_sdk,
+					densities: $densities,
+					native_libraries: $native_libs,
+					cli: $cli,
+					patches: $patches,
+					changelog: $changelog,
+					package_name: $pkg_name,
+					display_name: $display_name,
+					patches_source: $patches_source,
+					brand: $brand,
+					variant: $variant,
+					sub_variant: $sub_variant,
+					applied_patches: $applied,
+					failed_patches: $failed,
+					skipped_patches: $skipped
+				} |
+				if $cli != "" then . else del(.[$key].cli) end |
+				if $min_sdk != "" then . else del(.[$key].min_sdk) end |
+				if ($densities | length) > 0 then . else del(.[$key].densities) end |
+				if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |
+				if ($failed | length) > 0 then . else del(.[$key].failed_patches) end |
+				if ($skipped | length) > 0 then . else del(.[$key].skipped_patches) end
+			end) |
+			# 2. Update exact filename record for catalog cache updater (merge_build_meta.py) & frontend
+			(if $file_key != "" then
+				.[$file_key] = {
+					name: $name,
+					arch: $arch,
+					ext: $ext,
+					version: $version,
+					min_sdk: $min_sdk,
+					densities: $densities,
+					native_libraries: $native_libs,
+					cli: $cli,
+					patches: $patches_arr,
+					changelog: $changelog_arr,
+					release_notes: $release_notes,
+					package_name: $pkg_name,
+					display_name: $display_name,
+					applied_patches: $applied,
+					failed_patches: $failed,
+					skipped_patches: $skipped
+				} |
+				if $cli != "" then . else del(.[$file_key].cli) end |
+				if $release_notes != "" then . else del(.[$file_key].release_notes) end |
+				if $min_sdk != "" then . else del(.[$file_key].min_sdk) end |
+				if ($densities | length) > 0 then . else del(.[$file_key].densities) end |
+				if ($native_libs | length) > 0 then . else del(.[$file_key].native_libraries) end |
+				if ($patches_arr | length) > 0 then . else del(.[$file_key].patches) end |
+				if ($changelog_arr | length) > 0 then . else del(.[$file_key].changelog) end |
+				if ($failed | length) > 0 then . else del(.[$file_key].failed_patches) end |
+				if ($skipped | length) > 0 then . else del(.[$file_key].skipped_patches) end
+			else . end)
+			' \
+			"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
+	) 200>"${BUILD_JSON_FILE}.lock"
 }
 verify_downloaded_apk() {
 	local stock_apk=$1
@@ -3302,7 +3445,7 @@ build_rv() {
 				cp -f "$patched_apk" "$apk_output"
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
-			write_build_info "${table% (*}" "${arch_f}" ".apk" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}"
+			write_build_info "${table% (*}" "${arch_f}" ".apk" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "$apk_output" "" "${args[cli_source]:-${args[cli]:-}}"
 			continue
 		fi
 		local base_template
@@ -3358,7 +3501,7 @@ build_rv() {
 		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
 		popd >/dev/null || :
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
-		write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}"
+		write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "${CWD}/${BUILD_DIR}/${module_output}" "$patched_apk" "${args[cli_source]:-${args[cli]:-}}"
 	done
 }
 

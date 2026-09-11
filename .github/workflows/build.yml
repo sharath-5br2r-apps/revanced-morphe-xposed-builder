@@ -153,7 +153,9 @@ jobs:
           with: |
             body_path: build.md
             token: ${{ secrets.GITHUB_TOKEN }}
-            files: ./build/*
+            files: |
+              ./build/*
+              build.json
             name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
             tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
             overwrite_files: true
