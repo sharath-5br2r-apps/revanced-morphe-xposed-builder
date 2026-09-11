@@ -92,9 +92,9 @@ These are set in your `.toml` config files under `configs/patches/` or `.github/
 |-----|----------|---------|-------------|
 | `build-mode` | ⚠️ Optional | `apk` | Build output type: `apk`, `module`, or `both`. |
 | `arch` | ⚠️ Optional | `auto` | Target architecture: `arm64-v8a`, `arm-v7a`, `x86`, `x86_64`, `all`, `multi`, or `auto`. |
-| `dpi` | ⚠️ Optional | `["nodpi", "anydpi", "auto"]` | Array of accepted DPI variants (e.g. `["120-640dpi"]` or `["nodpi", "anydpi"]`). `auto` matches whatever is available. |
+| `dpi` | ⚠️ Optional | `nodpi anydpi auto` | Space-separated list of accepted DPI variants (e.g. `"120-640dpi"` or `"nodpi anydpi"`). `auto` matches whatever is available. |
 | `version` | ⚠️ Optional | `auto` | APK version to download. Use `auto` (patch-compatible), `latest`, `beta`, `absolutelatest`, or an exact version string (e.g. `17.8.7.939743344`). |
-| `version-code` | ⚠️ Optional | `auto` | Target Android versionCode (`auto` resolves supported versionCode from patch metadata). Can be an explicit versionCode, `bypass` (to bypass versionCode checks), or an array of per-arch tables (e.g. `[{ arch = "arm64-v8a", version-code = "123" }]`). |
+| `version-code` | ⚠️ Optional | `auto` | Target Android versionCode (`auto` resolves supported versionCode from patch metadata). Can be an explicit versionCode, `bypass` (to bypass versionCode checks), or pipe-separated per-arch mapping (`arm64-v8a: ... \| arm-v7a: ...`). |
 | `prefer-dl-mode` | ⚠️ Optional | `apk` | Prefer downloading `apk` or `bundle` (APKM split) from APKMirror. |
 | `patcher-args` | ⚠️ Optional | — | Extra arguments passed directly to the patcher CLI (e.g. `-f --continue-on-error`). |
 | `enable-module-update` | ⚠️ Optional | `false` | Enable module update checks (global key, not per-app). |

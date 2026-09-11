@@ -536,15 +536,14 @@ _get_prebuilts() {
 		echo "none"
 	fi
 
-	readarray -t p_srcs < <(list_args "$patches_src_list")
-	[ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$patches_src_list")
-	readarray -t p_hosts < <(list_args "$patches_host_list")
-	[ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$patches_host_list")
-	readarray -t p_vers < <(list_args "$patches_ver_list")
-	[ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver_list")
-	readarray -t p_filters < <(list_args "${patches_filter_list:-}")
-	readarray -t p_tag_filters < <(list_args "${patches_tag_filter_list:-}")
-	readarray -t p_rel_name_filters < <(list_args "${patches_rel_name_filter_list:-}")
+	local IFS=$'\n'
+	local p_srcs=($(list_args "$patches_src_list" | tr -d \"\'))
+	local p_hosts=($(list_args "$patches_host_list" | tr -d \"\'))
+	local p_vers=($(list_args "$patches_ver_list" | tr -d \"\'))
+	local p_filters=($(list_args "${patches_filter_list:-}" | tr -d \"\'))
+	local p_tag_filters=($(list_args "${patches_tag_filter_list:-}" | tr -d \"\'))
+	local p_rel_name_filters=($(list_args "${patches_rel_name_filter_list:-}" | tr -d \"\'))
+	unset IFS
 	for i in "${!p_srcs[@]}"; do
 		local raw_host="${p_hosts[$i]:-${p_hosts[0]}}"
 		local src="${p_srcs[$i]}"
@@ -813,12 +812,11 @@ config_update() {
 		raw_patches_src=$(toml_get "$t" patches-source) || raw_patches_src=$DEF_PATCHES_SRC
 		raw_patches_host=$(toml_get "$t" patches-source-host) || raw_patches_host=$DEF_PATCHES_SRC_HOST
 		raw_patches_ver=$(toml_get "$t" patches-version) || raw_patches_ver=$DEF_PATCHES_VER
-		readarray -t p_srcs < <(list_args "$raw_patches_src")
-		[ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$raw_patches_src")
-		readarray -t p_hosts < <(list_args "$raw_patches_host")
-		[ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$raw_patches_host")
-		readarray -t p_vers < <(list_args "$raw_patches_ver")
-		[ ${#p_vers[@]} -eq 0 ] && p_vers=("$raw_patches_ver")
+		local IFS=$'\n'
+		local p_srcs=($(list_args "$raw_patches_src" | tr -d \"\'))
+		local p_hosts=($(list_args "$raw_patches_host" | tr -d \"\'))
+		local p_vers=($(list_args "$raw_patches_ver" | tr -d \"\'))
+		unset IFS
 		local table_updated=false
 		for i in "${!p_srcs[@]}"; do
 			local PATCHES_SRC="${p_srcs[$i]}"
@@ -1079,7 +1077,7 @@ get_patch_version_code() {
 	return 1
 }
 
-parse_version_code() {
+parse_arch_mapping() {
 	local mapping="${1:-}" arch="${2:-}"
 	if [ -z "$mapping" ]; then
 		return 0
@@ -1088,8 +1086,9 @@ parse_version_code() {
 		local json_res
 		if json_res=$(jq -r --arg arch "$arch" '
 			if type == "array" then
-				(map(select((.arch // "") == $arch)) | map(."version-code" // ."version_code" // .versionCode // .code) | .[0]) //
-				(map(select((.arch // "") == "all")) | map(."version-code" // ."version_code" // .versionCode // .code) | .[0]) //
+				(map(select((.arch // "") == $arch)) | map(."version-code" // ."version_code" // .versionCode // .code // .regex // tostring) | .[0]) //
+				(map(select((.arch // "") == "all")) | map(."version-code" // ."version_code" // .versionCode // .code // .regex // tostring) | .[0]) //
+				(map(."version-code" // ."version_code" // .versionCode // .code // .regex // tostring) | .[0]) //
 				empty
 			elif type == "object" then
 				.[$arch] // .all // empty
@@ -1100,38 +1099,35 @@ parse_version_code() {
 			echo "$json_res"
 			return 0
 		fi
-	else
+	fi
+	if [[ "$mapping" != *":"* ]]; then
 		echo "$mapping"
 		return 0
 	fi
+	local matched="" entry
+	local old_ifs="$IFS"
+	IFS='|'
+	for entry in $mapping; do
+		if [[ "$entry" =~ ^[[:space:]]*([^:]+)[[:space:]]*:[[:space:]]*(.*)$ ]]; then
+			local e_arch="${BASH_REMATCH[1]//[[:space:]]/}"
+			local e_val="${BASH_REMATCH[2]}"
+			e_val="${e_val//[ \'\";\r\n]/}"
+			if [ "${e_arch,,}" = "${arch,,}" ]; then
+				matched="$e_val"
+				break
+			fi
+		fi
+	done
+	IFS="$old_ifs"
+	echo "$matched"
+}
+
+parse_version_code() {
+	parse_arch_mapping "$@"
 }
 
 parse_git_regex() {
-	local mapping="${1:-}" arch="${2:-}"
-	if [ -z "$mapping" ]; then
-		return 0
-	fi
-	if [[ "$mapping" == *"["* ]] || [[ "$mapping" == *"{"* ]]; then
-		local json_res
-		if json_res=$(jq -r --arg arch "$arch" '
-			if type == "array" then
-				(map(select((.arch // "") == $arch)) | map(.regex // tostring) | .[0]) //
-				(map(select((.arch // "") == "all")) | map(.regex // tostring) | .[0]) //
-				(map(.regex // tostring) | .[0]) //
-				empty
-			elif type == "object" then
-				.[$arch] // .all // empty
-			else
-				empty
-			end
-		' <<<"$mapping" 2>/dev/null) && [ -n "$json_res" ] && [ "$json_res" != "null" ]; then
-			echo "$json_res"
-			return 0
-		fi
-	else
-		echo "$mapping"
-		return 0
-	fi
+	parse_arch_mapping "$@"
 }
 
 patches_list_versions() {
@@ -1523,10 +1519,8 @@ apkmirror_search() {
 	local appdpi=("nodpi" "anydpi")
 	local match_any_dpi=false
 	local dpi_to_use="${dpi:-nodpi anydpi auto}"
-	if [ -n "$dpi_to_use" ]; then
-		local -a extra_dpis=()
-		readarray -t extra_dpis < <(list_args "$dpi_to_use")
-		appdpi+=("${extra_dpis[@]}")
+	if [ "$dpi_to_use" ]; then
+		appdpi+=($dpi_to_use)
 		if isoneof "auto" "${appdpi[@]}"; then
 			match_any_dpi=true
 		fi
@@ -2795,8 +2789,9 @@ patch_apk() {
 	local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5 cli_source=$6
 	local per_bundle_ed="${7:-}"
 	local tmp_dir="${CWD}/${patched_apk}-temporary-files"
-	readarray -t p_jars < <(list_args "$patches_jar")
-	[ ${#p_jars[@]} -eq 0 ] && p_jars=("$patches_jar")
+	local IFS=$'\n'
+	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
+	unset IFS
 
 	local cli_source_l="${cli_source,,}"
 	if [[ "$cli_source_l" == "none" ]]; then
@@ -3281,30 +3276,32 @@ build_rv() {
 	local table=${args[table]}
 	local dl_from=${args[dl_from]}
 	local arch=${args[arch]}
-	local -a arch_list=()
-	readarray -t arch_list < <(list_args "$arch")
+	local arch_list=()
+	read -r -a arch_list <<< "$arch"
 	[ "${#arch_list[@]}" -eq 0 ] && arch_list=("auto")
 	[ "${arch_list[0]}" = "auto" ] && arch_list=("all" "arm64-v8a" "arm-v7a")
 
-	readarray -t p_jars_arr < <(list_args "${args[ptjar]}")
-	[ ${#p_jars_arr[@]} -eq 0 ] && p_jars_arr=("${args[ptjar]}")
+	local IFS=$'\n'
+	local p_jars_arr=($(echo "${args[ptjar]}" | tr ' ' '\n' | grep -v '^$'))
+	unset IFS
 	local n_bundles=${#p_jars_arr[@]}
-	readarray -t p_srcs_arr < <(list_args "${args[patches_sources_all]:-}")
-	[ ${#p_srcs_arr[@]} -eq 0 ] && [ -n "${args[patches_sources_all]:-}" ] && p_srcs_arr=("${args[patches_sources_all]}")
+	local -a p_srcs_arr=(${args[patches_sources_all]:-})
 
 	local -a per_bundle_ed_args=()
 	local exc_str="${args[excluded_patches]}"
 	local inc_str="${args[included_patches]}"
 
-	if [ -n "$exc_str" ] || [ -n "$inc_str" ]; then
+	if [[ "$exc_str" == *"|"* ]] || [[ "$inc_str" == *"|"* ]]; then
 		local -a exc_parts=() inc_parts=()
-		readarray -t exc_parts <<<"$(list_args "$exc_str")"
-		readarray -t inc_parts <<<"$(list_args "$inc_str")"
+		IFS='|' read -ra exc_parts <<< "$exc_str"
+		IFS='|' read -ra inc_parts <<< "$inc_str"
 		
 		for ((bi=0; bi<n_bundles; bi++)); do
 			local bundle_ed=""
 			local bp_exc="${exc_parts[$bi]:-}"
 			local bp_inc="${inc_parts[$bi]:-}"
+			bp_exc=$(echo "$bp_exc" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+			bp_inc=$(echo "$bp_inc" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 			if [ -n "$bp_exc" ]; then bundle_ed+=" $(join_args "$bp_exc" -d)"; fi
 			if [ -n "$bp_inc" ]; then bundle_ed+=" $(join_args "$bp_inc" -e)"; fi
 
@@ -3313,8 +3310,7 @@ build_rv() {
 				is_exclusive=true
 			elif [ "${args[exclusive_patches]}" != "false" ] && [ -n "${args[exclusive_patches]}" ]; then
 				local current_src="${p_srcs_arr[$bi]:-}"
-				local -a exc_srcs=()
-				readarray -t exc_srcs < <(list_args "${args[exclusive_patches]}")
+				local -a exc_srcs=($(list_args "${args[exclusive_patches]}" | tr -d \"\'))
 				[ ${#exc_srcs[@]} -eq 0 ] && exc_srcs=("${args[exclusive_patches]}")
 				for esrc in "${exc_srcs[@]}"; do
 					if [ "$esrc" = "$current_src" ]; then
@@ -3331,8 +3327,11 @@ build_rv() {
 					
 					local new_bp_exc="$bp_exc"
 					local -a current_bp_inc=()
+					bp_inc=$(echo "$bp_inc" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 					if [ -n "$bp_inc" ]; then
-						readarray -t current_bp_inc < <(list_args "$bp_inc")
+						while IFS= read -r p; do
+							[ -n "$p" ] && current_bp_inc+=("$p")
+						done <<< "$(list_args "$bp_inc" | sed -e "s/^'//" -e "s/'$//" -e 's/^"//' -e 's/"$//')"
 					fi
 					
 					local new_bp_exc="$bp_exc"
@@ -4076,23 +4075,14 @@ build_rv() {
 	}; then
 		:
 	elif [[ -n "$custom_mg_raw" ]]; then
-		local -a raw_parsed=()
-
-		if command -v jq >/dev/null 2>&1 && jq -e . >/dev/null 2>&1 <<<"$custom_mg_raw"; then
-			readarray -t raw_parsed < <(jq -r 'if type=="array" then .[] elif type=="string" then . else empty end' <<<"$custom_mg_raw" 2>/dev/null)
-		else
-			readarray -t raw_parsed < <(
-				echo "$custom_mg_raw" | tr -d '[]\r' | tr ',' '\n' | \
-				sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^['\"]//" -e "s/['\"]$//"
-			)
-		fi
-
-		for p in "${raw_parsed[@]}"; do
+		local p
+		while IFS= read -r p; do
+			p=$(echo "$p" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^'//" -e "s/'$//" -e 's/^"//' -e 's/"$//')
 			if [ -n "$p" ] && [ "${p,,}" != "none" ] && [ "${p,,}" != "null" ] && [ "${p,,}" != "false" ]; then
 				microg_patches+=("$p")
 				microg_default_enabled+=("true")
 			fi
-		done
+		done <<< "$(list_args "$custom_mg_raw")"
 	else
 		local IFS=$'\n'
 		for p in $(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || :); do
@@ -4386,74 +4376,8 @@ build_rv() {
 }
 
 
-list_args() {
-	if [ $# -eq 0 ] || [ -z "${1:-}" ]; then
-		return 0
-	fi
-
-	local -a items=()
-	if [ $# -gt 1 ]; then
-		items=("$@")
-	elif [[ "$1" =~ ^\[.*\]$ ]]; then
-		readarray -t items < <(jq -r '.[] | if type == "array" then (if length == 0 then "" else map(tostring) | join(" ") end) else tostring end' <<<"$1" 2>/dev/null)
-	elif [[ "$1" == *$'\n'* ]]; then
-		readarray -t items <<<"$1"
-	elif [[ "$1" == *\'* || "$1" == *\"* ]]; then
-		eval "items=($1)" 2>/dev/null || read -ra items <<<"$1"
-	else
-		read -ra items <<<"$1"
-	fi
-
-	local item
-	for item in "${items[@]}"; do
-		local trimmed="${item#"${item%%[![:space:]]*}"}"
-		trimmed="${trimmed%"${trimmed##*[![:space:]]}"}"
-		[ -n "$trimmed" ] && echo "$trimmed"
-	done
-}
-
-join_args() {
-	local flag=""
-	local -a items=()
-
-	if [ $# -eq 0 ]; then
-		return 0
-	elif [ $# -eq 2 ] && [[ "$2" == -* ]]; then
-		# Called with: join_args "$val" "$flag"
-		local val="$1"
-		flag="$2"
-		[ -z "$val" ] && return 0
-		readarray -t items < <(list_args "$val")
-	elif [[ "$1" == -* ]]; then
-		# Called with: join_args "$flag" "${items[@]}"
-		flag="$1"
-		shift
-		items=("$@")
-	else
-		local val="$1"
-		flag="${2:-}"
-		[ -z "$val" ] && return 0
-		readarray -t items < <(list_args "$val")
-	fi
-
-	local -a formatted=()
-	local item
-	for item in "${items[@]}"; do
-		local clean_item="${item#"${item%%[![:space:]]*}"}"
-		clean_item="${clean_item%"${clean_item##*[![:space:]]}"}"
-		[ -z "$clean_item" ] && continue
-
-		# Strip outer quotes if already quoted to prevent double-escaping
-		if [[ "$clean_item" =~ ^\'(.*)\'$ ]] || [[ "$clean_item" =~ ^\"(.*)\"$ ]]; then
-			clean_item="${BASH_REMATCH[1]}"
-		fi
-
-		local safe_item="${clean_item//\'/\'\\\'\'}"
-		formatted+=("${flag} '${safe_item}'")
-	done
-
-	echo "${formatted[*]}"
-}
+list_args() { tr -d '\t\r' <<<"$1" | tr -s ' ' | sed "s/' '/'\\n'/g" | sed 's/" "/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :; }
+join_args() { list_args "$1" | sed "s/^/${2} /" | paste -sd " " - || :; }
 
 module_config() {
 	local ma=""

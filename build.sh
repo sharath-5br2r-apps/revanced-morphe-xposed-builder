@@ -201,13 +201,11 @@ for table_name in $(toml_get_table_names); do
 		abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name'"
 	fi
 
-	# Parse patch sources: natively supported array or single string
-	readarray -t p_srcs < <(list_args "$patches_src")
-	[ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$patches_src")
-	readarray -t p_hosts < <(list_args "$patches_src_host")
-	[ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$patches_src_host")
-	readarray -t p_vers < <(list_args "$patches_ver")
-	[ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
+	local IFS=$'\n'
+	p_srcs=($(list_args "$patches_src" | tr -d \"\')); [ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$patches_src")
+	p_hosts=($(list_args "$patches_src_host" | tr -d \"\')); [ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$patches_src_host")
+	p_vers=($(list_args "$patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
+	unset IFS
 	for h in "${p_hosts[@]}"; do
 		ph_type="" ph_inst=""
 		if ! parse_host_spec "$h" ph_type ph_inst; then
@@ -327,7 +325,8 @@ for table_name in $(toml_get_table_names); do
 	if [ -z "${app_args[dl_from]-}" ]; then abort "ERROR: no 'dlurl' option was set for '$table_name'. (${DL_SRCS[*]})"; fi
 
 	raw_arch=$(toml_get "$t" arch) || raw_arch="auto"
-	readarray -t arch_list < <(list_args "$raw_arch")
+	local -a arch_list=()
+	read -r -a arch_list <<< "$raw_arch"
 	[ "${#arch_list[@]}" -eq 0 ] && arch_list=("auto")
 
 	for a in "${arch_list[@]}"; do
