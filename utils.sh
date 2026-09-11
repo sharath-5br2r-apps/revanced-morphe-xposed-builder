@@ -4202,11 +4202,30 @@ build_rv() {
 			fi
 		done <<< "$(list_args "$custom_mg_raw")"
 	else
-		local IFS=$'\n'
-		for p in $(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" | sed 's/^Name: //' || :); do
-			microg_patches+=("$p")
-		done
-		unset IFS
+		while IFS=$'\t' read -r p_name p_enabled; do
+			[ -z "$p_name" ] && continue
+			microg_patches+=("$p_name")
+			microg_default_enabled+=("$p_enabled")
+		done < <(awk '
+			BEGIN { RS=""; FS="\n" }
+			{
+				pname = ""
+				enabled = ""
+				for (i=1; i<=NF; i++) {
+					if ($i ~ /^Name: /) {
+						pname = substr($i, 7)
+						gsub(/\r/, "", pname)
+					}
+					if ($i ~ /^Enabled: /) {
+						enabled = substr($i, 10)
+						gsub(/\r/, "", enabled)
+					}
+				}
+				if (tolower(pname) ~ /gmscore|microg/) {
+					print pname "\t" (enabled == "true" ? "true" : "false")
+				}
+			}
+		' <<<"$list_patches")
 	fi
 
 	if [ ${#microg_patches[@]} -gt 0 ]; then
@@ -4304,7 +4323,7 @@ build_rv() {
 		if [ ${#microg_patches[@]} -gt 0 ]; then
 			for idx in "${!microg_patches[@]}"; do
 				local p="${microg_patches[$idx]}"
-				local is_def_enabled="${microg_default_enabled[$idx]}"
+				local is_def_enabled="${microg_default_enabled[$idx]:-true}"
 				if [ "$build_mode" = apk ]; then
 					if [ "$is_def_enabled" = "true" ]; then
 						for ((bi=0; bi<n_bundles; bi++)); do
