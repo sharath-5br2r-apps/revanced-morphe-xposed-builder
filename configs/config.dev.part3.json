@@ -1,24 +1,17 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "youtube-morphe-amoled": {
+  "youtube-morphe-exp": {
     "enabled": true,
     "app-name": "youtube",
-    "rv-brand": "morphe-amoled",
+    "rv-brand": "morphe-exp",
     "build-mode": "both",
-    "arch": [
-      "all",
-      "arm64-v8a",
-      "arm-v7a",
-      "x86_64"
-    ],
+    "arch": "all arm64-v8a arm-v7a x86_64",
+    "version": "exp",
     "pkg-name": "com.google.android.youtube",
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": [
-      "Theme"
-    ],
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
+    "included-patches": "'Theme'",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
     "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",

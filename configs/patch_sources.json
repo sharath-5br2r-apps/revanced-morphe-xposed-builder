@@ -193,10 +193,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.42.0",
-    "prerelease": "v1.42.1-dev.1",
+    "prerelease": "v1.42.1-dev.2",
     "blocked": false,
     "stable_date": "2026-09-09T21:01:44Z",
-    "pre_date": "2026-09-10T21:27:59Z"
+    "pre_date": "2026-09-11T10:20:03Z"
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
