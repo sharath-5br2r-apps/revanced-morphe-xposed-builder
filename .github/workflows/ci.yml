@@ -4,6 +4,15 @@ on:
   schedule:
     - cron: "0 */6 * * *"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "Execution mode"
+        required: true
+        type: choice
+        default: "Default"
+        options:
+          - "Default"
+          - "Batch Build (Absolute Latest)"
 
 concurrency:
   group: ci
@@ -79,6 +88,7 @@ jobs:
       - name: Resolve effective triggers
         id: effective_triggers
         env:
+          MODE: ${{ inputs.mode || 'Default' }}
           RAW_TRIGGER_STABLE: ${{ steps.sync_patch_sources.outputs.TRIGGER_STABLE || '0' }}
           RAW_TRIGGER_BETA: ${{ steps.sync_patch_sources.outputs.TRIGGER_BETA || '0' }}
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
@@ -120,20 +130,60 @@ jobs:
       config_file: ".github/configs/config.stable.updated.json"
     secrets: inherit
 
+  build_batch_part1:
+    needs: check_patch
+    if: ${{ github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: ".github/configs/config.absolutelatest.part1.json"
+    secrets: inherit
+
+  build_batch_part2:
+    needs: [check_patch, build_batch_part1]
+    if: ${{ always() && (github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)') && !cancelled() }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: ".github/configs/config.absolutelatest.part2.json"
+    secrets: inherit
+
+  build_batch_part3:
+    needs: [check_patch, build_batch_part2]
+    if: ${{ always() && (github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)') && !cancelled() }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: ".github/configs/config.absolutelatest.part3.json"
+    secrets: inherit
+
+  build_batch_part4:
+    needs: [check_patch, build_batch_part3]
+    if: ${{ always() && (github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)') && !cancelled() }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: ".github/configs/config.absolutelatest.part4.json"
+    secrets: inherit
+
+  build_batch_part5:
+    needs: [check_patch, build_batch_part4]
+    if: ${{ always() && (github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)') && !cancelled() }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: ".github/configs/config.absolutelatest.part5.json"
+    secrets: inherit
+
   trigger_cleanup:
-    needs: [build_beta, build_stable]
-    if: ${{ always() && (needs.build_beta.result == 'success' || needs.build_stable.result == 'success') }}
+    needs: [build_beta, build_stable, build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5]
+    if: ${{ always() && (needs.build_beta.result == 'success' || needs.build_stable.result == 'success' || needs.build_batch_part1.result == 'success' || needs.build_batch_part2.result == 'success' || needs.build_batch_part3.result == 'success' || needs.build_batch_part4.result == 'success' || needs.build_batch_part5.result == 'success') }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_beta, build_stable, trigger_cleanup]
-    if: ${{ always() && (needs.build_beta.result == 'success' || needs.build_stable.result == 'success') }}
+    needs: [build_beta, build_stable, build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5, trigger_cleanup]
+    if: ${{ always() && (needs.build_beta.result == 'success' || needs.build_stable.result == 'success' || needs.build_batch_part1.result == 'success' || needs.build_batch_part2.result == 'success' || needs.build_batch_part3.result == 'success' || needs.build_batch_part4.result == 'success' || needs.build_batch_part5.result == 'success') }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
 
   trigger_notify_failure:
-    needs: [check_patch, build_beta, build_stable]
+    needs: [check_patch, build_beta, build_stable, build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5]
     if: ${{ failure() }}
     uses: ./.github/workflows/notify.yml
     with:

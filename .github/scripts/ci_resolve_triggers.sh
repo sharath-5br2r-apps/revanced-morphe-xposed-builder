@@ -4,9 +4,16 @@ set -euo pipefail
 RAW_TRIGGER_STABLE=${RAW_TRIGGER_STABLE:-0}
 RAW_TRIGGER_BETA=${RAW_TRIGGER_BETA:-0}
 RAW_TRIGGER_APP_UPDATE=${RAW_TRIGGER_APP_UPDATE:-0}
+MODE="${MODE:-Default}"
 
 TRIGGER_STABLE=0
 TRIGGER_BETA=0
+
+if [ "$MODE" = "Batch Build (Absolute Latest)" ] || [ "$MODE" = "Batch Build (Absolute latest)" ]; then
+  echo "TRIGGER_STABLE=0" >> "$GITHUB_OUTPUT"
+  echo "TRIGGER_BETA=0" >> "$GITHUB_OUTPUT"
+  exit 0
+fi
 
 if [ "$RAW_TRIGGER_STABLE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
   CFG=".github/configs/config.stable.updated.json"

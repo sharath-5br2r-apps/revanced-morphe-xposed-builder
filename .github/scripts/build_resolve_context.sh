@@ -10,15 +10,15 @@ fi
 echo "CONFIG_FILE=$CONFIG" >> "$GITHUB_OUTPUT"
 
 IS_BETA=false
-if [[ "$CONFIG" == *"beta"* ]] || [[ "$CONFIG" == *"dev"* ]]; then
+if [[ "$CONFIG" == *"beta"* ]] || [[ "$CONFIG" == *"dev"* ]] || [[ "$CONFIG" == *"absolutelatest"* ]]; then
   IS_BETA=true
 elif [[ "$CONFIG" == *.json ]]; then
   pv=$(jq -r '."patches-version" // empty' "$CONFIG")
-  if [ "$pv" = "beta" ] || [ "$pv" = "dev" ]; then
+  if [ "$pv" = "beta" ] || [ "$pv" = "dev" ] || [ "$pv" = "absolutelatest" ]; then
     IS_BETA=true
   fi
 elif [[ "$CONFIG" == *.toml ]]; then
-  if awk '/^\[/ {exit} {print}' "$CONFIG" | grep -qE '^[[:space:]]*patches-version[[:space:]]*=[[:space:]]*"?(beta|dev)"?'; then
+  if awk '/^\[/ {exit} {print}' "$CONFIG" | grep -qE '^[[:space:]]*patches-version[[:space:]]*=[[:space:]]*"?(beta|dev|absolutelatest)"?'; then
     IS_BETA=true
   fi
 fi
