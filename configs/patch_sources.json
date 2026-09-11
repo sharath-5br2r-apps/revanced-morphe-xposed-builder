@@ -19,10 +19,10 @@
   "anddea": {
     "repo": "anddea/revanced-patches",
     "stable": "v4.2.0",
-    "prerelease": "v4.3.0-dev.5",
+    "prerelease": "v4.3.0-dev.6",
     "blocked": false,
     "stable_date": "2026-08-07T15:03:16Z",
-    "pre_date": "2026-09-04T15:44:14Z"
+    "pre_date": "2026-09-11T16:19:31Z"
   },
   "androidtv": {
     "repo": "ajstrick81/morphe-androidtv-patches",
@@ -72,10 +72,10 @@
   },
   "devanced": {
     "repo": "RookieEnough/De-Vanced",
-    "stable": "v1.3.3",
+    "stable": "v1.4.0",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-09-10T22:05:54Z",
+    "stable_date": "2026-09-11T17:03:28Z",
     "pre_date": ""
   },
   "dh6k": {
@@ -136,8 +136,8 @@
   },
   "hxreborn": {
     "repo": "hxreborn/morphe-patches",
-    "stable": "v1.17.0",
-    "stable_date": "2026-09-11T06:53:48Z",
+    "stable": "v1.18.0",
+    "stable_date": "2026-09-11T17:51:14Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -176,8 +176,8 @@
   },
   "kveld9": {
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.20.0",
-    "stable_date": "2026-09-11T03:53:49Z",
+    "stable": "v1.21.0",
+    "stable_date": "2026-09-11T16:48:52Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
@@ -193,10 +193,10 @@
   "morphe": {
     "repo": "MorpheApp/morphe-patches",
     "stable": "v1.42.0",
-    "prerelease": "v1.42.1-dev.2",
+    "prerelease": "v1.42.1-dev.3",
     "blocked": false,
     "stable_date": "2026-09-09T21:01:44Z",
-    "pre_date": "2026-09-11T10:20:03Z"
+    "pre_date": "2026-09-11T12:32:37Z"
   },
   "paresh": {
     "repo": "Paresh-Maheshwari/paresh-patches",
