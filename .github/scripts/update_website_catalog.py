@@ -3,10 +3,25 @@ import os
 import sys
 import re
 import json
+import gzip
 import shutil
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
+
+def detect_os(text):
+    clean = (text or "").lower()
+    if "termux" in clean:
+        return "termux"
+    if any(x in clean for x in ["macos", "mac", "darwin", "osx", ".dmg", ".pkg"]):
+        return "macos"
+    if any(x in clean for x in ["windows", "win", ".exe", ".msi"]):
+        return "windows"
+    if any(x in clean for x in ["linux", "ubuntu", "debian", ".appimage", ".deb", ".rpm"]):
+        return "linux"
+    if "android" in clean or any(clean.endswith(ext) for ext in [".apk", ".apks", ".apkm", ".xapk", ".zip"]):
+        return "android"
+    return "android"
 
 def run_cmd(cmd, check=True, cwd=None):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd)
@@ -188,28 +203,67 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
         else:
             variant_entry["latestStable"] = channel_meta
 
+        # Check vanilla status: no patch sources and brand is official/vanilla or no patches
+        is_vanilla = bool(
+            brand_key in ["official", "vanilla", "stock"] or
+            (not patches_ref and not (info.get("applied_patches") or []))
+        )
+
+        applied_patches_list = info.get("applied_patches") or []
+        failed_patches_list = info.get("failed_patches") or []
+        skipped_patches_list = info.get("skipped_patches") or []
+        densities_list = info.get("densities") or []
+        native_libs_list = info.get("native_libraries") or []
+        min_sdk_val = str(info.get("min_sdk") or "").strip()
+        cli_val = str(info.get("cli") or "").strip()
+        patches_list = patches_ref.split() if isinstance(patches_ref, str) else (patches_ref or [])
+        changelog_list = changelog_url.split() if isinstance(changelog_url, str) else (changelog_url or [])
+
         # Prepare assets for this build
         assets = []
         for f in matching_files:
             fname = f.name
             lower = fname.lower()
-            if not (lower.endswith(".apk") or lower.endswith(".zip")):
+            if not (lower.endswith(".apk") or lower.endswith(".zip") or lower.endswith(".exe") or lower.endswith(".msi") or lower.endswith(".dmg") or lower.endswith(".pkg") or lower.endswith(".appimage") or lower.endswith(".deb") or lower.endswith(".rpm") or lower.endswith(".tar.gz")):
                 continue
 
-            file_type = "APK" if lower.endswith(".apk") else "Module"
+            file_type = "APK" if lower.endswith(".apk") else ("Module" if lower.endswith(".zip") else lower.split(".")[-1].upper())
             raw_arch = extract_arch(fname, version)
             arch = normalize_arch(raw_arch)
             dl_url = f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
             size = f.stat().st_size if f.exists() else 0
+            asset_os = detect_os(fname)
 
-            assets.append({
+            asset_dict = {
                 "name": fname,
                 "browser_download_url": dl_url,
                 "size": size,
                 "download_count": 0,
                 "arch": arch,
-                "fileType": file_type
-            })
+                "fileType": file_type,
+                "os": asset_os,
+                "isVanilla": is_vanilla,
+            }
+            if min_sdk_val:
+                asset_dict["min_sdk"] = min_sdk_val
+            if densities_list:
+                asset_dict["densities"] = densities_list
+            if native_libs_list:
+                asset_dict["native_libraries"] = native_libs_list
+            if cli_val:
+                asset_dict["cli"] = cli_val
+            if patches_list:
+                asset_dict["patches"] = patches_list
+            if changelog_list:
+                asset_dict["changelog"] = changelog_list
+            if applied_patches_list:
+                asset_dict["applied_patches"] = applied_patches_list
+            if failed_patches_list:
+                asset_dict["failed_patches"] = failed_patches_list
+            if skipped_patches_list:
+                asset_dict["skipped_patches"] = skipped_patches_list
+
+            assets.append(asset_dict)
 
         # Sort assets consistently: arm64, arm, all
         arch_order = {"arm64": 0, "arm": 1, "all": 2, "universal": 3, "x86_64": 4, "x86": 5}
@@ -235,25 +289,21 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
             "subVariant": sub_variant_val,
             "publishedAt": now_iso,
             "releaseUrl": f"{github_server}/{github_repo}/releases/tag/{next_ver_code}",
-            "patchSources": patches_ref.split() if isinstance(patches_ref, str) else (patches_ref or []),
-            "changelogs": changelog_url.split() if isinstance(changelog_url, str) else (changelog_url or []),
-            "appliedPatches": info.get("applied_patches") or [],
+            "patchSources": patches_list,
+            "changelogs": changelog_list,
+            "appliedPatches": applied_patches_list,
             "assets": assets
         }
 
         # Rolling archive build entry
         archive_tag = "beta" if is_prerelease else "stable"
-        archive_assets = [
-            {
-                "name": a["name"],
-                "browser_download_url": f"{github_server}/{github_repo}/releases/download/{archive_tag}/{a['name']}",
-                "size": a["size"],
-                "download_count": a.get("download_count", 0),
-                "arch": a["arch"],
-                "fileType": a["fileType"]
-            }
-            for a in assets
-        ]
+        archive_assets = []
+        for a in assets:
+            arch_a = dict(a)
+            arch_a["browser_download_url"] = f"{github_server}/{github_repo}/releases/download/{archive_tag}/{a['name']}"
+            arch_a["download_count"] = a.get("download_count", 0)
+            archive_assets.append(arch_a)
+
         archive_entry = {
             "build": version,
             "releaseId": archive_tag,
@@ -264,9 +314,9 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
             "subVariant": sub_variant_val,
             "publishedAt": now_iso,
             "releaseUrl": f"{github_server}/{github_repo}/releases/tag/{archive_tag}",
-            "patchSources": patches_ref.split() if isinstance(patches_ref, str) else (patches_ref or []),
-            "changelogs": changelog_url.split() if isinstance(changelog_url, str) else (changelog_url or []),
-            "appliedPatches": info.get("applied_patches") or [],
+            "patchSources": patches_list,
+            "changelogs": changelog_list,
+            "appliedPatches": applied_patches_list,
             "assets": archive_assets
         }
 
@@ -343,14 +393,17 @@ def main():
         github_repo
     )
 
-    with open(data_path, "w", encoding="utf-8") as f:
-        json.dump(updated_catalog, f, separators=(",", ":"))
+    data_gz_path = clone_dir / "data.json.gz"
+    data_bytes = json.dumps(updated_catalog, separators=(",", ":")).encode("utf-8")
+    with open(data_path, "wb") as f:
+        f.write(data_bytes)
+    with gzip.open(data_gz_path, "wb", compresslevel=9) as f:
+        f.write(data_bytes)
 
-
-    print("Committing and pushing updated data.json...")
+    print("Committing and pushing updated data.json and data.json.gz...")
     run_cmd("git config user.name 'github-actions[bot]'", cwd=clone_dir)
     run_cmd("git config user.email 'github-actions[bot]@users.noreply.github.com'", cwd=clone_dir)
-    run_cmd("git add data.json", cwd=clone_dir)
+    run_cmd("git add data.json data.json.gz", cwd=clone_dir)
 
     status = run_cmd("git status --porcelain", cwd=clone_dir)
     if not status:
