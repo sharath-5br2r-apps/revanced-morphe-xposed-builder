@@ -304,10 +304,10 @@
   "tiktok": {
     "repo": "icysymmetra/tiktok-patches-for-morphe",
     "stable": "v0.7.0",
-    "prerelease": "v0.8.0-dev.8",
+    "prerelease": "v0.8.0-dev.9",
     "blocked": false,
     "stable_date": "2026-08-23T00:36:23Z",
-    "pre_date": "2026-09-11T09:29:43Z"
+    "pre_date": "2026-09-11T18:21:08Z"
   },
   "x-shim": {
     "enabled": false,
