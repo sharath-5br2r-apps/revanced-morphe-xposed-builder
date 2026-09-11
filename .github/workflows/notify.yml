@@ -10,6 +10,7 @@ on:
       workflow_name:
         required: false
         type: string
+  workflow_dispatch:
 
 concurrency:
   group: notify
