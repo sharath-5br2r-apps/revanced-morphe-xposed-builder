@@ -1,0 +1,132 @@
+# --- Batch TOML Part 6 (8 distinct apps, 8 builds) ---
+
+
+[youtube-morphe-exp]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe-exp"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+version = "exp"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+
+
+
+[wallcraft-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "wallcraft"
+rv-brand = "morphe-hoodles-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.wallpaperscraft.wallpaper"
+uptodown-dlurl = "https://wallpaperscraft.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[smash-hit-morphe-byehi98]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "smash-hit"
+rv-brand = "morphe-byehi98"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mediocre.smashhit"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.mediocre.smashhit"
+uptodown-dlurl = "https://smash-hit.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mediocre/smash-hit/"
+patches-source = "byehi98/okish-morphe-patches"
+
+
+
+[podcast-addict-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "podcast-addict"
+rv-brand = "morphe-hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.bambuna.podcastaddict"
+uptodown-dlurl = "https://podcast-addict.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[microsoft-excel-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "microsoft-excel"
+rv-brand = "morphe-rushiranpise"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.microsoft.office.excel"
+uptodown-dlurl = "https://microsoft-excel-preview.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/excel/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[github-morphe-hoodles-stylus]
+enabled = true
+app-name = "github"
+rv-brand = "morphe-hoodles-stylus"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.github.android"
+cli-source = "MorpheApp/morphe-desktop"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
+apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
+patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
+included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'"
+
+
+
+[chess-morphe-prathxm]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "chess"
+rv-brand = "morphe-prathxm"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess"
+version = "auto"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.chess"
+uptodown-dlurl = "https://chess.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/"
+patches-source = "PrathxmOp/Prathxm-Patches"
+
+
+
+[automate-morphe-xtra]
+enabled = true
+app-name = "automate"
+rv-brand = "morphe-xtra"
+pkg-name = "com.llamalab.automate"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.llamalab.automate"
+uptodown-dlurl = "https://automate-beta.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/llamalab/automate-llamalab"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+# ── AutoSync ──────────────────────────────────────────────────────────────────
+

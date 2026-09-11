@@ -1,0 +1,132 @@
+# --- Batch TOML Part 11 (8 distinct apps, 8 builds) ---
+
+
+[xrecorder-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "xrecorder"
+rv-brand = "morphe-hoodles-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a"
+pkg-name = "videoeditor.videorecorder.screenrecorder"
+uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[twitch-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "twitch"
+rv-brand = "morphe-hooman"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/tv.twitch.android.app"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "tv.twitch.android.app"
+uptodown-dlurl = "https://twitch.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/twitch-interactive-inc/twitch"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[sdmaid-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "sdmaid"
+rv-brand = "morphe-paresh-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "eu.darken.sdmse"
+uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
+apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+# ── MX Player Pro (morphe-paresh) ─────────────────────────────────────────────
+
+
+[pandora-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "pandora"
+rv-brand = "morphe-hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pandora.android"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.pandora.android"
+uptodown-dlurl = "https://pandora.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pandora/pandora-music-podcasts"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[jiohotstar-morphe-paresh-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "jiohotstar"
+rv-brand = "morphe-paresh-exp"
+version = "latest"
+build-mode = "apk"
+pkg-name = "in.startv.hotstar"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+
+[eyecon-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "eyecon"
+rv-brand = "morphe-paresh"
+pkg-name = "com.eyecon.global"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.eyecon.global"
+uptodown-dlurl = "https://eyecon-phone-dialer-and-cont-eyecon.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/eyecon-phone-dialer-contacts/eyecon-caller-id-spam-block"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+[brave-nightly-morphe-dh6k]
+enabled = true
+app-name = "brave-nightly"
+rv-brand = "morphe-dh6k"
+version = "beta"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.brave.browser_nightly"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "dh6k/morphe-patches"
+patcher-args = "--continue-on-error"
+github-dlurl = "https://github.com/brave/brave-browser/releases"
+github-dlurl-regex = "arm64-v8a: (BraveMonoarm64|MonoArm64)\\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
+github-release-name-regex = "^Nightly v"
+
+
+[amazon-alexa-signed]
+enabled = true
+app-name = "amazon-alexa"
+rv-brand = "signed"
+build-mode = "apk"
+cli-source = "apksigner"
+pkg-name = "com.amazon.dee.app"
+cli-source-host = "none"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.dee.app"
+patches-source = "none"
+patches-source-host = "none"
+arch = "all arm64-v8a arm-v7a x86_64"
+prefer-dl-mode = "bundle"
+uptodown-dlurl = "https://alexa.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
+dpi = "120-480dpi 480-640dpi"
+

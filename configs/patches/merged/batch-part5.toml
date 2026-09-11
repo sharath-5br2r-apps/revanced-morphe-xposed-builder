@@ -1,0 +1,137 @@
+# --- Batch TOML Part 5 (8 distinct apps, 8 builds) ---
+
+
+[youtube-morphe-exp-amoled]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe-exp-amoled"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+version = "exp"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+
+
+
+
+[windscribe-vpn-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "windscribe-vpn"
+rv-brand = "morphe-rushiranpise"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.windscribe.vpn"
+uptodown-dlurl = "https://windscribe.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
+apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[solid-explorer-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "solid-explorer"
+rv-brand = "morphe-hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "pl.solidexplorer2"
+uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[podcast-addict-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "podcast-addict"
+rv-brand = "morphe-hoodles-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.bambuna.podcastaddict"
+uptodown-dlurl = "https://podcast-addict.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[microsoft-word-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "microsoft-word"
+rv-brand = "morphe-rushiranpise"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.microsoft.office.word"
+uptodown-dlurl = "https://microsoft-word-preview.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/word/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[github-morphe-hoodles-stylus-exp]
+enabled = true
+app-name = "github"
+rv-brand = "morphe-hoodles-stylus-exp"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.github.android"
+cli-source = "MorpheApp/morphe-desktop"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
+apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.github.android"
+patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
+included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'"
+version = "latest"
+
+
+
+[chess-morphe-prathxm-clone]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "chess"
+rv-brand = "morphe-prathxm-clone"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess"
+version = "auto"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.chess"
+uptodown-dlurl = "https://chess.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/"
+patches-source = "PrathxmOp/Prathxm-Patches"
+included-patches = "'Clone Chess.com'"
+
+
+[autosync-morphe-xtra]
+enabled = true
+app-name = "autosync"
+rv-brand = "morphe-xtra"
+pkg-name = "com.ttxapps.autosync"
+build-mode = "apk"
+arch = "all arm64-v8a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.ttxapps.autosync"
+uptodown-dlurl = "https://autosync.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/metactrl/autosync-universal-cloud-sync-and-backup"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+# ── Backdrops ─────────────────────────────────────────────────────────────────
+

@@ -1,0 +1,137 @@
+# --- Batch TOML Part 8 (8 distinct apps, 8 builds) ---
+
+
+[youtube-morphe-anddea]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe-anddea"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "anddea/revanced-patches"
+included-patches = "'MaterialYou'"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+
+# ── YouTube morphe-anddea-amoled (#000000 explicit) ───────────────────────────
+
+
+[ventusky-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "ventusky"
+rv-brand = "morphe-hoodles-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "cz.ackee.ventusky"
+uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[smart-launcher-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "smart-launcher"
+rv-brand = "morphe-hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "ginlemon.flowerfree"
+uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[pinterest-morphe-browzomje]
+enabled = true
+app-name = "pinterest"
+rv-brand = "morphe-browzomje"
+pkg-name = "com.pinterest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
+uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
+patches-source = "browzomje/browzomje-patches"
+
+
+
+[macrodroid-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "macrodroid"
+rv-brand = "morphe-rushiranpise-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.arlosoft.macrodroid"
+uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
+patches-source = "rushiranpise/morphe-patches"
+
+# ── Bluetooth Keyboard and Mouse (morphe-rushiranpise) ───────────────────────
+
+
+[gboard-morphe-jasonwu1994-adobo]
+enabled = true
+app-name = "gboard"
+rv-brand = "morphe-jasonwu1994-adobo"
+build-mode = "both"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.inputmethod.latin"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
+patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
+included-patches = " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"
+exclusive-patches = "jkennethcarino/adobo"
+excluded-patches = "'Package Rename' | "
+patcher-args = "-f --continue-on-error"
+cli-source = "MorpheApp/morphe-desktop"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
+apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
+apkmirror-release-filter = "!(lite|beta)"
+
+
+
+
+[calcnote-morphe-binarymend]
+enabled = true
+app-name = "calcnote"
+rv-brand = "morphe-binarymend"
+pkg-name = "com.burton999.notecal"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.burton999.notecal"
+uptodown-dlurl = "https://calcnote-notepad-calculator.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/burton999/calcnote-notepad-calculator"
+patches-source = "binarymend/morphe-patches"
+
+
+[amazon-shopping-morphe-rushiranpise]
+enabled = true
+app-name = "amazon-shopping"
+rv-brand = "morphe-rushiranpise"
+build-mode = "apk"
+pkg-name = "com.amazon.mShop.android.shopping"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://amazon-shopping.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/"
+patches-source = "rushiranpise/morphe-patches"
+included-patches = "'Dark Mode' 'Open Links in Browser'"
+excluded-patches = "'Hide Rufus Tab'"
+custom-microg-patches = "'None'"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
+
+arch = "all arm64-v8a arm-v7a"
+
+

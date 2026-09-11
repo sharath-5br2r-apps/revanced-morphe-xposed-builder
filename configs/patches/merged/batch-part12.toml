@@ -1,0 +1,127 @@
+# --- Batch TOML Part 12 (8 distinct apps, 8 builds) ---
+
+
+[xrecorder-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "xrecorder"
+rv-brand = "morphe-hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a"
+pkg-name = "videoeditor.videorecorder.screenrecorder"
+uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[truecaller-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "truecaller"
+rv-brand = "morphe-paresh"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.truecaller"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a"
+pkg-name = "com.truecaller"
+uptodown-dlurl = "https://truecaller.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/true-software-scandinavia-ab/truecaller-caller-id-block"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+
+[sdmaid-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "sdmaid"
+rv-brand = "morphe-paresh"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "eu.darken.sdmse"
+uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
+apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+
+[oxygen-updater-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "oxygen-updater"
+rv-brand = "morphe-rushiranpise-exp"
+version = "beta"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+pkg-name = "com.arjanvlek.oxygenupdater"
+github-dlurl = "https://github.com/oxygen-updater/os-updater"
+patches-source = "rushiranpise/morphe-patches"
+
+
+[jiohotstar-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "jiohotstar"
+rv-brand = "morphe-paresh"
+build-mode = "apk"
+pkg-name = "in.startv.hotstar"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.startv.hotstar"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+
+[duolingo-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "duolingo"
+rv-brand = "morphe-rushiranpise"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.duolingo"
+uptodown-dlurl = "https://duolingo.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[brave-beta-morphe-dh6k]
+enabled = true
+app-name = "brave-beta"
+rv-brand = "morphe-dh6k"
+version = "beta"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.brave.browser_beta"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "dh6k/morphe-patches"
+patcher-args = "--continue-on-error"
+github-dlurl = "https://github.com/brave/brave-browser/releases"
+github-dlurl-regex = "arm64-v8a: (BraveMonoarm64|MonoArm64)\\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
+github-release-name-regex = "^Beta v"
+
+
+
+[adobe-acrobat-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "adobe-acrobat"
+rv-brand = "morphe-rushiranpise-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a x86_64"
+pkg-name = "com.adobe.reader"
+uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
+patches-source = "rushiranpise/morphe-patches"
+custom-microg-patches = "'None'"
+
+

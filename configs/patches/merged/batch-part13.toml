@@ -1,0 +1,123 @@
+# --- Batch TOML Part 13 (8 distinct apps, 8 builds) ---
+
+
+[xodo-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "xodo"
+rv-brand = "morphe-hoodles-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
+version = "latest"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.xodo.pdf.reader"
+uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[tiktok-morphe-icysymmetra]
+enabled = true
+app-name = "tiktok"
+pkg-name = "com.zhiliaoapp.musically"
+rv-brand = "morphe-icysymmetra"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a"
+uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
+patches-source = "icysymmetra/tiktok-patches-for-morphe"
+
+
+
+[proton-vpn-morphe-rushiranpise-exp]
+enabled = true
+app-name = "proton-vpn"
+rv-brand = "morphe-rushiranpise-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "ch.protonvpn.android"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/"
+prefer-dl-mode = "bundle"
+dpi = "120-640dpi"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[oxygen-updater-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "oxygen-updater"
+rv-brand = "morphe-rushiranpise"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+pkg-name = "com.arjanvlek.oxygenupdater"
+github-dlurl = "https://github.com/oxygen-updater/os-updater"
+patches-source = "rushiranpise/morphe-patches"
+
+
+[jetpack-joyride-morphe-byehi98]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "jetpack-joyride"
+rv-brand = "morphe-byehi98"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.halfbrick.jetpackjoyride"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.halfbrick.jetpackjoyride"
+uptodown-dlurl = "https://jetpack-joyride.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/"
+patches-source = "byehi98/okish-morphe-patches"
+
+
+[drofus-morphe-lain]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "drofus"
+rv-brand = "morphe-lain"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mixapplications.rufus"
+build-mode = "apk"
+arch = "arm64-v8a arm-v7a"
+pkg-name = "com.mixapplications.rufus"
+uptodown-dlurl = "https://rufus-unofficial.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mixapplications/drofus-iso2usb"
+patches-source = "kiraio-moe/Lain-Patches"
+
+
+[bluetooth-keyboard-mouse-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "bluetooth-keyboard-mouse"
+rv-brand = "morphe-rushiranpise"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/io.appground.blek"
+build-mode = "apk"
+arch = "arm64-v8a x86_64"
+pkg-name = "io.appground.blek"
+uptodown-dlurl = "https://bluetooth-keyboard-and-mouse.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard-mouse-2/"
+patches-source = "rushiranpise/morphe-patches"
+
+# ── Proton VPN (morphe-rushiranpise) ─────────────────────────────────────────
+
+
+[adobe-acrobat-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "adobe-acrobat"
+rv-brand = "morphe-rushiranpise"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
+build-mode = "apk"
+arch = "all arm64-v8a x86_64"
+pkg-name = "com.adobe.reader"
+uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
+patches-source = "rushiranpise/morphe-patches"
+custom-microg-patches = "'None'"
+
+

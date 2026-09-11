@@ -1,0 +1,132 @@
+# --- Batch TOML Part 15 (8 distinct apps, 8 builds) ---
+
+
+[x-morphe-piko-materialyou-exp]
+enabled = true
+app-name = "x"
+rv-brand = "morphe-piko-materialyou-exp"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+version = "latest"
+pkg-name = "com.twitter.android"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "crimera/piko"
+patches-source-host = "github"
+included-patches = "'Dynamic Color'"
+patcher-args = "--continue-on-error"
+uptodown-dlurl = "https://twitter.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+
+
+[symfonium-morphe-hooman]
+enabled = true
+app-name = "symfonium"
+rv-brand = "morphe-hooman"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "app.symfonik.music.player"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://symfonium.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.symfonik.music.player"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[proton-vpn-morphe-paresh-exp]
+enabled = true
+app-name = "proton-vpn"
+rv-brand = "morphe-paresh-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
+version = "latest"
+build-mode = "apk"
+pkg-name = "ch.protonvpn.android"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn"
+prefer-dl-mode = "bundle"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+dpi = "120-640dpi"
+
+arch = "all arm64-v8a arm-v7a x86_64"
+
+
+
+[nova-launcher-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "nova-launcher"
+rv-brand = "morphe-hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a"
+pkg-name = "com.teslacoilsw.launcher"
+uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[inshorts-morphe-xtra-exp]
+enabled = true
+app-name = "inshorts"
+rv-brand = "morphe-xtra-exp"
+pkg-name = "com.nis.app"
+build-mode = "apk"
+version = "latest"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nis.app"
+uptodown-dlurl = "https://inshorts.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2/"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+# ── Automate ──────────────────────────────────────────────────────────────────
+
+
+[doc-scanner-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "doc-scanner"
+rv-brand = "morphe-paresh"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.cv.docscanner"
+uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+
+[bitwarden-morphe-stylus]
+enabled = true
+app-name = "bitwarden"
+rv-brand = "morphe-stylus"
+build-mode = "apk"
+pkg-name = "com.x8bit.bitwarden"
+cli-source = "MorpheApp/morphe-desktop"
+github-dlurl = "https://github.com/bitwarden/android"
+github-dlurl-regex = "fdroid.apk$"
+github-release-regex = "bwpm"
+version = "latest"
+patches-source = "ch3thanhs/stylus"
+
+
+[adobe-acrobat-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "adobe-acrobat"
+rv-brand = "morphe-hooman"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
+build-mode = "apk"
+arch = "all arm64-v8a x86_64"
+pkg-name = "com.adobe.reader"
+uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+

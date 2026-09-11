@@ -1,85 +1,134 @@
 #!/bin/bash
 set -euo pipefail
 
-# Convert utils.sh to Unix line endings if needed
-dos2unix utils.sh 2>/dev/null || true
-source utils.sh
+[ "${DISABLE_CONFIG_UPDATE:-false}" = "true" ] && { echo "::notice::Config JSON updates disabled via option."; exit 0; }
 
 [ -f tags_old.json ] && TAGS_OLD=$(cat tags_old.json) || TAGS_OLD='{}'
 [ -f tags_new.json ] && TAGS_NEW=$(cat tags_new.json) || TAGS_NEW='{}'
 [ -f active_apps.json ] || echo '[]' > active_apps.json
 [ -f active_patch_apps.stable.json ] || echo '[]' > active_patch_apps.stable.json
-[ -f active_patch_apps.beta.json ] || echo '[]' > active_patch_apps.beta.json
+[ -f active_patch_apps.dev.json ] || echo '[]' > active_patch_apps.dev.json
 
-jq -rn --argjson new "$TAGS_NEW" --argjson old "$TAGS_OLD" '
-  [ $new | to_entries[] | . as $e
-      | ($old[$e.key] // {}) as $o
-      | select($e.value.stable != "" and $e.value.stable != ($o.stable // ""))
-      | select($e.value.blocked != true)
-      | ($e.value.repo // $e.key // "") as $r
-      | select($r != "")
-      | $r | ascii_downcase
-  ]
-' > active.stable.json
+if [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
+  echo "::notice::Skipping version check / tag comparison as SKIP_VERSION_CHECK is true."
+  [ -f active.stable.json ] || echo '[]' > active.stable.json
+  [ -f active.prerelease.json ] || echo '[]' > active.prerelease.json
+else
+  jq -rn --argjson new "$TAGS_NEW" --argjson old "$TAGS_OLD" '
+    [ $new | to_entries[] | . as $e
+        | ($old[$e.key] // {}) as $o
+        | select($e.value.stable != "" and $e.value.stable != ($o.stable // ""))
+        | select($e.value.enabled != false and $e.value.enabledStable != false)
+        | $e.value.repo | ascii_downcase
+    ]
+  ' > active.stable.json
 
-jq -rn --argjson new "$TAGS_NEW" --argjson old "$TAGS_OLD" '
-  [ $new | to_entries[] | . as $e
-      | ($old[$e.key] // {}) as $o
-      | ($e.value.beta // "") as $new_beta
-      | ($o.beta // "") as $old_beta
-      | ($e.value.beta_date // "") as $b_date
-      | ($e.value.stable_date // "") as $s_date
-      | select($new_beta != "" and $new_beta != $old_beta)
-      | select($e.value.blocked != true)
-      | select($b_date > $s_date)
-      | ($e.value.repo // $e.key // "") as $r
-      | select($r != "")
-      | $r | ascii_downcase
-  ]
-' > active.beta.json
-
-# Compile base configs if missing
-if [ ! -f config.stable.json ] || [ ! -f config.beta.json ]; then
-  python3 .github/scripts/compile_patch_configs.py
+  jq -rn --argjson new "$TAGS_NEW" --argjson old "$TAGS_OLD" '
+    [ $new | to_entries[] | . as $e
+        | ($old[$e.key] // {}) as $o
+        | select($e.value.prerelease != "" and $e.value.prerelease != ($o.prerelease // ""))
+        | select($e.value.enabled != false and $e.value.enabledDev != false)
+        | select(($e.value.pre_date // "") > ($e.value.stable_date // ""))
+        | $e.value.repo | ascii_downcase
+    ]
+  ' > active.prerelease.json
 fi
 
-if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ]; then
+split_config_json() {
+  local src_json=$1
+  local prefix=$2
+  local max_files=${3:-5}
+
+  # Touch all part files upfront to guarantee existence
+  for idx in $(seq 1 "$max_files"); do
+    local empty_file="configs/${prefix}.part${idx}.json"
+    [ -f "$empty_file" ] || echo "{}" > "$empty_file"
+  done
+
+  if [ ! -s "$src_json" ]; then return 0; fi
+
+  jq --arg prefix "$prefix" --argjson max_files "$max_files" '
+    . as $root |
+    to_entries | map(select(.value | type == "object" and (.value.enabled // true) != false)) as $enabled |
+    ($enabled | length) as $total |
+    if $total == 0 then {} else
+      range(0; $max_files) as $idx |
+      [ $enabled[range($idx; $total; $max_files)] ] as $slice |
+      {
+        filename: "configs/\($prefix).part\($idx + 1).json",
+        data: (
+          if ($slice | length) > 0 then
+            { "patches-version": ($root["patches-version"] // "latest"), "enable-module-update": ($root["enable-module-update"] // true) } +
+            ($slice | from_entries)
+          else {} end
+        )
+      }
+    end
+  ' "$src_json" | jq -c '.' | while IFS= read -r item; do
+    [ -z "$item" ] || [ "$item" = "null" ] || [ "$item" = "{}" ] && continue
+    local fname data
+    fname=$(jq -r '.filename // empty' <<<"$item")
+    data=$(jq '.data' <<<"$item")
+    if [ -n "$fname" ] && [ "$fname" != "null" ]; then
+      if [ "$data" = "{}" ]; then
+        echo "{}" > "$fname"
+        echo "[+] Created empty part file $fname"
+      else
+        echo "$data" > "$fname"
+        echo "[+] Split enabled apps into $fname"
+      fi
+    fi
+  done
+}
+
+if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
+  python3 .github/scripts/merge_toml_configs.py .dev.toml config.stable.json
+
   jq --slurpfile active active.stable.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.stable.json '
-    { "patches-version": "stable" } as $force |
-    ($force + . + $force) |
     with_entries(
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or ($activeApps[0] | index($k)) then . else (.value.enabled = false) end
-      else . end
-    )
-  ' config.stable.json > .github/configs/config.stable.updated.json
+        ((if ($app["patches-source"] | type) == "array" then ($app["patches-source"] | join(" ")) else ($app["patches-source"] // "morpheapp/morphe-patches") end) | ascii_downcase | gsub("[^a-zA-Z0-9_/-]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) or ($activePatchApps[0] | index($k)) then . else empty end
+      else empty end
+    ) |
+    { "patches-version": "latest", "enable-module-update": true } + .
+  ' config.stable.json > configs/config.stable.updated.json
+
+  split_config_json "configs/config.stable.updated.json" "config.stable" 5
 fi
 
-if [ "${TRIGGER_BETA:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ]; then
-  jq --slurpfile active active.beta.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.beta.json --argjson tags "$TAGS_NEW" '
-    { "patches-version": "beta" } as $force |
-    ($force + . + $force) |
+if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
+  python3 .github/scripts/merge_toml_configs.py .stable.toml config.dev.json
+
+  jq --slurpfile active active.prerelease.json --slurpfile activePatchApps active_patch_apps.dev.json '
     with_entries(
       if .value | type == "object" then
         .key as $k |
         .value as $app |
-        (($app["patches-source"] // "morpheapp/morphe-patches") | ascii_downcase | gsub("[\"'\''\\n\\r\\t]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
-        
-        # Check if the app has any source where beta_date > stable_date
-        (
-          $srcs | map(
-            . as $src |
-            ($tags | to_entries | map(select((.value.repo | ascii_downcase) == $src)) | .[0].value) as $t |
-            if $t == null then false
-            else (($t.beta_date // "") > ($t.stable_date // "")) end
-          ) | any
-        ) as $has_valid_beta |
+        ((if ($app["patches-source"] | type) == "array" then ($app["patches-source"] | join(" ")) else ($app["patches-source"] // "morpheapp/morphe-patches") end) | ascii_downcase | gsub("[^a-zA-Z0-9_/-]"; " ") | split(" ") | map(select(. != ""))) as $srcs |
+        if (($srcs - $active[0]) != $srcs) or ($activePatchApps[0] | index($k)) then . else empty end
+      else empty end
+    ) |
+    { "patches-version": "dev", "enable-module-update": false } + .
+  ' config.dev.json > configs/config.dev.updated.json
 
-        if ((($srcs - $active[0]) != $srcs) and ($activePatchApps[0] | index($k))) or (($activeApps[0] | index($k)) and $has_valid_beta) then . else (.value.enabled = false) end
-      else . end
-    )
-  ' config.beta.json > .github/configs/config.beta.updated.json
+  split_config_json "configs/config.dev.updated.json" "config.dev" 5
+fi
+
+if [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
+  python3 .github/scripts/merge_toml_configs.py .stable.toml config.latest.json
+
+  jq --slurpfile activeApps active_apps.json '
+    with_entries(
+      if .value | type == "object" then
+        .key as $k |
+        if ($activeApps[0] | index($k)) then . else empty end
+      else empty end
+    ) |
+    { "patches-version": "absolutelatest", "enable-module-update": false } + .
+  ' config.latest.json > configs/config.latest.updated.json
+
+  split_config_json "configs/config.latest.updated.json" "config.latest" 5
 fi

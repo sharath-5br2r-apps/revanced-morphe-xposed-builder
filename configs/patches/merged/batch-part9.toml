@@ -1,0 +1,137 @@
+# --- Batch TOML Part 9 (8 distinct apps, 8 builds) ---
+
+
+[youtube-morphe-amoled]
+enabled = true
+app-name = "youtube"
+rv-brand = "morphe-amoled"
+build-mode = "both"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.youtube"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+
+
+
+[ventusky-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "ventusky"
+rv-brand = "morphe-hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "cz.ackee.ventusky"
+uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[smart-launcher-6-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "smart-launcher-6"
+rv-brand = "morphe-hoodles-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "ginlemon.flowerfree"
+uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[pc-remote-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "pc-remote"
+rv-brand = "morphe-rushiranpise-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
+version = "latest"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+pkg-name = "com.monect.portable"
+uptodown-dlurl = "https://monect-pc-remote.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
+patches-source = "rushiranpise/morphe-patches"
+
+arch = "all arm64-v8a arm-v7a x86_64"
+
+
+
+[macrodroid-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "macrodroid"
+rv-brand = "morphe-rushiranpise"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.arlosoft.macrodroid"
+uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[fing-morphe-paresh-exp]
+enabled = true
+app-name = "fing"
+rv-brand = "morphe-paresh-exp"
+version = "latest"
+build-mode = "apk"
+pkg-name = "com.overlook.android.fing"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+arch = "all arm64-v8a arm-v7a"
+
+
+
+[brawl-stars-morphe-nulls]
+enabled = true
+cli-source = "none"
+cli-source-host = "none"
+app-name = "brawl-stars"
+rv-brand = "nulls"
+build-mode = "apk"
+arch = "all"
+pkg-name = "daniillnull.nulls.brawlstars"
+direct-dlurl = "http://dnull.xyz/latest_bs"
+patches-source = "none"
+patches-source-host = "none"
+
+
+[amazon-india-morphe-rushiranpise-exp]
+enabled = true
+app-name = "amazon-india"
+rv-brand = "morphe-rushiranpise-exp"
+build-mode = "apk"
+pkg-name = "in.amazon.mShop.android.shopping"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay"
+patches-source = "rushiranpise/morphe-patches"
+included-patches = "'Dark Mode' 'Open Links in Browser'"
+excluded-patches = "'Hide Rufus Tab'"
+custom-microg-patches = "'None'"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
+version = "latest"
+
+arch = "all arm64-v8a arm-v7a"
+
+

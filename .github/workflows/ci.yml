@@ -1,32 +1,47 @@
-name: CI
-
+name: "CI / Update Versions"
+run-name: "CI Run [Mode: ${{ inputs.mode || 'Scheduled/Default' }}]"
+permissions: write-all
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "35 1/2 * * *" # Every 2 hours
+  workflow_call:
+    inputs:
+      mode:
+        required: false
+        type: string
+        default: "Default"
   workflow_dispatch:
     inputs:
       mode:
-        description: "Execution mode"
+        description: "Select CI execution mode"
         required: true
         type: choice
         default: "Default"
         options:
           - "Default"
+          - "Update Versions Only"
+          - "Generate Configs Only (No Build)"
+          - "Build Only"
+          - "Batch Build (Latest)"
           - "Batch Build (Absolute Latest)"
 
 concurrency:
   group: ci
   cancel-in-progress: false
 
-permissions: write-all
-
 jobs:
   check_patch:
-    runs-on: ubuntu-latest
     permissions:
       contents: write
-      actions: write
-    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TRAWL_URL: "http://localhost:8191"
+      CFB_URL: "http://localhost:8000"
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+      KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
     services:
       redis:
         image: redis:alpine
@@ -39,9 +54,29 @@ jobs:
         env:
           REDIS_URL: redis://redis:6379
         options: --shm-size=1gb
+      cfb:
+        image: ghcr.io/sarperavci/cloudflarebypassforscraping:latest
+        ports:
+          - 8000:8000
     outputs:
       trigger_stable: ${{ steps.effective_triggers.outputs.TRIGGER_STABLE }}
-      trigger_beta: ${{ steps.effective_triggers.outputs.TRIGGER_BETA }}
+      trigger_prerelease: ${{ steps.effective_triggers.outputs.TRIGGER_PRERELEASE }}
+      trigger_absolutelatest: ${{ steps.effective_triggers.outputs.TRIGGER_ABSOLUTE_LATEST }}
+      has_dev_1: ${{ steps.effective_triggers.outputs.HAS_DEV_1 }}
+      has_dev_2: ${{ steps.effective_triggers.outputs.HAS_DEV_2 }}
+      has_dev_3: ${{ steps.effective_triggers.outputs.HAS_DEV_3 }}
+      has_dev_4: ${{ steps.effective_triggers.outputs.HAS_DEV_4 }}
+      has_dev_5: ${{ steps.effective_triggers.outputs.HAS_DEV_5 }}
+      has_stable_1: ${{ steps.effective_triggers.outputs.HAS_STABLE_1 }}
+      has_stable_2: ${{ steps.effective_triggers.outputs.HAS_STABLE_2 }}
+      has_stable_3: ${{ steps.effective_triggers.outputs.HAS_STABLE_3 }}
+      has_stable_4: ${{ steps.effective_triggers.outputs.HAS_STABLE_4 }}
+      has_stable_5: ${{ steps.effective_triggers.outputs.HAS_STABLE_5 }}
+      has_latest_1: ${{ steps.effective_triggers.outputs.HAS_LATEST_1 }}
+      has_latest_2: ${{ steps.effective_triggers.outputs.HAS_LATEST_2 }}
+      has_latest_3: ${{ steps.effective_triggers.outputs.HAS_LATEST_3 }}
+      has_latest_4: ${{ steps.effective_triggers.outputs.HAS_LATEST_4 }}
+      has_latest_5: ${{ steps.effective_triggers.outputs.HAS_LATEST_5 }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -49,143 +84,750 @@ jobs:
           ref: main
           fetch-depth: 1
 
-      - name: Compile Base Configs (JSON)
-        run: bash .github/scripts/ci_compile_base_configs.sh
+      - name: Ensure patch_sources.json exists
+        id: ensure_patch_sources
+        run: bash .github/scripts/ci_ensure_patch_sources.sh
 
-      - name: Sync Patch Sources
-        id: sync_patch_sources
+      - name: Commit dummy patch_sources.json if created
+        if: steps.ensure_patch_sources.outputs.created == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: main
+          skip_checkout: true
+          file_pattern: configs/patch_sources.json
+          commit_message: "Create dummy patch_sources.json"
+
+      - name: Fetch latest tags
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
+        id: fetch_tags
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 .github/scripts/sync_patch_sources.py
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/ci_fetch_tags.sh
 
-      - name: Setup Python dependencies
-        run: pip install --no-cache-dir curl_cffi || true
+      - name: Compare latest vs stored tags
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
+        id: compare
+        env:
+          LATEST_TAGS: ${{ steps.fetch_tags.outputs.latest }}
+        run: bash .github/scripts/ci_compare_tags.sh
 
       - name: Fetch App Versions
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
         id: fetch_app_versions
-        env:
-          CF_BYPASS_SOLVER_TRAWL_8191_ENABLED: "true"
         run: bash .github/scripts/ci_fetch_app_versions.sh
         
       - name: Compare App Versions
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
         id: compare_apps
+        env:
+          FETCHED_APP_VERSIONS: ${{ steps.fetch_app_versions.outputs.fetched }}
         run: bash .github/scripts/ci_compare_app_versions.sh
 
-      - name: Check Patch App Updates
-        if: ${{ steps.sync_patch_sources.outputs.TRIGGER_STABLE == '1' || steps.sync_patch_sources.outputs.TRIGGER_BETA == '1' }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 .github/scripts/ci_check_app_patches.py
-
       - name: Generate configs (JSON)
-        if: ${{ steps.sync_patch_sources.outputs.TRIGGER_STABLE == '1' || steps.sync_patch_sources.outputs.TRIGGER_BETA == '1' || steps.sync_patch_sources.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
+        if: ${{ inputs.mode != 'Build Only' && inputs.mode != 'Batch Build (Latest)' && inputs.mode != 'Batch Build (Absolute Latest)' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || inputs.mode == 'Generate Configs Only (No Build)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         id: generate_configs
         env:
-          TRIGGER_STABLE: ${{ steps.sync_patch_sources.outputs.TRIGGER_STABLE }}
-          TRIGGER_BETA: ${{ steps.sync_patch_sources.outputs.TRIGGER_BETA }}
+          TAGS_OLD: ${{ steps.compare.outputs.tags_old }}
+          TAGS_NEW: ${{ steps.compare.outputs.tags_new }}
+          TRIGGER_STABLE: ${{ steps.compare.outputs.TRIGGER_STABLE }}
+          TRIGGER_PRERELEASE: ${{ steps.compare.outputs.TRIGGER_PRERELEASE }}
           TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE }}
-          TRIGGER_BLOCKED: ${{ steps.sync_patch_sources.outputs.TRIGGER_BLOCKED }}
+          DISABLE_CONFIG_UPDATE: "false"
+          SKIP_VERSION_CHECK: ${{ inputs.mode == 'Build Only' && 'true' || 'false' }}
         run: bash .github/scripts/ci_generate_configs.sh
 
       - name: Resolve effective triggers
         id: effective_triggers
         env:
+          CREATED: ${{ steps.ensure_patch_sources.outputs.created }}
           MODE: ${{ inputs.mode || 'Default' }}
-          RAW_TRIGGER_STABLE: ${{ steps.sync_patch_sources.outputs.TRIGGER_STABLE || '0' }}
-          RAW_TRIGGER_BETA: ${{ steps.sync_patch_sources.outputs.TRIGGER_BETA || '0' }}
+          RAW_TRIGGER_STABLE: ${{ steps.compare.outputs.TRIGGER_STABLE || '0' }}
+          RAW_TRIGGER_PRERELEASE: ${{ steps.compare.outputs.TRIGGER_PRERELEASE || '0' }}
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
         run: bash .github/scripts/ci_resolve_triggers.sh
 
-      - name: Notify telegram
-        if: ${{ steps.sync_patch_sources.outputs.TRIGGER_STABLE == '1' || steps.sync_patch_sources.outputs.TRIGGER_BETA == '1' || steps.sync_patch_sources.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
-        env:
-          TG_TOKEN: ${{ secrets.TG_TOKEN }}
-          TRIGGER_STABLE: ${{ steps.sync_patch_sources.outputs.TRIGGER_STABLE }}
-          TRIGGER_BETA: ${{ steps.sync_patch_sources.outputs.TRIGGER_BETA }}
-          TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE }}
-          EFFECTIVE_STABLE: ${{ steps.effective_triggers.outputs.TRIGGER_STABLE }}
-          EFFECTIVE_BETA: ${{ steps.effective_triggers.outputs.TRIGGER_BETA }}
-        run: bash .github/scripts/ci_notify_telegram.sh
-
-      - name: Commit updated patch sources and configs
-        if: ${{ steps.sync_patch_sources.outputs.TRIGGER_STABLE == '1' || steps.sync_patch_sources.outputs.TRIGGER_BETA == '1' || steps.sync_patch_sources.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
+      - name: Commit updated version metadata and configs
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || inputs.mode == 'Batch Build (Latest)' || inputs.mode == 'Batch Build (Absolute Latest)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
-          file_pattern: .github/configs/*.json
+          file_pattern: configs/app_versions.json configs/patch_sources.json configs/config.*.updated.json configs/config.stable.part*.json configs/config.dev.part*.json configs/config.latest.part*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
-  build_beta:
+      - name: Upload split config part artifacts
+        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Batch Build (Latest)' && inputs.mode != 'Batch Build (Absolute Latest)' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: split-configs
+          path: |
+            configs/config.stable.part*.json
+            configs/config.dev.part*.json
+            configs/config.latest.part*.json
+          if-no-files-found: ignore
+
+  resolve_dev_version:
     needs: check_patch
-    if: ${{ needs.check_patch.outputs.trigger_beta == '1' }}
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' }}
+    runs-on: ubuntu-latest
+    outputs:
+      next_ver_code_dev: ${{ steps.version_dev.outputs.NEXT_VER_CODE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Resolve next version code (Dev)
+        id: version_dev
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
+  build_dev_1:
+    needs: [check_patch, resolve_dev_version]
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_1 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.beta.updated.json"
+      config_file: "configs/config.dev.part1.json"
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
+      upload_release_metadata: false
+      aggregate_flavor: "dev"
     secrets: inherit
 
-  build_stable:
-    needs: [check_patch, build_beta]
-    if: ${{ always() && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.result == 'success' && needs.build_beta.result != 'cancelled' }}
+  build_dev_2:
+    needs: [check_patch, resolve_dev_version]
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_2 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.stable.updated.json"
+      config_file: "configs/config.dev.part2.json"
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
+      upload_release_metadata: false
+      aggregate_flavor: "dev"
     secrets: inherit
 
-  build_batch_part1:
+  build_dev_3:
+    needs: [check_patch, resolve_dev_version]
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_3 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.dev.part3.json"
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
+      upload_release_metadata: false
+      aggregate_flavor: "dev"
+    secrets: inherit
+
+  build_dev_4:
+    needs: [check_patch, resolve_dev_version]
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_4 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.dev.part4.json"
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
+      upload_release_metadata: false
+      aggregate_flavor: "dev"
+    secrets: inherit
+
+  build_dev_5:
+    needs: [check_patch, resolve_dev_version]
+    if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_5 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.dev.part5.json"
+      release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
+      upload_release_metadata: false
+      aggregate_flavor: "dev"
+    secrets: inherit
+
+  aggregate_dev_logs:
+    needs: [check_patch, resolve_dev_version, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_prerelease == '1' && (needs.build_dev_1.result == 'success' || needs.build_dev_2.result == 'success' || needs.build_dev_3.result == 'success' || needs.build_dev_4.result == 'success' || needs.build_dev_5.result == 'success') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download dev part-logs artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: part-logs-dev-*
+          path: logs_artifacts
+          merge-multiple: false
+
+      - name: Aggregate logs for Dev
+        run: |
+          mkdir -p dev_logs
+          cp -r logs_artifacts/* dev_logs/ 2>/dev/null || true
+          cd dev_logs && bash ../.github/scripts/build_aggregate_logs.sh dev && cd ..
+
+      - name: Upload aggregated dev logs artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: aggregated-dev-build-logs
+          path: dev_logs/aggregated_out/*
+          if-no-files-found: ignore
+
+      - name: Upload dev build.json to numbered release via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
+          if [ -n "$tag" ] && [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
+            notes_arg=("--notes" "")
+            [ -s "dev_logs/aggregated_out/build.dev.md" ] && notes_arg=("--notes-file" "dev_logs/aggregated_out/build.dev.md")
+            if gh release view "$tag" >/dev/null 2>&1; then
+              [ -s "dev_logs/aggregated_out/build.dev.md" ] && gh release edit "$tag" --notes-file "dev_logs/aggregated_out/build.dev.md" || true
+            else
+              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            fi
+            if [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
+              echo "Uploading dev_logs/aggregated_out/build.dev.json to release $tag..."
+              gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json" --clobber || {
+                echo "::warning::Failed to upload dev_logs/aggregated_out/build.dev.json to release $tag, retrying..."
+                sleep 3
+                gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json" --clobber || echo "::warning::Failed to upload dev_logs/aggregated_out/build.dev.json to release $tag"
+              }
+            fi
+          fi
+
+      - name: Upload module update metadata and changelogs to releases (Dev)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
+          # Ensure update and update_changelog releases exist
+          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
+          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
+
+          # Upload changelog markdown files to update_changelog and update
+          if [ -s "dev_logs/aggregated_out/build.dev.md" ]; then
+            if [ -n "$tag" ]; then
+              echo "Uploading dev_logs/aggregated_out/build.dev.md as ${tag}.md to release update_changelog..."
+              cp -f "dev_logs/aggregated_out/build.dev.md" "${tag}.md"
+              gh release upload update_changelog "${tag}.md" --clobber || {
+                sleep 3
+                gh release upload update_changelog "${tag}.md" --clobber || echo "::warning::Failed to upload ${tag}.md to release update_changelog"
+              }
+            fi
+            echo "Uploading dev_logs/aggregated_out/build.dev.md as build.md to release update..."
+            cp -f "dev_logs/aggregated_out/build.dev.md" "build.md"
+            gh release upload update "build.md" --clobber || {
+              sleep 3
+              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
+            }
+          fi
+
+          # Upload module update JSON files to update release
+          if [ -d "dev_logs" ]; then
+            for file in $(find dev_logs -name "*-update.json"); do
+              if [ -s "$file" ]; then
+                echo "Uploading $file to release update..."
+                gh release upload update "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release update, retrying..."
+                  sleep 3
+                  gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
+                }
+              fi
+            done
+          fi
+
+  resolve_stable_version:
+    needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' }}
+    runs-on: ubuntu-latest
+    outputs:
+      next_ver_code_stable: ${{ steps.version_stable.outputs.NEXT_VER_CODE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Resolve next version code (Stable)
+        id: version_stable
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
+  build_stable_1:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_1 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part1.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+      aggregate_flavor: "stable"
+    secrets: inherit
+
+  build_stable_2:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_2 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part2.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+      aggregate_flavor: "stable"
+    secrets: inherit
+
+  build_stable_3:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_3 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part3.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+      aggregate_flavor: "stable"
+    secrets: inherit
+
+  build_stable_4:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_4 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part4.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+      aggregate_flavor: "stable"
+    secrets: inherit
+
+  build_stable_5:
+    needs: [check_patch, resolve_stable_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_5 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.stable.part5.json"
+      release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+      upload_release_metadata: false
+      aggregate_flavor: "stable"
+    secrets: inherit
+
+  aggregate_stable_logs:
+    needs: [check_patch, resolve_stable_version, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && (needs.build_stable_1.result == 'success' || needs.build_stable_2.result == 'success' || needs.build_stable_3.result == 'success' || needs.build_stable_4.result == 'success' || needs.build_stable_5.result == 'success') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download stable part-logs artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: part-logs-stable-*
+          path: logs_artifacts
+          merge-multiple: false
+
+      - name: Aggregate logs for Stable
+        run: |
+          mkdir -p stable_logs
+          cp -r logs_artifacts/* stable_logs/ 2>/dev/null || true
+          cd stable_logs && bash ../.github/scripts/build_aggregate_logs.sh stable && cd ..
+
+      - name: Upload aggregated stable logs artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: aggregated-stable-build-logs
+          path: stable_logs/aggregated_out/*
+          if-no-files-found: ignore
+
+      - name: Upload stable build.json to numbered release via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
+          if [ -n "$tag" ] && [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
+            notes_arg=("--notes" "")
+            [ -s "stable_logs/aggregated_out/build.stable.md" ] && notes_arg=("--notes-file" "stable_logs/aggregated_out/build.stable.md")
+            if gh release view "$tag" >/dev/null 2>&1; then
+              [ -s "stable_logs/aggregated_out/build.stable.md" ] && gh release edit "$tag" --notes-file "stable_logs/aggregated_out/build.stable.md" || true
+            else
+              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            fi
+            if [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
+              echo "Uploading stable_logs/aggregated_out/build.stable.json to release $tag..."
+              gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json" --clobber || {
+                echo "::warning::Failed to upload stable_logs/aggregated_out/build.stable.json to release $tag, retrying..."
+                sleep 3
+                gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json" --clobber || echo "::warning::Failed to upload stable_logs/aggregated_out/build.stable.json to release $tag"
+              }
+            fi
+          fi
+
+      - name: Upload module update metadata and changelogs to releases (Stable)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
+          # Ensure update and update_changelog releases exist
+          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
+          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
+
+          # Upload changelog markdown files to update_changelog and update
+          if [ -s "stable_logs/aggregated_out/build.stable.md" ]; then
+            if [ -n "$tag" ]; then
+              echo "Uploading stable_logs/aggregated_out/build.stable.md as ${tag}.md to release update_changelog..."
+              cp -f "stable_logs/aggregated_out/build.stable.md" "${tag}.md"
+              gh release upload update_changelog "${tag}.md" --clobber || {
+                sleep 3
+                gh release upload update_changelog "${tag}.md" --clobber || echo "::warning::Failed to upload ${tag}.md to release update_changelog"
+              }
+            fi
+            echo "Uploading stable_logs/aggregated_out/build.stable.md as build.md to release update..."
+            cp -f "stable_logs/aggregated_out/build.stable.md" "build.md"
+            gh release upload update "build.md" --clobber || {
+              sleep 3
+              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
+            }
+          fi
+
+          # Upload module update JSON files to update release
+          if [ -d "stable_logs" ]; then
+            for file in $(find stable_logs -name "*-update.json"); do
+              if [ -s "$file" ]; then
+                echo "Uploading $file to release update..."
+                gh release upload update "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release update, retrying..."
+                  sleep 3
+                  gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
+                }
+              fi
+            done
+          fi
+
+  resolve_latest_version:
+    needs: [check_patch, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, aggregate_stable_logs]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' }}
+    runs-on: ubuntu-latest
+    outputs:
+      next_ver_code_latest: ${{ steps.version_latest.outputs.NEXT_VER_CODE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Resolve next version code (Latest)
+        id: version_latest
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
+  build_latest_1:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_1 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part1.json"
+      patches_version: "latest"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+      aggregate_flavor: "latest"
+    secrets: inherit
+
+  build_latest_2:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_2 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part2.json"
+      patches_version: "latest"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+      aggregate_flavor: "latest"
+    secrets: inherit
+
+  build_latest_3:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_3 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part3.json"
+      patches_version: "latest"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+      aggregate_flavor: "latest"
+    secrets: inherit
+
+  build_latest_4:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_4 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part4.json"
+      patches_version: "latest"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+      aggregate_flavor: "latest"
+    secrets: inherit
+
+  build_latest_5:
+    needs: [check_patch, resolve_latest_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && needs.check_patch.outputs.has_latest_5 == '1' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: "configs/config.latest.part5.json"
+      patches_version: "latest"
+      release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+      upload_release_metadata: false
+      aggregate_flavor: "latest"
+    secrets: inherit
+
+  aggregate_latest_logs:
+    needs: [check_patch, resolve_latest_version, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_absolutelatest == '1' && (needs.build_latest_1.result == 'success' || needs.build_latest_2.result == 'success' || needs.build_latest_3.result == 'success' || needs.build_latest_4.result == 'success' || needs.build_latest_5.result == 'success') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download latest part-logs artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: part-logs-latest-*
+          path: logs_artifacts
+          merge-multiple: false
+
+      - name: Aggregate logs for Absolute Latest
+        run: |
+          mkdir -p latest_logs
+          cp -r logs_artifacts/* latest_logs/ 2>/dev/null || true
+          cd latest_logs && bash ../.github/scripts/build_aggregate_logs.sh latest && cd ..
+
+      - name: Upload aggregated latest logs artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: aggregated-latest-build-logs
+          path: latest_logs/aggregated_out/*
+          if-no-files-found: ignore
+
+      - name: Upload latest build.json to numbered release via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
+          if [ -n "$tag" ] && [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
+            notes_arg=("--notes" "")
+            [ -s "latest_logs/aggregated_out/build.latest.md" ] && notes_arg=("--notes-file" "latest_logs/aggregated_out/build.latest.md")
+            if gh release view "$tag" >/dev/null 2>&1; then
+              [ -s "latest_logs/aggregated_out/build.latest.md" ] && gh release edit "$tag" --notes-file "latest_logs/aggregated_out/build.latest.md" || true
+            else
+              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            fi
+            if [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
+              echo "Uploading latest_logs/aggregated_out/build.latest.json to release $tag..."
+              gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json" --clobber || {
+                echo "::warning::Failed to upload latest_logs/aggregated_out/build.latest.json to release $tag, retrying..."
+                sleep 3
+                gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json" --clobber || echo "::warning::Failed to upload latest_logs/aggregated_out/build.latest.json to release $tag"
+              }
+            fi
+          fi
+
+      - name: Upload module update metadata and changelogs to releases (Latest)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
+          # Ensure update and update_changelog releases exist
+          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
+          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
+
+          # Upload changelog markdown files to update_changelog and update
+          if [ -s "latest_logs/aggregated_out/build.latest.md" ]; then
+            if [ -n "$tag" ]; then
+              echo "Uploading latest_logs/aggregated_out/build.latest.md as ${tag}.md to release update_changelog..."
+              cp -f "latest_logs/aggregated_out/build.latest.md" "${tag}.md"
+              gh release upload update_changelog "${tag}.md" --clobber || {
+                sleep 3
+                gh release upload update_changelog "${tag}.md" --clobber || echo "::warning::Failed to upload ${tag}.md to release update_changelog"
+              }
+            fi
+            echo "Uploading latest_logs/aggregated_out/build.latest.md as build.md to release update..."
+            cp -f "latest_logs/aggregated_out/build.latest.md" "build.md"
+            gh release upload update "build.md" --clobber || {
+              sleep 3
+              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
+            }
+          fi
+
+          # Upload module update JSON files to update release
+          if [ -d "latest_logs" ]; then
+            for file in $(find latest_logs -name "*-update.json"); do
+              if [ -s "$file" ]; then
+                echo "Uploading $file to release update..."
+                gh release upload update "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release update, retrying..."
+                  sleep 3
+                  gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
+                }
+              fi
+            done
+          fi
+
+  resolve_batch_version:
     needs: check_patch
-    if: ${{ inputs.mode == 'Batch Build (Absolute Latest)' }}
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && (inputs.mode == 'Batch Build (Latest)' || inputs.mode == 'Batch Build (Absolute Latest)') }}
+    runs-on: ubuntu-latest
+    outputs:
+      next_ver_code_batch: ${{ steps.version_batch.outputs.NEXT_VER_CODE }}
+      patches_version: ${{ inputs.mode == 'Batch Build (Absolute Latest)' && 'absolutelatest' || 'latest' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Resolve next version code (Batch)
+        id: version_batch
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
+
+  build_batch:
+    needs: [check_patch, resolve_batch_version]
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.resolve_batch_version.result == 'success' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config_file: ["configs/patches/merged/batch-part1.toml", "configs/patches/merged/batch-part2.toml", "configs/patches/merged/batch-part3.toml", "configs/patches/merged/batch-part4.toml", "configs/patches/merged/batch-part5.toml", "configs/patches/merged/batch-part6.toml", "configs/patches/merged/batch-part7.toml", "configs/patches/merged/batch-part8.toml", "configs/patches/merged/batch-part9.toml", "configs/patches/merged/batch-part10.toml", "configs/patches/merged/batch-part11.toml", "configs/patches/merged/batch-part12.toml", "configs/patches/merged/batch-part13.toml", "configs/patches/merged/batch-part14.toml", "configs/patches/merged/batch-part15.toml", "configs/patches/merged/batch-part16.toml"]
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.absolutelatest.part1.json"
+      config_file: ${{ matrix.config_file }}
+      patches_version: ${{ needs.resolve_batch_version.outputs.patches_version }}
+      release_version_code: ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}
+      upload_release_metadata: false
+      aggregate_flavor: "batch"
     secrets: inherit
 
-  build_batch_part2:
-    needs: [check_patch, build_batch_part1]
-    if: ${{ always() && inputs.mode == 'Batch Build (Absolute Latest)' && !cancelled() }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: ".github/configs/config.absolutelatest.part2.json"
-    secrets: inherit
+  aggregate_batch_logs:
+    needs: [check_patch, resolve_batch_version, build_batch]
+    if: ${{ !cancelled() && needs.build_batch.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
 
-  build_batch_part3:
-    needs: [check_patch, build_batch_part2]
-    if: ${{ always() && inputs.mode == 'Batch Build (Absolute Latest)' && !cancelled() }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: ".github/configs/config.absolutelatest.part3.json"
-    secrets: inherit
+      - name: Download all part-logs artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: part-logs-batch-*
+          path: logs_artifacts
+          merge-multiple: false
 
-  build_batch_part4:
-    needs: [check_patch, build_batch_part3]
-    if: ${{ always() && inputs.mode == 'Batch Build (Absolute Latest)' && !cancelled() }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: ".github/configs/config.absolutelatest.part4.json"
-    secrets: inherit
+      - name: Aggregate logs
+        run: |
+          mkdir -p batch_logs
+          cp -r logs_artifacts/* batch_logs/ 2>/dev/null || true
+          cd batch_logs
+          FLAVOR="stable"
+          if [ "${{ needs.resolve_batch_version.outputs.patches_version }}" = "absolutelatest" ] || [ "${{ needs.resolve_batch_version.outputs.patches_version }}" = "dev" ]; then
+            FLAVOR="dev"
+          fi
+          bash ../.github/scripts/build_aggregate_logs.sh "$FLAVOR"
+          cd ..
 
-  build_batch_part5:
-    needs: [check_patch, build_batch_part4]
-    if: ${{ always() && inputs.mode == 'Batch Build (Absolute Latest)' && !cancelled() }}
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: ".github/configs/config.absolutelatest.part5.json"
-    secrets: inherit
+      - name: Upload aggregated logs artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: aggregated-build-logs
+          path: batch_logs/aggregated_out/*
+          if-no-files-found: ignore
+
+      - name: Prepare build.json and generate release notes for release upload
+        run: |
+          if [ -d "batch_logs/aggregated_out" ]; then
+            for json_file in batch_logs/aggregated_out/build.*.json; do
+              if [ -f "$json_file" ]; then
+                cp -f "$json_file" build.json
+              fi
+            done
+          fi
+          if [ -s "build.json" ]; then
+            python3 .github/scripts/generate_md_from_json.py build.json release_notes.md || true
+          fi
+
+      - name: Upload build.json to numbered release via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
+          if [ -n "$tag" ] && [ -s "build.json" ]; then
+            notes_arg=("--notes" "")
+            [ -s "release_notes.md" ] && notes_arg=("--notes-file" "release_notes.md")
+            if gh release view "$tag" >/dev/null 2>&1; then
+              [ -s "release_notes.md" ] && gh release edit "$tag" --notes-file "release_notes.md" || true
+            else
+              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+            fi
+            if [ -s "build.json" ]; then
+              echo "Uploading build.json to release $tag..."
+              gh release upload "$tag" "build.json" --clobber || {
+                echo "::warning::Failed to upload build.json to release $tag, retrying..."
+                sleep 3
+                gh release upload "$tag" "build.json" --clobber || echo "::warning::Failed to upload build.json to release $tag"
+              }
+            fi
+          fi
+
+      - name: Upload module update metadata and changelogs to releases
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
+          # Ensure update and update_changelog releases exist
+          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
+          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
+
+          # Upload changelog markdown files to update_changelog and update
+          md_file="release_notes.md"
+          if [ ! -s "$md_file" ]; then
+            for f in batch_logs/aggregated_out/build.*.md; do
+              if [ -s "$f" ]; then
+                md_file="$f"
+                break
+              fi
+            done
+          fi
+
+          if [ -s "$md_file" ]; then
+            if [ -n "$tag" ]; then
+              echo "Uploading $md_file as ${tag}.md to release update_changelog..."
+              cp -f "$md_file" "${tag}.md"
+              gh release upload update_changelog "${tag}.md" --clobber || {
+                sleep 3
+                gh release upload update_changelog "${tag}.md" --clobber || echo "::warning::Failed to upload ${tag}.md to release update_changelog"
+              }
+            fi
+            echo "Uploading $md_file as build.md to release update..."
+            cp -f "$md_file" "build.md"
+            gh release upload update "build.md" --clobber || {
+              sleep 3
+              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
+            }
+          fi
+
+          # Upload module update JSON files to update release
+          if [ -d "batch_logs" ]; then
+            for file in $(find batch_logs -name "*-update.json"); do
+              if [ -s "$file" ]; then
+                echo "Uploading $file to release update..."
+                gh release upload update "$file" --clobber || {
+                  echo "::warning::Failed to upload $file to release update, retrying..."
+                  sleep 3
+                  gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
+                }
+              fi
+            done
+          fi
 
   trigger_cleanup:
-    needs: [build_beta, build_stable, build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5]
-    if: ${{ always() && (needs.build_beta.result == 'success' || needs.build_stable.result == 'success' || needs.build_batch_part1.result == 'success' || needs.build_batch_part2.result == 'success' || needs.build_batch_part3.result == 'success' || needs.build_batch_part4.result == 'success' || needs.build_batch_part5.result == 'success') }}
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, build_batch, aggregate_batch_logs]
+    if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_beta, build_stable, build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5, trigger_cleanup]
-    if: ${{ always() && (needs.build_beta.result == 'success' || needs.build_stable.result == 'success' || needs.build_batch_part1.result == 'success' || needs.build_batch_part2.result == 'success' || needs.build_batch_part3.result == 'success' || needs.build_batch_part4.result == 'success' || needs.build_batch_part5.result == 'success') }}
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, build_batch, aggregate_batch_logs, trigger_cleanup]
+    if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
 
   trigger_notify_failure:
-    needs: [check_patch, build_beta, build_stable, build_batch_part1, build_batch_part2, build_batch_part3, build_batch_part4, build_batch_part5]
+    needs: [check_patch, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, build_batch, aggregate_batch_logs]
     if: ${{ failure() }}
     uses: ./.github/workflows/notify.yml
     with:

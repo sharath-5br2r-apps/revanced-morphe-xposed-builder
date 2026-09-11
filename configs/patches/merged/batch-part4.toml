@@ -1,0 +1,146 @@
+# --- Batch TOML Part 4 (9 distinct apps, 9 builds) ---
+
+
+[youtube-music-morphe-anddea]
+enabled = true
+app-name = "youtube-music"
+rv-brand = "morphe-anddea"
+build-mode = "both"
+arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.apps.youtube.music"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "anddea/revanced-patches"
+patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
+uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
+apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+
+# ── YouTube Music morphe-anddea-amoled (#000000 explicit) ─────────────────────
+
+
+[windscribe-vpn-morphe-rushiranpise-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "windscribe-vpn"
+rv-brand = "morphe-rushiranpise-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
+version = "latest"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.windscribe.vpn"
+uptodown-dlurl = "https://windscribe.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
+apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
+patches-source = "rushiranpise/morphe-patches"
+
+
+
+[solid-explorer-morphe-hoodles-exp]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "solid-explorer"
+rv-brand = "morphe-hoodles-exp"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "pl.solidexplorer2"
+uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[poweramp-morphe-hooman]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "poweramp"
+rv-brand = "morphe-hooman"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
+build-mode = "apk"
+arch = "arm64-v8a"
+pkg-name = "com.maxmpz.audioplayer"
+uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp/"
+apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
+apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
+patches-source = "arandomhooman/hoomans-morphe-patches"
+
+
+
+[mx-player-pro-morphe-paresh]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "mx-player-pro"
+rv-brand = "morphe-paresh"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a"
+pkg-name = "com.mxtech.videoplayer.pro"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
+uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+
+
+[goodreads-morphe-hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "goodreads"
+rv-brand = "morphe-hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.goodreads"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.goodreads"
+uptodown-dlurl = "https://goodreads.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/goodreads/goodreads"
+patches-source = "hoo-dles/morphe-patches"
+
+
+
+[clash-of-clans-morphe-nulls]
+enabled = true
+cli-source = "none"
+cli-source-host = "none"
+app-name = "clash-of-clans"
+rv-brand = "nulls"
+build-mode = "apk"
+arch = "all"
+pkg-name = "nullsclash.night.rel"
+direct-dlurl = "http://dnull.xyz/latest_coc"
+patches-source = "none"
+patches-source-host = "none"
+
+
+[backdrops-morphe-xtra]
+enabled = true
+app-name = "backdrops"
+rv-brand = "morphe-xtra"
+pkg-name = "com.backdrops.wallpapers"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+cli-source = "MorpheApp/morphe-desktop"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.backdrops.wallpapers"
+uptodown-dlurl = "https://backdrops.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/backdrops/backdrops-wallpapers"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
+
+
+[1111-warp-morphe-rushiranpise]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "1111-warp"
+rv-brand = "morphe-rushiranpise"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
+custom-microg-patches = "'None'"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.cloudflare.onedotonedotonedotone"
+uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
+patches-source = "rushiranpise/morphe-patches"
+apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
+
+

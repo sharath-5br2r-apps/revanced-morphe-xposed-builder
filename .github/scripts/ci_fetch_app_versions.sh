@@ -7,72 +7,163 @@ dos2unix utils.sh 2>/dev/null || true
 source utils.sh
 set_prebuilts
 
-# Use pre-compiled configs if available, or compile as fallback
-CONFIG_INPUTS=()
-[ -f config.stable.json ] && CONFIG_INPUTS+=(config.stable.json)
-[ -f config.beta.json ] && CONFIG_INPUTS+=(config.beta.json)
+# Find all app configs in configs/ directory
+CONFIG_FILES=$(find configs/patches -maxdepth 2 -name "*.toml" 2>/dev/null | sort -u)
 
-if [ ${#CONFIG_INPUTS[@]} -eq 0 ]; then
-    python3 .github/scripts/compile_patch_configs.py
-    [ -f config.stable.json ] && CONFIG_INPUTS+=(config.stable.json)
-    [ -f config.beta.json ] && CONFIG_INPUTS+=(config.beta.json)
+if [ -z "$CONFIG_FILES" ]; then
+    echo "No config files found in configs/"
+    exit 0
 fi
 
-[ -f .github/configs/app_versions.json ] || echo '{}' > .github/configs/app_versions.json
+# Convert all TOML files to a single JSON using yq
+yq eval-all -o=json '. as $item ireduce ({}; . * $item)' configs/patches/*.toml > temp_all_configs.json 2>/dev/null || {
+	rm -f temp_all_configs.json
+	for f in configs/patches/*.toml; do
+		[ -f "$f" ] && yq -o=json "$f" >> temp_all_configs.json.tmp
+	done
+	jq -s 'add' temp_all_configs.json.tmp > temp_all_configs.json
+	rm -f temp_all_configs.json.tmp
+}
+
+APP_VERSIONS_FILE="configs/app_versions.json"
+[ -f "$APP_VERSIONS_FILE" ] || echo '{}' > "$APP_VERSIONS_FILE"
+
 > fetched_app_versions.jsonl
-CHECK_ONLY_LISTED=$(jq -r '."_check_only_listed" // false' .github/configs/app_versions.json)
+CHECK_ONLY_LISTED=$(jq -r '."_check_only_listed" // false' "$APP_VERSIONS_FILE")
 
 if [ "$CHECK_ONLY_LISTED" = "true" ]; then
-    jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[] | "\(.key)|\(.value.keys[0])"' .github/configs/app_versions.json > check_list.txt
+    jq -r 'to_entries | map(select((.key | startswith("_") | not) and (.value.keys[0] != null) and (.value.keys[0] != "null") and (.value.keys[0] != ""))) | .[] | "\(.key)|\(.value.keys[0])"' "$APP_VERSIONS_FILE" > check_list.txt
 else
-    # All enabled apps across stable and dev configs
-    ENABLED_APPS=$(jq -r -s 'add | to_entries | map(select((.value | type == "object") and .value.enabled == true)) | .[].key' "${CONFIG_INPUTS[@]}")
+    # All enabled apps
+    ENABLED_APPS=$(jq -r 'to_entries | map(select((.value | type == "object") and .value.enabled == true)) | .[].key' temp_all_configs.json)
     
     # Get all grouped apps to exclude them
-    GROUPED_APPS=$(jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[].value.keys[]?' .github/configs/app_versions.json 2>/dev/null || echo "")
+    GROUPED_APPS=$(jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[].value.keys[]?' "$APP_VERSIONS_FILE" 2>/dev/null || echo "")
     
     > check_list.txt
     
-    # Add groups first
-    jq -r 'to_entries | map(select(.key | startswith("_") | not)) | .[] | "\(.key)|\(.value.keys[0])"' .github/configs/app_versions.json >> check_list.txt
+    # Add groups first (filtering out null app keys)
+    jq -r 'to_entries | map(select((.key | startswith("_") | not) and (.value.keys[0] != null) and (.value.keys[0] != "null") and (.value.keys[0] != ""))) | .[] | "\(.key)|\(.value.keys[0])"' "$APP_VERSIONS_FILE" >> check_list.txt
     
     # Add non-grouped enabled apps
     for app in $ENABLED_APPS; do
-        if ! echo "$GROUPED_APPS" | grep -qx "$app"; then
-            echo "$app|$app" >> check_list.txt
+        if [ -n "$app" ] && [ "$app" != "null" ]; then
+            if ! echo "$GROUPED_APPS" | grep -qx "$app"; then
+                echo "$app|$app" >> check_list.txt
+            fi
         fi
     done
 fi
 
 declare -A cached_versions
+declare -A args
 
 while IFS='|' read -r group app; do
     if [ -z "$group" ] || [ -z "$app" ]; then continue; fi
     echo "::group::Fetching version for $group ($app)..."
     
-    mapfile -t _urls < <(
-        jq -r -s --arg app "$app" '
-            add | .[$app] as $a |
-            ($a["uptodown-dlurl"] // ""),
-            ($a["apkmirror-dlurl"] // ""),
-            ($a["apkpure-dlurl"] // ""),
-            ($a["apkcombo-dlurl"] // ""),
-            ($a["github-dlurl"] // "")
-        ' "${CONFIG_INPUTS[@]}"
-    )
-    uptodown_url="${_urls[0]:-}"
-    apkmirror_url="${_urls[1]:-}"
-    apkpure_url="${_urls[2]:-}"
-    apkcombo_url="${_urls[3]:-}"
-    github_url="${_urls[4]:-}"
+    args=()
+    github_url=$(jq -r ".\"$app\".\"github-dlurl\" // empty" temp_all_configs.json)
+    gitlab_url=$(jq -r ".\"$app\".\"gitlab-dlurl\" // empty" temp_all_configs.json)
+    forgejo_url=$(jq -r ".\"$app\".\"forgejo-dlurl\" // empty" temp_all_configs.json)
+
+    apkmirror_url=$(jq -r ".\"$app\".\"apkmirror-dlurl\" // empty" temp_all_configs.json)
+    uptodown_url=$(jq -r ".\"$app\".\"uptodown-dlurl\" // empty" temp_all_configs.json)
+    apkpure_url=$(jq -r ".\"$app\".\"apkpure-dlurl\" // empty" temp_all_configs.json)
+    apkcombo_url=$(jq -r ".\"$app\".\"apkcombo-dlurl\" // empty" temp_all_configs.json)
+
+    version=$(jq -r ".\"$app\".\"version\" // empty" temp_all_configs.json)
+    if [ "$version" == "beta" ] || [ "$version" == "dev" ]; then __AAV__="true"; else __AAV__="false"; fi
+    prefer_apk_mode=$(jq -r ".\"$app\".\"prefer-apk-mode\" // empty" temp_all_configs.json)
+    prefer_dl_mode=$(jq -r ".\"$app\".\"prefer-dl-mode\" // empty" temp_all_configs.json)
+    [ -n "$prefer_dl_mode" ] || prefer_dl_mode="${prefer_apk_mode:-apk}"
+    github_dlurl_regex=$(jq -r ".\"$app\".\"github-dlurl-regex\" // .\"$app\".\"github-regex\" // empty" temp_all_configs.json)
+    github_regex="$github_dlurl_regex"
+    github_release_regex=$(jq -r ".\"$app\".\"github-release-regex\" // empty" temp_all_configs.json)
+    github_release_name_regex=$(jq -r ".\"$app\".\"github-release-name-regex\" // empty" temp_all_configs.json)
+    github_dlurl_exclude_filter=$(jq -r ".\"$app\".\"github-dlurl-exclude-filter\" // .\"$app\".\"github-exclude-filter\" // empty" temp_all_configs.json)
+    github_dlurl_source=$(jq -r ".\"$app\".\"github-dlurl-source\" // empty" temp_all_configs.json)
+
+    gitlab_dlurl_regex=$(jq -r ".\"$app\".\"gitlab-dlurl-regex\" // .\"$app\".\"gitlab-regex\" // empty" temp_all_configs.json)
+    gitlab_regex="$gitlab_dlurl_regex"
+    gitlab_release_regex=$(jq -r ".\"$app\".\"gitlab-release-regex\" // empty" temp_all_configs.json)
+    gitlab_release_name_regex=$(jq -r ".\"$app\".\"gitlab-release-name-regex\" // empty" temp_all_configs.json)
+    gitlab_dlurl_exclude_filter=$(jq -r ".\"$app\".\"gitlab-dlurl-exclude-filter\" // .\"$app\".\"gitlab-exclude-filter\" // empty" temp_all_configs.json)
+
+    forgejo_dlurl_regex=$(jq -r ".\"$app\".\"forgejo-dlurl-regex\" // .\"$app\".\"forgejo-regex\" // empty" temp_all_configs.json)
+    forgejo_regex="$forgejo_dlurl_regex"
+    forgejo_release_regex=$(jq -r ".\"$app\".\"forgejo-release-regex\" // empty" temp_all_configs.json)
+    forgejo_release_name_regex=$(jq -r ".\"$app\".\"forgejo-release-name-regex\" // empty" temp_all_configs.json)
+    forgejo_dlurl_exclude_filter=$(jq -r ".\"$app\".\"forgejo-dlurl-exclude-filter\" // .\"$app\".\"forgejo-exclude-filter\" // empty" temp_all_configs.json)
+
+    apkmirror_example_url=$(jq -r ".\"$app\".\"apkmirror-example-url\" // .\"$app\".\"apkmirror-example-dlurl\" // empty" temp_all_configs.json)
+    apkmirror_release_filter=$(jq -r ".\"$app\".\"apkmirror-release-filter\" // .\"$app\".\"release-filter\" // empty" temp_all_configs.json)
+    dpi=$(jq -r ".\"$app\".\"dpi\" // empty" temp_all_configs.json)
+    min_sdk=$(jq -r ".\"$app\".\"min-sdk\" // empty" temp_all_configs.json)
+    pkg_name=$(jq -r ".\"$app\".\"pkg-name\" // empty" temp_all_configs.json)
+    check_sig=$(jq -r ".\"$app\".\"check-sig\" // false" temp_all_configs.json)
+    custom_microg_patches=$(jq -r ".\"$app\".\"custom-microg-patches\" // empty" temp_all_configs.json)
+
+    version_filter=$(jq -r ".\"$app\".\"version-filter\" // .\"$app\".\"apkmirror-version-filter\" // empty" temp_all_configs.json)
+    apkmirror_version_filter="$version_filter"
+    included_patches=$(jq -r ".\"$app\".\"included-patches\" // empty" temp_all_configs.json)
+    excluded_patches=$(jq -r ".\"$app\".\"excluded-patches\" // empty" temp_all_configs.json)
+    exclusive_patches=$(jq -r ".\"$app\".\"exclusive-patches\" // false" temp_all_configs.json)
+    arch=$(jq -r ".\"$app\".\"arch\" // empty" temp_all_configs.json)
+    build_mode=$(jq -r ".\"$app\".\"build-mode\" // \"apk\"" temp_all_configs.json)
+
+    args["github_dlurl"]="$github_url"
+    args["github_dlurl_regex"]="$github_dlurl_regex"
+    args["github_regex"]="$github_regex"
+    args["github_release_regex"]="$github_release_regex"
+    args["github_release_name_regex"]="$github_release_name_regex"
+    args["github_dlurl_exclude_filter"]="$github_dlurl_exclude_filter"
+    args["github_dlurl_source"]="$github_dlurl_source"
+
+    args["gitlab_dlurl"]="$gitlab_url"
+    args["gitlab_dlurl_regex"]="$gitlab_dlurl_regex"
+    args["gitlab_regex"]="$gitlab_regex"
+    args["gitlab_release_regex"]="$gitlab_release_regex"
+    args["gitlab_release_name_regex"]="$gitlab_release_name_regex"
+    args["gitlab_dlurl_exclude_filter"]="$gitlab_dlurl_exclude_filter"
+
+    args["forgejo_dlurl"]="$forgejo_url"
+    args["forgejo_dlurl_regex"]="$forgejo_dlurl_regex"
+    args["forgejo_regex"]="$forgejo_regex"
+    args["forgejo_release_regex"]="$forgejo_release_regex"
+    args["forgejo_release_name_regex"]="$forgejo_release_name_regex"
+    args["forgejo_dlurl_exclude_filter"]="$forgejo_dlurl_exclude_filter"
+
+    args["apkmirror_dlurl"]="$apkmirror_url"
+    args["apkmirror_example_url"]="$apkmirror_example_url"
+    args["apkmirror_release_filter"]="$apkmirror_release_filter"
+    args["apkmirror_version_filter"]="$apkmirror_version_filter"
+    args["version_filter"]="$version_filter"
+
+    args["pkg_name"]="$pkg_name"
+    args["app_name"]="$group"
+    args["table"]="$app"
+    args["dpi"]="$dpi"
+    args["min_sdk"]="$min_sdk"
+    args["check_sig"]="$check_sig"
+    args["custom_microg_patches"]="$custom_microg_patches"
+    args["included_patches"]="$included_patches"
+    args["excluded_patches"]="$excluded_patches"
+    args["exclusive_patches"]="$exclusive_patches"
+    args["arch"]="$arch"
+    args["build_mode"]="$build_mode"
+
+    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode prefer_dl_mode apkmirror_example_url apkmirror_release_filter apkmirror_version_filter version_filter github_dlurl_regex github_release_regex github_release_name_regex github_dlurl_exclude_filter github_dlurl_source gitlab_dlurl_regex gitlab_release_regex gitlab_release_name_regex gitlab_dlurl_exclude_filter forgejo_dlurl_regex forgejo_release_regex forgejo_release_name_regex forgejo_dlurl_exclude_filter included_patches excluded_patches exclusive_patches arch build_mode
 
     dlurls=()
     sources=()
-    [ -n "$uptodown_url" ] && { dlurls+=("$uptodown_url"); sources+=("uptodown"); }
+    [ -n "$github_url" ] && { dlurls+=("$github_url"); sources+=("github"); }
+    [ -n "$gitlab_url" ] && { dlurls+=("$gitlab_url"); sources+=("gitlab"); }
+    [ -n "$forgejo_url" ] && { dlurls+=("$forgejo_url"); sources+=("forgejo"); }
     [ -n "$apkmirror_url" ] && { dlurls+=("$apkmirror_url"); sources+=("apkmirror"); }
+    [ -n "$uptodown_url" ] && { dlurls+=("$uptodown_url"); sources+=("uptodown"); }
     [ -n "$apkpure_url" ] && { dlurls+=("$apkpure_url"); sources+=("apkpure"); }
     [ -n "$apkcombo_url" ] && { dlurls+=("$apkcombo_url"); sources+=("apkcombo"); }
-    [ -n "$github_url" ] && { dlurls+=("$github_url"); sources+=("github"); }
 
     if [ ${#dlurls[@]} -eq 0 ]; then
         echo "::warning::No dlurl for $app, skipping"
@@ -84,19 +175,34 @@ while IFS='|' read -r group app; do
     for i in "${!dlurls[@]}"; do
         dlurl="${dlurls[$i]}"
         source="${sources[$i]}"
+        cache_key="url_${dlurl//[^a-zA-Z0-9]/_}_${github_release_name_regex//[^a-zA-Z0-9]/_}_${github_release_regex//[^a-zA-Z0-9]/_}_${gitlab_release_name_regex//[^a-zA-Z0-9]/_}_${forgejo_release_name_regex//[^a-zA-Z0-9]/_}"
         
-        if [ -n "${cached_versions[$dlurl]:-}" ]; then
-            latest_ver="${cached_versions[$dlurl]}"
+        if [ -n "${cached_versions["$cache_key"]:-}" ]; then
+            latest_ver="${cached_versions["$cache_key"]}"
             echo "::notice::Reusing cached version for $app: $latest_ver"
             break
         else
-            if [[ "$source" == "uptodown" ]]; then
-                get_uptodown_resp "$dlurl" || { echo "::warning::Failed uptodown resp for $app"; continue; }
-                vers=$(get_uptodown_vers) || { echo "::warning::Failed uptodown vers for $app"; continue; }
+            if [[ "$source" == "github" ]]; then
+                get_github_resp "$dlurl" || { echo "::warning::Failed github resp for $app"; continue; }
+                vers=$(get_github_vers) || { echo "::warning::Failed github vers for $app"; continue; }
+                latest_ver=$(echo "$vers" | get_highest_ver) || true
+            elif [[ "$source" == "gitlab" ]]; then
+                get_gitlab_resp "$dlurl" || { echo "::warning::Failed gitlab resp for $app"; continue; }
+                vers=$(get_gitlab_vers) || { echo "::warning::Failed gitlab vers for $app"; continue; }
+                latest_ver=$(echo "$vers" | get_highest_ver) || true
+            elif [[ "$source" == "forgejo" ]]; then
+                get_forgejo_resp "$dlurl" || { echo "::warning::Failed forgejo resp for $app"; continue; }
+                vers=$(get_forgejo_vers) || { echo "::warning::Failed forgejo vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "apkmirror" ]]; then
+                __APKMIRROR_RELEASE_FILTER__="${apkmirror_release_filter:-}"
+                export __APKMIRROR_RELEASE_FILTER__
                 get_apkmirror_resp "$dlurl" || { echo "::warning::Failed apkmirror resp for $app"; continue; }
                 vers=$(get_apkmirror_vers) || { echo "::warning::Failed apkmirror vers for $app"; continue; }
+                latest_ver=$(echo "$vers" | get_highest_ver) || true
+            elif [[ "$source" == "uptodown" ]]; then
+                get_uptodown_resp "$dlurl" || { echo "::warning::Failed uptodown resp for $app"; continue; }
+                vers=$(get_uptodown_vers) || { echo "::warning::Failed uptodown vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "apkpure" ]]; then
                 get_apkpure_resp "$dlurl" || { echo "::warning::Failed apkpure resp for $app"; continue; }
@@ -106,14 +212,10 @@ while IFS='|' read -r group app; do
                 get_apkcombo_resp "$dlurl" || { echo "::warning::Failed apkcombo resp for $app"; continue; }
                 vers=$(get_apkcombo_vers) || { echo "::warning::Failed apkcombo vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "github" ]]; then
-                get_github_resp "$dlurl" || { echo "::warning::Failed github resp for $app"; continue; }
-                vers=$(get_github_vers) || { echo "::warning::Failed github vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
             fi
             
             if [ -n "$latest_ver" ]; then
-                cached_versions[$dlurl]="$latest_ver"
+                cached_versions["$cache_key"]="$latest_ver"
                 # Sleep to avoid rate limiting only if we actually fetched
                 sleep $((RANDOM % 5 + 3))
                 break
@@ -138,4 +240,4 @@ fi
 
 echo "$FETCHED_JSON" > fetched_app_versions.json
 
-rm -f fetched_app_versions.jsonl check_list.txt
+rm -f temp_all_configs.json fetched_app_versions.jsonl check_list.txt
