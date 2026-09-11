@@ -1496,6 +1496,10 @@ get_apkmirror_pkg_name() {
 apkmirror_search() {
 	local resp="$1" dpi="$2" arch="$3" apk_bundle="$4" clean_search_version="$5" search_version="$6" target_vc="${7:-}"
 	
+	set +u
+	local rel_filter="${args[apkmirror_release_filter]:-${__APKMIRROR_RELEASE_FILTER__:-${apkmirror_release_filter:-}}}"
+	set -u
+
 	local py_cmd=""
 	if command -v python3 >/dev/null 2>&1; then
 		py_cmd="python3"
@@ -1508,7 +1512,7 @@ apkmirror_search() {
 
 	if [ -n "$py_cmd" ] && [ -f "$py_script" ]; then
 		local py_res
-		if py_res=$("$py_cmd" "$py_script" "$dpi" "$arch" "$apk_bundle" "$clean_search_version" "$search_version" "$target_vc" <<<"$resp") && [ -n "$py_res" ]; then
+		if py_res=$("$py_cmd" "$py_script" "$dpi" "$arch" "$apk_bundle" "$clean_search_version" "$search_version" "$target_vc" "$rel_filter" <<<"$resp") && [ -n "$py_res" ]; then
 			echo "$py_res"
 			return 0
 		fi
@@ -1755,6 +1759,24 @@ dl_apkmirror() {
 			local s_split="${s_flat//<\/a>/<\/a>
 }"
 			local s_links=$(echo "$s_split" | grep -oP 'href="\K/apk/[^"]+')
+			set +u
+			local rel_filter="${args[apkmirror_release_filter]:-${__APKMIRROR_RELEASE_FILTER__:-${apkmirror_release_filter:-}}}"
+			set -u
+			if [ -n "$rel_filter" ]; then
+				if [[ "$rel_filter" == !* ]]; then
+					local neg_pat="${rel_filter#!}"
+					s_links=$(echo "$s_links" | grep -ivE "$neg_pat" || true)
+					s_split=$(echo "$s_split" | grep -ivE "$neg_pat" || true)
+				else
+					s_links=$(echo "$s_links" | grep -iE "$rel_filter" || true)
+					s_split=$(echo "$s_split" | grep -iE "$rel_filter" || true)
+				fi
+			fi
+			if [ "${__AAV__:-false}" = false ]; then
+				s_links=$(echo "$s_links" | grep -ivE -- "-(beta|alpha)" || true)
+				s_split=$(echo "$s_split" | grep -ivE -- "-(beta|alpha)" || true)
+			fi
+
 			version_href=$(echo "$s_links" | grep -F "$search_version-release" | head -1) || true
 			if [ -z "$version_href" ]; then
 				version_href=$(echo "$s_split" | grep -F "$version" | grep -oP 'href="\K/apk/[^"]+' | grep -F -- '-release/' | head -1) || true

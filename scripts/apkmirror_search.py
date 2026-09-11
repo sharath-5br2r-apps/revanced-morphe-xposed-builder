@@ -2,7 +2,7 @@
 import sys
 import re
 
-def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc):
+def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc, rel_filter=""):
     dpi_raw = dpi if dpi else "nodpi anydpi auto"
     appdpi = ["nodpi", "anydpi"]
     match_any_dpi = False
@@ -55,6 +55,22 @@ def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, 
         dlurl = href_m.group(1)
         if not dlurl.startswith("http"):
             dlurl = "https://www.apkmirror.com" + dlurl
+
+        # Check rel_filter if specified
+        if rel_filter:
+            # Extract readable variant text from row or accent_color anchor
+            variant_m = re.search(r'<a[^>]*class="[^"]*accent_color[^"]*"[^>]*>(.*?)</a>', r, re.DOTALL)
+            variant_text = re.sub(r'<[^>]+>', '', variant_m.group(1)).strip() if variant_m else ""
+            if not variant_text:
+                variant_text = re.sub(r'<[^>]+>', ' ', r).strip()
+
+            if rel_filter.startswith("!"):
+                neg_pat = rel_filter[1:]
+                if re.search(neg_pat, dlurl, re.IGNORECASE) or re.search(neg_pat, variant_text, re.IGNORECASE):
+                    continue
+            else:
+                if not (re.search(rel_filter, dlurl, re.IGNORECASE) or re.search(rel_filter, variant_text, re.IGNORECASE)):
+                    continue
 
         badge_m = re.search(r'class="[^"]*apkm-badge[^"]*"[^>]*>([^<]+)</span>', r)
         node_apk_bundle = badge_m.group(1).strip() if badge_m else "APK"
@@ -124,12 +140,13 @@ def main():
     clean_search_version = sys.argv[4]
     search_version = sys.argv[5]
     target_vc = sys.argv[6] if len(sys.argv) > 6 else ""
+    rel_filter = sys.argv[7] if len(sys.argv) > 7 else ""
 
     html_content = sys.stdin.read()
     if not html_content:
         sys.exit(1)
 
-    url = apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc)
+    url = apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc, rel_filter)
     if url:
         print(url)
         sys.exit(0)
