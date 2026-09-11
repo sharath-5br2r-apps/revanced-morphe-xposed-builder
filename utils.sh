@@ -1127,6 +1127,99 @@ parse_version_code() {
 }
 
 parse_git_regex() {
+	local mapping="${1:-}" arch="${2:-}"
+	if [ -z "$mapping" ]; then
+		return 0
+	fi
+	if command -v python3 >/dev/null 2>&1; then
+		python3 -c '
+import sys, json, re
+
+mapping = sys.argv[1] if len(sys.argv) > 1 else ""
+target_arch = sys.argv[2] if len(sys.argv) > 2 else ""
+
+if not mapping:
+    sys.exit(0)
+
+def clean_regex(r):
+    r = r.strip().strip("\"'\''")
+    if "\\\\" in r:
+        r = r.replace("\\\\", "\\")
+    return r
+
+mapping_stripped = mapping.strip()
+if mapping_stripped.startswith("[") or mapping_stripped.startswith("{"):
+    try:
+        data = json.loads(mapping_stripped)
+        target_archs = [a.lower() for a in target_arch.split() if a.strip()]
+        matched = []
+        if isinstance(data, list):
+            if not target_archs or "all" in target_archs:
+                matched = [clean_regex(item.get("regex", str(item))) for item in data if isinstance(item, dict) and "regex" in item]
+            else:
+                for ta in target_archs:
+                    for item in data:
+                        if isinstance(item, dict) and (item.get("arch", "").lower() == ta or item.get("arch", "").lower() == "all"):
+                            matched.append(clean_regex(item.get("regex", str(item))))
+                            break
+                if not matched:
+                    matched = [clean_regex(item.get("regex", str(item))) for item in data if isinstance(item, dict) and "regex" in item]
+        elif isinstance(data, dict):
+            if not target_archs or "all" in target_archs:
+                matched = [clean_regex(str(v)) for v in data.values()]
+            else:
+                for ta in target_archs:
+                    if ta in data:
+                        matched.append(clean_regex(str(data[ta])))
+                    elif "all" in data:
+                        matched.append(clean_regex(str(data["all"])))
+                if not matched:
+                    matched = [clean_regex(str(v)) for v in data.values()]
+        dedup = []
+        for m in matched:
+            if m and m not in dedup:
+                dedup.append(m)
+        if dedup:
+            if len(dedup) == 1:
+                print(dedup[0])
+            else:
+                print("|".join(f"({m})" if not (m.startswith("(") and m.endswith(")")) else m for m in dedup))
+            sys.exit(0)
+    except Exception:
+        pass
+
+pattern = r"(?:^|\s*\|\s*)([a-zA-Z0-9_\-]+)\s*:\s*(.*?)(?=\s*\|\s*[a-zA-Z0-9_\-]+\s*:|$)"
+items = re.findall(pattern, mapping)
+if not items:
+    print(clean_regex(mapping))
+    sys.exit(0)
+
+target_archs = [a.lower() for a in target_arch.split() if a.strip()]
+matched = []
+if not target_archs or "all" in target_archs:
+    matched = [clean_regex(v) for k, v in items if v.strip()]
+else:
+    for ta in target_archs:
+        for k, v in items:
+            if k.lower() == ta or k.lower() == "all":
+                matched.append(clean_regex(v))
+                break
+    if not matched:
+        matched = [clean_regex(v) for k, v in items if v.strip()]
+
+dedup = []
+for m in matched:
+    if m and m not in dedup:
+        dedup.append(m)
+if not dedup:
+    print(clean_regex(mapping))
+elif len(dedup) == 1:
+    print(dedup[0])
+else:
+    print("|".join(f"({m})" if not (m.startswith("(") and m.endswith(")")) else m for m in dedup))
+' "$mapping" "$arch"
+		return 0
+	fi
 	parse_arch_mapping "$@"
 }
 
@@ -2482,14 +2575,8 @@ get_git_repo_resp() {
 	[ -z "$raw_filter" ] && raw_filter='\.(apk|apkm|xapk|apks)$'
 	local filter="$raw_filter"
 	if [[ "$raw_filter" == *"["* ]] || [[ "$raw_filter" == *":"* ]]; then
-		filter=$(jq -r --arg arch "$target_arch" '
-			if type == "array" then
-				(map(select(.arch == $arch or .arch == "all")) | map(.regex) | join("|")) as $matched |
-				if ($matched | length) > 0 then $matched else (map(.regex) | join("|")) end
-			else
-				tostring
-			end
-		' <<<"$raw_filter" 2>/dev/null) || filter="$raw_filter"
+		filter=$(parse_git_regex "$raw_filter" "$target_arch")
+		[ -z "$filter" ] && filter="$raw_filter"
 	fi
 	local tk1="${provider}_release_regex"
 	local rk1="${provider}_release_name_regex"
@@ -2556,72 +2643,89 @@ get_git_repo_resp() {
 	local api_url="" resp="" release=""
 	api_url=$(source_release_api_base "$host" "$src" "$host_instance") || return 1
 
+	local assets_json="[]"
 	if [ -n "$tag" ]; then
 		local tag_api
 		tag_api=$(source_release_tag_api "$host" "$src" "$tag" "$host_instance") || return 1
 		resp=$(source_req "$host" "$tag_api" -) || return 1
-		release="[${resp}]"
+		local release="[${resp}]"
+		if { [ -n "$tag_filter" ] || [ -n "$rel_name_filter" ]; }; then
+			release=$(filter_releases_by_regex "$tag_filter" "$rel_name_filter" <<<"$release")
+		fi
+		assets_json=$(jq -c --arg f "$filter" '
+			(if type == "array" then . else [.] end) | map(
+				. as $rel |
+				(((if ($rel.assets | type) == "object" then $rel.assets.links else $rel.assets end) // $rel.assets_links // [])) | map(
+					. as $asset |
+					($asset.name // $asset.browser_download_url // "") as $name |
+					select(($name | test("\\.(sha256|txt|asc|sig|md5)$"; "i") | not)) |
+					select(
+						if ($f | startswith("!")) then
+							($name | test($f[1:]; "i") | not)
+						else
+							($name | test($f; "i"))
+						end
+					) |
+					{
+						name: $name,
+						browser_download_url: ($asset.browser_download_url // $asset.url // ""),
+						tag_name: ($rel.tag_name // "latest"),
+						published_at: ($rel.published_at // $rel.created_at // $rel.released_at // "")
+					}
+				)
+			) | flatten | sort_by(.published_at) | reverse
+		' <<<"$release" 2>/dev/null || echo "[]")
 	else
 		local max_p=3
 		if [ "${__FORCE_PAGINATE__:-false}" = true ]; then max_p=10; fi
-		local p_page=1 all_releases="[]"
+		local p_page=1 all_assets="[]"
 		for ((p_page=1; p_page<=max_p; p_page++)); do
 			resp=$(source_req "$host" "${api_url}?per_page=100&page=${p_page}" - 2>/dev/null || true)
 			if [ -z "$resp" ] || [ "$resp" = "[]" ] || [[ "$resp" != "["* ]]; then
 				break
 			fi
-			all_releases=$(jq -s 'add' <<<"${all_releases}${resp}")
+			local cur_release="$resp"
+			if [ -n "$tag_filter" ] || [ -n "$rel_name_filter" ]; then
+				cur_release=$(filter_releases_by_regex "$tag_filter" "$rel_name_filter" <<<"$cur_release")
+			fi
+			if [ -n "$cur_release" ] && [ "$cur_release" != "[]" ]; then
+				local cur_assets
+				cur_assets=$(jq -c --arg f "$filter" '
+					(if type == "array" then . else [.] end) | map(
+						. as $rel |
+						(((if ($rel.assets | type) == "object" then $rel.assets.links else $rel.assets end) // $rel.assets_links // [])) | map(
+							. as $asset |
+							($asset.name // $asset.browser_download_url // "") as $name |
+							select(($name | test("\\.(sha256|txt|asc|sig|md5)$"; "i") | not)) |
+							select(
+								if ($f | startswith("!")) then
+									($name | test($f[1:]; "i") | not)
+								else
+									($name | test($f; "i"))
+								end
+							) |
+							{
+								name: $name,
+								browser_download_url: ($asset.browser_download_url // $asset.url // ""),
+								tag_name: ($rel.tag_name // "latest"),
+								published_at: ($rel.published_at // $rel.created_at // $rel.released_at // "")
+							}
+						)
+					) | flatten
+				' <<<"$cur_release" 2>/dev/null || echo "[]")
+				if [ -n "$cur_assets" ] && [ "$cur_assets" != "[]" ]; then
+					all_assets=$(jq -s 'add' <<<"${all_assets}${cur_assets}" 2>/dev/null || echo "$all_assets")
+				fi
+			fi
 			local p_count
 			p_count=$(jq 'length' <<<"$resp" 2>/dev/null || echo 0)
 			if [ "$p_count" -lt 100 ]; then
 				break
 			fi
 		done
-		release="$all_releases"
 		if [ $max_p -gt 3 ]; then __GIT_PAGINATED_ALL__=true; fi
+		assets_json=$(jq -c 'sort_by(.published_at) | reverse' <<<"${all_assets:-[]}" 2>/dev/null || echo "[]")
 	fi
-
-	if [ -z "$release" ] || [ "$release" = "[]" ]; then return 1; fi
-
-	if { [ -n "$tag_filter" ] || [ -n "$rel_name_filter" ]; } && [ -z "$tag" ]; then
-		release=$(filter_releases_by_regex "$tag_filter" "$rel_name_filter" <<<"$release")
-	fi
-
-	local release_with_apks
-	release_with_apks=$(jq -c --arg f "$filter" 'map(select((((if (.assets | type) == "object" then .assets.links else .assets end) // .assets_links // []) | map(select(if ($f | startswith("!")) then ((.name // .browser_download_url // "") | test($f[1:]; "i") | not) else ((.name // .browser_download_url // "") | test($f; "i")) end)) | length > 0)))' <<<"$release" 2>/dev/null)
-	if [ -n "$release_with_apks" ] && [ "$release_with_apks" != "[]" ]; then
-		release="$release_with_apks"
-	fi
-
-	local mode="latest"
-	if [ "${__AAV__:-false}" = true ] || [ "${version:-}" = "beta" ] || [ "${version:-}" = "dev" ] || [ "${version:-}" = "absolutelatest" ] || [ -n "$tag_filter" ] || [ -n "$rel_name_filter" ]; then
-		mode="absolutelatest"
-	fi
-
-	local assets_json
-	assets_json=$(jq -c --arg f "$filter" '
-		(if type == "array" then . else [.] end) | map(
-			. as $rel |
-			(((if ($rel.assets | type) == "object" then $rel.assets.links else $rel.assets end) // $rel.assets_links // [])) | map(
-				. as $asset |
-				($asset.name // $asset.browser_download_url // "") as $name |
-				select(($name | test("\\.(sha256|txt|asc|sig|md5)$"; "i") | not)) |
-				select(
-					if ($f | startswith("!")) then
-						($name | test($f[1:]; "i") | not)
-					else
-						($name | test($f; "i"))
-					end
-				) |
-				{
-					name: $name,
-					browser_download_url: ($asset.browser_download_url // $asset.url // ""),
-					tag_name: ($rel.tag_name // "latest"),
-					published_at: ($rel.published_at // $rel.created_at // $rel.released_at // "")
-				}
-			)
-		) | flatten | sort_by(.published_at) | reverse
-	' <<<"$release") || return 1
 
 	if [ -z "$assets_json" ] || [ "$assets_json" = "[]" ]; then
 		wpr "No matching APK assets found in $provider releases for $url (filter: $filter)"
@@ -2673,9 +2777,23 @@ dl_git_repo() {
 		if [ -n "$regex" ]; then
 			regex="${regex//\{version\}/${version_clean}}"
 			regex="${regex//\{arch\}/${arch}}"
-			matching_asset=$(jq -c --arg r "$regex" '
-				map(select((.name // "") | test($r; "i"))) | .[0] // empty
-			' <<<"${assets_json:-[]}")
+			if [ -n "$version_clean" ] && [ "$version" != "latest" ] && [ "$version" != "absolutelatest" ]; then
+				matching_asset=$(jq -c --arg r "$regex" --arg ver "$version" --arg ver_clean "$version_clean" '
+					map(select(
+						((.name // "") | test($r; "i")) and
+						(
+							((.tag_name // "") | contains($ver_clean)) or
+							((.tag_name // "") | contains($ver)) or
+							((.name // "") | contains($ver_clean))
+						)
+					)) | .[0] // empty
+				' <<<"${assets_json:-[]}")
+			fi
+			if [ -z "$matching_asset" ]; then
+				matching_asset=$(jq -c --arg r "$regex" '
+					map(select((.name // "") | test($r; "i"))) | .[0] // empty
+				' <<<"${assets_json:-[]}")
+			fi
 		fi
 	fi
 

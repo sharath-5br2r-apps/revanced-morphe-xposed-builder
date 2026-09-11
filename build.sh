@@ -201,7 +201,7 @@ for table_name in $(toml_get_table_names); do
 		abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name'"
 	fi
 
-	local IFS=$'\n'
+	IFS=$'\n'
 	p_srcs=($(list_args "$patches_src" | tr -d \"\')); [ ${#p_srcs[@]} -eq 0 ] && p_srcs=("$patches_src")
 	p_hosts=($(list_args "$patches_src_host" | tr -d \"\')); [ ${#p_hosts[@]} -eq 0 ] && p_hosts=("$patches_src_host")
 	p_vers=($(list_args "$patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
@@ -221,7 +221,7 @@ for table_name in $(toml_get_table_names); do
 	patches_tag_filter=$(toml_get "$t" patches-tag-filter) || patches_tag_filter=""
 	patches_rel_name_filter=$(toml_get "$t" patches-release-name-filter) || patches_rel_name_filter=""
 
-	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "${p_hosts[*]}" "${p_srcs[*]}" "${p_vers[*]}" "$cli_src_filter" "$patches_src_filter" "$cli_tag_filter" "$patches_tag_filter" "$cli_rel_name_filter" "$patches_rel_name_filter")"; then
+	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver" "$cli_src_filter" "$patches_src_filter" "$cli_tag_filter" "$patches_tag_filter" "$cli_rel_name_filter" "$patches_rel_name_filter")"; then
 		epr "Could not get prebuilts"
 		continue
 	fi
@@ -325,7 +325,7 @@ for table_name in $(toml_get_table_names); do
 	if [ -z "${app_args[dl_from]-}" ]; then abort "ERROR: no 'dlurl' option was set for '$table_name'. (${DL_SRCS[*]})"; fi
 
 	raw_arch=$(toml_get "$t" arch) || raw_arch="auto"
-	local -a arch_list=()
+	arch_list=()
 	read -r -a arch_list <<< "$raw_arch"
 	[ "${#arch_list[@]}" -eq 0 ] && arch_list=("auto")
 
