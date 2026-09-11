@@ -1,0 +1,12 @@
+name: Probe2
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+jobs:
+  probe:
+    uses: sharath-5br2r-apps/revanced-morphe-xposed-builder/.github/workflows/build.yml@main
+    with:
+      config_file: ".github/configs/config.beta.updated.json"
+    secrets: inherit
