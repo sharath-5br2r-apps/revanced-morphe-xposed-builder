@@ -2,10 +2,10 @@
   "IMXEren": {
     "repo": "IMXEren/mix-patches",
     "host": "gitlab",
-    "stable": "v1.7.0",
+    "stable": "v1.7.1",
     "prerelease": "",
     "blocked": false,
-    "stable_date": "2026-09-08T21:52:00.863Z",
+    "stable_date": "2026-09-11T06:02:09.402Z",
     "pre_date": ""
   },
   "adobo": {
@@ -176,8 +176,8 @@
   },
   "kveld9": {
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.18.0",
-    "stable_date": "2026-09-10T21:36:32Z",
+    "stable": "v1.20.0",
+    "stable_date": "2026-09-11T03:53:49Z",
     "prerelease": "",
     "pre_date": "",
     "blocked": false
