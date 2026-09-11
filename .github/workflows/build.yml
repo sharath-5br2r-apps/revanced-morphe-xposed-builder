@@ -6,34 +6,29 @@ on:
       config_file:
         required: true
         type: string
-      exclusive_apps:
-        required: false
-        type: string
       remove_apks:
         required: false
         type: string
         default: ""
-      patches_version:
-        required: false
-        type: string
-        default: ""
-      release_version_code:
-        required: false
-        type: string
-        default: ""
-      upload_release_metadata:
-        description: "Upload build.json directly to release (set false when aggregate job handles release metadata)"
-        required: false
-        type: boolean
-        default: true
-      aggregate_flavor:
-        description: "Flavor tag for artifact grouping and json aggregation (e.g. dev, stable, latest, batch)"
+  workflow_dispatch:
+    inputs:
+      config_file:
+        description: "Select the config file to use"
+        required: true
+        type: choice
+        default: ".github/configs/config.manual.toml"
+        options:
+          - ".github/configs/config.manual.toml"
+          - ".github/configs/config.beta.updated.json"
+          - ".github/configs/config.stable.updated.json"
+      remove_apks:
+        description: "Optional: APKs to remove from cache (space-separated, e.g., com.brave.browser-1.93.138-*.apk)"
         required: false
         type: string
         default: ""
 
 concurrency:
-  group: build-${{ inputs.config_file }}
+  group: build
   cancel-in-progress: false
 
 jobs:
@@ -41,10 +36,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    outputs:
-      next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
-      archive_tag: ${{ steps.context.outputs.ARCHIVE_TAG }}
-      flavor_tag: ${{ steps.context.outputs.FLAVOR_TAG }}
+    timeout-minutes: 120
     services:
       redis:
         image: redis:alpine
@@ -57,10 +49,6 @@ jobs:
         env:
           REDIS_URL: redis://redis:6379
         options: --shm-size=1gb
-      cfb:
-        image: ghcr.io/sarperavci/cloudflarebypassforscraping:latest
-        ports:
-          - 8000:8000
     steps:
       - name: Setup java
         uses: actions/setup-java@v6
@@ -75,163 +63,104 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      - name: Normalize patches TOMLs
-        run: python3 .github/scripts/ci_merge_patch_tomls.py
-
       - name: Resolve build context
         id: context
-        env:
-          OVERRIDE_PATCHES_VERSION: ${{ inputs.patches_version }}
+        run: bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}"
+
+      - name: Install Bouncy Castle for BKS Keystore
         run: |
-          bash scripts/generate_manual_config.sh
-          bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}"
+          CFG="${{ steps.context.outputs.CONFIG_FILE }}"
+          if [[ "$CFG" == *.json ]]; then
+            JSON_STREAM="cat $CFG"
+          else
+            JSON_STREAM="yq -o=json eval . $CFG"
+          fi
+          if $JSON_STREAM | jq -e 'to_entries | any((.value | type == "object") and .value.enabled == true and (.value["cli-source"] | type == "string" and test("npatch|lspatch"; "i")))' >/dev/null; then
+            bash .github/scripts/build_install_bouncy_castle.sh
+          else
+            echo "Skipping Bouncy Castle installation (no enabled Xposed modules found in config)."
+          fi
 
       - name: Resolve version code
         id: version
         env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          PASSED_VER_CODE: ${{ inputs.release_version_code }}
-        run: |
-          if [ -n "$PASSED_VER_CODE" ]; then
-            echo "NEXT_VER_CODE=$PASSED_VER_CODE" >> "$GITHUB_OUTPUT"
-            echo "[+] Using passed release version code: $PASSED_VER_CODE"
-          else
-            bash .github/scripts/build_resolve_version.sh
-          fi
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/build_resolve_version.sh
 
-      - name: Cache APKs
-        uses: actions/cache@v6
+      - name: Restore APKs Cache
+        uses: actions/cache/restore@v6
         with:
           path: temp/apks
-          key: apks-v4-${{ hashFiles(inputs.config_file, 'configs/app_versions.json') }}
+          key: apks-${{ github.run_id }}
           restore-keys: |
-            apks-v4-
+            apks-
 
       - name: Remove specific APKs from cache
         if: ${{ inputs.remove_apks != '' }}
         run: |
-           if [ -d "temp/apks" ]; then
+          if [ -d "temp/apks" ]; then
             cd temp/apks
-            find . -maxdepth 1 -type f -regextype posix-extended -regex ".*/(${{ inputs.remove_apks }})" -exec rm -f {} +
-           fi
+            for apk in ${{ inputs.remove_apks }}; do
+              echo "Removing $apk from cache..."
+              rm -f $apk || true
+            done
+          fi
 
       - name: Setup Python dependencies
         run: |
           pip install --no-cache-dir curl_cffi || true
 
       - name: Build modules and apks
-        if: ${{ steps.context.outputs.HAS_ENABLED_APPS != 'false' }}
         env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          APKS_REPO: ${{ vars.APKS_REPO }}
-          UPLOAD_APKS_REPO: ${{ vars.APKS_REPO }}
-          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
+          UPLOAD_APKS_REPO: "nullcpy/apks"
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          TRAWL_URL: "http://localhost:8191"
-          CFB_URL: "http://localhost:8000"
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
-          KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
-          OVERRIDE_PATCHES_VERSION: ${{ inputs.patches_version }}
+          CF_BYPASS_SOLVER_TRAWL_8191_ENABLED: "true"
         run: |
           set -euo pipefail
-          bash ./build.sh --config="${{ steps.context.outputs.CONFIG_FILE }}" --allowed-apps="${{ inputs.exclusive_apps }}"
+          ./build.sh "${{ steps.context.outputs.CONFIG_FILE }}"
 
       - name: Update Usage Tracker
         env:
           APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          APKS_REPO: ${{ vars.APKS_REPO }}
-          APKS_REPO_URL: ${{ vars.APKS_REPO }}
-        run: |
-          TOKEN="${APKS_REPO_TOKEN:-${PERSONAL_ACCESS_TOKEN:-}}"
-          if [ -n "${APKS_REPO:-}" ] && [ -n "$TOKEN" ]; then
-            python3 .github/scripts/update_usage_tracker.py || true
-          else
-            echo "APKS_REPO or APKS_REPO_TOKEN/PERSONAL_ACCESS_TOKEN is not present. Skipping usage tracker update."
-          fi
-
+        run: python3 .github/scripts/update_usage_tracker.py || true
+        
       - name: Cleanup old cached APKs
         run: bash .github/scripts/build_cache_cleanup.sh
+
+      - name: Generate Cache Manifest
+        run: find temp/apks/ -maxdepth 1 -type f -printf "%s %f\n" | sort > temp/cache_manifest.txt
+
+      - name: Save APKs Cache
+        uses: actions/cache/save@v6
+        if: always()
+        with:
+          path: temp/apks
+          key: apks-${{ hashFiles('temp/cache_manifest.txt') }}
 
       - name: Get output
         id: get_output
         run: bash .github/scripts/build_get_output.sh
 
-      - name: Generate release notes from build.json
-        if: ${{ inputs.upload_release_metadata != false }}
-        run: |
-          if [ -s "build.json" ]; then
-            python3 .github/scripts/generate_md_from_json.py build.json release_notes.md || true
-          fi
-
       - name: Upload to release
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
-          prerelease_flag=""
-          [ "${{ steps.context.outputs.IS_PRERELEASE }}" = "true" ] && prerelease_flag="--prerelease"
-          notes_arg=("--notes" "")
-          if [ "${{ inputs.upload_release_metadata }}" != "false" ] && [ -s "release_notes.md" ]; then
-            notes_arg=("--notes-file" "release_notes.md")
-          fi
-          if gh release view "$tag" >/dev/null 2>&1; then
-            [ -s "release_notes.md" ] && gh release edit "$tag" --notes-file "release_notes.md" || true
-          else
-            gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" $prerelease_flag || true
-          fi
-          if [ -d "./build" ]; then
-            for file in ./build/*; do
-              if [ -s "$file" ]; then
-                echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber || {
-                  echo "::warning::Failed to upload $file to release $tag, retrying..."
-                  sleep 3
-                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
-                }
-              fi
-            done
-          fi
-
-      - name: Upload build.json to numbered release
-        if: ${{ inputs.upload_release_metadata != false }}
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
-          if [ -s "build.json" ]; then
-            notes_arg=("--notes" "")
-            [ -s "release_notes.md" ] && notes_arg=("--notes-file" "release_notes.md")
-            if gh release view "$tag" >/dev/null 2>&1; then
-              [ -s "release_notes.md" ] && gh release edit "$tag" --notes-file "release_notes.md" || true
-            else
-              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
-            fi
-            if [ -s "build.json" ]; then
-              echo "Uploading build.json to release $tag..."
-              gh release upload "$tag" "build.json" --clobber || {
-                echo "::warning::Failed to upload build.json to release $tag, retrying..."
-                sleep 3
-                gh release upload "$tag" "build.json" --clobber || echo "::warning::Failed to upload build.json to release $tag"
-              }
-            fi
-          fi
-
-      - name: Upload part build logs artifact
-        if: ${{ inputs.upload_release_metadata == false }}
-        uses: actions/upload-artifact@v7
+        uses: Wandalen/wretry.action@v3.8.0
         with:
-          name: part-logs-${{ inputs.aggregate_flavor || steps.context.outputs.FLAVOR_TAG || 'logs' }}-${{ steps.context.outputs.CONFIG_TAG || strategy.job-index || '0' }}-${{ github.job }}
-          path: |
-            build.json
-          if-no-files-found: ignore
+          action: softprops/action-gh-release@v3
+          attempt_limit: 3
+          attempt_delay: 30000
+          with: |
+            body_path: build.md
+            token: ${{ secrets.GITHUB_TOKEN }}
+            files: ./build/*
+            name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
+            tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
+            overwrite_files: true
+            prerelease: ${{ steps.context.outputs.IS_PRERELEASE == 'true' }}
 
       - name: Update changelog and module update files
-        if: ${{ inputs.upload_release_metadata != false }}
+        id: update_changelog
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           ARCHIVE_TAG: ${{ steps.context.outputs.ARCHIVE_TAG }}
@@ -239,70 +168,51 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: bash .github/scripts/build_update_changelog.sh
 
-      - name: Upload changelog and module update files to releases
-        if: ${{ inputs.upload_release_metadata != false }}
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
-          # Ensure update and update_changelog releases exist
-          gh release view update >/dev/null 2>&1 || gh release create update --title "update" --notes "" --target main || true
-          gh release view update_changelog >/dev/null 2>&1 || gh release create update_changelog --title "update_changelog" --notes "" --target main || true
-
-          # Upload changelog files to update_changelog release
-          if [ -d "changelogs" ]; then
-            for file in changelogs/*.md; do
-              if [ -s "$file" ]; then
-                echo "Uploading $file to release update_changelog..."
-                gh release upload update_changelog "$file" --clobber || {
-                  sleep 3
-                  gh release upload update_changelog "$file" --clobber || echo "::warning::Failed to upload $file to release update_changelog"
-                }
-              fi
-            done
-          fi
-
-          # Upload build.md to update release
-          if [ -s "build.md" ]; then
-            echo "Uploading build.md to release update..."
-            gh release upload update "build.md" --clobber || {
-              sleep 3
-              gh release upload update "build.md" --clobber || echo "::warning::Failed to upload build.md to release update"
-            }
-          fi
-
-          # Upload module update json files to update release
-          shopt -s nullglob
-          for file in *-update.json; do
-            if [ -s "$file" ]; then
-              echo "Uploading $file to release update..."
-              gh release upload update "$file" --clobber || {
-                sleep 3
-                gh release upload update "$file" --clobber || echo "::warning::Failed to upload $file to release update"
-              }
-            fi
-          done
-          shopt -u nullglob
+      - name: Commit updated build and module update files
+        if: steps.update_changelog.outputs.has_modules == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: update
+          skip_checkout: true
+          file_pattern: changelogs/*.md *-update.json
+          commit_message: Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}
 
       - name: Remove frequently updated apps
         run: |
+          git checkout -f main
           bash .github/scripts/build_exclude_from_archive.sh
 
       - name: Upload to release (Archive)
+        id: archive_upload
+        continue-on-error: true
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          action: softprops/action-gh-release@v3
+          attempt_limit: 3
+          attempt_delay: 30000
+          with: |
+            token: ${{ secrets.GITHUB_TOKEN }}
+            files: ./build/*
+            tag_name: ${{ steps.context.outputs.ARCHIVE_TAG }}
+            overwrite_files: true
+            target_commitish: main
+
+      - name: Update Website Catalog
         env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          tag="${{ steps.context.outputs.ARCHIVE_TAG }}"
-          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "$tag" --notes "" --target main || true
-          if [ -d "./build" ]; then
-            for file in ./build/*; do
-              if [ -s "$file" ]; then
-                echo "Uploading $file to release $tag..."
-                gh release upload "$tag" "$file" --clobber || {
-                  echo "::warning::Failed to upload $file to release $tag, retrying..."
-                  sleep 3
-                  gh release upload "$tag" "$file" --clobber || echo "::warning::Failed to upload $file to release $tag"
-                }
-              fi
-            done
-          fi
+          WEBSITE_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
+          NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          IS_PRERELEASE: ${{ steps.context.outputs.IS_PRERELEASE }}
+          ARCHIVE_UPLOAD_FAILED: ${{ steps.archive_upload.outcome == 'failure' && 'true' || 'false' }}
+        run: python3 .github/scripts/update_website_catalog.py
+
+      - name: Notify telegram
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_THREAD_ID: ${{ steps.context.outputs.TG_THREAD_ID }}
+          TITLE_SUFFIX: ${{ steps.context.outputs.TITLE_SUFFIX }}
+          NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: bash .github/scripts/build_notify_telegram.sh

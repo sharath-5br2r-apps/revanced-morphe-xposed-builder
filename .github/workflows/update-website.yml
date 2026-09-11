@@ -13,16 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Dispatch Website Cache Update
+      - name: Dispatch Website Deployment
         env:
-          PAT_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          WEBSITE_REPO: ${{ vars.WEBSITE_REPO }}
+          DISPATCH_TOKEN: ${{ secrets.WEBSITE_DISPATCH_TOKEN || secrets.APKS_REPO_TOKEN }}
         run: |
-          if [ -n "${WEBSITE_REPO:-}" ] && [ -n "${PAT_TOKEN:-}" ]; then
-            curl -X POST "https://api.github.com/repos/${WEBSITE_REPO}/dispatches" \
-              -H "Accept: application/vnd.github.v3+json" \
-              -H "Authorization: token $PAT_TOKEN" \
-              -d '{"event_type": "update-catalog-cache"}'
-          else
-            echo "WEBSITE_REPO or PERSONAL_ACCESS_TOKEN is not present. Skipping website update."
-          fi
+          curl -f -X POST https://api.github.com/repos/nullcpy/nullcpy.github.io/dispatches \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token $DISPATCH_TOKEN" \
+          -d '{"event_type": "update-catalog-cache"}'
