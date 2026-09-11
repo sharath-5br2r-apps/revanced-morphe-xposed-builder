@@ -18,6 +18,8 @@ concurrency:
   group: ci
   cancel-in-progress: false
 
+permissions: write-all
+
 jobs:
   check_patch:
     runs-on: ubuntu-latest

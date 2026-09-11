@@ -22,6 +22,8 @@ concurrency:
   group: ci
   cancel-in-progress: false
 
+permissions: write-all
+
 jobs:
   build_manual:
     uses: ./.github/workflows/build.yml

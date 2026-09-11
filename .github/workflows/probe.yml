@@ -1,9 +1,0 @@
-name: Probe Caller
-on:
-  workflow_dispatch:
-jobs:
-  probe:
-    uses: ./.github/workflows/build.yml
-    with:
-      config_file: ".github/configs/config.beta.updated.json"
-    secrets: inherit
