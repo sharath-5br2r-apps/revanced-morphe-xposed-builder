@@ -57,6 +57,12 @@ if BASEPATH=$(get_basepath); then
 			module:    '$PKG_VER'"
 		abort
 	fi
+
+	# TODO:
+	# elif "${MODPATH:?}/bin/$ARCH/cmpr" "$BASEPATH/base.apk" "$MODPATH/$PKG_NAME.apk"; then
+	# 	ui_print "* $PKG_NAME is up-to-date"
+	# 	INS=false
+	# fi
 fi
 
 install() {
