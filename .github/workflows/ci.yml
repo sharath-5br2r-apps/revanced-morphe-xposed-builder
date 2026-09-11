@@ -132,7 +132,7 @@ jobs:
 
   build_batch_part1:
     needs: check_patch
-    if: ${{ github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)' }}
+    if: ${{ inputs.mode == 'Batch Build (Absolute Latest)' }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: ".github/configs/config.absolutelatest.part1.json"
@@ -140,7 +140,7 @@ jobs:
 
   build_batch_part2:
     needs: [check_patch, build_batch_part1]
-    if: ${{ always() && (github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)') && !cancelled() }}
+    if: ${{ always() && inputs.mode == 'Batch Build (Absolute Latest)' && !cancelled() }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: ".github/configs/config.absolutelatest.part2.json"
@@ -148,7 +148,7 @@ jobs:
 
   build_batch_part3:
     needs: [check_patch, build_batch_part2]
-    if: ${{ always() && (github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)') && !cancelled() }}
+    if: ${{ always() && inputs.mode == 'Batch Build (Absolute Latest)' && !cancelled() }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: ".github/configs/config.absolutelatest.part3.json"
@@ -156,7 +156,7 @@ jobs:
 
   build_batch_part4:
     needs: [check_patch, build_batch_part3]
-    if: ${{ always() && (github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)') && !cancelled() }}
+    if: ${{ always() && inputs.mode == 'Batch Build (Absolute Latest)' && !cancelled() }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: ".github/configs/config.absolutelatest.part4.json"
@@ -164,7 +164,7 @@ jobs:
 
   build_batch_part5:
     needs: [check_patch, build_batch_part4]
-    if: ${{ always() && (github.event.inputs.mode == 'Batch Build (Absolute Latest)' || github.event.inputs.mode == 'Batch Build (Absolute latest)') && !cancelled() }}
+    if: ${{ always() && inputs.mode == 'Batch Build (Absolute Latest)' && !cancelled() }}
     uses: ./.github/workflows/build.yml
     with:
       config_file: ".github/configs/config.absolutelatest.part5.json"
