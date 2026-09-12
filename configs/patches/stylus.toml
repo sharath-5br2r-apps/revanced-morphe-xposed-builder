@@ -1,7 +1,7 @@
 [bitwarden-morphe-stylus]
 enabled = true
 app-name = "bitwarden"
-rv-brand = "morphe-stylus"
+brand = "stylus"
 build-mode = "apk"
 pkg-name = "com.x8bit.bitwarden"
 cli-source = "MorpheApp/morphe-desktop"
@@ -13,7 +13,8 @@ patches-source = "ch3thanhs/stylus"
 [bitwarden-morphe-stylus-exp]
 enabled = true
 app-name = "bitwarden"
-rv-brand = "morphe-stylus-exp"
+brand = "stylus"
+sub-variant = "exp"
 build-mode = "apk"
 pkg-name = "com.x8bit.bitwarden"
 cli-source = "MorpheApp/morphe-desktop"

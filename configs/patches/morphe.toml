@@ -5,7 +5,7 @@ patches-version = "absolutelatest"
 [youtube-morphe]
 enabled = true
 app-name = "youtube"
-rv-brand = "morphe"
+brand = "morphe"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -22,7 +22,8 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [youtube-morphe-amoled]
 enabled = true
 app-name = "youtube"
-rv-brand = "morphe-amoled"
+brand = "morphe"
+variant = "amoled"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -39,7 +40,8 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [youtube-morphe-exp]
 enabled = true
 app-name = "youtube"
-rv-brand = "morphe-exp"
+brand = "morphe"
+sub-variant = "exp"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -56,7 +58,9 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [youtube-morphe-exp-amoled]
 enabled = true
 app-name = "youtube"
-rv-brand = "morphe-exp-amoled"
+brand = "morphe"
+variant = "amoled"
+sub-variant = "exp"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -75,7 +79,8 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [youtube-music-morphe-exp]
 enabled = true
 app-name = "youtube-music"
-rv-brand = "morphe-exp"
+brand = "morphe"
+sub-variant = "exp"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -92,7 +97,9 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [youtube-music-morphe-exp-amoled]
 enabled = true
 app-name = "youtube-music"
-rv-brand = "morphe-exp-amoled"
+brand = "morphe"
+variant = "amoled"
+sub-variant = "exp"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
 version = "exp"

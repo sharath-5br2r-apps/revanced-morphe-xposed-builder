@@ -210,11 +210,13 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
         )
 
         applied_patches_list = info.get("applied_patches") or []
+        removed_patches_list = info.get("removed_patches") or []
         failed_patches_list = info.get("failed_patches") or []
         skipped_patches_list = info.get("skipped_patches") or []
         densities_list = info.get("densities") or []
         native_libs_list = info.get("native_libraries") or []
         min_sdk_val = str(info.get("min_sdk") or "").strip()
+        dpi_val = str(info.get("dpi") or "").strip()
         cli_val = str(info.get("cli") or "").strip()
         patches_list = patches_ref.split() if isinstance(patches_ref, str) else (patches_ref or [])
         changelog_list = changelog_url.split() if isinstance(changelog_url, str) else (changelog_url or [])
@@ -246,6 +248,8 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
             }
             if min_sdk_val:
                 asset_dict["min_sdk"] = min_sdk_val
+            if dpi_val:
+                asset_dict["dpi"] = dpi_val
             if densities_list:
                 asset_dict["densities"] = densities_list
             if native_libs_list:
@@ -258,6 +262,8 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
                 asset_dict["changelog"] = changelog_list
             if applied_patches_list:
                 asset_dict["applied_patches"] = applied_patches_list
+            if removed_patches_list:
+                asset_dict["removed_patches"] = removed_patches_list
             if failed_patches_list:
                 asset_dict["failed_patches"] = failed_patches_list
             if skipped_patches_list:

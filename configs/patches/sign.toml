@@ -3,7 +3,7 @@ patches-version = "dev"
 [amazon-alexa-signed]
 enabled = true
 app-name = "amazon-alexa"
-rv-brand = "signed"
+brand = "signed"
 build-mode = "apk"
 cli-source = "apksigner"
 pkg-name = "com.amazon.dee.app"

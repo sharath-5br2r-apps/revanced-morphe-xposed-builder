@@ -1,7 +1,7 @@
 [brave-stable-morphe-kveld9]
 enabled = true
 app-name = "brave-stable"
-rv-brand = "morphe-kveld9"
+brand = "kveld9"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
 pkg-name = "com.brave.browser"
@@ -15,7 +15,7 @@ github-release-name-regex = "^Release v"
 [brave-beta-morphe-dh6k]
 enabled = true
 app-name = "brave-beta"
-rv-brand = "morphe-dh6k"
+brand = "dh6k"
 version = "beta"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -30,7 +30,7 @@ github-release-name-regex = "^Beta v"
 [brave-nightly-morphe-dh6k]
 enabled = true
 app-name = "brave-nightly"
-rv-brand = "morphe-dh6k"
+brand = "dh6k"
 version = "beta"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"

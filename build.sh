@@ -10,7 +10,6 @@ trap "abort" INT
 
 # Parse command-line arguments
 DO_CLEAN=false
-DO_CONFIG_UPDATE=false
 CLI_CONFIG_FILE=""
 ALLOWED_APPS_REGEX=""
 CLI_OUTPUT_DIR=""
@@ -20,10 +19,6 @@ while [ $# -gt 0 ]; do
 	case "$1" in
 		--clean|clean)
 			DO_CLEAN=true
-			shift
-			;;
-		--config-update)
-			DO_CONFIG_UPDATE=true
 			shift
 			;;
 		--config=*)
@@ -62,7 +57,7 @@ while [ $# -gt 0 ]; do
 			break
 			;;
     --help)
-      pr "Usage: $0 [--clean] [--config-update] [--config=path/to/config] [--allowed-apps=\"regex\"] [--output=path/to/output/dir]"
+      pr "Usage: $0 [--clean] [--config=path/to/config] [--allowed-apps=\"regex\"] [--output=path/to/output/dir]"
       exit 0
       shift
       ;;
@@ -79,11 +74,6 @@ done
 if [ "$DO_CLEAN" = true ]; then
 	[ -n "$CLI_OUTPUT_DIR" ] && BUILD_DIR="$CLI_OUTPUT_DIR"
 	rm -rf "$TEMP_DIR" "$BUILD_DIR" build.md
-	exit 0
-fi
-
-if [ "$DO_CONFIG_UPDATE" = true ]; then
-	config_update
 	exit 0
 fi
 
@@ -110,7 +100,7 @@ elif [ ${#POSITIONAL_ARGS[@]} -gt 0 ] && [ -f "${POSITIONAL_ARGS[0]}" ]; then
 	POSITIONAL_ARGS=("${POSITIONAL_ARGS[@]:1}") 
 fi
 
-toml_prep "$cfg_file" || abort "could not find config file '$cfg_file'\n\tUsage: $0 [--clean] [--config-update] [--config=path/to/config] [--allowed-apps=\"regex\"] [--output=path/to/output/dir]"
+toml_prep "$cfg_file" || abort "could not find config file '$cfg_file'\n\tUsage: $0 [--clean] [--config=path/to/config] [--allowed-apps=\"regex\"] [--output=path/to/output/dir]"
 main_config_t=$(toml_get_table_main)
 COMPRESSION_LEVEL=$(toml_get "$main_config_t" compression-level) || COMPRESSION_LEVEL="9"
 REMOVE_RV_INTEGRATIONS_CHECKS=$(toml_get "$main_config_t" remove-rv-integrations-checks) || REMOVE_RV_INTEGRATIONS_CHECKS="false"
@@ -119,8 +109,9 @@ DEF_CLI_VER=$(toml_get "$main_config_t" cli-version) || DEF_CLI_VER="latest"
 DEF_PATCHES_SRC=$(toml_get "$main_config_t" patches-source) || DEF_PATCHES_SRC="MorpheApp/morphe-patches"
 DEF_PATCHES_SRC_HOST=$(toml_get "$main_config_t" patches-source-host) || DEF_PATCHES_SRC_HOST="github"
 DEF_CLI_SRC=$(toml_get "$main_config_t" cli-source) || DEF_CLI_SRC="MorpheApp/morphe-desktop"
-DEF_CLI_SRC_HOST=$(toml_get "$main_config_t" cli-source-host) || DEF_CLI_SRC_HOST="github"
-DEF_RV_BRAND=$(toml_get "$main_config_t" rv-brand) || DEF_RV_BRAND="ReVanced"
+DEF_BRAND=$(toml_get "$main_config_t" brand) || DEF_BRAND=""
+DEF_VARIANT=$(toml_get "$main_config_t" variant) || DEF_VARIANT=""
+DEF_SUB_VARIANT=$(toml_get "$main_config_t" sub-variant) || DEF_SUB_VARIANT=""
 DEF_DPI=$(toml_get "$main_config_t" dpi) || DEF_DPI="nodpi anydpi auto"
 DEF_AUTHOR_NAME=$(toml_get "$main_config_t" author) || DEF_AUTHOR_NAME="sharath-5br2r"
 DEF_AUTHOR_PAGE=$(toml_get "$main_config_t" author-page) || DEF_AUTHOR_PAGE="github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder"
@@ -265,7 +256,10 @@ for table_name in $(toml_get_table_names); do
 	app_args[patches_version]="${p_vers[0]}"
 	app_args[patches_ref]="${patches_ref_all%,}"
 	app_args[changelog_url]="${changelog_url_all% }"
-	app_args[rv_brand]=$(toml_get "$t" rv-brand) || app_args[rv_brand]="${p_srcs[0]%%/*}"
+	app_args[brand]=$(toml_get "$t" brand) || app_args[brand]="${DEF_BRAND:-${p_srcs[0]%%/*}}"
+	app_args[variant]=$(toml_get "$t" variant) || app_args[variant]="$DEF_VARIANT"
+	app_args[sub_variant]=$(toml_get "$t" sub-variant) || app_args[sub_variant]="$DEF_SUB_VARIANT"
+	[ -z "${app_args[sub_variant]}" ] && { app_args[sub_variant]=$(toml_get "$t" sub_variant) || app_args[sub_variant]=""; }
 	app_args[github_dlurl_regex]=$(toml_get "$t" github-dlurl-regex) || app_args[github_dlurl_regex]=""
 	app_args[github_regex]="${app_args[github_dlurl_regex]}"
 	app_args[github_release_regex]=$(toml_get "$t" github-release-regex) || app_args[github_release_regex]=""

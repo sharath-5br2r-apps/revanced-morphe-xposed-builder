@@ -4,7 +4,7 @@ patches-version = "absolutelatest"
 [instagram-morphe-piko]
 enabled = true
 app-name = "instagram"
-rv-brand = "morphe-piko"
+brand = "piko"
 build-mode = "apk"
 arch = "arm64-v8a x86_64"
 pkg-name = "com.instagram.android"
@@ -21,7 +21,7 @@ patches-source = "crimera/piko"
 [x-morphe-piko]
 enabled = true
 app-name = "x"
-rv-brand = "morphe-piko"
+brand = "piko"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.twitter.android"
@@ -39,7 +39,8 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [x-morphe-piko-exp]
 enabled = true
 app-name = "x"
-rv-brand = "morphe-piko-exp"
+brand = "piko"
+sub-variant = "exp"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "latest"
@@ -58,7 +59,8 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [x-morphe-piko-materialyou]
 enabled = true
 app-name = "x"
-rv-brand = "morphe-piko-materialyou"
+brand = "piko"
+variant = "materialyou"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.twitter.android"
@@ -74,7 +76,9 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [x-morphe-piko-materialyou-exp]
 enabled = true
 app-name = "x"
-rv-brand = "morphe-piko-materialyou-exp"
+brand = "piko"
+variant = "materialyou"
+sub-variant = "exp"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "latest"
