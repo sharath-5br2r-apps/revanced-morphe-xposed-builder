@@ -38,7 +38,7 @@ def normalize_channel(val):
     return val.strip()  # Pinned version string like "v1.41.0"
 
 
-def compile_configs(patches_dir=".github/configs/patches"):
+def compile_configs(patches_dir="configs/patches"):
     stable_pool = {}
     beta_pool = {}
 
@@ -125,7 +125,7 @@ def compile_configs(patches_dir=".github/configs/patches"):
     return stable_pool, beta_pool
 
 
-def compile_batch_pool(patches_dir=".github/configs/patches"):
+def compile_batch_pool(patches_dir="configs/patches"):
     batch_pool = {}
     toml_files = sorted(glob.glob(os.path.join(patches_dir, "*.toml")))
     for filepath in toml_files:
@@ -152,7 +152,7 @@ def compile_batch_pool(patches_dir=".github/configs/patches"):
 
 
 def main():
-    patches_dir = sys.argv[1] if len(sys.argv) > 1 else ".github/configs/patches"
+    patches_dir = sys.argv[1] if len(sys.argv) > 1 else ("configs/patches" if os.path.isdir("configs/patches") else ".github/configs/patches")
     stable_pool, beta_pool = compile_configs(patches_dir)
     batch_pool = compile_batch_pool(patches_dir)
 
@@ -171,8 +171,9 @@ def main():
     with open("config.beta.json", "w", encoding="utf-8") as f:
         json.dump(beta_out, f, indent=2)
 
-    os.makedirs(".github/configs", exist_ok=True)
-    with open(".github/configs/config.absolutelatest.json", "w", encoding="utf-8") as f:
+    cfg_dir = "configs" if os.path.isdir("configs") else ".github/configs"
+    os.makedirs(cfg_dir, exist_ok=True)
+    with open(f"{cfg_dir}/config.absolutelatest.json", "w", encoding="utf-8") as f:
         json.dump(batch_out, f, indent=2)
 
     import math
@@ -185,7 +186,7 @@ def main():
         part_data = {"patches-version": "absolutelatest"}
         for k in part_keys:
             part_data[k] = batch_pool[k]
-        with open(f".github/configs/config.absolutelatest.part{part_num}.json", "w", encoding="utf-8") as pf:
+        with open(f"{cfg_dir}/config.absolutelatest.part{part_num}.json", "w", encoding="utf-8") as pf:
             json.dump(part_data, pf, indent=2)
 
     print("Base patch configurations compiled successfully.")

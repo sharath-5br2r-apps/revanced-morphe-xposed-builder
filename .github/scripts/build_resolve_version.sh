@@ -2,15 +2,25 @@
 export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
 
-YEAR=$(date -u +"%y")
-TAG=$( { gh api "repos/${GITHUB_REPOSITORY:-$1}/git/matching-refs/tags/" 2>/dev/null || true; } | jq -r '.[].ref // empty' | sed 's#refs/tags/##' | awk -v year="$YEAR" '$1 ~ "^" year "[0-9][0-9][0-9][0-9]$" {print $1}' | sort -nr | head -n1 )
+REPO="${GITHUB_REPOSITORY:-$1}"
+DATE_PREFIX=$(date -u +"%Y.%m.%d")
 
-if [ -n "$TAG" ]; then
-    BUILD_COUNT=${TAG:2:4}
-    BUILD_COUNT=$((10#$BUILD_COUNT + 1))
-else
-    BUILD_COUNT=1
-fi
+# Fetch all matching tags for today's date prefix
+TAGS=$( { gh api "repos/${REPO}/git/matching-refs/tags/${DATE_PREFIX}-" 2>/dev/null || true; } | jq -r '.[].ref // empty' | sed 's#refs/tags/##' )
 
-NEXT_VER_CODE=$(printf "%s%04d" "$YEAR" "$BUILD_COUNT")
+HIGHEST_REV=$(echo "$TAGS" | awk -F'-' -v prefix="$DATE_PREFIX" '
+  $0 ~ "^" prefix "-[0-9]+$" {
+    n = $NF + 0
+    if (n > max) max = n
+  }
+  END { print (max ? max : 0) }
+')
+
+NEXT_REV=$((HIGHEST_REV + 1))
+NEXT_VER_CODE="${DATE_PREFIX}-${NEXT_REV}"
+RELEASE_TITLE_BASE="Build ${DATE_PREFIX} (revision ${NEXT_REV})"
+
 echo "NEXT_VER_CODE=$NEXT_VER_CODE" >> "$GITHUB_OUTPUT"
+echo "RELEASE_TITLE_BASE=$RELEASE_TITLE_BASE" >> "$GITHUB_OUTPUT"
+echo "[+] Resolved version tag: $NEXT_VER_CODE"
+echo "[+] Resolved title base: $RELEASE_TITLE_BASE"

@@ -7,23 +7,26 @@ dos2unix utils.sh 2>/dev/null || true
 source utils.sh
 set_prebuilts
 
-# Find all app configs in configs/ directory
-CONFIG_FILES=$(find configs/patches -maxdepth 2 -name "*.toml" 2>/dev/null | sort -u)
+# Use pre-compiled configs if available, or compile as fallback
+CONFIG_INPUTS=()
+[ -f config.stable.json ] && CONFIG_INPUTS+=(config.stable.json)
+[ -f config.beta.json ] && CONFIG_INPUTS+=(config.beta.json)
+[ -f configs/config.absolutelatest.json ] && CONFIG_INPUTS+=(configs/config.absolutelatest.json)
 
-if [ -z "$CONFIG_FILES" ]; then
-    echo "No config files found in configs/"
+if [ ${#CONFIG_INPUTS[@]} -eq 0 ]; then
+    python3 .github/scripts/compile_patch_configs.py
+    [ -f config.stable.json ] && CONFIG_INPUTS+=(config.stable.json)
+    [ -f config.beta.json ] && CONFIG_INPUTS+=(config.beta.json)
+    [ -f configs/config.absolutelatest.json ] && CONFIG_INPUTS+=(configs/config.absolutelatest.json)
+fi
+
+if [ ${#CONFIG_INPUTS[@]} -eq 0 ]; then
+    echo "No config files found or compiled."
     exit 0
 fi
 
-# Convert all TOML files to a single JSON using yq
-yq eval-all -o=json '. as $item ireduce ({}; . * $item)' configs/patches/*.toml > temp_all_configs.json 2>/dev/null || {
-	rm -f temp_all_configs.json
-	for f in configs/patches/*.toml; do
-		[ -f "$f" ] && yq -o=json "$f" >> temp_all_configs.json.tmp
-	done
-	jq -s 'add' temp_all_configs.json.tmp > temp_all_configs.json
-	rm -f temp_all_configs.json.tmp
-}
+# Merge compiled configs into a single temporary json for metadata extraction
+jq -s 'add' "${CONFIG_INPUTS[@]}" > temp_all_configs.json
 
 APP_VERSIONS_FILE="configs/app_versions.json"
 [ -f "$APP_VERSIONS_FILE" ] || echo '{}' > "$APP_VERSIONS_FILE"

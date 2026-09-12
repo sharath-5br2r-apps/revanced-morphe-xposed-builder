@@ -84,44 +84,33 @@ jobs:
           ref: main
           fetch-depth: 1
 
-      - name: Ensure patch_sources.json exists
-        id: ensure_patch_sources
-        run: bash .github/scripts/ci_ensure_patch_sources.sh
-
-      - name: Commit dummy patch_sources.json if created
-        if: steps.ensure_patch_sources.outputs.created == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: main
-          skip_checkout: true
-          file_pattern: configs/patch_sources.json
-          commit_message: "Create dummy patch_sources.json"
-
-      - name: Fetch latest tags
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
-        id: fetch_tags
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: bash .github/scripts/ci_fetch_tags.sh
-
-      - name: Compare latest vs stored tags
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
+      - name: Sync patch sources and fetch tags
+        if: ${{ inputs.mode != 'Build Only' }}
         id: compare
         env:
-          LATEST_TAGS: ${{ steps.fetch_tags.outputs.latest }}
-        run: bash .github/scripts/ci_compare_tags.sh
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: python3 .github/scripts/sync_patch_sources.py
 
       - name: Fetch App Versions
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
+        if: ${{ inputs.mode != 'Build Only' }}
         id: fetch_app_versions
         run: bash .github/scripts/ci_fetch_app_versions.sh
         
       - name: Compare App Versions
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Build Only' }}
+        if: ${{ inputs.mode != 'Build Only' }}
         id: compare_apps
         env:
           FETCHED_APP_VERSIONS: ${{ steps.fetch_app_versions.outputs.fetched }}
         run: bash .github/scripts/ci_compare_app_versions.sh
+
+      - name: Check App Patches (Bytecode Diff)
+        if: ${{ inputs.mode != 'Build Only' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BETA == '1') }}
+        id: check_app_patches
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: python3 .github/scripts/ci_check_app_patches.py
 
       - name: Generate configs (JSON)
         if: ${{ inputs.mode != 'Build Only' && inputs.mode != 'Batch Build (Latest)' && inputs.mode != 'Batch Build (Absolute Latest)' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || inputs.mode == 'Generate Configs Only (No Build)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
@@ -139,7 +128,6 @@ jobs:
       - name: Resolve effective triggers
         id: effective_triggers
         env:
-          CREATED: ${{ steps.ensure_patch_sources.outputs.created }}
           MODE: ${{ inputs.mode || 'Default' }}
           RAW_TRIGGER_STABLE: ${{ steps.compare.outputs.TRIGGER_STABLE || '0' }}
           RAW_TRIGGER_PRERELEASE: ${{ steps.compare.outputs.TRIGGER_PRERELEASE || '0' }}
@@ -147,16 +135,16 @@ jobs:
         run: bash .github/scripts/ci_resolve_triggers.sh
 
       - name: Commit updated version metadata and configs
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || inputs.mode == 'Batch Build (Latest)' || inputs.mode == 'Batch Build (Absolute Latest)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        if: ${{ inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || inputs.mode == 'Batch Build (Latest)' || inputs.mode == 'Batch Build (Absolute Latest)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
           skip_checkout: true
-          file_pattern: configs/app_versions.json configs/patch_sources.json configs/config.*.updated.json configs/config.stable.part*.json configs/config.dev.part*.json configs/config.latest.part*.json
+          file_pattern: configs/app_versions.json configs/patch_sources.json configs/patch_file_hashes.json configs/config.*.updated.json configs/config.stable.part*.json configs/config.dev.part*.json configs/config.latest.part*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
       - name: Upload split config part artifacts
-        if: ${{ steps.ensure_patch_sources.outputs.created == 'false' && inputs.mode != 'Batch Build (Latest)' && inputs.mode != 'Batch Build (Absolute Latest)' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        if: ${{ inputs.mode != 'Batch Build (Latest)' && inputs.mode != 'Batch Build (Absolute Latest)' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: actions/upload-artifact@v7
         with:
           name: split-configs
@@ -271,12 +259,18 @@ jobs:
         run: |
           tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
           if [ -n "$tag" ] && [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
+            if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
+              title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
+            else
+              title_base="Build $tag"
+            fi
+            release_title="${title_base} (Pre-release)"
             notes_arg=("--notes" "")
             [ -s "dev_logs/aggregated_out/build.dev.md" ] && notes_arg=("--notes-file" "dev_logs/aggregated_out/build.dev.md")
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "dev_logs/aggregated_out/build.dev.md" ] && gh release edit "$tag" --notes-file "dev_logs/aggregated_out/build.dev.md" || true
             else
-              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+              gh release create "$tag" --title "$release_title" "${notes_arg[@]}" --prerelease || true
             fi
             if [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
               echo "Uploading dev_logs/aggregated_out/build.dev.json to release $tag..."
@@ -328,6 +322,7 @@ jobs:
               fi
             done
           fi
+
 
   resolve_stable_version:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs]
@@ -434,12 +429,17 @@ jobs:
         run: |
           tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
           if [ -n "$tag" ] && [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
+            if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
+              title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
+            else
+              title_base="Build $tag"
+            fi
             notes_arg=("--notes" "")
             [ -s "stable_logs/aggregated_out/build.stable.md" ] && notes_arg=("--notes-file" "stable_logs/aggregated_out/build.stable.md")
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "stable_logs/aggregated_out/build.stable.md" ] && gh release edit "$tag" --notes-file "stable_logs/aggregated_out/build.stable.md" || true
             else
-              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
             fi
             if [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
               echo "Uploading stable_logs/aggregated_out/build.stable.json to release $tag..."
@@ -491,6 +491,7 @@ jobs:
               fi
             done
           fi
+
 
   resolve_latest_version:
     needs: [check_patch, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, aggregate_stable_logs]
@@ -602,12 +603,17 @@ jobs:
         run: |
           tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
           if [ -n "$tag" ] && [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
+            if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
+              title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
+            else
+              title_base="Build $tag"
+            fi
             notes_arg=("--notes" "")
             [ -s "latest_logs/aggregated_out/build.latest.md" ] && notes_arg=("--notes-file" "latest_logs/aggregated_out/build.latest.md")
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "latest_logs/aggregated_out/build.latest.md" ] && gh release edit "$tag" --notes-file "latest_logs/aggregated_out/build.latest.md" || true
             else
-              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
             fi
             if [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
               echo "Uploading latest_logs/aggregated_out/build.latest.json to release $tag..."
@@ -659,6 +665,7 @@ jobs:
               fi
             done
           fi
+
 
   resolve_batch_version:
     needs: check_patch
@@ -727,38 +734,47 @@ jobs:
           path: batch_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Prepare build.json and generate release notes for release upload
-        run: |
-          if [ -d "batch_logs/aggregated_out" ]; then
-            for json_file in batch_logs/aggregated_out/build.*.json; do
-              if [ -f "$json_file" ]; then
-                cp -f "$json_file" build.json
-              fi
-            done
-          fi
-          if [ -s "build.json" ]; then
-            python3 .github/scripts/generate_md_from_json.py build.json release_notes.md || true
-          fi
-
       - name: Upload build.json to numbered release via GitHub CLI
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
-          if [ -n "$tag" ] && [ -s "build.json" ]; then
-            notes_arg=("--notes" "")
-            [ -s "release_notes.md" ] && notes_arg=("--notes-file" "release_notes.md")
-            if gh release view "$tag" >/dev/null 2>&1; then
-              [ -s "release_notes.md" ] && gh release edit "$tag" --notes-file "release_notes.md" || true
+          # Discover aggregated json and markdown directly
+          json_file="build.json"
+          md_file="release_notes.md"
+          if [ -d "batch_logs/aggregated_out" ]; then
+            for j in batch_logs/aggregated_out/build.*.json; do
+              [ -s "$j" ] && { json_file="$j"; cp -f "$j" build.json; break; }
+            done
+            for m in batch_logs/aggregated_out/build.*.md; do
+              [ -s "$m" ] && { md_file="$m"; cp -f "$m" release_notes.md; break; }
+            done
+          fi
+
+          if [ ! -s "$md_file" ] && [ -s "$json_file" ]; then
+            python3 .github/scripts/generate_release_notes.py "$json_file" release_notes.md || true
+            md_file="release_notes.md"
+          fi
+
+          if [ -n "$tag" ] && [ -s "$json_file" ]; then
+            if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
+              title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
             else
-              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+              title_base="Build $tag"
             fi
-            if [ -s "build.json" ]; then
-              echo "Uploading build.json to release $tag..."
-              gh release upload "$tag" "build.json" --clobber || {
-                echo "::warning::Failed to upload build.json to release $tag, retrying..."
+            notes_arg=("--notes" "")
+            [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
+            if gh release view "$tag" >/dev/null 2>&1; then
+              [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
+            else
+              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
+            fi
+            if [ -s "$json_file" ]; then
+              echo "Uploading $json_file to release $tag..."
+              gh release upload "$tag" "$json_file" --clobber || {
+                echo "::warning::Failed to upload $json_file to release $tag, retrying..."
                 sleep 3
-                gh release upload "$tag" "build.json" --clobber || echo "::warning::Failed to upload build.json to release $tag"
+                gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
               }
             fi
           fi

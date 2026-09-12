@@ -3236,8 +3236,10 @@ write_build_info() {
 			--argjson skipped "$skipped_json" \
 			--argjson densities "$densities_json" \
 			--argjson native_libs "$native_libs_json" \
+			--arg app_key "$key" \
 			'
 			  .[$key] = {
+			    app_key: $app_key,
 			    name: $name,
 			    arch: $arch,
 			    ext: $ext,
@@ -4441,7 +4443,7 @@ build_rv() {
 				"${version_f} (patches ${patches_ver})" \
 				"${DEF_AUTHOR_NAME:-nullcpy}" \
 				"${app_name} ${args[rv_brand]} module" \
-				"https://github.com/${GITHUB_REPOSITORY-}/releases/download/update/${curr_upj}" \
+				"https://raw.githubusercontent.com/${GITHUB_REPOSITORY-}/update/${curr_upj}" \
 				"$base_template"
 
 			pr "Packing module ${table} (${curr_mod_id})"

@@ -353,56 +353,10 @@ for table_name in $(toml_get_table_names); do
 	if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
 done
 rm -rf temp/tmp.*
-if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then
-	wpr "WARNING: No builds completed or output directory is empty."
-	exit 0
-fi
+if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then abort "All builds failed."; fi
 
-log "\n**Notes:**"
-log "• Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs."
-log "• Use [Zygisk Detach](https://github.com/j-hc/zygisk-detach) to stop Play Store from updating Modules."
-log "\n[GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | [Website](https://sharath-5br2r-apps.github.io)\n"
-
-changelog_merged=$(cat "$TEMP_DIR"/*/changelog.md 2>/dev/null || :)
-changelog_merged=$(awk '
-{
-	line=$0
-	if (line ~ /^(CLI|Patches): /) {
-		key=line
-		sub(/\r$/, "", key)
-		gsub(/[[:space:]]+$/, "", key)
-		if (seen[key]++) {
-			skip_changelog = 1
-			next
-		}
-		skip_changelog = 0
-	} else if (skip_changelog) {
-		if (line ~ /^\[Changelog\]/ || line ~ /^<details>/ || line ~ /^<summary>/ || line ~ /^<\/details>/ || line == "" || line == "\r") {
-			next
-		}
-		skip_changelog = 0
-	}
-	print line
-}' <<<"$changelog_merged")
-log "$changelog_merged"
-
-if [ -f "$BUILD_JSON_FILE" ]; then
-	patches_summary=$(jq -r '
-		to_entries | map(
-			.key as $app |
-			.value as $val |
-			if ($val.applied_patches | length) > 0 then
-				"<details><summary><b>" + $app + " (" + (($val.applied_patches | length) | tostring) + " patches)</b></summary>\n\n" +
-				($val.applied_patches | map("• " + .) | join("\n")) +
-				"\n</details>"
-			else
-				empty
-			fi
-		) | join("\n\n")
-	' "$BUILD_JSON_FILE" 2>/dev/null || true)
-	if [ -n "$patches_summary" ]; then
-		log "\n<details><summary><b>Applied Patches Details</b></summary>\n\n${patches_summary}\n</details>\n"
-	fi
+if command -v python3 >/dev/null 2>&1; then
+	python3 .github/scripts/generate_release_notes.py
 fi
 
 SKIPPED=$(cat "$TEMP_DIR"/skipped 2>/dev/null || :)

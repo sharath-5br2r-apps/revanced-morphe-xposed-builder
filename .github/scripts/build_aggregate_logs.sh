@@ -24,7 +24,7 @@ for json_file in $(find . \( -name "build.json" -o -name "build*.json" \) 2>/dev
 done
 
 # Generate normalized aggregated build.md exclusively from aggregated build.json
-python3 ../.github/scripts/generate_md_from_json.py "$FLAVOR" 2>/dev/null || python3 .github/scripts/generate_md_from_json.py "$FLAVOR" || true
+python3 ../.github/scripts/generate_release_notes.py "$aggregated_json" "$aggregated_md" 2>/dev/null || python3 .github/scripts/generate_release_notes.py "$aggregated_json" "$aggregated_md" || true
 
 if [ -s "$aggregated_md" ]; then
   echo "[+] Aggregated changelog size: $(wc -c < "$aggregated_md") bytes"

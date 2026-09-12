@@ -165,7 +165,7 @@ jobs:
         if: ${{ inputs.upload_release_metadata != false }}
         run: |
           if [ -s "build.json" ]; then
-            python3 .github/scripts/generate_md_from_json.py build.json release_notes.md || true
+            python3 .github/scripts/generate_release_notes.py build.json release_notes.md || true
           fi
 
       - name: Upload to release
@@ -173,6 +173,12 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
+          if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
+            title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
+          else
+            title_base="Build $tag"
+          fi
+          release_title="${title_base}${{ steps.context.outputs.TITLE_SUFFIX }}"
           prerelease_flag=""
           [ "${{ steps.context.outputs.IS_PRERELEASE }}" = "true" ] && prerelease_flag="--prerelease"
           notes_arg=("--notes" "")
@@ -182,7 +188,7 @@ jobs:
           if gh release view "$tag" >/dev/null 2>&1; then
             [ -s "release_notes.md" ] && gh release edit "$tag" --notes-file "release_notes.md" || true
           else
-            gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" $prerelease_flag || true
+            gh release create "$tag" --title "$release_title" "${notes_arg[@]}" $prerelease_flag || true
           fi
           if [ -d "./build" ]; then
             for file in ./build/*; do
@@ -204,12 +210,18 @@ jobs:
         run: |
           tag="${{ steps.version.outputs.NEXT_VER_CODE }}"
           if [ -s "build.json" ]; then
+            if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
+              title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
+            else
+              title_base="Build $tag"
+            fi
+            release_title="${title_base}${{ steps.context.outputs.TITLE_SUFFIX }}"
             notes_arg=("--notes" "")
             [ -s "release_notes.md" ] && notes_arg=("--notes-file" "release_notes.md")
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "release_notes.md" ] && gh release edit "$tag" --notes-file "release_notes.md" || true
             else
-              gh release create "$tag" --title "Build No. $tag" "${notes_arg[@]}" || true
+              gh release create "$tag" --title "$release_title" "${notes_arg[@]}" || true
             fi
             if [ -s "build.json" ]; then
               echo "Uploading build.json to release $tag..."
@@ -229,6 +241,7 @@ jobs:
           path: |
             build.json
           if-no-files-found: ignore
+
 
       - name: Update changelog and module update files
         if: ${{ inputs.upload_release_metadata != false }}
@@ -284,8 +297,18 @@ jobs:
           done
           shopt -u nullglob
 
+      - name: Commit updated build and module update files to update branch
+        if: ${{ inputs.upload_release_metadata != false && steps.update_changelog.outputs.has_modules == 'true' }}
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: update
+          skip_checkout: true
+          file_pattern: build.md changelogs/*.md *-update.json
+          commit_message: "Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}"
+
       - name: Remove frequently updated apps
         run: |
+          git checkout -f main || true
           bash .github/scripts/build_exclude_from_archive.sh
 
       - name: Upload to release (Archive)

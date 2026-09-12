@@ -5,15 +5,8 @@ set -euo pipefail
 export GITHUB_OUTPUT="${GITHUB_OUTPUT:-/tmp/github_output.env}"
 > "$GITHUB_OUTPUT"
 
-echo "=== Running 1: ci_ensure_patch_sources.sh ==="
-bash .github/scripts/ci_ensure_patch_sources.sh
-cat "$GITHUB_OUTPUT"
-
-echo "=== Running 2: ci_fetch_tags.sh ==="
-bash .github/scripts/ci_fetch_tags.sh
-
-echo "=== Running 3: ci_compare_tags.sh ==="
-bash .github/scripts/ci_compare_tags.sh
+echo "=== Running 1: sync_patch_sources.py ==="
+python3 .github/scripts/sync_patch_sources.py
 cat "$GITHUB_OUTPUT"
 
 echo "=== Running 4: ci_fetch_app_versions.sh ==="

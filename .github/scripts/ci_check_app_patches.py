@@ -180,11 +180,11 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
         os.remove(old_f)
     
     try:
-        host = new_info.get('host', 'github')
+        host = (new_info.get('host') or 'github').lower()
         if host == 'gitlab':
             encoded_repo = repo.replace('/', '%2F')
             api_url = f"https://gitlab.com/api/v4/projects/{encoded_repo}/releases/{tag}"
-            req = urllib.request.Request(api_url)
+            req = urllib.request.Request(api_url, headers={'User-Agent': 'Mozilla/5.0 (rvb-check-patches)'})
             with urllib.request.urlopen(req) as response:
                 release_data = json.loads(response.read().decode('utf-8'))
                 
@@ -200,7 +200,28 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
             if not download_url:
                 raise Exception(f"No .mpp, .rvp, or .jar asset found in GitLab release for {repo}@{tag}")
                 
-            dl_req = urllib.request.Request(download_url, headers={'Accept': 'application/octet-stream'})
+            dl_req = urllib.request.Request(download_url, headers={'Accept': 'application/octet-stream', 'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(dl_req) as dl_resp, open(file_name, 'wb') as out_file:
+                out_file.write(dl_resp.read())
+        elif host in ('forgejo', 'gitea', 'codeberg'):
+            api_url = f"https://codeberg.org/api/v1/repos/{repo}/releases/tags/{tag}"
+            req = urllib.request.Request(api_url, headers={'User-Agent': 'Mozilla/5.0 (rvb-check-patches)'})
+            with urllib.request.urlopen(req) as response:
+                release_data = json.loads(response.read().decode('utf-8'))
+
+            download_url = None
+            file_name = None
+            for asset in release_data.get('assets', []):
+                name = asset.get('name', '')
+                if name.endswith('.mpp') or name.endswith('.rvp') or name.endswith('.jar'):
+                    download_url = asset.get('browser_download_url')
+                    file_name = name
+                    break
+
+            if not download_url:
+                raise Exception(f"No .mpp, .rvp, or .jar asset found in Forgejo release for {repo}@{tag}")
+
+            dl_req = urllib.request.Request(download_url, headers={'User-Agent': 'Mozilla/5.0'})
             with urllib.request.urlopen(dl_req) as dl_resp, open(file_name, 'wb') as out_file:
                 out_file.write(dl_resp.read())
         else:
@@ -291,7 +312,7 @@ def run():
     except FileNotFoundError:
         tags_new = {}
     
-    hash_file = '.github/configs/patch_file_hashes.json'
+    hash_file = 'configs/patch_file_hashes.json' if os.path.exists('configs/patch_file_hashes.json') or os.path.isdir('configs') else '.github/configs/patch_file_hashes.json'
     if os.path.exists(hash_file):
         with open(hash_file, 'r') as f:
             hashes = json.load(f)
@@ -348,6 +369,9 @@ def run():
         json.dump(stable_set, f)
         
     with open('active_patch_apps.beta.json', 'w') as f:
+        json.dump(beta_set, f)
+
+    with open('active_patch_apps.dev.json', 'w') as f:
         json.dump(beta_set, f)
 
     if stable_set or beta_set:
