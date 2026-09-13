@@ -72,22 +72,22 @@
     "stable_date": "2026-09-03T09:17:16Z"
   },
   "byehi98/okish-morphe-patches": {
-    "beta": "v1.26.1-dev.1",
-    "beta_date": "2026-09-12T14:32:23Z",
+    "beta": "v1.27.0-dev.1",
+    "beta_date": "2026-09-13T15:26:38Z",
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.26.1",
-    "stable_date": "2026-09-12T14:37:38Z"
+    "stable": "v1.27.0",
+    "stable_date": "2026-09-13T15:32:36Z"
   },
   "ch3thanhs/stylus": {
-    "beta": "v1.5.1-dev.1",
-    "beta_date": "2026-08-31T09:32:40Z",
+    "beta": "v1.5.2-dev.1",
+    "beta_date": "2026-09-13T13:13:34Z",
     "blocked": false,
     "host": "github",
     "repo": "ch3thanhs/stylus",
-    "stable": "v1.5.1",
-    "stable_date": "2026-08-31T09:35:55Z"
+    "stable": "v1.5.2",
+    "stable_date": "2026-09-13T13:20:35Z"
   },
   "crimera/piko": {
     "beta": "v3.10.0-dev.6",

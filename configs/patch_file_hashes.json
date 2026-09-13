@@ -51,15 +51,15 @@
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "8275110b2b3b0eec9acd9451dc5ba14b",
-      "shared": "d13babfcb873c7371ad3f1af0f314d0a"
+      "shared": "f5474fd1736593ba4b9f9cc36c4b2093"
     },
     "stable": {}
   },
   "ch3thanhs/stylus": {
     "beta": {},
     "stable": {
-      "com.x8bit.bitwarden": "000cbc2c9d9908714c03f1a04099e517",
-      "shared": "cb01ce53cf5556afc6bd721961730655"
+      "com.x8bit.bitwarden": "7dc0af8f1605dde07d90594ed8d23b60",
+      "shared": "d3095f4c5c9a17e50b93b97c74cdedac"
     }
   },
   "crimera/piko": {
