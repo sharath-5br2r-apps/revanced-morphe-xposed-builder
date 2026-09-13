@@ -176,8 +176,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.22.0",
-    "stable_date": "2026-09-12T22:59:56Z"
+    "stable": "v1.22.1",
+    "stable_date": "2026-09-13T01:12:16Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",
