@@ -9,8 +9,8 @@
     "stable_date": "2026-06-22T17:44:41Z"
   },
   "MorpheApp/morphe-patches": {
-    "beta": "v1.43.0-dev.3",
-    "beta_date": "2026-09-13T10:45:37Z",
+    "beta": "v1.43.0-dev.4",
+    "beta_date": "2026-09-13T19:00:01Z",
     "blocked": false,
     "host": "github",
     "repo": "MorpheApp/morphe-patches",
@@ -90,8 +90,8 @@
     "stable_date": "2026-09-13T13:20:35Z"
   },
   "crimera/piko": {
-    "beta": "v3.10.0-dev.6",
-    "beta_date": "2026-09-10T01:22:23Z",
+    "beta": "v3.10.0-dev.7",
+    "beta_date": "2026-09-13T18:20:38Z",
     "blocked": false,
     "host": "github",
     "repo": "crimera/piko",
@@ -176,8 +176,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.22.1",
-    "stable_date": "2026-09-13T01:12:16Z"
+    "stable": "v1.22.2",
+    "stable_date": "2026-09-13T19:00:24Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",
