@@ -2,10 +2,11 @@ enable-module-update = true
 patches-version = "absolutelatest"
 
 
-[calcnote-morphe-binarymend]
+[CalcNote-Morphe-Binarymend]
 enabled = true
-app-name = "calcnote"
-brand = "binarymend"
+app-name = "CalcNote"
+engine-brand = "Morphe"
+patch-brand = "Binarymend"
 pkg-name = "com.burton999.notecal"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"

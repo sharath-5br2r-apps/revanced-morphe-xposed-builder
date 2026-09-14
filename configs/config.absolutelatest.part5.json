@@ -1,11 +1,12 @@
 {
   "patches-version": "absolutelatest",
-  "adobe-acrobat-morphe-rushiranpise": {
+  "AdobeAcrobat-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "adobe-acrobat",
-    "brand": "rushiranpise",
+    "app-name": "Adobe Acrobat",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader",
     "build-mode": "apk",
     "arch": "all arm64-v8a x86_64",
@@ -15,13 +16,14 @@
     "patches-source": "rushiranpise/morphe-patches",
     "custom-microg-patches": "'None'"
   },
-  "adobe-acrobat-morphe-rushiranpise-exp": {
+  "AdobeAcrobat-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "adobe-acrobat",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "Adobe Acrobat",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader",
     "version": "latest",
     "build-mode": "apk",
@@ -32,12 +34,13 @@
     "patches-source": "rushiranpise/morphe-patches",
     "custom-microg-patches": "'None'"
   },
-  "pc-remote-morphe-rushiranpise": {
+  "PCRemote-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "pc-remote",
-    "brand": "rushiranpise",
+    "app-name": "PC Remote",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
@@ -47,13 +50,14 @@
     "patches-source": "rushiranpise/morphe-patches",
     "arch": "all arm64-v8a arm-v7a x86_64"
   },
-  "pc-remote-morphe-rushiranpise-exp": {
+  "PCRemote-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "pc-remote",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "PC Remote",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable",
     "version": "latest",
     "custom-microg-patches": "'None'",
@@ -64,25 +68,27 @@
     "patches-source": "rushiranpise/morphe-patches",
     "arch": "all arm64-v8a arm-v7a x86_64"
   },
-  "oxygen-updater-morphe-rushiranpise": {
+  "OxygenUpdater-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "oxygen-updater",
-    "brand": "rushiranpise",
+    "app-name": "Oxygen Updater",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
     "pkg-name": "com.arjanvlek.oxygenupdater",
     "github-dlurl": "https://github.com/oxygen-updater/os-updater",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "oxygen-updater-morphe-rushiranpise-exp": {
+  "OxygenUpdater-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "oxygen-updater",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "Oxygen Updater",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "version": "beta",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
@@ -90,12 +96,13 @@
     "github-dlurl": "https://github.com/oxygen-updater/os-updater",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "windscribe-vpn-morphe-rushiranpise": {
+  "WindscribeVPN-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "windscribe-vpn",
-    "brand": "rushiranpise",
+    "app-name": "Windscribe VPN",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
@@ -106,13 +113,14 @@
     "apkcombo-dlurl": "https://apkcombo.com/windscribe/com.windscribe.vpn",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "windscribe-vpn-morphe-rushiranpise-exp": {
+  "WindscribeVPN-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "windscribe-vpn",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "Windscribe VPN",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn",
     "version": "latest",
     "custom-microg-patches": "'None'",
@@ -124,12 +132,13 @@
     "apkcombo-dlurl": "https://apkcombo.com/windscribe/com.windscribe.vpn",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "1111-warp-morphe-rushiranpise": {
+  "CloudflareWarp-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "1111-warp",
-    "brand": "rushiranpise",
+    "app-name": "Cloudflare WARP",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
@@ -140,13 +149,14 @@
     "patches-source": "rushiranpise/morphe-patches",
     "apkmirror-exampls-url": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
   },
-  "1111-warp-morphe-rushiranpise-exp": {
+  "CloudflareWarp-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "1111-warp",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "Cloudflare WARP",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone",
     "version": "latest",
     "custom-microg-patches": "'None'",
@@ -158,12 +168,13 @@
     "patches-source": "rushiranpise/morphe-patches",
     "apkmirror-exampls-url": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
   },
-  "adguard-morphe-rushiranpise": {
+  "AdGuard-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "adguard",
-    "brand": "rushiranpise",
+    "app-name": "AdGuard",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
@@ -173,13 +184,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/adguard-software-limited/adguard",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "adguard-morphe-rushiranpise-exp": {
+  "AdGuard-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "adguard",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "AdGuard",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android",
     "version": "latest",
     "custom-microg-patches": "'None'",
@@ -190,12 +202,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/adguard-software-limited/adguard",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "beta-maniac-morphe-rushiranpise": {
+  "BetaManiac-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "beta-maniac",
-    "brand": "rushiranpise",
+    "app-name": "Beta Maniac",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -204,13 +217,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "beta-maniac-morphe-rushiranpise-exp": {
+  "BetaManiac-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "beta-maniac",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "Beta Maniac",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta",
     "version": "latest",
     "build-mode": "apk",
@@ -220,12 +234,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "macrodroid-morphe-rushiranpise": {
+  "MacroDroid-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "macrodroid",
-    "brand": "rushiranpise",
+    "app-name": "MacroDroid",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -234,13 +249,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "macrodroid-morphe-rushiranpise-exp": {
+  "MacroDroid-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "macrodroid",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "MacroDroid",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid",
     "version": "latest",
     "build-mode": "apk",
@@ -250,12 +266,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "bluetooth-keyboard-mouse-morphe-rushiranpise": {
+  "BluetoothKeyboardAndMouse-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "bluetooth-keyboard-mouse",
-    "brand": "rushiranpise",
+    "app-name": "Bluetooth Keyboard & Mouse",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/io.appground.blek",
     "build-mode": "apk",
     "arch": "arm64-v8a x86_64",
@@ -264,11 +281,12 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard-mouse-2/",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "proton-vpn-morphe-rushiranpise": {
+  "ProtonVPN-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "proton-vpn",
-    "brand": "rushiranpise",
+    "app-name": "Proton VPN",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -280,12 +298,13 @@
     "dpi": "120-640dpi",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "proton-vpn-morphe-rushiranpise-exp": {
+  "ProtonVPN-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "proton-vpn",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "Proton VPN",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android",
     "version": "latest",
     "build-mode": "apk",
@@ -298,11 +317,12 @@
     "dpi": "120-640dpi",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "amazon-alexa-signed": {
+  "AmazonAlexa-APKSigner-Signed": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "amazon-alexa",
-    "brand": "signed",
+    "app-name": "Amazon Alexa",
+    "engine-brand": "APKSigner",
+    "patch-brand": "Signed",
     "build-mode": "apk",
     "cli-source": "apksigner",
     "pkg-name": "com.amazon.dee.app",
@@ -316,10 +336,11 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/",
     "dpi": "120-480dpi 480-640dpi"
   },
-  "bitwarden-morphe-stylus": {
+  "Bitwarden-Morphe-Stylus": {
     "enabled": true,
-    "app-name": "bitwarden",
-    "brand": "stylus",
+    "app-name": "Bitwarden",
+    "engine-brand": "Morphe",
+    "patch-brand": "Stylus",
     "build-mode": "apk",
     "pkg-name": "com.x8bit.bitwarden",
     "cli-source": "MorpheApp/morphe-desktop",
@@ -329,11 +350,12 @@
     "version": "latest",
     "patches-source": "ch3thanhs/stylus"
   },
-  "bitwarden-morphe-stylus-exp": {
+  "Bitwarden-Morphe-Stylus-Experimental": {
     "enabled": true,
-    "app-name": "bitwarden",
-    "brand": "stylus",
-    "sub-variant": "exp",
+    "app-name": "Bitwarden",
+    "engine-brand": "Morphe",
+    "patch-brand": "Stylus",
+    "sub-variant": "Experimental",
     "build-mode": "apk",
     "pkg-name": "com.x8bit.bitwarden",
     "cli-source": "MorpheApp/morphe-desktop",
@@ -343,12 +365,13 @@
     "version": "latest",
     "patches-source": "ch3thanhs/stylus"
   },
-  "tiktok-morphe-icysymmetra": {
+  "TikTok-Morphe-Icysymmetra": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "tiktok",
+    "app-name": "TikTok",
     "pkg-name": "com.zhiliaoapp.musically",
-    "brand": "icysymmetra",
+    "engine-brand": "Morphe",
+    "patch-brand": "Icysymmetra",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a",
     "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
@@ -356,12 +379,13 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically",
     "patches-source": "icysymmetra/tiktok-patches-for-morphe"
   },
-  "tiktok-morphe-hxreborn": {
+  "TikTok-Morphe-Hxreborn": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "tiktok",
+    "app-name": "TikTok",
     "pkg-name": "com.zhiliaoapp.musically",
-    "brand": "hxreborn",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hxreborn",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a",
     "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",

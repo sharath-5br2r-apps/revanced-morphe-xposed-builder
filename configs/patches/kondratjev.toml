@@ -1,11 +1,12 @@
 enable-module-update = true
 patches-version = "absolutelatest"
 
-[soundcloud-morphe-kondratjev]
+[SoundCloud-Morphe-Kondratjev]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "soundcloud"
-brand = "kondratjev"
+app-name = "SoundCloud"
+engine-brand = "Morphe"
+patch-brand = "Kondratjev"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
 version = "auto"
 build-mode = "apk"

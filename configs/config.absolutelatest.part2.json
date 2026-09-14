@@ -1,12 +1,13 @@
 {
   "patches-version": "absolutelatest",
-  "prime-video-morphe-hoodles-shared-exp": {
+  "PrimeVideo-Morphe-Hoodles-Shared-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "prime-video",
-    "brand": "hoodles",
-    "variant": "shared",
-    "sub-variant": "exp",
+    "app-name": "Prime Video",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "variant": "Shared",
+    "sub-variant": "Experimental",
     "pkg-name": "com.amazon.avod.thirdpartyclient",
     "build-mode": "apk",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient",
@@ -18,12 +19,13 @@
     "patches-source": "hoo-dles/morphe-patches",
     "excluded-patches": "'Rename Shared Permissions'"
   },
-  "xrecorder-morphe-hoodles": {
+  "XRecorder-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "xrecorder",
-    "brand": "hoodles",
+    "app-name": "XRecorder",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a",
@@ -32,13 +34,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "xrecorder-morphe-hoodles-exp": {
+  "XRecorder-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "xrecorder",
-    "brand": "hoodles",
-    "sub-variant": "exp",
+    "app-name": "XRecorder",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder",
     "version": "latest",
     "build-mode": "apk",
@@ -48,12 +51,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "smart-launcher-morphe-hoodles": {
+  "SmartLauncher-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "smart-launcher",
-    "brand": "hoodles",
+    "app-name": "Smart Launcher",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -62,43 +66,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "smart-launcher-morphe-hoodles-exp": {
+  "SmartLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "smart-launcher",
-    "brand": "hoodles",
-    "sub-variant": "exp",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
-    "version": "latest",
-    "build-mode": "apk",
-    "arch": "all arm64-v8a arm-v7a x86_64",
-    "pkg-name": "ginlemon.flowerfree",
-    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
-    "patches-source": "hoo-dles/morphe-patches"
-  },
-  "smart-launcher-6-morphe-hoodles": {
-    "enable-module-update": true,
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "smart-launcher-6",
-    "brand": "hoodles",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
-    "build-mode": "apk",
-    "arch": "all arm64-v8a arm-v7a x86_64",
-    "pkg-name": "ginlemon.flowerfree",
-    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
-    "patches-source": "hoo-dles/morphe-patches"
-  },
-  "smart-launcher-6-morphe-hoodles-exp": {
-    "enable-module-update": true,
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "smart-launcher-6",
-    "brand": "hoodles",
-    "sub-variant": "exp",
+    "app-name": "Smart Launcher",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
     "version": "latest",
     "build-mode": "apk",
@@ -108,12 +83,45 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "nova-launcher-morphe-hoodles": {
+  "SmartLauncher6-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "nova-launcher",
-    "brand": "hoodles",
+    "app-name": "Smart Launcher 6",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
+    "build-mode": "apk",
+    "arch": "all arm64-v8a arm-v7a x86_64",
+    "pkg-name": "ginlemon.flowerfree",
+    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "SmartLauncher6-Morphe-Hoodles-Experimental": {
+    "enable-module-update": true,
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "Smart Launcher 6",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree",
+    "version": "latest",
+    "build-mode": "apk",
+    "arch": "all arm64-v8a arm-v7a x86_64",
+    "pkg-name": "ginlemon.flowerfree",
+    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "NovaLauncher-Morphe-Hoodles": {
+    "enable-module-update": true,
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "Nova Launcher",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a",
@@ -122,13 +130,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "nova-launcher-morphe-hoodles-exp": {
+  "NovaLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "nova-launcher",
-    "brand": "hoodles",
-    "sub-variant": "exp",
+    "app-name": "Nova Launcher",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher",
     "version": "latest",
     "build-mode": "apk",
@@ -138,12 +147,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "xodo-morphe-hoodles": {
+  "Xodo-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "xodo",
-    "brand": "hoodles",
+    "app-name": "Xodo PDF",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader",
     "build-mode": "apk",
     "arch": "arm64-v8a arm-v7a x86_64",
@@ -152,13 +162,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "xodo-morphe-hoodles-exp": {
+  "Xodo-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "xodo",
-    "brand": "hoodles",
-    "sub-variant": "exp",
+    "app-name": "Xodo PDF",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader",
     "version": "latest",
     "build-mode": "apk",
@@ -168,12 +179,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "solid-explorer-morphe-hoodles": {
+  "SolidExplorer-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "solid-explorer",
-    "brand": "hoodles",
+    "app-name": "Solid Explorer",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -182,13 +194,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "solid-explorer-morphe-hoodles-exp": {
+  "SolidExplorer-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "solid-explorer",
-    "brand": "hoodles",
-    "sub-variant": "exp",
+    "app-name": "Solid Explorer",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2",
     "version": "latest",
     "build-mode": "apk",
@@ -198,11 +211,12 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "github-morphe-hoodles-stylus": {
+  "GitHub-Morphe-Hoodles-Stylus": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "github",
-    "brand": "hoodles stylus",
+    "app-name": "GitHub",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles-Stylus",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
     "pkg-name": "com.github.android",
@@ -213,12 +227,13 @@
     "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
     "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'"
   },
-  "github-morphe-hoodles-stylus-exp": {
+  "GitHub-Morphe-Hoodles-Stylus-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "github",
-    "brand": "hoodles stylus",
-    "sub-variant": "exp",
+    "app-name": "GitHub",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles-Stylus",
+    "sub-variant": "Experimental",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
     "pkg-name": "com.github.android",
@@ -230,12 +245,13 @@
     "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'",
     "version": "latest"
   },
-  "wallcraft-morphe-hoodles": {
+  "Wallcraft-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "wallcraft",
-    "brand": "hoodles",
+    "app-name": "Wallcraft",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -244,13 +260,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "wallcraft-morphe-hoodles-exp": {
+  "Wallcraft-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "wallcraft",
-    "brand": "hoodles",
-    "sub-variant": "exp",
+    "app-name": "Wallcraft",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper",
     "version": "latest",
     "build-mode": "apk",
@@ -260,12 +277,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "wps-office-morphe-hoodles": {
+  "WPSOffice-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "wps-office",
-    "brand": "hoodles",
+    "app-name": "WPS Office",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cn.wps.moffice_eng",
     "build-mode": "apk",
     "arch": "arm64-v8a arm-v7a",
@@ -274,12 +292,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/wps-software-pte-ltd/wps-office-pdf/",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "podcast-addict-morphe-hoodles": {
+  "PodcastAddict-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "podcast-addict",
-    "brand": "hoodles",
+    "app-name": "Podcast Addict",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -288,13 +307,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "podcast-addict-morphe-hoodles-exp": {
+  "PodcastAddict-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "podcast-addict",
-    "brand": "hoodles",
-    "sub-variant": "exp",
+    "app-name": "Podcast Addict",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict",
     "version": "latest",
     "build-mode": "apk",
@@ -304,12 +324,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "merriam-webster-morphe-hoodles": {
+  "MerriamWebsterDictionary-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "merriam-webster",
-    "brand": "hoodles",
+    "app-name": "Merriam-Webster Dictionary",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.merriamwebster",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -318,12 +339,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/merriam-webster-inc/dictionary-merriam-webster",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "pandora-morphe-hoodles": {
+  "Pandora-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "pandora",
-    "brand": "hoodles",
+    "app-name": "Pandora",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pandora.android",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -332,12 +354,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/pandora/pandora-music-podcasts",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "ventusky-morphe-hoodles": {
+  "Ventusky-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "ventusky",
-    "brand": "hoodles",
+    "app-name": "Ventusky",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -346,13 +369,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "ventusky-morphe-hoodles-exp": {
+  "Ventusky-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "ventusky",
-    "brand": "hoodles",
-    "sub-variant": "exp",
+    "app-name": "Ventusky",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky",
     "version": "latest",
     "build-mode": "apk",
@@ -362,13 +386,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "niagara-launcher-morphe-hoodles-exp": {
+  "NiagaraLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "niagara-launcher",
-    "brand": "hoodles",
-    "sub-variant": "exp",
+    "app-name": "Niagara Launcher",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/bitpit.launcher",
     "version": "latest",
     "build-mode": "apk",
@@ -378,12 +403,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/mellowdrop-studio/niagara-launcher-%f0%9f%94%b9-fresh-clean",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "hellochinese-morphe-hoodles": {
+  "HelloChinese-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "hellochinese",
-    "brand": "hoodles",
+    "app-name": "HelloChinese",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.hellochinese",
     "build-mode": "apk",
     "arch": "arm64-v8a",
@@ -392,12 +418,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/hellochinese-learn-chinese-mandarin/hellochinese-learn-chinese/",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "myfitnesspal-morphe-hoodles": {
+  "MyFitnessPal-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "myfitnesspal",
-    "brand": "hoodles",
+    "app-name": "MyFitnessPal",
+    "engine-brand": "Morphe",
+    "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",

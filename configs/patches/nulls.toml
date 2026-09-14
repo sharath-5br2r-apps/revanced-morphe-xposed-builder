@@ -1,36 +1,39 @@
 enable-module-update = true
 patches-version = "absolutelatest"
 
-[clash-of-clans-morphe-nulls]
+[ClashOfClans-APKSigner-Nulls]
 enabled = true
 cli-source = "none"
 cli-source-host = "none"
-app-name = "clash-of-clans"
-brand = "nulls"
+app-name = "Clash of Clans"
+engine-brand = "APKSigner"
+patch-brand = "Nulls"
 build-mode = "apk"
 arch = "all"
 pkg-name = "nullsclash.night.rel"
 direct-dlurl = "http://dnull.xyz/latest_coc"
 patches-source = "none"
 patches-source-host = "none"
-[clash-royale-morphe-nulls]
+[ClashRoyale-APKSigner-Nulls]
 enabled = true
 cli-source = "none"
 cli-source-host = "none"
-app-name = "clash-royale"
-brand = "nulls"
+app-name = "Clash Royale"
+engine-brand = "APKSigner"
+patch-brand = "Nulls"
 build-mode = "apk"
 arch = "all"
 pkg-name = "nullsroyale.rel.free"
 direct-dlurl = "http://dnull.xyz/latest_cr"
 patches-source = "none"
 patches-source-host = "none"
-[brawl-stars-morphe-nulls]
+[BrawlStars-APKSigner-Nulls]
 enabled = true
 cli-source = "none"
 cli-source-host = "none"
-app-name = "brawl-stars"
-brand = "nulls"
+app-name = "Brawl Stars"
+engine-brand = "APKSigner"
+patch-brand = "Nulls"
 build-mode = "apk"
 arch = "all"
 pkg-name = "daniillnull.nulls.brawlstars"

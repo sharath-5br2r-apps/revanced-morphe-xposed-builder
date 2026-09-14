@@ -1,11 +1,12 @@
 enable-module-update = true
 patches-version = "absolutelatest"
 
-[chess-morphe-prathxm]
+[ChessDotCom-Morphe-Prathxm]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "chess"
-brand = "prathxm"
+app-name = "Chess.com"
+engine-brand = "Morphe"
+patch-brand = "Prathxm"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess"
 version = "auto"
 build-mode = "apk"
@@ -16,12 +17,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/"
 patches-source = "PrathxmOp/Prathxm-Patches"
 
-[chess-morphe-prathxm-clone]
+[ChessDotCom-Morphe-Prathxm-Clone]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "chess"
-brand = "prathxm"
-sub-variant = "clone"
+app-name = "Chess.com"
+engine-brand = "Morphe"
+patch-brand = "Prathxm"
+sub-variant = "Clone"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess"
 version = "auto"
 build-mode = "apk"

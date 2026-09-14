@@ -24,9 +24,12 @@ def main():
     merged = {}
     for f in configs:
         data = load_toml(f)
+        file_defaults = {k: v for k, v in data.items() if not isinstance(v, dict)}
         for k, v in data.items():
             if isinstance(v, dict):
-                merged[k] = v
+                entry = dict(file_defaults)
+                entry.update(v)
+                merged[k] = entry
 
     with open(out_file, 'w', encoding='utf-8') as out:
         json.dump(merged, out, indent=2)

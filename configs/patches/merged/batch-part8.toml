@@ -1,47 +1,58 @@
 # --- Batch TOML Part 8 (8 distinct apps, 8 builds) ---
 
 
-[youtube-morphe-anddea]
+[YouTube-Morphe-AMOLED-Experimental]
 enabled = true
-app-name = "youtube"
-brand = "anddea"
+app-name = "YouTube"
+engine-brand = "Morphe"
+variant = "AMOLED"
+sub-variant = "Experimental"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
+version = "exp"
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
-patches-source = "anddea/revanced-patches"
-included-patches = "'MaterialYou'"
-patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
+patches-source = "MorpheApp/morphe-patches"
+included-patches = "'Theme'"
+patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
+apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
+apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
-# ── YouTube morphe-anddea-amoled (#000000 explicit) ───────────────────────────
 
 
-[ventusky-morphe-hoodles-exp]
+
+[Twitter-Morphe-Piko-MaterialYou]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "ventusky"
-brand = "hoodles"
-sub-variant = "exp"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
-version = "latest"
+app-name = "Twitter"
+engine-brand = "Morphe"
+patch-brand = "Piko"
+variant = "MaterialYou"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "cz.ackee.ventusky"
-uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
-patches-source = "hoo-dles/morphe-patches"
+pkg-name = "com.twitter.android"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "crimera/piko"
+patches-source-host = "github"
+included-patches = "'Dynamic Color'"
+patcher-args = "--continue-on-error"
+uptodown-dlurl = "https://twitter.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 
 
 
-[smart-launcher-morphe-hoodles]
+[SmartLauncher-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "smart-launcher"
-brand = "hoodles"
+app-name = "Smart Launcher"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+version = "latest"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "ginlemon.flowerfree"
@@ -51,78 +62,88 @@ patches-source = "hoo-dles/morphe-patches"
 
 
 
-[pinterest-morphe-browzomje]
+[Pandora-Morphe-Hoodles]
 enabled = true
-app-name = "pinterest"
-brand = "browzomje"
-pkg-name = "com.pinterest"
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "Pandora"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pandora.android"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
-cli-source = "MorpheApp/morphe-desktop"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
-uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
-patches-source = "browzomje/browzomje-patches"
+pkg-name = "com.pandora.android"
+uptodown-dlurl = "https://pandora.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pandora/pandora-music-podcasts"
+patches-source = "hoo-dles/morphe-patches"
 
 
 
-[macrodroid-morphe-rushiranpise-exp]
+[MXPlayerPro-Morphe-Paresh-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "macrodroid"
-brand = "rushiranpise"
-sub-variant = "exp"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
+app-name = "MX Player Pro"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+sub-variant = "Experimental"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
 version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "com.arlosoft.macrodroid"
-uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
-patches-source = "rushiranpise/morphe-patches"
+arch = "all arm64-v8a arm-v7a"
+pkg-name = "com.mxtech.videoplayer.pro"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
+uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
 
-# ── Bluetooth Keyboard and Mouse (morphe-rushiranpise) ───────────────────────
+# ── Cricbuzz (morphe-paresh) ──────────────────────────────────────────────────
 
 
-[gboard-morphe-jasonwu1994-adobo]
+[Fing-Morphe-Paresh-Experimental]
 enabled = true
-app-name = "gboard"
-brand = "jasonwu1994 adobo"
-build-mode = "both"
-arch = "arm64-v8a arm-v7a x86_64"
-pkg-name = "com.google.android.inputmethod.latin"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
-patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
-included-patches = " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"
-exclusive-patches = "jkennethcarino/adobo"
-excluded-patches = "'Package Rename' | "
-patcher-args = "-f --continue-on-error"
-cli-source = "MorpheApp/morphe-desktop"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
-apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
-apkmirror-release-filter = "!(lite|beta)"
-
-
-
-
-[calcnote-morphe-binarymend]
-enabled = true
-app-name = "calcnote"
-brand = "binarymend"
-pkg-name = "com.burton999.notecal"
+app-name = "Fing"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+sub-variant = "Experimental"
+version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.overlook.android.fing"
 cli-source = "MorpheApp/morphe-desktop"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.burton999.notecal"
-uptodown-dlurl = "https://calcnote-notepad-calculator.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/burton999/calcnote-notepad-calculator"
-patches-source = "binarymend/morphe-patches"
+uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
+
+arch = "all arm64-v8a arm-v7a"
 
 
-[amazon-shopping-morphe-rushiranpise]
+
+[CamScanner-Morphe-Hoodles]
 enabled = true
-app-name = "amazon-shopping"
-brand = "rushiranpise"
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "CamScanner"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.intsig.camscanner"
+build-mode = "apk"
+arch = "all arm64-v8a"
+pkg-name = "com.intsig.camscanner"
+uptodown-dlurl = "https://camscanner-pdf-creator.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator"
+apkmirror-example-url = "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator/camscanner-scanner-pdf-maker-7-24-0-2608130000-release/"
+apkpure-dlurl = "https://apkpure.com/camscanner-scanner-pdf-maker/com.intsig.camscanner"
+apkcombo-dlurl = "https://apkcombo.com/camscanner/com.intsig.camscanner"
+patches-source = "hoo-dles/morphe-patches"
+patcher-args = "--continue-on-error"
+
+
+
+[AmazonShopping-Morphe-Rushiranpise-Experimental]
+enabled = true
+app-name = "Amazon Shopping"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 build-mode = "apk"
 pkg-name = "com.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
@@ -133,6 +154,7 @@ included-patches = "'Dark Mode' 'Open Links in Browser'"
 excluded-patches = "'Hide Rufus Tab'"
 custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
+version = "latest"
 
 arch = "all arm64-v8a arm-v7a"
 

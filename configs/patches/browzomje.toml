@@ -2,10 +2,11 @@ enable-module-update = true
 patches-version = "absolutelatest"
 
 # ── Pinterest (browzomje-patches) ─────────────────────────────────────────────
-[pinterest-morphe-browzomje]
+[Pinterest-Morphe-Browzomje]
 enabled = true
-app-name = "pinterest"
-brand = "browzomje"
+app-name = "Pinterest"
+engine-brand = "Morphe"
+patch-brand = "Browzomje"
 pkg-name = "com.pinterest"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -15,11 +16,12 @@ uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
 patches-source = "browzomje/browzomje-patches"
 
-[pinterest-morphe-browzomje-exp]
+[Pinterest-Morphe-Browzomje-Experimental]
 enabled = true
-app-name = "pinterest"
-brand = "browzomje"
-sub-variant = "exp"
+app-name = "Pinterest"
+engine-brand = "Morphe"
+patch-brand = "Browzomje"
+sub-variant = "Experimental"
 pkg-name = "com.pinterest"
 build-mode = "apk"
 version = "latest"

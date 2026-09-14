@@ -2,11 +2,12 @@ enable-module-update = true
 patches-version = "absolutelatest"
 
 # ── Drofus (morphe-lain) ─────────────────────────────────────────────────────
-[drofus-morphe-lain]
+[Drofus-Morphe-Lain]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "drofus"
-brand = "lain"
+app-name = "Drofus"
+engine-brand = "Morphe"
+patch-brand = "Lain"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mixapplications.rufus"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a"

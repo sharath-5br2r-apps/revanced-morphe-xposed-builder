@@ -2,130 +2,130 @@
   "_check_only_listed": true,
   "Discord": {
     "keys": [
-      "discord-npatch-revenge"
+      "Discord-NPatch-Revenge"
     ],
     "version": "343.12"
   },
-  "Prime-Video": {
+  "Prime Video": {
     "keys": [
-      "prime-video-morphe-hoodles-exp",
-      "prime-video-morphe-hoodles-shared-exp"
+      "PrimeVideo-Morphe-Hoodles-Experimental",
+      "PrimeVideo-Morphe-Hoodles-Shared-Experimental"
     ],
     "version": "3.0.471"
   },
   "Amazon Alexa": {
     "keys": [
-      "amazon-alexa-signed"
+      "AmazonAlexa-APKSigner-Signed"
     ],
     "version": "2.2.709433.0"
   },
   "Adobe Acrobat": {
     "keys": [
-      "adobe-acrobat-morphe-rushiranpise-exp"
+      "AdobeAcrobat-Morphe-Rushiranpise-Experimental"
     ],
     "version": "26.8.2"
   },
   "Proton VPN": {
     "keys": [
-      "proton-vpn-morphe-paresh-exp"
+      "ProtonVPN-Morphe-Paresh-Experimental"
     ],
     "version": "5.20.21.0"
   },
-  "X": {
+  "Twitter": {
     "keys": [
-      "x-morphe-piko-exp",
-      "x-morphe-piko-materialyou-exp"
+      "Twitter-Morphe-Piko-Experimental",
+      "Twitter-Morphe-Piko-MaterialYou-Experimental"
     ],
     "version": "12.25.0-prod.01"
   },
   "Speedtest": {
     "keys": [
-      "speedtest-morphe-xtra-exp"
+      "Speedtest-Morphe-BholeyKaBhakt-Experimental"
     ],
     "version": "7.0.7"
   },
   "Bitwarden": {
     "keys": [
-      "bitwarden-morphe-stylus",
-      "bitwarden-morphe-stylus-exp"
+      "Bitwarden-Morphe-Stylus",
+      "Bitwarden-Morphe-Stylus-Experimental"
     ],
     "version": "2026.8.1-bwpm"
   },
   "Oxygen Updater": {
     "keys": [
-      "oxygen-updater-morphe-rushiranpise-exp"
+      "OxygenUpdater-Morphe-Rushiranpise-Experimental"
     ],
     "version": "7.1.0"
   },
   "Brave Beta": {
     "keys": [
-      "brave-beta-morphe-dh6k"
+      "BraveBrowser-Beta-Morphe-Dh6k"
     ],
     "version": "1.96.51"
   },
   "Brave Nightly": {
     "keys": [
-      "brave-nightly-morphe-dh6k"
+      "BraveBrowser-Nightly-Morphe-Dh6k"
     ],
     "version": "1.97.29"
   },
   "PC Remote": {
     "keys": [
-      "pc-remote-morphe-rushiranpise-exp"
+      "PCRemote-Morphe-Rushiranpise-Experimental"
     ],
     "version": "8.3.5"
   },
   "Amazon India": {
     "keys": [
-      "amazon-india-morphe-rushiranpise-exp"
+      "AmazonIndia-Morphe-Rushiranpise-Experimental"
     ],
     "version": "32.17.0.300"
   },
   "GitHub": {
     "keys": [
-      "github-morphe-hoodles-stylus-exp"
+      "GitHub-Morphe-Hoodles-Stylus-Experimental"
     ],
     "version": "1.276.0"
   },
   "Fing": {
     "keys": [
-      "fing-morphe-paresh-exp"
+      "Fing-Morphe-Paresh-Experimental"
     ],
     "version": "12.13.4"
   },
   "JioHotstar": {
     "keys": [
-      "jiohotstar-morphe-paresh-exp"
+      "Jiohotstar-Morphe-Paresh-Experimental"
     ],
     "version": "26.08.31.3"
   },
   "Nova Launcher": {
     "keys": [
-      "nova-launcher-morphe-hoodles-exp"
+      "NovaLauncher-Morphe-Hoodles-Experimental"
     ],
     "version": "89000"
   },
   "Battery Guru": {
     "keys": [
-      "batteryguru-morphe-hooman-exp"
+      "BatteryGuru-Morphe-Hooman-Experimental"
     ],
     "version": "2.5.0.8"
   },
   "Poweramp": {
     "keys": [
-      "poweramp-morphe-hooman-exp"
+      "Poweramp-Morphe-Hooman-Experimental"
     ],
     "version": "build-1025-bundle-play"
   },
   "Xodo PDF": {
     "keys": [
-      "xodo-morphe-hoodles-exp"
+      "Xodo-Morphe-Hoodles-Experimental"
     ],
     "version": "11.1.0"
   },
   "Beta Maniac": {
     "keys": [
-      "beta-maniac-morphe-rushiranpise-exp"
+      "BetaManiac-Morphe-Rushiranpise-Experimental"
     ],
     "version": "0.11.0"
   },
@@ -137,123 +137,123 @@
     "keys": [],
     "version": "1.104.1"
   },
-  "SD Maid SE": {
+  "SD Maid 2/SE": {
     "keys": [
-      "sdmaid-morphe-paresh-exp"
+      "SDMaid-Morphe-Paresh-Experimental"
     ],
     "version": "2.1.0-rc0"
   },
   "Solid Explorer": {
     "keys": [
-      "solid-explorer-morphe-hoodles-exp"
+      "SolidExplorer-Morphe-Hoodles-Experimental"
     ],
     "version": "3.5.20"
   },
   "Amazon Shopping": {
     "keys": [
-      "amazon-shopping-morphe-rushiranpise-exp"
+      "AmazonShopping-Morphe-Rushiranpise-Experimental"
     ],
     "version": "32.17.0.100"
   },
   "XRecorder": {
     "keys": [
-      "xrecorder-morphe-hoodles-exp"
+      "XRecorder-Morphe-Hoodles-Experimental"
     ],
     "version": "2.5.4.4"
   },
   "Smart Launcher 6": {
     "keys": [
-      "smart-launcher-6-morphe-hoodles-exp"
+      "SmartLauncher6-Morphe-Hoodles-Experimental"
     ],
     "version": "055"
   },
-  "Windscribe": {
+  "Windscribe VPN": {
     "keys": [
-      "windscribe-vpn-morphe-rushiranpise-exp"
+      "WindscribeVPN-Morphe-Rushiranpise-Experimental"
     ],
     "version": "4.3.2360"
   },
-  "1.1.1.1 WARP": {
+  "Cloudflare WARP": {
     "keys": [
-      "1111-warp-morphe-rushiranpise-exp"
+      "CloudflareWarp-Morphe-Rushiranpise-Experimental"
     ],
     "version": "6.38.9"
   },
   "AdGuard": {
     "keys": [
-      "adguard-morphe-rushiranpise-exp"
+      "AdGuard-Morphe-Rushiranpise-Experimental"
     ],
     "version": "4.14.0"
   },
   "Pinterest": {
     "keys": [
-      "pinterest-morphe-browzomje-exp"
+      "Pinterest-Morphe-Browzomje-Experimental"
     ],
     "version": "14.35.0"
   },
   "Inshorts": {
     "keys": [
-      "inshorts-morphe-xtra-exp"
+      "Inshorts-Morphe-BholeyKaBhakt-Experimental"
     ],
     "version": "6.12.35"
   },
   "Cricbuzz": {
     "keys": [
-      "cricbuzz-morphe-paresh-exp"
+      "Cricbuzz-Morphe-Paresh-Experimental"
     ],
     "version": "16.09.00"
   },
   "Doc Scanner": {
     "keys": [
-      "doc-scanner-morphe-paresh-exp"
+      "DocScanner-Morphe-Paresh-Experimental"
     ],
     "version": "6.9.9"
   },
   "MacroDroid": {
     "keys": [
-      "macrodroid-morphe-rushiranpise-exp"
+      "MacroDroid-Morphe-Rushiranpise-Experimental"
     ],
     "version": "5.67.8"
   },
   "MX Player Pro": {
     "keys": [
-      "mx-player-pro-morphe-paresh-exp"
+      "MXPlayerPro-Morphe-Paresh-Experimental"
     ],
     "version": "1.93.4"
   },
   "Wallcraft": {
     "keys": [
-      "wallcraft-morphe-hoodles-exp"
+      "Wallcraft-Morphe-Hoodles-Experimental"
     ],
     "version": "3.65.0"
   },
   "Podcast Addict": {
     "keys": [
-      "podcast-addict-morphe-hoodles-exp"
+      "PodcastAddict-Morphe-Hoodles-Experimental"
     ],
     "version": "2026.10.1"
   },
   "Ventusky": {
     "keys": [
-      "ventusky-morphe-hoodles-exp"
+      "Ventusky-Morphe-Hoodles-Experimental"
     ],
     "version": "56.0"
   },
   "Niagara Launcher": {
     "keys": [
-      "niagara-launcher-morphe-hoodles-exp"
+      "NiagaraLauncher-Morphe-Hoodles-Experimental"
     ],
     "version": "1.16.23"
   },
   "MyFitnessPal": {
     "keys": [
-      "myfitnesspal-morphe-hoodles-exp"
+      "MyFitnessPal-Morphe-Hoodles-Experimental"
     ],
     "version": "26.36.0"
   },
   "Goodreads": {
     "keys": [
-      "goodreads-morphe-hoodles-exp"
+      "Goodreads-Morphe-Hoodles-Experimental"
     ],
     "version": "61"
   }

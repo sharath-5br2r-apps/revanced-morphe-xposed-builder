@@ -115,9 +115,68 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
         app_name = raw_display
         app_key = normalize_key(app_name) or normalize_key(target_key)
 
+        engine_brand_cfg = (info.get("engine_brand") or "").strip()
+        patch_brand_cfg = (info.get("patch_brand") or "").strip()
         brand_cfg = (info.get("brand") or "").strip()
-        if brand_cfg:
-            brand_name = brand_cfg
+
+        if not engine_brand_cfg and not patch_brand_cfg and brand_cfg:
+            if brand_cfg.lower() in ["morphe", "npatch", "apksigner"]:
+                engine_brand_cfg = brand_cfg
+            else:
+                engine_brand_cfg = "morphe"
+                patch_brand_cfg = brand_cfg
+
+        if patch_brand_cfg.lower() == "morphe" or patch_brand_cfg.lower() == engine_brand_cfg.lower():
+            patch_brand_cfg = ""
+
+        brand_token_map = {
+            "npatch": "NPatch",
+            "morphe": "Morphe",
+            "nulls": "Null's",
+            "null's": "Null's",
+            "apksigner": "apksigner",
+            "signed": "signed",
+            "anddea": "Anddea",
+            "piko": "Piko",
+            "revenge": "Revenge",
+            "hoodles": "Hoodles",
+            "stylus": "Stylus",
+            "rushiranpise": "Rushiranpise",
+            "paresh": "Paresh",
+            "hooman": "Hooman",
+            "xtra": "Xtra",
+            "byehi98": "Byehi98",
+            "browzomje": "Browzomje",
+            "dh6k": "Dh6k",
+            "hxreborn": "HxReborn",
+            "icysymmetra": "IcySymmetra",
+            "jasonwu1994": "Jasonwu1994",
+            "adobo": "Adobo",
+            "kondratjev": "Kondratjev",
+            "kveld9": "Kveld9",
+            "lain": "Lain",
+            "binarymend": "Binarymend",
+            "bholeykabhakt": "Bholeykabhakt",
+        }
+
+        def format_brand_tokens(text):
+            tokens = (text or "").split()
+            return " ".join([brand_token_map.get(t.lower(), t.capitalize()) for t in tokens])
+
+        if engine_brand_cfg or patch_brand_cfg:
+            engine_disp = format_brand_tokens(engine_brand_cfg)
+            patch_disp = format_brand_tokens(patch_brand_cfg)
+            if patch_disp and engine_disp:
+                brand_name = f"{patch_disp} ({engine_disp})"
+                brand_key = normalize_key(f"{engine_brand_cfg}{patch_brand_cfg}")
+            elif patch_disp:
+                brand_name = patch_disp
+                brand_key = normalize_key(patch_brand_cfg)
+            else:
+                brand_name = engine_disp
+                brand_key = normalize_key(engine_brand_cfg)
+        elif brand_cfg:
+            brand_name = format_brand_tokens(brand_cfg)
             brand_key = normalize_key(brand_cfg)
         else:
             brand_key, brand_name = parse_patch_info(info.get("patches_source"), info.get("patches"))

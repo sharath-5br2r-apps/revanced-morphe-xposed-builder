@@ -1,30 +1,31 @@
 # --- Batch TOML Part 15 (8 distinct apps, 8 builds) ---
 
 
-[x-morphe-piko-materialyou-exp]
+[WindscribeVPN-Morphe-Rushiranpise-Experimental]
 enabled = true
-app-name = "x"
-brand = "piko"
-variant = "materialyou"
-sub-variant = "exp"
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "Windscribe VPN"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
+version = "latest"
+custom-microg-patches = "'None'"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
-version = "latest"
-pkg-name = "com.twitter.android"
-cli-source = "MorpheApp/morphe-desktop"
-patches-source = "crimera/piko"
-patches-source-host = "github"
-included-patches = "'Dynamic Color'"
-patcher-args = "--continue-on-error"
-uptodown-dlurl = "https://twitter.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+pkg-name = "com.windscribe.vpn"
+uptodown-dlurl = "https://windscribe.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
+apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
+patches-source = "rushiranpise/morphe-patches"
 
 
-[symfonium-morphe-hooman]
+
+[Symfonium-Morphe-Hooman]
 enabled = true
-app-name = "symfonium"
-brand = "hooman"
+app-name = "Symfonium"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "app.symfonik.music.player"
@@ -36,13 +37,12 @@ patches-source = "arandomhooman/hoomans-morphe-patches"
 
 
 
-[proton-vpn-morphe-paresh-exp]
+[ProtonVPN-Morphe-Paresh]
 enabled = true
-app-name = "proton-vpn"
-brand = "paresh"
-sub-variant = "exp"
+app-name = "Proton VPN"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
-version = "latest"
 build-mode = "apk"
 pkg-name = "ch.protonvpn.android"
 cli-source = "MorpheApp/morphe-desktop"
@@ -57,29 +57,31 @@ arch = "all arm64-v8a arm-v7a x86_64"
 
 
 
-[nova-launcher-morphe-hoodles]
+[NiagaraLauncher-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "nova-launcher"
-brand = "hoodles"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher"
+app-name = "Niagara Launcher"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/bitpit.launcher"
+version = "latest"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a"
-pkg-name = "com.teslacoilsw.launcher"
-uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "bitpit.launcher"
+uptodown-dlurl = "https://niagara-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mellowdrop-studio/niagara-launcher-%f0%9f%94%b9-fresh-clean"
 patches-source = "hoo-dles/morphe-patches"
 
 
 
-[inshorts-morphe-xtra-exp]
+[Inshorts-Morphe-BholeyKaBhakt]
 enabled = true
-app-name = "inshorts"
-brand = "xtra"
-sub-variant = "exp"
+app-name = "Inshorts"
+engine-brand = "Morphe"
+patch-brand = "BholeyKaBhakt"
 pkg-name = "com.nis.app"
 build-mode = "apk"
-version = "latest"
 arch = "all arm64-v8a arm-v7a x86_64"
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nis.app"
@@ -87,29 +89,31 @@ uptodown-dlurl = "https://inshorts.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2/"
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
-# ── Automate ──────────────────────────────────────────────────────────────────
 
 
-[doc-scanner-morphe-paresh]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "doc-scanner"
-brand = "paresh"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
+[Discord-NPatch-Revenge]
+enabled = true 
+app-name = "Discord"
+pkg-name = "com.discord"
+engine-brand = "NPatch"
+patch-brand = "Revenge"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "com.cv.docscanner"
-uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
-patches-source = "Paresh-Maheshwari/paresh-patches"
-patches-source-host = "gitlab"
+cli-source = "7723mod/NPatch"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord"
+patches-source = "revenge-mod/revenge-xposed"
+patcher-args = "-l 0"
+uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers"
+apkmirror-example-url = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
 
 
-
-[bitwarden-morphe-stylus]
+[Bitwarden-Morphe-Stylus-Experimental]
 enabled = true
-app-name = "bitwarden"
-brand = "stylus"
+app-name = "Bitwarden"
+engine-brand = "Morphe"
+patch-brand = "Stylus"
+sub-variant = "Experimental"
 build-mode = "apk"
 pkg-name = "com.x8bit.bitwarden"
 cli-source = "MorpheApp/morphe-desktop"
@@ -120,17 +124,21 @@ version = "latest"
 patches-source = "ch3thanhs/stylus"
 
 
-[adobe-acrobat-morphe-hooman]
+[AdobeAcrobat-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adobe-acrobat"
-brand = "hooman"
+app-name = "Adobe Acrobat"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
+version = "latest"
 build-mode = "apk"
 arch = "all arm64-v8a x86_64"
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
-patches-source = "arandomhooman/hoomans-morphe-patches"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
+patches-source = "rushiranpise/morphe-patches"
+custom-microg-patches = "'None'"
 
 

@@ -2,10 +2,11 @@ enable-module-update = true
 patches-version = "absolutelatest"
 
 # ── YouTube morphe-anddea (stock/AMOLED, default) ─────────────────────────────
-[youtube-morphe-anddea]
+[YouTube-Morphe-Anddea]
 enabled = true
-app-name = "youtube"
-brand = "anddea"
+app-name = "YouTube"
+engine-brand = "Morphe"
+patch-brand = "Anddea"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -18,11 +19,12 @@ apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
 # ── YouTube morphe-anddea-amoled (#000000 explicit) ───────────────────────────
-[youtube-morphe-anddea-amoled]
+[YouTube-Morphe-Anddea-AMOLED]
 enabled = true
-app-name = "youtube"
-brand = "anddea"
-variant = "amoled"
+app-name = "YouTube"
+engine-brand = "Morphe"
+patch-brand = "Anddea"
+variant = "AMOLED"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -34,10 +36,11 @@ uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
-[youtube-music-morphe-anddea]
+[YouTubeMusic-Morphe-Anddea]
 enabled = true
-app-name = "youtube-music"
-brand = "anddea"
+app-name = "YouTube Music"
+engine-brand = "Morphe"
+patch-brand = "Anddea"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.apps.youtube.music"
@@ -49,11 +52,12 @@ apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 
 # ── YouTube Music morphe-anddea-amoled (#000000 explicit) ─────────────────────
-[youtube-music-morphe-anddea-amoled]
+[YouTubeMusic-Morphe-Anddea-AMOLED]
 enabled = true
-app-name = "youtube-music"
-brand = "anddea"
-variant = "amoled"
+app-name = "YouTube Music"
+engine-brand = "Morphe"
+patch-brand = "Anddea"
+variant = "AMOLED"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.apps.youtube.music"
@@ -64,11 +68,12 @@ uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 
-[speedtest-morphe-xtra]
+[Speedtest-Morphe-BholeyKaBhakt]
 enabled = true
-app-name = "speedtest"
+app-name = "Speedtest"
 pkg-name = "org.zwanoo.android.speedtest"
-brand = "xtra"
+engine-brand = "Morphe"
+patch-brand = "BholeyKaBhakt"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/org.zwanoo.android.speedtest"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -77,12 +82,13 @@ uptodown-dlurl = "https://speedtest-net-mobile.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/ookla/speedtest"
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
-[speedtest-morphe-xtra-exp]
+[Speedtest-Morphe-BholeyKaBhakt-Experimental]
 enabled = true
-app-name = "speedtest"
+app-name = "Speedtest"
 pkg-name = "org.zwanoo.android.speedtest"
-brand = "xtra"
-sub-variant = "exp"
+engine-brand = "Morphe"
+patch-brand = "BholeyKaBhakt"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/org.zwanoo.android.speedtest"
 version = "latest"
 build-mode = "apk"
@@ -93,10 +99,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/ookla/speedtest"
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 # ── Inshorts ──────────────────────────────────────────────────────────────────
-[inshorts-morphe-xtra]
+[Inshorts-Morphe-BholeyKaBhakt]
 enabled = true
-app-name = "inshorts"
-brand = "xtra"
+app-name = "Inshorts"
+engine-brand = "Morphe"
+patch-brand = "BholeyKaBhakt"
 pkg-name = "com.nis.app"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -106,11 +113,12 @@ uptodown-dlurl = "https://inshorts.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2/"
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
-[inshorts-morphe-xtra-exp]
+[Inshorts-Morphe-BholeyKaBhakt-Experimental]
 enabled = true
-app-name = "inshorts"
-brand = "xtra"
-sub-variant = "exp"
+app-name = "Inshorts"
+engine-brand = "Morphe"
+patch-brand = "BholeyKaBhakt"
+sub-variant = "Experimental"
 pkg-name = "com.nis.app"
 build-mode = "apk"
 version = "latest"
@@ -122,10 +130,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/inshorts-formerly-news-in-short
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 # ── Automate ──────────────────────────────────────────────────────────────────
-[automate-morphe-xtra]
+[Automate-Morphe-BholeyKaBhakt]
 enabled = true
-app-name = "automate"
-brand = "xtra"
+app-name = "Automate"
+engine-brand = "Morphe"
+patch-brand = "BholeyKaBhakt"
 pkg-name = "com.llamalab.automate"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -136,10 +145,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/llamalab/automate-llamalab"
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 # ── AutoSync ──────────────────────────────────────────────────────────────────
-[autosync-morphe-xtra]
+[Autosync-Morphe-BholeyKaBhakt]
 enabled = true
-app-name = "autosync"
-brand = "xtra"
+app-name = "Autosync"
+engine-brand = "Morphe"
+patch-brand = "BholeyKaBhakt"
 pkg-name = "com.ttxapps.autosync"
 build-mode = "apk"
 arch = "all arm64-v8a x86_64"
@@ -150,10 +160,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/metactrl/autosync-universal-clo
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
 # ── Backdrops ─────────────────────────────────────────────────────────────────
-[backdrops-morphe-xtra]
+[Backdrops-Morphe-BholeyKaBhakt]
 enabled = true
-app-name = "backdrops"
-brand = "xtra"
+app-name = "Backdrops"
+engine-brand = "Morphe"
+patch-brand = "BholeyKaBhakt"
 pkg-name = "com.backdrops.wallpapers"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -163,10 +174,11 @@ uptodown-dlurl = "https://backdrops.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/backdrops/backdrops-wallpapers"
 patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
-[calcnote-morphe-binarymend]
+[CalcNote-Morphe-Binarymend]
 enabled = true
-app-name = "calcnote"
-brand = "binarymend"
+app-name = "CalcNote"
+engine-brand = "Morphe"
+patch-brand = "Binarymend"
 pkg-name = "com.burton999.notecal"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -176,10 +188,11 @@ uptodown-dlurl = "https://calcnote-notepad-calculator.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/burton999/calcnote-notepad-calculator"
 patches-source = "binarymend/morphe-patches"
 
-[brave-stable-morphe-kveld9]
+[BraveBrowser-Morphe-Kveld9]
 enabled = true
-app-name = "brave-stable"
-brand = "kveld9"
+app-name = "Brave Browser"
+engine-brand = "Morphe"
+patch-brand = "Kveld9"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
 pkg-name = "com.brave.browser"
@@ -190,10 +203,12 @@ github-dlurl = "https://github.com/brave/brave-browser/releases"
 github-dlurl-regex = "arm64-v8a: (BraveMonoarm64|MonoArm64)\\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
 github-release-name-regex = "^Release v"
 
-[brave-beta-morphe-dh6k]
+[BraveBrowser-Beta-Morphe-Dh6k]
 enabled = true
-app-name = "brave-beta"
-brand = "dh6k"
+app-name = "Brave Browser"
+engine-brand = "Morphe"
+patch-brand = "Dh6k"
+sub-variant = "Beta"
 version = "beta"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -205,10 +220,12 @@ github-dlurl = "https://github.com/brave/brave-browser/releases"
 github-dlurl-regex = "arm64-v8a: (BraveMonoarm64|MonoArm64)\\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$"
 github-release-name-regex = "^Beta v"
 
-[brave-nightly-morphe-dh6k]
+[BraveBrowser-Nightly-Morphe-Dh6k]
 enabled = true
-app-name = "brave-nightly"
-brand = "dh6k"
+app-name = "Brave Browser"
+engine-brand = "Morphe"
+patch-brand = "Dh6k"
+sub-variant = "Nightly"
 version = "beta"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -221,10 +238,11 @@ github-dlurl-regex = "arm64-v8a: (BraveMonoarm64|MonoArm64)\\.apk$ | arm-v7a: (B
 github-release-name-regex = "^Nightly v"
 
 # ── Pinterest (browzomje-patches) ─────────────────────────────────────────────
-[pinterest-morphe-browzomje]
+[Pinterest-Morphe-Browzomje]
 enabled = true
-app-name = "pinterest"
-brand = "browzomje"
+app-name = "Pinterest"
+engine-brand = "Morphe"
+patch-brand = "Browzomje"
 pkg-name = "com.pinterest"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -234,11 +252,12 @@ uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
 patches-source = "browzomje/browzomje-patches"
 
-[pinterest-morphe-browzomje-exp]
+[Pinterest-Morphe-Browzomje-Experimental]
 enabled = true
-app-name = "pinterest"
-brand = "browzomje"
-sub-variant = "exp"
+app-name = "Pinterest"
+engine-brand = "Morphe"
+patch-brand = "Browzomje"
+sub-variant = "Experimental"
 pkg-name = "com.pinterest"
 build-mode = "apk"
 version = "latest"
@@ -249,11 +268,12 @@ uptodown-dlurl = "https://pinterest.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
 patches-source = "browzomje/browzomje-patches"
 
-[smash-hit-morphe-byehi98]
+[SmashHit-Morphe-Byehi98]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "smash-hit"
-brand = "byehi98"
+app-name = "Smash Hit"
+engine-brand = "Morphe"
+patch-brand = "Byehi98"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mediocre.smashhit"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -262,11 +282,12 @@ uptodown-dlurl = "https://smash-hit.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mediocre/smash-hit/"
 patches-source = "byehi98/okish-morphe-patches"
 
-[vector-morphe-byehi98]
+[Vector-Morphe-Byehi98]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "vector"
-brand = "byehi98"
+app-name = "Vector"
+engine-brand = "Morphe"
+patch-brand = "Byehi98"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nekki.vector"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -275,11 +296,12 @@ uptodown-dlurl = "https://vector.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nekki/vector/"
 patches-source = "byehi98/okish-morphe-patches"
 
-[hill-climb-racing-morphe-byehi98]
+[HillClimbRacing-Morphe-Byehi98]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "hill-climb-racing"
-brand = "byehi98"
+app-name = "Hill Climb Racing"
+engine-brand = "Morphe"
+patch-brand = "Byehi98"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.fingersoft.hillclimb"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -288,11 +310,12 @@ uptodown-dlurl = "https://hill-climb-racing.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
 patches-source = "byehi98/okish-morphe-patches"
 
-[jetpack-joyride-morphe-byehi98]
+[JetpackJoyride-Morphe-Byehi98]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "jetpack-joyride"
-brand = "byehi98"
+app-name = "Jetpack Joyride"
+engine-brand = "Morphe"
+patch-brand = "Byehi98"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.halfbrick.jetpackjoyride"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -302,11 +325,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyri
 apkmirror-example-url = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/"
 patches-source = "byehi98/okish-morphe-patches"
 
-[chess-morphe-prathxm]
+[ChessDotCom-Morphe-Prathxm]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "chess"
-brand = "prathxm"
+app-name = "Chess.com"
+engine-brand = "Morphe"
+patch-brand = "Prathxm"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess"
 version = "auto"
 build-mode = "apk"
@@ -317,12 +341,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/"
 patches-source = "PrathxmOp/Prathxm-Patches"
 
-[chess-morphe-prathxm-clone]
+[ChessDotCom-Morphe-Prathxm-Clone]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "chess"
-brand = "prathxm"
-sub-variant = "clone"
+app-name = "Chess.com"
+engine-brand = "Morphe"
+patch-brand = "Prathxm"
+sub-variant = "Clone"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess"
 version = "auto"
 build-mode = "apk"
@@ -334,10 +359,11 @@ apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-lear
 patches-source = "PrathxmOp/Prathxm-Patches"
 included-patches = "'Clone Chess.com'"
 
-[gboard-morphe-jasonwu1994-adobo]
+[Gboard-Morphe-Jasonwu1994Adobo]
 enabled = true
-app-name = "gboard"
-brand = "jasonwu1994 adobo"
+app-name = "Gboard"
+engine-brand = "Morphe"
+patch-brand = "Jasonwu1994Adobo"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.inputmethod.latin"
@@ -352,11 +378,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
 apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 apkmirror-release-filter = "!(lite|beta)"
 
-[gboard-morphe-jasonwu1994-adobo-clone]
+[Gboard-Morphe-Jasonwu1994Adobo-Clone]
 enabled = true
-app-name = "gboard"
-brand = "jasonwu1994 adobo"
-sub-variant = "clone"
+app-name = "Gboard"
+engine-brand = "Morphe"
+patch-brand = "Jasonwu1994Adobo"
+sub-variant = "Clone"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
 patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
@@ -371,11 +398,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
 apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 apkmirror-release-filter = "!(lite|beta)"
 
-[camscanner-morphe-hoodles]
+[CamScanner-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "camscanner"
-brand = "hoodles"
+app-name = "CamScanner"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.intsig.camscanner"
 build-mode = "apk"
 arch = "all arm64-v8a"
@@ -388,11 +416,12 @@ apkcombo-dlurl = "https://apkcombo.com/camscanner/com.intsig.camscanner"
 patches-source = "hoo-dles/morphe-patches"
 patcher-args = "--continue-on-error"
 
-[prime-video-morphe-hoodles-exp]
+[PrimeVideo-Morphe-Hoodles-Experimental]
 enabled = true
-app-name = "prime-video"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Prime Video"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 pkg-name = "com.amazon.avod.thirdpartyclient"
 build-mode = "apk"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient"
@@ -403,12 +432,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-
 uptodown-dlurl = "https://amazon-video.en.uptodown.com/android"
 patches-source = "hoo-dles/morphe-patches"
 
-[prime-video-morphe-hoodles-shared-exp]
+[PrimeVideo-Morphe-Hoodles-Shared-Experimental]
 enabled = true
-app-name = "prime-video"
-brand = "hoodles"
-variant = "shared"
-sub-variant = "exp"
+app-name = "Prime Video"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+variant = "Shared"
+sub-variant = "Experimental"
 pkg-name = "com.amazon.avod.thirdpartyclient"
 build-mode = "apk"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.avod.thirdpartyclient"
@@ -420,11 +450,12 @@ uptodown-dlurl = "https://amazon-video.en.uptodown.com/android"
 patches-source = "hoo-dles/morphe-patches"
 excluded-patches = "'Rename Shared Permissions'"
 
-[xrecorder-morphe-hoodles]
+[XRecorder-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "xrecorder"
-brand = "hoodles"
+app-name = "XRecorder"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a"
@@ -433,12 +464,13 @@ uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.c
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
 patches-source = "hoo-dles/morphe-patches"
 
-[xrecorder-morphe-hoodles-exp]
+[XRecorder-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "xrecorder"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "XRecorder"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder"
 version = "latest"
 build-mode = "apk"
@@ -448,11 +480,12 @@ uptodown-dlurl = "https://videoeditor-videorecorder-screenrecorder.en.uptodown.c
 apkmirror-dlurl = "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
 patches-source = "hoo-dles/morphe-patches"
 
-[smart-launcher-morphe-hoodles]
+[SmartLauncher-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "smart-launcher"
-brand = "hoodles"
+app-name = "Smart Launcher"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -461,40 +494,13 @@ uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
 patches-source = "hoo-dles/morphe-patches"
 
-[smart-launcher-morphe-hoodles-exp]
+[SmartLauncher-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "smart-launcher"
-brand = "hoodles"
-sub-variant = "exp"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
-version = "latest"
-build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "ginlemon.flowerfree"
-uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-patches-source = "hoo-dles/morphe-patches"
-
-[smart-launcher-6-morphe-hoodles]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "smart-launcher-6"
-brand = "hoodles"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
-build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "ginlemon.flowerfree"
-uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
-patches-source = "hoo-dles/morphe-patches"
-
-[smart-launcher-6-morphe-hoodles-exp]
-enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "smart-launcher-6"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Smart Launcher"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
 version = "latest"
 build-mode = "apk"
@@ -504,11 +510,42 @@ uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
 patches-source = "hoo-dles/morphe-patches"
 
-[nova-launcher-morphe-hoodles]
+[SmartLauncher6-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "nova-launcher"
-brand = "hoodles"
+app-name = "Smart Launcher 6"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "ginlemon.flowerfree"
+uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+patches-source = "hoo-dles/morphe-patches"
+
+[SmartLauncher6-Morphe-Hoodles-Experimental]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "Smart Launcher 6"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
+version = "latest"
+build-mode = "apk"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "ginlemon.flowerfree"
+uptodown-dlurl = "https://smart-launcher.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+patches-source = "hoo-dles/morphe-patches"
+
+[NovaLauncher-Morphe-Hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "Nova Launcher"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a"
@@ -517,12 +554,13 @@ uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
 patches-source = "hoo-dles/morphe-patches"
 
-[nova-launcher-morphe-hoodles-exp]
+[NovaLauncher-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "nova-launcher"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Nova Launcher"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher"
 version = "latest"
 build-mode = "apk"
@@ -532,11 +570,12 @@ uptodown-dlurl = "https://nova-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
 patches-source = "hoo-dles/morphe-patches"
 
-[xodo-morphe-hoodles]
+[Xodo-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "xodo"
-brand = "hoodles"
+app-name = "Xodo PDF"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -545,12 +584,13 @@ uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
 patches-source = "hoo-dles/morphe-patches"
 
-[xodo-morphe-hoodles-exp]
+[Xodo-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "xodo"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Xodo PDF"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader"
 version = "latest"
 build-mode = "apk"
@@ -560,11 +600,12 @@ uptodown-dlurl = "https://xodo-pdf-reader-editor.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
 patches-source = "hoo-dles/morphe-patches"
 
-[solid-explorer-morphe-hoodles]
+[SolidExplorer-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "solid-explorer"
-brand = "hoodles"
+app-name = "Solid Explorer"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -573,12 +614,13 @@ uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
 patches-source = "hoo-dles/morphe-patches"
 
-[solid-explorer-morphe-hoodles-exp]
+[SolidExplorer-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "solid-explorer"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Solid Explorer"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2"
 version = "latest"
 build-mode = "apk"
@@ -588,10 +630,11 @@ uptodown-dlurl = "https://solid-explorer-file-manager.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
 patches-source = "hoo-dles/morphe-patches"
 
-[github-morphe-hoodles-stylus]
+[GitHub-Morphe-Hoodles-Stylus]
 enabled = true
-app-name = "github"
-brand = "hoodles stylus"
+app-name = "GitHub"
+engine-brand = "Morphe"
+patch-brand = "Hoodles-Stylus"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.github.android"
@@ -602,11 +645,12 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
 included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'"
 
-[github-morphe-hoodles-stylus-exp]
+[GitHub-Morphe-Hoodles-Stylus-Experimental]
 enabled = true
-app-name = "github"
-brand = "hoodles stylus"
-sub-variant = "exp"
+app-name = "GitHub"
+engine-brand = "Morphe"
+patch-brand = "Hoodles-Stylus"
+sub-variant = "Experimental"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.github.android"
@@ -618,11 +662,12 @@ patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
 included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'"
 version = "latest"
 
-[wallcraft-morphe-hoodles]
+[Wallcraft-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "wallcraft"
-brand = "hoodles"
+app-name = "Wallcraft"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -631,12 +676,13 @@ uptodown-dlurl = "https://wallpaperscraft.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
 patches-source = "hoo-dles/morphe-patches"
 
-[wallcraft-morphe-hoodles-exp]
+[Wallcraft-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "wallcraft"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Wallcraft"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper"
 version = "latest"
 build-mode = "apk"
@@ -646,11 +692,12 @@ uptodown-dlurl = "https://wallpaperscraft.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
 patches-source = "hoo-dles/morphe-patches"
 
-[wps-office-morphe-hoodles]
+[WPSOffice-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "wps-office"
-brand = "hoodles"
+app-name = "WPS Office"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cn.wps.moffice_eng"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a"
@@ -659,11 +706,12 @@ uptodown-dlurl = "https://wps-office.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/wps-software-pte-ltd/wps-office-pdf/"
 patches-source = "hoo-dles/morphe-patches"
 
-[podcast-addict-morphe-hoodles]
+[PodcastAddict-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "podcast-addict"
-brand = "hoodles"
+app-name = "Podcast Addict"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -672,12 +720,13 @@ uptodown-dlurl = "https://podcast-addict.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict"
 patches-source = "hoo-dles/morphe-patches"
 
-[podcast-addict-morphe-hoodles-exp]
+[PodcastAddict-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "podcast-addict"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Podcast Addict"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.bambuna.podcastaddict"
 version = "latest"
 build-mode = "apk"
@@ -687,11 +736,12 @@ uptodown-dlurl = "https://podcast-addict.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict"
 patches-source = "hoo-dles/morphe-patches"
 
-[merriam-webster-morphe-hoodles]
+[MerriamWebsterDictionary-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "merriam-webster"
-brand = "hoodles"
+app-name = "Merriam-Webster Dictionary"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.merriamwebster"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -700,11 +750,12 @@ uptodown-dlurl = "https://merriam-webster.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/merriam-webster-inc/dictionary-merriam-webster"
 patches-source = "hoo-dles/morphe-patches"
 
-[pandora-morphe-hoodles]
+[Pandora-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "pandora"
-brand = "hoodles"
+app-name = "Pandora"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pandora.android"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -713,11 +764,12 @@ uptodown-dlurl = "https://pandora.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/pandora/pandora-music-podcasts"
 patches-source = "hoo-dles/morphe-patches"
 
-[ventusky-morphe-hoodles]
+[Ventusky-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "ventusky"
-brand = "hoodles"
+app-name = "Ventusky"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -726,12 +778,13 @@ uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/androi
 apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
 patches-source = "hoo-dles/morphe-patches"
 
-[ventusky-morphe-hoodles-exp]
+[Ventusky-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "ventusky"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Ventusky"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
 version = "latest"
 build-mode = "apk"
@@ -741,12 +794,13 @@ uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/androi
 apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
 patches-source = "hoo-dles/morphe-patches"
 
-[niagara-launcher-morphe-hoodles-exp]
+[NiagaraLauncher-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "niagara-launcher"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Niagara Launcher"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/bitpit.launcher"
 version = "latest"
 build-mode = "apk"
@@ -756,11 +810,12 @@ uptodown-dlurl = "https://niagara-launcher.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mellowdrop-studio/niagara-launcher-%f0%9f%94%b9-fresh-clean"
 patches-source = "hoo-dles/morphe-patches"
 
-[hellochinese-morphe-hoodles]
+[HelloChinese-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "hellochinese"
-brand = "hoodles"
+app-name = "HelloChinese"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.hellochinese"
 build-mode = "apk"
 arch = "arm64-v8a"
@@ -769,11 +824,12 @@ uptodown-dlurl = "https://hellochinese.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/hellochinese-learn-chinese-mandarin/hellochinese-learn-chinese/"
 patches-source = "hoo-dles/morphe-patches"
 
-[myfitnesspal-morphe-hoodles]
+[MyFitnessPal-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "myfitnesspal"
-brand = "hoodles"
+app-name = "MyFitnessPal"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -782,12 +838,13 @@ uptodown-dlurl = "https://calorie-counter-myfitnesspal.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal"
 patches-source = "hoo-dles/morphe-patches"
 
-[myfitnesspal-morphe-hoodles-exp]
+[MyFitnessPal-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "myfitnesspal"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "MyFitnessPal"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android"
 version = "latest"
 build-mode = "apk"
@@ -797,11 +854,12 @@ uptodown-dlurl = "https://calorie-counter-myfitnesspal.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal"
 patches-source = "hoo-dles/morphe-patches"
 
-[goodreads-morphe-hoodles]
+[Goodreads-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "goodreads"
-brand = "hoodles"
+app-name = "Goodreads"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.goodreads"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -810,12 +868,13 @@ uptodown-dlurl = "https://goodreads.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/goodreads/goodreads"
 patches-source = "hoo-dles/morphe-patches"
 
-[goodreads-morphe-hoodles-exp]
+[Goodreads-Morphe-Hoodles-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "goodreads"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Goodreads"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.goodreads"
 version = "latest"
 build-mode = "apk"
@@ -825,11 +884,12 @@ uptodown-dlurl = "https://goodreads.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/goodreads/goodreads"
 patches-source = "hoo-dles/morphe-patches"
 
-[lightroom-morphe-hoodles]
+[AdobeLightroom-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "lightroom"
-brand = "hoodles"
+app-name = "Adobe Lightroom"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.lrmobile"
 build-mode = "apk"
 arch = "arm64-v8a"
@@ -838,10 +898,11 @@ uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-lightroom/"
 patches-source = "hoo-dles/morphe-patches"
 
-[symfonium-morphe-hooman]
+[Symfonium-Morphe-Hooman]
 enabled = true
-app-name = "symfonium"
-brand = "hooman"
+app-name = "Symfonium"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "app.symfonik.music.player"
@@ -851,10 +912,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-c
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.symfonik.music.player"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[adm-morphe-hooman]
+[AdvancedDownloadManager-Morphe-Hooman]
 enabled = true
-app-name = "adm"
-brand = "hooman"
+app-name = "Advanced Download Manager"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.dv.adm"
@@ -864,11 +926,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/admtorrent/advanced-download-ma
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[twitch-morphe-hooman]
+[Twitch-Morphe-Hooman]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "twitch"
-brand = "hooman"
+app-name = "Twitch"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/tv.twitch.android.app"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -877,11 +940,12 @@ uptodown-dlurl = "https://twitch.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/twitch-interactive-inc/twitch"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[batteryguru-morphe-hooman]
+[BatteryGuru-Morphe-Hooman]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "batteryguru"
-brand = "hooman"
+app-name = "Battery Guru"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -890,12 +954,13 @@ uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[batteryguru-morphe-hooman-exp]
+[BatteryGuru-Morphe-Hooman-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "batteryguru"
-brand = "hooman"
-sub-variant = "exp"
+app-name = "Battery Guru"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
 version = "latest"
 build-mode = "apk"
@@ -905,11 +970,12 @@ uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[poweramp-morphe-hooman]
+[Poweramp-Morphe-Hooman]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "poweramp"
-brand = "hooman"
+app-name = "Poweramp"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
 build-mode = "apk"
 arch = "arm64-v8a"
@@ -920,12 +986,13 @@ apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.
 apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[poweramp-morphe-hooman-exp]
+[Poweramp-Morphe-Hooman-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "poweramp"
-brand = "hooman"
-sub-variant = "exp"
+app-name = "Poweramp"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
 version = "latest"
 build-mode = "apk"
@@ -937,11 +1004,12 @@ apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.
 apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[adobe-acrobat-morphe-hooman]
+[AdobeAcrobat-Morphe-Hooman]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adobe-acrobat"
-brand = "hooman"
+app-name = "Adobe Acrobat"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 build-mode = "apk"
 arch = "all arm64-v8a x86_64"
@@ -950,12 +1018,13 @@ uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[adobe-acrobat-morphe-hooman-exp]
+[AdobeAcrobat-Morphe-Hooman-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adobe-acrobat"
-brand = "hooman"
-sub-variant = "exp"
+app-name = "Adobe Acrobat"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 version = "latest"
 build-mode = "apk"
@@ -965,11 +1034,12 @@ uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[swiftkey-morphe-hooman]
+[MicrosoftSwiftKey-Morphe-Hooman]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "swiftkey"
-brand = "hooman"
+app-name = "Microsoft SwiftKey"
+engine-brand = "Morphe"
+patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.touchtype.swiftkey"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -978,11 +1048,12 @@ uptodown-dlurl = "https://swiftkey-keyboard.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/swiftkey/swiftkey-keyboard"
 patches-source = "arandomhooman/hoomans-morphe-patches"
 
-[soundcloud-morphe-kondratjev]
+[SoundCloud-Morphe-Kondratjev]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "soundcloud"
-brand = "kondratjev"
+app-name = "SoundCloud"
+engine-brand = "Morphe"
+patch-brand = "Kondratjev"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.soundcloud.android"
 version = "auto"
 build-mode = "apk"
@@ -996,11 +1067,12 @@ apkcombo-dlurl = "https://apkcombo.com/soundcloud/com.soundcloud.android"
 patches-source = "kondratjev/morphe-patches"
 
 # ── Drofus (morphe-lain) ─────────────────────────────────────────────────────
-[drofus-morphe-lain]
+[Drofus-Morphe-Lain]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "drofus"
-brand = "lain"
+app-name = "Drofus"
+engine-brand = "Morphe"
+patch-brand = "Lain"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mixapplications.rufus"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a"
@@ -1010,10 +1082,10 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/mixapplications/drofus-iso2usb"
 patches-source = "kiraio-moe/Lain-Patches"
 
 # ── YouTube morphe (stock/default theme) ──────────────────────────────────────
-[youtube-morphe]
+[YouTube-Morphe]
 enabled = true
-app-name = "youtube"
-brand = "morphe"
+app-name = "YouTube"
+engine-brand = "Morphe"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -1027,11 +1099,11 @@ apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
 # ── YouTube morphe-amoled (#000000) ───────────────────────────────────────────
-[youtube-morphe-amoled]
+[YouTube-Morphe-AMOLED]
 enabled = true
-app-name = "youtube"
-brand = "morphe"
-variant = "amoled"
+app-name = "YouTube"
+engine-brand = "Morphe"
+variant = "AMOLED"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -1045,11 +1117,11 @@ apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
-[youtube-morphe-exp]
+[YouTube-Morphe-Experimental]
 enabled = true
-app-name = "youtube"
-brand = "morphe"
-sub-variant = "exp"
+app-name = "YouTube"
+engine-brand = "Morphe"
+sub-variant = "Experimental"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -1063,12 +1135,12 @@ apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
-[youtube-morphe-exp-amoled]
+[YouTube-Morphe-AMOLED-Experimental]
 enabled = true
-app-name = "youtube"
-brand = "morphe"
-variant = "amoled"
-sub-variant = "exp"
+app-name = "YouTube"
+engine-brand = "Morphe"
+variant = "AMOLED"
+sub-variant = "Experimental"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -1083,11 +1155,11 @@ apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
-[youtube-music-morphe-exp]
+[YouTubeMusic-Morphe-Experimental]
 enabled = true
-app-name = "youtube-music"
-brand = "morphe"
-sub-variant = "exp"
+app-name = "YouTube Music"
+engine-brand = "Morphe"
+sub-variant = "Experimental"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -1101,12 +1173,12 @@ apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtu
 apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 
-[youtube-music-morphe-exp-amoled]
+[YouTubeMusic-Morphe-AMOLED-Experimental]
 enabled = true
-app-name = "youtube-music"
-brand = "morphe"
-variant = "amoled"
-sub-variant = "exp"
+app-name = "YouTube Music"
+engine-brand = "Morphe"
+variant = "AMOLED"
+sub-variant = "Experimental"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -1121,12 +1193,13 @@ apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtu
 apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 
-[clash-of-clans-morphe-nulls]
+[ClashOfClans-APKSigner-Nulls]
 enabled = true
 cli-source = "none"
 cli-source-host = "none"
-app-name = "clash-of-clans"
-brand = "nulls"
+app-name = "Clash of Clans"
+engine-brand = "APKSigner"
+patch-brand = "Nulls"
 build-mode = "apk"
 arch = "all"
 pkg-name = "nullsclash.night.rel"
@@ -1134,12 +1207,13 @@ direct-dlurl = "http://dnull.xyz/latest_coc"
 patches-source = "none"
 patches-source-host = "none"
 
-[clash-royale-morphe-nulls]
+[ClashRoyale-APKSigner-Nulls]
 enabled = true
 cli-source = "none"
 cli-source-host = "none"
-app-name = "clash-royale"
-brand = "nulls"
+app-name = "Clash Royale"
+engine-brand = "APKSigner"
+patch-brand = "Nulls"
 build-mode = "apk"
 arch = "all"
 pkg-name = "nullsroyale.rel.free"
@@ -1147,12 +1221,13 @@ direct-dlurl = "http://dnull.xyz/latest_cr"
 patches-source = "none"
 patches-source-host = "none"
 
-[brawl-stars-morphe-nulls]
+[BrawlStars-APKSigner-Nulls]
 enabled = true
 cli-source = "none"
 cli-source-host = "none"
-app-name = "brawl-stars"
-brand = "nulls"
+app-name = "Brawl Stars"
+engine-brand = "APKSigner"
+patch-brand = "Nulls"
 build-mode = "apk"
 arch = "all"
 pkg-name = "daniillnull.nulls.brawlstars"
@@ -1160,11 +1235,12 @@ direct-dlurl = "http://dnull.xyz/latest_bs"
 patches-source = "none"
 patches-source-host = "none"
 
-[truecaller-morphe-paresh]
+[Truecaller-Morphe-Paresh]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "truecaller"
-brand = "paresh"
+app-name = "Truecaller"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.truecaller"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a"
@@ -1174,10 +1250,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/true-software-scandinavia-ab/tr
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-[fing-morphe-paresh]
+[Fing-Morphe-Paresh]
 enabled = true
-app-name = "fing"
-brand = "paresh"
+app-name = "Fing"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 build-mode = "apk"
 pkg-name = "com.overlook.android.fing"
 cli-source = "MorpheApp/morphe-desktop"
@@ -1188,11 +1265,12 @@ patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 arch = "all arm64-v8a arm-v7a x86_64"
 
-[fing-morphe-paresh-exp]
+[Fing-Morphe-Paresh-Experimental]
 enabled = true
-app-name = "fing"
-brand = "paresh"
-sub-variant = "exp"
+app-name = "Fing"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+sub-variant = "Experimental"
 version = "latest"
 build-mode = "apk"
 pkg-name = "com.overlook.android.fing"
@@ -1204,10 +1282,11 @@ patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 arch = "all arm64-v8a arm-v7a"
 
-[proton-vpn-morphe-paresh]
+[ProtonVPN-Morphe-Paresh]
 enabled = true
-app-name = "proton-vpn"
-brand = "paresh"
+app-name = "Proton VPN"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
 build-mode = "apk"
 pkg-name = "ch.protonvpn.android"
@@ -1220,11 +1299,12 @@ patches-source-host = "gitlab"
 dpi = "120-640dpi"
 arch = "all arm64-v8a arm-v7a x86_64"
 
-[proton-vpn-morphe-paresh-exp]
+[ProtonVPN-Morphe-Paresh-Experimental]
 enabled = true
-app-name = "proton-vpn"
-brand = "paresh"
-sub-variant = "exp"
+app-name = "Proton VPN"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
 version = "latest"
 build-mode = "apk"
@@ -1238,11 +1318,12 @@ patches-source-host = "gitlab"
 dpi = "120-640dpi"
 arch = "all arm64-v8a arm-v7a x86_64"
 
-[jiohotstar-morphe-paresh]
+[Jiohotstar-Morphe-Paresh]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "jiohotstar"
-brand = "paresh"
+app-name = "JioHotstar"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 build-mode = "apk"
 pkg-name = "in.startv.hotstar"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
@@ -1251,12 +1332,13 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-[jiohotstar-morphe-paresh-exp]
+[Jiohotstar-Morphe-Paresh-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "jiohotstar"
-brand = "paresh"
-sub-variant = "exp"
+app-name = "JioHotstar"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+sub-variant = "Experimental"
 version = "latest"
 build-mode = "apk"
 pkg-name = "in.startv.hotstar"
@@ -1266,11 +1348,12 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-[sdmaid-morphe-paresh]
+[SDMaid-Morphe-Paresh]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "sdmaid"
-brand = "paresh"
+app-name = "SD Maid 2/SE"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -1281,12 +1364,13 @@ apkmirror-example-url = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-syste
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-[sdmaid-morphe-paresh-exp]
+[SDMaid-Morphe-Paresh-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "sdmaid"
-brand = "paresh"
-sub-variant = "exp"
+app-name = "SD Maid 2/SE"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
 version = "latest"
 build-mode = "apk"
@@ -1299,11 +1383,12 @@ patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
 # ── MX Player Pro (morphe-paresh) ─────────────────────────────────────────────
-[mx-player-pro-morphe-paresh]
+[MXPlayerPro-Morphe-Paresh]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "mx-player-pro"
-brand = "paresh"
+app-name = "MX Player Pro"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a"
@@ -1313,12 +1398,13 @@ uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-[mx-player-pro-morphe-paresh-exp]
+[MXPlayerPro-Morphe-Paresh-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "mx-player-pro"
-brand = "paresh"
-sub-variant = "exp"
+app-name = "MX Player Pro"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
 version = "latest"
 build-mode = "apk"
@@ -1330,11 +1416,12 @@ patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
 # ── Cricbuzz (morphe-paresh) ──────────────────────────────────────────────────
-[cricbuzz-morphe-paresh]
+[Cricbuzz-Morphe-Paresh]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "cricbuzz"
-brand = "paresh"
+app-name = "Cricbuzz"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -1344,12 +1431,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cric
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-[cricbuzz-morphe-paresh-exp]
+[Cricbuzz-Morphe-Paresh-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "cricbuzz"
-brand = "paresh"
-sub-variant = "exp"
+app-name = "Cricbuzz"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
 version = "latest"
 build-mode = "apk"
@@ -1361,11 +1449,12 @@ patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
 # ── Doc Scanner (morphe-paresh) ───────────────────────────────────────────────
-[doc-scanner-morphe-paresh]
+[DocScanner-Morphe-Paresh]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "doc-scanner"
-brand = "paresh"
+app-name = "Doc Scanner"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -1375,12 +1464,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-cre
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-[doc-scanner-morphe-paresh-exp]
+[DocScanner-Morphe-Paresh-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "doc-scanner"
-brand = "paresh"
-sub-variant = "exp"
+app-name = "Doc Scanner"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
 version = "latest"
 build-mode = "apk"
@@ -1392,11 +1482,12 @@ patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
 # ── Eyecon (morphe-paresh) ────────────────────────────────────────────────────
-[eyecon-morphe-paresh]
+[Eyecon-Morphe-Paresh]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "eyecon"
-brand = "paresh"
+app-name = "Eyecon"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 pkg-name = "com.eyecon.global"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -1406,10 +1497,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/eyecon-phone-dialer-contacts/ey
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-[instagram-morphe-piko]
+[Instagram-Morphe-Piko]
 enabled = true
-app-name = "instagram"
-brand = "piko"
+app-name = "Instagram"
+engine-brand = "Morphe"
+patch-brand = "Piko"
 build-mode = "apk"
 arch = "arm64-v8a x86_64"
 pkg-name = "com.instagram.android"
@@ -1421,10 +1513,11 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 patches-source = "crimera/piko"
 
 # ── X (Twitter) morphe-piko (no material you) ─────────────────────────────────
-[x-morphe-piko]
+[Twitter-Morphe-Piko]
 enabled = true
-app-name = "x"
-brand = "piko"
+app-name = "Twitter"
+engine-brand = "Morphe"
+patch-brand = "Piko"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.twitter.android"
@@ -1438,11 +1531,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
-[x-morphe-piko-exp]
+[Twitter-Morphe-Piko-Experimental]
 enabled = true
-app-name = "x"
-brand = "piko"
-sub-variant = "exp"
+app-name = "Twitter"
+engine-brand = "Morphe"
+patch-brand = "Piko"
+sub-variant = "Experimental"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "latest"
@@ -1457,11 +1551,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
-[x-morphe-piko-materialyou]
+[Twitter-Morphe-Piko-MaterialYou]
 enabled = true
-app-name = "x"
-brand = "piko"
-variant = "materialyou"
+app-name = "Twitter"
+engine-brand = "Morphe"
+patch-brand = "Piko"
+variant = "MaterialYou"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.twitter.android"
@@ -1474,12 +1569,13 @@ uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 
-[x-morphe-piko-materialyou-exp]
+[Twitter-Morphe-Piko-MaterialYou-Experimental]
 enabled = true
-app-name = "x"
-brand = "piko"
-variant = "materialyou"
-sub-variant = "exp"
+app-name = "Twitter"
+engine-brand = "Morphe"
+patch-brand = "Piko"
+variant = "MaterialYou"
+sub-variant = "Experimental"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "latest"
@@ -1493,11 +1589,12 @@ uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 
-[discord-npatch-revenge]
+[Discord-NPatch-Revenge]
 enabled = true
-app-name = "discord"
+app-name = "Discord"
 pkg-name = "com.discord"
-brand = "revenge"
+engine-brand = "NPatch"
+patch-brand = "Revenge"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 cli-source = "7723mod/NPatch"
@@ -1508,11 +1605,12 @@ uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers"
 apkmirror-example-url = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
 
-[microsoft-word-morphe-rushiranpise]
+[MicrosoftWord-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "microsoft-word"
-brand = "rushiranpise"
+app-name = "Microsoft Word"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -1522,11 +1620,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/word/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word"
 patches-source = "rushiranpise/morphe-patches"
 
-[microsoft-excel-morphe-rushiranpise]
+[MicrosoftExcel-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "microsoft-excel"
-brand = "rushiranpise"
+app-name = "Microsoft Excel"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -1536,11 +1635,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/excel/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel"
 patches-source = "rushiranpise/morphe-patches"
 
-[duolingo-morphe-rushiranpise]
+[Duolingo-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "duolingo"
-brand = "rushiranpise"
+app-name = "Duolingo"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -1549,10 +1649,11 @@ uptodown-dlurl = "https://duolingo.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
 patches-source = "rushiranpise/morphe-patches"
 
-[amazon-india-morphe-rushiranpise]
+[AmazonIndia-Morphe-Rushiranpise]
 enabled = true
-app-name = "amazon-india"
-brand = "rushiranpise"
+app-name = "Amazon India"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 build-mode = "apk"
 pkg-name = "in.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
@@ -1565,11 +1666,12 @@ custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
 arch = "all arm64-v8a arm-v7a"
 
-[amazon-india-morphe-rushiranpise-exp]
+[AmazonIndia-Morphe-Rushiranpise-Experimental]
 enabled = true
-app-name = "amazon-india"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Amazon India"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 build-mode = "apk"
 pkg-name = "in.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
@@ -1583,10 +1685,11 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 version = "latest"
 arch = "all arm64-v8a arm-v7a"
 
-[amazon-shopping-morphe-rushiranpise]
+[AmazonShopping-Morphe-Rushiranpise]
 enabled = true
-app-name = "amazon-shopping"
-brand = "rushiranpise"
+app-name = "Amazon Shopping"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 build-mode = "apk"
 pkg-name = "com.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
@@ -1599,11 +1702,12 @@ custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
 arch = "all arm64-v8a arm-v7a"
 
-[amazon-shopping-morphe-rushiranpise-exp]
+[AmazonShopping-Morphe-Rushiranpise-Experimental]
 enabled = true
-app-name = "amazon-shopping"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Amazon Shopping"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 build-mode = "apk"
 pkg-name = "com.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
@@ -1617,11 +1721,12 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 version = "latest"
 arch = "all arm64-v8a arm-v7a"
 
-[adobe-acrobat-morphe-rushiranpise]
+[AdobeAcrobat-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adobe-acrobat"
-brand = "rushiranpise"
+app-name = "Adobe Acrobat"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 build-mode = "apk"
 arch = "all arm64-v8a x86_64"
@@ -1631,12 +1736,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
 patches-source = "rushiranpise/morphe-patches"
 custom-microg-patches = "'None'"
 
-[adobe-acrobat-morphe-rushiranpise-exp]
+[AdobeAcrobat-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adobe-acrobat"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Adobe Acrobat"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 version = "latest"
 build-mode = "apk"
@@ -1647,11 +1753,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
 patches-source = "rushiranpise/morphe-patches"
 custom-microg-patches = "'None'"
 
-[pc-remote-morphe-rushiranpise]
+[PCRemote-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "pc-remote"
-brand = "rushiranpise"
+app-name = "PC Remote"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -1661,12 +1768,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/
 patches-source = "rushiranpise/morphe-patches"
 arch = "all arm64-v8a arm-v7a x86_64"
 
-[pc-remote-morphe-rushiranpise-exp]
+[PCRemote-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "pc-remote"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "PC Remote"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
 version = "latest"
 custom-microg-patches = "'None'"
@@ -1677,23 +1785,25 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/
 patches-source = "rushiranpise/morphe-patches"
 arch = "all arm64-v8a arm-v7a x86_64"
 
-[oxygen-updater-morphe-rushiranpise]
+[OxygenUpdater-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "oxygen-updater"
-brand = "rushiranpise"
+app-name = "Oxygen Updater"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
 pkg-name = "com.arjanvlek.oxygenupdater"
 github-dlurl = "https://github.com/oxygen-updater/os-updater"
 patches-source = "rushiranpise/morphe-patches"
 
-[oxygen-updater-morphe-rushiranpise-exp]
+[OxygenUpdater-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "oxygen-updater"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Oxygen Updater"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 version = "beta"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -1701,11 +1811,12 @@ pkg-name = "com.arjanvlek.oxygenupdater"
 github-dlurl = "https://github.com/oxygen-updater/os-updater"
 patches-source = "rushiranpise/morphe-patches"
 
-[windscribe-vpn-morphe-rushiranpise]
+[WindscribeVPN-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "windscribe-vpn"
-brand = "rushiranpise"
+app-name = "Windscribe VPN"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -1716,12 +1827,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
 apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
 patches-source = "rushiranpise/morphe-patches"
 
-[windscribe-vpn-morphe-rushiranpise-exp]
+[WindscribeVPN-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "windscribe-vpn"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Windscribe VPN"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
 version = "latest"
 custom-microg-patches = "'None'"
@@ -1733,11 +1845,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
 apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
 patches-source = "rushiranpise/morphe-patches"
 
-[1111-warp-morphe-rushiranpise]
+[CloudflareWarp-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "1111-warp"
-brand = "rushiranpise"
+app-name = "Cloudflare WARP"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -1748,12 +1861,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer
 patches-source = "rushiranpise/morphe-patches"
 apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
-[1111-warp-morphe-rushiranpise-exp]
+[CloudflareWarp-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "1111-warp"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Cloudflare WARP"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
 version = "latest"
 custom-microg-patches = "'None'"
@@ -1765,11 +1879,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer
 patches-source = "rushiranpise/morphe-patches"
 apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
-[adguard-morphe-rushiranpise]
+[AdGuard-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adguard"
-brand = "rushiranpise"
+app-name = "AdGuard"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -1779,12 +1894,13 @@ uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
 patches-source = "rushiranpise/morphe-patches"
 
-[adguard-morphe-rushiranpise-exp]
+[AdGuard-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adguard"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "AdGuard"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
 version = "latest"
 custom-microg-patches = "'None'"
@@ -1795,11 +1911,12 @@ uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
 patches-source = "rushiranpise/morphe-patches"
 
-[beta-maniac-morphe-rushiranpise]
+[BetaManiac-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "beta-maniac"
-brand = "rushiranpise"
+app-name = "Beta Maniac"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -1808,12 +1925,13 @@ uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
 patches-source = "rushiranpise/morphe-patches"
 
-[beta-maniac-morphe-rushiranpise-exp]
+[BetaManiac-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "beta-maniac"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Beta Maniac"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
 version = "latest"
 build-mode = "apk"
@@ -1824,11 +1942,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-lif
 patches-source = "rushiranpise/morphe-patches"
 
 # ── MacroDroid (morphe-rushiranpise) ──────────────────────────────────────────
-[macrodroid-morphe-rushiranpise]
+[MacroDroid-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "macrodroid"
-brand = "rushiranpise"
+app-name = "MacroDroid"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -1837,12 +1956,13 @@ uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
 patches-source = "rushiranpise/morphe-patches"
 
-[macrodroid-morphe-rushiranpise-exp]
+[MacroDroid-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "macrodroid"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "MacroDroid"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
 version = "latest"
 build-mode = "apk"
@@ -1853,11 +1973,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-auto
 patches-source = "rushiranpise/morphe-patches"
 
 # ── Bluetooth Keyboard and Mouse (morphe-rushiranpise) ───────────────────────
-[bluetooth-keyboard-mouse-morphe-rushiranpise]
+[BluetoothKeyboardAndMouse-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "bluetooth-keyboard-mouse"
-brand = "rushiranpise"
+app-name = "Bluetooth Keyboard & Mouse"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/io.appground.blek"
 build-mode = "apk"
 arch = "arm64-v8a x86_64"
@@ -1867,10 +1988,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard
 patches-source = "rushiranpise/morphe-patches"
 
 # ── Proton VPN (morphe-rushiranpise) ─────────────────────────────────────────
-[proton-vpn-morphe-rushiranpise]
+[ProtonVPN-Morphe-Rushiranpise]
 enabled = true
-app-name = "proton-vpn"
-brand = "rushiranpise"
+app-name = "Proton VPN"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -1882,11 +2004,12 @@ prefer-dl-mode = "bundle"
 dpi = "120-640dpi"
 patches-source = "rushiranpise/morphe-patches"
 
-[proton-vpn-morphe-rushiranpise-exp]
+[ProtonVPN-Morphe-Rushiranpise-Experimental]
 enabled = true
-app-name = "proton-vpn"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Proton VPN"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
 version = "latest"
 build-mode = "apk"
@@ -1899,10 +2022,11 @@ prefer-dl-mode = "bundle"
 dpi = "120-640dpi"
 patches-source = "rushiranpise/morphe-patches"
 
-[amazon-alexa-signed]
+[AmazonAlexa-APKSigner-Signed]
 enabled = true
-app-name = "amazon-alexa"
-brand = "signed"
+app-name = "Amazon Alexa"
+engine-brand = "APKSigner"
+patch-brand = "Signed"
 build-mode = "apk"
 cli-source = "apksigner"
 pkg-name = "com.amazon.dee.app"
@@ -1916,10 +2040,11 @@ uptodown-dlurl = "https://alexa.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
 dpi = "120-480dpi 480-640dpi"
 
-[bitwarden-morphe-stylus]
+[Bitwarden-Morphe-Stylus]
 enabled = true
-app-name = "bitwarden"
-brand = "stylus"
+app-name = "Bitwarden"
+engine-brand = "Morphe"
+patch-brand = "Stylus"
 build-mode = "apk"
 pkg-name = "com.x8bit.bitwarden"
 cli-source = "MorpheApp/morphe-desktop"
@@ -1929,11 +2054,12 @@ github-release-regex = "bwpm"
 version = "latest"
 patches-source = "ch3thanhs/stylus"
 
-[bitwarden-morphe-stylus-exp]
+[Bitwarden-Morphe-Stylus-Experimental]
 enabled = true
-app-name = "bitwarden"
-brand = "stylus"
-sub-variant = "exp"
+app-name = "Bitwarden"
+engine-brand = "Morphe"
+patch-brand = "Stylus"
+sub-variant = "Experimental"
 build-mode = "apk"
 pkg-name = "com.x8bit.bitwarden"
 cli-source = "MorpheApp/morphe-desktop"
@@ -1943,11 +2069,12 @@ github-release-regex = "bwpm"
 version = "latest"
 patches-source = "ch3thanhs/stylus"
 
-[tiktok-morphe-icysymmetra]
+[TikTok-Morphe-Icysymmetra]
 enabled = true
-app-name = "tiktok"
+app-name = "TikTok"
 pkg-name = "com.zhiliaoapp.musically"
-brand = "icysymmetra"
+engine-brand = "Morphe"
+patch-brand = "Icysymmetra"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a"
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
@@ -1955,11 +2082,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-includin
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
 patches-source = "icysymmetra/tiktok-patches-for-morphe"
 
-[tiktok-morphe-hxreborn]
+[TikTok-Morphe-Hxreborn]
 enabled = true
-app-name = "tiktok"
+app-name = "TikTok"
 pkg-name = "com.zhiliaoapp.musically"
-brand = "hxreborn"
+engine-brand = "Morphe"
+patch-brand = "Hxreborn"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a"
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"

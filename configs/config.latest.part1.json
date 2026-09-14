@@ -1,9 +1,9 @@
 {
   "patches-version": "absolutelatest",
   "enable-module-update": true,
-  "amazon-shopping-morphe-rushiranpise-exp": {
+  "AmazonShopping-rushiranpise-Experimental": {
     "enabled": true,
-    "app-name": "amazon-shopping",
+    "app-name": "Amazon Shopping",
     "build-mode": "apk",
     "pkg-name": "com.amazon.mShop.android.shopping",
     "cli-source": "MorpheApp/morphe-desktop",
@@ -16,7 +16,8 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping",
     "version": "latest",
     "arch": "all arm64-v8a arm-v7a",
-    "brand": "rushiranpise",
-    "sub-variant": "exp"
+    "sub-variant": "Experimental",
+    "engine-brand": "Morphe",
+    "patch-brand": "rushiranpise"
   }
 }

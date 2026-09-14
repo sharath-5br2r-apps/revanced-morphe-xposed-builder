@@ -1,10 +1,11 @@
 enable-module-update = true
 patches-version = "absolutelatest"
-[tiktok-morphe-icysymmetra]
+[TikTok-Morphe-Icysymmetra]
 enabled = true
-app-name = "tiktok"
+app-name = "TikTok"
 pkg-name = "com.zhiliaoapp.musically"
-brand = "icysymmetra"
+engine-brand = "Morphe"
+patch-brand = "Icysymmetra"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a"
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
@@ -12,11 +13,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-includin
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
 patches-source = "icysymmetra/tiktok-patches-for-morphe"
 
-[tiktok-morphe-hxreborn]
+[TikTok-Morphe-Hxreborn]
 enabled = true
-app-name = "tiktok"
+app-name = "TikTok"
 pkg-name = "com.zhiliaoapp.musically"
-brand = "hxreborn"
+engine-brand = "Morphe"
+patch-brand = "Hxreborn"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a"
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"

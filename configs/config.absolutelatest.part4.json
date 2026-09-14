@@ -1,11 +1,12 @@
 {
   "patches-version": "absolutelatest",
-  "fing-morphe-paresh-exp": {
+  "Fing-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "fing",
-    "brand": "paresh",
-    "sub-variant": "exp",
+    "app-name": "Fing",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
+    "sub-variant": "Experimental",
     "version": "latest",
     "build-mode": "apk",
     "pkg-name": "com.overlook.android.fing",
@@ -17,11 +18,12 @@
     "patches-source-host": "gitlab",
     "arch": "all arm64-v8a arm-v7a"
   },
-  "proton-vpn-morphe-paresh": {
+  "ProtonVPN-Morphe-Paresh": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "proton-vpn",
-    "brand": "paresh",
+    "app-name": "Proton VPN",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android",
     "build-mode": "apk",
     "pkg-name": "ch.protonvpn.android",
@@ -34,12 +36,13 @@
     "dpi": "120-640dpi",
     "arch": "all arm64-v8a arm-v7a x86_64"
   },
-  "proton-vpn-morphe-paresh-exp": {
+  "ProtonVPN-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "proton-vpn",
-    "brand": "paresh",
-    "sub-variant": "exp",
+    "app-name": "Proton VPN",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android",
     "version": "latest",
     "build-mode": "apk",
@@ -53,12 +56,13 @@
     "dpi": "120-640dpi",
     "arch": "all arm64-v8a arm-v7a x86_64"
   },
-  "jiohotstar-morphe-paresh": {
+  "Jiohotstar-Morphe-Paresh": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "jiohotstar",
-    "brand": "paresh",
+    "app-name": "JioHotstar",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
     "build-mode": "apk",
     "pkg-name": "in.startv.hotstar",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/",
@@ -67,13 +71,14 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "jiohotstar-morphe-paresh-exp": {
+  "Jiohotstar-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "jiohotstar",
-    "brand": "paresh",
-    "sub-variant": "exp",
+    "app-name": "JioHotstar",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
+    "sub-variant": "Experimental",
     "version": "latest",
     "build-mode": "apk",
     "pkg-name": "in.startv.hotstar",
@@ -83,12 +88,13 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "sdmaid-morphe-paresh": {
+  "SDMaid-Morphe-Paresh": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "sdmaid",
-    "brand": "paresh",
+    "app-name": "SD Maid 2/SE",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -99,13 +105,14 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "sdmaid-morphe-paresh-exp": {
+  "SDMaid-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "sdmaid",
-    "brand": "paresh",
-    "sub-variant": "exp",
+    "app-name": "SD Maid 2/SE",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse",
     "version": "latest",
     "build-mode": "apk",
@@ -117,12 +124,13 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "mx-player-pro-morphe-paresh": {
+  "MXPlayerPro-Morphe-Paresh": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "mx-player-pro",
-    "brand": "paresh",
+    "app-name": "MX Player Pro",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a",
@@ -132,13 +140,14 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "mx-player-pro-morphe-paresh-exp": {
+  "MXPlayerPro-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "mx-player-pro",
-    "brand": "paresh",
-    "sub-variant": "exp",
+    "app-name": "MX Player Pro",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro",
     "version": "latest",
     "build-mode": "apk",
@@ -149,12 +158,13 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "cricbuzz-morphe-paresh": {
+  "Cricbuzz-Morphe-Paresh": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "cricbuzz",
-    "brand": "paresh",
+    "app-name": "Cricbuzz",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -164,13 +174,14 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "cricbuzz-morphe-paresh-exp": {
+  "Cricbuzz-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "cricbuzz",
-    "brand": "paresh",
-    "sub-variant": "exp",
+    "app-name": "Cricbuzz",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android",
     "version": "latest",
     "build-mode": "apk",
@@ -181,12 +192,13 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "doc-scanner-morphe-paresh": {
+  "DocScanner-Morphe-Paresh": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "doc-scanner",
-    "brand": "paresh",
+    "app-name": "Doc Scanner",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -196,13 +208,14 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "doc-scanner-morphe-paresh-exp": {
+  "DocScanner-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "doc-scanner",
-    "brand": "paresh",
-    "sub-variant": "exp",
+    "app-name": "Doc Scanner",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
+    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner",
     "version": "latest",
     "build-mode": "apk",
@@ -213,12 +226,13 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "eyecon-morphe-paresh": {
+  "Eyecon-Morphe-Paresh": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "eyecon",
-    "brand": "paresh",
+    "app-name": "Eyecon",
+    "engine-brand": "Morphe",
+    "patch-brand": "Paresh",
     "pkg-name": "com.eyecon.global",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -228,11 +242,12 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "instagram-morphe-piko": {
+  "Instagram-Morphe-Piko": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "instagram",
-    "brand": "piko",
+    "app-name": "Instagram",
+    "engine-brand": "Morphe",
+    "patch-brand": "Piko",
     "build-mode": "apk",
     "arch": "arm64-v8a x86_64",
     "pkg-name": "com.instagram.android",
@@ -243,11 +258,12 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android",
     "patches-source": "crimera/piko"
   },
-  "x-morphe-piko": {
+  "Twitter-Morphe-Piko": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "x",
-    "brand": "piko",
+    "app-name": "Twitter",
+    "engine-brand": "Morphe",
+    "patch-brand": "Piko",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
     "pkg-name": "com.twitter.android",
@@ -260,12 +276,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
   },
-  "x-morphe-piko-exp": {
+  "Twitter-Morphe-Piko-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "x",
-    "brand": "piko",
-    "sub-variant": "exp",
+    "app-name": "Twitter",
+    "engine-brand": "Morphe",
+    "patch-brand": "Piko",
+    "sub-variant": "Experimental",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
     "version": "latest",
@@ -279,12 +296,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
   },
-  "x-morphe-piko-materialyou": {
+  "Twitter-Morphe-Piko-MaterialYou": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "x",
-    "brand": "piko",
-    "variant": "materialyou",
+    "app-name": "Twitter",
+    "engine-brand": "Morphe",
+    "patch-brand": "Piko",
+    "variant": "MaterialYou",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
     "pkg-name": "com.twitter.android",
@@ -297,13 +315,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
   },
-  "x-morphe-piko-materialyou-exp": {
+  "Twitter-Morphe-Piko-MaterialYou-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "x",
-    "brand": "piko",
-    "variant": "materialyou",
-    "sub-variant": "exp",
+    "app-name": "Twitter",
+    "engine-brand": "Morphe",
+    "patch-brand": "Piko",
+    "variant": "MaterialYou",
+    "sub-variant": "Experimental",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
     "version": "latest",
@@ -317,12 +336,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
   },
-  "discord-npatch-revenge": {
+  "Discord-NPatch-Revenge": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "discord",
+    "app-name": "Discord",
     "pkg-name": "com.discord",
-    "brand": "revenge",
+    "engine-brand": "NPatch",
+    "patch-brand": "Revenge",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
     "cli-source": "7723mod/NPatch",
@@ -333,12 +353,13 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers",
     "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
   },
-  "microsoft-word-morphe-rushiranpise": {
+  "MicrosoftWord-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "microsoft-word",
-    "brand": "rushiranpise",
+    "app-name": "Microsoft Word",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
     "arch": "arm64-v8a arm-v7a x86_64",
@@ -348,12 +369,13 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "microsoft-excel-morphe-rushiranpise": {
+  "MicrosoftExcel-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "microsoft-excel",
-    "brand": "rushiranpise",
+    "app-name": "Microsoft Excel",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
     "arch": "arm64-v8a arm-v7a x86_64",
@@ -363,12 +385,13 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "duolingo-morphe-rushiranpise": {
+  "Duolingo-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "duolingo",
-    "brand": "rushiranpise",
+    "app-name": "Duolingo",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -377,11 +400,12 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "amazon-india-morphe-rushiranpise": {
+  "AmazonIndia-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "amazon-india",
-    "brand": "rushiranpise",
+    "app-name": "Amazon India",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "build-mode": "apk",
     "pkg-name": "in.amazon.mShop.android.shopping",
     "cli-source": "MorpheApp/morphe-desktop",
@@ -394,12 +418,13 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping",
     "arch": "all arm64-v8a arm-v7a"
   },
-  "amazon-india-morphe-rushiranpise-exp": {
+  "AmazonIndia-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "amazon-india",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "Amazon India",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "build-mode": "apk",
     "pkg-name": "in.amazon.mShop.android.shopping",
     "cli-source": "MorpheApp/morphe-desktop",
@@ -413,11 +438,12 @@
     "version": "latest",
     "arch": "all arm64-v8a arm-v7a"
   },
-  "amazon-shopping-morphe-rushiranpise": {
+  "AmazonShopping-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "amazon-shopping",
-    "brand": "rushiranpise",
+    "app-name": "Amazon Shopping",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
     "build-mode": "apk",
     "pkg-name": "com.amazon.mShop.android.shopping",
     "cli-source": "MorpheApp/morphe-desktop",
@@ -430,12 +456,13 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping",
     "arch": "all arm64-v8a arm-v7a"
   },
-  "amazon-shopping-morphe-rushiranpise-exp": {
+  "AmazonShopping-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "amazon-shopping",
-    "brand": "rushiranpise",
-    "sub-variant": "exp",
+    "app-name": "Amazon Shopping",
+    "engine-brand": "Morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
     "build-mode": "apk",
     "pkg-name": "com.amazon.mShop.android.shopping",
     "cli-source": "MorpheApp/morphe-desktop",

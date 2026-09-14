@@ -2442,7 +2442,7 @@ dl_cache_repo() {
 	local path="" version_f=${version// /}
 	local base_url=${__CACHE_REPO_URL__:-${__GITHUB_URL__:-$url}}
 
-	local key_check="${table:-}${app_name:-}${args[brand]:-${args[rv_brand]:-}}"
+	local key_check="${table:-}${app_name:-}${args[patch_brand]:-}${args[engine_brand]:-}${args[brand]:-${args[rv_brand]:-}}"
 	key_check="${key_check,,}"
 	if [[ "$key_check" == *"gboard"* ]] && [[ "$key_check" == *"jasonwu"* ]]; then
 		version_f=$(echo "$version_f" | sed -E 's/-release.*//')
@@ -3130,6 +3130,8 @@ write_build_info() {
 	local cli_ref=${16:-${cli_ref:-${args[cli_source]:-${args[cli]:-}}}}
 	local dpi_val=${17:-${args[dpi]:-}}
 	local removed_patches=${18:-}
+	local engine_brand=${19:-${args[engine_brand]:-}}
+	local patch_brand=${20:-${args[patch_brand]:-}}
 
 	local arch_orig="${args[arch]// /}"
 	if [ "$arch_orig" != "auto" ]; then ext="${arch}${ext}"; arch=""; fi
@@ -3144,29 +3146,31 @@ write_build_info() {
 	local target_apk=""
 	if [ -n "$inspect_apk_override" ] && [ -f "$inspect_apk_override" ]; then
 		target_apk="$inspect_apk_override"
-	elif [ -n "$target_file" ] && [ -f "$target_file" ]; then
+	elif [ -n "$target_file" ] && [ -f "$target_file" ] && [[ "$target_file" == *.apk ]]; then
 		target_apk="$target_file"
-	fi
-	if [ -z "$target_apk" ] || [ ! -f "$target_apk" ]; then
-		target_apk="${final_apk_output:-${apk_output:-${patched_apk:-${stock_apk_to_patch:-${stock_apk:-}}}}}"
-	fi
-
-	# For .zip modules, check companion .apk or inspect base.apk inside
-	local inspect_apk="$target_apk"
-	if [[ "$inspect_apk" == *.zip ]]; then
-		local zip_companion="${inspect_apk%.zip}.apk"
-		if [ -f "$zip_companion" ]; then
-			inspect_apk="$zip_companion"
-		else
-			inspect_apk=""
-		fi
+	elif [ -n "${patched_apk:-}" ] && [ -f "${patched_apk:-}" ]; then
+		target_apk="$patched_apk"
 	fi
 
-	local aapt_bin="${AAPT2:-$(command -v aapt2 2>/dev/null || command -v aapt 2>/dev/null || true)}"
+	# Inspect APK with aapt if available
 	local min_sdk=""
-	local densities_json="[]" native_libs_json="[]"
-	if [ -n "$inspect_apk" ] && [ -f "$inspect_apk" ]; then
-		if [ -n "$aapt_bin" ] && [ -x "$aapt_bin" ]; then
+	local densities_json="[]"
+	local native_libs_json="[]"
+
+	local inspect_apk=""
+	if [ -n "$target_apk" ] && [ -f "$target_apk" ]; then
+		inspect_apk="$target_apk"
+	fi
+
+	if [ -n "$inspect_apk" ]; then
+		local aapt_bin=""
+		if command -v aapt2 >/dev/null 2>&1; then
+			aapt_bin="aapt2"
+		elif command -v aapt >/dev/null 2>&1; then
+			aapt_bin="aapt"
+		fi
+
+		if [ -n "$aapt_bin" ]; then
 			local aapt_out
 			aapt_out=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null || true)
 			min_sdk=$(printf '%s' "$aapt_out" | grep -oP "(?:sdkVersion|minSdkVersion):'\K[^']+" | head -1 || true)
@@ -3245,6 +3249,8 @@ write_build_info() {
 			--arg display_name "$display_name" \
 			--arg patches_source "$patches_source" \
 			--arg brand "$brand" \
+			--arg engine_brand "$engine_brand" \
+			--arg patch_brand "$patch_brand" \
 			--arg variant "$variant" \
 			--arg sub_variant "$sub_variant" \
 			--argjson patches_arr "$patches_json" \
@@ -3263,6 +3269,8 @@ write_build_info() {
 				(if $display_name != "" then .[$key].display_name = $display_name else . end) |
 				(if $patches_source != "" then .[$key].patches_source = $patches_source else . end) |
 				(if $brand != "" then .[$key].brand = $brand else . end) |
+				(if $engine_brand != "" then .[$key].engine_brand = $engine_brand else . end) |
+				(if $patch_brand != "" then .[$key].patch_brand = $patch_brand else . end) |
 				(if $variant != "" then .[$key].variant = $variant else . end) |
 				(if $sub_variant != "" then .[$key].sub_variant = $sub_variant else . end) |
 				(if $dpi != "" then .[$key].dpi = $dpi else . end) |
@@ -3291,6 +3299,8 @@ write_build_info() {
 					display_name: $display_name,
 					patches_source: $patches_source,
 					brand: $brand,
+					engine_brand: $engine_brand,
+					patch_brand: $patch_brand,
 					variant: $variant,
 					sub_variant: $sub_variant,
 					applied_patches: $applied,
@@ -3300,6 +3310,8 @@ write_build_info() {
 				} |
 				if $cli != "" then . else del(.[$key].cli) end |
 				if $dpi != "" then . else del(.[$key].dpi) end |
+				if $engine_brand != "" then . else del(.[$key].engine_brand) end |
+				if $patch_brand != "" then . else del(.[$key].patch_brand) end |
 				if $min_sdk != "" then . else del(.[$key].min_sdk) end |
 				if ($densities | length) > 0 then . else del(.[$key].densities) end |
 				if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |
@@ -3325,6 +3337,8 @@ write_build_info() {
 					package_name: $pkg_name,
 					display_name: $display_name,
 					brand: $brand,
+					engine_brand: $engine_brand,
+					patch_brand: $patch_brand,
 					variant: $variant,
 					sub_variant: $sub_variant,
 					applied_patches: $applied,
@@ -3334,6 +3348,8 @@ write_build_info() {
 				} |
 				if $cli != "" then . else del(.[$file_key].cli) end |
 				if $dpi != "" then . else del(.[$file_key].dpi) end |
+				if $engine_brand != "" then . else del(.[$file_key].engine_brand) end |
+				if $patch_brand != "" then . else del(.[$file_key].patch_brand) end |
 				if $release_notes != "" then . else del(.[$file_key].release_notes) end |
 				if $min_sdk != "" then . else del(.[$file_key].min_sdk) end |
 				if ($densities | length) > 0 then . else del(.[$file_key].densities) end |
@@ -3650,7 +3666,7 @@ build_rv() {
 
 		# Clean resolved_version of arch, versionCodes, and release variant suffixes without clipping long version components
 		if [ -n "$resolved_version" ]; then
-			local gboard_check="${table:-}${app_name:-}${args[brand]:-${args[rv_brand]:-}}${pkg_name:-}"
+			local gboard_check="${table:-}${app_name:-}${args[patch_brand]:-}${args[engine_brand]:-}${args[brand]:-${args[rv_brand]:-}}${pkg_name:-}"
 			if [[ "${gboard_check,,}" == *"gboard"* ]] || [[ "$pkg_name" == *"inputmethod.latin"* ]]; then
 				resolved_version=$(echo "$resolved_version" | sed -E 's/-(arm64-v8a|armeabi-v7a|arm-v7a|x86_64|x86)$//gi')
 			fi
@@ -3926,7 +3942,7 @@ build_rv() {
 
 		# Clean resolved_version of arch, versionCodes, and release variant suffixes without clipping long version components
 		if [ -n "$resolved_version" ]; then
-			local gboard_check="${table:-}${app_name:-}${args[brand]:-${args[rv_brand]:-}}${pkg_name:-}"
+			local gboard_check="${table:-}${app_name:-}${args[patch_brand]:-}${args[engine_brand]:-}${args[brand]:-${args[rv_brand]:-}}${pkg_name:-}"
 			if [[ "${gboard_check,,}" == *"gboard"* ]] || [[ "$pkg_name" == *"inputmethod.latin"* ]]; then
 				resolved_version=$(echo "$resolved_version" | sed -E 's/-(arm64-v8a|armeabi-v7a|arm-v7a|x86_64|x86)$//gi')
 			fi
@@ -4326,9 +4342,49 @@ build_rv() {
 	fi
 
 	local patcher_args patched_apk build_mode final_apk_output=""
+	local engine_brand_val="${args[engine_brand]:-}"
+	local patch_brand_val="${args[patch_brand]:-}"
 	local brand_val="${args[brand]:-}"
+
+	# Infer engine_brand_val if not explicitly set
+	if [ -z "$engine_brand_val" ]; then
+		local cli_src_check="${args[cli_source]:-}"
+		cli_src_check="${cli_src_check,,}"
+		if [[ "$cli_src_check" == *"npatch"* ]]; then
+			engine_brand_val="npatch"
+		elif [[ "$cli_src_check" == *"apksigner"* ]]; then
+			engine_brand_val="apksigner"
+		elif [ -n "$brand_val" ] && [ "$brand_val" = "npatch" -o "$brand_val" = "apksigner" ]; then
+			engine_brand_val="$brand_val"
+		else
+			engine_brand_val="morphe"
+		fi
+	fi
+
+	# Infer patch_brand_val if empty but brand_val is set
+	if [ -z "$patch_brand_val" ] && [ -n "$brand_val" ] && [ "$brand_val" != "$engine_brand_val" ]; then
+		patch_brand_val="$brand_val"
+	fi
+
+	# For morphe-patches or if patch brand equals engine brand, ignore patch-brand
+	if [ "${patch_brand_val,,}" = "morphe" ] || [ "${patch_brand_val,,}" = "${engine_brand_val,,}" ]; then
+		patch_brand_val=""
+	fi
+
+	local engine_brand_slug=""
+	[ -n "$engine_brand_val" ] && engine_brand_slug=$(resolve_slug "$engine_brand_val")
+
+	local patch_brand_slug=""
+	[ -n "$patch_brand_val" ] && patch_brand_slug=$(resolve_slug "$patch_brand_val")
+
 	local brand_slug=""
-	[ -n "$brand_val" ] && brand_slug=$(resolve_slug "$brand_val")
+	if [ -n "$engine_brand_slug" ] && [ -n "$patch_brand_slug" ]; then
+		brand_slug="${engine_brand_slug}-${patch_brand_slug}"
+	elif [ -n "$patch_brand_slug" ]; then
+		brand_slug="$patch_brand_slug"
+	else
+		brand_slug="$engine_brand_slug"
+	fi
 
 	local variant_val="${args[variant]:-}"
 	local variant_slug=""
@@ -4339,11 +4395,72 @@ build_rv() {
 	[ -n "$sub_variant_val" ] && sub_variant_slug=$(resolve_slug "$sub_variant_val")
 
 	local brand_suffix=""
-	[ -n "$brand_slug" ] && brand_suffix+="-${brand_slug}"
+	[ -n "$engine_brand_slug" ] && brand_suffix+="-${engine_brand_slug}"
+	[ -n "$patch_brand_slug" ] && brand_suffix+="-${patch_brand_slug}"
 	[ -n "$variant_slug" ] && [ "$variant_slug" != "default" ] && brand_suffix+="-${variant_slug}"
 	[ -n "$sub_variant_slug" ] && brand_suffix+="-${sub_variant_slug}"
 
-	local brand_display="${brand_val}"
+	# Format display name token helper
+	_format_brand_token() {
+		local t="$1"
+		case "${t,,}" in
+			"npatch") echo "NPatch" ;;
+			"morphe") echo "Morphe" ;;
+			"nulls"|"null's") echo "Null's" ;;
+			"apksigner") echo "apksigner" ;;
+			"signed") echo "signed" ;;
+			"anddea") echo "Anddea" ;;
+			"piko") echo "Piko" ;;
+			"revenge") echo "Revenge" ;;
+			"hoodles") echo "Hoodles" ;;
+			"stylus") echo "Stylus" ;;
+			"rushiranpise") echo "Rushiranpise" ;;
+			"paresh") echo "Paresh" ;;
+			"hooman") echo "Hooman" ;;
+			"xtra") echo "Xtra" ;;
+			"byehi98") echo "Byehi98" ;;
+			"browzomje") echo "Browzomje" ;;
+			"dh6k") echo "Dh6k" ;;
+			"hxreborn") echo "HxReborn" ;;
+			"icysymmetra") echo "IcySymmetra" ;;
+			"jasonwu1994") echo "Jasonwu1994" ;;
+			"adobo") echo "Adobo" ;;
+			"kondratjev") echo "Kondratjev" ;;
+			"kveld9") echo "Kveld9" ;;
+			"lain") echo "Lain" ;;
+			"binarymend") echo "Binarymend" ;;
+			"bholeykabhakt") echo "Bholeykabhakt" ;;
+			*) echo "${t^}" ;;
+		esac
+	}
+
+	local engine_disp=""
+	if [ -n "$engine_brand_val" ]; then
+		for w in $engine_brand_val; do
+			engine_disp+="$(_format_brand_token "$w") "
+		done
+		engine_disp="${engine_disp% }"
+	fi
+
+	local patch_disp=""
+	if [ -n "$patch_brand_val" ]; then
+		for w in $patch_brand_val; do
+			patch_disp+="$(_format_brand_token "$w") "
+		done
+		patch_disp="${patch_disp% }"
+	fi
+
+	local brand_display=""
+	if [ -n "$patch_disp" ]; then
+		if [ -n "$engine_disp" ]; then
+			brand_display="${patch_disp} (${engine_disp})"
+		else
+			brand_display="${patch_disp}"
+		fi
+	else
+		brand_display="${engine_disp}"
+	fi
+
 	[ -n "$variant_val" ] && [ "$variant_val" != "Default" ] && brand_display+=" ${variant_val}"
 	[ -n "$sub_variant_val" ] && brand_display+=" ${sub_variant_val}"
 	brand_display="${brand_display#" "}"
@@ -4497,7 +4614,7 @@ build_rv() {
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
 			final_apk_output="$apk_output"
-			write_build_info "${table% (*}" "${arch_f}" ".apk" "${file_prefix:-${app_name_l}${brand_suffix}}" "$version_f" "$patches_ref" "$changelog_url" "$pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "$apk_output" "" "$cli_ref" "${args[dpi]:-}" "$excluded_patches_for_build"
+			write_build_info "${table% (*}" "${arch_f}" ".apk" "${file_prefix:-${app_name_l}${brand_suffix}}" "$version_f" "$patches_ref" "$changelog_url" "$pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "$apk_output" "" "$cli_ref" "${args[dpi]:-}" "$excluded_patches_for_build" "$engine_brand_val" "$patch_brand_val"
 			continue
 		fi
 		local base_mod_id="${args[module_prop_name]}"
@@ -4573,7 +4690,7 @@ build_rv() {
 			popd >/dev/null || :
 			rm -rf "$base_template"
 			pr "Built ${table} (root): '${BUILD_DIR}/${curr_mod_output}'"
-			write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix:-${app_name_l}${brand_suffix}}" "$version_f" "$patches_ref" "$changelog_url" "$pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "${CWD}/${BUILD_DIR}/${curr_mod_output}" "$patched_apk" "$cli_ref" "${args[dpi]:-}" "$excluded_patches_for_build"
+			write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix:-${app_name_l}${brand_suffix}}" "$version_f" "$patches_ref" "$changelog_url" "$pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "${CWD}/${BUILD_DIR}/${curr_mod_output}" "$patched_apk" "$cli_ref" "${args[dpi]:-}" "$excluded_patches_for_build" "$engine_brand_val" "$patch_brand_val"
 		done
 		done
 		) > "${build_logs_dir}/build_${arch// /}.log" 2>&1 &

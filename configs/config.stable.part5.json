@@ -1,9 +1,9 @@
 {
   "patches-version": "latest",
   "enable-module-update": true,
-  "speedtest-morphe-xtra": {
+  "Speedtest-BholeyKaBhakt": {
     "enabled": true,
-    "app-name": "speedtest",
+    "app-name": "Speedtest",
     "pkg-name": "org.zwanoo.android.speedtest",
     "rv-brand": "morphe-xtra",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/org.zwanoo.android.speedtest",
@@ -12,11 +12,13 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "uptodown-dlurl": "https://speedtest-net-mobile.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/ookla/speedtest",
-    "patches-source": "BholeyKaBhakt/revanced-patches-xtra"
+    "patches-source": "BholeyKaBhakt/revanced-patches-xtra",
+    "engine-brand": "Morphe",
+    "patch-brand": "xtra"
   },
-  "autosync-morphe-xtra": {
+  "Autosync-BholeyKaBhakt": {
     "enabled": true,
-    "app-name": "autosync",
+    "app-name": "Autosync",
     "rv-brand": "morphe-xtra",
     "pkg-name": "com.ttxapps.autosync",
     "build-mode": "apk",
@@ -25,11 +27,13 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.ttxapps.autosync",
     "uptodown-dlurl": "https://autosync.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/metactrl/autosync-universal-cloud-sync-and-backup",
-    "patches-source": "BholeyKaBhakt/revanced-patches-xtra"
+    "patches-source": "BholeyKaBhakt/revanced-patches-xtra",
+    "engine-brand": "Morphe",
+    "patch-brand": "xtra"
   },
-  "brave-nightly-morphe-dh6k": {
+  "BraveBrowser-dh6k-Nightly": {
     "enabled": true,
-    "app-name": "brave-nightly",
+    "app-name": "Brave Browser",
     "rv-brand": "morphe-dh6k",
     "version": "beta",
     "build-mode": "apk",
@@ -40,12 +44,14 @@
     "patcher-args": "--continue-on-error",
     "github-dlurl": "https://github.com/brave/brave-browser/releases",
     "github-dlurl-regex": "arm64-v8a: (BraveMonoarm64|MonoArm64)\\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$",
-    "github-release-name-regex": "^Nightly v"
+    "github-release-name-regex": "^Nightly v",
+    "engine-brand": "Morphe",
+    "patch-brand": "dh6k"
   },
-  "hill-climb-racing-morphe-byehi98": {
+  "HillClimbRacing-byehi98": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "hill-climb-racing",
+    "app-name": "Hill Climb Racing",
     "rv-brand": "morphe-byehi98",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.fingersoft.hillclimb",
     "build-mode": "apk",
@@ -53,11 +59,13 @@
     "pkg-name": "com.fingersoft.hillclimb",
     "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/",
-    "patches-source": "byehi98/okish-morphe-patches"
+    "patches-source": "byehi98/okish-morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "byehi98"
   },
   "gboard-morphe-jasonwu1994-adobo-clone": {
     "enabled": true,
-    "app-name": "gboard",
+    "app-name": "Gboard",
     "rv-brand": "morphe-jasonwu1994-adobo-clone",
     "build-mode": "apk",
     "arch": "arm64-v8a arm-v7a x86_64",
@@ -71,12 +79,14 @@
     "patcher-args": "-f --continue-on-error",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/google-inc/gboard",
     "apkmirror-example-url": "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/",
-    "apkmirror-release-filter": "!(lite|beta)"
+    "apkmirror-release-filter": "!(lite|beta)",
+    "engine-brand": "Morphe",
+    "patch-brand": "jasonwu1994-adobo-clone"
   },
   "xrecorder-morphe-hoodles-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "xrecorder",
+    "app-name": "XRecorder",
     "rv-brand": "morphe-hoodles-exp",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/videoeditor.videorecorder.screenrecorder",
     "version": "latest",
@@ -85,12 +95,14 @@
     "pkg-name": "videoeditor.videorecorder.screenrecorder",
     "uptodown-dlurl": "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder",
-    "patches-source": "hoo-dles/morphe-patches"
+    "patches-source": "hoo-dles/morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "hoodles-exp"
   },
-  "nova-launcher-morphe-hoodles": {
+  "NovaLauncher-hoodles": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "nova-launcher",
+    "app-name": "Nova Launcher",
     "rv-brand": "morphe-hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.teslacoilsw.launcher",
     "build-mode": "apk",
@@ -98,12 +110,14 @@
     "pkg-name": "com.teslacoilsw.launcher",
     "uptodown-dlurl": "https://nova-launcher.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher",
-    "patches-source": "hoo-dles/morphe-patches"
+    "patches-source": "hoo-dles/morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "hoodles"
   },
   "solid-explorer-morphe-hoodles-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "solid-explorer",
+    "app-name": "Solid Explorer",
     "rv-brand": "morphe-hoodles-exp",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2",
     "version": "latest",
@@ -112,12 +126,14 @@
     "pkg-name": "pl.solidexplorer2",
     "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager",
-    "patches-source": "hoo-dles/morphe-patches"
+    "patches-source": "hoo-dles/morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "hoodles-exp"
   },
-  "wps-office-morphe-hoodles": {
+  "WPSOffice-hoodles": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "wps-office",
+    "app-name": "WPS Office",
     "rv-brand": "morphe-hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cn.wps.moffice_eng",
     "build-mode": "apk",
@@ -125,12 +141,14 @@
     "pkg-name": "cn.wps.moffice_eng",
     "uptodown-dlurl": "https://wps-office.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/wps-software-pte-ltd/wps-office-pdf/",
-    "patches-source": "hoo-dles/morphe-patches"
+    "patches-source": "hoo-dles/morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "hoodles"
   },
-  "ventusky-morphe-hoodles": {
+  "Ventusky-hoodles": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "ventusky",
+    "app-name": "Ventusky",
     "rv-brand": "morphe-hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky",
     "build-mode": "apk",
@@ -138,12 +156,14 @@
     "pkg-name": "cz.ackee.ventusky",
     "uptodown-dlurl": "https://ventusky-weather-maps-and-radar.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar",
-    "patches-source": "hoo-dles/morphe-patches"
+    "patches-source": "hoo-dles/morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "hoodles"
   },
   "myfitnesspal-morphe-hoodles-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "myfitnesspal",
+    "app-name": "MyFitnessPal",
     "rv-brand": "morphe-hoodles-exp",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android",
     "version": "latest",
@@ -152,11 +172,13 @@
     "pkg-name": "com.myfitnesspal.android",
     "uptodown-dlurl": "https://calorie-counter-myfitnesspal.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal",
-    "patches-source": "hoo-dles/morphe-patches"
+    "patches-source": "hoo-dles/morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "hoodles-exp"
   },
-  "adm-morphe-hooman": {
+  "AdvancedDownloadManager-hooman": {
     "enabled": true,
-    "app-name": "adm",
+    "app-name": "Advanced Download Manager",
     "rv-brand": "morphe-hooman",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -165,12 +187,14 @@
     "uptodown-dlurl": "https://advanced-download-manager.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "patches-source": "arandomhooman/hoomans-morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "hooman"
   },
   "poweramp-morphe-hooman-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "poweramp",
+    "app-name": "Poweramp",
     "rv-brand": "morphe-hooman-exp",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer",
     "version": "latest",
@@ -181,12 +205,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/max-mp/poweramp/",
     "apkpure-dlurl": "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer",
     "apkcombo-dlurl": "https://apkcombo.com/poweramp/com.maxmpz.audioplayer",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "patches-source": "arandomhooman/hoomans-morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "hooman-exp"
   },
-  "drofus-morphe-lain": {
+  "Drofus-Lain": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "drofus",
+    "app-name": "Drofus",
     "rv-brand": "morphe-lain",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mixapplications.rufus",
     "build-mode": "apk",
@@ -194,11 +220,13 @@
     "pkg-name": "com.mixapplications.rufus",
     "uptodown-dlurl": "https://rufus-unofficial.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/mixapplications/drofus-iso2usb",
-    "patches-source": "kiraio-moe/Lain-Patches"
+    "patches-source": "kiraio-moe/Lain-Patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "lain"
   },
   "youtube-music-morphe-exp": {
     "enabled": true,
-    "app-name": "youtube-music",
+    "app-name": "YouTube Music",
     "rv-brand": "morphe-exp",
     "build-mode": "both",
     "arch": "arm64-v8a arm-v7a x86_64",
@@ -211,11 +239,13 @@
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
     "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
     "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music",
+    "engine-brand": "Morphe",
+    "patch-brand": "exp"
   },
-  "proton-vpn-morphe-paresh": {
+  "ProtonVPN-Paresh": {
     "enabled": true,
-    "app-name": "proton-vpn",
+    "app-name": "Proton VPN",
     "rv-brand": "morphe-paresh",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android",
     "build-mode": "apk",
@@ -227,12 +257,14 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab",
     "dpi": "120-640dpi",
-    "arch": "all arm64-v8a arm-v7a x86_64"
+    "arch": "all arm64-v8a arm-v7a x86_64",
+    "engine-brand": "Morphe",
+    "patch-brand": "paresh"
   },
   "sdmaid-morphe-paresh-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "sdmaid",
+    "app-name": "SD Maid 2/SE",
     "rv-brand": "morphe-paresh-exp",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse",
     "version": "latest",
@@ -243,12 +275,14 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner",
     "apkmirror-example-url": "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release",
     "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab"
+    "patches-source-host": "gitlab",
+    "engine-brand": "Morphe",
+    "patch-brand": "paresh-exp"
   },
-  "doc-scanner-morphe-paresh": {
+  "DocScanner-Paresh": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "doc-scanner",
+    "app-name": "Doc Scanner",
     "rv-brand": "morphe-paresh",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner",
     "build-mode": "apk",
@@ -257,11 +291,13 @@
     "uptodown-dlurl": "https://doc-scanner.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator",
     "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab"
+    "patches-source-host": "gitlab",
+    "engine-brand": "Morphe",
+    "patch-brand": "paresh"
   },
   "x-morphe-piko-exp": {
     "enabled": true,
-    "app-name": "x",
+    "app-name": "Twitter",
     "rv-brand": "morphe-piko-exp",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -274,12 +310,14 @@
     "patcher-args": "--continue-on-error",
     "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android",
+    "engine-brand": "Morphe",
+    "patch-brand": "piko-exp"
   },
-  "microsoft-excel-morphe-rushiranpise": {
+  "MicrosoftExcel-rushiranpise": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "microsoft-excel",
+    "app-name": "Microsoft Excel",
     "rv-brand": "morphe-rushiranpise",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
@@ -288,11 +326,13 @@
     "uptodown-dlurl": "https://microsoft-excel-preview.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/microsoft-corporation/excel/",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel",
-    "patches-source": "rushiranpise/morphe-patches"
+    "patches-source": "rushiranpise/morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "rushiranpise"
   },
   "amazon-shopping-morphe-rushiranpise-exp": {
     "enabled": true,
-    "app-name": "amazon-shopping",
+    "app-name": "Amazon Shopping",
     "rv-brand": "morphe-rushiranpise-exp",
     "build-mode": "apk",
     "pkg-name": "com.amazon.mShop.android.shopping",
@@ -305,23 +345,27 @@
     "custom-microg-patches": "'None'",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping",
     "version": "latest",
-    "arch": "all arm64-v8a arm-v7a"
+    "arch": "all arm64-v8a arm-v7a",
+    "engine-brand": "Morphe",
+    "patch-brand": "rushiranpise-exp"
   },
-  "oxygen-updater-morphe-rushiranpise": {
+  "OxygenUpdater-rushiranpise": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "oxygen-updater",
+    "app-name": "Oxygen Updater",
     "rv-brand": "morphe-rushiranpise",
     "custom-microg-patches": "'None'",
     "build-mode": "apk",
     "pkg-name": "com.arjanvlek.oxygenupdater",
     "github-dlurl": "https://github.com/oxygen-updater/os-updater",
-    "patches-source": "rushiranpise/morphe-patches"
+    "patches-source": "rushiranpise/morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "rushiranpise"
   },
   "1111-warp-morphe-rushiranpise-exp": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "1111-warp",
+    "app-name": "Cloudflare WARP",
     "rv-brand": "morphe-rushiranpise-exp",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone",
     "version": "latest",
@@ -332,12 +376,14 @@
     "uptodown-dlurl": "https://1-1-1-1.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet",
     "patches-source": "rushiranpise/morphe-patches",
-    "apkmirror-exampls-url": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
+    "apkmirror-exampls-url": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/",
+    "engine-brand": "Morphe",
+    "patch-brand": "rushiranpise-exp"
   },
-  "macrodroid-morphe-rushiranpise": {
+  "MacroDroid-rushiranpise": {
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "macrodroid",
+    "app-name": "MacroDroid",
     "rv-brand": "morphe-rushiranpise",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid",
     "build-mode": "apk",
@@ -345,11 +391,13 @@
     "pkg-name": "com.arlosoft.macrodroid",
     "uptodown-dlurl": "https://macrodroid.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/",
-    "patches-source": "rushiranpise/morphe-patches"
+    "patches-source": "rushiranpise/morphe-patches",
+    "engine-brand": "Morphe",
+    "patch-brand": "rushiranpise"
   },
-  "bitwarden-morphe-stylus": {
+  "Bitwarden-Stylus": {
     "enabled": true,
-    "app-name": "bitwarden",
+    "app-name": "Bitwarden",
     "rv-brand": "morphe-stylus",
     "build-mode": "apk",
     "pkg-name": "com.x8bit.bitwarden",
@@ -358,6 +406,8 @@
     "github-dlurl-regex": "fdroid.apk$",
     "github-release-regex": "bwpm",
     "version": "latest",
-    "patches-source": "ch3thanhs/stylus"
+    "patches-source": "ch3thanhs/stylus",
+    "engine-brand": "Morphe",
+    "patch-brand": "stylus"
   }
 }

@@ -1,47 +1,53 @@
 # --- Batch TOML Part 7 (8 distinct apps, 8 builds) ---
 
 
-[youtube-morphe-anddea-amoled]
+[YouTube-Morphe-Anddea]
 enabled = true
-app-name = "youtube"
-brand = "anddea"
-variant = "amoled"
+app-name = "YouTube"
+engine-brand = "Morphe"
+patch-brand = "Anddea"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
 cli-source = "MorpheApp/morphe-desktop"
 patches-source = "anddea/revanced-patches"
 included-patches = "'MaterialYou'"
-patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF --continue-on-error"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
+# ── YouTube morphe-anddea-amoled (#000000 explicit) ───────────────────────────
 
 
-[wallcraft-morphe-hoodles]
+[Twitter-Morphe-Piko-MaterialYou-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "wallcraft"
-brand = "hoodles"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.wallpaperscraft.wallpaper"
+app-name = "Twitter"
+engine-brand = "Morphe"
+patch-brand = "Piko"
+variant = "MaterialYou"
+sub-variant = "Experimental"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "com.wallpaperscraft.wallpaper"
-uptodown-dlurl = "https://wallpaperscraft.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
-patches-source = "hoo-dles/morphe-patches"
+version = "latest"
+pkg-name = "com.twitter.android"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "crimera/piko"
+patches-source-host = "github"
+included-patches = "'Dynamic Color'"
+patcher-args = "--continue-on-error"
+uptodown-dlurl = "https://twitter.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 
 
-
-[smart-launcher-morphe-hoodles-exp]
+[SmartLauncher6-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "smart-launcher"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Smart Launcher 6"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
-version = "latest"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "ginlemon.flowerfree"
@@ -51,14 +57,13 @@ patches-source = "hoo-dles/morphe-patches"
 
 
 
-[pinterest-morphe-browzomje-exp]
+[Pinterest-Morphe-Browzomje]
 enabled = true
-app-name = "pinterest"
-brand = "browzomje"
-sub-variant = "exp"
+app-name = "Pinterest"
+engine-brand = "Morphe"
+patch-brand = "Browzomje"
 pkg-name = "com.pinterest"
 build-mode = "apk"
-version = "latest"
 arch = "all arm64-v8a arm-v7a x86_64"
 cli-source = "MorpheApp/morphe-desktop"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest"
@@ -67,77 +72,76 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/pinterest/pinterest-one-destina
 patches-source = "browzomje/browzomje-patches"
 
 
-[merriam-webster-morphe-hoodles]
+
+[MacroDroid-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "merriam-webster"
-brand = "hoodles"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.merriamwebster"
+app-name = "MacroDroid"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "com.merriamwebster"
-uptodown-dlurl = "https://merriam-webster.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/merriam-webster-inc/dictionary-merriam-webster"
-patches-source = "hoo-dles/morphe-patches"
+pkg-name = "com.arlosoft.macrodroid"
+uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
+patches-source = "rushiranpise/morphe-patches"
 
 
 
-[gboard-morphe-jasonwu1994-adobo-clone]
+[Gboard-Morphe-Jasonwu1994Adobo]
 enabled = true
-app-name = "gboard"
-brand = "jasonwu1994 adobo"
-sub-variant = "clone"
-build-mode = "apk"
+app-name = "Gboard"
+engine-brand = "Morphe"
+patch-brand = "Jasonwu1994Adobo"
+build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
+pkg-name = "com.google.android.inputmethod.latin"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
 patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
 included-patches = " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"
 exclusive-patches = "jkennethcarino/adobo"
 excluded-patches = "'Package Rename' | "
-pkg-name = "com.google.android.inputmethod.latin"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin"
-cli-source = "MorpheApp/morphe-desktop"
 patcher-args = "-f --continue-on-error"
+cli-source = "MorpheApp/morphe-desktop"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
 apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 apkmirror-release-filter = "!(lite|beta)"
 
 
-[camscanner-morphe-hoodles]
+
+
+[ChessDotCom-Morphe-Prathxm]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "camscanner"
-brand = "hoodles"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.intsig.camscanner"
+app-name = "Chess.com"
+engine-brand = "Morphe"
+patch-brand = "Prathxm"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess"
+version = "auto"
 build-mode = "apk"
-arch = "all arm64-v8a"
-pkg-name = "com.intsig.camscanner"
-uptodown-dlurl = "https://camscanner-pdf-creator.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator"
-apkmirror-example-url = "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator/camscanner-scanner-pdf-maker-7-24-0-2608130000-release/"
-apkpure-dlurl = "https://apkpure.com/camscanner-scanner-pdf-maker/com.intsig.camscanner"
-apkcombo-dlurl = "https://apkcombo.com/camscanner/com.intsig.camscanner"
-patches-source = "hoo-dles/morphe-patches"
-patcher-args = "--continue-on-error"
+arch = "all arm64-v8a arm-v7a x86_64"
+pkg-name = "com.chess"
+uptodown-dlurl = "https://chess.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/"
+patches-source = "PrathxmOp/Prathxm-Patches"
 
 
 
-[amazon-shopping-morphe-rushiranpise-exp]
+[Automate-Morphe-BholeyKaBhakt]
 enabled = true
-app-name = "amazon-shopping"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Automate"
+engine-brand = "Morphe"
+patch-brand = "BholeyKaBhakt"
+pkg-name = "com.llamalab.automate"
 build-mode = "apk"
-pkg-name = "com.amazon.mShop.android.shopping"
+arch = "all arm64-v8a arm-v7a x86_64"
 cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://amazon-shopping.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/"
-patches-source = "rushiranpise/morphe-patches"
-included-patches = "'Dark Mode' 'Open Links in Browser'"
-excluded-patches = "'Hide Rufus Tab'"
-custom-microg-patches = "'None'"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
-version = "latest"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.llamalab.automate"
+uptodown-dlurl = "https://automate-beta.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/llamalab/automate-llamalab"
+patches-source = "BholeyKaBhakt/revanced-patches-xtra"
 
-arch = "all arm64-v8a arm-v7a"
-
+# ── AutoSync ──────────────────────────────────────────────────────────────────
 

@@ -1,7 +1,8 @@
-[bitwarden-morphe-stylus]
+[Bitwarden-Morphe-Stylus]
 enabled = true
-app-name = "bitwarden"
-brand = "stylus"
+app-name = "Bitwarden"
+engine-brand = "Morphe"
+patch-brand = "Stylus"
 build-mode = "apk"
 pkg-name = "com.x8bit.bitwarden"
 cli-source = "MorpheApp/morphe-desktop"
@@ -10,11 +11,12 @@ github-dlurl-regex = "fdroid.apk$"
 github-release-regex = "bwpm"
 version = "latest"
 patches-source = "ch3thanhs/stylus"
-[bitwarden-morphe-stylus-exp]
+[Bitwarden-Morphe-Stylus-Experimental]
 enabled = true
-app-name = "bitwarden"
-brand = "stylus"
-sub-variant = "exp"
+app-name = "Bitwarden"
+engine-brand = "Morphe"
+patch-brand = "Stylus"
+sub-variant = "Experimental"
 build-mode = "apk"
 pkg-name = "com.x8bit.bitwarden"
 cli-source = "MorpheApp/morphe-desktop"

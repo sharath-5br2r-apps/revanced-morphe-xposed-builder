@@ -1,10 +1,11 @@
 enable-module-update = true
 patches-version = "absolutelatest"
-[microsoft-word-morphe-rushiranpise]
+[MicrosoftWord-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "microsoft-word"
-brand = "rushiranpise"
+app-name = "Microsoft Word"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -14,11 +15,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/word/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word"
 patches-source = "rushiranpise/morphe-patches"
 
-[microsoft-excel-morphe-rushiranpise]
+[MicrosoftExcel-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "microsoft-excel"
-brand = "rushiranpise"
+app-name = "Microsoft Excel"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -28,11 +30,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/excel/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel"
 patches-source = "rushiranpise/morphe-patches"
 
-[duolingo-morphe-rushiranpise]
+[Duolingo-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "duolingo"
-brand = "rushiranpise"
+app-name = "Duolingo"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -41,10 +44,11 @@ uptodown-dlurl = "https://duolingo.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
 patches-source = "rushiranpise/morphe-patches"
 
-[amazon-india-morphe-rushiranpise]
+[AmazonIndia-Morphe-Rushiranpise]
 enabled = true
-app-name = "amazon-india"
-brand = "rushiranpise"
+app-name = "Amazon India"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 build-mode = "apk"
 pkg-name = "in.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
@@ -58,11 +62,12 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 
 arch = "all arm64-v8a arm-v7a"
 
-[amazon-india-morphe-rushiranpise-exp]
+[AmazonIndia-Morphe-Rushiranpise-Experimental]
 enabled = true
-app-name = "amazon-india"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Amazon India"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 build-mode = "apk"
 pkg-name = "in.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
@@ -77,10 +82,11 @@ version = "latest"
 
 arch = "all arm64-v8a arm-v7a"
 
-[amazon-shopping-morphe-rushiranpise]
+[AmazonShopping-Morphe-Rushiranpise]
 enabled = true
-app-name = "amazon-shopping"
-brand = "rushiranpise"
+app-name = "Amazon Shopping"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 build-mode = "apk"
 pkg-name = "com.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
@@ -94,11 +100,12 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 
 arch = "all arm64-v8a arm-v7a"
 
-[amazon-shopping-morphe-rushiranpise-exp]
+[AmazonShopping-Morphe-Rushiranpise-Experimental]
 enabled = true
-app-name = "amazon-shopping"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Amazon Shopping"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 build-mode = "apk"
 pkg-name = "com.amazon.mShop.android.shopping"
 cli-source = "MorpheApp/morphe-desktop"
@@ -113,11 +120,12 @@ version = "latest"
 
 arch = "all arm64-v8a arm-v7a"
 
-[adobe-acrobat-morphe-rushiranpise]
+[AdobeAcrobat-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adobe-acrobat"
-brand = "rushiranpise"
+app-name = "Adobe Acrobat"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 build-mode = "apk"
 arch = "all arm64-v8a x86_64"
@@ -127,12 +135,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
 patches-source = "rushiranpise/morphe-patches"
 custom-microg-patches = "'None'"
 
-[adobe-acrobat-morphe-rushiranpise-exp]
+[AdobeAcrobat-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adobe-acrobat"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Adobe Acrobat"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 version = "latest"
 build-mode = "apk"
@@ -143,11 +152,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat"
 patches-source = "rushiranpise/morphe-patches"
 custom-microg-patches = "'None'"
 
-[pc-remote-morphe-rushiranpise]
+[PCRemote-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "pc-remote"
-brand = "rushiranpise"
+app-name = "PC Remote"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -158,12 +168,13 @@ patches-source = "rushiranpise/morphe-patches"
 
 arch = "all arm64-v8a arm-v7a x86_64"
 
-[pc-remote-morphe-rushiranpise-exp]
+[PCRemote-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "pc-remote"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "PC Remote"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
 version = "latest"
 custom-microg-patches = "'None'"
@@ -175,33 +186,36 @@ patches-source = "rushiranpise/morphe-patches"
 
 arch = "all arm64-v8a arm-v7a x86_64"
 
-[oxygen-updater-morphe-rushiranpise]
+[OxygenUpdater-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "oxygen-updater"
-brand = "rushiranpise"
+app-name = "Oxygen Updater"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
 pkg-name = "com.arjanvlek.oxygenupdater"
 github-dlurl = "https://github.com/oxygen-updater/os-updater"
 patches-source = "rushiranpise/morphe-patches"
-[oxygen-updater-morphe-rushiranpise-exp]
+[OxygenUpdater-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "oxygen-updater"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Oxygen Updater"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 version = "beta"
 custom-microg-patches = "'None'"
 build-mode = "apk"
 pkg-name = "com.arjanvlek.oxygenupdater"
 github-dlurl = "https://github.com/oxygen-updater/os-updater"
 patches-source = "rushiranpise/morphe-patches"
-[windscribe-vpn-morphe-rushiranpise]
+[WindscribeVPN-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "windscribe-vpn"
-brand = "rushiranpise"
+app-name = "Windscribe VPN"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -212,12 +226,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
 apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
 patches-source = "rushiranpise/morphe-patches"
 
-[windscribe-vpn-morphe-rushiranpise-exp]
+[WindscribeVPN-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "windscribe-vpn"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Windscribe VPN"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.windscribe.vpn"
 version = "latest"
 custom-microg-patches = "'None'"
@@ -229,11 +244,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/windscribe/windscribe-vpn"
 apkcombo-dlurl = "https://apkcombo.com/windscribe/com.windscribe.vpn"
 patches-source = "rushiranpise/morphe-patches"
 
-[1111-warp-morphe-rushiranpise]
+[CloudflareWarp-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "1111-warp"
-brand = "rushiranpise"
+app-name = "Cloudflare WARP"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -244,12 +260,13 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer
 patches-source = "rushiranpise/morphe-patches"
 apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
-[1111-warp-morphe-rushiranpise-exp]
+[CloudflareWarp-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "1111-warp"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Cloudflare WARP"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone"
 version = "latest"
 custom-microg-patches = "'None'"
@@ -261,11 +278,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer
 patches-source = "rushiranpise/morphe-patches"
 apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
-[adguard-morphe-rushiranpise]
+[AdGuard-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adguard"
-brand = "rushiranpise"
+app-name = "AdGuard"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
 custom-microg-patches = "'None'"
 build-mode = "apk"
@@ -275,12 +293,13 @@ uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
 patches-source = "rushiranpise/morphe-patches"
 
-[adguard-morphe-rushiranpise-exp]
+[AdGuard-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "adguard"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "AdGuard"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adguard.android"
 version = "latest"
 custom-microg-patches = "'None'"
@@ -291,11 +310,12 @@ uptodown-dlurl = "https://adguard-for-android.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adguard-software-limited/adguard"
 patches-source = "rushiranpise/morphe-patches"
 
-[beta-maniac-morphe-rushiranpise]
+[BetaManiac-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "beta-maniac"
-brand = "rushiranpise"
+app-name = "Beta Maniac"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -304,12 +324,13 @@ uptodown-dlurl = "https://beta-maniac.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2"
 patches-source = "rushiranpise/morphe-patches"
 
-[beta-maniac-morphe-rushiranpise-exp]
+[BetaManiac-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "beta-maniac"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Beta Maniac"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/it.mirko.beta"
 version = "latest"
 build-mode = "apk"
@@ -320,11 +341,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-lif
 patches-source = "rushiranpise/morphe-patches"
 
 # ── MacroDroid (morphe-rushiranpise) ──────────────────────────────────────────
-[macrodroid-morphe-rushiranpise]
+[MacroDroid-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "macrodroid"
-brand = "rushiranpise"
+app-name = "MacroDroid"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -333,12 +355,13 @@ uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
 patches-source = "rushiranpise/morphe-patches"
 
-[macrodroid-morphe-rushiranpise-exp]
+[MacroDroid-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "macrodroid"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "MacroDroid"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
 version = "latest"
 build-mode = "apk"
@@ -349,11 +372,12 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-auto
 patches-source = "rushiranpise/morphe-patches"
 
 # ── Bluetooth Keyboard and Mouse (morphe-rushiranpise) ───────────────────────
-[bluetooth-keyboard-mouse-morphe-rushiranpise]
+[BluetoothKeyboardAndMouse-Morphe-Rushiranpise]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "bluetooth-keyboard-mouse"
-brand = "rushiranpise"
+app-name = "Bluetooth Keyboard & Mouse"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/io.appground.blek"
 build-mode = "apk"
 arch = "arm64-v8a x86_64"
@@ -363,10 +387,11 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/appground-io/bluetooth-keyboard
 patches-source = "rushiranpise/morphe-patches"
 
 # ── Proton VPN (morphe-rushiranpise) ─────────────────────────────────────────
-[proton-vpn-morphe-rushiranpise]
+[ProtonVPN-Morphe-Rushiranpise]
 enabled = true
-app-name = "proton-vpn"
-brand = "rushiranpise"
+app-name = "Proton VPN"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -378,11 +403,12 @@ prefer-dl-mode = "bundle"
 dpi = "120-640dpi"
 patches-source = "rushiranpise/morphe-patches"
 
-[proton-vpn-morphe-rushiranpise-exp]
+[ProtonVPN-Morphe-Rushiranpise-Experimental]
 enabled = true
-app-name = "proton-vpn"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "Proton VPN"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
 version = "latest"
 build-mode = "apk"

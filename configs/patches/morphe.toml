@@ -2,10 +2,10 @@ enable-module-update = true
 patches-version = "absolutelatest"
 
 # ── YouTube morphe (stock/default theme) ──────────────────────────────────────
-[youtube-morphe]
+[YouTube-Morphe]
 enabled = true
-app-name = "youtube"
-brand = "morphe"
+app-name = "YouTube"
+engine-brand = "Morphe"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -19,11 +19,11 @@ apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
 # ── YouTube morphe-amoled (#000000) ───────────────────────────────────────────
-[youtube-morphe-amoled]
+[YouTube-Morphe-AMOLED]
 enabled = true
-app-name = "youtube"
-brand = "morphe"
-variant = "amoled"
+app-name = "YouTube"
+engine-brand = "Morphe"
+variant = "AMOLED"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -37,11 +37,11 @@ apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
-[youtube-morphe-exp]
+[YouTube-Morphe-Experimental]
 enabled = true
-app-name = "youtube"
-brand = "morphe"
-sub-variant = "exp"
+app-name = "YouTube"
+engine-brand = "Morphe"
+sub-variant = "Experimental"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -55,12 +55,12 @@ apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
-[youtube-morphe-exp-amoled]
+[YouTube-Morphe-AMOLED-Experimental]
 enabled = true
-app-name = "youtube"
-brand = "morphe"
-variant = "amoled"
-sub-variant = "exp"
+app-name = "YouTube"
+engine-brand = "Morphe"
+variant = "AMOLED"
+sub-variant = "Experimental"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -76,11 +76,11 @@ apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
 
 
-[youtube-music-morphe-exp]
+[YouTubeMusic-Morphe-Experimental]
 enabled = true
-app-name = "youtube-music"
-brand = "morphe"
-sub-variant = "exp"
+app-name = "YouTube Music"
+engine-brand = "Morphe"
+sub-variant = "Experimental"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
 version = "exp"
@@ -94,12 +94,12 @@ apkpure-dlurl = "https://apkpure.com/youtube-music/com.google.android.apps.youtu
 apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
 
-[youtube-music-morphe-exp-amoled]
+[YouTubeMusic-Morphe-AMOLED-Experimental]
 enabled = true
-app-name = "youtube-music"
-brand = "morphe"
-variant = "amoled"
-sub-variant = "exp"
+app-name = "YouTube Music"
+engine-brand = "Morphe"
+variant = "AMOLED"
+sub-variant = "Experimental"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
 version = "exp"

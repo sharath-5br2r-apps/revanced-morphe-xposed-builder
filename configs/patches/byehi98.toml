@@ -1,11 +1,12 @@
 enable-module-update = true
 patches-version = "absolutelatest"
 
-[smash-hit-morphe-byehi98]
+[SmashHit-Morphe-Byehi98]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "smash-hit"
-brand = "byehi98"
+app-name = "Smash Hit"
+engine-brand = "Morphe"
+patch-brand = "Byehi98"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mediocre.smashhit"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -14,11 +15,12 @@ uptodown-dlurl = "https://smash-hit.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mediocre/smash-hit/"
 patches-source = "byehi98/okish-morphe-patches"
 
-[vector-morphe-byehi98]
+[Vector-Morphe-Byehi98]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "vector"
-brand = "byehi98"
+app-name = "Vector"
+engine-brand = "Morphe"
+patch-brand = "Byehi98"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.nekki.vector"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -27,11 +29,12 @@ uptodown-dlurl = "https://vector.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nekki/vector/"
 patches-source = "byehi98/okish-morphe-patches"
 
-[hill-climb-racing-morphe-byehi98]
+[HillClimbRacing-Morphe-Byehi98]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "hill-climb-racing"
-brand = "byehi98"
+app-name = "Hill Climb Racing"
+engine-brand = "Morphe"
+patch-brand = "Byehi98"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.fingersoft.hillclimb"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -40,11 +43,12 @@ uptodown-dlurl = "https://hill-climb-racing.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
 patches-source = "byehi98/okish-morphe-patches"
 
-[jetpack-joyride-morphe-byehi98]
+[JetpackJoyride-Morphe-Byehi98]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "jetpack-joyride"
-brand = "byehi98"
+app-name = "Jetpack Joyride"
+engine-brand = "Morphe"
+patch-brand = "Byehi98"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.halfbrick.jetpackjoyride"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"

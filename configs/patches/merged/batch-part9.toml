@@ -1,11 +1,11 @@
 # --- Batch TOML Part 9 (8 distinct apps, 8 builds) ---
 
 
-[youtube-morphe-amoled]
+[YouTube-Morphe-AMOLED]
 enabled = true
-app-name = "youtube"
-brand = "morphe"
-variant = "amoled"
+app-name = "YouTube"
+engine-brand = "Morphe"
+variant = "AMOLED"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -21,29 +21,36 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 
 
 
-[ventusky-morphe-hoodles]
+[Twitter-Morphe-Piko-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
-app-name = "ventusky"
-brand = "hoodles"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/cz.ackee.ventusky"
+app-name = "Twitter"
+engine-brand = "Morphe"
+patch-brand = "Piko"
+sub-variant = "Experimental"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "cz.ackee.ventusky"
-uptodown-dlurl = "https://ventusky-weather-maps-and-radar.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
-patches-source = "hoo-dles/morphe-patches"
+version = "latest"
+pkg-name = "com.twitter.android"
+cli-source = "MorpheApp/morphe-desktop"
+patches-source = "crimera/piko"
+patches-source-host = "github"
+excluded-patches = "'Dynamic Color'"
+patcher-args = "--continue-on-error"
+uptodown-dlurl = "https://twitter.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+
+# ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
 
 
 
-[smart-launcher-6-morphe-hoodles-exp]
+[SmartLauncher-Morphe-Hoodles]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "smart-launcher-6"
-brand = "hoodles"
-sub-variant = "exp"
+app-name = "Smart Launcher"
+engine-brand = "Morphe"
+patch-brand = "Hoodles"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ginlemon.flowerfree"
-version = "latest"
 build-mode = "apk"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "ginlemon.flowerfree"
@@ -53,12 +60,13 @@ patches-source = "hoo-dles/morphe-patches"
 
 
 
-[pc-remote-morphe-rushiranpise-exp]
+[PCRemote-Morphe-Rushiranpise-Experimental]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "pc-remote"
-brand = "rushiranpise"
-sub-variant = "exp"
+app-name = "PC Remote"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.monect.portable"
 version = "latest"
 custom-microg-patches = "'None'"
@@ -72,27 +80,28 @@ arch = "all arm64-v8a arm-v7a x86_64"
 
 
 
-[macrodroid-morphe-rushiranpise]
+[MXPlayerPro-Morphe-Paresh]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"
-app-name = "macrodroid"
-brand = "rushiranpise"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.arlosoft.macrodroid"
+app-name = "MX Player Pro"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a x86_64"
-pkg-name = "com.arlosoft.macrodroid"
-uptodown-dlurl = "https://macrodroid.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
-patches-source = "rushiranpise/morphe-patches"
+arch = "all arm64-v8a arm-v7a"
+pkg-name = "com.mxtech.videoplayer.pro"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
+uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
+patches-source = "Paresh-Maheshwari/paresh-patches"
+patches-source-host = "gitlab"
 
 
 
-[fing-morphe-paresh-exp]
+[Fing-Morphe-Paresh]
 enabled = true
-app-name = "fing"
-brand = "paresh"
-sub-variant = "exp"
-version = "latest"
+app-name = "Fing"
+engine-brand = "Morphe"
+patch-brand = "Paresh"
 build-mode = "apk"
 pkg-name = "com.overlook.android.fing"
 cli-source = "MorpheApp/morphe-desktop"
@@ -102,40 +111,40 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-arch = "all arm64-v8a arm-v7a"
+arch = "all arm64-v8a arm-v7a x86_64"
 
 
 
-[brawl-stars-morphe-nulls]
+[CalcNote-Morphe-Binarymend]
 enabled = true
-cli-source = "none"
-cli-source-host = "none"
-app-name = "brawl-stars"
-brand = "nulls"
+app-name = "CalcNote"
+engine-brand = "Morphe"
+patch-brand = "Binarymend"
+pkg-name = "com.burton999.notecal"
 build-mode = "apk"
-arch = "all"
-pkg-name = "daniillnull.nulls.brawlstars"
-direct-dlurl = "http://dnull.xyz/latest_bs"
-patches-source = "none"
-patches-source-host = "none"
-
-
-[amazon-india-morphe-rushiranpise-exp]
-enabled = true
-app-name = "amazon-india"
-brand = "rushiranpise"
-sub-variant = "exp"
-build-mode = "apk"
-pkg-name = "in.amazon.mShop.android.shopping"
+arch = "all arm64-v8a arm-v7a x86_64"
 cli-source = "MorpheApp/morphe-desktop"
-uptodown-dlurl = "https://amazon-india.en.uptodown.com/android"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.burton999.notecal"
+uptodown-dlurl = "https://calcnote-notepad-calculator.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/burton999/calcnote-notepad-calculator"
+patches-source = "binarymend/morphe-patches"
+
+
+[AmazonShopping-Morphe-Rushiranpise]
+enabled = true
+app-name = "Amazon Shopping"
+engine-brand = "Morphe"
+patch-brand = "Rushiranpise"
+build-mode = "apk"
+pkg-name = "com.amazon.mShop.android.shopping"
+cli-source = "MorpheApp/morphe-desktop"
+uptodown-dlurl = "https://amazon-shopping.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/"
 patches-source = "rushiranpise/morphe-patches"
 included-patches = "'Dark Mode' 'Open Links in Browser'"
 excluded-patches = "'Hide Rufus Tab'"
 custom-microg-patches = "'None'"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
-version = "latest"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
 
 arch = "all arm64-v8a arm-v7a"
 

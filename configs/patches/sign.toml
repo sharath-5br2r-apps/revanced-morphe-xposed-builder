@@ -1,9 +1,10 @@
 enable-module-update = true
 patches-version = "dev"
-[amazon-alexa-signed]
+[AmazonAlexa-APKSigner-Signed]
 enabled = true
-app-name = "amazon-alexa"
-brand = "signed"
+app-name = "Amazon Alexa"
+engine-brand = "APKSigner"
+patch-brand = "Signed"
 build-mode = "apk"
 cli-source = "apksigner"
 pkg-name = "com.amazon.dee.app"

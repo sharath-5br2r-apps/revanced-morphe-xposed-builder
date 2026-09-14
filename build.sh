@@ -109,8 +109,9 @@ DEF_CLI_VER=$(toml_get "$main_config_t" cli-version) || DEF_CLI_VER="latest"
 DEF_PATCHES_SRC=$(toml_get "$main_config_t" patches-source) || DEF_PATCHES_SRC="MorpheApp/morphe-patches"
 DEF_PATCHES_SRC_HOST=$(toml_get "$main_config_t" patches-source-host) || DEF_PATCHES_SRC_HOST="github"
 DEF_CLI_SRC=$(toml_get "$main_config_t" cli-source) || DEF_CLI_SRC="MorpheApp/morphe-desktop"
-DEF_CLI_SRC_HOST=$(toml_get "$main_config_t" cli-source-host) || DEF_CLI_SRC_HOST="github"
 DEF_BRAND=$(toml_get "$main_config_t" brand) || DEF_BRAND=""
+DEF_ENGINE_BRAND=$(toml_get "$main_config_t" engine-brand) || DEF_ENGINE_BRAND="${DEF_BRAND:-}"
+DEF_PATCH_BRAND=$(toml_get "$main_config_t" patch-brand) || DEF_PATCH_BRAND=""
 DEF_VARIANT=$(toml_get "$main_config_t" variant) || DEF_VARIANT=""
 DEF_SUB_VARIANT=$(toml_get "$main_config_t" sub-variant) || DEF_SUB_VARIANT=""
 DEF_DPI=$(toml_get "$main_config_t" dpi) || DEF_DPI="nodpi anydpi auto"
@@ -257,7 +258,26 @@ for table_name in $(toml_get_table_names); do
 	app_args[patches_version]="${p_vers[0]}"
 	app_args[patches_ref]="${patches_ref_all%,}"
 	app_args[changelog_url]="${changelog_url_all% }"
-	app_args[brand]=$(toml_get "$t" brand) || app_args[brand]="${DEF_BRAND:-${p_srcs[0]%%/*}}"
+	app_args[engine_brand]=$(toml_get "$t" engine-brand) || app_args[engine_brand]="${DEF_ENGINE_BRAND:-}"
+	app_args[patch_brand]=$(toml_get "$t" patch-brand) || app_args[patch_brand]="${DEF_PATCH_BRAND:-}"
+	legacy_brand=$(toml_get "$t" brand) || legacy_brand="${DEF_BRAND:-}"
+	if [ -z "${app_args[engine_brand]}" ] && [ -z "${app_args[patch_brand]}" ] && [ -n "$legacy_brand" ]; then
+		_cli_lower="${app_args[cli_source],,}"
+		if [[ "$_cli_lower" == *"npatch"* ]]; then
+			app_args[engine_brand]="npatch"
+			[ "$legacy_brand" != "npatch" ] && app_args[patch_brand]="$legacy_brand"
+		elif [[ "$_cli_lower" == *"apksigner"* ]]; then
+			app_args[engine_brand]="apksigner"
+			[ "$legacy_brand" != "apksigner" ] && app_args[patch_brand]="$legacy_brand"
+		elif [[ "$legacy_brand" == "morphe" ]]; then
+			app_args[engine_brand]="morphe"
+			app_args[patch_brand]=""
+		else
+			app_args[engine_brand]="morphe"
+			app_args[patch_brand]="$legacy_brand"
+		fi
+	fi
+	app_args[brand]=$(toml_get "$t" brand) || app_args[brand]="${app_args[patch_brand]:-${app_args[engine_brand]:-${DEF_BRAND:-${p_srcs[0]%%/*}}}}"
 	app_args[variant]=$(toml_get "$t" variant) || app_args[variant]="$DEF_VARIANT"
 	app_args[sub_variant]=$(toml_get "$t" sub-variant) || app_args[sub_variant]="$DEF_SUB_VARIANT"
 	[ -z "${app_args[sub_variant]}" ] && { app_args[sub_variant]=$(toml_get "$t" sub_variant) || app_args[sub_variant]=""; }
