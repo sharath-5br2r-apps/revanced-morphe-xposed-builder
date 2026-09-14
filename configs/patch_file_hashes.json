@@ -64,8 +64,8 @@
   },
   "crimera/piko": {
     "beta": {
-      "com.instagram.android": "6585a876351a5bbb7190c4aeaaecf5e8",
-      "com.twitter.android": "2eb0a988ba3dd485259160654529decc",
+      "com.instagram.android": "9fdac617e2f3580eeaf8156617709903",
+      "com.twitter.android": "4fc2550423abe25a1647d19df78db37f",
       "shared": "306a26f969894f9f6eb65156853a889a"
     },
     "stable": {}
