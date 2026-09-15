@@ -212,8 +212,9 @@ def main():
                 if not any(u == dl_url for _, u in app_entry["apks"]):
                     app_entry["apks"].append((norm_arch, dl_url))
             elif lower.endswith(".zip") and "-module-" in lower:
+                display_label = f"{norm_arch} (Beta Channel)" if "-module-beta" in lower else norm_arch
                 if not any(u == dl_url for _, u in app_entry["modules"]):
-                    app_entry["modules"].append((norm_arch, dl_url))
+                    app_entry["modules"].append((display_label, dl_url, norm_arch, "-module-beta" in lower))
 
         # Fallback: no assets[], reconstruct filenames from top-level exts[]+name+arch
         if not assets:
@@ -239,11 +240,11 @@ def main():
                         if github_repo and next_ver_code else fname
                     )
                     if not any(u == dl_url for _, u in app_entry["modules"]):
-                        app_entry["modules"].append((norm_arch, dl_url))
+                        app_entry["modules"].append((norm_arch, dl_url, norm_arch, False))
 
         arch_priority = {"arm64": 0, "arm": 1, "all": 2, "universal": 3, "x86_64": 4, "x86": 5}
         app_entry["apks"].sort(key=lambda x: arch_priority.get(x[0], 99))
-        app_entry["modules"].sort(key=lambda x: arch_priority.get(x[0], 99))
+        app_entry["modules"].sort(key=lambda x: (arch_priority.get(x[2], 99), 1 if x[3] else 0))
 
     # Build output markdown
     lines = []
@@ -292,7 +293,7 @@ def main():
                 lines.append(f"  * APK: {apk_links}")
 
             if app["modules"]:
-                mod_links = " • ".join(f"[{arch}]({url})" for arch, url in app["modules"])
+                mod_links = " • ".join(f"[{label}]({url})" for label, url, _, _ in app["modules"])
                 lines.append(f"  * Module: {mod_links}")
 
             lines.append("")

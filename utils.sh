@@ -3286,7 +3286,7 @@ write_build_info() {
 			(if $cli != "" then .[$key].cli = $cli else . end) |
 			.[$key].assets = ((.[$key].assets // []) | map(select(.name != $asset_name)) + [
 				{
-					name: $asset_name, arch: $arch, ext: $ext,
+					name: $asset_name, arch: $arch, ext: $ext, os: "Android",
 					densities: $densities, native_libraries: $native_libs, min_sdk: $min_sdk,
 					appliedPatches: $applied, skippedPatches: $skipped, failedPatches: $failed
 				}
@@ -3315,7 +3315,7 @@ write_build_info() {
 				sub_variant: $sub_variant,
 				assets: [
 					{
-						name: $asset_name, arch: $arch, ext: $ext,
+						name: $asset_name, arch: $arch, ext: $ext, os: "Android",
 						densities: $densities, native_libraries: $native_libs, min_sdk: $min_sdk,
 						appliedPatches: $applied, skippedPatches: $skipped, failedPatches: $failed
 					}
