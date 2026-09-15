@@ -3181,12 +3181,6 @@ write_build_info() {
 	local arch_orig="${args[arch]// /}"
 	if [ "$arch_orig" != "auto" ]; then ext="${arch}${ext}"; arch=""; fi
 
-	# Determine entry key (artifact filename if known)
-	local entry_key=""
-	if [ -n "$target_file" ]; then
-		entry_key="${target_file##*/}"
-	fi
-
 	# Determine APK to inspect for metadata (prefer override, then target, then patched_apk)
 	local target_apk=""
 	if [ -n "$inspect_apk_override" ] && [ -f "$inspect_apk_override" ]; then
@@ -3247,39 +3241,9 @@ write_build_info() {
 	skipped_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: Skipping disabled: ).*|(?<=INFO: Skipping incompatible patch \x27)[^\x27]+|(?<=WARN: Skipping patch \x27)[^\x27]+' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
 	[[ "$skipped_json" != \[* ]] && skipped_json='[]'
 
-	# extract removed / excluded patches
-	local removed_json="[]"
-	if [ -n "$removed_patches" ]; then
-		if [[ "$removed_patches" =~ ^\[.*\]$ ]]; then
-			removed_json="$removed_patches"
-		else
-			removed_json=$(jq -n --arg r "$removed_patches" '$r | split("|") | map(split(" ")) | flatten | map(select(length > 0))' 2>/dev/null || echo '[]')
-		fi
-	fi
-
-	local release_notes=""
-	if [ -n "${patches_dir:-}" ] && [ -f "${patches_dir}/tag_notes.txt" ]; then
-		release_notes=$(cat "${patches_dir}/tag_notes.txt" 2>/dev/null || true)
-	fi
-
-	local patches_json
-	if [[ "$patches" =~ ^\[.*\]$ ]]; then
-		patches_json="$patches"
-	else
-		patches_json=$(jq -n --arg p "$patches" '$p | split("|") | map(split(" ")) | flatten | map(select(length > 0))' 2>/dev/null || echo '[]')
-	fi
-
-	local changelog_json
-	if [[ "$changelog" =~ ^\[.*\]$ ]]; then
-		changelog_json="$changelog"
-	else
-		changelog_json=$(jq -n --arg c "$changelog" '$c | split("|") | map(split(" ")) | flatten | map(select(length > 0))' 2>/dev/null || echo '[]')
-	fi
-
 	(
 		flock -x 200 2>/dev/null || true
 		jq --arg key "$key" \
-			--arg file_key "$entry_key" \
 			--arg ext "$ext" \
 			--arg arch "$arch" \
 			--arg name "$name" \
@@ -3287,7 +3251,6 @@ write_build_info() {
 			--arg dpi "$dpi_val" \
 			--arg min_sdk "$min_sdk" \
 			--arg cli "${cli_ref:-${cli_name_ver:-}}" \
-			--arg release_notes "$release_notes" \
 			--arg patches "$patches" \
 			--arg changelog "$changelog" \
 			--arg pkg_name "$pkg_name" \
@@ -3298,16 +3261,12 @@ write_build_info() {
 			--arg patch_brand "$patch_brand" \
 			--arg variant "$variant" \
 			--arg sub_variant "$sub_variant" \
-			--argjson patches_arr "$patches_json" \
-			--argjson changelog_arr "$changelog_json" \
 			--argjson applied "$applied_json" \
-			--argjson removed "$removed_json" \
 			--argjson failed "$failed_json" \
 			--argjson skipped "$skipped_json" \
 			--argjson densities "$densities_json" \
 			--argjson native_libs "$native_libs_json" \
 			'
-			# 1. Update target_key record for builder scripts
 			(if has($key) then
 				.[$key].exts = (.[$key].exts + [$ext] | unique) |
 				(if ($ext == ".apk" and $pkg_name != "") or ((.[$key].package_name // "") == "" and $pkg_name != "") then .[$key].package_name = $pkg_name else . end) |
@@ -3322,11 +3281,16 @@ write_build_info() {
 				(if $min_sdk != "" then .[$key].min_sdk = $min_sdk else . end) |
 				(if ($densities | length) > 0 then .[$key].densities = $densities else . end) |
 				(if ($native_libs | length) > 0 then .[$key].native_libraries = $native_libs else . end) |
-				(if ($applied | length) > 0 then .[$key].applied_patches = (.[$key].applied_patches // [] + $applied | unique) else . end) |
-				(if ($removed | length) > 0 then .[$key].removed_patches = (.[$key].removed_patches // [] + $removed | unique) else . end) |
-				(if ($failed | length) > 0 then .[$key].failed_patches = (.[$key].failed_patches // [] + $failed | unique) else . end) |
-				(if ($skipped | length) > 0 then .[$key].skipped_patches = (.[$key].skipped_patches // [] + $skipped | unique) else . end) |
-				(if $cli != "" then .[$key].cli = $cli else . end)
+				(if $cli != "" then .[$key].cli = $cli else . end) |
+				(if ($applied | length) > 0 then .[$key].appliedPatches = $applied else del(.[$key].appliedPatches) end) |
+				(if ($skipped | length) > 0 then .[$key].skippedPatches = $skipped else del(.[$key].skippedPatches) end) |
+				(if ($failed | length) > 0 then .[$key].failedPatches = $failed else del(.[$key].failedPatches) end) |
+				.[$key].assets = ((.[$key].assets // []) | map(select(.name != $ext)) + [
+					{ name: $ext, arch: $arch, ext: $ext, dpi: $dpi, native_libraries: $native_libs, min_sdk: $min_sdk }
+					| if $dpi != "" then . else del(.dpi) end
+					| if ($native_libs | length) > 0 then . else del(.native_libraries) end
+					| if $min_sdk != "" then . else del(.min_sdk) end
+				])
 			else
 				.[$key] = {
 					exts: [$ext],
@@ -3348,10 +3312,15 @@ write_build_info() {
 					patch_brand: $patch_brand,
 					variant: $variant,
 					sub_variant: $sub_variant,
-					applied_patches: $applied,
-					removed_patches: $removed,
-					failed_patches: $failed,
-					skipped_patches: $skipped
+					appliedPatches: $applied,
+					skippedPatches: $skipped,
+					failedPatches: $failed,
+					assets: [
+						{ name: $ext, arch: $arch, ext: $ext, dpi: $dpi, native_libraries: $native_libs, min_sdk: $min_sdk }
+						| if $dpi != "" then . else del(.dpi) end
+						| if ($native_libs | length) > 0 then . else del(.native_libraries) end
+						| if $min_sdk != "" then . else del(.min_sdk) end
+					]
 				} |
 				if $cli != "" then . else del(.[$key].cli) end |
 				if $dpi != "" then . else del(.[$key].dpi) end |
@@ -3360,51 +3329,10 @@ write_build_info() {
 				if $min_sdk != "" then . else del(.[$key].min_sdk) end |
 				if ($densities | length) > 0 then . else del(.[$key].densities) end |
 				if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |
-				if ($removed | length) > 0 then . else del(.[$key].removed_patches) end |
-				if ($failed | length) > 0 then . else del(.[$key].failed_patches) end |
-				if ($skipped | length) > 0 then . else del(.[$key].skipped_patches) end
-			end) |
-			# 2. Update exact filename record for catalog cache updater (merge_build_meta.py) & frontend
-			(if $file_key != "" then
-				.[$file_key] = {
-					name: $name,
-					arch: $arch,
-					ext: $ext,
-					version: $version,
-					dpi: $dpi,
-					min_sdk: $min_sdk,
-					densities: $densities,
-					native_libraries: $native_libs,
-					cli: $cli,
-					patches: $patches_arr,
-					changelog: $changelog_arr,
-					release_notes: $release_notes,
-					package_name: $pkg_name,
-					display_name: $display_name,
-					brand: $brand,
-					engine_brand: $engine_brand,
-					patch_brand: $patch_brand,
-					variant: $variant,
-					sub_variant: $sub_variant,
-					applied_patches: $applied,
-					removed_patches: $removed,
-					failed_patches: $failed,
-					skipped_patches: $skipped
-				} |
-				if $cli != "" then . else del(.[$file_key].cli) end |
-				if $dpi != "" then . else del(.[$file_key].dpi) end |
-				if $engine_brand != "" then . else del(.[$file_key].engine_brand) end |
-				if $patch_brand != "" then . else del(.[$file_key].patch_brand) end |
-				if $release_notes != "" then . else del(.[$file_key].release_notes) end |
-				if $min_sdk != "" then . else del(.[$file_key].min_sdk) end |
-				if ($densities | length) > 0 then . else del(.[$file_key].densities) end |
-				if ($native_libs | length) > 0 then . else del(.[$file_key].native_libraries) end |
-				if ($patches_arr | length) > 0 then . else del(.[$file_key].patches) end |
-				if ($changelog_arr | length) > 0 then . else del(.[$file_key].changelog) end |
-				if ($removed | length) > 0 then . else del(.[$file_key].removed_patches) end |
-				if ($failed | length) > 0 then . else del(.[$file_key].failed_patches) end |
-				if ($skipped | length) > 0 then . else del(.[$file_key].skipped_patches) end
-			else . end)
+				if ($applied | length) > 0 then . else del(.[$key].appliedPatches) end |
+				if ($skipped | length) > 0 then . else del(.[$key].skippedPatches) end |
+				if ($failed | length) > 0 then . else del(.[$key].failedPatches) end
+			end)
 			' \
 			"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
 	) 200>"${BUILD_JSON_FILE}.lock"
@@ -4395,28 +4323,13 @@ build_rv() {
 	local patch_brand_val="${args[patch_brand]:-}"
 	local brand_val="${args[brand]:-}"
 
-	# Infer engine_brand_val if not explicitly set
-	if [ -z "$engine_brand_val" ]; then
-		local cli_src_check="${args[cli_source]:-}"
-		cli_src_check="${cli_src_check,,}"
-		if [[ "$cli_src_check" == *"npatch"* ]]; then
-			engine_brand_val="npatch"
-		elif [[ "$cli_src_check" == *"apksigner"* ]]; then
-			engine_brand_val="apksigner"
-		elif [ -n "$brand_val" ] && [ "$brand_val" = "npatch" -o "$brand_val" = "apksigner" ]; then
-			engine_brand_val="$brand_val"
-		else
-			engine_brand_val="morphe"
-		fi
-	fi
-
 	# Infer patch_brand_val if empty but brand_val is set
 	if [ -z "$patch_brand_val" ] && [ -n "$brand_val" ] && [ "$brand_val" != "$engine_brand_val" ]; then
 		patch_brand_val="$brand_val"
 	fi
 
-	# For morphe-patches or if patch brand equals engine brand, ignore patch-brand
-	if [ "${patch_brand_val,,}" = "morphe" ] || [ "${patch_brand_val,,}" = "${engine_brand_val,,}" ]; then
+	# Suppress patch_brand if it equals engine_brand
+	if [ "${patch_brand_val,,}" = "${engine_brand_val,,}" ]; then
 		patch_brand_val=""
 	fi
 
@@ -4449,55 +4362,9 @@ build_rv() {
 	[ -n "$variant_slug" ] && [ "$variant_slug" != "default" ] && brand_suffix+="-${variant_slug}"
 	[ -n "$sub_variant_slug" ] && brand_suffix+="-${sub_variant_slug}"
 
-	# Format display name token helper
-	_format_brand_token() {
-		local t="$1"
-		case "${t,,}" in
-			"npatch") echo "NPatch" ;;
-			"morphe") echo "Morphe" ;;
-			"nulls"|"null's") echo "Null's" ;;
-			"apksigner") echo "apksigner" ;;
-			"signed") echo "signed" ;;
-			"anddea") echo "Anddea" ;;
-			"piko") echo "Piko" ;;
-			"revenge") echo "Revenge" ;;
-			"hoodles") echo "Hoodles" ;;
-			"stylus") echo "Stylus" ;;
-			"rushiranpise") echo "Rushiranpise" ;;
-			"paresh") echo "Paresh" ;;
-			"hooman") echo "Hooman" ;;
-			"xtra") echo "Xtra" ;;
-			"byehi98") echo "Byehi98" ;;
-			"browzomje") echo "Browzomje" ;;
-			"dh6k") echo "Dh6k" ;;
-			"hxreborn") echo "HxReborn" ;;
-			"icysymmetra") echo "IcySymmetra" ;;
-			"jasonwu1994") echo "Jasonwu1994" ;;
-			"adobo") echo "Adobo" ;;
-			"kondratjev") echo "Kondratjev" ;;
-			"kveld9") echo "Kveld9" ;;
-			"lain") echo "Lain" ;;
-			"binarymend") echo "Binarymend" ;;
-			"bholeykabhakt") echo "Bholeykabhakt" ;;
-			*) echo "${t^}" ;;
-		esac
-	}
 
-	local engine_disp=""
-	if [ -n "$engine_brand_val" ]; then
-		for w in $engine_brand_val; do
-			engine_disp+="$(_format_brand_token "$w") "
-		done
-		engine_disp="${engine_disp% }"
-	fi
-
-	local patch_disp=""
-	if [ -n "$patch_brand_val" ]; then
-		for w in $patch_brand_val; do
-			patch_disp+="$(_format_brand_token "$w") "
-		done
-		patch_disp="${patch_disp% }"
-	fi
+	local engine_disp="$engine_brand_val"
+	local patch_disp="$patch_brand_val"
 
 	local brand_display=""
 	if [ -n "$patch_disp" ]; then
