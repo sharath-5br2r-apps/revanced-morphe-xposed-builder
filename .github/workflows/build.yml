@@ -260,6 +260,7 @@ jobs:
 
 
       - name: Update changelog and module update files
+        id: update_changelog
         if: ${{ inputs.upload_release_metadata != false }}
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
