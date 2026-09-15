@@ -3179,9 +3179,14 @@ write_build_info() {
 	local patch_brand=${20:-${args[patch_brand]:-}}
 
 	local arch_orig="${args[arch]// /}"
-	# ext stays as the bare file extension (.apk/.zip); arch stays as the arch value.
-	# asset_name = arch+ext gives a unique dedup key per-asset (e.g. arm64-v8a.apk, all.apk, .apk).
-	local asset_name="${arch}${ext}"
+	# asset_name is the full output filename (e.g. xrecorder-morphe-v2.5.4-all.apk).
+	# Falls back to arch+ext if target_file is not yet known at call time.
+	local asset_name
+	if [ -n "${14:-}" ]; then
+		asset_name=$(basename "${14}")
+	else
+		asset_name="${arch}${ext}"
+	fi
 
 	# Determine APK to inspect for metadata (prefer override, then target, then patched_apk)
 	local target_apk=""
