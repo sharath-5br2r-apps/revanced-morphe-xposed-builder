@@ -125,7 +125,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           APKS_REPO: ${{ vars.APKS_REPO }}
           UPLOAD_APKS_REPO: ${{ vars.APKS_REPO }}
-          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
+          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -142,12 +142,12 @@ jobs:
 
       - name: Update Usage Tracker
         env:
-          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
+          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           APKS_REPO: ${{ vars.APKS_REPO }}
           APKS_REPO_URL: ${{ vars.APKS_REPO }}
         run: |
-          TOKEN="${APKS_REPO_TOKEN:-${PERSONAL_ACCESS_TOKEN:-}}"
+          TOKEN="${APKS_REPO_TOKEN:-${PERSONAL_ACCESS_TOKEN:-${GH_TOKEN:-${GITHUB_TOKEN:-}}}}"
           if [ -n "${APKS_REPO:-}" ] && [ -n "$TOKEN" ]; then
             python3 .github/scripts/update_usage_tracker.py || true
           else
@@ -350,7 +350,9 @@ jobs:
       - name: Update Website Catalog
         if: ${{ inputs.upload_release_metadata != false }}
         env:
-          WEBSITE_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
+          WEBSITE_REPO_TOKEN: ${{ secrets.WEBSITE_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           GITHUB_SERVER_URL: ${{ github.server_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}

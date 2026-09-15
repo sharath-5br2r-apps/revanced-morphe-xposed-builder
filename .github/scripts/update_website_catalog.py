@@ -412,7 +412,12 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
     return catalog_data
 
 def main():
-    token = os.environ.get("WEBSITE_REPO_TOKEN") or os.environ.get("APKS_REPO_TOKEN") or os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    token = (
+        os.environ.get("WEBSITE_REPO_TOKEN")
+        or os.environ.get("PERSONAL_ACCESS_TOKEN")
+        or os.environ.get("GH_TOKEN")
+        or os.environ.get("GITHUB_TOKEN")
+    )
     if not token:
         print("Warning: No token found for website repo. Skipping catalog push.")
         return

@@ -23,7 +23,12 @@ def load_json(path, default=None):
     return default if default is not None else {}
 
 def main():
-    token = os.environ.get("WEBSITE_REPO_TOKEN") or os.environ.get("APKS_REPO_TOKEN") or os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    token = (
+        os.environ.get("WEBSITE_REPO_TOKEN")
+        or os.environ.get("PERSONAL_ACCESS_TOKEN")
+        or os.environ.get("GH_TOKEN")
+        or os.environ.get("GITHUB_TOKEN")
+    )
     is_local_dry_run = not bool(token)
     
     print("=== Synchronizing Website Catalog Data & Live Metrics ===")
