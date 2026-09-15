@@ -262,20 +262,19 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
         else:
             variant_entry["latestStable"] = channel_meta
 
+        # Build a lookup from filename → per-asset metadata stored in build.json assets[]
+        build_json_assets = {a["name"]: a for a in (info.get("assets") or [])}
+
         # Check vanilla status: no patch sources and brand is official/vanilla or no patches
+        # Use per-asset appliedPatches (new format) or top-level applied_patches (legacy)
+        any_applied = any(
+            (a.get("appliedPatches") or []) for a in build_json_assets.values()
+        ) or (info.get("applied_patches") or [])
         is_vanilla = bool(
             brand_key in ["official", "vanilla", "stock"] or
-            (not patches_ref and not (info.get("applied_patches") or []))
+            (not patches_ref and not any_applied)
         )
 
-        applied_patches_list = info.get("applied_patches") or []
-        removed_patches_list = info.get("removed_patches") or []
-        failed_patches_list = info.get("failed_patches") or []
-        skipped_patches_list = info.get("skipped_patches") or []
-        densities_list = info.get("densities") or []
-        native_libs_list = info.get("native_libraries") or []
-        min_sdk_val = str(info.get("min_sdk") or "").strip()
-        dpi_val = str(info.get("dpi") or "").strip()
         cli_val = str(info.get("cli") or "").strip()
         patches_list = patches_ref.split() if isinstance(patches_ref, str) else (patches_ref or [])
         changelog_list = changelog_url.split() if isinstance(changelog_url, str) else (changelog_url or [])
@@ -289,11 +288,21 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
                 continue
 
             file_type = "APK" if lower.endswith(".apk") else ("Module" if lower.endswith(".zip") else lower.split(".")[-1].upper())
-            raw_arch = extract_arch(fname, version)
-            arch = normalize_arch(raw_arch)
             dl_url = f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
             size = f.stat().st_size if f.exists() else 0
             asset_os = detect_os(fname)
+
+            # Per-asset metadata from build.json (new format). Fall back to top-level for legacy.
+            bja = build_json_assets.get(fname, {})
+            raw_arch = bja.get("arch") or extract_arch(fname, version)
+            arch = normalize_arch(raw_arch)
+            min_sdk_val = str(bja.get("min_sdk") or info.get("min_sdk") or "").strip()
+            densities_list = bja.get("densities") or info.get("densities") or []
+            native_libs_list = bja.get("native_libraries") or info.get("native_libraries") or []
+            applied_patches_list = bja.get("appliedPatches") or info.get("applied_patches") or []
+            removed_patches_list = bja.get("removedPatches") or info.get("removed_patches") or []
+            failed_patches_list = bja.get("failedPatches") or info.get("failed_patches") or []
+            skipped_patches_list = bja.get("skippedPatches") or info.get("skipped_patches") or []
 
             asset_dict = {
                 "name": fname,
@@ -307,8 +316,6 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
             }
             if min_sdk_val:
                 asset_dict["min_sdk"] = min_sdk_val
-            if dpi_val:
-                asset_dict["dpi"] = dpi_val
             if densities_list:
                 asset_dict["densities"] = densities_list
             if native_libs_list:
@@ -356,7 +363,7 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
             "releaseUrl": f"{github_server}/{github_repo}/releases/tag/{next_ver_code}",
             "patchSources": patches_list,
             "changelogs": changelog_list,
-            "appliedPatches": applied_patches_list,
+            "appliedPatches": list(dict.fromkeys(p for a in assets for p in (a.get("applied_patches") or []))),
             "assets": assets
         }
 
@@ -381,7 +388,7 @@ def update_catalog_data(catalog_data, build_info, built_files, next_ver_code, is
             "releaseUrl": f"{github_server}/{github_repo}/releases/tag/{archive_tag}",
             "patchSources": patches_list,
             "changelogs": changelog_list,
-            "appliedPatches": applied_patches_list,
+            "appliedPatches": list(dict.fromkeys(p for a in archive_assets for p in (a.get("applied_patches") or []))),
             "assets": archive_assets
         }
 
