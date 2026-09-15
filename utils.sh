@@ -3179,7 +3179,9 @@ write_build_info() {
 	local patch_brand=${20:-${args[patch_brand]:-}}
 
 	local arch_orig="${args[arch]// /}"
-	if [ "$arch_orig" != "auto" ]; then ext="${arch}${ext}"; arch=""; fi
+	# ext stays as the bare file extension (.apk/.zip); arch stays as the arch value.
+	# asset_name = arch+ext gives a unique dedup key per-asset (e.g. arm64-v8a.apk, all.apk, .apk).
+	local asset_name="${arch}${ext}"
 
 	# Determine APK to inspect for metadata (prefer override, then target, then patched_apk)
 	local target_apk=""
@@ -3244,6 +3246,7 @@ write_build_info() {
 	(
 		flock -x 200 2>/dev/null || true
 		jq --arg key "$key" \
+			--arg asset_name "$asset_name" \
 			--arg ext "$ext" \
 			--arg arch "$arch" \
 			--arg name "$name" \
@@ -3276,9 +3279,9 @@ write_build_info() {
 			(if $variant != "" then .[$key].variant = $variant else . end) |
 			(if $sub_variant != "" then .[$key].sub_variant = $sub_variant else . end) |
 			(if $cli != "" then .[$key].cli = $cli else . end) |
-			.[$key].assets = ((.[$key].assets // []) | map(select(.name != $ext)) + [
+			.[$key].assets = ((.[$key].assets // []) | map(select(.name != $asset_name)) + [
 				{
-					name: $ext, arch: $arch, ext: $ext,
+					name: $asset_name, arch: $arch, ext: $ext,
 					densities: $densities, native_libraries: $native_libs, min_sdk: $min_sdk,
 					appliedPatches: $applied, skippedPatches: $skipped, failedPatches: $failed
 				}
@@ -3307,7 +3310,7 @@ write_build_info() {
 				sub_variant: $sub_variant,
 				assets: [
 					{
-						name: $ext, arch: $arch, ext: $ext,
+						name: $asset_name, arch: $arch, ext: $ext,
 						densities: $densities, native_libraries: $native_libs, min_sdk: $min_sdk,
 						appliedPatches: $applied, skippedPatches: $skipped, failedPatches: $failed
 					}
