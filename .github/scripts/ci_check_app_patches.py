@@ -180,14 +180,24 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
         os.remove(old_f)
     
     try:
-        host = (new_info.get('host') or 'github').lower()
-        if host == 'gitlab':
+        # Parse host field: supports "host_url|host_type" or "host_type"
+        host_raw = (new_info.get('host') or 'github').strip()
+        if '|' in host_raw:
+            host_url, host_type = host_raw.split('|', 1)
+            host_url = host_url.strip().rstrip('/')
+            host_type = host_type.strip().lower()
+        else:
+            host_url = None
+            host_type = host_raw.lower()
+
+        if host_type == 'gitlab':
+            base_url = host_url or 'https://gitlab.com'
             encoded_repo = repo.replace('/', '%2F')
-            api_url = f"https://gitlab.com/api/v4/projects/{encoded_repo}/releases/{tag}"
+            api_url = f"{base_url}/api/v4/projects/{encoded_repo}/releases/{tag}"
             req = urllib.request.Request(api_url, headers={'User-Agent': 'Mozilla/5.0 (rvb-check-patches)'})
             with urllib.request.urlopen(req) as response:
                 release_data = json.loads(response.read().decode('utf-8'))
-                
+
             download_url = None
             file_name = None
             for link in release_data.get('assets', {}).get('links', []):
@@ -196,15 +206,16 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
                     download_url = link.get('direct_asset_url') or link.get('url')
                     file_name = name
                     break
-                    
+
             if not download_url:
                 raise Exception(f"No .mpp, .rvp, or .jar asset found in GitLab release for {repo}@{tag}")
-                
+
             dl_req = urllib.request.Request(download_url, headers={'Accept': 'application/octet-stream', 'User-Agent': 'Mozilla/5.0'})
             with urllib.request.urlopen(dl_req) as dl_resp, open(file_name, 'wb') as out_file:
                 out_file.write(dl_resp.read())
-        elif host in ('forgejo', 'gitea', 'codeberg'):
-            api_url = f"https://codeberg.org/api/v1/repos/{repo}/releases/tags/{tag}"
+        elif host_type in ('forgejo', 'gitea', 'codeberg'):
+            base_url = host_url or 'https://codeberg.org'
+            api_url = f"{base_url}/api/v1/repos/{repo}/releases/tags/{tag}"
             req = urllib.request.Request(api_url, headers={'User-Agent': 'Mozilla/5.0 (rvb-check-patches)'})
             with urllib.request.urlopen(req) as response:
                 release_data = json.loads(response.read().decode('utf-8'))
@@ -219,13 +230,13 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
                     break
 
             if not download_url:
-                raise Exception(f"No .mpp, .rvp, or .jar asset found in Forgejo release for {repo}@{tag}")
+                raise Exception(f"No .mpp, .rvp, or .jar asset found in Forgejo/Gitea release for {repo}@{tag}")
 
             dl_req = urllib.request.Request(download_url, headers={'User-Agent': 'Mozilla/5.0'})
             with urllib.request.urlopen(dl_req) as dl_resp, open(file_name, 'wb') as out_file:
                 out_file.write(dl_resp.read())
         else:
-            # Download asset using gh cli
+            # Download asset using gh cli (github or unknown)
             subprocess.run(['gh', 'release', 'download', tag, '-R', repo, '-p', '*.mpp', '-p', '*.rvp', '-p', '*.jar', '--clobber'], check=True, capture_output=True)
         
         # Find downloaded files
