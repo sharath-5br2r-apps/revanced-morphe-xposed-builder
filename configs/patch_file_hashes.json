@@ -134,7 +134,7 @@
   "kondratjev/morphe-patches": {
     "beta": {
       "com.soundcloud.android": "807fb8391bddea511afc7898a95f679d",
-      "shared": "33c10ad33676739ca8e809b0a152d3da"
+      "shared": "e6de59c97fa94ca506628d9c90047fe9"
     },
     "stable": {}
   },
@@ -147,9 +147,9 @@
   },
   "morpheapp/morphe-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "cbbf1bfa6c4d8af4fb14786a8d4c6484",
-      "com.google.android.youtube": "2b8917073e98facc2e2094217b44ad68",
-      "shared": "90075e2cd54a18d840affd66456acf5e"
+      "com.google.android.apps.youtube.music": "0b6e6f56dcd16ad60545b39c6d74cfe0",
+      "com.google.android.youtube": "8d3982111d5a33371f10d54a444addf9",
+      "shared": "598139b1fd85a2a390d561f5319b2c4e"
     },
     "stable": {}
   },

@@ -1,13 +1,12 @@
 {
   "patches-version": "dev",
   "enable-module-update": true,
-  "YouTube-Morphe-AMOLED-Experimental": {
+  "YouTube-Morphe-Experimental": {
     "enable-module-update": true,
     "patches-version": "absolutelatest",
     "enabled": true,
     "app-name": "YouTube",
     "engine-brand": "Morphe",
-    "variant": "AMOLED",
     "sub-variant": "Experimental",
     "build-mode": "both",
     "arch": "all arm64-v8a arm-v7a x86_64",
@@ -16,7 +15,6 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "MorpheApp/morphe-patches",
     "included-patches": "'Theme'",
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
     "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
