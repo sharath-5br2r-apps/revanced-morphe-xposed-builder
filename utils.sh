@@ -3248,7 +3248,6 @@ write_build_info() {
 			--arg arch "$arch" \
 			--arg name "$name" \
 			--arg version "$version" \
-			--arg dpi "$dpi_val" \
 			--arg min_sdk "$min_sdk" \
 			--arg cli "${cli_ref:-${cli_name_ver:-}}" \
 			--arg patches "$patches" \
@@ -3267,72 +3266,64 @@ write_build_info() {
 			--argjson densities "$densities_json" \
 			--argjson native_libs "$native_libs_json" \
 			'
-			(if has($key) then
-				.[$key].exts = (.[$key].exts + [$ext] | unique) |
-				(if ($ext == ".apk" and $pkg_name != "") or ((.[$key].package_name // "") == "" and $pkg_name != "") then .[$key].package_name = $pkg_name else . end) |
-				(if $display_name != "" then .[$key].display_name = $display_name else . end) |
-				(if $patches_source != "" then .[$key].patches_source = $patches_source else . end) |
-				(if $brand != "" then .[$key].brand = $brand else . end) |
-				(if $engine_brand != "" then .[$key].engine_brand = $engine_brand else . end) |
-				(if $patch_brand != "" then .[$key].patch_brand = $patch_brand else . end) |
-				(if $variant != "" then .[$key].variant = $variant else . end) |
-				(if $sub_variant != "" then .[$key].sub_variant = $sub_variant else . end) |
-				(if $dpi != "" then .[$key].dpi = $dpi else . end) |
-				(if $min_sdk != "" then .[$key].min_sdk = $min_sdk else . end) |
-				(if ($densities | length) > 0 then .[$key].densities = $densities else . end) |
-				(if ($native_libs | length) > 0 then .[$key].native_libraries = $native_libs else . end) |
-				(if $cli != "" then .[$key].cli = $cli else . end) |
-				(if ($applied | length) > 0 then .[$key].appliedPatches = $applied else del(.[$key].appliedPatches) end) |
-				(if ($skipped | length) > 0 then .[$key].skippedPatches = $skipped else del(.[$key].skippedPatches) end) |
-				(if ($failed | length) > 0 then .[$key].failedPatches = $failed else del(.[$key].failedPatches) end) |
-				.[$key].assets = ((.[$key].assets // []) | map(select(.name != $ext)) + [
-					{ name: $ext, arch: $arch, ext: $ext, dpi: $dpi, native_libraries: $native_libs, min_sdk: $min_sdk }
-					| if $dpi != "" then . else del(.dpi) end
+		(if has($key) then
+			(if ($ext == ".apk" and $pkg_name != "") or ((.[$key].package_name // "") == "" and $pkg_name != "") then .[$key].package_name = $pkg_name else . end) |
+			(if $display_name != "" then .[$key].display_name = $display_name else . end) |
+			(if $patches_source != "" then .[$key].patches_source = $patches_source else . end) |
+			(if $brand != "" then .[$key].brand = $brand else . end) |
+			(if $engine_brand != "" then .[$key].engine_brand = $engine_brand else . end) |
+			(if $patch_brand != "" then .[$key].patch_brand = $patch_brand else . end) |
+			(if $variant != "" then .[$key].variant = $variant else . end) |
+			(if $sub_variant != "" then .[$key].sub_variant = $sub_variant else . end) |
+			(if $cli != "" then .[$key].cli = $cli else . end) |
+			.[$key].assets = ((.[$key].assets // []) | map(select(.name != $ext)) + [
+				{
+					name: $ext, arch: $arch, ext: $ext,
+					densities: $densities, native_libraries: $native_libs, min_sdk: $min_sdk,
+					appliedPatches: $applied, skippedPatches: $skipped, failedPatches: $failed
+				}
+				| if $arch != "" then . else del(.arch) end
+				| if ($densities | length) > 0 then . else del(.densities) end
+				| if ($native_libs | length) > 0 then . else del(.native_libraries) end
+				| if $min_sdk != "" then . else del(.min_sdk) end
+				| if ($applied | length) > 0 then . else del(.appliedPatches) end
+				| if ($skipped | length) > 0 then . else del(.skippedPatches) end
+				| if ($failed | length) > 0 then . else del(.failedPatches) end
+			])
+		else
+			.[$key] = {
+				name: $name,
+				version: $version,
+				cli: $cli,
+				patches: $patches,
+				changelog: $changelog,
+				package_name: $pkg_name,
+				display_name: $display_name,
+				patches_source: $patches_source,
+				brand: $brand,
+				engine_brand: $engine_brand,
+				patch_brand: $patch_brand,
+				variant: $variant,
+				sub_variant: $sub_variant,
+				assets: [
+					{
+						name: $ext, arch: $arch, ext: $ext,
+						densities: $densities, native_libraries: $native_libs, min_sdk: $min_sdk,
+						appliedPatches: $applied, skippedPatches: $skipped, failedPatches: $failed
+					}
+					| if $arch != "" then . else del(.arch) end
+					| if ($densities | length) > 0 then . else del(.densities) end
 					| if ($native_libs | length) > 0 then . else del(.native_libraries) end
 					| if $min_sdk != "" then . else del(.min_sdk) end
-				])
-			else
-				.[$key] = {
-					exts: [$ext],
-					name: $name,
-					arch: $arch,
-					version: $version,
-					dpi: $dpi,
-					min_sdk: $min_sdk,
-					densities: $densities,
-					native_libraries: $native_libs,
-					cli: $cli,
-					patches: $patches,
-					changelog: $changelog,
-					package_name: $pkg_name,
-					display_name: $display_name,
-					patches_source: $patches_source,
-					brand: $brand,
-					engine_brand: $engine_brand,
-					patch_brand: $patch_brand,
-					variant: $variant,
-					sub_variant: $sub_variant,
-					appliedPatches: $applied,
-					skippedPatches: $skipped,
-					failedPatches: $failed,
-					assets: [
-						{ name: $ext, arch: $arch, ext: $ext, dpi: $dpi, native_libraries: $native_libs, min_sdk: $min_sdk }
-						| if $dpi != "" then . else del(.dpi) end
-						| if ($native_libs | length) > 0 then . else del(.native_libraries) end
-						| if $min_sdk != "" then . else del(.min_sdk) end
-					]
-				} |
-				if $cli != "" then . else del(.[$key].cli) end |
-				if $dpi != "" then . else del(.[$key].dpi) end |
-				if $engine_brand != "" then . else del(.[$key].engine_brand) end |
-				if $patch_brand != "" then . else del(.[$key].patch_brand) end |
-				if $min_sdk != "" then . else del(.[$key].min_sdk) end |
-				if ($densities | length) > 0 then . else del(.[$key].densities) end |
-				if ($native_libs | length) > 0 then . else del(.[$key].native_libraries) end |
-				if ($applied | length) > 0 then . else del(.[$key].appliedPatches) end |
-				if ($skipped | length) > 0 then . else del(.[$key].skippedPatches) end |
-				if ($failed | length) > 0 then . else del(.[$key].failedPatches) end
-			end)
+					| if ($applied | length) > 0 then . else del(.appliedPatches) end
+					| if ($skipped | length) > 0 then . else del(.skippedPatches) end
+					| if ($failed | length) > 0 then . else del(.failedPatches) end
+				]
+			} |
+			if $cli != "" then . else del(.[$key].cli) end |
+			if $engine_brand != "" then . else del(.[$key].engine_brand) end |
+			if $patch_brand != "" then . else del(.[$key].patch_brand) end
+		end)
 			' \
 			"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
 	) 200>"${BUILD_JSON_FILE}.lock"
