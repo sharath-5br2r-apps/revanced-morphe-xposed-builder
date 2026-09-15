@@ -209,11 +209,11 @@ def main():
 
             lower = fname.lower()
             if lower.endswith(".apk") and "-module-" not in lower:
-                if not any(u == dl_url for _, u in app_entry["apks"]):
+                if not any(u == dl_url for _, u, *_ in app_entry["apks"]):
                     app_entry["apks"].append((norm_arch, dl_url))
             elif lower.endswith(".zip") and "-module-" in lower:
                 display_label = f"{norm_arch} (Beta Channel)" if "-module-beta" in lower else norm_arch
-                if not any(u == dl_url for _, u in app_entry["modules"]):
+                if not any(u == dl_url for _, u, *_ in app_entry["modules"]):
                     app_entry["modules"].append((display_label, dl_url, norm_arch, "-module-beta" in lower))
 
         # Fallback: no assets[], reconstruct filenames from top-level exts[]+name+arch
@@ -231,7 +231,7 @@ def main():
                         f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
                         if github_repo and next_ver_code else fname
                     )
-                    if not any(u == dl_url for _, u in app_entry["apks"]):
+                    if not any(u == dl_url for _, u, *_ in app_entry["apks"]):
                         app_entry["apks"].append((norm_arch, dl_url))
                 elif ext == "zip":
                     fname = f"{name}-module-v{clean_ver}-{arch or 'all'}.zip"
@@ -239,7 +239,7 @@ def main():
                         f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
                         if github_repo and next_ver_code else fname
                     )
-                    if not any(u == dl_url for _, u in app_entry["modules"]):
+                    if not any(u == dl_url for _, u, *_ in app_entry["modules"]):
                         app_entry["modules"].append((norm_arch, dl_url, norm_arch, False))
 
         arch_priority = {"arm64": 0, "arm": 1, "all": 2, "universal": 3, "x86_64": 4, "x86": 5}
