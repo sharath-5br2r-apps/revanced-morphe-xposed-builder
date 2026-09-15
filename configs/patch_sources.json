@@ -176,8 +176,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.29.0",
-    "stable_date": "2026-09-15T02:47:27Z"
+    "stable": "v1.30.0",
+    "stable_date": "2026-09-15T20:31:08Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",
@@ -189,12 +189,12 @@
     "stable_date": "2026-09-09T16:26:35Z"
   },
   "rushiranpise/morphe-patches": {
-    "beta": "v1.21.5-dev.1",
-    "beta_date": "2026-09-08T05:10:27Z",
+    "beta": "v1.22.0-dev.1",
+    "beta_date": "2026-09-15T20:50:28Z",
     "blocked": false,
     "host": "github",
     "repo": "rushiranpise/morphe-patches",
-    "stable": "v1.21.5",
-    "stable_date": "2026-09-08T05:16:26Z"
+    "stable": "v1.22.0",
+    "stable_date": "2026-09-15T20:58:05Z"
   }
 }

@@ -142,7 +142,7 @@
     "beta": {},
     "stable": {
       "com.brave.browser": "fd5637131e8c32c03efe295a0b7749c9",
-      "shared": "35b8fe4c209cddf64ad67e3d5d8c4e28"
+      "shared": "bbe027176f2b7e9a5b68f93d47fd766a"
     }
   },
   "morpheapp/morphe-patches": {
@@ -181,21 +181,21 @@
   },
   "rushiranpise/morphe-patches": {
     "beta": {
-      "ch.protonvpn.android": "5469f88a77f4d42dea4b361c9a2ba68d",
-      "com.adguard.android": "82b7f029fe04d6960aa4a74e34f9bf2f",
-      "com.adobe.reader": "0dae86dfbb74ee3f07bae6147e20f0a4",
-      "com.amazon.mShop.android.shopping": "6281daaca055b834db82e35a47e1ff83",
-      "com.arjanvlek.oxygenupdater": "50fbfa8e3c33e011678edb8fdfaf368e",
-      "com.arlosoft.macrodroid": "0f3411669eb81c15dc988e15a14c2d22",
-      "com.cloudflare.onedotonedotonedotone": "5877e0f73f2c8227ba5d96ac4b6a8d20",
+      "ch.protonvpn.android": "1615f87749b7dab57cac0d1847c3097f",
+      "com.adguard.android": "5b2b7a02e6f99456e95cd0300799e011",
+      "com.adobe.reader": "c05c4d8e096d3fd2fffec0e1e9f8b339",
+      "com.amazon.mShop.android.shopping": "6901649f342501d6f941ff6a52811b26",
+      "com.arjanvlek.oxygenupdater": "1a2829a3ec74edd838e85564458fd666",
+      "com.arlosoft.macrodroid": "6057f1721f919c1d57548d465cde7726",
+      "com.cloudflare.onedotonedotonedotone": "e482dea53e48b8e01b9ab4617f2a22a1",
       "com.duolingo": "d41d8cd98f00b204e9800998ecf8427e",
-      "com.microsoft.office.excel": "309a027e69b37be927748066be613ac7",
-      "com.microsoft.office.word": "3b17d60119174bb314f65804ff1031b8",
-      "com.monect.portable": "95712fd2eef7dfd77ecaeca3253db348",
-      "com.windscribe.vpn": "52a1a2c98abed75013f50fb1886d3f2f",
-      "in.amazon.mShop.android.shopping": "6281daaca055b834db82e35a47e1ff83",
-      "io.appground.blek": "1b2e9d6bb3cbc1f0675ec2a36edd1e04",
-      "it.mirko.beta": "55e46cd291285f9aee3fb9d5d7d77e08",
+      "com.microsoft.office.excel": "baa75d99d58049ff5bcdbcd2b2959c39",
+      "com.microsoft.office.word": "3becdc0486ce313a8de637e3146de40e",
+      "com.monect.portable": "c05c4d8e096d3fd2fffec0e1e9f8b339",
+      "com.windscribe.vpn": "371910661a688b92d7bfe1a8b54b7b83",
+      "in.amazon.mShop.android.shopping": "6901649f342501d6f941ff6a52811b26",
+      "io.appground.blek": "211803ce0fdfe2706c3ab3bf61ed7fcd",
+      "it.mirko.beta": "9b4e60af84fb2b247a68fbbba0a6945e",
       "shared": "b337cf3aa24d7635804a8e2fa9435a93"
     },
     "stable": {}
