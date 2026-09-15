@@ -126,8 +126,8 @@
     "stable_date": "2026-09-07T08:52:16Z"
   },
   "icysymmetra/tiktok-patches-for-morphe": {
-    "beta": "v0.8.0-dev.10",
-    "beta_date": "2026-09-14T08:54:19Z",
+    "beta": "v0.8.0-dev.11",
+    "beta_date": "2026-09-14T21:05:20Z",
     "blocked": false,
     "host": "github",
     "repo": "icysymmetra/tiktok-patches-for-morphe",
@@ -176,8 +176,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.25.1",
-    "stable_date": "2026-09-14T19:28:10Z"
+    "stable": "v1.27.1",
+    "stable_date": "2026-09-14T23:21:19Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",
