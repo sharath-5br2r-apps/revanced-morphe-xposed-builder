@@ -42,7 +42,7 @@
     "keys": [
       "Speedtest-Morphe-BholeyKaBhakt-Experimental"
     ],
-    "version": "7.0.7"
+    "version": "7.1.0"
   },
   "Bitwarden": {
     "keys": [
@@ -61,13 +61,13 @@
     "keys": [
       "BraveBrowser-Beta-Morphe-Dh6k"
     ],
-    "version": "1.96.52"
+    "version": "1.96.53"
   },
   "Brave Nightly": {
     "keys": [
       "BraveBrowser-Nightly-Morphe-Dh6k"
     ],
-    "version": "1.97.33"
+    "version": "1.97.34"
   },
   "PC Remote": {
     "keys": [
