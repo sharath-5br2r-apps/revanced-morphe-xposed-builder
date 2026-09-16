@@ -332,18 +332,6 @@ jobs:
             done
           fi
 
-      - name: Update Website Catalog
-        if: ${{ inputs.upload_release_metadata != false }}
-        env:
-          WEBSITE_REPO_TOKEN: ${{ secrets.WEBSITE_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
-          NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          GITHUB_SERVER_URL: ${{ github.server_url }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          WEBSITE_REPO: ${{ vars.WEBSITE_REPO || 'sharath-5br2r-apps/sharath-5br2r-apps.github.io' }}
-          IS_PRERELEASE: ${{ steps.context.outputs.IS_PRERELEASE }}
-        run: python3 .github/scripts/update_website_catalog.py || true
 
       - name: Notify telegram
         env:

@@ -455,13 +455,8 @@ GitHub Actions automates compilation, testing, and distribution:
 
 ## Website Catalog & Metrics Synchronization
 
-The builder maintains a public catalog (`data.json` and `data.json.gz`) consumed by web catalogs and Obtainium:
+The builder triggers catalog updates for the website repository (consumed by web catalogs and Obtainium):
 
-- **Target Website Repository:** Configured via the `WEBSITE_REPO` variable/environment (e.g. `your-username/your-username.github.io`) using `WEBSITE_REPO_TOKEN` (falling back to `PERSONAL_ACCESS_TOKEN`, then `GH_TOKEN` / `GITHUB_TOKEN`).
+- **Target Website Repository:** Configured via the `WEBSITE_REPO` variable/environment (e.g. `your-username/your-username.github.io` or `sharath-5br2r-apps/sharath-5br2r-apps.github.io`) using `WEBSITE_DISPATCH_TOKEN` (falling back to `WEBSITE_REPO_TOKEN`, `PERSONAL_ACCESS_TOKEN`, then `GH_TOKEN` / `GITHUB_TOKEN`).
+- **Dispatch-based Architecture:** Direct commits and clones from builder workflows to the website tree are disabled. Instead, `update-website.yml` and `cleanup.yml` send a `repository_dispatch` event (`update-catalog-cache`) to the website repository, triggering its autonomous catalog generator/updater (`merge_build_meta.py` in the catalog repo).
 - **APKs Cache Repository (`$APKS_REPO`):** Dedicated assets repository configured via `APKS_REPO` using `APKS_REPO_TOKEN` (falling back to `PERSONAL_ACCESS_TOKEN`, then `GH_TOKEN` / `GITHUB_TOKEN`).
-- **Per-Build Updates (`update_website_catalog.py`):** Pushes newly compiled build metadata, download URLs, applied patch lists, and SHA-256 checksums to the website repository.
-- **Maintenance & Pruning (`sync_website_catalog.py`):**
-  - Synchronizes real-time download counts from GitHub Releases.
-  - Prunes deleted builds and empty app entries.
-  - Reconciles `latestStable` and `latestBeta` variant pointers.
-  - Protected by a circuit breaker requiring valid release data before modifying the catalog.
