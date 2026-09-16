@@ -111,7 +111,7 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || 
         if (($srcs - $active[0]) != $srcs) or ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
-    { "patches-version": "dev", "enable-module-update": false } + .
+    { "patches-version": "dev" } + .
   ' config.dev.json > configs/config.dev.updated.json
 
   split_config_json "configs/config.dev.updated.json" "config.dev" 5
@@ -127,7 +127,7 @@ if [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || 
         if ($activeApps[0] | index($k)) then . else empty end
       else empty end
     ) |
-    { "patches-version": "absolutelatest", "enable-module-update": false } + .
+    { "patches-version": "absolutelatest" } + .
   ' config.latest.json > configs/config.latest.updated.json
 
   split_config_json "configs/config.latest.updated.json" "config.latest" 5
