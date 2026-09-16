@@ -27,13 +27,13 @@
     "stable_date": "2026-09-11T06:02:09.402Z"
   },
   "MorpheApp/morphe-patches": {
-    "beta": "v1.43.0-dev.6",
-    "beta_date": "2026-09-14T00:38:22Z",
+    "beta": "v1.44.0-dev.1",
+    "beta_date": "2026-09-15T17:30:22Z",
     "blocked": false,
     "host": "github",
     "repo": "MorpheApp/morphe-patches",
-    "stable": "v1.42.0",
-    "stable_date": "2026-09-09T21:01:44Z"
+    "stable": "v1.43.0",
+    "stable_date": "2026-09-14T12:57:41Z"
   },
   "Paresh-Maheshwari/paresh-patches": {
     "beta": "v1.20.0-dev.4",
@@ -68,8 +68,8 @@
     "blocked": false,
     "host": "github",
     "repo": "RookieEnough/De-Vanced",
-    "stable": "v1.4.0",
-    "stable_date": "2026-09-11T17:03:28Z"
+    "stable": "v1.4.2",
+    "stable_date": "2026-09-15T11:45:50Z"
   },
   "SapitoSucio/FroggoMorphePatches": {
     "beta": "v1.4.0-dev.2",
@@ -86,8 +86,8 @@
     "blocked": false,
     "host": "github",
     "repo": "ajstrick81/morphe-androidtv-patches",
-    "stable": "v1.36.0",
-    "stable_date": "2026-09-14T01:44:41Z"
+    "stable": "v1.37.1",
+    "stable_date": "2026-09-15T00:22:58Z"
   },
   "anddea/revanced-patches": {
     "beta": "v4.3.0-dev.6",
@@ -203,12 +203,12 @@
     "blocked": false,
     "host": "github",
     "repo": "hxreborn/morphe-patches",
-    "stable": "v1.21.0",
-    "stable_date": "2026-09-13T19:40:26Z"
+    "stable": "v1.23.0",
+    "stable_date": "2026-09-15T05:51:29Z"
   },
   "icysymmetra/tiktok-patches-for-morphe": {
-    "beta": "v0.8.0-dev.9",
-    "beta_date": "2026-09-11T18:21:08Z",
+    "beta": "v0.8.0-dev.11",
+    "beta_date": "2026-09-14T21:05:20Z",
     "blocked": false,
     "host": "github",
     "repo": "icysymmetra/tiktok-patches-for-morphe",
@@ -252,13 +252,13 @@
     "stable_date": "2026-07-12T15:14:45Z"
   },
   "kondratjev/morphe-patches": {
-    "beta": "v1.23.0-dev.1",
-    "beta_date": "2026-09-10T14:06:26Z",
+    "beta": "v1.24.0-dev.1",
+    "beta_date": "2026-09-15T15:21:18Z",
     "blocked": false,
     "host": "github",
     "repo": "kondratjev/morphe-patches",
-    "stable": "v1.23.0",
-    "stable_date": "2026-09-10T14:09:16Z"
+    "stable": "v1.24.0",
+    "stable_date": "2026-09-15T15:25:21Z"
   },
   "kveld9/kveld-morphe-patches": {
     "beta": "",
@@ -266,8 +266,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.23.1",
-    "stable_date": "2026-09-13T21:01:16Z"
+    "stable": "v1.30.1",
+    "stable_date": "2026-09-16T01:11:56Z"
   },
   "liongalahad/nuviotv-morphe-patches": {
     "beta": "v1.0.0-beta.1",
@@ -284,8 +284,8 @@
     "blocked": false,
     "host": "github",
     "repo": "quantavil/edge-morphe-patches",
-    "stable": "v1.35.0",
-    "stable_date": "2026-08-19T05:57:27Z"
+    "stable": "v1.36.1",
+    "stable_date": "2026-09-14T14:51:02Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",
@@ -306,13 +306,13 @@
     "stable_date": "2026-08-30T09:46:33Z"
   },
   "rushiranpise/morphe-patches": {
-    "beta": "v1.21.5-dev.1",
-    "beta_date": "2026-09-08T05:10:27Z",
+    "beta": "v1.22.0-dev.1",
+    "beta_date": "2026-09-15T20:50:28Z",
     "blocked": false,
     "host": "github",
     "repo": "rushiranpise/morphe-patches",
-    "stable": "v1.21.5",
-    "stable_date": "2026-09-08T05:16:26Z"
+    "stable": "v1.22.0",
+    "stable_date": "2026-09-15T20:58:05Z"
   },
   "shaun-the-sheep-patches/morphe-patches": {
     "beta": "v1.2.0-dev.1",
