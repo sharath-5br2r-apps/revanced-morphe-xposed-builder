@@ -261,16 +261,16 @@ jobs:
 
       - name: Update changelog and module update files
         id: update_changelog
-        if: ${{ inputs.upload_release_metadata != false }}
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           ARCHIVE_TAG: ${{ steps.context.outputs.ARCHIVE_TAG }}
           GITHUB_SERVER_URL: ${{ github.server_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          UPLOAD_RELEASE_METADATA: ${{ inputs.upload_release_metadata != false && 'true' || 'false' }}
         run: bash .github/scripts/build_update_changelog.sh
 
       - name: Commit updated build and module update files to update branch
-        if: ${{ inputs.upload_release_metadata != false && steps.update_changelog.outputs.has_modules == 'true' }}
+        if: ${{ steps.update_changelog.outputs.has_modules == 'true' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -290,10 +290,20 @@ jobs:
           if [ ${#UPDATE_JSON_FILES[@]} -gt 0 ]; then
             git add "${UPDATE_JSON_FILES[@]}"
           fi
-          # Only commit if there are staged changes
+          # Only commit and push if there are staged changes
           if ! git diff --cached --quiet; then
             git commit -m "Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}"
-            git push origin update
+            # Push with retry in case of parallel builds pushing to update branch
+            for i in {1..5}; do
+              git fetch origin update 2>/dev/null || true
+              git rebase -X theirs origin/update 2>/dev/null || true
+              if git push origin update; then
+                echo "Successfully pushed update branch"
+                break
+              fi
+              echo "Push failed, retrying in 3s ($i/5)..."
+              sleep 3
+            done
           else
             echo "No changes to commit on update branch."
           fi

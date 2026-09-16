@@ -19,11 +19,13 @@ if [ -n "${GITHUB_OUTPUT-}" ]; then
 fi
 
 git checkout -f update || git switch --discard-changes --orphan update
-mkdir -p changelogs
-SRC_MD="build.md"
-[ -f build.tmp ] && SRC_MD="build.tmp"
-if [ -f "$SRC_MD" ]; then
-  cp -f "$SRC_MD" "changelogs/${NEXT_VER_CODE}.md"
+if [ "${UPLOAD_RELEASE_METADATA:-true}" != "false" ]; then
+  mkdir -p changelogs
+  SRC_MD="build.md"
+  [ -f build.tmp ] && SRC_MD="build.tmp"
+  if [ -f "$SRC_MD" ]; then
+    cp -f "$SRC_MD" "changelogs/${NEXT_VER_CODE}.md"
+  fi
 fi
 
 get_update_json() {
