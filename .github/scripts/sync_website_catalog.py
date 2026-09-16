@@ -34,8 +34,9 @@ def main():
     print("=== Synchronizing Website Catalog Data & Live Metrics ===")
     
     # 1. Fetch active releases from GitHub (single bulk request)
-    print("Fetching active releases and live metrics from GitHub...")
-    releases_raw = run_cmd('gh api "repos/nullcpy/rvb/releases?per_page=100"', check=False)
+    github_repo = os.environ.get("GITHUB_REPOSITORY", "sharath-5br2r-apps/revanced-morphe-xposed-builder").strip()
+    print(f"Fetching active releases and live metrics from GitHub ({github_repo})...")
+    releases_raw = run_cmd(f'gh api "repos/{github_repo}/releases?per_page=100"', check=False)
     if not releases_raw:
         print("Error: Could not retrieve releases from GitHub API. Aborting to protect catalog integrity.", file=sys.stderr)
         sys.exit(1)
@@ -93,7 +94,7 @@ def main():
     # Targeted fallback for stable and beta if not present in first 100 releases
     if "stable" not in active_tags:
         print("Fetching stable release directly via targeted tag API...")
-        stable_raw = run_cmd('gh api "repos/nullcpy/rvb/releases/tags/stable"', check=False)
+        stable_raw = run_cmd(f'gh api "repos/{github_repo}/releases/tags/stable"', check=False)
         if stable_raw:
             try:
                 stable_data = json.loads(stable_raw)
@@ -108,7 +109,7 @@ def main():
 
     if "beta" not in active_tags:
         print("Fetching beta release directly via targeted tag API...")
-        beta_raw = run_cmd('gh api "repos/nullcpy/rvb/releases/tags/beta"', check=False)
+        beta_raw = run_cmd(f'gh api "repos/{github_repo}/releases/tags/beta"', check=False)
         if beta_raw:
             try:
                 beta_data = json.loads(beta_raw)
@@ -123,18 +124,19 @@ def main():
 
     print(f"Active archive assets: {len(live_stable_assets)} in stable, {len(live_beta_assets)} in beta.")
 
+    website_repo = os.environ.get("WEBSITE_REPO", "sharath-5br2r-apps/sharath-5br2r-apps.github.io").strip()
     # 2. Clone or locate data.json
     clone_dir = None
     if is_local_dry_run:
-        data_path = Path("../nullcpy.github.io/data.json").resolve()
+        data_path = Path(f"../{website_repo.split('/')[-1]}/data.json").resolve()
         if not data_path.exists():
             data_path = Path("temp/data.json")
     else:
-        website_repo_url = f"https://oauth2:{token}@github.com/nullcpy/nullcpy.github.io.git"
+        website_repo_url = f"https://oauth2:{token}@github.com/{website_repo}.git"
         clone_dir = Path("temp/website_repo_sync")
         if clone_dir.exists():
             shutil.rmtree(clone_dir)
-        print("Cloning website repository (nullcpy.github.io)...")
+        print(f"Cloning website repository ({website_repo})...")
         run_cmd(f"git clone --depth 1 {website_repo_url} {clone_dir}")
         data_path = clone_dir / "data.json"
 
@@ -283,7 +285,7 @@ def main():
             result = subprocess.run("git push origin main", shell=True, capture_output=True, text=True, cwd=clone_dir)
             if result.returncode == 0:
                 pushed = True
-                print("Pushed synchronized data.json to nullcpy.github.io!")
+                print(f"Pushed synchronized data.json to {website_repo}!")
                 break
             print(f"Warning: Git push attempt {attempt} failed: {result.stderr.strip()}. Retrying with rebase...", file=sys.stderr)
             subprocess.run("git pull --rebase origin main", shell=True, cwd=clone_dir)

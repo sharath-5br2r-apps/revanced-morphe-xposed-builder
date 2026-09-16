@@ -447,13 +447,14 @@ def main():
     build_dir = Path("build")
     built_files = [f for f in build_dir.iterdir() if f.is_file()] if build_dir.exists() else []
 
-    website_repo_url = f"https://oauth2:{token}@github.com/nullcpy/nullcpy.github.io.git"
+    website_repo = os.environ.get("WEBSITE_REPO", "sharath-5br2r-apps/sharath-5br2r-apps.github.io").strip()
+    website_repo_url = f"https://oauth2:{token}@github.com/{website_repo}.git"
     clone_dir = Path("temp/website_repo")
 
     if clone_dir.exists():
         shutil.rmtree(clone_dir)
 
-    print("Cloning website repository (nullcpy.github.io)...")
+    print(f"Cloning website repository ({website_repo})...")
     run_cmd(f"git clone --depth 1 {website_repo_url} {clone_dir}")
 
     data_path = clone_dir / "data.json"
@@ -494,7 +495,7 @@ def main():
         result = subprocess.run("git push origin main", shell=True, capture_output=True, text=True, cwd=clone_dir)
         if result.returncode == 0:
             pushed = True
-            print("Successfully published updated data.json to nullcpy.github.io!")
+            print(f"Successfully published updated data.json to {website_repo}!")
             break
         print(f"Warning: Git push attempt {attempt} failed: {result.stderr.strip()}. Retrying with rebase...", file=sys.stderr)
         subprocess.run("git pull --rebase origin main", shell=True, cwd=clone_dir)

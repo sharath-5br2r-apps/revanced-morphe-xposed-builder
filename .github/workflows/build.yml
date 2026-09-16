@@ -271,12 +271,32 @@ jobs:
 
       - name: Commit updated build and module update files to update branch
         if: ${{ inputs.upload_release_metadata != false && steps.update_changelog.outputs.has_modules == 'true' }}
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: update
-          skip_checkout: true
-          file_pattern: changelogs/*.md *-update.json
-          commit_message: "Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}"
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin update 2>/dev/null || true
+          if git ls-remote --heads origin update | grep -q 'refs/heads/update'; then
+            git checkout -B update origin/update
+          else
+            git checkout --orphan update
+            git rm -rf . --quiet || true
+          fi
+          # Stage changelogs (if any)
+          git add changelogs/*.md 2>/dev/null || true
+          # Stage *-update.json files only if they exist (avoid fatal pathspec error)
+          shopt -s nullglob
+          UPDATE_JSON_FILES=(*-update.json)
+          shopt -u nullglob
+          if [ ${#UPDATE_JSON_FILES[@]} -gt 0 ]; then
+            git add "${UPDATE_JSON_FILES[@]}"
+          fi
+          # Only commit if there are staged changes
+          if ! git diff --cached --quiet; then
+            git commit -m "Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}"
+            git push origin update
+          else
+            echo "No changes to commit on update branch."
+          fi
 
       - name: Remove frequently updated apps
         run: |
@@ -311,6 +331,7 @@ jobs:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           GITHUB_SERVER_URL: ${{ github.server_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          WEBSITE_REPO: ${{ vars.WEBSITE_REPO || 'sharath-5br2r-apps/sharath-5br2r-apps.github.io' }}
           IS_PRERELEASE: ${{ steps.context.outputs.IS_PRERELEASE }}
         run: python3 .github/scripts/update_website_catalog.py || true
 

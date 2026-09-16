@@ -17,7 +17,8 @@ jobs:
         env:
           DISPATCH_TOKEN: ${{ secrets.WEBSITE_DISPATCH_TOKEN || secrets.WEBSITE_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          curl -f -X POST https://api.github.com/repos/nullcpy/nullcpy.github.io/dispatches \
+          TARGET_REPO="${{ vars.WEBSITE_REPO || 'sharath-5br2r-apps/sharath-5br2r-apps.github.io' }}"
+          curl -f -X POST "https://api.github.com/repos/${TARGET_REPO}/dispatches" \
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token $DISPATCH_TOKEN" \
           -d '{"event_type": "update-catalog-cache"}'

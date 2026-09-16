@@ -16,7 +16,11 @@ cleanup() {
 trap cleanup EXIT
 
 echo "--- Checking out update branch ---"
-git fetch origin update || true
+git fetch origin update 2>/dev/null || true
+if ! git ls-remote --heads origin update | grep -q 'refs/heads/update'; then
+  echo "Remote 'update' branch does not exist yet. Nothing to clean up."
+  exit 0
+fi
 git checkout -B update origin/update
 
 
