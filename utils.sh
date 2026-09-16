@@ -3192,31 +3192,34 @@ write_build_info() {
 	local target_apk=""
 	if [ -n "$inspect_apk_override" ] && [ -f "$inspect_apk_override" ]; then
 		target_apk="$inspect_apk_override"
-	elif [ -n "$target_file" ] && [ -f "$target_file" ] && [[ "$target_file" == *.apk ]]; then
+	elif [ -n "$target_file" ] && [ -f "$target_file" ]; then
 		target_apk="$target_file"
-	elif [ -n "${patched_apk:-}" ] && [ -f "${patched_apk:-}" ]; then
-		target_apk="$patched_apk"
+	fi
+	if [ -z "$target_apk" ] || [ ! -f "$target_apk" ]; then
+		target_apk="${final_apk_output:-${apk_output:-${patched_apk:-${stock_apk_to_patch:-${stock_apk:-}}}}}"
 	fi
 
-	# Inspect APK with aapt if available
+	# For .zip modules, check companion .apk or inspect base.apk inside
+	local inspect_apk="$target_apk"
+	if [[ "$inspect_apk" == *.zip ]]; then
+		local zip_companion="${inspect_apk%.zip}.apk"
+		if [ -f "$zip_companion" ]; then
+			inspect_apk="$zip_companion"
+		else
+			inspect_apk=""
+		fi
+	fi
+	# If still a .zip, clear so we skip aapt on it
+	[[ "$inspect_apk" == *.zip ]] && inspect_apk=""
+
+	# Inspect APK with aapt/aapt2 if available
 	local min_sdk=""
 	local densities_json="[]"
 	local native_libs_json="[]"
 
-	local inspect_apk=""
-	if [ -n "$target_apk" ] && [ -f "$target_apk" ]; then
-		inspect_apk="$target_apk"
-	fi
-
-	if [ -n "$inspect_apk" ]; then
-		local aapt_bin=""
-		if command -v aapt2 >/dev/null 2>&1; then
-			aapt_bin="aapt2"
-		elif command -v aapt >/dev/null 2>&1; then
-			aapt_bin="aapt"
-		fi
-
-		if [ -n "$aapt_bin" ]; then
+	if [ -n "$inspect_apk" ] && [ -f "$inspect_apk" ]; then
+		local aapt_bin="${AAPT2:-$(command -v aapt2 2>/dev/null || command -v aapt 2>/dev/null || true)}"
+		if [ -n "$aapt_bin" ] && { [ -x "$aapt_bin" ] || command -v "$aapt_bin" >/dev/null 2>&1; }; then
 			local aapt_out
 			aapt_out=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null || true)
 			min_sdk=$(printf '%s' "$aapt_out" | grep -oP "(?:sdkVersion|minSdkVersion):'\K[^']+" | head -1 || true)
@@ -4521,6 +4524,31 @@ build_rv() {
 		excluded_patches_for_build=$(printf '%s\n' "${cur_per_bundle_ed_args[@]}" | grep -oP '(?<=-d )(?:"[^"]*"|\x27[^\x27]*\x27|\S+)' | tr -d "\"'")
 		[ -z "$excluded_patches_for_build" ] && excluded_patches_for_build="${args[excluded_patches]:-}"
 
+		local final_pkg_name="${args[patched_pkg_name]:-}"
+		if [ -z "$final_pkg_name" ]; then
+			local target_apk_to_check=""
+			[ -f "$patched_apk" ] && target_apk_to_check="$patched_apk"
+			[ -z "$target_apk_to_check" ] && [ -f "$apk_output" ] && target_apk_to_check="$apk_output"
+
+			if [ -n "$target_apk_to_check" ]; then
+				local aapt_tool="${AAPT2:-$(command -v aapt2 2>/dev/null || command -v aapt 2>/dev/null || true)}"
+				if [ -n "$aapt_tool" ] && { [ -x "$aapt_tool" ] || command -v "$aapt_tool" >/dev/null 2>&1; }; then
+					local detected_pkg=""
+					if [[ "$aapt_tool" == *"aapt2"* ]]; then
+						detected_pkg=$("$aapt_tool" dump packagename "$target_apk_to_check" 2>/dev/null | tr -d '\r\n' || true)
+					fi
+					[ -z "$detected_pkg" ] && detected_pkg=$("$aapt_tool" dump badging "$target_apk_to_check" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1 || true)
+					if [ -n "$detected_pkg" ]; then
+						if [ "$detected_pkg" != "$pkg_name" ]; then
+							pr "Detected modified package ID in manifest: '$pkg_name' -> '$detected_pkg'"
+						fi
+						final_pkg_name="$detected_pkg"
+					fi
+				fi
+			fi
+		fi
+		final_pkg_name="${final_pkg_name:-$pkg_name}"
+
 		if [ "$build_mode" = apk ]; then
 			if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
 				mv -f "$patched_apk" "$apk_output"
@@ -4529,7 +4557,7 @@ build_rv() {
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
 			final_apk_output="$apk_output"
-			write_build_info "${table% (*}" "${arch_f}" ".apk" "${file_prefix:-${app_name_l}${brand_suffix}}" "$version_f" "$patches_ref" "$changelog_url" "$pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "$apk_output" "" "$cli_ref" "${args[dpi]:-}" "$excluded_patches_for_build" "$engine_brand_val" "$patch_brand_val"
+			write_build_info "${table% (*}" "${arch_f}" ".apk" "${file_prefix:-${app_name_l}${brand_suffix}}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "$apk_output" "" "$cli_ref" "${args[dpi]:-}" "$excluded_patches_for_build" "$engine_brand_val" "$patch_brand_val"
 			continue
 		fi
 		local base_mod_id="${args[module_prop_name]}"
@@ -4562,7 +4590,7 @@ build_rv() {
 			base_template=$(mktemp -d -p "$TEMP_DIR")
 			cp -a $MODULE_TEMPLATE_DIR/. "$base_template"
 
-			module_config "$base_template" "$pkg_name" "$version_f" "$arch"
+			module_config "$base_template" "$final_pkg_name" "$version_f" "$arch"
 
 
 			module_prop \
@@ -4605,7 +4633,7 @@ build_rv() {
 			popd >/dev/null || :
 			rm -rf "$base_template"
 			pr "Built ${table} (root): '${BUILD_DIR}/${curr_mod_output}'"
-			write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix:-${app_name_l}${brand_suffix}}" "$version_f" "$patches_ref" "$changelog_url" "$pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "${CWD}/${BUILD_DIR}/${curr_mod_output}" "$patched_apk" "$cli_ref" "${args[dpi]:-}" "$excluded_patches_for_build" "$engine_brand_val" "$patch_brand_val"
+			write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix:-${app_name_l}${brand_suffix}}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "${CWD}/${BUILD_DIR}/${curr_mod_output}" "$patched_apk" "$cli_ref" "${args[dpi]:-}" "$excluded_patches_for_build" "$engine_brand_val" "$patch_brand_val"
 		done
 		done
 		) > "${build_logs_dir}/build_${arch// /}.log" 2>&1 &
