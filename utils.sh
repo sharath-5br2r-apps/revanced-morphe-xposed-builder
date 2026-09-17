@@ -3278,7 +3278,7 @@ write_build_info() {
 			--argjson native_libs "$native_libs_json" \
 			'
 		(if has($key) then
-			(if ($ext == ".apk" and $pkg_name != "") or ((.[$key].package_name // "") == "" and $pkg_name != "") then .[$key].package_name = $pkg_name else . end) |
+			(if ($ext == ".apk" and $pkg_name != "") or ((.[$key].package_name // "") == "" and $pkg_name != "") then .[$key].package_name = $pkg_name | .[$key].pkgname = $pkg_name else . end) |
 			(if $display_name != "" then .[$key].display_name = $display_name else . end) |
 			(if $patches_source != "" then .[$key].patches_source = $patches_source else . end) |
 			(if $brand != "" then .[$key].brand = $brand else . end) |
@@ -3309,6 +3309,7 @@ write_build_info() {
 				patches: $patches,
 				changelog: $changelog,
 				package_name: $pkg_name,
+				pkgname: $pkg_name,
 				display_name: $display_name,
 				patches_source: $patches_source,
 				brand: $brand,
@@ -4524,26 +4525,24 @@ build_rv() {
 		excluded_patches_for_build=$(printf '%s\n' "${cur_per_bundle_ed_args[@]}" | grep -oP '(?<=-d )(?:"[^"]*"|\x27[^\x27]*\x27|\S+)' | tr -d "\"'")
 		[ -z "$excluded_patches_for_build" ] && excluded_patches_for_build="${args[excluded_patches]:-}"
 
-		local final_pkg_name="${args[patched_pkg_name]:-}"
-		if [ -z "$final_pkg_name" ]; then
-			local target_apk_to_check=""
-			[ -f "$patched_apk" ] && target_apk_to_check="$patched_apk"
-			[ -z "$target_apk_to_check" ] && [ -f "$apk_output" ] && target_apk_to_check="$apk_output"
+		local final_pkg_name=""
+		local target_apk_to_check=""
+		[ -f "$patched_apk" ] && target_apk_to_check="$patched_apk"
+		[ -z "$target_apk_to_check" ] && [ -f "$apk_output" ] && target_apk_to_check="$apk_output"
 
-			if [ -n "$target_apk_to_check" ]; then
-				local aapt_tool="${AAPT2:-$(command -v aapt2 2>/dev/null || command -v aapt 2>/dev/null || true)}"
-				if [ -n "$aapt_tool" ] && { [ -x "$aapt_tool" ] || command -v "$aapt_tool" >/dev/null 2>&1; }; then
-					local detected_pkg=""
-					if [[ "$aapt_tool" == *"aapt2"* ]]; then
-						detected_pkg=$("$aapt_tool" dump packagename "$target_apk_to_check" 2>/dev/null | tr -d '\r\n' || true)
+		if [ -n "$target_apk_to_check" ]; then
+			local aapt_tool="${AAPT2:-$(command -v aapt2 2>/dev/null || command -v aapt 2>/dev/null || true)}"
+			if [ -n "$aapt_tool" ] && { [ -x "$aapt_tool" ] || command -v "$aapt_tool" >/dev/null 2>&1; }; then
+				local detected_pkg=""
+				if [[ "$aapt_tool" == *"aapt2"* ]]; then
+					detected_pkg=$("$aapt_tool" dump packagename "$target_apk_to_check" 2>/dev/null | tr -d '\r\n' || true)
+				fi
+				[ -z "$detected_pkg" ] && detected_pkg=$("$aapt_tool" dump badging "$target_apk_to_check" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1 || true)
+				if [ -n "$detected_pkg" ]; then
+					if [ "$detected_pkg" != "$pkg_name" ]; then
+						pr "Detected modified package ID in output APK: '$pkg_name' -> '$detected_pkg'"
 					fi
-					[ -z "$detected_pkg" ] && detected_pkg=$("$aapt_tool" dump badging "$target_apk_to_check" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1 || true)
-					if [ -n "$detected_pkg" ]; then
-						if [ "$detected_pkg" != "$pkg_name" ]; then
-							pr "Detected modified package ID in manifest: '$pkg_name' -> '$detected_pkg'"
-						fi
-						final_pkg_name="$detected_pkg"
-					fi
+					final_pkg_name="$detected_pkg"
 				fi
 			fi
 		fi
