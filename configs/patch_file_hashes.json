@@ -141,14 +141,14 @@
   "kveld9/kveld-morphe-patches": {
     "beta": {},
     "stable": {
-      "com.brave.browser": "b1ca6fe83178f2e58af0d0295c4e3030",
-      "shared": "bc9a3e0a39435125984743b2e401ed45"
+      "com.brave.browser": "9f508d08265ac189fb3e8e37669555e0",
+      "shared": "043cfe1968e1a08738459a9a4890cc1d"
     }
   },
   "morpheapp/morphe-patches": {
     "beta": {
       "com.google.android.apps.youtube.music": "ac8289b399defc11d4a537467e7bccad",
-      "com.google.android.youtube": "2ec78980d3f65acecb62981e34a03558",
+      "com.google.android.youtube": "6e4c7be79f7e39e330e654e35903e8e5",
       "shared": "4acd6e1942d5c56801f251973a0dfba5"
     },
     "stable": {}

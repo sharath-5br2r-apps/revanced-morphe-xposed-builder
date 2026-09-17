@@ -9,8 +9,8 @@
     "stable_date": "2026-06-22T17:44:41Z"
   },
   "MorpheApp/morphe-patches": {
-    "beta": "v1.44.0-dev.3",
-    "beta_date": "2026-09-17T11:52:11Z",
+    "beta": "v1.44.0-dev.4",
+    "beta_date": "2026-09-17T18:00:26Z",
     "blocked": false,
     "host": "github",
     "repo": "MorpheApp/morphe-patches",
@@ -113,8 +113,8 @@
     "blocked": false,
     "host": "github",
     "repo": "hoo-dles/morphe-patches",
-    "stable": "v1.44.0",
-    "stable_date": "2026-09-07T01:13:25Z"
+    "stable": "v1.44.1",
+    "stable_date": "2026-09-17T16:37:30Z"
   },
   "hxreborn/hxreborn-tiktok-patches": {
     "beta": "v0.10.0-dev.1",
@@ -140,8 +140,8 @@
     "blocked": false,
     "host": "github",
     "repo": "jasonwu1994/Gboard-patches",
-    "stable": "v3.10.0",
-    "stable_date": "2026-09-02T10:45:23Z"
+    "stable": "custom-theme-previews-v1",
+    "stable_date": "2026-09-17T16:50:03Z"
   },
   "jkennethcarino/adobo": {
     "beta": "v1.5.0-dev.2",
@@ -176,8 +176,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.35.0",
-    "stable_date": "2026-09-17T03:18:28Z"
+    "stable": "v1.36.1",
+    "stable_date": "2026-09-17T18:25:37Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",
