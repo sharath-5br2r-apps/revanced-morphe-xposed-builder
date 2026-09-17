@@ -97,7 +97,7 @@
       "cz.ackee.ventusky": "ed386fb3971cb592c47941df5564d78c",
       "ginlemon.flowerfree": "8565a9df34cb8847ead3223b60d713b3",
       "pl.solidexplorer2": "a9f0bae93d8e7e68f5c5f6e4438802e6",
-      "shared": "580ef6f43fd5289db95378bb5508df97",
+      "shared": "839e8c7e9c93c3a0276e460b9e2986d7",
       "videoeditor.videorecorder.screenrecorder": "b757bfdb8b080a895208709fb2927845"
     },
     "stable": {}
@@ -141,8 +141,8 @@
   "kveld9/kveld-morphe-patches": {
     "beta": {},
     "stable": {
-      "com.brave.browser": "9f508d08265ac189fb3e8e37669555e0",
-      "shared": "043cfe1968e1a08738459a9a4890cc1d"
+      "com.brave.browser": "8f9556a16017e8f8076ee1c8dfbff312",
+      "shared": "e282c98ea889657df302fe44029872d8"
     }
   },
   "morpheapp/morphe-patches": {

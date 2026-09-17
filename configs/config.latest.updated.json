@@ -16,23 +16,5 @@
     "github-dlurl": "https://github.com/brave/brave-browser/releases",
     "github-dlurl-regex": "arm64-v8a: (BraveMonoarm64|MonoArm64)\\.apk$ | arm-v7a: (BraveMonoarm|MonoArm)\\.apk$ | x86_64: (BraveMonox64|BraveMonoX64|Monox64|MonoX64|[xX]64)\\.apk$",
     "github-release-name-regex": "^Nightly v"
-  },
-  "SolidExplorer-Morphe-Hoodles-Experimental": {
-    "enable-module-update": true,
-    "patches-version": "absolutelatest",
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "Solid Explorer",
-    "engine-brand": "Morphe",
-    "patch-brand": "Hoodles",
-    "sub-variant": "Experimental",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/pl.solidexplorer2",
-    "version": "latest",
-    "build-mode": "apk",
-    "arch": "all arm64-v8a arm-v7a x86_64",
-    "pkg-name": "pl.solidexplorer2",
-    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager",
-    "patches-source": "hoo-dles/morphe-patches"
   }
 }
