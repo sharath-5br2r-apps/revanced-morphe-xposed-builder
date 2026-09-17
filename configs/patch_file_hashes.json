@@ -51,7 +51,7 @@
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "8275110b2b3b0eec9acd9451dc5ba14b",
-      "shared": "f5474fd1736593ba4b9f9cc36c4b2093"
+      "shared": "52684b6d2f311cb4a5e99725b9b2b341"
     },
     "stable": {}
   },
@@ -82,10 +82,10 @@
     "beta": {
       "bitpit.launcher": "8b7512facf22c0149e588b59f084ef7b",
       "cn.wps.moffice_eng": "447813aedaba74ed575d4f0cfc21a46f",
-      "com.adobe.lrmobile": "b6a29ee09897cf26ce99b46d6ea9a8b0",
-      "com.amazon.avod.thirdpartyclient": "b4af734d77cd6c96ebc69eb25ca00eaa",
+      "com.adobe.lrmobile": "a00f2718d6ed36bc0cfc5235bbae2d24",
+      "com.amazon.avod.thirdpartyclient": "1d689bf966f0fe57015e9e4e887c3547",
       "com.bambuna.podcastaddict": "c5014f7044cccd0b5f1a3cdb162437dd",
-      "com.goodreads": "b7fad1b822c0b9790b5a39379f712ae1",
+      "com.goodreads": "c31962adcdb8d9a3594ea8a4a70cd0d8",
       "com.hellochinese": "1399ee6c3e33c987c0345bca59d0d7cb",
       "com.intsig.camscanner": "0b4ca9534c59e67d0a5cc607370bd377",
       "com.merriamwebster": "085859c18ca7dbcef6e0d1edbb5a6dbf",
@@ -97,7 +97,7 @@
       "cz.ackee.ventusky": "ed386fb3971cb592c47941df5564d78c",
       "ginlemon.flowerfree": "8565a9df34cb8847ead3223b60d713b3",
       "pl.solidexplorer2": "a9f0bae93d8e7e68f5c5f6e4438802e6",
-      "shared": "b75754ec9eaa13dc7c698a4c2ffdb20a",
+      "shared": "580ef6f43fd5289db95378bb5508df97",
       "videoeditor.videorecorder.screenrecorder": "b757bfdb8b080a895208709fb2927845"
     },
     "stable": {}
@@ -141,15 +141,15 @@
   "kveld9/kveld-morphe-patches": {
     "beta": {},
     "stable": {
-      "com.brave.browser": "fd5637131e8c32c03efe295a0b7749c9",
-      "shared": "f068b78ffa9d7ba71642fb19fdc41a2c"
+      "com.brave.browser": "b1ca6fe83178f2e58af0d0295c4e3030",
+      "shared": "e5db197bbce40ad5b768f80365e947bf"
     }
   },
   "morpheapp/morphe-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "0b6e6f56dcd16ad60545b39c6d74cfe0",
-      "com.google.android.youtube": "8d3982111d5a33371f10d54a444addf9",
-      "shared": "598139b1fd85a2a390d561f5319b2c4e"
+      "com.google.android.apps.youtube.music": "3833cb8c57f276f67a34e490ee4047ff",
+      "com.google.android.youtube": "62a31b0f2cd01849cd7f050bd6bbb049",
+      "shared": "86af4708f57cf211834b8bba6c634c4d"
     },
     "stable": {}
   },
