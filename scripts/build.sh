@@ -4,8 +4,10 @@ set -euo pipefail
 shopt -s nullglob
 
 # Engine is run with repo root as CWD (workflows, CI scripts) but lives beside
-# utils.sh under scripts/; source the sibling explicitly.
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/utils.sh"
+# utils.sh under scripts/; keep the absolute path for isolated worker shells.
+RVB_UTILS_SH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/utils.sh"
+export RVB_UTILS_SH
+source "$RVB_UTILS_SH"
 echo '{}' > "$BUILD_JSON_FILE"
 
 CONFIG_FILE="config.toml"
