@@ -128,7 +128,9 @@ for f in "$RUN_ROOT"/*.trace; do
 		-e "s|$RUN_ROOT|<RUN>|g" \
 		-e "s|/dev/fd/[0-9]+|<SRC>|g" \
 		-e "s|/tmp/[^ ]*|<TMP>|g" \
-		-e 's#(--keystore(-entry)?-(password|alias)=)[^] ]+#\1***#g' \
+		-e 's#--keystore-entry-password=[^] ]+#--keystore-entry-***#g' \
+		-e 's#--keystore-password=[^] ]+#--keystore-***#g' \
+		-e 's#--keystore-entry-alias=[^] ]+#--keystore-entry-alias=***#g' \
 		-e 's#(\[--signer=)[^]]+#\1***#g' \
 		"$f"
 done
