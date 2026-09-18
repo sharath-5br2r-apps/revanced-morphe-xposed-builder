@@ -31,7 +31,10 @@
 #   PATCHER_MOUNT_ARG     "--mount" for module builds, else ""
 
 resolve_patcher() {
-	local src="${1,,}" override="${2,,}"
+	local src="${1:-}"
+	local override="${2:-}"
+	src="${src,,}"
+	override="${override,,}"
 	[ -n "$override" ] && src="$override"
 	local kind flow bundle_re list_arg list_x list_b lv_sub lp_sub has_list any_ver signing per_bundle_ed exp_unsup mount
 

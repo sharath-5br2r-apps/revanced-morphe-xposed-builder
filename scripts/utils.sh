@@ -278,7 +278,15 @@ source_release_api_base() {
 	local host=${1,,} src=$2 instance=${3:-} encoded
 	instance="${instance%/}"
 	case "$host" in
-		github) echo "${instance:-https://api.github.com}/repos/${src}/releases" ;;
+		github)
+			# Accept both API and website host overrides. Release API requests
+			# must never be sent to github.com/repos directly.
+			case "${instance,,}" in
+				https://github.com|http://github.com|github.com|www.github.com|https://www.github.com)
+				instance="https://api.github.com" ;;
+			esac
+			echo "${instance:-https://api.github.com}/repos/${src}/releases"
+			;;
 		gitlab)
 			encoded=$(jq -nr --arg v "$src" '$v | @uri')
 			echo "${instance:-https://gitlab.com}/api/v4/projects/${encoded}/releases"

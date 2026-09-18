@@ -26,7 +26,7 @@ for s in curl java; do
 	chmod +x "$RUN_ROOT/bin/$s"
 done
 export PATH="$RUN_ROOT/bin:$PATH"
-export TRACE_FIXTURES="$RVB_ROOT/configs/patches"
+export TRACE_FIXTURES="$TRACES_DIR/fixtures"
 export GITHUB_TOKEN="trace-dummy-token"
 export NEXT_VER_CODE="000000"
 export GITHUB_REPOSITORY=""
@@ -42,7 +42,7 @@ cd "$RUN_ROOT"
 source <(tr -d '\r' < "$RVB_ROOT/scripts/utils.sh") 2>/dev/null || { echo "FATAL: sourcing utils.sh failed"; exit 1; }
 
 if [ ${#FIXTURES[@]} -eq 0 ] || [ -z "${FIXTURES[0]:-}" ]; then
-	FIXTURES=("$RVB_ROOT"/configs/patches/*.toml)
+	FIXTURES=("$TRACES_DIR"/fixtures/configs/*.toml)
 fi
 
 overall=0
