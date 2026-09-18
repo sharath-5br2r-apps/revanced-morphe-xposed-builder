@@ -3953,11 +3953,7 @@ build_rv() {
 	local patches_ref="${args[patches_ref]}"
 	local changelog_url="${args[changelog_url]}"
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
-	local -a arch_build_pids=()
-	local build_logs_dir="${TEMP_DIR}/build_logs_$$"
-	mkdir -p "$build_logs_dir"
 	for arch in "${arch_list[@]}"; do
-	(
 		arch_f="${arch// /}"
 		if [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-all.apk" ]; then
 			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
@@ -4202,12 +4198,7 @@ build_rv() {
 			write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}-module-beta" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}"
 		fi
 		done
-	) >"${build_logs_dir}/build_${arch// /}.log" 2>&1 &
-	arch_build_pids+=("$!")
 	done
-	for pid in "${arch_build_pids[@]}"; do wait "$pid" || return 1; done
-	for logfile in "${build_logs_dir}"/build_*.log; do [ -f "$logfile" ] && cat "$logfile"; done
-	rm -rf "$build_logs_dir"
 }
 
 list_args() { tr -d '\t\r' <<<"$1" | tr -s ' ' | sed "s/' '/'\\n'/g" | sed 's/" "/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :; }

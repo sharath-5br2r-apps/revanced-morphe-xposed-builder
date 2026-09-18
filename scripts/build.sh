@@ -68,6 +68,32 @@ DEF_AUTHOR_NAME=$(toml_get "$main_config_t" author) || DEF_AUTHOR_NAME="nullcpy"
 DEF_AUTHOR_PAGE=$(toml_get "$main_config_t" author-page) || DEF_AUTHOR_PAGE="github.com/nullcpy/rvb"
 mkdir -p "$TEMP_DIR" "$BUILD_DIR"
 
+# Build tables concurrently using the available CPUs. Architecture variants
+# are still submitted as independent slices, so `both` does not bypass the
+# normal queue or corrupt shared build metadata.
+PAR_JOBS="${PARALLEL_JOBS:-$(nproc 2>/dev/null || echo 1)}"
+[[ "$PAR_JOBS" =~ ^[0-9]+$ ]] || PAR_JOBS="$(nproc 2>/dev/null || echo 1)"
+((PAR_JOBS < 1)) && PAR_JOBS=1
+BUILD_QUEUE_DIR="$TEMP_DIR/queue"
+declare -a BUILD_PIDS=()
+declare -a BUILD_LABELS=()
+_run_build() {
+	local label=$1 declaration=$2
+	while [ "${#BUILD_PIDS[@]}" -ge "$PAR_JOBS" ]; do
+		wait "${BUILD_PIDS[0]}" || epr "Build failed for ${BUILD_LABELS[0]}"
+		BUILD_PIDS=("${BUILD_PIDS[@]:1}")
+		BUILD_LABELS=("${BUILD_LABELS[@]:1}")
+	done
+	if [ "$PAR_JOBS" -le 1 ]; then
+		build_rv "$declaration" || epr "Build failed for $label"
+		return
+	fi
+	mkdir -p "$BUILD_QUEUE_DIR"
+	(build_rv "$declaration") >"$BUILD_QUEUE_DIR/${#BUILD_PIDS[@]}.log" 2>&1 &
+	BUILD_PIDS+=("$!")
+	BUILD_LABELS+=("$label")
+}
+
 : >build.md
 ENABLE_MODULE_UPDATE=$(toml_get "$main_config_t" enable-module-update) || ENABLE_MODULE_UPDATE=true
 if [ "$ENABLE_MODULE_UPDATE" = true ] && [ -z "${GITHUB_REPOSITORY-}" ]; then
@@ -267,37 +293,28 @@ for table_name in $(toml_get_table_names); do
 	table_name_f=${table_name_f// /-}
 	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-${DEF_AUTHOR_NAME}"
 
-	if [ "${app_args[arch]}" = both ]; then
-		build_pids=()
-		app_args[table]="$table_name (arm64-v8a)"
-		app_args[arch]="arm64-v8a"
-		module_prop_name_b=${app_args[module_prop_name]}
-		app_args[module_prop_name]="${module_prop_name_b}-arm64"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		(build_rv "$(declare -p app_args)") >"${TEMP_DIR}/build-arm64.log" 2>&1 & build_pids+=("$!")
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-		app_args[table]="$table_name (arm-v7a)"
-		app_args[arch]="arm-v7a"
-		app_args[module_prop_name]="${module_prop_name_b}-arm"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		(build_rv "$(declare -p app_args)") >"${TEMP_DIR}/build-arm.log" 2>&1 & build_pids+=("$!")
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-		for build_pid in "${build_pids[@]}"; do
-			if ! wait "$build_pid"; then epr "One or more architecture builds failed for ${table_name}"; fi
-		done
-		cat "${TEMP_DIR}/build-arm64.log" "${TEMP_DIR}/build-arm.log" 2>/dev/null || true
-		rm -f "${TEMP_DIR}/build-arm64.log" "${TEMP_DIR}/build-arm.log"
-	else
-		if [ "${app_args[arch]}" = "arm64-v8a" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-arm64"
-		elif [ "${app_args[arch]}" = "arm-v7a" ]; then
-			app_args[module_prop_name]="${app_args[module_prop_name]}-arm"
-		fi
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)" || epr "Build failed for ${app_args[table]}"
-		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
-	fi
+	module_prop_name_b=${app_args[module_prop_name]}
+	read -r -a arch_values <<< "${app_args[arch]}"
+	[ "${#arch_values[@]}" -gt 0 ] || arch_values=("${app_args[arch]}")
+	case " ${arch_values[*]} " in
+		*" both "*) arch_values=(arm64-v8a arm-v7a) ;;
+		*" all "*) arch_values=(arm64-v8a arm-v7a x86_64 x86) ;;
+	esac
+	for arch_value in "${arch_values[@]}"; do
+		app_args[table]="$table_name ($arch_value)"
+		app_args[arch]="$arch_value"
+		app_args[module_prop_name]="$module_prop_name_b"
+		case "$arch_value" in
+			arm64-v8a) app_args[module_prop_name]="${module_prop_name_b}-arm64" ;;
+			arm-v7a) app_args[module_prop_name]="${module_prop_name_b}-arm" ;;
+		esac
+		_run_build "${app_args[table]}" "$(declare -p app_args)"
+	done
 done
+for i in "${!BUILD_PIDS[@]}"; do
+	wait "${BUILD_PIDS[$i]}" || epr "Build failed for ${BUILD_LABELS[$i]}"
+done
+rm -rf "$BUILD_QUEUE_DIR"
 rm -rf temp/tmp.*
 if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then abort "All builds failed."; fi
 
