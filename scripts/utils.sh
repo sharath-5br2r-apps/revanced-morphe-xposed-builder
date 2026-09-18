@@ -72,8 +72,7 @@ declare -gA __PKG_VERS_CACHE__
 declare -gA __DL_RESP_CACHE__
 
 # Patcher tool registry: resolve_patcher() + PATCHER_* flags.
-# RVB_PATCHERS_SH lets the trace harness point at it when utils.sh is sourced
-# from a process substitution (same trick as scripts/cf_get.py lookup below).
+# RVB_PATCHERS_SH allows callers to override the patcher registry path.
 _RVB_PATCHERS_SH="${RVB_PATCHERS_SH:-${CWD}/.github/scripts/patchers.sh}"
 [ ! -f "$_RVB_PATCHERS_SH" ] && [ -n "${BASH_SOURCE[0]:-}" ] && _RVB_PATCHERS_SH="$(dirname "$(dirname "${BASH_SOURCE[0]}")")/.github/scripts/patchers.sh"
 if [ -f "$_RVB_PATCHERS_SH" ]; then
