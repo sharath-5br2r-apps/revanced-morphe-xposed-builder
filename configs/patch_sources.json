@@ -162,13 +162,13 @@
     "stable_date": "2026-07-12T15:14:45Z"
   },
   "kondratjev/morphe-patches": {
-    "beta": "v1.24.0-dev.1",
-    "beta_date": "2026-09-15T15:21:18Z",
+    "beta": "v1.25.0-dev.1",
+    "beta_date": "2026-09-18T17:23:20Z",
     "blocked": false,
     "host": "github",
     "repo": "kondratjev/morphe-patches",
-    "stable": "v1.24.0",
-    "stable_date": "2026-09-15T15:25:21Z"
+    "stable": "v1.25.0",
+    "stable_date": "2026-09-18T17:35:05Z"
   },
   "kveld9/kveld-morphe-patches": {
     "beta": "",
