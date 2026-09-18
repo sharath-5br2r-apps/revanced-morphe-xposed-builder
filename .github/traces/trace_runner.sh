@@ -123,6 +123,7 @@ done
 for f in "$RUN_ROOT"/*.trace; do
 	[ -f "$f" ] || continue
 	sed -i -E \
+		-e '/^\++ /d' \
 		-e "s|\x1b\[[0-9;]*m||g" \
 		-e "s|$RUN_ROOT|<RUN>|g" \
 		-e "s|/dev/fd/[0-9]+|<SRC>|g" \
