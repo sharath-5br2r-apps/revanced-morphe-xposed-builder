@@ -547,7 +547,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config_file: [".github/configs/patches/merged/batch-part1.toml", ".github/configs/patches/merged/batch-part2.toml", ".github/configs/patches/merged/batch-part3.toml", ".github/configs/patches/merged/batch-part4.toml", ".github/configs/patches/merged/batch-part5.toml", ".github/configs/patches/merged/batch-part6.toml", ".github/configs/patches/merged/batch-part7.toml", ".github/configs/patches/merged/batch-part8.toml", ".github/configs/patches/merged/batch-part9.toml", ".github/configs/patches/merged/batch-part10.toml", ".github/configs/patches/merged/batch-part11.toml", ".github/configs/patches/merged/batch-part12.toml", ".github/configs/patches/merged/batch-part13.toml", ".github/configs/patches/merged/batch-part14.toml", ".github/configs/patches/merged/batch-part15.toml", ".github/configs/patches/merged/batch-part16.toml"]
+        config_file: ["configs/config.batch.part1.json", "configs/config.batch.part2.json", "configs/config.batch.part3.json", "configs/config.batch.part4.json", "configs/config.batch.part5.json", "configs/config.batch.part6.json", "configs/config.batch.part7.json", "configs/config.batch.part8.json", "configs/config.batch.part9.json", "configs/config.batch.part10.json", "configs/config.batch.part11.json", "configs/config.batch.part12.json", "configs/config.batch.part13.json", "configs/config.batch.part14.json", "configs/config.batch.part15.json", "configs/config.batch.part16.json"]
     uses: ./.github/workflows/build.yml
     with:
       config_file: ${{ matrix.config_file }}
