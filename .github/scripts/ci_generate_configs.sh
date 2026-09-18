@@ -139,9 +139,16 @@ if [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || 
   split_config_json "configs/both/config.updated.json" "both/config" 5
 fi
 
-# Batch builds use the complete both-channel pool, split into deterministic
-# parts so workflow matrices can build them independently. Generate this even
-# when no app-update trigger fired if a current both config is available.
-if [ -f configs/both/config.updated.json ]; then
-  split_config_json "configs/both/config.updated.json" "batch/config" "${BATCH_CONFIG_PARTS:-16}"
+# Batch builds use the complete merged pool, not the trigger-filtered `both`
+# config. The latter intentionally contains only apps selected for an app
+# update, which silently drops the rest of the batch build.
+if [ -f configs/both/config.json ]; then
+  jq 'with_entries(
+        if ((.value | type) == "object" and (.value.enabled // true) != false)
+        then .
+        else empty
+        end
+      ) | {"patches-version": "both"} + .' \
+    configs/both/config.json > configs/batch/config.json
+  split_config_json "configs/batch/config.json" "batch/config" "${BATCH_CONFIG_PARTS:-16}"
 fi

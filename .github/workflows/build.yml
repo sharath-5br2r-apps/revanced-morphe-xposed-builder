@@ -191,7 +191,7 @@ jobs:
         if: ${{ inputs.upload_release_metadata == false }}
         uses: actions/upload-artifact@v7
         with:
-          name: part-logs-${{ inputs.aggregate_flavor || steps.context.outputs.FLAVOR_TAG || 'logs' }}-${{ inputs.config_file }}
+          name: part-logs-${{ inputs.aggregate_flavor || steps.context.outputs.FLAVOR_TAG || 'logs' }}-${{ steps.context.outputs.CONFIG_TAG || 'part' }}
           path: |
             build.json
             build.md

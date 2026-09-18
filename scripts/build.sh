@@ -268,19 +268,25 @@ for table_name in $(toml_get_table_names); do
 	app_args[module_prop_name]=$(toml_get "$t" module-prop-name) || app_args[module_prop_name]="${table_name_f}-${DEF_AUTHOR_NAME}"
 
 	if [ "${app_args[arch]}" = both ]; then
+		build_pids=()
 		app_args[table]="$table_name (arm64-v8a)"
 		app_args[arch]="arm64-v8a"
 		module_prop_name_b=${app_args[module_prop_name]}
 		app_args[module_prop_name]="${module_prop_name_b}-arm64"
 		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)" || epr "Build failed for ${app_args[table]}"
+		(build_rv "$(declare -p app_args)") >"${TEMP_DIR}/build-arm64.log" 2>&1 & build_pids+=("$!")
 		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
 		app_args[table]="$table_name (arm-v7a)"
 		app_args[arch]="arm-v7a"
 		app_args[module_prop_name]="${module_prop_name_b}-arm"
 		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::group::Building ${app_args[table]}"; fi
-		build_rv "$(declare -p app_args)" || epr "Build failed for ${app_args[table]}"
+		(build_rv "$(declare -p app_args)") >"${TEMP_DIR}/build-arm.log" 2>&1 & build_pids+=("$!")
 		if [ -n "${GITHUB_REPOSITORY:-}" ]; then echo "::endgroup::"; fi
+		for build_pid in "${build_pids[@]}"; do
+			if ! wait "$build_pid"; then epr "One or more architecture builds failed for ${table_name}"; fi
+		done
+		cat "${TEMP_DIR}/build-arm64.log" "${TEMP_DIR}/build-arm.log" 2>/dev/null || true
+		rm -f "${TEMP_DIR}/build-arm64.log" "${TEMP_DIR}/build-arm.log"
 	else
 		if [ "${app_args[arch]}" = "arm64-v8a" ]; then
 			app_args[module_prop_name]="${app_args[module_prop_name]}-arm64"
