@@ -258,7 +258,7 @@ pkg-name = "com.cloudflare.onedotonedotonedotone"
 uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
 patches-source = "rushiranpise/morphe-patches"
-apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
 [CloudflareWarp-Morphe-Rushiranpise-Experimental]
 enabled = true
@@ -276,7 +276,7 @@ pkg-name = "com.cloudflare.onedotonedotonedotone"
 uptodown-dlurl = "https://1-1-1-1.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet"
 patches-source = "rushiranpise/morphe-patches"
-apkmirror-exampls-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
 
 [AdGuard-Morphe-Rushiranpise]
 enabled = true
@@ -420,4 +420,3 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvp
 prefer-dl-mode = "bundle"
 dpi = "120-640dpi"
 patches-source = "rushiranpise/morphe-patches"
-

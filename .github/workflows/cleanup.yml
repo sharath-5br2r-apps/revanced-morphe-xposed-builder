@@ -40,14 +40,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash .github/scripts/cleanup_update_branch.sh
 
-      - name: Dispatch Website Deployment
+      - name: Notify website catalog rebuild
+        continue-on-error: true
         env:
-          DISPATCH_TOKEN: ${{ secrets.WEBSITE_DISPATCH_TOKEN || secrets.WEBSITE_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          DISPATCH_TOKEN: ${{ secrets.WEBSITE_TOKEN || secrets.WEBSITE_DISPATCH_TOKEN || secrets.WEBSITE_REPO_TOKEN || secrets.APKS_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          WEBSITE_REPO: "${{ vars.WEBSITE_REPO || 'sharath-5br2r-apps/sharath-5br2r-apps.github.io' }}"
         run: |
-          TARGET_REPO="${{ vars.WEBSITE_REPO || 'sharath-5br2r-apps/sharath-5br2r-apps.github.io' }}"
-          curl -f -X POST "https://api.github.com/repos/${TARGET_REPO}/dispatches" \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: token $DISPATCH_TOKEN" \
-          -d '{"event_type": "update-catalog-cache"}'
-
-
+          curl -fsS -X POST "https://api.github.com/repos/${WEBSITE_REPO}/dispatches" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $DISPATCH_TOKEN" \
+            -d '{"event_type": "catalog-updated"}' \
+            || echo "::warning::Website catalog dispatch failed; the scheduled rebuild will converge."

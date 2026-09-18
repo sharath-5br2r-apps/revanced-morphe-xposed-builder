@@ -27,7 +27,7 @@ except ImportError:
         sys.exit(1)
 
 
-PATCHES_DIR = "configs/patches" if os.path.isdir("configs/patches") else ".github/configs/patches"
+PATCHES_DIR = "configs/patches"
 STATE_FILE = "configs/patch_sources.json" if os.path.isdir("configs") else ".github/configs/patch_sources.json"
 
 

@@ -9,7 +9,7 @@
       "com.tubitv": "ad4cfa4b600c6451571625a911aace33",
       "com.univision.prendetv": "af7f8e042bd4b56df21f80a2c99ac58f",
       "com.wbd.hbomax": "62d421421ab7d213ad26b1b296796164",
-      "shared": "29fb6a6fbd8aaa338f28194d5675b5ae",
+      "shared": "168a520545b3cab8f69456ae06ffd0b8",
       "tv.pluto.android": "40dcc7c8b97d540deab8a158a9ad6ba1",
       "tv.twitch.android.app": "dcc3c62ee2cb5ba1793d74172bcf61fb"
     }
@@ -21,6 +21,13 @@
       "shared": "78a5856192f57b3a46bf8a24ef2a3bf5"
     },
     "stable": {}
+  },
+  "andrewliang25/morphe-patches": {
+    "beta": {},
+    "stable": {
+      "com.facebook.katana": "36b686c7da5624e0463207d2f99fa05f",
+      "shared": "7c131ea894766cbcd932a14f493a635a"
+    }
   },
   "arandomhooman/hoomans-morphe-patches": {
     "beta": {},
@@ -89,6 +96,13 @@
       "shared": "cf16eb2095610d4843c17c9cc833b2d0"
     }
   },
+  "fripe070/pixivpatches": {
+    "beta": {},
+    "stable": {
+      "jp.pxv.android": "ee544ff2052b1ff5536295bc3db0e9fc",
+      "shared": "88145df615f85fd9e698657c6942f52f"
+    }
+  },
   "hoo-dles/morphe-patches": {
     "beta": {
       "bitpit.launcher": "da6ecc087e6282ec8ce024ea656fb484",
@@ -153,9 +167,9 @@
   "hxreborn/morphe-patches": {
     "beta": {},
     "stable": {
-      "ch.protonmail.android": "759e59ff983b247540370eacf5dc347a",
-      "com.michaldrabik.showly2": "467a225092a9950bf586e4fea6d6ad99",
-      "shared": "120ce607112f2536ba363d1dc11084fd"
+      "ch.protonmail.android": "f7182d1ac61866ea5429d1b87adca501",
+      "com.michaldrabik.showly2": "69f09074101a64226871b33f80ece798",
+      "shared": "5e1511719106a8ba5463491ab39a5415"
     }
   },
   "icysymmetra/tiktok-patches-for-morphe": {
@@ -215,10 +229,10 @@
   "kveld9/kveld-morphe-patches": {
     "beta": {},
     "stable": {
-      "com.brave.browser": "fd5637131e8c32c03efe295a0b7749c9",
-      "com.ss.android.ugc.trill": "82b33ffaa5e6c76b3aa288bdaccf2aa9",
-      "com.zhiliaoapp.musically": "82b33ffaa5e6c76b3aa288bdaccf2aa9",
-      "shared": "83712a7149ff78f6377a0b78d3a66b18"
+      "com.brave.browser": "b1ca6fe83178f2e58af0d0295c4e3030",
+      "com.ss.android.ugc.trill": "5cc47af7a8ccadd5716c94ae8eb65761",
+      "com.zhiliaoapp.musically": "5cc47af7a8ccadd5716c94ae8eb65761",
+      "shared": "bc9a3e0a39435125984743b2e401ed45"
     }
   },
   "liongalahad/nuviotv-morphe-patches": {
@@ -230,10 +244,10 @@
   },
   "morpheapp/morphe-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "0b6e6f56dcd16ad60545b39c6d74cfe0",
-      "com.google.android.youtube": "7119124dbb9895258d15ff4c2037faf0",
+      "com.google.android.apps.youtube.music": "ac8289b399defc11d4a537467e7bccad",
+      "com.google.android.youtube": "e824a56f5a3e15499380f0e96106b0fa",
       "com.reddit.frontpage": "569f7eb9334163efdffd8a0715e61d26",
-      "shared": "598139b1fd85a2a390d561f5319b2c4e"
+      "shared": "4acd6e1942d5c56801f251973a0dfba5"
     },
     "stable": {
       "com.google.android.apps.youtube.music": "d0fac8952bcb3c5e898f43a9af93f87c",

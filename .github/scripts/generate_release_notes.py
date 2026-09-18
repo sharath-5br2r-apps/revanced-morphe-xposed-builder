@@ -304,7 +304,9 @@ def main():
     lines.append("• Install [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) or [MicroG](https://github.com/ReVanced/GmsCore/releases/latest), required for Google APKs.  ")
     lines.append("• Use [Zygisk Detach](https://github.com/j-hc/zygisk-detach) to stop Play Store from updating Modules.  ")
     lines.append("")
-    lines.append("🌐 [GitHub](https://github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder) | 🔗 [Website](https://sharath-5br2r.github.io/catalog)")
+    gh_repo = os.environ.get("GITHUB_REPOSITORY") or "nullcpy/rvb"
+    website_link = os.environ.get("RELEASE_NOTES_WEBSITE_LINK") or "https://sharath-5br2r.github.io/catalog"
+    lines.append(f"🌐 [GitHub](https://github.com/{gh_repo}) | 🔗 [Website]({website_link})")
     lines.append("")
 
     content = "\n".join(lines)

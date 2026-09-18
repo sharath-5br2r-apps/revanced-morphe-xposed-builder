@@ -1,23 +1,36 @@
 #!/bin/bash
 set -euo pipefail
 
-# Convert utils.sh to Unix line endings if needed
-dos2unix utils.sh 2>/dev/null || true
+# This script is also used by scripts/fetch_versions.sh and local builders, so
+# never assume GitHub Actions' working directory or command annotations.
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
+cd "$ROOT_DIR"
 
-source utils.sh
+CONFIG_DIR="${CONFIG_DIR:-$ROOT_DIR/configs}"
+APP_VERSIONS_FILE="${APP_VERSIONS_FILE:-$CONFIG_DIR/app_versions.json}"
+OUTPUT_FILE="${FETCHED_APP_VERSIONS_FILE:-$ROOT_DIR/fetched_app_versions.json}"
+NO_SLEEP="${NO_SLEEP:-${CI_FETCH_NO_SLEEP:-false}}"
+CONFIG_LIST="${CONFIG_FILES:-}"
+
+source "$ROOT_DIR/scripts/utils.sh"
 set_prebuilts
 
 # Use pre-compiled configs if available, or compile as fallback
 CONFIG_INPUTS=()
-[ -f config.stable.json ] && CONFIG_INPUTS+=(config.stable.json)
-[ -f config.beta.json ] && CONFIG_INPUTS+=(config.beta.json)
-[ -f configs/config.absolutelatest.json ] && CONFIG_INPUTS+=(configs/config.absolutelatest.json)
+if [ -n "$CONFIG_LIST" ]; then
+    read -r -a CONFIG_INPUTS <<< "$CONFIG_LIST"
+else
+    for config_name in config.stable.json config.stable.updated.json config.beta.json config.beta.updated.json config.both.json config.both.updated.json config.latest.json config.latest.updated.json; do
+        [ -f "$CONFIG_DIR/$config_name" ] && CONFIG_INPUTS+=("$CONFIG_DIR/$config_name")
+    done
+fi
 
 if [ ${#CONFIG_INPUTS[@]} -eq 0 ]; then
-    python3 .github/scripts/compile_patch_configs.py
-    [ -f config.stable.json ] && CONFIG_INPUTS+=(config.stable.json)
-    [ -f config.beta.json ] && CONFIG_INPUTS+=(config.beta.json)
-    [ -f configs/config.absolutelatest.json ] && CONFIG_INPUTS+=(configs/config.absolutelatest.json)
+    python3 "$ROOT_DIR/.github/scripts/compile_patch_configs.py"
+    for config_name in config.stable.json config.stable.updated.json config.beta.json config.beta.updated.json config.both.json config.both.updated.json config.latest.json config.latest.updated.json; do
+        [ -f "$CONFIG_DIR/$config_name" ] && CONFIG_INPUTS+=("$CONFIG_DIR/$config_name")
+    done
 fi
 
 if [ ${#CONFIG_INPUTS[@]} -eq 0 ]; then
@@ -26,12 +39,13 @@ if [ ${#CONFIG_INPUTS[@]} -eq 0 ]; then
 fi
 
 # Merge compiled configs into a single temporary json for metadata extraction
-jq -s 'add' "${CONFIG_INPUTS[@]}" > temp_all_configs.json
+jq -s 'add' "${CONFIG_INPUTS[@]}" > "$ROOT_DIR/temp_all_configs.json"
 
-APP_VERSIONS_FILE="configs/app_versions.json"
 [ -f "$APP_VERSIONS_FILE" ] || echo '{}' > "$APP_VERSIONS_FILE"
 
-> fetched_app_versions.jsonl
+WORK_FILE=$(mktemp "${TMPDIR:-/tmp}/ci-fetch.XXXXXX")
+trap 'rm -f "$ROOT_DIR/temp_all_configs.json" "$WORK_FILE" "$ROOT_DIR/check_list.txt"' EXIT
+: > "$WORK_FILE"
 CHECK_ONLY_LISTED=$(jq -r '."_check_only_listed" // false' "$APP_VERSIONS_FILE")
 
 if [ "$CHECK_ONLY_LISTED" = "true" ]; then
@@ -63,9 +77,10 @@ declare -A args
 
 while IFS='|' read -r group app; do
     if [ -z "$group" ] || [ -z "$app" ]; then continue; fi
-    echo "::group::Fetching version for $group ($app)..."
+    [ -n "${GITHUB_ACTIONS:-}" ] && echo "::group::Fetching version for $group ($app)..." || echo "Fetching version for $group ($app)..."
     
     args=()
+    archive_url=$(jq -r ".\"$app\".\"archive-dlurl\" // empty" temp_all_configs.json)
     github_url=$(jq -r ".\"$app\".\"github-dlurl\" // empty" temp_all_configs.json)
     gitlab_url=$(jq -r ".\"$app\".\"gitlab-dlurl\" // empty" temp_all_configs.json)
     forgejo_url=$(jq -r ".\"$app\".\"forgejo-dlurl\" // empty" temp_all_configs.json)
@@ -74,6 +89,9 @@ while IFS='|' read -r group app; do
     uptodown_url=$(jq -r ".\"$app\".\"uptodown-dlurl\" // empty" temp_all_configs.json)
     apkpure_url=$(jq -r ".\"$app\".\"apkpure-dlurl\" // empty" temp_all_configs.json)
     apkcombo_url=$(jq -r ".\"$app\".\"apkcombo-dlurl\" // empty" temp_all_configs.json)
+
+    # Restore the source-specific overrides used by downstream configs.
+    archive_regex=$(jq -r ".\"$app\".\"archive-dlurl-regex\" // empty" temp_all_configs.json)
 
     version=$(jq -r ".\"$app\".\"version\" // empty" temp_all_configs.json)
     if [ "$version" == "beta" ] || [ "$version" == "dev" ]; then __AAV__="true"; else __AAV__="false"; fi
@@ -137,6 +155,9 @@ while IFS='|' read -r group app; do
     args["forgejo_release_name_regex"]="$forgejo_release_name_regex"
     args["forgejo_dlurl_exclude_filter"]="$forgejo_dlurl_exclude_filter"
 
+    args["archive_dlurl"]="$archive_url"
+    args["archive_dlurl_regex"]="$archive_regex"
+
     args["apkmirror_dlurl"]="$apkmirror_url"
     args["apkmirror_example_url"]="$apkmirror_example_url"
     args["apkmirror_release_filter"]="$apkmirror_release_filter"
@@ -156,7 +177,7 @@ while IFS='|' read -r group app; do
     args["arch"]="$arch"
     args["build_mode"]="$build_mode"
 
-    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode prefer_dl_mode apkmirror_example_url apkmirror_release_filter apkmirror_version_filter version_filter github_dlurl_regex github_release_regex github_release_name_regex github_dlurl_exclude_filter github_dlurl_source gitlab_dlurl_regex gitlab_release_regex gitlab_release_name_regex gitlab_dlurl_exclude_filter forgejo_dlurl_regex forgejo_release_regex forgejo_release_name_regex forgejo_dlurl_exclude_filter included_patches excluded_patches exclusive_patches arch build_mode
+    export dpi min_sdk pkg_name check_sig custom_microg_patches prefer_apk_mode prefer_dl_mode apkmirror_example_url apkmirror_release_filter apkmirror_version_filter version_filter github_dlurl_regex github_release_regex github_release_name_regex github_dlurl_exclude_filter github_dlurl_source gitlab_dlurl_regex gitlab_release_regex gitlab_release_name_regex gitlab_dlurl_exclude_filter forgejo_dlurl_regex forgejo_release_regex forgejo_release_name_regex forgejo_dlurl_exclude_filter archive_regex included_patches excluded_patches exclusive_patches arch build_mode
 
     dlurls=()
     sources=()
@@ -169,8 +190,7 @@ while IFS='|' read -r group app; do
     [ -n "$apkcombo_url" ] && { dlurls+=("$apkcombo_url"); sources+=("apkcombo"); }
 
     if [ ${#dlurls[@]} -eq 0 ]; then
-        echo "::warning::No dlurl for $app, skipping"
-        echo "::endgroup::"
+        echo "WARNING: No dlurl for $app, skipping" >&2
         continue
     fi
     
@@ -178,14 +198,17 @@ while IFS='|' read -r group app; do
     for i in "${!dlurls[@]}"; do
         dlurl="${dlurls[$i]}"
         source="${sources[$i]}"
-        cache_key="url_${dlurl//[^a-zA-Z0-9]/_}_${github_release_name_regex//[^a-zA-Z0-9]/_}_${github_release_regex//[^a-zA-Z0-9]/_}_${gitlab_release_name_regex//[^a-zA-Z0-9]/_}_${forgejo_release_name_regex//[^a-zA-Z0-9]/_}"
+        cache_key="url_${source}_${dlurl//[^a-zA-Z0-9]/_}_${github_release_name_regex//[^a-zA-Z0-9]/_}_${github_release_regex//[^a-zA-Z0-9]/_}_${gitlab_release_name_regex//[^a-zA-Z0-9]/_}_${forgejo_release_name_regex//[^a-zA-Z0-9]/_}"
         
         if [ -n "${cached_versions["$cache_key"]:-}" ]; then
             latest_ver="${cached_versions["$cache_key"]}"
-            echo "::notice::Reusing cached version for $app: $latest_ver"
+            echo "Reusing cached version for $app: $latest_ver"
             break
         else
-            if [[ "$source" == "github" ]]; then
+            if [[ "$source" == "archive" ]]; then
+                "get_${source}_resp" "$dlurl" || continue
+                latest_ver=$("get_${source}_vers" | get_highest_ver) || true
+            elif [[ "$source" == "github" ]]; then
                 get_github_resp "$dlurl" || { echo "::warning::Failed github resp for $app"; continue; }
                 vers=$(get_github_vers) || { echo "::warning::Failed github vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
@@ -220,7 +243,9 @@ while IFS='|' read -r group app; do
             if [ -n "$latest_ver" ]; then
                 cached_versions["$cache_key"]="$latest_ver"
                 # Sleep to avoid rate limiting only if we actually fetched
-                sleep $((RANDOM % 5 + 3))
+                if [ "$NO_SLEEP" != true ] && [ "$NO_SLEEP" != 1 ]; then
+                    sleep $((RANDOM % 5 + 3))
+                fi
                 break
             fi
         fi
@@ -228,19 +253,16 @@ while IFS='|' read -r group app; do
     
     if [ -n "$latest_ver" ]; then
         echo "Latest version for $group is $latest_ver"
-        jq -n --arg grp "$group" --arg ver "$latest_ver" '{($grp): $ver}' >> fetched_app_versions.jsonl
+        jq -n --arg grp "$group" --arg ver "$latest_ver" '{($grp): $ver}' >> "$WORK_FILE"
     else
-        echo "::error::Could not find latest version for $group"
+        echo "ERROR: Could not find latest version for $group" >&2
     fi
-    echo "::endgroup::"
 done < check_list.txt
 
-if [ -s fetched_app_versions.jsonl ]; then
-    FETCHED_JSON=$(jq -s 'reduce .[] as $item ({}; . * $item)' fetched_app_versions.jsonl)
+if [ -s "$WORK_FILE" ]; then
+    FETCHED_JSON=$(jq -s 'reduce .[] as $item ({}; . * $item)' "$WORK_FILE")
 else
     FETCHED_JSON="{}"
 fi
 
-echo "$FETCHED_JSON" > fetched_app_versions.json
-
-rm -f temp_all_configs.json fetched_app_versions.jsonl check_list.txt
+echo "$FETCHED_JSON" > "$OUTPUT_FILE"

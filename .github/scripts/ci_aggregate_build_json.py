@@ -16,7 +16,21 @@ def main():
                         data = json.load(jf)
                         if isinstance(data, dict):
                             for k, v in data.items():
-                                merged[k] = v
+                                if not isinstance(v, dict) or not isinstance(merged.get(k), dict):
+                                    merged[k] = v
+                                    continue
+                                # The current build.json format stores one target
+                                # per key and its outputs in assets[]. Merge asset
+                                # lists by filename so parallel build artifacts do
+                                # not overwrite each other.
+                                old = merged[k]
+                                assets = {a.get("name"): a for a in old.get("assets", [])
+                                          if isinstance(a, dict) and a.get("name")}
+                                assets.update({a.get("name"): a for a in v.get("assets", [])
+                                               if isinstance(a, dict) and a.get("name")})
+                                merged[k] = {**old, **v}
+                                if assets:
+                                    merged[k]["assets"] = list(assets.values())
                 except Exception as e:
                     print(f"[-] Error reading {filepath}: {e}", file=sys.stderr)
 

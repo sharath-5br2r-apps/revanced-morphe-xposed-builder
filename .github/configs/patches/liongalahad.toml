@@ -1,5 +1,4 @@
 patches-source = "liongalahad/nuviotv-morphe-patches"
-patches-version = "both"
 brand = "liongalahad"
 
 [Nuvio-liongalahad-AndroidTV]
@@ -21,5 +20,4 @@ sub-variant = "Clone"
 included-patches = "'Allow Importing Subs from Local Storage' 'Library Mode Focus Fix' 'Local Downloads' 'Local Media' 'Mark SDH Subtitles' 'Random Episode' 'Remove SDH Annotations' 'Restore Source Selection'"
 github-dlurl = "https://github.com/NuvioMedia/NuvioTV"
 github-regex = 'app-full-universal-release\.apk'
-
 

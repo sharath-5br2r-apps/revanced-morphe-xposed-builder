@@ -36,7 +36,7 @@ while IFS= read -r group; do
             jq --arg k "$key" '. + [$k] | unique' "$ACTIVE_APPS" > tmp.json && mv tmp.json "$ACTIVE_APPS"
         done
         
-        # Add to app_updates.json for Telegram notification (using Group name)
+        # Record the update for downstream release tooling.
         jq --arg grp "$group" --arg old "${old_ver:-unknown}" --arg new "$new_ver" '.[$grp] = {old: $old, new: $new}' "$APP_UPDATES_FILE" > tmp.json && mv tmp.json "$APP_UPDATES_FILE"
         
         # Update current versions

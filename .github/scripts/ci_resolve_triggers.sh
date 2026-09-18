@@ -6,7 +6,7 @@ MODE="${MODE:-Default}"
 if [ "${CREATED:-false}" = "true" ] || [ "${SKIP_BUILD:-false}" = "true" ] || [ "$MODE" = "Update Versions Only" ] || [ "$MODE" = "Generate Configs Only (No Build)" ] || [[ "$MODE" == "Batch Build"* ]]; then
   echo "TRIGGER_STABLE=0" >> "$GITHUB_OUTPUT"
   echo "TRIGGER_PRERELEASE=0" >> "$GITHUB_OUTPUT"
-  echo "TRIGGER_ABSOLUTE_LATEST=0" >> "$GITHUB_OUTPUT"
+  echo "TRIGGER_LATEST=0" >> "$GITHUB_OUTPUT"
   for i in {1..5}; do
     echo "HAS_DEV_${i}=0" >> "$GITHUB_OUTPUT"
     echo "HAS_STABLE_${i}=0" >> "$GITHUB_OUTPUT"
@@ -28,7 +28,7 @@ fi
 TRIGGER_STABLE=0
 TRIGGER_PRERELEASE=0
 
-if [ "$RAW_TRIGGER_STABLE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
+if [ "$RAW_TRIGGER_STABLE" = "1" ]; then
   CFG="configs/config.stable.updated.json"
   ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
   if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
@@ -71,17 +71,17 @@ for i in {1..5}; do
   fi
 done
 
-TRIGGER_ABSOLUTE_LATEST=0
+TRIGGER_LATEST=0
 if [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
   CFG="configs/config.latest.updated.json"
   if [ -s "$CFG" ]; then
     ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" 2>/dev/null || echo 0)
     if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
-      TRIGGER_ABSOLUTE_LATEST=1
+      TRIGGER_LATEST=1
     fi
   fi
 fi
 
 echo "TRIGGER_STABLE=$TRIGGER_STABLE" >> "$GITHUB_OUTPUT"
 echo "TRIGGER_PRERELEASE=$TRIGGER_PRERELEASE" >> "$GITHUB_OUTPUT"
-echo "TRIGGER_ABSOLUTE_LATEST=$TRIGGER_ABSOLUTE_LATEST" >> "$GITHUB_OUTPUT"
+echo "TRIGGER_LATEST=$TRIGGER_LATEST" >> "$GITHUB_OUTPUT"

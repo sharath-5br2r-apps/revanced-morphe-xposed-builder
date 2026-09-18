@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 compile_patch_configs.py
-Parses all TOML patch configurations in .github/configs/patches/
+Parses all TOML patch configurations in configs/patches/
 and generates config.stable.json and config.beta.json with dynamic pool routing:
 - apps with patches-version = "stable" go to stable pool only
 - apps with patches-version = "beta" go to beta pool only
-- apps with no patches-version go to both pools (inheriting file-level default if set)
+- apps with no patches-version go to both pools
 - apps with enabled = false are omitted
 """
 
@@ -31,7 +31,7 @@ def normalize_channel(val):
     v = val.strip().lower()
     if v == "stable":
         return "stable"
-    if v in ("beta", "dev", "absolutelatest"):
+    if v == "beta":
         return "beta"
     if v in ("both", "all"):
         return "both"
@@ -62,13 +62,10 @@ def compile_configs(patches_dir="configs/patches"):
         # File-level defaults are keys defined before tables
         file_defaults = {k: v for k, v in data.items() if not isinstance(v, dict)}
 
-        # Resolve file-level channel default (default is "stable" if omitted)
+        # The only non-tag selector is both; omitted keys inherit both.
         file_pv = normalize_channel(file_defaults.get("patches-version"))
         if not file_pv:
-            if ".beta." in filename or ".dev." in filename:
-                file_pv = "beta"
-            else:
-                file_pv = "stable"
+            file_pv = "both"
 
         for app_key, app_table in data.items():
             if not isinstance(app_table, dict):
@@ -151,10 +148,33 @@ def compile_batch_pool(patches_dir="configs/patches"):
     return batch_pool
 
 
+def compile_both_pool(patches_dir="configs/patches"):
+    """Return every enabled app, preserving explicit stable/beta selectors."""
+    pool = {}
+    toml_files = sorted(glob.glob(os.path.join(patches_dir, "*.toml")))
+    for filepath in toml_files:
+        try:
+            with open(filepath, "rb") as f:
+                data = tomllib.load(f)
+        except Exception:
+            continue
+        file_defaults = {k: v for k, v in data.items() if not isinstance(v, dict)}
+        for app_key, app_table in data.items():
+            if not isinstance(app_table, dict):
+                continue
+            merged = dict(file_defaults)
+            merged.update(app_table)
+            if str(merged.get("enabled", True)).lower() == "false":
+                continue
+            pool[app_key] = merged
+    return pool
+
+
 def main():
-    patches_dir = sys.argv[1] if len(sys.argv) > 1 else ("configs/patches" if os.path.isdir("configs/patches") else ".github/configs/patches")
+    patches_dir = sys.argv[1] if len(sys.argv) > 1 else "configs/patches"
     stable_pool, beta_pool = compile_configs(patches_dir)
     batch_pool = compile_batch_pool(patches_dir)
+    both_pool = compile_both_pool(patches_dir)
 
     stable_out = {"patches-version": "stable"}
     stable_out.update(stable_pool)
@@ -162,8 +182,10 @@ def main():
     beta_out = {"patches-version": "beta"}
     beta_out.update(beta_pool)
 
-    batch_out = {"patches-version": "absolutelatest"}
+    batch_out = {"patches-version": "both"}
     batch_out.update(batch_pool)
+    both_out = {"patches-version": "both"}
+    both_out.update(both_pool)
 
     with open("config.stable.json", "w", encoding="utf-8") as f:
         json.dump(stable_out, f, indent=2)
@@ -171,10 +193,12 @@ def main():
     with open("config.beta.json", "w", encoding="utf-8") as f:
         json.dump(beta_out, f, indent=2)
 
-    cfg_dir = "configs" if os.path.isdir("configs") else ".github/configs"
+    cfg_dir = "configs"
     os.makedirs(cfg_dir, exist_ok=True)
-    with open(f"{cfg_dir}/config.absolutelatest.json", "w", encoding="utf-8") as f:
-        json.dump(batch_out, f, indent=2)
+    with open(f"{cfg_dir}/config.latest.json", "w", encoding="utf-8") as f:
+        json.dump(both_out, f, indent=2)
+    with open(f"{cfg_dir}/config.both.json", "w", encoding="utf-8") as f:
+        json.dump(both_out, f, indent=2)
 
     import math
     batch_app_keys = list(batch_pool.keys())
@@ -183,10 +207,10 @@ def main():
     for i in range(num_parts):
         part_num = i + 1
         part_keys = batch_app_keys[i * chunk_size : (i + 1) * chunk_size]
-        part_data = {"patches-version": "absolutelatest"}
+        part_data = {"patches-version": "both"}
         for k in part_keys:
             part_data[k] = batch_pool[k]
-        with open(f"{cfg_dir}/config.absolutelatest.part{part_num}.json", "w", encoding="utf-8") as pf:
+        with open(f"{cfg_dir}/config.latest.part{part_num}.json", "w", encoding="utf-8") as pf:
             json.dump(part_data, pf, indent=2)
 
     print("Base patch configurations compiled successfully.")

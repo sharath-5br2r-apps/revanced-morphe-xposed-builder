@@ -2,6 +2,9 @@
 set -euo pipefail
 
 [ "${DISABLE_CONFIG_UPDATE:-false}" = "true" ] && { echo "::notice::Config JSON updates disabled via option."; exit 0; }
+# Convert utils.sh to Unix line endings if needed
+dos2unix scripts/utils.sh 2>/dev/null || true
+source scripts/utils.sh
 
 [ -f tags_old.json ] && TAGS_OLD=$(cat tags_old.json) || TAGS_OLD='{}'
 [ -f tags_new.json ] && TAGS_NEW=$(cat tags_new.json) || TAGS_NEW='{}'
@@ -58,7 +61,7 @@ split_config_json() {
         filename: "configs/\($prefix).part\($idx + 1).json",
         data: (
           if ($slice | length) > 0 then
-            { "patches-version": ($root["patches-version"] // "latest"), "enable-module-update": ($root["enable-module-update"] // true) } +
+            { "patches-version": ($root["patches-version"] // "both"), "enable-module-update": ($root["enable-module-update"] // true) } +
             ($slice | from_entries)
           else {} end
         )
@@ -93,7 +96,7 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
         if (($srcs - $active[0]) != $srcs) or ($activeApps[0] | index($k)) or ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
-    { "patches-version": "latest", "enable-module-update": true } + .
+    { "patches-version": "stable", "enable-module-update": true } + .
   ' config.stable.json > configs/config.stable.updated.json
 
   split_config_json "configs/config.stable.updated.json" "config.stable" 5
@@ -127,8 +130,17 @@ if [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || 
         if ($activeApps[0] | index($k)) then . else empty end
       else empty end
     ) |
-    { "patches-version": "absolutelatest" } + .
+    { "patches-version": "both" } + .
   ' config.latest.json > configs/config.latest.updated.json
 
   split_config_json "configs/config.latest.updated.json" "config.latest" 5
+  cp -f configs/config.latest.updated.json configs/config.both.updated.json
+  split_config_json "configs/config.both.updated.json" "config.both" 5
+fi
+
+# Batch builds use the complete both-channel pool, split into deterministic
+# parts so workflow matrices can build them independently. Generate this even
+# when no app-update trigger fired if a current both config is available.
+if [ -f configs/config.both.updated.json ]; then
+  split_config_json "configs/config.both.updated.json" "config.batch" "${BATCH_CONFIG_PARTS:-16}"
 fi

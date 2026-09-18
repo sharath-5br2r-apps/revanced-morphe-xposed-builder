@@ -1,5 +1,8 @@
 import os, json, zipfile, hashlib, re, subprocess, glob
 import urllib.request
+import sys as _sys
+_sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from patchers import ci_bundle_diffable
 
 def load_channel_config(channel):
     filename = f"config.{channel}.json"
@@ -354,11 +357,9 @@ def run():
             continue
             
         repo_clis = cli_sources.get(repo_lower, set())
-        
-        is_revanced_or_morphe = any('revanced' in c or 'morphe' in c for c in repo_clis)
-        if not repo_clis:
-            is_revanced_or_morphe = True
-        
+
+        is_revanced_or_morphe = ci_bundle_diffable(repo_clis)
+
         if repo_lower not in hashes:
             hashes[repo_lower] = {}
         hashes[repo_lower].setdefault('stable', {})
@@ -384,6 +385,14 @@ def run():
 
     with open('active_patch_apps.dev.json', 'w') as f:
         json.dump(beta_set, f)
+
+    # The latest and absolute-latest build lanes use the same patch activity
+    # set, but must remain distinct artifacts so either lane can be consumed
+    # independently by the build workflow.
+    with open('active_patch_apps.latest.json', 'w') as f:
+        json.dump(stable_set, f)
+    with open('active_patch_apps.both.json', 'w') as f:
+        json.dump(stable_set, f)
 
     if stable_set or beta_set:
         parts = []

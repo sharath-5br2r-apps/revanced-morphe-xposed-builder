@@ -2,9 +2,9 @@
 """
 CF bypass solver — aggregates all methods previously split across bash functions:
   fallback_get   → plain requests (no impersonation)
-  trawl_get      → Trawl/8191 solver  (TRAWL_URL / CF_BYPASS_SOLVER_TRAWL_8191_URL)
-  cffi_get       → curl_cffi browser impersonation
-  cfb_get        → cf-bypasser sidecar (CFB_URL / CF_BYPASS_SOLVER_CFB_URL)
+  trawl_get      → Trawl/8191 solver  (TRAWL_URL)
+  cf_get         → curl_cffi browser impersonation
+  cfb_get        → cf-bypasser sidecar (CFB_URL)
   fs_get         → FlareSolverr        (FS_URL / FLARESOLVERR_URL / CF_BYPASS_SOLVER_FS_URL)
 
 Usage:
@@ -34,6 +34,7 @@ except ImportError:
     _HAS_CFFI = False
 
 MAX_RETRIES = 2
+_TRAWL_READY = set()
 DEFAULT_UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -171,11 +172,28 @@ def trawl_get(url: str, referer: str = "") -> None:
     """POST to a Trawl/8191 solver, mirroring _trawl_get in utils.sh."""
     trawl_base = (
         os.environ.get("TRAWL_URL") or
-        os.environ.get("CF_BYPASS_SOLVER_TRAWL_8191_URL") or
         ""
     ).rstrip("/")
     if not trawl_base:
         return
+
+    # Keep readiness polling inside the Python solver so every caller shares
+    # the same health/retry behavior and utils.sh has no duplicate trawl code.
+    if trawl_base not in _TRAWL_READY:
+        health_url = trawl_base + "/health"
+        ready = False
+        for _ in range(30):
+            try:
+                with urllib.request.urlopen(health_url, timeout=3) as health:
+                    if 200 <= health.status < 500:
+                        ready = True
+                        break
+            except Exception:
+                pass
+            time.sleep(3)
+        if not ready:
+            return
+        _TRAWL_READY.add(trawl_base)
 
     solver_url = trawl_base + "/scrape"
     payload: dict = {"url": url, "maxTimeout": 60000, "skipHttp": True}
@@ -214,8 +232,8 @@ def trawl_get(url: str, referer: str = "") -> None:
 # Method 3: curl_cffi browser impersonation
 # ---------------------------------------------------------------------------
 
-def cffi_get(url: str, cookie_file: str) -> None:
-    """Browser-impersonating GET via curl_cffi, mirroring _cf_cffi_get in utils.sh."""
+def cf_get(url: str, cookie_file: str) -> None:
+    """Unified Python GET using curl_cffi browser impersonation when available."""
     if not _HAS_CFFI:
         return
 
@@ -254,7 +272,6 @@ def cfb_get(url: str, referer: str = "") -> None:
     """GET via cf-bypasser sidecar, mirroring _cfb_get in utils.sh."""
     cfb_base = (
         os.environ.get("CFB_URL") or
-        os.environ.get("CF_BYPASS_SOLVER_CFB_URL") or
         ""
     ).rstrip("/")
     if not cfb_base:
@@ -348,7 +365,7 @@ def main():
 
     trawl_get(url, referer)
 
-    cffi_get(url, cookie_file)
+    cf_get(url, cookie_file)
 
     cfb_get(url, referer)
 
