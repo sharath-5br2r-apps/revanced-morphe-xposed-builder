@@ -19,7 +19,6 @@
 
 Building, testing, and maintaining these patches and automated workflows relies on the dedication of upstream developers and open-source teams.
 
-- **❤️ [Donate to Upstream Developers](#credits--acknowledgements)** if you can (ReVanced, Morphe, and independent patch maintainers).
 - **⭐ Star this repository** (This is a huge help!)
 - **📢 Share the project** with others who might find it useful.
 
@@ -66,22 +65,28 @@ You can build APKs and Magisk/KSU modules locally on Android (Termux), Linux, or
 
 - **Clean build artifacts**: `./build.sh --clean`
 - **Update configurations**: `./build.sh --config-update`
-- **Build with config file**: `./build.sh --config=configs/config.stable.updated.json`
-- **Filter apps by regex**: `./build.sh --config=configs/config.stable.updated.json --allowed-apps="YouTube.*"`
-- **Custom output directory**: `./build.sh --config=configs/config.stable.updated.json --output=dist/`
+- **Build with config file**: `./build.sh --config=configs/stable/config.updated.json`
+- **Filter apps by regex**: `./build.sh --config=configs/stable/config.updated.json --allowed-apps="YouTube.*"`
+- **Custom output directory**: `./build.sh --config=configs/stable/config.updated.json --output=dist/`
 - *(Positional syntax `./build.sh [config_file] [app_regex...]` remains backwards-compatible).*
+
+Builds use the available CPU count for table-level parallelism by default. Set
+`PARALLEL_JOBS=1` for a fully sequential local build. Architecture lists such
+as `arm64-v8a arm-v7a x86_64` are expanded into independent build slices;
+`both` expands to arm64-v8a and arm-v7a.
 
 ### Optional Keystore Setup (`.env`)
 Create a `.env` file in the project root to sign APKs with a custom keystore:
 
 ```bash
+KEYSTORE_FILE="/path/to/keystore.bks" # optional; takes precedence over KEYSTORE_BASE64
 KEYSTORE_BASE64="<base64_encoded_keystore>"
 KEYSTORE_PASSWORD="mysecretpassword"
 KEYSTORE_ALIAS="mykeyalias"
 KEYSTORE_KEY_PASSWORD="mykeypassword"
 ```
 
-*If no `.env` or keystore environment variables are supplied, `utils.sh` automatically falls back to `.env.default` and uses the bundled debug keystore (`ks.keystore`). For complete configuration options, see [CONFIG.md](CONFIG.md).*
+*If no keystore variables are supplied, the builder uses its configured default keystore. For complete configuration options, see [CONFIG.md](CONFIG.md).*
 
 ---
 
@@ -92,7 +97,7 @@ This automated builder would not be possible without the incredible work and ded
 - **Upstream Repositories & Tools:**
   - **[nullcpy/rvb](https://github.com/nullcpy/rvb)** for the foundational builder workflow.
   - **[peternmuller](https://github.com/peternmuller)**, **[nvbangg](https://github.com/nvbangg/revanced-morphe-builder)**, and **[j-hc](https://github.com/j-hc)** for build scripts, CI/CD pipelines, and automation logic.
-  - **[ReVanced](https://github.com/revanced)** ([Donate to ReVanced](https://revanced.app/donate)) & **[MorpheApp](https://github.com/MorpheApp)** for patcher engines and core tools.
+  - **[ReVanced](https://github.com/revanced)** & **[MorpheApp](https://github.com/MorpheApp)** for patcher engines and core tools.
 - **Upstream Patch Developers:**
   - **[Anddea](https://github.com/anddea)** (ReVanced Patches)
   - **[crimera](https://github.com/crimera)** (Piko)

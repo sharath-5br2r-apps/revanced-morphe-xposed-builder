@@ -25,13 +25,15 @@ patches-source-host = "github"               # source host for patches: "github"
 cli-source = "ReVanced/revanced-cli"             # where to fetch cli from. default: "MorpheApp/morphe-desktop"
 cli-source-host = "github"                       # source host for cli: "github" or "gitlab". default: "github"
 # options like cli-source can also set per app
-brand = "Morphe"                     # patch brand/engine identity (e.g. "ReVanced Advanced", "Piko", "Morphe", "Android TV"). default: patches-source owner.
+engine-brand = "Morphe"              # patch engine identity; derived from cli-type when omitted.
+patch-brand = "Morphe"               # patch source/maintainer identity.
 
 author = "nullcpy"                   # module author name. default: "nullcpy"
 author-page = "github.com/nullcpy/rvb" # module author page/link printed during installation. default: "github.com/nullcpy/rvb"
 
-patches-version = "stable"  # 'stable', 'beta', 'both', or a version number. default: "stable"
+patches-version = "both"    # 'stable', 'beta', 'both', or an explicit version. default: "both"
 cli-version = "stable"      # 'stable', 'beta', or a version number. default: "stable"
+cli-type = "morphe"         # morphe, revanced, npatch, instafel, apksigner, or none
 
 > [!TIP]
 > **File-Level Defaults in Modular Configs:**  
@@ -39,7 +41,8 @@ cli-version = "stable"      # 'stable', 'beta', or a version number. default: "s
 
 [Some-App]
 app-name = "SomeApp"     # clean display name (e.g. "YouTube", "Instagram"). Default is table name.
-brand = "Piko"           # per-app patch brand override (e.g. "Piko", "Adobo", "ReVanced Advanced").
+engine-brand = "Morphe"  # per-app engine identity override.
+patch-brand = "Piko"     # per-app patch source/maintainer identity.
 variant = "Nord"         # optional feature/visual variant (e.g. "Nord", "Mocha", "MaterialYou").
 sub-variant = "clone"    # optional packaging/install variant (e.g. "clone", "alt").
 pkg-name = "com.some.app" # stock package name (used by APKMirror/Uptodown scrapers and version checking).
@@ -47,11 +50,11 @@ patched-pkg-name = "com.some.app.clone" # optional override for the resulting in
 patch-folder = "someapp" # explicit patch folder name override. forces the CI to strictly match patches inside this exact folder name, bypassing fallback heuristics (useful for resolving collisions like youtube vs youtube-music). Supports multiple folders space-separated (e.g. "ad backup geo"), or a wildcard "*" to force mapping every single patch folder in the repo.
 enabled = true       # whether to build the app. default: true
 build-mode = "both"  # 'both', 'apk' or 'module'. default: apk
-arch = "both"        # 'both', 'auto', 'all', 'arm64-v8a', 'arm-v7a', 'x86_64', or 'x86'. default: both
+arch = "both"        # 'both', 'auto', 'all', or a space-separated architecture list. default: both
 
 # 'auto' option gets the latest possible version supported by all the included patches
-# 'exp' gets the latest experimental version from patches.json. falls back to 'latest' if none found.
-# 'latest' gets the latest stable without checking patches support. 'beta' gets the latest beta/alpha
+# 'exp' gets the latest experimental version from patches.json. falls back to a stable release if none is found.
+# 'latest' is an app-version mode; patches/cli-version use 'stable', 'beta', 'both', or an explicit tag.
 # whitespace seperated list of patches to exclude. default: ""
 version = "auto"     # 'auto', 'exp', 'latest', 'beta' or a version number (e.g. '17.40.41'). default: auto
 # target Android versionCode. 'auto' automatically resolves the supported versionCode from patch metadata (e.g. Morphe Desktop).
@@ -81,9 +84,12 @@ apkpure-dlurl = "https://apkpure.com/some-app/com.some.app"
 apkcombo-dlurl = "https://apkcombo.com/some-app/com.some.app"
 # github release url or repo url (e.g. 'https://github.com/developer/app', '.../releases/latest', or '.../releases/tag/v1.0').
 github-dlurl = "https://github.com/developer/app"
+gitlab-dlurl = "https://gitlab.com/developer/app/-/releases"
+forgejo-dlurl = "https://codeberg.org/developer/app/releases"
 # regex used to filter releases when querying a repo url without a fixed tag (e.g. multi-channel repos).
 # if omitted, the script automatically checks if table, brand, or variant targets a channel (beta, nightly, alpha, canary) or filters for stable releases.
 github-release-regex = "^Beta"
+github-release-name-regex = "^Release v"
 # regex used to pick the exact apk file from the github release assets. supports {version} and {arch} string interpolation.
 # you can define a generic regex, or map architectures to specific regexes using 'arch: regex | arch2: regex2'.
 github-regex = "arm64-v8a: 'MyApp-arm64-v{version}\\.apk' | arm-v7a: 'MyApp-arm-v{version}\\.apk'"
@@ -151,8 +157,8 @@ patches-source-host = "github"
 patches-source-host = "'github' 'gitlab'"
 
 # Same rule applies to patches-version:
-patches-version = "latest"                        # applies to all sources
-patches-version = "'latest' 'v1.2.3'"             # per-source versions
+patches-version = "stable"                        # applies to all sources
+patches-version = "'stable' 'v1.2.3'"             # per-source versions
 ```
 
 > [!TIP]
@@ -172,9 +178,9 @@ You can natively inject Xposed modules into an app using `7723mod/NPatch` direct
 ```toml
 [Discord]
 cli-source = "7723mod/NPatch"                            # Use NPatch as the CLI
-cli-version = "latest"
+cli-version = "stable"
 patches-source = "revenge-mod/revenge-xposed"            # Provide the Xposed module as the patches bundle
-patches-version = "latest"
+patches-version = "stable"
 version = "auto"                                         # 'auto' safely falls back to 'latest' since modules don't list supported versions
 arch = "auto"
 github-dlurl = "https://github.com/discord/releases/..." # Or apkmirror, etc.
@@ -225,7 +231,7 @@ produces cleaner patched APKs and avoids caching two copies of the same app.
 
 ## Modular Configuration Directory & Dynamic Pool Routing
 
-Configurations are organized in `.github/configs/patches/*.toml` (e.g. `morphe.toml`, `anddea.toml`, `piko.toml`, `ajstrick81.toml`).
+Configurations are organized in `configs/patches/*.toml` (e.g. `morphe.toml`, `anddea.toml`, `piko.toml`, `ajstrick81.toml`).
 
 You do **not** need separate files for stable and beta:
 - **Single-File Co-existence**: All variants and builds for a brand or patch source can reside in the same `.toml` file.
@@ -241,7 +247,7 @@ You do **not** need separate files for stable and beta:
 
 ## Automated Patch Sources State Tracking
 
-Patch sources and their release versions in `.github/configs/patch_sources.json` are **100% automated**:
+Patch sources and their release versions in `configs/patch_sources.json` are **100% automated**:
 - The CI automatically scans all `.toml` files, discovers every active `patches-source` repository and host (`github` or `gitlab`), and checks for new stable and beta releases.
 - Unreferenced or deleted patch sources are pruned automatically.
 - **You do not need to manually edit `patch_sources.json`.** Simply add or update `patches-source` in your `.toml` files.
@@ -251,11 +257,11 @@ Patch sources and their release versions in `.github/configs/patch_sources.json`
 The CI workflow automatically detects when a new version of an app is released on APKMirror, Uptodown, or Archive.org.
 
 ### How it Works
-1. **Version Fetching**: During the CI run, it reads all enabled apps from the `.github/configs/patches/*.toml` configurations and queries the URLs (`uptodown-dlurl`, `apkmirror-dlurl`, etc.).
-2. **Comparison**: It checks the newly fetched versions against the currently stored versions in `.github/configs/app_versions.json`.
+1. **Version Fetching**: During the CI run, it reads all enabled apps from the `configs/patches/*.toml` configurations and queries the URLs (`github-dlurl`, `gitlab-dlurl`, `forgejo-dlurl`, `uptodown-dlurl`, `apkmirror-dlurl`, etc.).
+2. **Comparison**: It checks the newly fetched versions against the currently stored versions in `configs/app_versions.json`.
 3. **Triggering**: If a new version is detected, the app is added to a temporary `active_apps.json` list, and the CI is triggered to build it.
 ### Tracking File
-App versions are permanently tracked and committed to `.github/configs/app_versions.json`.
+App versions are permanently tracked and committed to `configs/app_versions.json`.
 You can manually update this file if you need to force a specific version state, but the CI will automatically manage it during scheduled runs.
 
 **Selective Checking:** If you only want the CI to check specific apps (instead of all enabled apps in your config), you can add `"_check_only_listed": true` to the top level of `app_versions.json`. When this is true, the script will only check for updates for the apps that already exist as keys in the file, saving time and resources.
