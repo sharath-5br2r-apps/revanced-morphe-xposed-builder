@@ -17,6 +17,14 @@ DL_SRCS=("local" "direct" "cache_repo" "github" "gitlab" "forgejo" "archive" "ap
 BUILD_JSON_FILE="build.json"
 PATCH_OUTPUT=""
 
+# Cross-platform advisory lock for shared downloads and generated metadata.
+# Uses fcntl on Unix and msvcrt on Windows through the same Python helper.
+run_locked() {
+	local lock_path=$1
+	shift
+	python3 "${CWD}/.github/scripts/build_json_lock.py" "$lock_path" "$@"
+}
+
 if [ -z "${GITHUB_TOKEN-}" ] && command -v gh >/dev/null 2>&1; then
 	GITHUB_TOKEN=$(gh auth token 2>/dev/null || true)
 fi
@@ -352,8 +360,10 @@ source_release_pick_from_list() {
 		forgejo|gitea)
 			if [ "$mode" = beta ] || [ "$mode" = dev ]; then
 				jq -e -c 'map(select(.prerelease == true or (.tag_name | test("(?i)(dev|alpha|beta|rc)")))) | sort_by(.published_at // .created_at // .released_at // "") | reverse | .[0] // empty'
-			else
+			elif [ "$mode" = both ]; then
 				jq -e -c 'map(select(.tag_name != null and .tag_name != "")) | sort_by(.published_at // .created_at // .released_at // "") | reverse | .[0] // empty'
+			else
+				jq -e -c 'map(select(.tag_name != null and .tag_name != "" and (.tag_name | test("(?i)(dev|alpha|beta|rc|pre)" ) | not) and (.prerelease != true))) | sort_by(.published_at // .created_at // .released_at // "") | reverse | .[0] // empty'
 			fi
 			;;
 		gitlab)
@@ -661,19 +671,6 @@ set_prebuilts() {
 		[ -f "$AAPT2" ] || AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}"
 	fi
 
-	# Prefer the system aapt2, then Patch Power's SDK, then the usual Android SDK
-	# variables. The bundled binary remains the final fallback.
-	local sdk_root="${PATCH_POWER_SDK_ROOT:-${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}}"
-	if [ -n "$sdk_root" ] && [ -d "$sdk_root/build-tools" ]; then
-		local latest_bt
-		latest_bt=$(ls -1d "$sdk_root"/build-tools/* 2>/dev/null | sort -V | tail -1)
-		if [ -n "$latest_bt" ] && [ -f "$latest_bt/lib/apksigner.jar" ]; then
-			APKSIGNER="$latest_bt/lib/apksigner.jar"
-		fi
-		if [ -n "$latest_bt" ] && [ -x "$latest_bt/aapt2" ] && ! command -v aapt2 >/dev/null 2>&1; then
-			AAPT2="$latest_bt/aapt2"
-		fi
-	fi
 }
 
 _req() {
@@ -692,7 +689,9 @@ _req() {
 			if [ -f "$op" ]; then return 0; fi
 		fi
 	fi
-	if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 --fail -s -S "$@" "$ip" -o "$dlp"; then
+	local req_lock="${TEMP_DIR}/locks/$(tr -cs 'a-zA-Z0-9._-' '_' <<<"$op").lock"
+	mkdir -p "${TEMP_DIR}/locks"
+	if ! run_locked "$req_lock" curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 --fail -s -S "$@" "$ip" -o "$dlp"; then
 		epr "Request failed: $ip"
 		if [ "$dlp" != - ]; then rm -f "$dlp"; fi
 		return 1
@@ -2773,7 +2772,22 @@ patch_apk() {
 		fi
 	fi
 
-	local base_cmd="java -jar '$cli_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=$RVB_KEYSTORE \
+	# Morphe keeps writable morphe-data beside its JAR. Give each queued patch
+	# run a private JAR copy so sibling builds cannot share or purge that state.
+	local stage_jar="$cli_jar" stage_dir=""
+	if [ "${PATCHER_KIND:-}" = morphe ]; then
+		local sbase
+		sbase=$(basename "$cli_jar")
+		stage_dir="${TEMP_DIR}/morphe-stage-$(basename "$patched_apk" .apk)-$$"
+		if mkdir -p "$stage_dir" && cp -f "$cli_jar" "${stage_dir}/${sbase}"; then
+			stage_jar="${stage_dir}/${sbase}"
+		else
+			wpr "Could not stage a private morphe JAR copy; using the shared one"
+			stage_dir=""
+		fi
+	fi
+
+	local base_cmd="java -jar '$stage_jar' patch '$stock_input' -t '$tmp_dir' -o '$patched_apk' --keystore=$RVB_KEYSTORE \
 --keystore-entry-password=$RVB_KEYSTORE_PASS --keystore-password=$RVB_KEYSTORE_PASS --signer=$RVB_KEY_ALIAS --keystore-entry-alias=$RVB_KEY_ALIAS"
 
 	local -a ed_parts=()
@@ -2827,6 +2841,7 @@ patch_apk() {
 		ret=$?
 	fi
 
+	[ -n "$stage_dir" ] && rm -rf "$stage_dir"
 	echo "$PATCH_OUTPUT"
 	if [ $ret -eq 0 ] && [ -f "$patched_apk" ]; then
 		return 0
@@ -3587,6 +3602,26 @@ build_rv() {
 			fi
 
 			local vc_infix="${target_version_code:+-${target_version_code}}"
+			local _apk_lock_pid="" _apk_lock_ready=""
+			mkdir -p "${TEMP_DIR}/apkslocks"
+			_apk_lock_ready="${TEMP_DIR}/apkslocks/.ready-$$-${RANDOM}"
+			python3 "${CWD}/.github/scripts/universal_lock.py" \
+				"${TEMP_DIR}/apkslocks/${pkg_name}-${version_f}${vc_infix}.lock" \
+				"$_apk_lock_ready" &
+			_apk_lock_pid=$!
+			for _lock_wait in $(seq 1 100); do
+				[ -f "$_apk_lock_ready" ] && break
+				sleep 0.1
+			done
+			if [ ! -f "$_apk_lock_ready" ]; then
+				kill "$_apk_lock_pid" 2>/dev/null || true
+				wpr "Could not acquire APK cache lock for $pkg_name $version_f"
+				_apk_lock_pid=""
+			fi
+			release_apk_lock() {
+				[ -n "${_apk_lock_pid:-}" ] && kill "$_apk_lock_pid" 2>/dev/null || true
+				rm -f "${_apk_lock_ready:-}"
+			}
 			local cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
 			local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 			local stock_apk="$cached_stock_apk"
@@ -3646,22 +3681,25 @@ build_rv() {
 				all_apk="${apk_dl_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 
 				for dl_p in "${DL_SRCS[@]}"; do
-					if [ -z "${args[${dl_p}_dlurl]}" ]; then continue; fi
+					if [ -z "${args[${dl_p}_dlurl]}" ]; then release_apk_lock; continue; fi
 					pr "Downloading '${table}' from '${dl_p}'"
 					if ! isoneof $dl_p "${tried_dl[@]}"; then
 						if ! get_${dl_p}_resp "${args[${dl_p}_dlurl]}"; then
 							epr "ERROR: Could not get '${table}' from '${dl_p}'"
+							release_apk_lock
 							continue
 						fi
 					fi
 					if ! dl_${dl_p} "${args[${dl_p}_dlurl]}" "$version" "$stock_apk" "$arch" "${args[dpi]}" "$get_latest_ver" "$target_version_code"; then
 						pr "ERROR: Could not download '${table}' from '${dl_p}' with version '${version}', arch '${arch}', dpi '${args[dpi]}'"
 						rm -f "$stock_apk" "${stock_apk%.apk}".* "${stock_apk}".*
+						release_apk_lock
 						continue
 					fi
 					if ! unzip -l "$stock_apk" >/dev/null 2>&1; then
 						epr "ERROR: Downloaded file from ${dl_p} is not a valid zip archive (Cloudflare block or bad file)!"
 						rm -f "$stock_apk" "${stock_apk%.apk}".* "${stock_apk}".*
+						release_apk_lock
 						continue
 					fi
 					if ! unzip -l "$stock_apk" | grep '^[[:space:]]*[0-9].*AndroidManifest\.xml$' >/dev/null; then
@@ -3676,6 +3714,7 @@ build_rv() {
 							if ! merge_splits "${stock_apk}.bundle" "$stock_apk"; then
 								epr "ERROR: Failed to extract/merge bundle"
 								rm -f "${stock_apk}.bundle" "$stock_apk"
+								release_apk_lock
 								continue
 							fi
 							rm -f "${stock_apk}.bundle"
@@ -3692,12 +3731,14 @@ build_rv() {
 						if [ -z "$downloaded_pkg" ]; then
 							epr "ERROR: Downloaded file is not a valid APK or aapt failed to parse it. Rejecting..."
 							rm -f "$stock_apk"
+							release_apk_lock
 							continue
 						fi
 
 						if [ -n "$downloaded_pkg" ] && [ "$downloaded_pkg" != "$pkg_name" ] && [[ "$pkg_name" == *.* ]]; then
 							epr "ERROR: Downloaded APK package name ($downloaded_pkg) does not match expected ($pkg_name). Rejecting..."
 							rm -f "$stock_apk"
+							release_apk_lock
 							continue
 						fi
 
@@ -3705,6 +3746,7 @@ build_rv() {
 							if [ "$downloaded_vc" != "$target_version_code" ]; then
 								epr "ERROR: Downloaded APK version code ($downloaded_vc) does not match expected ($target_version_code). Rejecting..."
 								rm -f "$stock_apk" "${stock_apk%.apk}.apkm"
+								release_apk_lock
 								continue
 							fi
 						fi
@@ -3727,6 +3769,7 @@ build_rv() {
 					local _vapk="$stock_apk"
 					if ! verify_downloaded_apk "$_vapk" "$pkg_name" "$dl_p"; then
 						rm -f "$stock_apk" "${stock_apk%.apk}.apkm"
+						release_apk_lock
 						continue
 					fi
 
@@ -3803,21 +3846,28 @@ build_rv() {
 
 				if [ -f "$stock_apk" ] && [ -n "${UPLOAD_APKS_REPO:-}" ] && [ "$dl_p" != "archive" ] && [ "$dl_p" != "cache_repo" ]; then
 					pr "Uploading newly downloaded APKs to ${UPLOAD_APKS_REPO}..."
-					if gh release view "$pkg_name" --repo "$UPLOAD_APKS_REPO" >/dev/null 2>&1 || gh release create "$pkg_name" --repo "$UPLOAD_APKS_REPO" --title "$pkg_name" --notes ""; then
-						if [ -n "$all_apk" ] && [ -f "$all_apk" ]; then
-							gh release upload "$pkg_name" "$all_apk" --repo "$UPLOAD_APKS_REPO" --clobber || true
-						else
-							gh release upload "$pkg_name" "$stock_apk" --repo "$UPLOAD_APKS_REPO" --clobber || true
+					local _ua_file="$stock_apk" _ua_ok="" _ua_att
+					[ -n "$all_apk" ] && [ -f "$all_apk" ] && _ua_file="$all_apk"
+					for _ua_att in 1 2 3; do
+						if { gh release view "$pkg_name" --repo "$UPLOAD_APKS_REPO" >/dev/null 2>&1 || \
+							gh release create "$pkg_name" --repo "$UPLOAD_APKS_REPO" --title "$pkg_name" --notes ""; } && \
+							gh release upload "$pkg_name" "$_ua_file" --repo "$UPLOAD_APKS_REPO" --clobber; then
+							_ua_ok=1
+							break
 						fi
-					else
-						wpr "Failed to view/create release $pkg_name on $UPLOAD_APKS_REPO"
-					fi
+						[ "$_ua_att" -lt 3 ] && { wpr "Cache upload for $pkg_name failed (attempt $_ua_att/3), retrying..."; sleep $((_ua_att * 3)); }
+					done
+					[ -n "$_ua_ok" ] || wpr "Failed to view/create/upload release $pkg_name on $UPLOAD_APKS_REPO after 3 attempts"
 				fi
 			else
 				pr "Found APK in cache: ${stock_apk}. Skipping download!"
 			fi
 			if [ -f "$stock_apk" ]; then break; fi
+			[ -n "$_apk_lock_pid" ] && kill "$_apk_lock_pid" 2>/dev/null || true
+			rm -f "$_apk_lock_ready"
 		done
+		[ -n "$_apk_lock_pid" ] && kill "$_apk_lock_pid" 2>/dev/null || true
+		rm -f "$_apk_lock_ready"
 		if [ ! -f "$stock_apk" ]; then
 			epr "ERROR: Could not download '${table}' for version $resolved_version"
 			continue

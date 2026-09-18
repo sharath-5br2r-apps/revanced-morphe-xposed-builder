@@ -68,30 +68,50 @@ DEF_AUTHOR_NAME=$(toml_get "$main_config_t" author) || DEF_AUTHOR_NAME="nullcpy"
 DEF_AUTHOR_PAGE=$(toml_get "$main_config_t" author-page) || DEF_AUTHOR_PAGE="github.com/nullcpy/rvb"
 mkdir -p "$TEMP_DIR" "$BUILD_DIR"
 
-# Build tables concurrently using the available CPUs. Architecture variants
-# are still submitted as independent slices, so `both` does not bypass the
-# normal queue or corrupt shared build metadata.
+# Build process pool. Each child re-sources utils.sh so patcher state and
+# caches remain isolated; architecture slices use this same table queue.
 PAR_JOBS="${PARALLEL_JOBS:-$(nproc 2>/dev/null || echo 1)}"
 [[ "$PAR_JOBS" =~ ^[0-9]+$ ]] || PAR_JOBS="$(nproc 2>/dev/null || echo 1)"
 ((PAR_JOBS < 1)) && PAR_JOBS=1
-BUILD_QUEUE_DIR="$TEMP_DIR/queue"
-declare -a BUILD_PIDS=()
-declare -a BUILD_LABELS=()
+QUEUE_DIR="$TEMP_DIR/queue"
+declare -gA JOB_PID=() JOB_LABEL=() JOB_LOG=() JOB_RC=()
+JOB_SEQ=0
+if ((PAR_JOBS > 1)); then
+	mkdir -p "$QUEUE_DIR"
+	export RVB_UTILS_SH COMPRESSION_LEVEL ENABLE_MODULE_UPDATE DEF_AUTHOR_NAME REMOVE_RV_INTEGRATIONS_CHECKS
+	_reap_done() {
+		local id rc
+		for id in "${!JOB_PID[@]}"; do
+			[ -f "${JOB_RC[$id]}" ] || { kill -0 "${JOB_PID[$id]}" 2>/dev/null && continue || echo 137 >"${JOB_RC[$id]}"; }
+			rc=$(cat "${JOB_RC[$id]}" 2>/dev/null) || rc=1
+			[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::group::Building ${JOB_LABEL[$id]}"
+			cat "${JOB_LOG[$id]}" 2>/dev/null
+			[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::endgroup::"
+			[ "$rc" = 0 ] || epr "Build failed for ${JOB_LABEL[$id]} (exit $rc)"
+			rm -f "${JOB_LOG[$id]}" "${JOB_RC[$id]}"
+			unset "JOB_PID[$id]" "JOB_LABEL[$id]" "JOB_LOG[$id]" "JOB_RC[$id]"
+		done
+	}
+	_wait_slot() { while ((${#JOB_PID[@]} >= PAR_JOBS)); do _reap_done; ((${#JOB_PID[@]} < PAR_JOBS)) && break; wait -n >/dev/null 2>&1 || true; done; }
+	_enqueue_build() {
+		_wait_slot
+		local id=$((JOB_SEQ + 1)); JOB_SEQ=$id
+		(
+			set +e
+			RVB_CHILD=1 bash -c 'set -euo pipefail; shopt -s nullglob; source "$RVB_UTILS_SH"; set_prebuilts; build_rv "$1"' _ "$1" >"$QUEUE_DIR/$id.log" 2>&1
+			echo $? >"$QUEUE_DIR/$id.rc"
+		) &
+		JOB_PID[$id]=$!; JOB_LABEL[$id]="$2"; JOB_LOG[$id]="$QUEUE_DIR/$id.log"; JOB_RC[$id]="$QUEUE_DIR/$id.rc"
+	}
+fi
 _run_build() {
-	local label=$1 declaration=$2
-	while [ "${#BUILD_PIDS[@]}" -ge "$PAR_JOBS" ]; do
-		wait "${BUILD_PIDS[0]}" || epr "Build failed for ${BUILD_LABELS[0]}"
-		BUILD_PIDS=("${BUILD_PIDS[@]:1}")
-		BUILD_LABELS=("${BUILD_LABELS[@]:1}")
-	done
-	if [ "$PAR_JOBS" -le 1 ]; then
-		build_rv "$declaration" || epr "Build failed for $label"
-		return
+	if ((PAR_JOBS <= 1)); then
+		[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::group::Building $1"
+		build_rv "$2" || epr "Build failed for $1"
+		[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::endgroup::"
+	else
+		_enqueue_build "$2" "$1"
 	fi
-	mkdir -p "$BUILD_QUEUE_DIR"
-	(build_rv "$declaration") >"$BUILD_QUEUE_DIR/${#BUILD_PIDS[@]}.log" 2>&1 &
-	BUILD_PIDS+=("$!")
-	BUILD_LABELS+=("$label")
 }
 
 : >build.md
@@ -311,10 +331,12 @@ for table_name in $(toml_get_table_names); do
 		_run_build "${app_args[table]}" "$(declare -p app_args)"
 	done
 done
-for i in "${!BUILD_PIDS[@]}"; do
-	wait "${BUILD_PIDS[$i]}" || epr "Build failed for ${BUILD_LABELS[$i]}"
+while ((PAR_JOBS > 1 && ${#JOB_PID[@]} > 0)); do
+	_reap_done
+	((${#JOB_PID[@]} > 0)) || break
+	wait -n >/dev/null 2>&1 || true
 done
-rm -rf "$BUILD_QUEUE_DIR"
+rm -rf "$QUEUE_DIR"
 rm -rf temp/tmp.*
 if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then abort "All builds failed."; fi
 
