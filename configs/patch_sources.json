@@ -9,8 +9,8 @@
     "stable_date": "2026-06-22T17:44:41Z"
   },
   "MorpheApp/morphe-patches": {
-    "beta": "v1.44.0-dev.4",
-    "beta_date": "2026-09-17T18:00:26Z",
+    "beta": "v1.44.0-dev.5",
+    "beta_date": "2026-09-18T07:55:08Z",
     "blocked": false,
     "host": "github",
     "repo": "MorpheApp/morphe-patches",
@@ -72,13 +72,13 @@
     "stable_date": "2026-09-03T09:17:16Z"
   },
   "byehi98/okish-morphe-patches": {
-    "beta": "v1.28.0-dev.1",
-    "beta_date": "2026-09-16T12:18:27Z",
+    "beta": "v1.28.0-dev.2",
+    "beta_date": "2026-09-18T11:45:27Z",
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.27.0",
-    "stable_date": "2026-09-13T15:32:36Z"
+    "stable": "v1.28.0",
+    "stable_date": "2026-09-18T11:52:16Z"
   },
   "ch3thanhs/stylus": {
     "beta": "v1.5.2-dev.1",
@@ -135,8 +135,8 @@
     "stable_date": "2026-08-23T00:36:23Z"
   },
   "jasonwu1994/Gboard-patches": {
-    "beta": "v3.10.0-dev.3",
-    "beta_date": "2026-09-01T22:42:41Z",
+    "beta": "v3.11.0-dev.2",
+    "beta_date": "2026-09-18T14:38:25Z",
     "blocked": false,
     "host": "github",
     "repo": "jasonwu1994/Gboard-patches",

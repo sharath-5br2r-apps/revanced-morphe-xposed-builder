@@ -1,0 +1,18 @@
+{
+  "patches-version": "both",
+  "enable-module-update": true,
+  "Bitwarden-Morphe-Stylus": {
+    "enabled": true,
+    "app-name": "Bitwarden",
+    "engine-brand": "Morphe",
+    "patch-brand": "Stylus",
+    "build-mode": "apk",
+    "pkg-name": "com.x8bit.bitwarden",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "github-dlurl": "https://github.com/bitwarden/android",
+    "github-dlurl-regex": "fdroid.apk$",
+    "github-release-regex": "bwpm",
+    "version": "latest",
+    "patches-source": "ch3thanhs/stylus"
+  }
+}
