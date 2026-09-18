@@ -1,4 +1,4 @@
-=== FIXTURE: anddea ===
+=== FIXTURE: piko ===
 [+] Getting prebuilts (MorpheApp)
 curl-stub: unhandled URL in trace mode: https://github.com/repos/MorpheApp/morphe-desktop/releases?per_page=100
 [-] Request failed: https://github.com/repos/MorpheApp/morphe-desktop/releases?per_page=100
