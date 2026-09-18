@@ -125,7 +125,7 @@ jobs:
           APKS_REPO_URL: "${{ vars.APKS_REPO_URL || vars.APKS_REPO }}"
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          CF_SOLVER_URL: "http://localhost:8000"
+          CFB_URL: "http://localhost:8000"
           OVERRIDE_PATCHES_VERSION: ${{ inputs.patches_version }}
           RVB_MORPHE_PASSTHROUGH: "${{ vars.RVB_MORPHE_PASSTHROUGH || 'true' }}"
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}

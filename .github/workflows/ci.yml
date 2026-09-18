@@ -35,8 +35,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      TRAWL_URL: "http://localhost:8191"
-      CFB_URL: "http://localhost:8000"
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
@@ -84,7 +82,7 @@ jobs:
         if: ${{ inputs.mode != 'Build Only' }}
         id: fetch_app_versions
         env:
-          CF_SOLVER_URL: "http://localhost:8000"
+          CFB_URL: "http://localhost:8000"
         run: bash .github/scripts/ci_fetch_app_versions.sh
         
       - name: Compare App Versions

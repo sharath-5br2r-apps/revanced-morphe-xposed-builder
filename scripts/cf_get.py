@@ -16,11 +16,14 @@ import urllib.parse
 try:
     from curl_cffi import requests
     from curl_cffi.requests import Response
+    cffi_requests = requests
+    _HAS_CFFI = True
 except ImportError:
     # Exit 2: curl_cffi not installed, caller should fall back to curl/solver
     sys.exit(2)
 
 MAX_RETRIES = 2
+_TRAWL_READY = set()
 DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
 
 def is_challenge(status_code: int, text: str, headers: dict = None) -> bool:
@@ -388,7 +391,7 @@ def save_cookies(session, cookie_file: str, user_agent: str = ""):
         pass
 
 def solve_challenge(url: str, session) -> tuple[bool, str]:
-    solver_url = os.getenv("CF_SOLVER_URL", "http://localhost:8000").rstrip("/")
+    solver_url = os.getenv("CFB_URL", "http://localhost:8000").rstrip("/")
     try:
         resp = requests.get(f"{solver_url}/cookies", params={"url": url}, timeout=60)
         if resp.status_code == 200:
@@ -411,7 +414,7 @@ def solve_challenge(url: str, session) -> tuple[bool, str]:
     return False, ""
 
 def fetch_from_solver_html(url: str) -> str | None:
-    solver_url = os.getenv("CF_SOLVER_URL", "http://localhost:8000").rstrip("/")
+    solver_url = os.getenv("CFB_URL", "http://localhost:8000").rstrip("/")
     try:
         resp = requests.get(f"{solver_url}/html", params={"url": url}, timeout=60)
         if resp.status_code == 200 and resp.text:
@@ -497,48 +500,6 @@ def main():
     cfb_get(url, referer)
 
     fs_get(url, referer)
-
-    # All methods failed
-    impersonate_targets = get_impersonate_targets()
-
-    for imp in impersonate_targets:
-        try:
-            s = requests.Session(impersonate=imp)
-            load_cookies(s, cookie_file)
-
-            resp = s.get(url, timeout=15, allow_redirects=True)
-            if is_challenge(resp.status_code, resp.text, getattr(resp, "headers", None)):
-                solved, ua = solve_challenge(url, s)
-                if solved:
-                    save_cookies(s, cookie_file, ua)
-                    # Retry with solved clearance cookies + User-Agent
-                    resp = s.get(url, timeout=15, allow_redirects=True)
-                    if not is_challenge(resp.status_code, resp.text, getattr(resp, "headers", None)) and resp.status_code == 200:
-                        sys.stdout.write(resp.text)
-                        sys.exit(0)
-
-                # Fallback: query solver's direct /html endpoint
-                solver_html = fetch_from_solver_html(url)
-                if solver_html:
-                    sys.stdout.write(solver_html)
-                    sys.exit(0)
-
-                continue  # try next impersonation target
-
-            if resp.status_code == 200 and resp.text:
-                save_cookies(s, cookie_file)
-                sys.stdout.write(resp.text)
-                sys.exit(0)
-            else:
-                continue
-        except Exception:
-            continue
-
-    # Final fallback if curl_cffi failed on all targets: try solver /html endpoint directly
-    solver_html = fetch_from_solver_html(url)
-    if solver_html:
-        sys.stdout.write(solver_html)
-        sys.exit(0)
 
     sys.exit(1)
 
