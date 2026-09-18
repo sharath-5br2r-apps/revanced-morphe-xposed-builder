@@ -3,7 +3,13 @@ set -euo pipefail
 
 # This script is also used by scripts/fetch_versions.sh and local builders, so
 # never assume GitHub Actions' working directory or command annotations.
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+while [ -L "$SCRIPT_PATH" ]; do
+    SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$SCRIPT_PATH")" && pwd)
+    SCRIPT_PATH=$(readlink "$SCRIPT_PATH")
+    [[ "$SCRIPT_PATH" != /* ]] && SCRIPT_PATH="$SCRIPT_DIR/$SCRIPT_PATH"
+done
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$SCRIPT_PATH")" && pwd)
 ROOT_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
 cd "$ROOT_DIR"
 
@@ -12,34 +18,24 @@ APP_VERSIONS_FILE="${APP_VERSIONS_FILE:-$CONFIG_DIR/app_versions.json}"
 OUTPUT_FILE="${FETCHED_APP_VERSIONS_FILE:-$ROOT_DIR/fetched_app_versions.json}"
 NO_SLEEP="${NO_SLEEP:-${CI_FETCH_NO_SLEEP:-false}}"
 CONFIG_LIST="${CONFIG_FILES:-}"
+ALLOWED_APPS="${CI_FETCH_ALLOWED_APPS:-}"
+if [ "${1:-}" = "--allowed-apps" ] && [ -n "${2:-}" ]; then
+    ALLOWED_APPS="$2"
+elif [[ "${1:-}" == --allowed-apps=* ]]; then
+    ALLOWED_APPS="${1#--allowed-apps=}"
+fi
 
 source "$ROOT_DIR/scripts/utils.sh"
 set_prebuilts
 
-# Use pre-compiled configs if available, or compile as fallback
-CONFIG_INPUTS=()
-if [ -n "$CONFIG_LIST" ]; then
-    read -r -a CONFIG_INPUTS <<< "$CONFIG_LIST"
-else
-    for config_name in config.stable.json config.stable.updated.json config.beta.json config.beta.updated.json config.both.json config.both.updated.json config.latest.json config.latest.updated.json; do
-        [ -f "$CONFIG_DIR/$config_name" ] && CONFIG_INPUTS+=("$CONFIG_DIR/$config_name")
-    done
-fi
-
-if [ ${#CONFIG_INPUTS[@]} -eq 0 ]; then
-    python3 "$ROOT_DIR/.github/scripts/compile_patch_configs.py"
-    for config_name in config.stable.json config.stable.updated.json config.beta.json config.beta.updated.json config.both.json config.both.updated.json config.latest.json config.latest.updated.json; do
-        [ -f "$CONFIG_DIR/$config_name" ] && CONFIG_INPUTS+=("$CONFIG_DIR/$config_name")
-    done
-fi
-
-if [ ${#CONFIG_INPUTS[@]} -eq 0 ]; then
-    echo "No config files found or compiled."
+# Version detection is intentionally based only on the source patch TOMLs.
+# Generated channel/batch configs are build artifacts and may be stale or absent.
+python3 "$ROOT_DIR/.github/scripts/merge_toml_configs.py" \
+    .dev.toml "$ROOT_DIR/temp_all_configs.json"
+if [ ! -s "$ROOT_DIR/temp_all_configs.json" ]; then
+    echo "No patch configs found under configs/patches."
     exit 0
 fi
-
-# Merge compiled configs into a single temporary json for metadata extraction
-jq -s 'add' "${CONFIG_INPUTS[@]}" > "$ROOT_DIR/temp_all_configs.json"
 
 [ -f "$APP_VERSIONS_FILE" ] || echo '{}' > "$APP_VERSIONS_FILE"
 
@@ -70,6 +66,17 @@ else
             fi
         fi
     done
+fi
+
+if [ -n "$ALLOWED_APPS" ]; then
+    allowed_apps_file=$(mktemp "${TMPDIR:-/tmp}/ci-fetch-allowed.XXXXXX")
+    tr ', ' '\n' <<< "$ALLOWED_APPS" | sed '/^$/d' > "$allowed_apps_file"
+    awk -F'|' 'NR==FNR { patterns[++n]=$1; next } {
+        for (i=1; i<=n; i++) if ($1 ~ patterns[i] || $2 ~ patterns[i]) { print; next }
+    }' \
+        "$allowed_apps_file" check_list.txt > "${allowed_apps_file}.list"
+    mv "${allowed_apps_file}.list" check_list.txt
+    rm -f "$allowed_apps_file"
 fi
 
 declare -A cached_versions
@@ -190,7 +197,7 @@ while IFS='|' read -r group app; do
     [ -n "$apkcombo_url" ] && { dlurls+=("$apkcombo_url"); sources+=("apkcombo"); }
 
     if [ ${#dlurls[@]} -eq 0 ]; then
-        echo "WARNING: No dlurl for $app, skipping" >&2
+        wpr "No dlurl for $app, skipping"
         continue
     fi
     
@@ -209,34 +216,34 @@ while IFS='|' read -r group app; do
                 "get_${source}_resp" "$dlurl" || continue
                 latest_ver=$("get_${source}_vers" | get_highest_ver) || true
             elif [[ "$source" == "github" ]]; then
-                get_github_resp "$dlurl" || { echo "::warning::Failed github resp for $app"; continue; }
-                vers=$(get_github_vers) || { echo "::warning::Failed github vers for $app"; continue; }
+                get_github_resp "$dlurl" || { wpr "Failed github resp for $app"; continue; }
+                vers=$(get_github_vers) || { wpr "Failed github vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "gitlab" ]]; then
-                get_gitlab_resp "$dlurl" || { echo "::warning::Failed gitlab resp for $app"; continue; }
-                vers=$(get_gitlab_vers) || { echo "::warning::Failed gitlab vers for $app"; continue; }
+                get_gitlab_resp "$dlurl" || { wpr "Failed gitlab resp for $app"; continue; }
+                vers=$(get_gitlab_vers) || { wpr "Failed gitlab vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "forgejo" ]]; then
-                get_forgejo_resp "$dlurl" || { echo "::warning::Failed forgejo resp for $app"; continue; }
-                vers=$(get_forgejo_vers) || { echo "::warning::Failed forgejo vers for $app"; continue; }
+                get_forgejo_resp "$dlurl" || { wpr "Failed forgejo resp for $app"; continue; }
+                vers=$(get_forgejo_vers) || { wpr "Failed forgejo vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "apkmirror" ]]; then
                 __APKMIRROR_RELEASE_FILTER__="${apkmirror_release_filter:-}"
                 export __APKMIRROR_RELEASE_FILTER__
-                get_apkmirror_resp "$dlurl" || { echo "::warning::Failed apkmirror resp for $app"; continue; }
-                vers=$(get_apkmirror_vers) || { echo "::warning::Failed apkmirror vers for $app"; continue; }
+                get_apkmirror_resp "$dlurl" || { wpr "Failed apkmirror resp for $app"; continue; }
+                vers=$(get_apkmirror_vers) || { wpr "Failed apkmirror vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "uptodown" ]]; then
-                get_uptodown_resp "$dlurl" || { echo "::warning::Failed uptodown resp for $app"; continue; }
-                vers=$(get_uptodown_vers) || { echo "::warning::Failed uptodown vers for $app"; continue; }
+                get_uptodown_resp "$dlurl" || { wpr "Failed uptodown resp for $app"; continue; }
+                vers=$(get_uptodown_vers) || { wpr "Failed uptodown vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "apkpure" ]]; then
-                get_apkpure_resp "$dlurl" || { echo "::warning::Failed apkpure resp for $app"; continue; }
-                vers=$(get_apkpure_vers) || { echo "::warning::Failed apkpure vers for $app"; continue; }
+                get_apkpure_resp "$dlurl" || { wpr "Failed apkpure resp for $app"; continue; }
+                vers=$(get_apkpure_vers) || { wpr "Failed apkpure vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             elif [[ "$source" == "apkcombo" ]]; then
-                get_apkcombo_resp "$dlurl" || { echo "::warning::Failed apkcombo resp for $app"; continue; }
-                vers=$(get_apkcombo_vers) || { echo "::warning::Failed apkcombo vers for $app"; continue; }
+                get_apkcombo_resp "$dlurl" || { wpr "Failed apkcombo resp for $app"; continue; }
+                vers=$(get_apkcombo_vers) || { wpr "Failed apkcombo vers for $app"; continue; }
                 latest_ver=$(echo "$vers" | get_highest_ver) || true
             fi
             
@@ -255,7 +262,7 @@ while IFS='|' read -r group app; do
         echo "Latest version for $group is $latest_ver"
         jq -n --arg grp "$group" --arg ver "$latest_ver" '{($grp): $ver}' >> "$WORK_FILE"
     else
-        echo "ERROR: Could not find latest version for $group" >&2
+        epr "Could not find latest version for $group"
     fi
 done < check_list.txt
 
@@ -263,6 +270,19 @@ if [ -s "$WORK_FILE" ]; then
     FETCHED_JSON=$(jq -s 'reduce .[] as $item ({}; . * $item)' "$WORK_FILE")
 else
     FETCHED_JSON="{}"
+fi
+
+# With --allowed-apps, retain the current version for every unselected group.
+# This mirrors build.sh: restricted runs update only the requested applications.
+if [ -n "$ALLOWED_APPS" ]; then
+    existing_versions=$(jq '
+        with_entries(
+            if (.value | type) == "object" then
+                .value = (.value.version // null)
+            else . end
+        ) | with_entries(select(.value != null and .value != ""))
+    ' "$APP_VERSIONS_FILE")
+    FETCHED_JSON=$(jq -n --argjson existing "$existing_versions" --argjson fetched "$FETCHED_JSON" '$existing * $fetched')
 fi
 
 echo "$FETCHED_JSON" > "$OUTPUT_FILE"

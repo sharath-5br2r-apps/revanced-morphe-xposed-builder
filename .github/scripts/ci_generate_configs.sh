@@ -45,6 +45,7 @@ split_config_json() {
   # Touch all part files upfront to guarantee existence
   for idx in $(seq 1 "$max_files"); do
     local empty_file="configs/${prefix}.part${idx}.json"
+    mkdir -p "$(dirname "$empty_file")"
     [ -f "$empty_file" ] || echo "{}" > "$empty_file"
   done
 
@@ -85,7 +86,7 @@ split_config_json() {
 }
 
 if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
-  python3 .github/scripts/merge_toml_configs.py .dev.toml config.stable.json
+  python3 .github/scripts/merge_toml_configs.py .dev.toml configs/stable/config.json
 
   jq --slurpfile active active.stable.json --slurpfile activeApps active_apps.json --slurpfile activePatchApps active_patch_apps.stable.json '
     with_entries(
@@ -97,13 +98,13 @@ if [ "${TRIGGER_STABLE:-0}" = "1" ] || [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [
       else empty end
     ) |
     { "patches-version": "stable", "enable-module-update": true } + .
-  ' config.stable.json > configs/config.stable.updated.json
+  ' configs/stable/config.json > configs/stable/config.updated.json
 
-  split_config_json "configs/config.stable.updated.json" "config.stable" 5
+  split_config_json "configs/stable/config.updated.json" "stable/config" 5
 fi
 
 if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
-  python3 .github/scripts/merge_toml_configs.py .stable.toml config.dev.json
+  python3 .github/scripts/merge_toml_configs.py .stable.toml configs/beta/config.json
 
   jq --slurpfile active active.prerelease.json --slurpfile activePatchApps active_patch_apps.dev.json '
     with_entries(
@@ -114,14 +115,14 @@ if [ "${TRIGGER_PRERELEASE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || 
         if (($srcs - $active[0]) != $srcs) or ($activePatchApps[0] | index($k)) then . else empty end
       else empty end
     ) |
-    { "patches-version": "dev" } + .
-  ' config.dev.json > configs/config.dev.updated.json
+    { "patches-version": "beta" } + .
+  ' configs/beta/config.json > configs/beta/config.updated.json
 
-  split_config_json "configs/config.dev.updated.json" "config.dev" 5
+  split_config_json "configs/beta/config.updated.json" "beta/config" 5
 fi
 
-if [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ]; then
-  python3 .github/scripts/merge_toml_configs.py .stable.toml config.latest.json
+if [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || [ "${SKIP_VERSION_CHECK:-false}" = "true" ] || [ "${FORCE_BATCH_CONFIGS:-false}" = "true" ]; then
+  python3 .github/scripts/merge_toml_configs.py .stable.toml configs/both/config.json
 
   jq --slurpfile activeApps active_apps.json '
     with_entries(
@@ -131,16 +132,14 @@ if [ "${TRIGGER_APP_UPDATE:-0}" = "1" ] || [ "${TRIGGER_BLOCKED:-0}" = "1" ] || 
       else empty end
     ) |
     { "patches-version": "both" } + .
-  ' config.latest.json > configs/config.latest.updated.json
+  ' configs/both/config.json > configs/both/config.updated.json
 
-  split_config_json "configs/config.latest.updated.json" "config.latest" 5
-  cp -f configs/config.latest.updated.json configs/config.both.updated.json
-  split_config_json "configs/config.both.updated.json" "config.both" 5
+  split_config_json "configs/both/config.updated.json" "both/config" 5
 fi
 
 # Batch builds use the complete both-channel pool, split into deterministic
 # parts so workflow matrices can build them independently. Generate this even
 # when no app-update trigger fired if a current both config is available.
-if [ -f configs/config.both.updated.json ]; then
-  split_config_json "configs/config.both.updated.json" "config.batch" "${BATCH_CONFIG_PARTS:-16}"
+if [ -f configs/both/config.updated.json ]; then
+  split_config_json "configs/both/config.updated.json" "batch/config" "${BATCH_CONFIG_PARTS:-16}"
 fi

@@ -167,6 +167,12 @@
     ],
     "version": "055"
   },
+  "Smart Launcher": {
+    "keys": [
+      "SmartLauncher-Morphe-Hoodles-Experimental"
+    ],
+    "version": "latest"
+  },
   "Windscribe VPN": {
     "keys": [
       "WindscribeVPN-Morphe-Rushiranpise-Experimental"

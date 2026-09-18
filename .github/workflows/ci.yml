@@ -102,7 +102,7 @@ jobs:
         run: python3 .github/scripts/ci_check_app_patches.py
 
       - name: Generate configs (JSON)
-        if: ${{ inputs.mode != 'Build Only' && inputs.mode != 'Batch Build (Stable)' && inputs.mode != 'Batch Build (Both)' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || inputs.mode == 'Generate Configs Only (No Build)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        if: ${{ inputs.mode != 'Build Only' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Batch Build (Stable)' || inputs.mode == 'Batch Build (Both)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         id: generate_configs
         env:
           TAGS_OLD: ${{ steps.compare.outputs.tags_old }}
@@ -110,6 +110,7 @@ jobs:
           TRIGGER_STABLE: ${{ steps.compare.outputs.TRIGGER_STABLE }}
           TRIGGER_PRERELEASE: ${{ steps.compare.outputs.TRIGGER_PRERELEASE }}
           TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE }}
+          FORCE_BATCH_CONFIGS: ${{ startsWith(inputs.mode, 'Batch Build') && 'true' || 'false' }}
           DISABLE_CONFIG_UPDATE: "false"
           SKIP_VERSION_CHECK: ${{ inputs.mode == 'Build Only' && 'true' || 'false' }}
         run: bash .github/scripts/ci_generate_configs.sh
@@ -129,7 +130,7 @@ jobs:
         with:
           branch: main
           skip_checkout: true
-          file_pattern: .github/configs/app_versions.json .github/configs/patch_sources.json .github/configs/patch_file_hashes.json .github/configs/config.*.updated.json .github/configs/config.stable.part*.json .github/configs/config.dev.part*.json .github/configs/config.latest.part*.json
+          file_pattern: configs/app_versions.json configs/patch_sources.json configs/patch_file_hashes.json configs/*/config.updated.json configs/*/config.part*.json
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
       - name: Upload split config part artifacts
@@ -138,9 +139,10 @@ jobs:
         with:
           name: split-configs
           path: |
-            .github/configs/config.stable.part*.json
-            .github/configs/config.dev.part*.json
-            .github/configs/config.latest.part*.json
+            configs/stable/config.part*.json
+            configs/beta/config.part*.json
+            configs/both/config.part*.json
+            configs/batch/config.part*.json
           if-no-files-found: ignore
 
   resolve_dev_version:
@@ -164,7 +166,7 @@ jobs:
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_1 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.dev.part1.json"
+      config_file: "configs/beta/config.part1.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
       aggregate_flavor: "dev"
@@ -175,7 +177,7 @@ jobs:
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_2 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.dev.part2.json"
+      config_file: "configs/beta/config.part2.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
       aggregate_flavor: "dev"
@@ -186,7 +188,7 @@ jobs:
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_3 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.dev.part3.json"
+      config_file: "configs/beta/config.part3.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
       aggregate_flavor: "dev"
@@ -197,7 +199,7 @@ jobs:
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_4 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.dev.part4.json"
+      config_file: "configs/beta/config.part4.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
       aggregate_flavor: "dev"
@@ -208,7 +210,7 @@ jobs:
     if: ${{ needs.check_patch.outputs.trigger_prerelease == '1' && needs.check_patch.outputs.has_dev_5 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.dev.part5.json"
+      config_file: "configs/beta/config.part5.json"
       release_version_code: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
       upload_release_metadata: false
       aggregate_flavor: "dev"
@@ -290,7 +292,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_1 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.stable.part1.json"
+      config_file: "configs/stable/config.part1.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
       aggregate_flavor: "stable"
@@ -301,7 +303,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_2 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.stable.part2.json"
+      config_file: "configs/stable/config.part2.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
       aggregate_flavor: "stable"
@@ -312,7 +314,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_3 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.stable.part3.json"
+      config_file: "configs/stable/config.part3.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
       aggregate_flavor: "stable"
@@ -323,7 +325,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_4 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.stable.part4.json"
+      config_file: "configs/stable/config.part4.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
       aggregate_flavor: "stable"
@@ -334,7 +336,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_stable == '1' && needs.check_patch.outputs.has_stable_5 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.stable.part5.json"
+      config_file: "configs/stable/config.part5.json"
       release_version_code: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
       upload_release_metadata: false
       aggregate_flavor: "stable"
@@ -415,7 +417,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_latest == '1' && needs.check_patch.outputs.has_latest_1 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.latest.part1.json"
+      config_file: "configs/both/config.part1.json"
       patches_version: "both"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
@@ -427,7 +429,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_latest == '1' && needs.check_patch.outputs.has_latest_2 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.latest.part2.json"
+      config_file: "configs/both/config.part2.json"
       patches_version: "both"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
@@ -439,7 +441,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_latest == '1' && needs.check_patch.outputs.has_latest_3 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.latest.part3.json"
+      config_file: "configs/both/config.part3.json"
       patches_version: "both"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
@@ -451,7 +453,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_latest == '1' && needs.check_patch.outputs.has_latest_4 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.latest.part4.json"
+      config_file: "configs/both/config.part4.json"
       patches_version: "both"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
@@ -463,7 +465,7 @@ jobs:
     if: ${{ !cancelled() && needs.check_patch.result == 'success' && needs.check_patch.outputs.trigger_latest == '1' && needs.check_patch.outputs.has_latest_5 == '1' }}
     uses: ./.github/workflows/build.yml
     with:
-      config_file: ".github/configs/config.latest.part5.json"
+      config_file: "configs/both/config.part5.json"
       patches_version: "both"
       release_version_code: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
       upload_release_metadata: false
@@ -547,7 +549,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config_file: ["configs/config.batch.part1.json", "configs/config.batch.part2.json", "configs/config.batch.part3.json", "configs/config.batch.part4.json", "configs/config.batch.part5.json", "configs/config.batch.part6.json", "configs/config.batch.part7.json", "configs/config.batch.part8.json", "configs/config.batch.part9.json", "configs/config.batch.part10.json", "configs/config.batch.part11.json", "configs/config.batch.part12.json", "configs/config.batch.part13.json", "configs/config.batch.part14.json", "configs/config.batch.part15.json", "configs/config.batch.part16.json"]
+        config_file: ["configs/batch/config.part1.json", "configs/batch/config.part2.json", "configs/batch/config.part3.json", "configs/batch/config.part4.json", "configs/batch/config.part5.json", "configs/batch/config.part6.json", "configs/batch/config.part7.json", "configs/batch/config.part8.json", "configs/batch/config.part9.json", "configs/batch/config.part10.json", "configs/batch/config.part11.json", "configs/batch/config.part12.json", "configs/batch/config.part13.json", "configs/batch/config.part14.json", "configs/batch/config.part15.json", "configs/batch/config.part16.json"]
     uses: ./.github/workflows/build.yml
     with:
       config_file: ${{ matrix.config_file }}

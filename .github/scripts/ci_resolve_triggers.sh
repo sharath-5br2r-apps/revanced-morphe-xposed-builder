@@ -29,7 +29,7 @@ TRIGGER_STABLE=0
 TRIGGER_PRERELEASE=0
 
 if [ "$RAW_TRIGGER_STABLE" = "1" ]; then
-  CFG="configs/config.stable.updated.json"
+  CFG="configs/stable/config.updated.json"
   ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
   if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
     TRIGGER_STABLE=1
@@ -39,7 +39,7 @@ if [ "$RAW_TRIGGER_STABLE" = "1" ]; then
 fi
 
 if [ "$RAW_TRIGGER_PRERELEASE" = "1" ]; then
-  CFG="configs/config.dev.updated.json"
+  CFG="configs/beta/config.updated.json"
   ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
   if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
     TRIGGER_PRERELEASE=1
@@ -49,21 +49,21 @@ if [ "$RAW_TRIGGER_PRERELEASE" = "1" ]; then
 fi
 
 for i in {1..5}; do
-  dev_file="configs/config.dev.part${i}.json"
+  dev_file="configs/beta/config.part${i}.json"
   if [ -s "$dev_file" ] && [ "$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$dev_file" 2>/dev/null || echo 0)" -gt 0 ]; then
     echo "HAS_DEV_${i}=1" >> "$GITHUB_OUTPUT"
   else
     echo "HAS_DEV_${i}=0" >> "$GITHUB_OUTPUT"
   fi
 
-  stable_file="configs/config.stable.part${i}.json"
+  stable_file="configs/stable/config.part${i}.json"
   if [ -s "$stable_file" ] && [ "$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$stable_file" 2>/dev/null || echo 0)" -gt 0 ]; then
     echo "HAS_STABLE_${i}=1" >> "$GITHUB_OUTPUT"
   else
     echo "HAS_STABLE_${i}=0" >> "$GITHUB_OUTPUT"
   fi
 
-  latest_file="configs/config.latest.part${i}.json"
+  latest_file="configs/both/config.part${i}.json"
   if [ -s "$latest_file" ] && [ "$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$latest_file" 2>/dev/null || echo 0)" -gt 0 ]; then
     echo "HAS_LATEST_${i}=1" >> "$GITHUB_OUTPUT"
   else
@@ -73,7 +73,7 @@ done
 
 TRIGGER_LATEST=0
 if [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
-  CFG="configs/config.latest.updated.json"
+  CFG="configs/both/config.updated.json"
   if [ -s "$CFG" ]; then
     ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" 2>/dev/null || echo 0)
     if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then

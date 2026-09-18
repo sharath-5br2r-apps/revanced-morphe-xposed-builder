@@ -2372,6 +2372,11 @@ get_github_resp() {
 	repo=$(cut -d/ -f4-5 <<<"$url")
 	tag=${url%/}
 	tag=${tag##*/}
+	# A repository releases page has no tag; treat it as the latest-release
+	# endpoint instead of constructing /releases/tags/releases.
+	if [[ "$url" == */releases ]] || [[ "$url" == */releases/ ]]; then
+		tag="${repo##*/}"
+	fi
 	
 	if [ "$tag" = "${repo##*/}" ]; then
 		if [ -n "${resolved_version:-}" ]; then
@@ -2403,10 +2408,12 @@ get_github_resp() {
 
 	if [ "$tag" = "latest" ]; then
 		local jq_filter=""
-		if [ -n "${args[github_release_regex]:-}" ]; then
+		if [ -n "${args[github_release_name_regex]:-}" ]; then
+			jq_filter="[.[] | select((.name // \"\") | test(\"${args[github_release_name_regex]}\"; \"i\"))]"
+		elif [ -n "${args[github_release_regex]:-}" ]; then
 			jq_filter="[.[] | select((.name // \"\") | test(\"${args[github_release_regex]}\"; \"i\"))]"
 		else
-			local variant_l="${table,,} ${args[variant]:-} ${args[brand]:-}"
+				local variant_l="${table:-${args[app_name]:-}} ${args[variant]:-} ${args[brand]:-}"
 			if [[ "$variant_l" == *"beta"* ]]; then
 				jq_filter='[.[] | select((.name // "") | test("(^|[^a-zA-Z])Beta([^a-zA-Z]|$)"; "i"))]'
 			elif [[ "$variant_l" == *"nightly"* ]]; then
