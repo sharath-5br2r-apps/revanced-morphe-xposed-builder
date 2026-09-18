@@ -1,20 +1,21 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "HillClimbRacing-Morphe-Byehi98": {
+  "YouTubeMusic-Morphe-Anddea": {
     "enable-module-update": true,
     "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "Hill Climb Racing",
+    "app-name": "YouTube Music",
     "engine-brand": "Morphe",
-    "patch-brand": "Byehi98",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.fingersoft.hillclimb",
-    "build-mode": "apk",
-    "arch": "all arm64-v8a arm-v7a x86_64",
-    "pkg-name": "com.fingersoft.hillclimb",
-    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/",
-    "patches-source": "byehi98/okish-morphe-patches"
+    "patch-brand": "Anddea",
+    "build-mode": "both",
+    "arch": "arm64-v8a arm-v7a x86_64",
+    "pkg-name": "com.google.android.apps.youtube.music",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "patches-source": "anddea/revanced-patches",
+    "patcher-args": "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error",
+    "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.apps.youtube.music"
   },
   "YouTube-Morphe-AMOLED-Experimental": {
     "enable-module-update": true,

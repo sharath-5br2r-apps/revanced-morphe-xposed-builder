@@ -1,9 +1,9 @@
 {
   "anddea/revanced-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "36817ab0b0cfc78d16a9f3e3ddac8500",
-      "com.google.android.youtube": "9e3614c902e79399436168e248b352f7",
-      "shared": "78a5856192f57b3a46bf8a24ef2a3bf5"
+      "com.google.android.apps.youtube.music": "e16c671799df8f6dd955061c9b98e13b",
+      "com.google.android.youtube": "77c1dc1f5879adaea4b3f99753140390",
+      "shared": "7bde30acb2bbcdec4698746c1d6db80f"
     },
     "stable": {}
   },
@@ -154,7 +154,7 @@
   "morpheapp/morphe-patches": {
     "beta": {
       "com.google.android.apps.youtube.music": "bb145b7694d3a86e91ab6a153140a8de",
-      "com.google.android.youtube": "98e9cea32b137430f7d43706e0366bb7",
+      "com.google.android.youtube": "874c0318865814d32662afb269d4d13b",
       "shared": "15acc84bec8476ff0a246706e7c0b822"
     },
     "stable": {}
