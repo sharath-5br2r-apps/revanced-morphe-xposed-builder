@@ -142,7 +142,7 @@
     "beta": {},
     "stable": {
       "com.brave.browser": "8f9556a16017e8f8076ee1c8dfbff312",
-      "shared": "e282c98ea889657df302fe44029872d8"
+      "shared": "624c642c36f8ca9f0c744098f191b897"
     }
   },
   "morpheapp/morphe-patches": {
