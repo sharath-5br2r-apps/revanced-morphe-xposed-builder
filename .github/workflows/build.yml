@@ -41,6 +41,7 @@ on:
           - "configs/config.manual.toml"
           - "configs/config.beta.updated.json"
           - "configs/config.stable.updated.json"
+          - "configs/config.both.updated.json"
       remove_apks:
         description: "Optional: APKs to remove from cache (space-separated, e.g., com.brave.browser-1.93.138-*.apk)"
         required: false
@@ -174,6 +175,7 @@ jobs:
         run: python3 .github/scripts/build_make_manifest.py
 
       - name: Upload to release
+        if: ${{ inputs.upload_release_metadata != false }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TAG: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -196,6 +198,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Update changelog and module update files
+        if: ${{ inputs.aggregate_flavor == '' }}
         id: update_changelog
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -205,7 +208,7 @@ jobs:
         run: bash .github/scripts/build_update_changelog.sh
 
       - name: Commit updated build and module update files
-        if: steps.update_changelog.outputs.has_modules == 'true'
+        if: ${{ inputs.aggregate_flavor == '' && steps.update_changelog.outputs.has_modules == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: update
@@ -219,6 +222,7 @@ jobs:
           bash .github/scripts/build_exclude_from_archive.sh
 
       - name: Upload to release (Archive)
+        if: ${{ inputs.upload_release_metadata != false }}
         id: archive_upload
         continue-on-error: true
         env:
@@ -233,6 +237,7 @@ jobs:
         run: bash .github/scripts/build_upload_release.sh
 
       - name: Merge and upload archive manifest
+        if: ${{ inputs.upload_release_metadata != false }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ARCHIVE_TAG: ${{ steps.context.outputs.ARCHIVE_TAG }}
@@ -240,6 +245,7 @@ jobs:
         run: bash .github/scripts/merge_archive_manifest.sh
 
       - name: Notify website catalog rebuild
+        if: ${{ inputs.upload_release_metadata != false }}
         continue-on-error: true
         env:
           DISPATCH_TOKEN: ${{ secrets.WEBSITE_TOKEN || secrets.WEBSITE_DISPATCH_TOKEN || secrets.WEBSITE_REPO_TOKEN || secrets.APKS_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}

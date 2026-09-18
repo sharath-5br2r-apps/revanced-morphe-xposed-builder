@@ -254,12 +254,10 @@ jobs:
               title_base="Build $tag"
             fi
             release_title="${title_base} (Pre-release)"
-            notes_arg=("--notes" "")
-            [ -s "dev_logs/aggregated_out/build.dev.md" ] && notes_arg=("--notes-file" "dev_logs/aggregated_out/build.dev.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -s "dev_logs/aggregated_out/build.dev.md" ] && gh release edit "$tag" --notes-file "dev_logs/aggregated_out/build.dev.md" || true
+              gh release edit "$tag" --generate-notes || true
             else
-              gh release create "$tag" --title "$release_title" "${notes_arg[@]}" --prerelease || true
+              gh release create "$tag" --title "$release_title" --generate-notes --prerelease || true
             fi
             if [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
               echo "Uploading dev_logs/aggregated_out/build.dev.json to release $tag..."
@@ -270,21 +268,6 @@ jobs:
               }
             fi
           fi
-
-      - name: Collect update branch files (Dev)
-        run: |
-          mkdir -p changelogs
-          [ -s "dev_logs/aggregated_out/build.dev.md" ] && cp -f "dev_logs/aggregated_out/build.dev.md" "changelogs/${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}.md" || true
-
-      - name: Commit update branch files (Dev)
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: update
-          create_branch: true
-          skip_checkout: true
-          file_pattern: changelogs/*.md
-          commit_message: "Bump version ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
-
 
   resolve_stable_version:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs]
@@ -396,12 +379,10 @@ jobs:
             else
               title_base="Build $tag"
             fi
-            notes_arg=("--notes" "")
-            [ -s "stable_logs/aggregated_out/build.stable.md" ] && notes_arg=("--notes-file" "stable_logs/aggregated_out/build.stable.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -s "stable_logs/aggregated_out/build.stable.md" ] && gh release edit "$tag" --notes-file "stable_logs/aggregated_out/build.stable.md" || true
+              gh release edit "$tag" --generate-notes || true
             else
-              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
+              gh release create "$tag" --title "$title_base" --generate-notes || true
             fi
             if [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
               echo "Uploading stable_logs/aggregated_out/build.stable.json to release $tag..."
@@ -412,21 +393,6 @@ jobs:
               }
             fi
           fi
-
-      - name: Collect update branch files (Stable)
-        run: |
-          mkdir -p changelogs
-          [ -s "stable_logs/aggregated_out/build.stable.md" ] && cp -f "stable_logs/aggregated_out/build.stable.md" "changelogs/${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}.md" || true
-
-      - name: Commit update branch files (Stable)
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: update
-          create_branch: true
-          skip_checkout: true
-          file_pattern: changelogs/*.md
-          commit_message: "Bump version ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
-
 
   resolve_latest_version:
     needs: [check_patch, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, aggregate_stable_logs]
@@ -543,12 +509,10 @@ jobs:
             else
               title_base="Build $tag"
             fi
-            notes_arg=("--notes" "")
-            [ -s "latest_logs/aggregated_out/build.latest.md" ] && notes_arg=("--notes-file" "latest_logs/aggregated_out/build.latest.md")
             if gh release view "$tag" >/dev/null 2>&1; then
-              [ -s "latest_logs/aggregated_out/build.latest.md" ] && gh release edit "$tag" --notes-file "latest_logs/aggregated_out/build.latest.md" || true
+              gh release edit "$tag" --generate-notes || true
             else
-              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
+              gh release create "$tag" --title "$title_base" --generate-notes || true
             fi
             if [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
               echo "Uploading latest_logs/aggregated_out/build.latest.json to release $tag..."
@@ -559,21 +523,6 @@ jobs:
               }
             fi
           fi
-
-      - name: Collect update branch files (Latest)
-        run: |
-          mkdir -p changelogs
-          [ -s "latest_logs/aggregated_out/build.latest.md" ] && cp -f "latest_logs/aggregated_out/build.latest.md" "changelogs/${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}.md" || true
-
-      - name: Commit update branch files (Latest)
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: update
-          create_branch: true
-          skip_checkout: true
-          file_pattern: changelogs/*.md
-          commit_message: "Bump version ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
-
 
   resolve_batch_version:
     needs: check_patch
@@ -628,10 +577,7 @@ jobs:
           mkdir -p batch_logs
           cp -r logs_artifacts/* batch_logs/ 2>/dev/null || true
           cd batch_logs
-          FLAVOR="stable"
-          if [ "${{ needs.resolve_batch_version.outputs.patches_version }}" = "dev" ]; then
-            FLAVOR="dev"
-          fi
+          FLAVOR="batch"
           bash ../.github/scripts/build_aggregate_logs.sh "$FLAVOR"
           cd ..
 
@@ -689,11 +635,18 @@ jobs:
 
       - name: Collect update branch files (Batch)
         run: |
+          set -euo pipefail
           mkdir -p changelogs
           tag="${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
-          for f in batch_logs/aggregated_out/build.*.md; do
-            [ -s "$f" ] && [ -n "$tag" ] && cp -f "$f" "changelogs/${tag}.md" && break || true
-          done
+          json_file="batch_logs/aggregated_out/build.batch.json"
+          changelog_file="batch_logs/aggregated_out/build.batch.md"
+          if [ -n "$tag" ] && [ -s "$json_file" ]; then
+            if [ ! -s "$changelog_file" ]; then
+              python3 .github/scripts/generate_release_notes.py "$json_file" "$changelog_file"
+            fi
+            cp -f "$json_file" "build.json"
+            [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
+          fi
 
       - name: Commit update branch files (Batch)
         uses: stefanzweifel/git-auto-commit-action@v7
@@ -701,9 +654,8 @@ jobs:
           branch: update
           create_branch: true
           skip_checkout: true
-          file_pattern: changelogs/*.md
+          file_pattern: build.json changelogs/*.md
           commit_message: "Bump version ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
-
 
   trigger_cleanup:
     needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, build_batch, aggregate_batch_logs]
