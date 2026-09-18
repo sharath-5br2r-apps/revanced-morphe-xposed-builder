@@ -3,7 +3,6 @@
   "enable-module-update": true,
   "XRecorder-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "XRecorder",
@@ -21,7 +20,6 @@
   },
   "NovaLauncher-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Nova Launcher",
@@ -37,7 +35,6 @@
   },
   "SolidExplorer-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Solid Explorer",
@@ -55,7 +52,6 @@
   },
   "PodcastAddict-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Podcast Addict",
@@ -73,7 +69,6 @@
   },
   "NiagaraLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Niagara Launcher",
@@ -91,7 +86,6 @@
   },
   "Goodreads-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Goodreads",

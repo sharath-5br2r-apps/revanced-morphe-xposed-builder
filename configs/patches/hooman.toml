@@ -1,5 +1,4 @@
 enable-module-update = true
-patches-version = "absolutelatest"
 [Symfonium-Morphe-Hooman]
 enabled = true
 app-name = "Symfonium"

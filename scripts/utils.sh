@@ -526,6 +526,10 @@ _get_prebuilts() {
 		local host="${p_hosts[$i]:-${p_hosts[0]}}" host_instance=""
 		local src="${p_srcs[$i]}"
 		local ver="${p_vers[$i]:-${p_vers[0]}}"
+		# Do not reuse the CLI release object when resolving the patch source.
+		# Values such as absolutelatest intentionally enter the tag-resolution
+		# branch below and must fetch a release from this source independently.
+		release=""
 		
 		parse_host_spec "$host" host host_instance || abort "source host '$host' is not supported"
 		local tag="Patches" fprefix="patches"
@@ -651,17 +655,23 @@ set_prebuilts() {
 	HTMLQ="${BIN_DIR}/htmlq/htmlq-${kernel}-${arch}${ext}"
 	[ -f "$HTMLQ" ] || HTMLQ="${BIN_DIR}/htmlq/htmlq-${arch}"
 	if [ ! -x "$HTMLQ" ] && command -v htmlq >/dev/null 2>&1; then HTMLQ="htmlq"; fi
-	AAPT2="${BIN_DIR}/aapt2/aapt2-${kernel}-${arch}${ext}"
-	[ -f "$AAPT2" ] || AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}"
+	if command -v aapt2 >/dev/null 2>&1; then
+		AAPT2=$(command -v aapt2)
+	else
+		AAPT2="${BIN_DIR}/aapt2/aapt2-${kernel}-${arch}${ext}"
+		[ -f "$AAPT2" ] || AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}"
+	fi
 
-	local sdk_root="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
+	# Prefer the system aapt2, then Patch Power's SDK, then the usual Android SDK
+	# variables. The bundled binary remains the final fallback.
+	local sdk_root="${PATCH_POWER_SDK_ROOT:-${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}}"
 	if [ -n "$sdk_root" ] && [ -d "$sdk_root/build-tools" ]; then
 		local latest_bt
 		latest_bt=$(ls -1d "$sdk_root"/build-tools/* 2>/dev/null | sort -V | tail -1)
 		if [ -n "$latest_bt" ] && [ -f "$latest_bt/lib/apksigner.jar" ]; then
 			APKSIGNER="$latest_bt/lib/apksigner.jar"
 		fi
-		if [ ! -x "$AAPT2" ] && [ -n "$latest_bt" ] && [ -x "$latest_bt/aapt2" ]; then
+		if [ -n "$latest_bt" ] && [ -x "$latest_bt/aapt2" ] && ! command -v aapt2 >/dev/null 2>&1; then
 			AAPT2="$latest_bt/aapt2"
 		fi
 	fi
@@ -1237,7 +1247,7 @@ sign_apk() {
 
 merge_splits() {
 	local bundle=$1 output=$2
-	if unzip -l "$bundle" 2>/dev/null | grep -q '^[[:space:]]*[0-9].*AndroidManifest\.xml$'; then
+	if unzip -l "$bundle" | grep '^[[:space:]]*[0-9].*AndroidManifest\.xml$' >/dev/null; then
 		pr "Downloaded bundle is actually a standard APK. Bypassing merge."
 		mv -f "$bundle" "$output"
 		return 0
@@ -1803,6 +1813,17 @@ dl_apkmirror() {
 			"${cookie_args[@]}" \
 			--timeout=300 \
 			"$final_url" || return 1
+	fi
+	# wget can receive a HTTP-200 Cloudflare challenge page. Reject it before
+	# any APK/bundle parsing or metadata checks.
+	if [ -f "$target_dl_dest" ]; then
+		local downloaded_header
+		downloaded_header=$(head -c 65536 "$target_dl_dest" 2>/dev/null | tr -d '\0' || true)
+		if is_cf_challenge_page "$downloaded_header" || grep -qiE '<!doctype[[:space:]]+html|<html|cloudflare|turnstile|just a moment' <<<"$downloaded_header" >/dev/null; then
+			epr "Cloudflare challenge page received instead of an artifact: $final_url"
+			rm -f "$target_dl_dest"
+			return 1
+		fi
 	fi
 
 	if [ "$is_bundle" = true ]; then
@@ -2924,7 +2945,7 @@ write_build_info() {
 	skipped_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: Skipping disabled: ).*|(?<=INFO: Skipping incompatible patch \x27)[^\x27]+|(?<=WARN: Skipping patch \x27)[^\x27]+' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
 	[[ "$skipped_json" != \[* ]] && skipped_json='[]'
 
-	jq --arg key "$key" \
+	python3 "${CWD}/.github/scripts/build_json_lock.py" "${BUILD_JSON_FILE}.lock" jq --arg key "$key" \
 			--arg asset_name "$asset_name" \
 			--arg ext "$ext" \
 			--arg arch "$arch" \
@@ -3637,7 +3658,7 @@ build_rv() {
 						rm -f "$stock_apk" "${stock_apk%.apk}".* "${stock_apk}".*
 						continue
 					fi
-					if ! unzip -l "$stock_apk" 2>/dev/null | grep -q '^[[:space:]]*[0-9].*AndroidManifest\.xml$'; then
+					if ! unzip -l "$stock_apk" | grep '^[[:space:]]*[0-9].*AndroidManifest\.xml$' >/dev/null; then
 						pr "WARNING: ${stock_apk} does not contain AndroidManifest.xml at root. Attempting to extract as bundle (XAPK/APKS/APKM)..."
 						mv "$stock_apk" "${stock_apk}.bundle"
 						if [ "${MORPHE_PASSTHROUGH_ACTIVE:-false}" = true ]; then
@@ -3926,6 +3947,18 @@ build_rv() {
 	local patches_ref="${args[patches_ref]}"
 	local changelog_url="${args[changelog_url]}"
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
+	local -a arch_build_pids=()
+	local build_logs_dir="${TEMP_DIR}/build_logs_$$"
+	mkdir -p "$build_logs_dir"
+	for arch in "${arch_list[@]}"; do
+	(
+		arch_f="${arch// /}"
+		if [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-all.apk" ]; then
+			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+		else
+			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+		fi
+		all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")
@@ -4162,7 +4195,13 @@ build_rv() {
 			pr "Built ${table} (root beta): '${BUILD_DIR}/${beta_module_output}'"
 			write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}-module-beta" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}"
 		fi
+		done
+	) >"${build_logs_dir}/build_${arch// /}.log" 2>&1 &
+	arch_build_pids+=("$!")
 	done
+	for pid in "${arch_build_pids[@]}"; do wait "$pid" || return 1; done
+	for logfile in "${build_logs_dir}"/build_*.log; do [ -f "$logfile" ] && cat "$logfile"; done
+	rm -rf "$build_logs_dir"
 }
 
 list_args() { tr -d '\t\r' <<<"$1" | tr -s ' ' | sed "s/' '/'\\n'/g" | sed 's/" "/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :; }

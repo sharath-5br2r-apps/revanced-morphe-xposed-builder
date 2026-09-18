@@ -1,5 +1,4 @@
 enable-module-update = true
-patches-version = "absolutelatest"
 [Discord-NPatch-Revenge]
 enabled = true 
 app-name = "Discord"

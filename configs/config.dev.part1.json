@@ -3,7 +3,6 @@
   "enable-module-update": true,
   "CamScanner-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "CamScanner",
@@ -23,7 +22,6 @@
   },
   "SmartLauncher-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Smart Launcher",
@@ -39,7 +37,6 @@
   },
   "NovaLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Nova Launcher",
@@ -57,7 +54,6 @@
   },
   "Wallcraft-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Wallcraft",
@@ -73,7 +69,6 @@
   },
   "MerriamWebsterDictionary-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Merriam-Webster Dictionary",
@@ -89,7 +84,6 @@
   },
   "HelloChinese-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "HelloChinese",
@@ -105,7 +99,6 @@
   },
   "AdobeLightroom-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Adobe Lightroom",

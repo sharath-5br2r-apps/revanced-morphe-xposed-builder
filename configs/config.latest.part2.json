@@ -1,5 +1,4 @@
 {
-  "patches-version": "absolutelatest",
   "enable-module-update": true,
   "BraveBrowser-Nightly-Morphe-Dh6k": {
     "enabled": true,

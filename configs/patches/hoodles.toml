@@ -1,5 +1,4 @@
 enable-module-update = true
-patches-version = "absolutelatest"
 
 [CamScanner-Morphe-Hoodles]
 enabled = true

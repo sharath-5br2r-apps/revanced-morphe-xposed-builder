@@ -1,5 +1,4 @@
 enable-module-update = true
-patches-version = "absolutelatest"
 
 # ── Pinterest (browzomje-patches) ─────────────────────────────────────────────
 [Pinterest-Morphe-Browzomje]

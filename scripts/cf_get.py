@@ -26,6 +26,32 @@ MAX_RETRIES = 2
 _TRAWL_READY = set()
 DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
 
+
+def get_impersonate_targets() -> list[str]:
+    """Return supported curl_cffi browser profiles, newest/highest priority first."""
+    targets = []
+    try:
+        from curl_cffi.requests import BrowserType
+        members = [m.value for m in BrowserType if hasattr(m, "value")]
+        import re
+
+        def key(name):
+            match = re.search(r"\d+", str(name))
+            version = int(match.group()) if match else 0
+            lowered = str(name).lower()
+            family = 3 if "chrome" in lowered and "android" not in lowered else 2 if "safari" in lowered else 1 if "edge" in lowered else 0
+            return family, version
+
+        for target in sorted(members, key=key, reverse=True):
+            if target not in targets:
+                targets.append(target)
+    except Exception:
+        pass
+    for target in ("chrome", "safari"):
+        if target not in targets:
+            targets.append(target)
+    return targets[:8]
+
 def is_challenge(status_code: int, text: str, headers: dict = None) -> bool:
     if status_code in (403, 503):
         return True
@@ -44,6 +70,21 @@ def is_challenge(status_code: int, text: str, headers: dict = None) -> bool:
         "/cdn-cgi/challenge-platform/",
         "challenges.cloudflare.com",
     ))
+
+
+def is_valid_download(path: str) -> bool:
+    """Reject Cloudflare challenge/error pages without assuming file type."""
+    try:
+        with open(path, "rb") as stream:
+            header = stream.read(65536)
+        if not header:
+            return False
+        sample = header.decode("utf-8", errors="ignore")
+        if is_challenge(200, sample) or "<!doctype html" in sample.lower() or "<html" in sample.lower():
+            return False
+        return True
+    except OSError:
+        return False
 
 
 def acquire_lock(lock_file: str):
@@ -449,12 +490,14 @@ def download_file(url: str, dest_path: str, referer: str = "", cookie_file: str 
                     for chunk in resp.iter_content(chunk_size=1048576):
                         if chunk:
                             f.write(chunk)
-                if os.path.isfile(temp_dest) and os.path.getsize(temp_dest) > 0:
+                if os.path.isfile(temp_dest) and os.path.getsize(temp_dest) > 0 and is_valid_download(temp_dest):
                     if os.path.isfile(dest_path):
                         os.remove(dest_path)
                     os.rename(temp_dest, dest_path)
                     save_cookies(s, cookie_file)
                     return True
+                if os.path.isfile(temp_dest):
+                    os.remove(temp_dest)
         except Exception as e:
             sys.stderr.write(f"[cf_get] Download error with target {imp}: {e}\n")
             if os.path.isfile(temp_dest):

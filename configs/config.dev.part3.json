@@ -3,7 +3,6 @@
   "enable-module-update": true,
   "PrimeVideo-Morphe-Hoodles-Shared-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "app-name": "Prime Video",
     "engine-brand": "Morphe",
@@ -23,7 +22,6 @@
   },
   "SmartLauncher6-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Smart Launcher 6",
@@ -39,7 +37,6 @@
   },
   "Xodo-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Xodo PDF",
@@ -57,7 +54,6 @@
   },
   "WPSOffice-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "WPS Office",
@@ -73,7 +69,6 @@
   },
   "Ventusky-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Ventusky",
@@ -89,7 +84,6 @@
   },
   "MyFitnessPal-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "MyFitnessPal",

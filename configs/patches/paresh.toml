@@ -1,5 +1,4 @@
 enable-module-update = true
-patches-version = "absolutelatest"
 [Truecaller-Morphe-Paresh]
 enabled = true
 cli-source = "MorpheApp/morphe-desktop"

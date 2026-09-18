@@ -1,5 +1,4 @@
 enable-module-update = true
-patches-version = "absolutelatest"
 
 # ── YouTube morphe-anddea (stock/AMOLED, default) ─────────────────────────────
 [YouTube-Morphe-Anddea]

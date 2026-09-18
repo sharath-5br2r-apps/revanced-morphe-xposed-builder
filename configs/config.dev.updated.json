@@ -2,7 +2,6 @@
   "patches-version": "dev",
   "CamScanner-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "CamScanner",
@@ -22,7 +21,6 @@
   },
   "PrimeVideo-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "app-name": "Prime Video",
     "engine-brand": "Morphe",
@@ -40,7 +38,6 @@
   },
   "PrimeVideo-Morphe-Hoodles-Shared-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "app-name": "Prime Video",
     "engine-brand": "Morphe",
@@ -60,7 +57,6 @@
   },
   "XRecorder-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "XRecorder",
@@ -76,7 +72,6 @@
   },
   "XRecorder-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "XRecorder",
@@ -94,7 +89,6 @@
   },
   "SmartLauncher-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Smart Launcher",
@@ -110,7 +104,6 @@
   },
   "SmartLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Smart Launcher",
@@ -128,7 +121,6 @@
   },
   "SmartLauncher6-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Smart Launcher 6",
@@ -144,7 +136,6 @@
   },
   "SmartLauncher6-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Smart Launcher 6",
@@ -162,7 +153,6 @@
   },
   "NovaLauncher-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Nova Launcher",
@@ -178,7 +168,6 @@
   },
   "NovaLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Nova Launcher",
@@ -196,7 +185,6 @@
   },
   "Xodo-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Xodo PDF",
@@ -212,7 +200,6 @@
   },
   "Xodo-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Xodo PDF",
@@ -230,7 +217,6 @@
   },
   "SolidExplorer-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Solid Explorer",
@@ -246,7 +232,6 @@
   },
   "SolidExplorer-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Solid Explorer",
@@ -264,7 +249,6 @@
   },
   "Wallcraft-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Wallcraft",
@@ -280,7 +264,6 @@
   },
   "Wallcraft-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Wallcraft",
@@ -298,7 +281,6 @@
   },
   "WPSOffice-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "WPS Office",
@@ -314,7 +296,6 @@
   },
   "PodcastAddict-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Podcast Addict",
@@ -330,7 +311,6 @@
   },
   "PodcastAddict-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Podcast Addict",
@@ -348,7 +328,6 @@
   },
   "MerriamWebsterDictionary-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Merriam-Webster Dictionary",
@@ -364,7 +343,6 @@
   },
   "Pandora-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Pandora",
@@ -380,7 +358,6 @@
   },
   "Ventusky-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Ventusky",
@@ -396,7 +373,6 @@
   },
   "Ventusky-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Ventusky",
@@ -414,7 +390,6 @@
   },
   "NiagaraLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Niagara Launcher",
@@ -432,7 +407,6 @@
   },
   "HelloChinese-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "HelloChinese",
@@ -448,7 +422,6 @@
   },
   "MyFitnessPal-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "MyFitnessPal",
@@ -464,7 +437,6 @@
   },
   "MyFitnessPal-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "MyFitnessPal",
@@ -482,7 +454,6 @@
   },
   "Goodreads-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Goodreads",
@@ -498,7 +469,6 @@
   },
   "Goodreads-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Goodreads",
@@ -516,7 +486,6 @@
   },
   "AdobeLightroom-Morphe-Hoodles": {
     "enable-module-update": true,
-    "patches-version": "absolutelatest",
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "Adobe Lightroom",

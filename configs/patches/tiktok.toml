@@ -1,5 +1,4 @@
 enable-module-update = true
-patches-version = "absolutelatest"
 [TikTok-Morphe-Icysymmetra]
 enabled = true
 app-name = "TikTok"
