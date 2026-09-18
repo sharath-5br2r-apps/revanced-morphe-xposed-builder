@@ -123,7 +123,7 @@
     "engine-brand": "APKSigner",
     "patch-brand": "Signed",
     "build-mode": "apk",
-    "cli-source": "apksigner",
+    "cli-type": "apksigner",
     "pkg-name": "com.amazon.dee.app",
     "cli-source-host": "none",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.dee.app",

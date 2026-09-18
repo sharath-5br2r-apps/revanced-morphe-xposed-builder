@@ -64,7 +64,7 @@
   "ClashOfClans-APKSigner-Nulls": {
     "enable-module-update": true,
     "enabled": true,
-    "cli-source": "none",
+    "cli-type": "none",
     "cli-source-host": "none",
     "app-name": "Clash of Clans",
     "engine-brand": "APKSigner",

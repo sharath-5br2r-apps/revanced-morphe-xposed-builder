@@ -70,7 +70,7 @@
   "BrawlStars-APKSigner-Nulls": {
     "enable-module-update": true,
     "enabled": true,
-    "cli-source": "none",
+    "cli-type": "none",
     "cli-source-host": "none",
     "app-name": "Brawl Stars",
     "engine-brand": "APKSigner",
