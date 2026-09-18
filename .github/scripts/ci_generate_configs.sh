@@ -6,6 +6,8 @@ set -euo pipefail
 dos2unix scripts/utils.sh 2>/dev/null || true
 source scripts/utils.sh
 
+mkdir -p configs/beta configs/stable configs/both configs/batch
+
 [ -f tags_old.json ] && TAGS_OLD=$(cat tags_old.json) || TAGS_OLD='{}'
 [ -f tags_new.json ] && TAGS_NEW=$(cat tags_new.json) || TAGS_NEW='{}'
 [ -f active_apps.json ] || echo '[]' > active_apps.json
