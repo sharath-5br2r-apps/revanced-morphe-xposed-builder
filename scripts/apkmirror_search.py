@@ -2,6 +2,51 @@
 import sys
 import re
 
+def extract_versions(html_content: str, allow_all: bool = False) -> list[str]:
+    # Restrict search to primary content / listWidget area to avoid scraping
+    # sidebar widgets ("Popular in last 24 hours", trending apps, etc.)
+    content_to_search = html_content
+    m_primary = re.search(r'(?:id="primary"|class="[^"]*listWidget[^"]*")(.*)', html_content, re.DOTALL)
+    if m_primary:
+        content_to_search = m_primary.group(1)
+
+    m_secondary = re.search(r'(?:id="secondary"|<aside\b|class="[^"]*sidebar[^"]*")', content_to_search, re.IGNORECASE)
+    if m_secondary:
+        content_to_search = content_to_search[:m_secondary.start()]
+
+    # Extract links with class fontBlack pointing to releases
+    links = re.findall(r'<a\s+[^>]*class="[^"]*fontBlack[^"]*"[^>]*href="([^"]*-release/)"[^>]*>(.*?)</a>', content_to_search, re.DOTALL)
+    if not links:
+        # Fallback in case attribute order differs
+        links = re.findall(r'<a\s+[^>]*href="([^"]*-release/)"[^>]*class="[^"]*fontBlack[^"]*"[^>]*>(.*?)</a>', content_to_search, re.DOTALL)
+
+    versions = []
+    seen = set()
+    for href, text in links:
+        clean_text = re.sub(r'<[^>]+>', '', text).strip()
+        if not clean_text:
+            continue
+        lower = clean_text.lower()
+        if not allow_all and any(kw in lower for kw in ("beta", "alpha", "secondary")):
+            continue
+
+        m_ver = re.search(r'(\d+\.\d+.*)$', clean_text)
+        ver = m_ver.group(1).strip() if m_ver else clean_text.split()[-1]
+        if ver and ver not in seen:
+            seen.add(ver)
+            versions.append(ver)
+
+    return versions
+
+def extract_package_name(html_content: str) -> str | None:
+    m = re.search(r'play\.google\.com/store/apps/details\?id=([a-zA-Z0-9_.]+)', html_content)
+    if m:
+        return m.group(1)
+    m2 = re.search(r'id=([a-zA-Z0-9_.]+)"\s+class="[^"]*accent_color', html_content)
+    if m2:
+        return m2.group(1)
+    return None
+
 def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc, rel_filter=""):
     dpi_raw = dpi if dpi else "nodpi anydpi auto"
     appdpi = ["nodpi", "anydpi"]
@@ -131,6 +176,28 @@ def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, 
     return None
 
 def main():
+    if len(sys.argv) < 2:
+        sys.exit(1)
+
+    subcmd = sys.argv[1]
+
+    if subcmd == "vers":
+        allow_all = (sys.argv[2].lower() == "true") if len(sys.argv) > 2 else False
+        html_content = sys.stdin.read()
+        vers = extract_versions(html_content, allow_all=allow_all)
+        if vers:
+            print("\n".join(vers))
+            sys.exit(0)
+        sys.exit(1)
+
+    if subcmd == "pkg":
+        html_content = sys.stdin.read()
+        pkg = extract_package_name(html_content)
+        if pkg:
+            print(pkg)
+            sys.exit(0)
+        sys.exit(1)
+
     if len(sys.argv) < 7:
         sys.exit(1)
 

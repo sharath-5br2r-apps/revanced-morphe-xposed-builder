@@ -62,18 +62,7 @@ jobs:
       archive_tag: ${{ steps.context.outputs.ARCHIVE_TAG }}
       flavor_tag: ${{ steps.context.outputs.FLAVOR_TAG }}
     services:
-      redis:
-        image: redis:alpine
-        ports:
-          - 6379:6379
-      trawl:
-        image: ghcr.io/germondai/trawl:latest
-        ports:
-          - 8191:8191
-        env:
-          REDIS_URL: redis://redis:6379
-        options: --shm-size=2gb
-      cfb:
+      cf_solver:
         image: ghcr.io/sarperavci/cloudflarebypassforscraping:latest
         ports:
           - 8000:8000
@@ -136,8 +125,7 @@ jobs:
           APKS_REPO_URL: "${{ vars.APKS_REPO_URL || vars.APKS_REPO }}"
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          TRAWL_URL: "http://localhost:8191"
-          CFB_URL: "http://localhost:8000"
+          CF_SOLVER_URL: "http://localhost:8000"
           OVERRIDE_PATCHES_VERSION: ${{ inputs.patches_version }}
           RVB_MORPHE_PASSTHROUGH: "${{ vars.RVB_MORPHE_PASSTHROUGH || 'true' }}"
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -186,22 +174,16 @@ jobs:
         run: python3 .github/scripts/build_make_manifest.py
 
       - name: Upload to release
-        if: ${{ inputs.upload_release_metadata != false }}
-        uses: Wandalen/wretry.action@v3.8.0
-        with:
-          action: softprops/action-gh-release@v3
-          attempt_limit: 3
-          attempt_delay: 30000
-          with: |
-            body_path: build.md
-            token: ${{ secrets.GITHUB_TOKEN }}
-            files: |
-              ./build/*
-              ./temp/manifest/build.json
-            name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
-            tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
-            overwrite_files: true
-            prerelease: ${{ steps.context.outputs.IS_PRERELEASE == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          RELEASE_TITLE: "Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}"
+          RELEASE_BODY_FILE: build.md
+          IS_PRERELEASE: ${{ steps.context.outputs.IS_PRERELEASE }}
+          UPLOAD_FILES: "./build/* ./temp/manifest/build.json"
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          UPLOAD_CONCURRENCY: "${{ vars.UPLOAD_CONCURRENCY || '4' }}"
+        run: bash .github/scripts/build_upload_release.sh
 
       - name: Upload part build metadata
         if: ${{ inputs.upload_release_metadata == false }}
@@ -239,17 +221,16 @@ jobs:
       - name: Upload to release (Archive)
         id: archive_upload
         continue-on-error: true
-        uses: Wandalen/wretry.action@v3.8.0
-        with:
-          action: softprops/action-gh-release@v3
-          attempt_limit: 3
-          attempt_delay: 30000
-          with: |
-            token: ${{ secrets.GITHUB_TOKEN }}
-            files: ./build/*
-            tag_name: ${{ steps.context.outputs.ARCHIVE_TAG }}
-            overwrite_files: true
-            target_commitish: main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.context.outputs.ARCHIVE_TAG }}
+          RELEASE_TITLE: ${{ steps.context.outputs.ARCHIVE_TAG }}
+          RELEASE_NOTES: "Archive release for ${{ steps.context.outputs.ARCHIVE_TAG }} builds"
+          RELEASE_TARGET: main
+          UPLOAD_FILES: "./build/*"
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          UPLOAD_CONCURRENCY: "${{ vars.UPLOAD_CONCURRENCY || '4' }}"
+        run: bash .github/scripts/build_upload_release.sh
 
       - name: Merge and upload archive manifest
         env:

@@ -1258,6 +1258,22 @@ merge_splits() {
 	return 0
 }
 
+_cf_cffi_download() {
+	local url=$1 dest=$2 referer=${3:-}
+	local py_cmd=""
+	if command -v python3 >/dev/null 2>&1; then
+		py_cmd="python3"
+	elif command -v python >/dev/null 2>&1; then
+		py_cmd="python"
+	fi
+	[ -z "$py_cmd" ] && return 2
+	local py_script="${CWD}/scripts/cf_get.py"
+	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/cf_get.py"
+	[ ! -f "$py_script" ] && return 2
+
+	"$py_cmd" "$py_script" download "$url" "$dest" "$referer" "$TEMP_DIR/cookie.txt"
+}
+
 _fallback_get(){
 	local url=$1
 	html=$(curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 -s -f "$url" -H "User-Agent: ${DEFAULT_UA}") || return 1
@@ -1282,10 +1298,18 @@ _cf_get_python() {
 	[ ! -f "$py_script" ] && return 2
 
 	local cffi_res
-	if cffi_res=$("$py_cmd" "$py_script" "$url" "$TEMP_DIR/cookie.txt" "$TEMP_DIR/cf_get.lock" 2>/dev/null); then
-		html=$(jq -r '.html // empty' <<<"$cffi_res") || return 1
-		CF_COOKIES=$(jq -r '.cf_cookies // empty' <<<"$cffi_res") || CF_COOKIES=""
-		user_agent=$(jq -r '.user_agent // empty' <<<"$cffi_res") || user_agent="${DEFAULT_UA}"
+	if cffi_res=$("$py_cmd" "$py_script" "$url" "$TEMP_DIR/cookie.txt" 2>/dev/null); then
+		html="$cffi_res"
+		if [ -f "$TEMP_DIR/cf_ua.txt" ]; then
+			user_agent="$(cat "$TEMP_DIR/cf_ua.txt" 2>/dev/null || echo "${DEFAULT_UA}")"
+		else
+			user_agent="${DEFAULT_UA}"
+		fi
+		if [ -f "$TEMP_DIR/cf_cookies.txt" ]; then
+			export CF_COOKIES="$(cat "$TEMP_DIR/cf_cookies.txt" 2>/dev/null || echo "")"
+		else
+			CF_COOKIES=""
+		fi
 		return 0
 	else
 		return 1
@@ -1335,7 +1359,26 @@ get_apkmirror_vers() {
 	local vers apkm_resp html=""
 	_cf_get "https://www.apkmirror.com/uploads/?appcategory=${__APKMIRROR_CAT__}" || return 1
 	apkm_resp="$html"
-	
+
+	local py_cmd=""
+	if command -v python3 >/dev/null 2>&1; then
+		py_cmd="python3"
+	elif command -v python >/dev/null 2>&1; then
+		py_cmd="python"
+	fi
+
+	local py_script="${CWD}/scripts/apkmirror_search.py"
+	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/apkmirror_search.py"
+
+	local allow_all="${__AAV__:-false}"
+	if [ -n "$py_cmd" ] && [ -f "$py_script" ]; then
+		local py_vers
+		if py_vers=$("$py_cmd" "$py_script" vers "$allow_all" <<<"$apkm_resp") && [ -n "$py_vers" ]; then
+			echo "$py_vers"
+			return 0
+		fi
+	fi
+
 	if [ -n "${HTMLQ:-}" ] && [ -x "$HTMLQ" ]; then
 		local main_content
 		main_content=$($HTMLQ "#primary" <<<"$apkm_resp" 2>/dev/null || true)
@@ -1343,13 +1386,13 @@ get_apkmirror_vers() {
 		[ -n "$main_content" ] && apkm_resp="$main_content"
 	fi
 
-	vers=$(sed -n 's;.*Version:</span><span class="infoSlide-value">\(.*\) </span>.*;\1;p' <<<"$apkm_resp" | awk '{$1=$1}1')
-	if [ "${__AAV__:-false}" = false ]; then
+	vers=$(echo "$apkm_resp" | grep -oP 'class="fontBlack"[^>]*href="[^"]*-release/"[^>]*>\K[^<]+' | awk '{print $NF}' || true)
+	if [ "$allow_all" = false ]; then
 		local IFS=$'\n'
-		vers=$(grep -iv "\(beta\|alpha\)" <<<"$vers" || true)
+		vers=$(grep -iv "\(beta\|alpha\|secondary\)" <<<"$vers" || true)
 		local v r_vers=()
 		for v in $vers; do
-			grep -iq "${v} \(beta\|alpha\)" <<<"$apkm_resp" || r_vers+=("$v")
+			grep -iq "${v} \(beta\|alpha\|secondary\)" <<<"$apkm_resp" || r_vers+=("$v")
 		done
 		echo "${r_vers[*]}"
 	else
@@ -1359,13 +1402,30 @@ get_apkmirror_vers() {
 
 get_apkmirror_pkg_name() {
 	local resp="$__APKMIRROR_RESP__"
-	if [ -n "${HTMLQ:-}" ] && [ -x "$HTMLQ" ]; then
-		local main_content
-		main_content=$($HTMLQ "#primary" <<<"$resp" 2>/dev/null || true)
-		[ -z "$main_content" ] && main_content=$($HTMLQ "#content" <<<"$resp" 2>/dev/null || true)
-		[ -n "$main_content" ] && resp="$main_content"
+	local py_cmd=""
+	if command -v python3 >/dev/null 2>&1; then
+		py_cmd="python3"
+	elif command -v python >/dev/null 2>&1; then
+		py_cmd="python"
 	fi
-	sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$resp"
+
+	local py_script="${CWD}/scripts/apkmirror_search.py"
+	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/apkmirror_search.py"
+
+	if [ -n "$py_cmd" ] && [ -f "$py_script" ]; then
+		local py_pkg
+		if py_pkg=$("$py_cmd" "$py_script" pkg <<<"$resp") && [ -n "$py_pkg" ]; then
+			echo "$py_pkg"
+			return 0
+		fi
+	fi
+
+	local pkg
+	pkg=$(echo "$resp" | grep -oP 'play\.google\.com/store/apps/details\?id=\K[a-zA-Z0-9_.]+' | head -1) || true
+	if [ -z "$pkg" ]; then
+		pkg=$(sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$resp")
+	fi
+	echo "$pkg"
 }
 
 apkmirror_search() {
@@ -1732,13 +1792,19 @@ dl_apkmirror() {
 	local referer_url="$base_url$btn_url"
 	[[ "$btn_url" == http* ]] && referer_url="$btn_url"
 
-	if [ "$is_bundle" = true ]; then
-		wget -nv -O "${output%.apk}.apkm" \
+	local target_dl_dest="${output}"
+	[ "$is_bundle" = true ] && target_dl_dest="${output%.apk}.apkm"
+
+	if ! _cf_cffi_download "$final_url" "$target_dl_dest" "$referer_url"; then
+		wget -nv -O "$target_dl_dest" \
 			--header="User-Agent: ${user_agent:-Mozilla/5.0}" \
 			--referer="$referer_url" \
 			"${cookie_args[@]}" \
 			--timeout=300 \
 			"$final_url" || return 1
+	fi
+
+	if [ "$is_bundle" = true ]; then
 		if ! unzip -l "${output%.apk}.apkm" >/dev/null 2>&1; then
 			epr "Downloaded file is not a valid zip (apkm): $final_url"
 			rm -f "${output%.apk}.apkm"
@@ -1750,13 +1816,6 @@ dl_apkmirror() {
 		else
 			merge_splits "${output%.apk}.apkm" "${output}"
 		fi
-	else
-		wget -nv -O "${output}" \
-			--header="User-Agent: ${user_agent:-Mozilla/5.0}" \
-			--referer="$referer_url" \
-			"${cookie_args[@]}" \
-			--timeout=300 \
-			"$final_url" || return 1
 	fi
 }
 
@@ -1996,96 +2055,114 @@ PYC
 # -------------------- uptodown --------------------
 get_uptodown_resp() {
 	local url="${1}"
-	if [ -n "${__DL_RESP_CACHE__["uptodown_resp_$url"]:-}" ]; then
-		__UPTODOWN_RESP__="${__DL_RESP_CACHE__["uptodown_resp_$url"]}"
-		__UPTODOWN_RESP_PKG__="${__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]}"
-		return 0
-	fi
-	__UPTODOWN_RESP__=$(req "${url}/versions" -) || return 1
-	__UPTODOWN_RESP_PKG__=$(req "${url}/download" -) || return 1
-	__DL_RESP_CACHE__["uptodown_resp_$url"]="$__UPTODOWN_RESP__"
-	__DL_RESP_CACHE__["uptodown_resp_pkg_$url"]="$__UPTODOWN_RESP_PKG__"
+	local clean_url="${url%/versions}"
+	clean_url="${clean_url%/download}"
+	clean_url="${clean_url%/}"
+	__UPTODOWN_CLEAN_URL__="$clean_url"
+	[ -n "${__DL_RESP_CACHE__["uptodown_resp_$url"]:-}" ] && return 0
+	__DL_RESP_CACHE__["uptodown_resp_$url"]="$clean_url"
+	return 0
 }
-get_uptodown_vers() { $HTMLQ --text ".version" <<<"$__UPTODOWN_RESP__"; }
+
+get_uptodown_vers() {
+	local py_cmd=""
+	if command -v python3 >/dev/null 2>&1; then
+		py_cmd="python3"
+	elif command -v python >/dev/null 2>&1; then
+		py_cmd="python"
+	fi
+
+	local py_script="${CWD}/scripts/uptodown.py"
+	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/uptodown.py"
+
+	local allow_all="${__AAV__:-false}"
+	if [ -n "$py_cmd" ] && [ -f "$py_script" ] && [ -n "${__UPTODOWN_CLEAN_URL__:-}" ]; then
+		local py_vers
+		if py_vers=$("$py_cmd" "$py_script" vers "$__UPTODOWN_CLEAN_URL__" "$allow_all" 2>/dev/null) && [ -n "$py_vers" ]; then
+			echo "$py_vers"
+			return 0
+		fi
+	fi
+
+	local vers
+	vers=$(grep -oP '<span class="version">\K[^<]+' <<<"${__UPTODOWN_RESP__:-}" || true)
+	if [ -z "$vers" ] && [ -n "${HTMLQ:-}" ] && [ -x "$HTMLQ" ]; then
+		vers=$($HTMLQ --text ".version" <<<"${__UPTODOWN_RESP__:-}" 2>/dev/null || true)
+	fi
+	if [ "$allow_all" = false ]; then
+		vers=$(grep -iv "\(beta\|alpha\|secondary\)" <<<"$vers" || true)
+	fi
+	echo "$vers"
+}
+
+get_uptodown_pkg_name() {
+	local py_cmd=""
+	if command -v python3 >/dev/null 2>&1; then
+		py_cmd="python3"
+	elif command -v python >/dev/null 2>&1; then
+		py_cmd="python"
+	fi
+
+	local py_script="${CWD}/scripts/uptodown.py"
+	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/uptodown.py"
+
+	if [ -n "$py_cmd" ] && [ -f "$py_script" ] && [ -n "${__UPTODOWN_CLEAN_URL__:-}" ]; then
+		local py_pkg
+		if py_pkg=$("$py_cmd" "$py_script" pkg "$__UPTODOWN_CLEAN_URL__" 2>/dev/null) && [ -n "$py_pkg" ]; then
+			echo "$py_pkg"
+			return 0
+		fi
+	fi
+
+	local pkg
+	pkg=$(grep -oP 'play\.google\.com/store/apps/details\?id=\K[a-zA-Z0-9_.]+' <<<"${__UPTODOWN_RESP_PKG__:-}${__UPTODOWN_RESP__:-}" | head -1) || true
+	if [ -z "$pkg" ] && [ -n "${HTMLQ:-}" ] && [ -x "$HTMLQ" ]; then
+		pkg=$($HTMLQ --text "tr.full:nth-child(1) > td:nth-child(3)" <<<"${__UPTODOWN_RESP_PKG__:-}" 2>/dev/null || true)
+	fi
+	echo "$pkg"
+}
+
 dl_uptodown() {
 	local uptodown_dlurl=$1 version=$2 output=$3 arch=$4 _dpi=$5
 	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
 
-	local apparch=('arm64-v8a, armeabi-v7a, x86_64' 'arm64-v8a, armeabi-v7a, x86, x86_64' 'arm64-v8a, armeabi-v7a')
-	if [ "$arch" != all ]; then
-		apparch+=("$arch")
+	local py_cmd=""
+	if command -v python3 >/dev/null 2>&1; then
+		py_cmd="python3"
+	elif command -v python >/dev/null 2>&1; then
+		py_cmd="python"
 	fi
 
-	local op resp data_code
-	data_code=$($HTMLQ "#detail-app-name" --attribute data-code <<<"$__UPTODOWN_RESP__")
-	local versionURL=""
-	local is_bundle=false
-	for i in {1..20}; do
-		resp=$(req "${uptodown_dlurl}/apps/${data_code}/versions/${i}" -)
-		if ! op=$(jq -e -r ".data | map(select(.version == \"${version}\")) | .[0]" <<<"$resp"); then
-			continue
-		fi
-		if [ "$(jq -e -r ".kindFile" <<<"$op")" = "xapk" ]; then is_bundle=true; fi
-		if versionURL=$(jq -e -r '.versionURL' <<<"$op"); then break; else return 1; fi
-	done
-	if [ -z "$versionURL" ]; then return 1; fi
-	versionURL=$(jq -e -r '.url + "/" + .extraURL + "/" + (.versionID | tostring)' <<<"$versionURL")
-	resp=$(req "$versionURL" -) || return 1
+	local py_script="${CWD}/scripts/uptodown.py"
+	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/uptodown.py"
 
-	local data_version files node_arch="" data_file_id node_class
-	data_version=$($HTMLQ '.button.variants' --attribute data-version <<<"$resp") || return 1
-	if [ "$data_version" ]; then
-		files=$(req "${uptodown_dlurl%/*}/app/${data_code}/version/${data_version}/files" - | jq -e -r .content) || return 1
-		local specific_arch_id="" specific_is_bundle=false
-		for ((n = 1; n < 12; n += 1)); do
-			node_class=$($HTMLQ -w -t ".content > :nth-child($n)" --attribute class <<<"$files") || return 1
-			if [ "$node_class" != "variant" ]; then
-				node_arch=$($HTMLQ -w -t ".content > :nth-child($n)" <<<"$files" | xargs) || return 1
-				continue
-			fi
-			if [ -z "$node_arch" ]; then return 1; fi
-			
-			local file_type
-			file_type=$($HTMLQ -w -t ".content > :nth-child($n) > .v-file > span" <<<"$files") || return 1
-			data_file_id=$($HTMLQ ".content > :nth-child($n) > .v-report" --attribute data-file-id <<<"$files") || return 1
-			
-			# Pass 1 Logic: Return Universal/Fat Bundles immediately to optimize cache size
-			if isoneof "$node_arch" 'arm64-v8a, armeabi-v7a, x86_64' 'arm64-v8a, armeabi-v7a, x86, x86_64' 'arm64-v8a, armeabi-v7a' 'universal'; then
-				if [ "$file_type" = "xapk" ]; then is_bundle=true; else is_bundle=false; fi
-				resp=$(req "${uptodown_dlurl}/download/${data_file_id}-x" -)
-				break
-			# Pass 2 Logic: Save specifically requested arch as fallback
-			elif [ "$node_arch" = "$arch" ] && [ -z "$specific_arch_id" ]; then
-				specific_arch_id="$data_file_id"
-				if [ "$file_type" = "xapk" ]; then specific_is_bundle=true; else specific_is_bundle=false; fi
-			fi
-		done
-		
-		if [ $n -eq 12 ]; then
-			if [ -n "$specific_arch_id" ]; then
-				is_bundle=$specific_is_bundle
-				resp=$(req "${uptodown_dlurl}/download/${specific_arch_id}-x" -)
+	if [ -n "$py_cmd" ] && [ -f "$py_script" ]; then
+		local py_info
+		if py_info=$("$py_cmd" "$py_script" download-url "$uptodown_dlurl" "$version" "$arch" 2>/dev/null) && [ -n "$py_info" ]; then
+			local cdn_url is_bundle
+			cdn_url=$(cut -f1 <<<"$py_info")
+			is_bundle=$(cut -f2 <<<"$py_info")
+
+			pr "Downloading from Uptodown CDN: $cdn_url"
+			if [ "$is_bundle" = "true" ]; then
+				local bundle="${output%.apk}.apkm"
+				req "$cdn_url" "$bundle" || return 1
+				if [ "${MORPHE_PASSTHROUGH_ACTIVE:-false}" = true ]; then
+					cp -f "$bundle" "${output}"
+				else
+					merge_splits "$bundle" "${output}" || { rm -f "$bundle"; return 1; }
+					rm -f "$bundle"
+				fi
 			else
-				return 1
+				req "$cdn_url" "$output" || return 1
 			fi
+			return 0
 		fi
 	fi
-	local data_url
-	data_url=$($HTMLQ "#detail-download-button" --attribute data-url <<<"$resp") || return 1
-	if [ $is_bundle = true ]; then
-		local bundle="${output%.apk}.apkm"
-		req "https://dw.uptodown.com/dwn/${data_url}" "$bundle" || return 1
-		if [ "${MORPHE_PASSTHROUGH_ACTIVE:-false}" = true ]; then
-			cp -f "$bundle" "${output}"
-		else
-			merge_splits "$bundle" "${output}" || { rm -f "$bundle"; return 1; }
-			rm -f "$bundle"
-		fi
-	else
-		req "https://dw.uptodown.com/dwn/${data_url}" "$output"
-	fi
+
+	epr "Failed to resolve Uptodown download URL for $uptodown_dlurl version $version"
+	return 1
 }
-get_uptodown_pkg_name() { $HTMLQ --text "tr.full:nth-child(1) > td:nth-child(3)" <<<"$__UPTODOWN_RESP_PKG__"; }
 
 # -------------------- archive --------------------
 dl_archive() {
