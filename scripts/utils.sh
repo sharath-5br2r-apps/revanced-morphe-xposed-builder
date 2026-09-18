@@ -1286,6 +1286,7 @@ _fallback_get(){
 
 _cf_get_python() {
 	local url=$1
+	local referer=${2:-}
 	local py_cmd=""
 	if command -v python3 >/dev/null 2>&1; then
 		py_cmd="python3"
@@ -1298,18 +1299,10 @@ _cf_get_python() {
 	[ ! -f "$py_script" ] && return 2
 
 	local cffi_res
-	if cffi_res=$("$py_cmd" "$py_script" "$url" "$TEMP_DIR/cookie.txt" 2>/dev/null); then
-		html="$cffi_res"
-		if [ -f "$TEMP_DIR/cf_ua.txt" ]; then
-			user_agent="$(cat "$TEMP_DIR/cf_ua.txt" 2>/dev/null || echo "${DEFAULT_UA}")"
-		else
-			user_agent="${DEFAULT_UA}"
-		fi
-		if [ -f "$TEMP_DIR/cf_cookies.txt" ]; then
-			export CF_COOKIES="$(cat "$TEMP_DIR/cf_cookies.txt" 2>/dev/null || echo "")"
-		else
-			CF_COOKIES=""
-		fi
+	if cffi_res=$("$py_cmd" "$py_script" "$url" "$TEMP_DIR/cookie.txt" "$TEMP_DIR/cf_get.lock" "$referer" 2>/dev/null); then
+		html=$(jq -r '.html // empty' <<<"$cffi_res") || return 1
+		CF_COOKIES=$(jq -r '.cf_cookies // empty' <<<"$cffi_res") || CF_COOKIES=""
+		user_agent=$(jq -r '.user_agent // empty' <<<"$cffi_res") || user_agent="${DEFAULT_UA}"
 		return 0
 	else
 		return 1
@@ -3228,9 +3221,10 @@ build_rv() {
 	local table=${args[table]}
 	local dl_from=${args[dl_from]}
 	local arch=${args[arch]}
-	local arch_f="${arch// /}"
-	local arch_list=("$arch_f")
-	[ "$arch_f" = "auto" ] && arch_list=("all" "arm64-v8a" "arm-v7a")
+	local arch_list=()
+	read -r -a arch_list <<< "$arch"
+	[ "${#arch_list[@]}" -eq 0 ] && arch_list=("auto")
+	[ "${arch_list[0]}" = "auto" ] && arch_list=("all" "arm64-v8a" "arm-v7a")
 
 	local IFS=$'\n'
 	local p_jars_arr=($(echo "${args[ptjar]}" | tr ' ' '\n' | grep -v '^$'))
