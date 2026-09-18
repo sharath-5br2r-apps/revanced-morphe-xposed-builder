@@ -4,7 +4,7 @@
     "keys": [
       "Discord-NPatch-Revenge"
     ],
-    "version": "345.9"
+    "version": "345.9 - Stable"
   },
   "Prime Video": {
     "keys": [
@@ -36,7 +36,7 @@
       "Twitter-Morphe-Piko-Experimental",
       "Twitter-Morphe-Piko-MaterialYou-Experimental"
     ],
-    "version": "12.25.2-prod.01"
+    "version": "12.27.0-prod.01"
   },
   "Speedtest": {
     "keys": [
@@ -49,7 +49,7 @@
       "Bitwarden-Morphe-Stylus",
       "Bitwarden-Morphe-Stylus-Experimental"
     ],
-    "version": "2026.8.1-bwpm"
+    "version": "2026.9.0-bwpm"
   },
   "Oxygen Updater": {
     "keys": [
@@ -67,7 +67,7 @@
     "keys": [
       "BraveBrowser-Nightly-Morphe-Dh6k"
     ],
-    "version": "1.98.8"
+    "version": "1.98.10"
   },
   "PC Remote": {
     "keys": [
@@ -103,7 +103,7 @@
     "keys": [
       "NovaLauncher-Morphe-Hoodles-Experimental"
     ],
-    "version": "89200"
+    "version": "8.9.2)"
   },
   "Battery Guru": {
     "keys": [
@@ -165,13 +165,13 @@
     "keys": [
       "SmartLauncher6-Morphe-Hoodles-Experimental"
     ],
-    "version": "055"
+    "version": "6.6 build 020"
   },
   "Smart Launcher": {
     "keys": [
       "SmartLauncher-Morphe-Hoodles-Experimental"
     ],
-    "version": "latest"
+    "version": "6.6 build 020"
   },
   "Windscribe VPN": {
     "keys": [
@@ -183,7 +183,7 @@
     "keys": [
       "CloudflareWarp-Morphe-Rushiranpise-Experimental"
     ],
-    "version": "6.38.9"
+    "version": "1.1.1.1 + WARP: Safer Internet 6.38.9"
   },
   "AdGuard": {
     "keys": [
@@ -261,6 +261,6 @@
     "keys": [
       "Goodreads-Morphe-Hoodles-Experimental"
     ],
-    "version": "61"
+    "version": "2.76.0 Build 0"
   }
 }
