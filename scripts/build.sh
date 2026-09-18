@@ -150,6 +150,7 @@ for table_name in $(toml_get_table_names); do
 	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
 	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
 	cli_type=$(toml_get "$t" cli-type) || cli_type="morphe"
+	cli_type="${cli_type,,}"
 	# Explicit downstream types override every source field. Hosts remain valid
 	# placeholders because the normal source validation still runs, but no
 	# source download/list operation is performed for these patcher types.
@@ -159,7 +160,7 @@ for table_name in $(toml_get_table_names); do
 		cli_src_host="github"
 		patches_src_host="github"
 	fi
-	if ! isoneof "$cli_src_host" github gitlab; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': only 'github' or 'gitlab' is allowed"; fi
+	if ! isoneof "$cli_src_host" github gitlab forgejo gitea none; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': expected github, gitlab, forgejo, gitea, or none"; fi
 	resolve_patcher "$cli_src" "$cli_type"
 	# Engine branding is determined by the explicit patcher type resolved by
 	# patchers.sh. A configured legacy brand may still identify the patch source.
@@ -180,7 +181,7 @@ for table_name in $(toml_get_table_names); do
 	p_vers=($(list_args "$patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
 	unset IFS
 	for h in "${p_hosts[@]}"; do
-		if ! isoneof "$h" github gitlab; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': only 'github' or 'gitlab' is allowed"; fi
+		if ! isoneof "$h" github gitlab forgejo gitea none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': expected github, gitlab, forgejo, gitea, or none"; fi
 	done
 
 	cli_filter=$(toml_get "$t" cli-source-filter) || cli_filter=""

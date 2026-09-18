@@ -2,7 +2,7 @@ enable-module-update = true
 
 [ClashOfClans-APKSigner-Nulls]
 enabled = true
-cli-source = "none"
+cli-type = "none"
 cli-source-host = "none"
 app-name = "Clash of Clans"
 engine-brand = "APKSigner"
@@ -15,7 +15,7 @@ patches-source = "none"
 patches-source-host = "none"
 [ClashRoyale-APKSigner-Nulls]
 enabled = true
-cli-source = "none"
+cli-type = "none"
 cli-source-host = "none"
 app-name = "Clash Royale"
 engine-brand = "APKSigner"
@@ -28,7 +28,7 @@ patches-source = "none"
 patches-source-host = "none"
 [BrawlStars-APKSigner-Nulls]
 enabled = true
-cli-source = "none"
+cli-type = "none"
 cli-source-host = "none"
 app-name = "Brawl Stars"
 engine-brand = "APKSigner"
