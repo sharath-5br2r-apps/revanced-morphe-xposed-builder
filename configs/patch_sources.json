@@ -108,8 +108,8 @@
     "stable_date": "2026-09-05T22:28:53Z"
   },
   "hoo-dles/morphe-patches": {
-    "beta": "v1.44.1-dev.1",
-    "beta_date": "2026-09-16T22:13:20Z",
+    "beta": "v1.44.2-dev.1",
+    "beta_date": "2026-09-17T22:21:40Z",
     "blocked": false,
     "host": "github",
     "repo": "hoo-dles/morphe-patches",
@@ -176,8 +176,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.36.1",
-    "stable_date": "2026-09-17T18:25:37Z"
+    "stable": "v1.41.1",
+    "stable_date": "2026-09-18T03:51:38Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",
