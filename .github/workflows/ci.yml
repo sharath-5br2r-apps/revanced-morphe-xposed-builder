@@ -22,7 +22,8 @@ on:
           - "Update Versions Only"
           - "Generate Configs Only (No Build)"
           - "Build Only"
-          - "Batch Build (Latest)"
+          - "Batch Build (Stable)"
+          - "Batch Build (Both)"
 
 concurrency:
   group: ci
@@ -101,7 +102,7 @@ jobs:
         run: python3 .github/scripts/ci_check_app_patches.py
 
       - name: Generate configs (JSON)
-        if: ${{ inputs.mode != 'Build Only' && inputs.mode != 'Batch Build (Latest)' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || inputs.mode == 'Generate Configs Only (No Build)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        if: ${{ inputs.mode != 'Build Only' && inputs.mode != 'Batch Build (Stable)' && inputs.mode != 'Batch Build (Both)' && (inputs.mode == 'Update Versions Only' || inputs.mode == 'Default' || inputs.mode == 'Generate Configs Only (No Build)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         id: generate_configs
         env:
           TAGS_OLD: ${{ steps.compare.outputs.tags_old }}
@@ -123,7 +124,7 @@ jobs:
         run: bash .github/scripts/ci_resolve_triggers.sh
 
       - name: Commit updated version metadata and configs
-        if: ${{ inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || inputs.mode == 'Batch Build (Latest)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
+        if: ${{ inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || inputs.mode == 'Batch Build (Stable)' || inputs.mode == 'Batch Build (Both)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: main
@@ -132,7 +133,7 @@ jobs:
           commit_message: "Update patch sources, app versions and generated configs [skip ci]"
 
       - name: Upload split config part artifacts
-        if: ${{ inputs.mode != 'Batch Build (Latest)' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
+        if: ${{ inputs.mode != 'Batch Build (Stable)' && inputs.mode != 'Batch Build (Both)' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
         uses: actions/upload-artifact@v7
         with:
           name: split-configs
@@ -576,11 +577,11 @@ jobs:
 
   resolve_batch_version:
     needs: check_patch
-    if: ${{ !cancelled() && needs.check_patch.result == 'success' && inputs.mode == 'Batch Build (Latest)' }}
+    if: ${{ !cancelled() && needs.check_patch.result == 'success' && (inputs.mode == 'Batch Build (Stable)' || inputs.mode == 'Batch Build (Both)') }}
     runs-on: ubuntu-latest
     outputs:
       next_ver_code_batch: ${{ steps.version_batch.outputs.NEXT_VER_CODE }}
-      patches_version: "both"
+      patches_version: ${{ inputs.mode == 'Batch Build (Both)' && 'both' || 'stable' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
