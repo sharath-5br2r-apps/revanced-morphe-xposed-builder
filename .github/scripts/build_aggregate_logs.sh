@@ -39,8 +39,24 @@ while IFS= read -r error_file; do
   } >> "$aggregated_errors"
 done < <(find . -type f -name error.log ! -path "./$aggregated_errors" 2>/dev/null | sort)
 
-# Generate normalized aggregated build.md exclusively from aggregated build.json
-python3 ../.github/scripts/generate_release_notes.py "$aggregated_json" "$aggregated_md" 2>/dev/null || python3 .github/scripts/generate_release_notes.py "$aggregated_json" "$aggregated_md" || true
+# Concatenate each part's Markdown using its config/artifact directory as a
+# heading. This preserves the build output exactly and avoids reconstructing
+# release notes from the legacy raw JSON shape.
+while IFS= read -r md_file; do
+  [ -s "$md_file" ] || continue
+  artifact_root=$(dirname "$md_file")
+  heading_file=$(find "$artifact_root" -type f -name 'config.part*.json' -print -quit 2>/dev/null || true)
+  if [ -n "$heading_file" ]; then
+    heading=$(basename "$heading_file")
+  else
+    heading=$(basename "$(dirname "$md_file")")
+  fi
+  {
+    printf '# %s\n\n' "$heading"
+    cat "$md_file"
+    printf '\n\n'
+  } >> "$aggregated_md"
+done < <(find . -type f -name build.md ! -path "./$aggregated_md" | sort)
 
 if [ -s "$aggregated_md" ]; then
   echo "[+] Aggregated changelog size: $(wc -c < "$aggregated_md") bytes"

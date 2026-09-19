@@ -11,7 +11,7 @@ Manifest schema v1 (per-release build.json asset): see build_make_manifest.py.
 import re
 
 _ARCH_TOKEN_RE = re.compile(
-    r"-(arm64-v8a|armeabi-v7a|armeabi-v7a|aarch64|arm64|arm32|arm|x86_64|x64|x86|universal|all)(?:-(?:apk|module))?\.(?:apk|zip)$",
+    r"-(arm64-v8a|armeabi-v7a|aarch64|arm64|arm32|arm|x86_64|x64|x86|universal|all)(?:-(?:apk|module))?\.(?:apk|zip)$",
     re.IGNORECASE,
 )
 _FILE_PREFIX_RE = re.compile(r"^(.*?)-(?:v[0-9]|module-)", re.IGNORECASE)
@@ -23,10 +23,14 @@ def normalize_key(s):
 
 def normalize_arch(arch_raw):
     a = (arch_raw or "").lower().strip()
-    if "arm64" in a or "aarch64" in a:
-        return "arm64"
-    if "arm" in a or "armeabi" in a:
-        return "arm"
+    if "arm64-v8a" in a or "aarch64" in a:
+        return "arm64-v8a"
+    if "armeabi-v7a" in a:
+        return "armeabi-v7a"
+    if a == "arm64" or a == "arm32":
+        return "arm64-v8a" if a == "arm64" else "armeabi-v7a"
+    if a in ("arm", "arm-v7a") or "armeabi" in a:
+        return "armeabi-v7a"
     if a in ["all", "universal"] or a.endswith("-all") or a.endswith("-universal"):
         return "all"
     if "x86_64" in a or "x64" in a:

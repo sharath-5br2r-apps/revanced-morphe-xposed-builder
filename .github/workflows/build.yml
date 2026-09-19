@@ -210,6 +210,7 @@ jobs:
             build.json
             build.md
             error.log
+            ${{ inputs.config_file }}
           if-no-files-found: ignore
 
       - name: Upload error log

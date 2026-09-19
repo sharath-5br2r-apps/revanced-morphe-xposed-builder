@@ -36,6 +36,15 @@ gh api --paginate "repos/$REPO/releases/tags/$ARCHIVE_TAG" -q '.assets[].name' \
   | grep -E '\.(apk|zip)$' > "$LIVE_LIST" || true
 jq -Rn '[inputs]' "$LIVE_LIST" > temp/manifest/archive-live.json
 
+# Some GitHub API responses can temporarily omit release assets. Do not turn
+# that transient response into an empty archive manifest; disable filtering
+# when the live asset list is unavailable.
+LIVE_FILTER='with_entries(select(.key as $k | $live[0] | index($k)))'
+if [ ! -s "$LIVE_LIST" ]; then
+  echo "Warning: no APK/ZIP assets returned for $ARCHIVE_TAG; disabling live-asset filtering." >&2
+  LIVE_FILTER='.'
+fi
+
 # 3. Union unified manifests (new entries override same-filename old entries),
 #    keep only keys whose file exists in the release, and stamp archive meta.
 #    Raw builder JSON is converted by build_make_manifest.py before this script
@@ -52,13 +61,13 @@ jq -e '(. == null) or (.schema == 1 and (.files | type) == "object")' \
 }
 jq -s --slurpfile live temp/manifest/archive-live.json \
   --arg tag "$ARCHIVE_TAG" \
-  --arg now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '
-    ((.[0].files // {}) + (.[1].files // {})) as $merged
+  --arg now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "
+    ((.[0].files // {}) + (.[1].files // {})) as \$merged
     | {schema: 1,
        kind: "archive",
-       meta: {build: $tag, channel: $tag, publishedAt: $now},
-       files: ($merged | with_entries(select(.key as $k | $live[0] | index($k))))}
-  ' "$OLD_MANIFEST" "$NEW_MANIFEST" > "$OUT_MANIFEST"
+       meta: {build: \$tag, channel: \$tag, publishedAt: \$now},
+       files: (\$merged | ${LIVE_FILTER})}
+  " "$OLD_MANIFEST" "$NEW_MANIFEST" > "$OUT_MANIFEST"
 
 ENTRIES=$(jq '.files | length' "$OUT_MANIFEST")
 echo "Merged archive manifest for $ARCHIVE_TAG: $ENTRIES entries. Uploading..."

@@ -632,6 +632,13 @@ jobs:
           path: batch_logs/aggregated_out/*
           if-no-files-found: ignore
 
+      - name: Upload batch release manifest artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: batch-release-manifest
+          path: batch_logs/release-manifest/build.json
+          if-no-files-found: error
+
       - name: Upload build.json to numbered release via GitHub CLI
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
@@ -654,7 +661,23 @@ jobs:
             md_file="release_notes.md"
           fi
 
-          if [ -n "$tag" ] && [ -s "$json_file" ]; then
+          # Convert the aggregated raw build.json into the release manifest
+          # before uploading. The raw file supplies the exact output filenames.
+          if [ -s "$json_file" ]; then
+            NEXT_VER_CODE="$tag" IS_PRERELEASE="${{ inputs.mode == 'Batch Build (Both)' && 'true' || 'false' }}" MANIFEST_ONLY=true \
+              python3 .github/scripts/build_make_manifest.py
+          fi
+          release_json_file="temp/manifest/build.json"
+
+          if [ ! -s "$release_json_file" ]; then
+            echo "::error::Batch release manifest was not generated"
+            exit 1
+          fi
+
+          mkdir -p batch_logs/release-manifest
+          cp -f "$release_json_file" batch_logs/release-manifest/build.json
+
+          if [ -n "$tag" ] && [ -s "$release_json_file" ]; then
             if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
               title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
             else
@@ -667,12 +690,12 @@ jobs:
             else
               gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
             fi
-            if [ -s "$json_file" ]; then
-              echo "Uploading $json_file to release $tag..."
-              gh release upload "$tag" "$json_file#build.json" --clobber || {
-                echo "::warning::Failed to upload $json_file to release $tag, retrying..."
+            if [ -s "$release_json_file" ]; then
+              echo "Uploading $release_json_file to release $tag..."
+              gh release upload "$tag" "$release_json_file#build.json" --clobber || {
+                echo "::warning::Failed to upload $release_json_file to release $tag, retrying..."
                 sleep 3
-                gh release upload "$tag" "$json_file#build.json" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
+                gh release upload "$tag" "$release_json_file#build.json" --clobber || echo "::warning::Failed to upload $release_json_file to release $tag"
               }
             fi
           fi
@@ -692,7 +715,7 @@ jobs:
             export ARCHIVE_TAG=stable
           fi
           cp -f batch_logs/aggregated_out/build.batch.json build.json
-          python3 .github/scripts/build_make_manifest.py
+          test -s temp/manifest/build.json
           bash .github/scripts/merge_archive_manifest.sh
 
       - name: Collect update branch files (Batch)
