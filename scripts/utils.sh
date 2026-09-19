@@ -467,7 +467,7 @@ _get_prebuilts() {
 
 	local rv_rel release resp tag_name matches asset name url
 	rv_rel=$(source_release_api_base "$host" "$src" "$host_instance") || return 1
-	if [ "$ver" = "beta" ] || [ "$ver" = "dev" ]; then
+	if [ "$ver" = "beta" ] || [ "$ver" = "dev" ] || [ "$ver" = "both" ]; then
 		resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 		resp=$(filter_releases_by_regex "${cli_tag_filter:-$cli_filter}" "$cli_name_filter" <<<"$resp")
 		release=$(source_release_pick_from_list "$host" "$ver" <<<"$resp") || true
@@ -477,7 +477,7 @@ _get_prebuilts() {
 			release="" # Clear release if we had to fallback to get_highest_ver
 		fi
 	fi
-	if [ "$ver" = "stable" ] || [ "$ver" = "latest" ] || [ "$ver" = "both" ]; then
+	if [ "$ver" = "stable" ] || [ "$ver" = "latest" ]; then
 		resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 		resp=$(filter_releases_by_regex "${cli_tag_filter:-$cli_filter}" "$cli_name_filter" <<<"$resp")
 		release=$(source_release_pick_from_list "$host" stable <<<"$resp") || return 1
@@ -570,7 +570,7 @@ _get_prebuilts() {
 		
 		local rv_rel release resp tag_name matches asset name url
 		rv_rel=$(source_release_api_base "$host" "$src" "$host_instance") || return 1
-		if [ "$ver" = "beta" ] || [ "$ver" = "dev" ]; then
+		if [ "$ver" = "beta" ] || [ "$ver" = "dev" ] || [ "$ver" = "both" ]; then
 			resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 			resp=$(filter_releases_by_regex "${patches_tag_filter_list:-$patches_filter_list}" "$patches_name_filter_list" <<<"$resp")
 			release=$(source_release_pick_from_list "$host" "$ver" <<<"$resp") || true
@@ -580,7 +580,7 @@ _get_prebuilts() {
 				release="" # Clear release if we had to fallback to get_highest_ver
 			fi
 		fi
-		if [ "$ver" = "stable" ] || [ "$ver" = "latest" ] || [ "$ver" = "both" ]; then
+		if [ "$ver" = "stable" ] || [ "$ver" = "latest" ]; then
 			resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 			resp=$(filter_releases_by_regex "${patches_tag_filter_list:-$patches_filter_list}" "$patches_name_filter_list" <<<"$resp")
 			release=$(source_release_pick_from_list "$host" stable <<<"$resp") || return 1
@@ -844,7 +844,7 @@ get_patch_version_code() {
 	local abi=""
 	case "${arch,,}" in
 		arm64-v8a|arm64) abi="ARM64_V8A" ;;
-		arm-v7a|armeabi-v7a|arm) abi="ARMEABI_V7A" ;;
+		armeabi-v7a|arm) abi="ARMEABI_V7A" ;;
 		x86_64) abi="X86_64" ;;
 		x86) abi="X86" ;;
 	esac
@@ -913,6 +913,10 @@ _cache_all_archs_present() {
 		check_apk="$_CACHE_CHECK_APK"
 		if [ -z "$check_apk" ]; then
 			return 1
+		elif [ "$arch_f" != all ] && [ "$arch_f" != universal ] && ! has_native_arch "$check_apk" "$arch_f"; then
+			# Presence alone is not enough: an all-ABI cache entry may contain
+			# only arm64/x86 and must not satisfy an armeabi-v7a (or other ABI) job.
+			return 1
 		elif [ "$validate" = validate ] && [ -n "$_CACHE_VC" ]; then
 			local cached_vc
 			cached_vc=$(_meta_field_of "$check_apk" versionCode) || cached_vc=""
@@ -958,13 +962,16 @@ _cache_target_vc() {
 _cache_probe_apk() {
 	local ver=$1 arch=$2 raw_ver=${3:-$1}
 	local vc check_apk=""
+	_CACHE_ARCH_MISSING=false
 	vc=$(_cache_target_vc "$raw_ver" "$arch")
 	local vc_infix="${vc:+-$vc}"
 	local stock_apk="${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.apk"
 	local all_apk="${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.apk"
 	[ -f "$stock_apk" ] && check_apk="$stock_apk"
-	[ -z "$check_apk" ] && [ -f "$all_apk" ] && check_apk="$all_apk"
-	if [ -z "$check_apk" ] && [ "${_CACHE_BUNDLE_OK:-false}" = true ]; then
+	if [ -z "$check_apk" ] && { [ "$arch" = all ] || [ "$arch" = universal ]; }; then
+		[ -f "$all_apk" ] && check_apk="$all_apk"
+	fi
+	if [ -z "$check_apk" ] && [ "${_CACHE_BUNDLE_OK:-false}" = true ] && { [ "$arch" = all ] || [ "$arch" = universal ]; }; then
 		local bx
 		for bx in xapk apkm apks; do
 			local bpath="${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.${bx}"
@@ -975,7 +982,15 @@ _cache_probe_apk() {
 		local legacy_stock="${apk_cache_dir}/${pkg_name}-${ver}-${arch}.apk"
 		local legacy_all="${apk_cache_dir}/${pkg_name}-${ver}-all.apk"
 		[ -f "$legacy_stock" ] && check_apk="$legacy_stock"
-		[ -z "$check_apk" ] && [ -f "$legacy_all" ] && check_apk="$legacy_all"
+		if [ -z "$check_apk" ] && { [ "$arch" = all ] || [ "$arch" = universal ]; }; then
+			[ -f "$legacy_all" ] && check_apk="$legacy_all"
+		fi
+	fi
+	# A universal cache entry is only reusable when it actually contains the
+	# requested ABI. Otherwise force a fresh source download for that ABI.
+	if [ -n "$check_apk" ] && [ "$arch" != all ] && [ "$arch" != universal ] && ! has_native_arch "$check_apk" "$arch"; then
+		check_apk=""
+		_CACHE_ARCH_MISSING=true
 	fi
 	_CACHE_VC="$vc"
 	_CACHE_CHECK_APK="$check_apk"
@@ -1176,7 +1191,7 @@ _bundle_ext_of() { # $1=path -> echoes extension without dot if it is a bundle
 _bundle_keep_regex_for_arch() {
 	case "$1" in
 		arm64-v8a) echo 'arm64_v8a' ;;
-		arm-v7a) echo 'armeabi' ;;
+		armeabi-v7a) echo 'armeabi' ;;
 		x86_64) echo 'x86_64' ;;
 		x86) echo 'x86(?!_)' ;;
 		*) echo '' ;; # all/universal: keep everything
@@ -1546,14 +1561,17 @@ apkmirror_search() {
 		# `all` means one representative APK, not a literal architecture.
 		# Accept the first suitable ABI when the release has no universal APK.
 		if [ "$arch" = all ]; then
-			if isoneof "$node_arch" 'universal' 'noarch' 'arm64-v8a + x86_64' 'arm64-v8a + armeabi-v7a' && { isoneof "$node_dpi" "${appdpi[@]}" || [ "$match_any_dpi" = true ]; }; then
+			if isoneof "$node_arch" 'universal' 'noarch' 'arm64-v8a + x86_64' 'arm64-v8a + x86 + x86_64' 'arm64-v8a + armeabi-v7a' && { isoneof "$node_dpi" "${appdpi[@]}" || [ "$match_any_dpi" = true ]; }; then
 				echo "$dlurl"
 				return 0
 			elif [ "$match_any_dpi" = true ] && [ -z "$best_fallback_url" ]; then
 				best_fallback_url="$dlurl"
 			fi
 		# Pass 1 Logic: Return Universal/Fat Bundles immediately to optimize cache size
-		elif isoneof "$node_arch" 'universal' 'noarch' 'arm64-v8a + x86_64' 'arm64-v8a + armeabi-v7a'; then
+		elif isoneof "$node_arch" 'universal' 'noarch' || \
+			{ [ "$arch" = armeabi-v7a ] && [ "$node_arch" = 'arm64-v8a + armeabi-v7a' ]; } || \
+			{ isoneof "$arch" x86 x86_64 && isoneof "$node_arch" 'arm64-v8a + x86_64' 'arm64-v8a + x86 + x86_64'; } || \
+			{ [ "$arch" = arm64-v8a ] && isoneof "$node_arch" 'arm64-v8a + x86_64' 'arm64-v8a + x86 + x86_64' 'arm64-v8a + armeabi-v7a'; }; then
 			if isoneof "$node_dpi" "${appdpi[@]}"; then
 				echo "$dlurl"
 				return 0
@@ -1600,7 +1618,6 @@ dl_apkmirror() {
 		return 0
 	fi
 
-	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
 
 	local clean_version="${version//[^0-9.]/}"
 	local clean_search_version="${clean_version//./-}"
@@ -2166,7 +2183,6 @@ get_uptodown_pkg_name() {
 
 dl_uptodown() {
 	local uptodown_dlurl=$1 version=$2 output=$3 arch=$4 _dpi=$5
-	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
 
 	local py_cmd=""
 	if command -v python3 >/dev/null 2>&1; then
@@ -2277,14 +2293,14 @@ get_archive_vers() {
 		command -v python3 >/dev/null 2>&1 || py_bin="python"
 		"$py_bin" -c "
 import sys, re
-pat = re.compile(r'^[^-]*-|(-[0-9]+)?-(all|arm64-v8a|arm-v7a|x86|x86_64)\.(apk|apkm|xapk|apks)$')
+pat = re.compile(r'^[^-]*-|(-[0-9]+)?-(all|arm64-v8a|armeabi-v7a|x86|x86_64)\.(apk|apkm|xapk|apks)$')
 for line in sys.stdin:
     l = line.strip()
     if l:
         print(pat.sub('', l))
 " <<<"$__ARCHIVE_RESP__"
 	else
-		sed -E 's/^[^-]*-//;s/(-[0-9]+)?-(all|arm64-v8a|arm-v7a|x86|x86_64)\.(apk|apkm|xapk|apks)$//g' <<<"$__ARCHIVE_RESP__"
+		sed -E 's/^[^-]*-//;s/(-[0-9]+)?-(all|arm64-v8a|armeabi-v7a|x86|x86_64)\.(apk|apkm|xapk|apks)$//g' <<<"$__ARCHIVE_RESP__"
 	fi
 }
 get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
@@ -2660,7 +2676,7 @@ get_local_resp() {
 get_local_vers() {
 	local name="${__LOCAL_APKNAME__:-}"
 	name="${name%.*}"
-	sed -E 's/^[^-]+-//; s/-(all|common|arm64-v8a|armeabi-v7a|arm-v7a|x86_64|x86|universal)$//' <<<"$name"
+	sed -E 's/^[^-]+-//; s/-(all|common|arm64-v8a|armeabi-v7a|x86_64|x86|universal)$//' <<<"$name"
 }
 get_local_pkg_name() {
 	local name="${__LOCAL_APKNAME__:-}"
@@ -3258,7 +3274,7 @@ has_native_arch() {
 	case "$arch" in
 		all|universal) return 0 ;;
 		arm64-v8a) wanted='lib/arm64-v8a/' ;;
-		arm-v7a) wanted='lib/armeabi-v7a/' ;;
+		armeabi-v7a) wanted='lib/armeabi-v7a/' ;;
 		x86) wanted='lib/x86/' ;;
 		x86_64) wanted='lib/x86_64/' ;;
 		*) return 1 ;;
@@ -3320,7 +3336,7 @@ _resolve_list_and_version() {
 	# source lookup. Keep this compatibility rule scoped to Gboard.
 	local gboard_key="${table,,}${app_name,,}${pkg_name,,}"
 	if [[ "$gboard_key" == *gboard* || "$gboard_key" == *inputmethod.latin* ]]; then
-		resolved_version=$(sed -E 's/-(arm64-v8a|armeabi-v7a|arm-v7a|x86_64|x86)$//I' <<<"$resolved_version")
+		resolved_version=$(sed -E 's/-(arm64-v8a|armeabi-v7a|x86_64|x86)$//I' <<<"$resolved_version")
 	fi
 	return 0
 }
@@ -3350,8 +3366,8 @@ build_rv() {
 	local arch=${args[arch]}
 	local arch_list=()
 	read -r -a arch_list <<< "$arch"
-	[ "${#arch_list[@]}" -eq 0 ] && arch_list=(all arm64-v8a x86_64 arm-v7a x86)
-	[ "${arch_list[0]}" = "auto" ] && arch_list=(all arm64-v8a x86_64 arm-v7a x86)
+	[ "${#arch_list[@]}" -eq 0 ] && arch_list=(all arm64-v8a x86_64 armeabi-v7a x86)
+	[ "${arch_list[0]}" = "auto" ] && arch_list=(all arm64-v8a x86_64 armeabi-v7a x86)
 
 	local IFS=$'\n'
 	local p_jars_arr=($(echo "${args[ptjar]}" | tr ' ' '\n' | grep -v '^$'))
@@ -3492,7 +3508,7 @@ build_rv() {
 		local app_versions_file=".github/configs/app_versions.json"
 		if [ -f "$app_versions_file" ]; then
 			local t_pure="${table% (arm64-v8a)}"
-			t_pure="${t_pure% (arm-v7a)}"
+			t_pure="${t_pure% (armeabi-v7a)}"
 			local json_ver=$(jq -r --arg t "$t_pure" 'to_entries | map(select(.key | startswith("_") | not)) | map(select(.value.keys != null and (.value.keys | index($t)))) | .[0].value.version // empty' "$app_versions_file")
 			if [ -n "$json_ver" ]; then
 				resolved_version="$json_ver"
@@ -3535,6 +3551,7 @@ build_rv() {
 	local final_stock_apk=""
 	local final_all_apk=""
 	local final_version=""
+	local arch_cache_incomplete=false
 	
 	for ((version_index=0; version_index<${#all_resolved_versions[@]}; version_index++)); do
 		curr_resolved_version="${all_resolved_versions[$version_index]}"
@@ -3548,7 +3565,7 @@ build_rv() {
 				if [ -n "$resolved_version" ]; then
 					local version_f=${resolved_version// /}
 					version_f=${version_f#v}
-					if _cache_all_archs_present "$version_f" validate "$resolved_version"; then
+					if [ "$arch_cache_incomplete" = false ] && _cache_all_archs_present "$version_f" validate "$resolved_version"; then
 						pr "Found all required architectures for '$pkg_name' (v$version_f) in cache. Skipping download!"
 						skip_dl_source_check=true
 						version="$resolved_version"
@@ -3564,7 +3581,7 @@ build_rv() {
 							local v=${bname#${pkg_name}-}
 							v=${v%.apk}
 							v=${v%-arm64-v8a}
-							v=${v%-arm-v7a}
+							v=${v%-armeabi-v7a}
 							v=${v%-x86_64}
 							v=${v%-x86}
 							v=${v%-all}
@@ -3784,11 +3801,11 @@ build_rv() {
 				stock_apk="$cached_bundle_apk"
 				all_apk="$cached_bundle_apk"
 			fi
-			if [ -f "$all_apk" ] && [ -z "$cached_bundle_apk" ]; then
+			if [ -f "$all_apk" ] && [ -z "$cached_bundle_apk" ] && { [ "$arch_f" = all ] || [ "$arch_f" = universal ]; }; then
 				local missing_arch=false
 				if [ "$arch_f" = "arm64-v8a" ] && ! unzip -l "$all_apk" 2>/dev/null | grep -q "lib/arm64-v8a/"; then
 					unzip -l "$all_apk" 2>/dev/null | grep -q "lib/" && missing_arch=true
-				elif [ "$arch_f" = "arm-v7a" ] && ! unzip -l "$all_apk" 2>/dev/null | grep -q "lib/armeabi-v7a/"; then
+				elif [ "$arch_f" = "armeabi-v7a" ] && ! unzip -l "$all_apk" 2>/dev/null | grep -q "lib/armeabi-v7a/"; then
 					unzip -l "$all_apk" 2>/dev/null | grep -q "lib/" && missing_arch=true
 				fi
 				if [ "$missing_arch" = false ]; then
@@ -3828,6 +3845,15 @@ build_rv() {
 				all_apk="${apk_dl_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 
 				for dl_p in "${DL_SRCS[@]}"; do
+					if [ "${_CACHE_ARCH_MISSING:-false}" = true ] && [ "$dl_p" = cache_repo ]; then
+						pr "Cached APK lacks '${arch_f}' libraries; skipping cache_repo and downloading from source."
+						continue
+					fi
+					if [ "$dl_p" = cache_repo ] && [ "$arch_f" != all ] && [ "$arch_f" != universal ] && \
+						[ -f "$all_apk" ] && ! has_native_arch "$all_apk" "$arch_f"; then
+						pr "Cached all-ABI APK lacks '${arch_f}' libraries; skipping cache_repo and downloading from source."
+						continue
+					fi
 					if [ -z "${args[${dl_p}_dlurl]}" ]; then release_apk_lock; continue; fi
 					pr "Downloading '${table}' from '${dl_p}'"
 					if ! isoneof $dl_p "${tried_dl[@]}"; then
@@ -4027,6 +4053,7 @@ build_rv() {
 		if ! has_native_arch "$stock_apk" "$arch_f"; then
 			wpr "Rejecting downloaded APK for ${table}: missing native libraries for '${arch_f}'"
 			rm -f "$stock_apk" "$all_apk"
+			arch_cache_incomplete=true
 			continue
 		fi
 
@@ -4166,7 +4193,7 @@ build_rv() {
 		local build_vc build_vc_infix
 		build_vc=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
 		build_vc_infix="${build_vc:+-${build_vc}}"
-		if [ -f "${apk_cache_dir}/${pkg_name}-${version_f}${build_vc_infix}-all.apk" ]; then
+		if { [ "$arch_f" = all ] || [ "$arch_f" = universal ]; } && [ -f "${apk_cache_dir}/${pkg_name}-${version_f}${build_vc_infix}-all.apk" ]; then
 			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${build_vc_infix}-all.apk"
 			all_apk="$stock_apk"
 		elif [ -f "${apk_cache_dir}/${pkg_name}-${version_f}${build_vc_infix}-${arch_f}.apk" ]; then
@@ -4175,17 +4202,24 @@ build_rv() {
 		else
 			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 			all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
-			# Downloads selected by a target versionCode are cached with that
-			# code even when no explicit version-code mapping exists in config.
-			# Reuse those files during the build phase instead of looking for the
-			# obsolete unqualified filename.
-			if [ ! -f "$stock_apk" ] && [ "$arch_f" = all ]; then
-				stock_apk=$(find "$apk_cache_dir" -maxdepth 1 -type f \
-					-name "${pkg_name}-${version_f}-*-all.apk" | sort | head -1)
-				[ -n "$stock_apk" ] && all_apk="$stock_apk"
-			elif [ ! -f "$stock_apk" ]; then
-				stock_apk=$(find "$apk_cache_dir" -maxdepth 1 -type f \
-					-name "${pkg_name}-${version_f}-*-${arch_f}.apk" | sort | head -1)
+			# Cache entries selected by an automatically resolved versionCode are
+			# versionCode-qualified even when config has no explicit mapping.  An
+			# all-ABI APK is valid input for every requested ABI, so find it before
+			# looking for a missing arch-specific filename.
+			if [ ! -f "$stock_apk" ]; then
+				local versioned_all
+				versioned_all=""
+				if [ "$arch_f" = all ] || [ "$arch_f" = universal ]; then
+					versioned_all=$(find "$apk_cache_dir" -maxdepth 1 -type f \
+						-name "${pkg_name}-${version_f}-*-all.apk" | sort | head -1)
+				fi
+				if [ -n "$versioned_all" ]; then
+					stock_apk="$versioned_all"
+					all_apk="$versioned_all"
+				elif [ "$arch_f" != all ] && [ "$arch_f" != universal ]; then
+					stock_apk=$(find "$apk_cache_dir" -maxdepth 1 -type f \
+						-name "${pkg_name}-${version_f}-*-${arch_f}.apk" | sort | head -1)
+				fi
 			fi
 		fi
 	for build_mode in "${build_mode_arr[@]}"; do
@@ -4263,7 +4297,7 @@ build_rv() {
 				:
 			elif [ "$arch" = "arm64-v8a" ]; then
 				zip -d "$stock_apk_to_patch" "lib/armeabi-v7a/*" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
-			elif [ "$arch" = "arm-v7a" ]; then
+			elif [ "$arch" = "armeabi-v7a" ]; then
 				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
 			elif [ "$arch" = "x86" ]; then
 				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/x86_64/*" "lib/armeabi-v7a/*" >/dev/null 2>&1 || :
@@ -4390,7 +4424,7 @@ build_rv() {
 				fi
 				if [ "$arch" = "arm64-v8a" ]; then
 					unzip -j "$_split_src" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
-				elif [ "$arch" = "arm-v7a" ]; then
+				elif [ "$arch" = "armeabi-v7a" ]; then
 					unzip -j "$_split_src" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*arm64_v8a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
 				elif [ "$arch" = "x86" ]; then
 					unzip -j "$_split_src" '*.apk' -x '*x86_64.apk' -x '*arm64_v8a.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
@@ -4435,7 +4469,7 @@ module_config() {
 	local ma=""
 	if [ "$4" = "arm64-v8a" ]; then
 		ma="arm64"
-	elif [ "$4" = "arm-v7a" ]; then
+	elif [ "$4" = "armeabi-v7a" ]; then
 		ma="arm"
 	fi
 	echo "PKG_NAME=$2

@@ -162,7 +162,7 @@ def resolve_download_variant(base_url: str, version: str, arch: str = "") -> tup
         raise RuntimeError(f"Could not extract app_id from {clean_url}")
 
     arch = arch.lower()
-    if arch == "arm-v7a":
+    if arch == "armeabi-v7a":
         arch = "armeabi-v7a"
 
     target_ver = version.strip()

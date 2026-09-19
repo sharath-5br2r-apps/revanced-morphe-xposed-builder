@@ -7,9 +7,9 @@ cli-type = "morphe"
 patch-brand = "Rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "arm64-v8a x86_64 arm-v7a"
+arch = "arm64-v8a x86_64 armeabi-v7a"
 pkg-name = "com.microsoft.office.word"
-version-code = "arm64-v8a: 2006247667 | arm-v7a: 2005247673 | x86_64: 2005247676"
+version-code = "arm64-v8a: 2006247667 | armeabi-v7a: 2005247673 | x86_64: 2005247676"
 uptodown-dlurl = "https://microsoft-word-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/word/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.word"
@@ -23,7 +23,7 @@ cli-type = "morphe"
 patch-brand = "Rushiranpise"
 custom-microg-patches = "'None'"
 build-mode = "apk"
-arch = "arm64-v8a x86_64 arm-v7a x86"
+arch = "arm64-v8a x86_64 armeabi-v7a x86"
 pkg-name = "com.microsoft.office.excel"
 uptodown-dlurl = "https://microsoft-excel-preview.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/microsoft-corporation/excel/"
@@ -59,7 +59,7 @@ excluded-patches = "'Hide Rufus Tab'"
 custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping"
 
-arch = "all arm64-v8a arm-v7a"
+arch = "all arm64-v8a armeabi-v7a"
 
 [AmazonIndia-Morphe-Rushiranpise-Experimental]
 enabled = true
@@ -80,7 +80,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 version = "latest"
 skip-patch-app-check = true
 
-arch = "all arm64-v8a arm-v7a"
+arch = "all arm64-v8a armeabi-v7a"
 
 [AmazonShopping-Morphe-Rushiranpise]
 enabled = true
@@ -98,7 +98,7 @@ excluded-patches = "'Hide Rufus Tab'"
 custom-microg-patches = "'None'"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.mShop.android.shopping"
 
-arch = "all arm64-v8a arm-v7a"
+arch = "all arm64-v8a armeabi-v7a"
 
 [AmazonShopping-Morphe-Rushiranpise-Experimental]
 enabled = true
@@ -119,7 +119,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 version = "latest"
 skip-patch-app-check = true
 
-arch = "all arm64-v8a arm-v7a"
+arch = "all arm64-v8a armeabi-v7a"
 
 [AdobeAcrobat-Morphe-Rushiranpise]
 enabled = true

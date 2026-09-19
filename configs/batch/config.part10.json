@@ -100,7 +100,7 @@
     "version": "latest",
     "skip-patch-app-check": true,
     "build-mode": "apk",
-    "arch": "all arm64-v8a arm-v7a",
+    "arch": "all arm64-v8a armeabi-v7a",
     "pkg-name": "com.mxtech.videoplayer.pro",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro",
     "uptodown-dlurl": "https://mx-player.en.uptodown.com/android",
@@ -126,7 +126,7 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/in.amazon.mShop.android.shopping",
     "version": "latest",
     "skip-patch-app-check": true,
-    "arch": "all arm64-v8a arm-v7a"
+    "arch": "all arm64-v8a armeabi-v7a"
   },
   "BetaManiac-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,

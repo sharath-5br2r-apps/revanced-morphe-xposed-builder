@@ -56,7 +56,7 @@ def normalize_arch(arch_raw):
 
 def extract_arch_from_filename(fname, version=""):
     match = re.search(
-        r"-(arm64-v8a|armeabi-v7a|arm-v7a|aarch64|arm64|arm32|arm|x86_64|x64|x86|universal|all)(?:-(?:apk|module))?\.(?:apk|zip)$",
+        r"-(arm64-v8a|armeabi-v7a|armeabi-v7a|aarch64|arm64|arm32|arm|x86_64|x64|x86|universal|all)(?:-(?:apk|module))?\.(?:apk|zip)$",
         fname, re.IGNORECASE
     )
     if match:

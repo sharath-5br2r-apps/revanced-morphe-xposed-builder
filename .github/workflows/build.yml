@@ -83,9 +83,7 @@ jobs:
 
       - name: Resolve build context
         id: context
-        env:
-          OVERRIDE_PATCHES_VERSION: ${{ inputs.patches_version }}
-        run: bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}"
+        run: bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}" "${{ inputs.patches_version }}"
 
       - name: Resolve version code
         id: version
@@ -127,7 +125,6 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           CFB_URL: "http://localhost:8000"
-          OVERRIDE_PATCHES_VERSION: ${{ inputs.patches_version }}
           RVB_MORPHE_PASSTHROUGH: "${{ vars.RVB_MORPHE_PASSTHROUGH || 'true' }}"
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
@@ -137,7 +134,7 @@ jobs:
           RELEASE_NOTES_WEBSITE_LINK: "${{ vars.RELEASE_NOTES_WEBSITE_LINK || 'https://sharath-5br2r.github.io/catalog' }}"
         run: |
           set -euo pipefail
-          bash scripts/build.sh --config="${{ steps.context.outputs.CONFIG_FILE }}" --allowed-apps="${{ inputs.exclusive_apps }}"
+          bash scripts/build.sh --config="${{ steps.context.outputs.CONFIG_FILE }}" --allowed-apps="${{ inputs.exclusive_apps }}" --patches-version="${{ inputs.patches_version }}"
 
       - name: Update Usage Tracker
         env:

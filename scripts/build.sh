@@ -13,6 +13,7 @@ echo '{}' > "$BUILD_JSON_FILE"
 CONFIG_FILE="config.toml"
 ALLOWED_APPS=""
 OUTPUT_DIR=""
+PATCHES_VERSION_OVERRIDE=""
 while [ $# -gt 0 ]; do
 	case "$1" in
 		--config=*) CONFIG_FILE="${1#*=}" ;;
@@ -21,6 +22,8 @@ while [ $# -gt 0 ]; do
 		--allowed-apps) shift; ALLOWED_APPS="${1:?missing value for --allowed-apps}" ;;
 		--output=*) OUTPUT_DIR="${1#*=}" ;;
 		--output) shift; OUTPUT_DIR="${1:?missing value for --output}" ;;
+		--patches-version=*) PATCHES_VERSION_OVERRIDE="${1#*=}" ;;
+		--patches-version) shift; PATCHES_VERSION_OVERRIDE="${1:?missing value for --patches-version}" ;;
 		--clean) CLEAN_REQUESTED=true ;;
 		clean) CLEAN_REQUESTED=true ;;
 		*) [ "$CONFIG_FILE" = config.toml ] && CONFIG_FILE="$1" || abort "Unknown option: $1" ;;
@@ -63,7 +66,7 @@ DEF_VARIANT=$(toml_get "$main_config_t" variant) || DEF_VARIANT=""
 DEF_SUB_VARIANT=$(toml_get "$main_config_t" sub-variant) || DEF_SUB_VARIANT=""
 [ -z "$DEF_SUB_VARIANT" ] && { DEF_SUB_VARIANT=$(toml_get "$main_config_t" sub_variant) || DEF_SUB_VARIANT=""; }
 DEF_DPI=$(toml_get "$main_config_t" dpi) || DEF_DPI="nodpi anydpi auto"
-DEF_ARCH=$(toml_get "$main_config_t" arch) || DEF_ARCH="all arm64-v8a x86_64 arm-v7a x86"
+DEF_ARCH=$(toml_get "$main_config_t" arch) || DEF_ARCH="all arm64-v8a x86_64 armeabi-v7a x86"
 DEF_BUILD_MODE=$(toml_get "$main_config_t" build-mode) || DEF_BUILD_MODE="apk"
 DEF_AUTHOR_NAME=$(toml_get "$main_config_t" author) || DEF_AUTHOR_NAME="sharath-5br2r"
 DEF_AUTHOR_PAGE=$(toml_get "$main_config_t" author-page) || DEF_AUTHOR_PAGE="github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder"
@@ -147,7 +150,7 @@ for table_name in $(toml_get_table_names); do
 	patches_src=$(toml_get "$t" patches-source) || patches_src=$DEF_PATCHES_SRC
 	patches_src_host=$(toml_get "$t" patches-source-host) || patches_src_host=$DEF_PATCHES_SRC_HOST
 	patches_ver=$(toml_get "$t" patches-version) || patches_ver=$DEF_PATCHES_VER
-	[ -n "${OVERRIDE_PATCHES_VERSION:-}" ] && patches_ver="$OVERRIDE_PATCHES_VERSION"
+	[ -n "$PATCHES_VERSION_OVERRIDE" ] && patches_ver="$PATCHES_VERSION_OVERRIDE"
 	cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
 	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
 	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
@@ -269,6 +272,10 @@ for table_name in $(toml_get_table_names); do
 	app_args[exclusive_patches]=$(toml_get "$t" exclusive-patches) || app_args[exclusive_patches]=false
 	app_args[version]=$(toml_get "$t" version) || app_args[version]="auto"
 	app_args[skip_patch_app_check]=$(toml_get "$t" skip-patch-app-check) || app_args[skip_patch_app_check]=false
+	# `latest` is explicitly allowed to build the newest stock app even when
+	# patch metadata has not caught up with its compatibility declaration.
+	# Version fallback still handles download failures independently.
+	[ "${app_args[version]}" = latest ] && app_args[skip_patch_app_check]=true
 	case "${app_args[cli_type],,}" in
 		npatch|lspatch|none|apksigner) app_args[skip_patch_app_check]=true ;;
 	esac
@@ -327,9 +334,12 @@ for table_name in $(toml_get_table_names); do
 	app_args[arch]=$(toml_get "$t" arch) || app_args[arch]="$DEF_ARCH"
 	arch_valid=true
 	read -r -a arch_values <<< "${app_args[arch]}"
+	for ai in "${!arch_values[@]}"; do
+	done
+	app_args[arch]="${arch_values[*]}"
 	[ "${#arch_values[@]}" -eq 0 ] && arch_values=("${app_args[arch]}")
 	for arch_value in "${arch_values[@]}"; do
-		if ! isoneof "$arch_value" "auto" "both" "all" "arm64-v8a" "arm-v7a" "x86_64" "x86"; then
+		if ! isoneof "$arch_value" "auto" "both" "all" "arm64-v8a" "armeabi-v7a" "x86_64" "x86"; then
 			arch_valid=false
 			break
 		fi
@@ -353,7 +363,7 @@ for table_name in $(toml_get_table_names); do
 	read -r -a arch_values <<< "${app_args[arch]}"
 	[ "${#arch_values[@]}" -gt 0 ] || arch_values=("${app_args[arch]}")
 	case " ${arch_values[*]} " in
-		*" both "*) arch_values=(arm64-v8a arm-v7a) ;;
+		*" both "*) arch_values=(arm64-v8a armeabi-v7a) ;;
 	esac
 	for arch_value in "${arch_values[@]}"; do
 		app_args[table]="$table_name ($arch_value)"
@@ -361,7 +371,7 @@ for table_name in $(toml_get_table_names); do
 		app_args[module_prop_name]="$module_prop_name_b"
 		case "$arch_value" in
 			arm64-v8a) app_args[module_prop_name]="${module_prop_name_b}-arm64" ;;
-			arm-v7a) app_args[module_prop_name]="${module_prop_name_b}-arm" ;;
+			armeabi-v7a) app_args[module_prop_name]="${module_prop_name_b}-arm" ;;
 		esac
 		_run_build "${app_args[table]}" "$(declare -p app_args)"
 	done

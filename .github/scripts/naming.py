@@ -11,7 +11,7 @@ Manifest schema v1 (per-release build.json asset): see build_make_manifest.py.
 import re
 
 _ARCH_TOKEN_RE = re.compile(
-    r"-(arm64-v8a|armeabi-v7a|arm-v7a|aarch64|arm64|arm32|arm|x86_64|x64|x86|universal|all)(?:-(?:apk|module))?\.(?:apk|zip)$",
+    r"-(arm64-v8a|armeabi-v7a|armeabi-v7a|aarch64|arm64|arm32|arm|x86_64|x64|x86|universal|all)(?:-(?:apk|module))?\.(?:apk|zip)$",
     re.IGNORECASE,
 )
 _FILE_PREFIX_RE = re.compile(r"^(.*?)-(?:v[0-9]|module-)", re.IGNORECASE)

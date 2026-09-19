@@ -72,8 +72,8 @@ You can build APKs and Magisk/KSU modules locally on Android (Termux), Linux, or
 
 Builds use the available CPU count for table-level parallelism by default. Set
 `PARALLEL_JOBS=1` for a fully sequential local build. Architecture lists such
-as `arm64-v8a arm-v7a x86_64` are expanded into independent build slices;
-`both` expands to arm64-v8a and arm-v7a.
+as `arm64-v8a armeabi-v7a x86_64` are expanded into independent build slices;
+`both` expands to arm64-v8a and armeabi-v7a.
 
 ### Optional Keystore Setup (`.env`)
 Create a `.env` file in the project root to sign APKs with a custom keystore:

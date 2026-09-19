@@ -7,7 +7,7 @@ cli-type = "morphe"
 patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.truecaller"
 build-mode = "both"
-arch = "all arm64-v8a arm-v7a"
+arch = "all arm64-v8a armeabi-v7a"
 pkg-name = "com.truecaller"
 uptodown-dlurl = "https://truecaller.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/true-software-scandinavia-ab/truecaller-caller-id-block"
@@ -46,7 +46,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 patches-source = "Paresh-Maheshwari/paresh-patches"
 patches-source-host = "gitlab"
 
-arch = "all arm64-v8a arm-v7a"
+arch = "all arm64-v8a armeabi-v7a"
 
 [ProtonVPN-Morphe-Paresh]
 enabled = true
@@ -158,7 +158,7 @@ cli-type = "morphe"
 patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a"
+arch = "all arm64-v8a armeabi-v7a"
 pkg-name = "com.mxtech.videoplayer.pro"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
 uptodown-dlurl = "https://mx-player.en.uptodown.com/android"
@@ -176,7 +176,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 version = "latest"
 skip-patch-app-check = true
 build-mode = "apk"
-arch = "all arm64-v8a arm-v7a"
+arch = "all arm64-v8a armeabi-v7a"
 pkg-name = "com.mxtech.videoplayer.pro"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
 uptodown-dlurl = "https://mx-player.en.uptodown.com/android"

@@ -2,6 +2,7 @@
 export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
 CONFIG="$1"
+P_OVERRIDE="${2:-}"
 
 if [ ! -f "$CONFIG" ]; then
   echo "::error::Config file not found: $CONFIG"
@@ -29,8 +30,6 @@ if [ "$HAS_ENABLED" = false ]; then
 fi
 
 IS_DEV=false
-P_OVERRIDE="${OVERRIDE_PATCHES_VERSION:-}"
-
 PVER=""
 if [ -n "$P_OVERRIDE" ]; then
   PVER="$P_OVERRIDE"

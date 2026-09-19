@@ -91,7 +91,7 @@ patch-brand = "Morphe"                       # Patch source identity (e.g. "Morp
 variant = ""                                 # Optional feature/theme variant (e.g. "Nord", "Mocha", "MaterialYou")
 sub-variant = ""                             # Optional packaging variant (e.g. "clone", "alt")
 
-arch = "all arm64-v8a x86_64 arm-v7a x86"    # space-separated architecture targets; default is this full list
+arch = "all arm64-v8a x86_64 armeabi-v7a x86"    # space-separated architecture targets; default is this full list
 dpi = "nodpi anydpi auto"                    # Preferred screen DPI order for APKMirror
 build-mode = "apk"                           # "apk", "module", or "both"
 include-stock = "merged"                     # "merged", "split", or "disable"
@@ -119,7 +119,7 @@ patch-folder = "youtube"                     # Explicit patch folder in patch bu
 
 # --- Versioning ---
 version = "auto"                             # "auto" (highest supported by patches), "exp", "latest", "beta", or "20.40.45"
-version-code = "auto"                        # "auto", numeric string, or per-arch: "arm64-v8a: 473623755 | arm-v7a: 473623748"
+version-code = "auto"                        # "auto", numeric string, or per-arch: "arm64-v8a: 473623755 | armeabi-v7a: 473623748"
 skip-version-code-check = false               # Skip versionCode selection and validation when stores use variant-specific codes
 version-filter = ""                          # Regex filter for APK versions on APKMirror
 skip-patch-app-check = false                  # Skip app/package compatibility checking
@@ -334,14 +334,14 @@ patch-folder = "*"                # Wildcard: maps every patch folder in the bun
 - `"473623755"`: Explicit versionCode for APKMirror variant matching.
 - Architecture-specific mapping:
   ```toml
-  version-code = "arm64-v8a: 473623755 | arm-v7a: 473623748"
+  version-code = "arm64-v8a: 473623755 | armeabi-v7a: 473623748"
   ```
 
 ### Architecture (`arch`)
-- `"both"`: Builds both `arm64-v8a` and `arm-v7a` (default).
+- `"both"`: Builds both `arm64-v8a` and `armeabi-v7a` (default).
 - `"auto"`: Detects available architectures from upstream downloads.
 - `"all"`: Universal architecture.
-- Explicit: `"arm64-v8a"`, `"arm-v7a"`, `"x86_64"`, `"x86"`, or space-separated list (e.g. `"arm64-v8a x86_64"`).
+- Explicit: `"arm64-v8a"`, `"armeabi-v7a"`, `"x86_64"`, `"x86"`, or space-separated list (e.g. `"arm64-v8a x86_64"`).
 
 ---
 
@@ -381,7 +381,7 @@ github-dlurl = "https://github.com/owner/repo"
 github-release-regex = "^v[0-9]"
 github-release-name-regex = "Stable"
 # Match APK asset by architecture:
-github-asset-regex = "arm64-v8a: 'MyApp-v{version}-arm64\\.apk' | arm-v7a: 'MyApp-v{version}-arm\\.apk'"
+github-asset-regex = "arm64-v8a: 'MyApp-v{version}-arm64\\.apk' | armeabi-v7a: 'MyApp-v{version}-arm\\.apk'"
 ```
 
 ### 6. GitLab Releases (`gitlab-dlurl`)
