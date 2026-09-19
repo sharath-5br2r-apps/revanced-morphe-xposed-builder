@@ -51,7 +51,6 @@ main_config_t=$(toml_get_table_main)
 COMPRESSION_LEVEL=$(toml_get "$main_config_t" compression-level) || COMPRESSION_LEVEL="9"
 REMOVE_RV_INTEGRATIONS_CHECKS=$(toml_get "$main_config_t" remove-rv-integrations-checks) || REMOVE_RV_INTEGRATIONS_CHECKS="false"
 DEF_PATCHES_VER=$(toml_get "$main_config_t" patches-version) || DEF_PATCHES_VER="both"
-[ "$DEF_PATCHES_VER" = "both" ] && DEF_PATCHES_VER="beta"
 DEF_CLI_VER=$(toml_get "$main_config_t" cli-version) || DEF_CLI_VER="stable"
 DEF_PATCHES_SRC=$(toml_get "$main_config_t" patches-source) || DEF_PATCHES_SRC="MorpheApp/morphe-patches"
 DEF_PATCHES_SRC_HOST=$(toml_get "$main_config_t" patches-source-host) || DEF_PATCHES_SRC_HOST="github"
@@ -149,7 +148,6 @@ for table_name in $(toml_get_table_names); do
 	patches_src_host=$(toml_get "$t" patches-source-host) || patches_src_host=$DEF_PATCHES_SRC_HOST
 	patches_ver=$(toml_get "$t" patches-version) || patches_ver=$DEF_PATCHES_VER
 	[ -n "${OVERRIDE_PATCHES_VERSION:-}" ] && patches_ver="$OVERRIDE_PATCHES_VERSION"
-	[ "$patches_ver" = "both" ] && { [[ "${1:-}" == *"beta"* ]] && patches_ver="beta" || patches_ver="stable"; }
 	cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
 	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
 	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
@@ -278,6 +276,7 @@ for table_name in $(toml_get_table_names); do
 		npatch|lspatch) app_args[skip_patch_app_check]=true ;;
 	esac
 	app_args[version_code]=$(toml_get "$t" version-code) || app_args[version_code]=""
+	app_args[skip_version_code_check]=$(toml_get "$t" skip-version-code-check) || app_args[skip_version_code_check]=false
 	app_args[app_name]=$(toml_get "$t" app-name) || app_args[app_name]=$table_name
 	app_args[patcher_args]=$(toml_get "$t" patcher-args) || app_args[patcher_args]=""
 	# Preserve the extended source/download controls supported by utils.sh.

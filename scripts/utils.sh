@@ -467,7 +467,7 @@ _get_prebuilts() {
 
 	local rv_rel release resp tag_name matches asset name url
 	rv_rel=$(source_release_api_base "$host" "$src" "$host_instance") || return 1
-	if [ "$ver" = "beta" ] || [ "$ver" = "dev" ] || [ "$ver" = "both" ]; then
+	if [ "$ver" = "beta" ] || [ "$ver" = "dev" ]; then
 		resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 		resp=$(filter_releases_by_regex "${cli_tag_filter:-$cli_filter}" "$cli_name_filter" <<<"$resp")
 		release=$(source_release_pick_from_list "$host" "$ver" <<<"$resp") || true
@@ -477,7 +477,7 @@ _get_prebuilts() {
 			release="" # Clear release if we had to fallback to get_highest_ver
 		fi
 	fi
-	if [ "$ver" = "stable" ] || [ "$ver" = "latest" ]; then
+	if [ "$ver" = "stable" ] || [ "$ver" = "latest" ] || [ "$ver" = "both" ]; then
 		resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 		resp=$(filter_releases_by_regex "${cli_tag_filter:-$cli_filter}" "$cli_name_filter" <<<"$resp")
 		release=$(source_release_pick_from_list "$host" stable <<<"$resp") || return 1
@@ -570,7 +570,7 @@ _get_prebuilts() {
 		
 		local rv_rel release resp tag_name matches asset name url
 		rv_rel=$(source_release_api_base "$host" "$src" "$host_instance") || return 1
-		if [ "$ver" = "beta" ] || [ "$ver" = "dev" ] || [ "$ver" = "both" ]; then
+		if [ "$ver" = "beta" ] || [ "$ver" = "dev" ]; then
 			resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 			resp=$(filter_releases_by_regex "${patches_tag_filter_list:-$patches_filter_list}" "$patches_name_filter_list" <<<"$resp")
 			release=$(source_release_pick_from_list "$host" "$ver" <<<"$resp") || true
@@ -580,7 +580,7 @@ _get_prebuilts() {
 				release="" # Clear release if we had to fallback to get_highest_ver
 			fi
 		fi
-		if [ "$ver" = "stable" ] || [ "$ver" = "latest" ]; then
+		if [ "$ver" = "stable" ] || [ "$ver" = "latest" ] || [ "$ver" = "both" ]; then
 			resp=$(source_req "$host" "$rv_rel?per_page=100" -) || return 1
 			resp=$(filter_releases_by_regex "${patches_tag_filter_list:-$patches_filter_list}" "$patches_name_filter_list" <<<"$resp")
 			release=$(source_release_pick_from_list "$host" stable <<<"$resp") || return 1
@@ -4175,6 +4175,18 @@ build_rv() {
 		else
 			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 			all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+			# Downloads selected by a target versionCode are cached with that
+			# code even when no explicit version-code mapping exists in config.
+			# Reuse those files during the build phase instead of looking for the
+			# obsolete unqualified filename.
+			if [ ! -f "$stock_apk" ] && [ "$arch_f" = all ]; then
+				stock_apk=$(find "$apk_cache_dir" -maxdepth 1 -type f \
+					-name "${pkg_name}-${version_f}-*-all.apk" | sort | head -1)
+				[ -n "$stock_apk" ] && all_apk="$stock_apk"
+			elif [ ! -f "$stock_apk" ]; then
+				stock_apk=$(find "$apk_cache_dir" -maxdepth 1 -type f \
+					-name "${pkg_name}-${version_f}-*-${arch_f}.apk" | sort | head -1)
+			fi
 		fi
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")

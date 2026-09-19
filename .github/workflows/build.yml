@@ -229,6 +229,7 @@ jobs:
         with:
           branch: update
           skip_checkout: true
+          push_options: --force
           file_pattern: changelogs/*.md *-update.json
           commit_message: Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}
 

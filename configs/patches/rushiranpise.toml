@@ -197,6 +197,7 @@ custom-microg-patches = "'None'"
 build-mode = "apk"
 pkg-name = "com.arjanvlek.oxygenupdater"
 github-dlurl = "https://github.com/oxygen-updater/os-updater"
+github-asset-regex = "Oxygen\\.Updater\\.{version}\\.apk"
 patches-source = "rushiranpise/morphe-patches"
 [OxygenUpdater-Morphe-Rushiranpise-Experimental]
 enabled = true
@@ -210,6 +211,7 @@ custom-microg-patches = "'None'"
 build-mode = "apk"
 pkg-name = "com.arjanvlek.oxygenupdater"
 github-dlurl = "https://github.com/oxygen-updater/os-updater"
+github-asset-regex = "Oxygen\\.Updater\\.{version}\\.apk"
 patches-source = "rushiranpise/morphe-patches"
 [WindscribeVPN-Morphe-Rushiranpise]
 enabled = true

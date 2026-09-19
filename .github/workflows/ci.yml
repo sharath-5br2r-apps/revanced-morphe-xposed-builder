@@ -717,6 +717,10 @@ jobs:
           create_branch: true
           skip_checkout: true
           add_options: -f
+          # The update branch is generated metadata, not a development branch.
+          # Replace its previous generated snapshot so stale concurrent runs do
+          # not fail with a non-fast-forward push.
+          push_options: --force
           file_pattern: build.json changelogs/*.md
           commit_message: "Bump version ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
 
