@@ -1,38 +1,3 @@
 {
-  "patches-version": "both",
-  "Discord-NPatch-Revenge": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Discord",
-    "pkg-name": "com.discord",
-    "cli-type": "npatch",
-    "patch-brand": "Revenge",
-    "build-mode": "apk",
-    "cli-source": "7723mod/NPatch",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord",
-    "patches-source": "revenge-mod/revenge-xposed",
-    "patcher-args": "-l 0",
-    "uptodown-dlurl": "https://discord-chat-for-gamers.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
-  },
-  "AdobeAcrobat-Morphe-Rushiranpise-Experimental": {
-    "enable-module-update": true,
-    "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "Adobe Acrobat",
-    "cli-type": "morphe",
-    "patch-brand": "Rushiranpise",
-    "sub-variant": "Experimental",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "build-mode": "apk",
-    "arch": "all arm64-v8a x86_64",
-    "pkg-name": "com.adobe.reader",
-    "uptodown-dlurl": "https://adobe-reader.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-acrobat",
-    "patches-source": "rushiranpise/morphe-patches",
-    "custom-microg-patches": "'None'"
-  }
+  "patches-version": "both"
 }
