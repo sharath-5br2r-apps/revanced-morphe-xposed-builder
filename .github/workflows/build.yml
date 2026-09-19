@@ -170,7 +170,10 @@ jobs:
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           IS_PRERELEASE: ${{ steps.context.outputs.IS_PRERELEASE }}
-        run: python3 .github/scripts/build_make_manifest.py
+        run: | 
+          cat build.json
+          python3 .github/scripts/build_make_manifest.py
+          cp -f temp/manifest/build.json build.json
 
       - name: Upload to release
         env:
@@ -193,7 +196,7 @@ jobs:
         run: |
           set -euo pipefail
           for attempt in 1 2 3; do
-            if gh release upload "$RELEASE_TAG" "temp/manifest/build.json#build.json" --clobber -R "$GITHUB_REPOSITORY"; then
+            if gh release upload "$RELEASE_TAG" "build.json" --clobber -R "$GITHUB_REPOSITORY"; then
               exit 0
             fi
             [ "$attempt" -lt 3 ] && sleep $((attempt * 3))
@@ -201,17 +204,6 @@ jobs:
           echo "Failed to upload build.json after 3 attempts" >&2
           exit 1
 
-      - name: Upload part build metadata
-        if: ${{ inputs.upload_release_metadata == false }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: part-logs-${{ inputs.aggregate_flavor || steps.context.outputs.FLAVOR_TAG || 'logs' }}-${{ steps.context.outputs.CONFIG_TAG || 'part' }}
-          path: |
-            build.json
-            build.md
-            error.log
-            ${{ inputs.config_file }}
-          if-no-files-found: ignore
 
       - name: Upload error log
         if: ${{ inputs.aggregate_flavor == '' && hashFiles('error.log') != '' }}
@@ -246,7 +238,6 @@ jobs:
           bash .github/scripts/build_exclude_from_archive.sh
 
       - name: Upload to release (Archive)
-        if: ${{ inputs.upload_release_metadata != false }}
         id: archive_upload
         continue-on-error: true
         env:
@@ -261,12 +252,25 @@ jobs:
         run: bash .github/scripts/build_upload_release.sh
 
       - name: Merge and upload archive manifest
-        if: ${{ inputs.upload_release_metadata != false }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ARCHIVE_TAG: ${{ steps.context.outputs.ARCHIVE_TAG }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: bash .github/scripts/merge_archive_manifest.sh
+
+      - name: Upload part build metadata
+        if: ${{ inputs.upload_release_metadata == false }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: part-logs-${{ inputs.aggregate_flavor || steps.context.outputs.FLAVOR_TAG || 'logs' }}-${{ steps.context.outputs.CONFIG_TAG || 'part' }}
+          path: |
+            build.json
+            build.md
+            error.log
+            ${{ inputs.config_file }}
+            if-no-files-found: ignore
+
+
 
       - name: Notify website catalog rebuild
         if: ${{ inputs.upload_release_metadata != false }}

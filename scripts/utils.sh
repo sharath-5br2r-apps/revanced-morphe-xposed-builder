@@ -694,6 +694,18 @@ set_prebuilts() {
 		[ -f "$AAPT2" ] || AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}"
 	fi
 
+  local sdk_root="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}}"
+  if [ -n "$sdk_root" ] && [ -d "$sdk_root/build-tools" ]; then          
+    local latest_bt
+    latest_bt=$(ls -1d "$sdk_root"/build-tools/* 2>/dev/null | sort -V | tail -1)
+    if [ -n "$latest_bt" ] && [ -f "$latest_bt/lib/apksigner.jar" ]; then
+      APKSIGNER="$latest_bt/lib/apksigner.jar"
+    fi
+    if [ -n "$latest_bt" ] && [ -z "$AAPT2"]&& [ -x "$latest_bt/aapt2" ] && ! command -v aapt2 >/dev/null 2>&1; then
+    AAPT2="$latest_bt/aapt2"
+    fi
+  fi
+}
 }
 
 _req() {

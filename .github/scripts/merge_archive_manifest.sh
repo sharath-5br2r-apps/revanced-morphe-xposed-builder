@@ -17,7 +17,7 @@ NEW_MANIFEST="temp/manifest/build.json"
 OLD_MANIFEST="temp/manifest/archive-old.json"
 LIVE_LIST="temp/manifest/archive-live-assets.txt"
 OUT_DIR="temp/archive-upload"
-OUT_MANIFEST="$OUT_DIR/build.json"
+OUT_MANIFEST="build_archive.json"
 
 mkdir -p temp/manifest "$OUT_DIR"
 
