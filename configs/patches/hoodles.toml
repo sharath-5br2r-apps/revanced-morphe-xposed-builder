@@ -493,3 +493,16 @@ pkg-name = "com.adobe.lrmobile"
 uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-lightroom/"
 patches-source = "hoo-dles/morphe-patches"
+
+[Duolingo-Morphe-Hoodles]
+enabled = true
+cli-source = "MorpheApp/morphe-desktop"
+app-name = "Duolingo"
+cli-type = "morphe"
+patch-brand = "Hoodles"
+cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo"
+build-mode = "apk"
+pkg-name = "com.duolingo"
+uptodown-dlurl = "https://duolingo.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
+patches-source = "hoo-dles/morphe-patches"

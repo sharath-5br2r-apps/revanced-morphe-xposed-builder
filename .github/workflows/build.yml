@@ -209,6 +209,15 @@ jobs:
           path: |
             build.json
             build.md
+            error.log
+          if-no-files-found: ignore
+
+      - name: Upload error log
+        if: ${{ inputs.aggregate_flavor == '' && hashFiles('error.log') != '' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: error_log
+          path: error.log
           if-no-files-found: ignore
 
       - name: Update changelog and module update files

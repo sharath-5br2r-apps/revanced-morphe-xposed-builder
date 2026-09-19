@@ -9,6 +9,7 @@ RVB_UTILS_SH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/utils.sh"
 export RVB_UTILS_SH
 source "$RVB_UTILS_SH"
 echo '{}' > "$BUILD_JSON_FILE"
+: > "${RVB_ERROR_LOG:-error.log}"
 
 CONFIG_FILE="config.toml"
 ALLOWED_APPS=""

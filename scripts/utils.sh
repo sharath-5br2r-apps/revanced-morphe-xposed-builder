@@ -16,6 +16,7 @@ BUILD_DIR="build"
 DL_SRCS=("local" "direct" "cache_repo" "github" "gitlab" "forgejo" "archive" "apkmirror" "uptodown" "apkpure" "apkcombo")
 BUILD_JSON_FILE="build.json"
 PATCH_OUTPUT=""
+RVB_ERROR_LOG="${RVB_ERROR_LOG:-error.log}"
 
 # Cross-platform advisory lock for shared downloads and generated metadata.
 # Uses fcntl on Unix and msvcrt on Windows through the same Python helper.
@@ -179,10 +180,12 @@ toml_get() {
 pr() { echo >&2 -e "\033[0;32m[+] ${1}\033[0m"; }
 epr() {
 	echo >&2 -e "\033[0;31m[-] ${1}\033[0m"
+	printf '%s\n' "[-] ${1}" >> "$RVB_ERROR_LOG"
 	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::error::utils.sh [-] ${1}\n"; fi
 }
 wpr() {
 	echo >&2 -e "\033[0;33m[!] ${1}\033[0m"
+	printf '%s\n' "[!] ${1}" >> "$RVB_ERROR_LOG"
 	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::warning::utils.sh [!] ${1}\n"; fi
 }
 abort() {
@@ -909,7 +912,6 @@ _cache_all_archs_present() {
 	local arch arch_f check_apk
 	for arch in "${arch_list[@]}"; do
 		arch_f="${arch// /}"
-		local prepared_stock_apk="$final_stock_apk"
 		_cache_probe_apk "$ver" "$arch_f" "$raw_ver"
 		check_apk="$_CACHE_CHECK_APK"
 		if [ -z "$check_apk" ]; then
@@ -1562,7 +1564,7 @@ apkmirror_search() {
 		# `all` means one representative APK, not a literal architecture.
 		# Accept the first suitable ABI when the release has no universal APK.
 		if [ "$arch" = all ]; then
-			if isoneof "$node_arch" 'universal' 'noarch' 'arm64-v8a + x86_64' 'arm64-v8a + x86 + x86_64' 'arm64-v8a + armeabi-v7a' && { isoneof "$node_dpi" "${appdpi[@]}" || [ "$match_any_dpi" = true ]; }; then
+			if isoneof "$node_arch" 'universal' 'noarch' 'arm64-v8a + x86_64' 'arm64-v8a + x86 + x86_64' 'arm64-v8a + armeabi-v7a' 'arm64-v8a + armeabi' && { isoneof "$node_dpi" "${appdpi[@]}" || [ "$match_any_dpi" = true ]; }; then
 				echo "$dlurl"
 				return 0
 			elif [ "$match_any_dpi" = true ] && [ -z "$best_fallback_url" ]; then
@@ -1570,9 +1572,9 @@ apkmirror_search() {
 			fi
 		# Pass 1 Logic: Return Universal/Fat Bundles immediately to optimize cache size
 		elif isoneof "$node_arch" 'universal' 'noarch' || \
-			{ [ "$arch" = armeabi-v7a ] && [ "$node_arch" = 'arm64-v8a + armeabi-v7a' ]; } || \
+			{ [ "$arch" = armeabi-v7a ] && isoneof "$node_arch" 'arm64-v8a + armeabi-v7a' 'arm64-v8a + armeabi'; } || \
 			{ isoneof "$arch" x86 x86_64 && isoneof "$node_arch" 'arm64-v8a + x86_64' 'arm64-v8a + x86 + x86_64'; } || \
-			{ [ "$arch" = arm64-v8a ] && isoneof "$node_arch" 'arm64-v8a + x86_64' 'arm64-v8a + x86 + x86_64' 'arm64-v8a + armeabi-v7a'; }; then
+			{ [ "$arch" = arm64-v8a ] && isoneof "$node_arch" 'arm64-v8a + x86_64' 'arm64-v8a + x86 + x86_64' 'arm64-v8a + armeabi-v7a' 'arm64-v8a + armeabi'; }; then
 			if isoneof "$node_dpi" "${appdpi[@]}"; then
 				echo "$dlurl"
 				return 0
@@ -3293,7 +3295,10 @@ has_native_arch() {
 # Returns: 0 continue | 1 hard failure (caller `return 1`) | 2 skip app (caller `return 0`)
 _resolve_list_and_version() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 table=$4 say_pkg=${5:-false}
-	if [ "${args[skip_patch_app_check]:-false}" = true ]; then
+	# Keep version discovery active for patchers with a patch list. The bypass
+	# is for the final compatibility rejection; returning here makes `auto`
+	# select the download source's newest release instead of the supported one.
+	if [ "${args[skip_patch_app_check]:-false}" = true ] && [ "${PATCHER_HAS_PATCH_LIST:-false}" != true ]; then
 		return 0
 	fi
 	if [ -z "$list_patches" ]; then
@@ -4191,6 +4196,7 @@ build_rv() {
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
 	for arch in "${arch_list[@]}"; do
 		arch_f="${arch// /}"
+		local prepared_stock_apk="${final_stock_apk:-}"
 		local build_vc build_vc_infix
 		build_vc=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
 		build_vc_infix="${build_vc:+-${build_vc}}"

@@ -7,10 +7,12 @@ echo "[+] Aggregating build logs for flavor: $FLAVOR"
 
 aggregated_json="aggregated_out/build.${FLAVOR}.json"
 aggregated_md="aggregated_out/build.${FLAVOR}.md"
+aggregated_errors="aggregated_out/error.log"
 
 mkdir -p aggregated_out
 echo "{}" > "$aggregated_json"
 > "$aggregated_md"
+> "$aggregated_errors"
 
 # Collect all downloaded part-logs (support build.json directly or inside subdirectories)
 for json_file in $(find . \( -name "build.json" -o -name "build*.json" \) 2>/dev/null); do
@@ -27,6 +29,15 @@ for json_file in $(find . \( -name "build.json" -o -name "build*.json" \) 2>/dev
     mv "$tmp_merged" "$aggregated_json"
   fi
 done
+
+# Preserve warnings and errors emitted by each parallel build part.
+while IFS= read -r error_file; do
+  [ -s "$error_file" ] || continue
+  {
+    printf '\n===== %s =====\n' "$error_file"
+    cat "$error_file"
+  } >> "$aggregated_errors"
+done < <(find . -type f -name error.log ! -path "./$aggregated_errors" 2>/dev/null | sort)
 
 # Generate normalized aggregated build.md exclusively from aggregated build.json
 python3 ../.github/scripts/generate_release_notes.py "$aggregated_json" "$aggregated_md" 2>/dev/null || python3 .github/scripts/generate_release_notes.py "$aggregated_json" "$aggregated_md" || true
