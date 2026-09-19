@@ -45,8 +45,8 @@
     "stable_date": "2026-09-11T06:02:09.402Z"
   },
   "MorpheApp/morphe-patches": {
-    "beta": "v1.44.0-dev.6",
-    "beta_date": "2026-09-18T16:39:09Z",
+    "beta": "v1.44.0-dev.9",
+    "beta_date": "2026-09-19T15:08:08Z",
     "blocked": false,
     "host": "github",
     "repo": "MorpheApp/morphe-patches",
@@ -122,8 +122,8 @@
     "blocked": false,
     "host": "github",
     "repo": "andrewliang25/morphe-patches",
-    "stable": "v3.0.0",
-    "stable_date": "2026-09-15T15:44:59Z"
+    "stable": "v3.1.0",
+    "stable_date": "2026-09-19T10:10:28Z"
   },
   "arandomhooman/hoomans-morphe-patches": {
     "beta": "v1.44.0-dev.4",
@@ -162,13 +162,13 @@
     "stable_date": "2026-07-18T18:58:06Z"
   },
   "byehi98/okish-morphe-patches": {
-    "beta": "v1.28.1-dev.2",
-    "beta_date": "2026-09-19T02:32:19Z",
+    "beta": "v1.28.1-dev.5",
+    "beta_date": "2026-09-19T06:13:01Z",
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.28.0",
-    "stable_date": "2026-09-18T11:52:16Z"
+    "stable": "v1.28.1",
+    "stable_date": "2026-09-19T06:16:14Z"
   },
   "crimera/piko": {
     "beta": "v3.10.0-dev.8",
@@ -248,8 +248,8 @@
     "blocked": false,
     "host": "github",
     "repo": "hxreborn/morphe-patches",
-    "stable": "v1.24.0",
-    "stable_date": "2026-09-17T15:12:45Z"
+    "stable": "v1.25.0",
+    "stable_date": "2026-09-19T11:14:52Z"
   },
   "icysymmetra/tiktok-patches-for-morphe": {
     "beta": "v0.8.0-dev.11",
@@ -279,8 +279,8 @@
     "stable_date": "2026-09-17T16:50:03Z"
   },
   "jkennethcarino/adobo": {
-    "beta": "v1.5.0-dev.2",
-    "beta_date": "2026-09-06T15:04:24Z",
+    "beta": "v1.5.0-dev.3",
+    "beta_date": "2026-09-19T14:53:33Z",
     "blocked": false,
     "host": "github",
     "repo": "jkennethcarino/adobo",

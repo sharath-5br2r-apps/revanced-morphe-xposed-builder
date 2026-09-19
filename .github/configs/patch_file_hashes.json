@@ -32,8 +32,8 @@
   "andrewliang25/morphe-patches": {
     "beta": {},
     "stable": {
-      "com.facebook.katana": "36b686c7da5624e0463207d2f99fa05f",
-      "shared": "7c131ea894766cbcd932a14f493a635a"
+      "com.facebook.katana": "38f486184dcbbb724e1943c1478aa6fa",
+      "shared": "44cfef101f878a2ab28de522316e2dd1"
     }
   },
   "arandomhooman/hoomans-morphe-patches": {
@@ -69,7 +69,7 @@
     "beta": {},
     "stable": {
       "org.swiftapps.swiftbackup": "19f8e7d3f7903d93d21919ae4e0b5bc2",
-      "shared": "33476eca792cd0686939390824d18c69"
+      "shared": "7a72277e9dc8c286b410c4f7b24f8e23"
     }
   },
   "crimera/piko": {
@@ -189,9 +189,9 @@
   "hxreborn/morphe-patches": {
     "beta": {},
     "stable": {
-      "ch.protonmail.android": "f7182d1ac61866ea5429d1b87adca501",
-      "com.michaldrabik.showly2": "69f09074101a64226871b33f80ece798",
-      "shared": "5e1511719106a8ba5463491ab39a5415"
+      "ch.protonmail.android": "6f939688ac1431babef0ab8e397bca5e",
+      "com.michaldrabik.showly2": "f5be9e25c229954f607306b0042d5159",
+      "shared": "1ccd1d127580d53a777a03f8d25ed3ff"
     }
   },
   "icysymmetra/tiktok-patches-for-morphe": {
@@ -266,10 +266,10 @@
   },
   "morpheapp/morphe-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "bb145b7694d3a86e91ab6a153140a8de",
-      "com.google.android.youtube": "922cba6d9da116df91367c3399d4cfdb",
-      "com.reddit.frontpage": "569f7eb9334163efdffd8a0715e61d26",
-      "shared": "15acc84bec8476ff0a246706e7c0b822"
+      "com.google.android.apps.youtube.music": "4e726ab50d05bb011e8235c1077d944c",
+      "com.google.android.youtube": "ec1a2e5b5d13af630a61d62af2cce21a",
+      "com.reddit.frontpage": "3e8eeeb8e27553038933e95c92c1cb60",
+      "shared": "f6dc26a11b6466a4b8c1711af6dda08a"
     },
     "stable": {
       "com.google.android.apps.youtube.music": "d0fac8952bcb3c5e898f43a9af93f87c",
