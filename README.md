@@ -47,46 +47,11 @@ Thank you to everyone in the open-source community who helps keep these projects
 
 ---
 
-## 🛠️ Local Building & Command Line Usage
+## ⚙️ Configuration and Local Builds
 
-You can build APKs and Magisk/KSU modules locally on Android (Termux), Linux, or macOS.
-
-### Prerequisites
-- **Bash** (`bash` 4.4+)
-- **OpenJDK 21** (`java`)
-- **jq** (`jq`)
-- **Python 3** (`python3`)
-- **cURL** (`curl`)
-
-### Command Line Flags & Usage
-```bash
-./build.sh [--clean] [--config-update] [--config=path/to/config] [--allowed-apps="<regex>"] [--output=path/to/output/dir]
-```
-
-- **Clean build artifacts**: `./build.sh --clean`
-- **Update configurations**: `./build.sh --config-update`
-- **Build with config file**: `./build.sh --config=configs/stable/config.updated.json`
-- **Filter apps by regex**: `./build.sh --config=configs/stable/config.updated.json --allowed-apps="YouTube.*"`
-- **Custom output directory**: `./build.sh --config=configs/stable/config.updated.json --output=dist/`
-- *(Positional syntax `./build.sh [config_file] [app_regex...]` remains backwards-compatible).*
-
-Builds use the available CPU count for table-level parallelism by default. Set
-`PARALLEL_JOBS=1` for a fully sequential local build. Architecture lists such
-as `arm64-v8a armeabi-v7a x86_64` are expanded into independent build slices;
-`both` expands to arm64-v8a and armeabi-v7a.
-
-### Optional Keystore Setup (`.env`)
-Create a `.env` file in the project root to sign APKs with a custom keystore:
-
-```bash
-KEYSTORE_FILE="/path/to/keystore.bks" # optional; takes precedence over KEYSTORE_BASE64
-KEYSTORE_BASE64="<base64_encoded_keystore>"
-KEYSTORE_PASSWORD="mysecretpassword"
-KEYSTORE_ALIAS="mykeyalias"
-KEYSTORE_KEY_PASSWORD="mykeypassword"
-```
-
-*If no keystore variables are supplied, the builder uses its configured default keystore. For complete configuration options, see [CONFIG.md](CONFIG.md).*
+Configuration syntax, available options, prerequisites, local `build.sh`
+usage, architecture selection, keystore setup, and CI behavior are documented
+in the [Configuration and Usage Guide](Documentation.md).
 
 ---
 

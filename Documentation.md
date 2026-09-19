@@ -444,6 +444,8 @@ You can run builds directly on Linux or Android (Termux):
 - `--config=path`: Path to a `.toml` or compiled `.json` configuration.
 - `--allowed-apps="regex"`: Only build apps matching the regex. Prefix with `!` to exclude (e.g. `!YouTube`).
 - `--output=path`: Custom directory for finished artifacts (default: `build/`).
+- `--patches-version=stable|beta|both`: Override the patch channel for this
+  build without setting an environment variable.
 - `--clean`: Purge temporary directories (`temp/`, `build/`, `build.md`) and exit.
 - `[filters...]`: Positional arguments to include or exclude specific app tables:
   ```bash
@@ -461,7 +463,6 @@ You can run builds directly on Linux or Android (Termux):
 | `KEYSTORE_PASSWORD` | Password for the keystore |
 | `KEYSTORE_ALIAS` | Key alias in the keystore |
 | `KEYSTORE_KEY_PASSWORD` | Key password (defaults to `KEYSTORE_PASSWORD` if unset) |
-| `OVERRIDE_PATCHES_VERSION`| Forces a specific patches version for all apps |
 | `NEXT_VER_CODE` | Explicit release version code (e.g. `2026.09.15-1`) |
 | `TRAWL_URL` / `CFB_URL` | FlareSolverr / Cloudflare bypass scraper endpoints |
 | `HTMLQ` / `YQ` / `AAPT2` | Custom binary paths |
@@ -489,7 +490,6 @@ committed to TOML, JSON, workflow files, or build logs.
 | `CI_FETCH_ALLOWED_APPS` | Variable | `ci_fetch_app_versions.sh` | Limits version fetching to selected app names. |
 | `CONFIG_FILES` / `CONFIG_DIR` | Variable | `ci_fetch_app_versions.sh` | Overrides the config file list or root config directory. |
 | `NO_SLEEP` / `CI_FETCH_NO_SLEEP` | Variable | `ci_fetch_app_versions.sh` | Disables request throttling during local/CI fetching. |
-| `OVERRIDE_PATCHES_VERSION` | Variable | config resolution scripts | Overrides the selected `patches-version`. |
 | `CFB_URL` | Variable | `cf_get.py`, download helpers | Cloudflare Bypasser endpoint. |
 | `TRAWL_URL` | Variable | `cf_get.py`, download helpers | Trawl endpoint. |
 | `KEYSTORE_BASE64` | Secret | `ci.yml`, `build.yml` | Base64-encoded signing keystore. |
