@@ -2935,6 +2935,7 @@ write_build_info() {
 
 	# Inspect APK with aapt/aapt2 if available
 	local min_sdk=""
+	local version_code=""
 	local densities_json="[]"
 	local native_libs_json="[]"
 
@@ -2944,6 +2945,7 @@ write_build_info() {
 			local aapt_out
 			aapt_out=$("$aapt_bin" dump badging "$inspect_apk" 2>/dev/null || true)
 			min_sdk=$(printf '%s' "$aapt_out" | grep -oP "(?:sdkVersion|minSdkVersion):'\K[^']+" | head -1 || true)
+			version_code=$(printf '%s' "$aapt_out" | grep -oP "versionCode='\K[^']+" | head -1 || true)
 			local den_raw nat_raw
 			den_raw=$(printf '%s' "$aapt_out" | grep -oP "densities: \K.*" | tr -d "'" || true)
 			[ -n "$den_raw" ] && densities_json=$(jq -n --arg d "$den_raw" '$d | split(" ") | map(select(length > 0))' 2>/dev/null || echo '[]')
@@ -2979,6 +2981,7 @@ write_build_info() {
 			--arg name "$name" \
 			--arg version "$version" \
 			--arg min_sdk "$min_sdk" \
+			--arg version_code "$version_code" \
 			--arg cli "${cli_ref:-${cli_name_ver:-}}" \
 			--arg patches "$patches" \
 			--arg changelog "$changelog" \
@@ -3011,6 +3014,7 @@ write_build_info() {
 			.[$key].assets = ((.[$key].assets // []) | map(select(.name != $asset_name)) + [
 				{
 					name: $asset_name, arch: $arch, ext: $ext, os: "Android",
+					version_code: $version_code,
 					densities: $densities, native_libraries: $native_libs, min_sdk: $min_sdk,
 					appliedPatches: $applied, skippedPatches: $skipped, failedPatches: $failed
 				}
@@ -3018,6 +3022,7 @@ write_build_info() {
 				| if ($densities | length) > 0 then . else del(.densities) end
 				| if ($native_libs | length) > 0 then . else del(.native_libraries) end
 				| if $min_sdk != "" then . else del(.min_sdk) end
+				| if $version_code != "" then . else del(.version_code) end
 				| if ($applied | length) > 0 then . else del(.appliedPatches) end
 				| if ($skipped | length) > 0 then . else del(.skippedPatches) end
 				| if ($failed | length) > 0 then . else del(.failedPatches) end
@@ -3042,6 +3047,7 @@ write_build_info() {
 				assets: [
 					{
 						name: $asset_name, arch: $arch, ext: $ext, os: "Android",
+						version_code: $version_code,
 						densities: $densities, native_libraries: $native_libs, min_sdk: $min_sdk,
 						appliedPatches: $applied, skippedPatches: $skipped, failedPatches: $failed
 					}
@@ -3049,6 +3055,7 @@ write_build_info() {
 					| if ($densities | length) > 0 then . else del(.densities) end
 					| if ($native_libs | length) > 0 then . else del(.native_libraries) end
 					| if $min_sdk != "" then . else del(.min_sdk) end
+					| if $version_code != "" then . else del(.version_code) end
 					| if ($applied | length) > 0 then . else del(.appliedPatches) end
 					| if ($skipped | length) > 0 then . else del(.skippedPatches) end
 					| if ($failed | length) > 0 then . else del(.failedPatches) end
@@ -3593,7 +3600,7 @@ build_rv() {
 		local version_f=${version// /}
 		version_f=${version_f#v}
 
-		if ! has_compatible_patches "$cli_jar" "$patches_jar" "$pkg_name" "$version_f" "${args[cli_source]:-}"; then
+		if [ "${args[skip_patch_app_check]:-false}" != true ] && ! has_compatible_patches "$cli_jar" "$patches_jar" "$pkg_name" "$version_f" "${args[cli_source]:-}"; then
 			wpr "No compatible patches found in '${args[patches_src]:-${args[cli_source]:-}}' for '$pkg_name' v${version_f}. Skipping ${table}."
 			continue
 		fi

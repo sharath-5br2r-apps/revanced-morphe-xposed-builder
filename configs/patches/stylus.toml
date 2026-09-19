@@ -10,6 +10,7 @@ github-dlurl = "https://github.com/bitwarden/android"
 github-dlurl-regex = "fdroid.apk$"
 github-release-regex = "bwpm"
 version = "latest"
+skip-patch-app-check = true
 patches-source = "ch3thanhs/stylus"
 [Bitwarden-Morphe-Stylus-Experimental]
 enabled = true
@@ -24,4 +25,5 @@ github-dlurl = "https://github.com/bitwarden/android"
 github-dlurl-regex = "fdroid.apk$"
 github-release-regex = "bwpm"
 version = "latest"
+skip-patch-app-check = true
 patches-source = "ch3thanhs/stylus"

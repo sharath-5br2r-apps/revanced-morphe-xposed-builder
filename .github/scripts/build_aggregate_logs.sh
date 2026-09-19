@@ -15,8 +15,13 @@ echo "{}" > "$aggregated_json"
 # Collect all downloaded part-logs (support build.json directly or inside subdirectories)
 for json_file in $(find . \( -name "build.json" -o -name "build*.json" \) 2>/dev/null); do
   # Avoid merging output target if running in same dir
-  if [ -s "$json_file" ] && [ "$json_file" != "./$aggregated_json" ] && [ "$json_file" != "$aggregated_json" ]; then
+  if [ -s "$json_file" ] && [ "${json_file#./}" != "$aggregated_json" ]; then
     echo "[+] Merging $json_file into $aggregated_json"
+    if ! jq empty "$json_file" >/dev/null 2>&1; then
+      echo "[-] ERROR: Invalid JSON fragment: $json_file" >&2
+      jq empty "$json_file" >&2 || true
+      exit 1
+    fi
     tmp_merged=$(mktemp)
     jq -s '.[0] * .[1]' "$aggregated_json" "$json_file" > "$tmp_merged"
     mv "$tmp_merged" "$aggregated_json"
