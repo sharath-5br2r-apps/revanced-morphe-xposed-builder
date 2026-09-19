@@ -689,10 +689,18 @@ set_prebuilts() {
 	if [ ! -x "$HTMLQ" ] && command -v htmlq >/dev/null 2>&1; then HTMLQ="htmlq"; fi
 	if command -v aapt2 >/dev/null 2>&1; then
 		AAPT2=$(command -v aapt2)
-	else
+	elif command -v aapt >/dev/null 2>&1; then
+		AAPT2=$(command -v aapt)
+	elif [ -n "${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}" ]; then
+		local sdk_root="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+		AAPT2=$(find "$sdk_root/build-tools" -name aapt2 -type f 2>/dev/null | sort -V | tail -1 || true)
+		[ -z "$AAPT2" ] && AAPT2=$(find "$sdk_root/build-tools" -name aapt -type f 2>/dev/null | sort -V | tail -1 || true)
+	fi
+	if [ -z "${AAPT2:-}" ] || [ ! -x "${AAPT2:-}" ]; then
 		AAPT2="${BIN_DIR}/aapt2/aapt2-${kernel}-${arch}${ext}"
 		[ -f "$AAPT2" ] || AAPT2="${BIN_DIR}/aapt2/aapt2-${arch}"
 	fi
+	export AAPT2
 
   local sdk_root="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}}"
   if [ -n "$sdk_root" ] && [ -d "$sdk_root/build-tools" ]; then          

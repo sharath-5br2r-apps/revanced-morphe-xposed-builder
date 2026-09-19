@@ -81,6 +81,16 @@ jobs:
           fetch-depth: 0
           submodules: true
 
+      - name: Setup Android build tools
+        run: |
+          sdk_dir="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          if [ -d "$sdk_dir/build-tools" ]; then
+            latest_bt=$(ls -d "$sdk_dir/build-tools"/* 2>/dev/null | sort -V | tail -1 || true)
+            if [ -n "$latest_bt" ] && [ -d "$latest_bt" ]; then
+              echo "$latest_bt" >> "$GITHUB_PATH"
+            fi
+          fi
+
       - name: Resolve build context
         id: context
         run: bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}" "${{ inputs.patches_version }}"

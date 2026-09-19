@@ -249,27 +249,69 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
-          if [ -n "$tag" ] && [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
+          # Discover aggregated json and markdown directly
+          json_file="build.json"
+          md_file="release_notes.md"
+          if [ -d "dev_logs/aggregated_out" ]; then
+            for j in dev_logs/aggregated_out/build.*.json; do
+              [ -s "$j" ] && { json_file="$j"; cp -f "$j" build.json; break; }
+            done
+            for m in dev_logs/aggregated_out/build.*.md; do
+              [ -s "$m" ] && { md_file="$m"; cp -f "$m" release_notes.md; break; }
+            done
+          fi
+
+          if [ ! -s "$md_file" ] && [ -s "$json_file" ]; then
+            python3 .github/scripts/generate_release_notes.py "$json_file" release_notes.md || true
+            md_file="release_notes.md"
+          fi
+
+          # Convert the aggregated raw build.json into the release manifest
+          # before uploading. The raw file supplies the exact output filenames.
+          if [ -s "$json_file" ]; then
+            NEXT_VER_CODE="$tag" IS_PRERELEASE="true" MANIFEST_ONLY=true \
+              python3 .github/scripts/build_make_manifest.py
+          fi
+          release_json_file="temp/manifest/build.json"
+
+          if [ ! -s "$release_json_file" ]; then
+            echo "::error::Dev release manifest was not generated"
+            exit 1
+          fi
+
+          mkdir -p dev_logs/release-manifest
+          cp -f "$release_json_file" dev_logs/release-manifest/build.json
+
+          if [ -n "$tag" ] && [ -s "$release_json_file" ]; then
             if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
               title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
             else
               title_base="Build $tag"
             fi
             release_title="${title_base} (Pre-release)"
+            notes_arg=("--notes" "")
+            [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
             if gh release view "$tag" >/dev/null 2>&1; then
-              gh release edit "$tag" --generate-notes || true
+              [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
-              gh release create "$tag" --title "$release_title" --generate-notes --prerelease || true
+              gh release create "$tag" --title "$release_title" --prerelease "${notes_arg[@]}" || true
             fi
-            if [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
-              echo "Uploading dev_logs/aggregated_out/build.dev.json to release $tag..."
-              gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json#build.json" --clobber || {
-                echo "::warning::Failed to upload dev_logs/aggregated_out/build.dev.json to release $tag, retrying..."
+            if [ -s "$release_json_file" ]; then
+              echo "Uploading $release_json_file to release $tag..."
+              gh release upload "$tag" "$release_json_file#build.json" --clobber || {
+                echo "::warning::Failed to upload $release_json_file to release $tag, retrying..."
                 sleep 3
-                gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json#build.json" --clobber || echo "::warning::Failed to upload dev_logs/aggregated_out/build.dev.json to release $tag"
+                gh release upload "$tag" "$release_json_file#build.json" --clobber || echo "::warning::Failed to upload $release_json_file to release $tag"
               }
             fi
           fi
+
+      - name: Upload dev release manifest artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: dev-release-manifest
+          path: dev_logs/release-manifest/build.json
+          if-no-files-found: error
 
       - name: Merge beta archive manifest
         env:
@@ -282,8 +324,34 @@ jobs:
         run: |
           set -euo pipefail
           cp -f dev_logs/aggregated_out/build.dev.json build.json
-          python3 .github/scripts/build_make_manifest.py
+          test -s temp/manifest/build.json
           bash .github/scripts/merge_archive_manifest.sh
+
+      - name: Collect update branch files (Dev)
+        run: |
+          set -euo pipefail
+          mkdir -p changelogs
+          tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
+          json_file="dev_logs/aggregated_out/build.dev.json"
+          changelog_file="dev_logs/aggregated_out/build.dev.md"
+          if [ -n "$tag" ] && [ -s "$json_file" ]; then
+            if [ ! -s "$changelog_file" ]; then
+              python3 .github/scripts/generate_release_notes.py "$json_file" "$changelog_file"
+            fi
+            cp -f "$json_file" "build.json"
+            [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
+          fi
+
+      - name: Commit update branch files (Dev)
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: update
+          create_branch: true
+          skip_checkout: true
+          add_options: -f
+          push_options: --force
+          file_pattern: build.json changelogs/*.md
+          commit_message: "Bump version ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
 
   resolve_stable_version:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs]
@@ -389,26 +457,68 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
-          if [ -n "$tag" ] && [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
+          # Discover aggregated json and markdown directly
+          json_file="build.json"
+          md_file="release_notes.md"
+          if [ -d "stable_logs/aggregated_out" ]; then
+            for j in stable_logs/aggregated_out/build.*.json; do
+              [ -s "$j" ] && { json_file="$j"; cp -f "$j" build.json; break; }
+            done
+            for m in stable_logs/aggregated_out/build.*.md; do
+              [ -s "$m" ] && { md_file="$m"; cp -f "$m" release_notes.md; break; }
+            done
+          fi
+
+          if [ ! -s "$md_file" ] && [ -s "$json_file" ]; then
+            python3 .github/scripts/generate_release_notes.py "$json_file" release_notes.md || true
+            md_file="release_notes.md"
+          fi
+
+          # Convert the aggregated raw build.json into the release manifest
+          # before uploading. The raw file supplies the exact output filenames.
+          if [ -s "$json_file" ]; then
+            NEXT_VER_CODE="$tag" IS_PRERELEASE="false" MANIFEST_ONLY=true \
+              python3 .github/scripts/build_make_manifest.py
+          fi
+          release_json_file="temp/manifest/build.json"
+
+          if [ ! -s "$release_json_file" ]; then
+            echo "::error::Stable release manifest was not generated"
+            exit 1
+          fi
+
+          mkdir -p stable_logs/release-manifest
+          cp -f "$release_json_file" stable_logs/release-manifest/build.json
+
+          if [ -n "$tag" ] && [ -s "$release_json_file" ]; then
             if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
               title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
             else
               title_base="Build $tag"
             fi
+            notes_arg=("--notes" "")
+            [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
             if gh release view "$tag" >/dev/null 2>&1; then
-              gh release edit "$tag" --generate-notes || true
+              [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
-              gh release create "$tag" --title "$title_base" --generate-notes || true
+              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
             fi
-            if [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
-              echo "Uploading stable_logs/aggregated_out/build.stable.json to release $tag..."
-              gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json#build.json" --clobber || {
-                echo "::warning::Failed to upload stable_logs/aggregated_out/build.stable.json to release $tag, retrying..."
+            if [ -s "$release_json_file" ]; then
+              echo "Uploading $release_json_file to release $tag..."
+              gh release upload "$tag" "$release_json_file#build.json" --clobber || {
+                echo "::warning::Failed to upload $release_json_file to release $tag, retrying..."
                 sleep 3
-                gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json#build.json" --clobber || echo "::warning::Failed to upload stable_logs/aggregated_out/build.stable.json to release $tag"
+                gh release upload "$tag" "$release_json_file#build.json" --clobber || echo "::warning::Failed to upload $release_json_file to release $tag"
               }
             fi
           fi
+
+      - name: Upload stable release manifest artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: stable-release-manifest
+          path: stable_logs/release-manifest/build.json
+          if-no-files-found: error
 
       - name: Merge stable archive manifest
         env:
@@ -421,8 +531,34 @@ jobs:
         run: |
           set -euo pipefail
           cp -f stable_logs/aggregated_out/build.stable.json build.json
-          python3 .github/scripts/build_make_manifest.py
+          test -s temp/manifest/build.json
           bash .github/scripts/merge_archive_manifest.sh
+
+      - name: Collect update branch files (Stable)
+        run: |
+          set -euo pipefail
+          mkdir -p changelogs
+          tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
+          json_file="stable_logs/aggregated_out/build.stable.json"
+          changelog_file="stable_logs/aggregated_out/build.stable.md"
+          if [ -n "$tag" ] && [ -s "$json_file" ]; then
+            if [ ! -s "$changelog_file" ]; then
+              python3 .github/scripts/generate_release_notes.py "$json_file" "$changelog_file"
+            fi
+            cp -f "$json_file" "build.json"
+            [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
+          fi
+
+      - name: Commit update branch files (Stable)
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: update
+          create_branch: true
+          skip_checkout: true
+          add_options: -f
+          push_options: --force
+          file_pattern: build.json changelogs/*.md
+          commit_message: "Bump version ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
 
   resolve_latest_version:
     needs: [check_patch, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, aggregate_stable_logs]
@@ -533,26 +669,68 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
-          if [ -n "$tag" ] && [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
+          # Discover aggregated json and markdown directly
+          json_file="build.json"
+          md_file="release_notes.md"
+          if [ -d "latest_logs/aggregated_out" ]; then
+            for j in latest_logs/aggregated_out/build.*.json; do
+              [ -s "$j" ] && { json_file="$j"; cp -f "$j" build.json; break; }
+            done
+            for m in latest_logs/aggregated_out/build.*.md; do
+              [ -s "$m" ] && { md_file="$m"; cp -f "$m" release_notes.md; break; }
+            done
+          fi
+
+          if [ ! -s "$md_file" ] && [ -s "$json_file" ]; then
+            python3 .github/scripts/generate_release_notes.py "$json_file" release_notes.md || true
+            md_file="release_notes.md"
+          fi
+
+          # Convert the aggregated raw build.json into the release manifest
+          # before uploading. The raw file supplies the exact output filenames.
+          if [ -s "$json_file" ]; then
+            NEXT_VER_CODE="$tag" IS_PRERELEASE="false" MANIFEST_ONLY=true \
+              python3 .github/scripts/build_make_manifest.py
+          fi
+          release_json_file="temp/manifest/build.json"
+
+          if [ ! -s "$release_json_file" ]; then
+            echo "::error::Latest release manifest was not generated"
+            exit 1
+          fi
+
+          mkdir -p latest_logs/release-manifest
+          cp -f "$release_json_file" latest_logs/release-manifest/build.json
+
+          if [ -n "$tag" ] && [ -s "$release_json_file" ]; then
             if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
               title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
             else
               title_base="Build $tag"
             fi
+            notes_arg=("--notes" "")
+            [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
             if gh release view "$tag" >/dev/null 2>&1; then
-              gh release edit "$tag" --generate-notes || true
+              [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
-              gh release create "$tag" --title "$title_base" --generate-notes || true
+              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
             fi
-            if [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
-              echo "Uploading latest_logs/aggregated_out/build.latest.json to release $tag..."
-              gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json#build.json" --clobber || {
-                echo "::warning::Failed to upload latest_logs/aggregated_out/build.latest.json to release $tag, retrying..."
+            if [ -s "$release_json_file" ]; then
+              echo "Uploading $release_json_file to release $tag..."
+              gh release upload "$tag" "$release_json_file#build.json" --clobber || {
+                echo "::warning::Failed to upload $release_json_file to release $tag, retrying..."
                 sleep 3
-                gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json#build.json" --clobber || echo "::warning::Failed to upload latest_logs/aggregated_out/build.latest.json to release $tag"
+                gh release upload "$tag" "$release_json_file#build.json" --clobber || echo "::warning::Failed to upload $release_json_file to release $tag"
               }
             fi
           fi
+
+      - name: Upload latest release manifest artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: latest-release-manifest
+          path: latest_logs/release-manifest/build.json
+          if-no-files-found: error
 
       - name: Merge latest archive manifest
         env:
@@ -565,8 +743,34 @@ jobs:
         run: |
           set -euo pipefail
           cp -f latest_logs/aggregated_out/build.latest.json build.json
-          python3 .github/scripts/build_make_manifest.py
+          test -s temp/manifest/build.json
           bash .github/scripts/merge_archive_manifest.sh
+
+      - name: Collect update branch files (Latest)
+        run: |
+          set -euo pipefail
+          mkdir -p changelogs
+          tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
+          json_file="latest_logs/aggregated_out/build.latest.json"
+          changelog_file="latest_logs/aggregated_out/build.latest.md"
+          if [ -n "$tag" ] && [ -s "$json_file" ]; then
+            if [ ! -s "$changelog_file" ]; then
+              python3 .github/scripts/generate_release_notes.py "$json_file" "$changelog_file"
+            fi
+            cp -f "$json_file" "build.json"
+            [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
+          fi
+
+      - name: Commit update branch files (Latest)
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: update
+          create_branch: true
+          skip_checkout: true
+          add_options: -f
+          push_options: --force
+          file_pattern: build.json changelogs/*.md
+          commit_message: "Bump version ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
 
   resolve_batch_version:
     needs: check_patch
@@ -632,13 +836,6 @@ jobs:
           path: batch_logs/aggregated_out/*
           if-no-files-found: ignore
 
-      - name: Upload batch release manifest artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: batch-release-manifest
-          path: batch_logs/release-manifest/build.json
-          if-no-files-found: error
-
       - name: Upload build.json to numbered release via GitHub CLI
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
@@ -699,6 +896,13 @@ jobs:
               }
             fi
           fi
+
+      - name: Upload batch release manifest artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: batch-release-manifest
+          path: batch_logs/release-manifest/build.json
+          if-no-files-found: error
 
       - name: Merge batch archive manifest
         env:
