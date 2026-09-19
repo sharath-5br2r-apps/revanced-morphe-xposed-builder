@@ -68,12 +68,11 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-lightroom/",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "YouTube-Morphe-AMOLED-Experimental": {
+  "YouTube-Morphe-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "app-name": "YouTube",
     "cli-type": "morphe",
-    "variant": "AMOLED",
     "sub-variant": "Experimental",
     "build-mode": "both",
     "version": "exp",
@@ -81,24 +80,20 @@
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "MorpheApp/morphe-patches",
     "included-patches": "'Theme'",
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
     "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
     "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
   },
-  "MXPlayerPro-Morphe-Paresh-Experimental": {
+  "MXPlayerPro-Morphe-Paresh": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "MX Player Pro",
     "cli-type": "morphe",
     "patch-brand": "Paresh",
-    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro",
-    "version": "latest",
-    "skip-patch-app-check": true,
     "build-mode": "apk",
     "arch": "all arm64-v8a armeabi-v7a",
     "pkg-name": "com.mxtech.videoplayer.pro",

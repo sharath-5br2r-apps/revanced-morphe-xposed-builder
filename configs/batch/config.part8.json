@@ -70,35 +70,30 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/goodreads/goodreads",
     "patches-source": "hoo-dles/morphe-patches"
   },
-  "YouTube-Morphe-AMOLED": {
+  "YouTube-Morphe": {
     "enable-module-update": true,
     "enabled": true,
     "app-name": "YouTube",
     "cli-type": "morphe",
-    "variant": "AMOLED",
     "build-mode": "both",
     "pkg-name": "com.google.android.youtube",
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "MorpheApp/morphe-patches",
     "included-patches": "'Theme'",
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
     "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
     "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
   },
-  "SDMaid-Morphe-Paresh-Experimental": {
+  "SDMaid-Morphe-Paresh": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
     "app-name": "SD Maid 2/SE",
     "cli-type": "morphe",
     "patch-brand": "Paresh",
-    "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse",
-    "version": "latest",
-    "skip-patch-app-check": true,
     "build-mode": "apk",
     "pkg-name": "eu.darken.sdmse",
     "uptodown-dlurl": "https://sd-maid-se.en.uptodown.com/android",
@@ -107,18 +102,21 @@
     "patches-source": "Paresh-Maheshwari/paresh-patches",
     "patches-source-host": "gitlab"
   },
-  "Duolingo-Morphe-Rushiranpise": {
+  "MicrosoftExcel-Morphe-Rushiranpise": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "Duolingo",
+    "app-name": "Microsoft Excel",
     "cli-type": "morphe",
     "patch-brand": "Rushiranpise",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.duolingo",
+    "custom-microg-patches": "'None'",
     "build-mode": "apk",
-    "pkg-name": "com.duolingo",
-    "uptodown-dlurl": "https://duolingo.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo",
+    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
+    "pkg-name": "com.microsoft.office.excel",
+    "skip-version-code-check": true,
+    "uptodown-dlurl": "https://microsoft-excel-preview.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/microsoft-corporation/excel/",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.microsoft.office.excel",
     "patches-source": "rushiranpise/morphe-patches"
   },
   "AdGuard-Morphe-Rushiranpise-Experimental": {
