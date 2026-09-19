@@ -46,7 +46,6 @@
   },
   "Bitwarden": {
     "keys": [
-      "Bitwarden-Morphe-Stylus",
       "Bitwarden-Morphe-Stylus-Experimental"
     ],
     "version": "2026.9.0-bwpm"

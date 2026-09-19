@@ -35,7 +35,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 
 Configurations are organized in `configs/patches/*.toml` (e.g. `morphe.toml`, `anddea.toml`, `piko.toml`).
 
-- **Single-File Co-existence:** All variants and builds for a patch source or brand can reside in one `.toml` file.
+- **Single-File Co-existence:** All variants and builds for a patch source or patch identity can reside in one `.toml` file.
 - **File-Level Defaults:** Any key defined before the first `[...]` table header acts as a default for all apps in that file. Apps automatically inherit these values unless explicitly overridden.
 - **Dynamic Pool Routing:**
   - **Stable Only (Default):** Apps with `patches-version = "stable"` (or omitting `patches-version` in standard `*.toml` files) are compiled into the **stable** build pool.
@@ -83,11 +83,11 @@ patches-version = "both"                     # "stable", "beta", "both", or expl
 
 cli-source = "MorpheApp/morphe-desktop"      # CLI engine repository (default: "MorpheApp/morphe-desktop")
 cli-source-host = "github"                   # Host for CLI (default: "github")
-cli-version = "stable"                       # "stable", "beta", "latest", or explicit version
+cli-version = "stable"                       # "stable", "beta", or explicit version
 cli-type = "morphe"                          # "morphe", "revanced", "npatch", "lspatch", "instafel", "apksigner", or "none"
 engine-brand = "Morphe"                      # Optional metadata override; defaults from cli-type.
 
-brand = "Morphe"                             # Brand display name (e.g. "Morphe", "ReVanced Advanced", "Piko")
+patch-brand = "Morphe"                       # Patch source identity (e.g. "Morphe", "ReVanced Advanced", "Piko")
 variant = ""                                 # Optional feature/theme variant (e.g. "Nord", "Mocha", "MaterialYou")
 sub-variant = ""                             # Optional packaging variant (e.g. "clone", "alt")
 
@@ -164,7 +164,6 @@ The builder enforces declarative naming conventions across artifact files, relea
 | Key | Description | Example |
 |---|---|---|
 | `app-name` | Human-readable app name | `"YouTube"`, `"Instagram"`, `"Prime Video"` |
-| `brand` | Canonical patch brand / identity | `"Morphe"`, `"ReVanced Advanced"`, `"Piko"`, `"Adobo"` |
 | `cli-type` | Low-level patcher type override | `"morphe"`, `"npatch"`, `"lspatch"`, `"apksigner"` |
 | `engine-brand` | Optional metadata/branding override; inferred from `cli-type` when omitted | `"Morphe"`, `"NPatch"`, `"LSPatch"` |
 | `patch-brand` | Canonical patch identity when using alternative engines | `"ReVanced"`, `"Piko"` |
@@ -178,16 +177,16 @@ The builder enforces declarative naming conventions across artifact files, relea
 The engine automatically constructs clean kebab-cased filenames:
 
 ```
-${app_slug}-${brand_slug}${variant:+-$variant}${sub_variant:+-$sub_variant}-v${version}-${arch}.apk
+${app_slug}-${engine_brand_slug}-${patch_brand_slug}${variant:+-$variant}${sub_variant:+-$sub_variant}-v${version}-${arch}.apk
 ```
 
 **Examples:**
-- `app-name = "YouTube"`, `brand = "ReVanced Advanced"`, `variant = "Nord"`
+- `app-name = "YouTube"`, `cli-type = "revanced"`, `engine-brand = "ReVanced"`, `patch-brand = "Advanced"`, `variant = "Nord"`
   ➔ `youtube-revanced-advanced-nord-v20.51.39-arm64-v8a.apk`
-- `app-name = "Instagram"`, `brand = "Piko"`, `sub-variant = "clone"`
-  ➔ `instagram-piko-clone-v439.0.0.37.89-arm64-v8a.apk`
-- `app-name = "TikTok"`, `brand = "Morphe"`, `sub-variant = "alt"`
-  ➔ `tiktok-morphe-alt-v37.5.4-arm64-v8a.apk`
+- `app-name = "Instagram"`, `cli-type = "morphe"`, `engine-brand = "Morphe"`, `patch-brand = "Piko"`, `sub-variant = "clone"`
+  ➔ `instagram-morphe-piko-clone-v439.0.0.37.89-arm64-v8a.apk`
+- `app-name = "TikTok"`, `cli-type = "morphe"`, `patch-brand = "Piko"`, `sub-variant = "alt"`
+  ➔ `tiktok-morphe-piko-alt-v37.5.4-arm64-v8a.apk`
 
 ---
 
@@ -236,7 +235,7 @@ Supports both `.mpp` patch bundles and classic `.jar` / `.rvp` formats with auto
 ### 2. ReVanced CLI
 ```toml
 cli-source = "ReVanced/revanced-cli"
-cli-version = "latest"
+cli-version = "stable"
 patches-source = "ReVanced/revanced-patches"
 ```
 Uses ReVanced CLI v4 / v5 argument structures, automatically handling `--patches`, `-b`, and custom aapt2 binaries on Android/Termux.
@@ -246,7 +245,7 @@ Inject Xposed modules directly into stock APKs without ReVanced patches:
 ```toml
 [Discord]
 cli-source = "7723mod/NPatch"
-cli-version = "latest"
+cli-version = "stable"
 patches-source = "revenge-mod/revenge-xposed"
 patches-version = "stable"
 version = "auto"
@@ -382,8 +381,6 @@ github-release-regex = "^v[0-9]"
 github-release-name-regex = "Stable"
 # Match APK asset by architecture:
 github-asset-regex = "arm64-v8a: 'MyApp-v{version}-arm64\\.apk' | arm-v7a: 'MyApp-v{version}-arm\\.apk'"
-# Exclude unwanted assets:
-github-dlurl-exclude-filter = "debug|unaligned"
 ```
 
 ### 6. GitLab Releases (`gitlab-dlurl`)
@@ -467,6 +464,48 @@ You can run builds directly on Linux or Android (Termux):
 | `NEXT_VER_CODE` | Explicit release version code (e.g. `2026.09.15-1`) |
 | `TRAWL_URL` / `CFB_URL` | FlareSolverr / Cloudflare bypass scraper endpoints |
 | `HTMLQ` / `YQ` / `AAPT2` | Custom binary paths |
+
+### CI Variables and Secrets
+
+The following values are consumed by `.github/scripts/*` and
+`.github/workflows/*`. Configure ordinary values as GitHub **Variables** and
+credentials or private material as GitHub **Secrets**. Secrets must never be
+committed to TOML, JSON, workflow files, or build logs.
+
+| Name | Type | Used by | Purpose / default |
+|---|---|---|---|
+| `APKS_REPO` | Variable | `build.yml` | Repository used for APK cache uploads. |
+| `APKS_REPO_URL` | Variable | `build.yml`, download helpers | Cache repository URL; falls back to `APKS_REPO`. |
+| `WEBSITE_REPO` | Variable | `build.yml`, `cleanup.yml`, `update-website.yml` | Website/catalog repository. |
+| `RVB_MORPHE_PASSTHROUGH` | Variable | `build.yml`, `utils.sh` | Enables Morphe bundle passthrough; defaults to `true`. |
+| `UPLOAD_CONCURRENCY` | Variable | `build.yml` | Upload worker count; defaults to `4`. |
+| `KEYSTORE_ALIAS` | Variable | `ci.yml`, `build.yml` | Signing key alias; defaults to `jhc`. |
+| `RELEASE_NOTES_WEBSITE_LINK` | Variable | `build.yml` | Website link included in release notes. |
+| `BATCH_CONFIG_PARTS` | Variable | `ci_generate_configs.sh` | Number of batch config fragments; defaults to `16`. |
+| `FORCE_BATCH_CONFIGS` | Variable | `ci_generate_configs.sh` | Forces batch config generation. |
+| `DISABLE_CONFIG_UPDATE` | Variable | `ci_generate_configs.sh` | Disables generated config updates. |
+| `SKIP_VERSION_CHECK` | Variable | `ci_generate_configs.sh` | Skips app/patch version checks. |
+| `CI_FETCH_ALLOWED_APPS` | Variable | `ci_fetch_app_versions.sh` | Limits version fetching to selected app names. |
+| `CONFIG_FILES` / `CONFIG_DIR` | Variable | `ci_fetch_app_versions.sh` | Overrides the config file list or root config directory. |
+| `NO_SLEEP` / `CI_FETCH_NO_SLEEP` | Variable | `ci_fetch_app_versions.sh` | Disables request throttling during local/CI fetching. |
+| `OVERRIDE_PATCHES_VERSION` | Variable | config resolution scripts | Overrides the selected `patches-version`. |
+| `CFB_URL` | Variable | `cf_get.py`, download helpers | Cloudflare Bypasser endpoint. |
+| `TRAWL_URL` | Variable | `cf_get.py`, download helpers | Trawl endpoint. |
+| `KEYSTORE_BASE64` | Secret | `ci.yml`, `build.yml` | Base64-encoded signing keystore. |
+| `KEYSTORE_FILE` | Secret | `build.yml` | Keystore file content/path supplied by CI. |
+| `KEYSTORE_PASSWORD` | Secret | `ci.yml`, `build.yml` | Keystore password. |
+| `KEYSTORE_KEY_PASSWORD` | Secret | `ci.yml`, `build.yml` | Private-key password; falls back to `KEYSTORE_PASSWORD`. |
+| `APKS_REPO_TOKEN` | Secret | `build.yml` | Token for cache repository releases/uploads. |
+| `PERSONAL_ACCESS_TOKEN` | Secret | build and release workflows | GitHub API/release token fallback. |
+| `WEBSITE_TOKEN` / `WEBSITE_DISPATCH_TOKEN` | Secret | website dispatch workflows | Token for dispatching catalog updates. |
+| `WEBSITE_REPO_TOKEN` | Secret | website dispatch workflows | Alternate website repository token. |
+| `GH_TOKEN` / `GITHUB_TOKEN` | Secret / GitHub-provided | GitHub CLI/API actions | GitHub API authentication; `GITHUB_TOKEN` is provided by Actions. |
+
+`GITHUB_OUTPUT`, `GITHUB_REPOSITORY`, `GITHUB_SERVER_URL`, `GITHUB_ACTIONS`,
+and `RUNNER_*` values are GitHub-provided runtime variables. They do not need
+to be configured manually. The scripts also use local output paths such as
+`FETCHED_APP_VERSIONS_FILE`, `APP_VERSIONS_FILE`, and `GITHUB_OUTPUT` when
+running outside Actions.
 
 ---
 

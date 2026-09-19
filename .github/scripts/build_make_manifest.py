@@ -32,7 +32,7 @@ def main():
 
     build_json_file = Path("build.json")
     if not build_json_file.exists():
-        print("No build.json found — writing empty manifest.")
+        print("[manifest] ERROR: build.json is missing; writing an empty manifest.", file=sys.stderr)
         build_info = {}
     else:
         with open(build_json_file, encoding="utf-8") as f:
@@ -40,10 +40,13 @@ def main():
 
     build_dir = Path("build")
     built_files = [f for f in build_dir.iterdir() if f.is_file()] if build_dir.exists() else []
+    manifest_only = os.environ.get("MANIFEST_ONLY", "false").lower() == "true"
 
     files = {}
+    skipped_targets = 0
     for target_key, info in build_info.items():
         if not isinstance(info, dict):
+            print(f"[manifest] WARNING: skipping {target_key}: entry is not an object.", file=sys.stderr)
             continue
         file_prefix = info.get("name") or target_key
         assets = info.get("assets") or []
@@ -53,7 +56,12 @@ def main():
             if isinstance(asset, dict) and asset.get("name")
         }
         if assets_by_name:
-            matching_files = [f for f in built_files if f.name in assets_by_name]
+            if manifest_only:
+                # Aggregate jobs do not download the APKs. Use the exact asset
+                # names recorded by the regular build.json from each build job.
+                matching_files = [Path(name) for name in assets_by_name]
+            else:
+                matching_files = [f for f in built_files if f.name in assets_by_name]
         else:
             # Compatibility with older raw build.json files that had no assets.
             prefix_lower = file_prefix.lower()
@@ -63,6 +71,12 @@ def main():
                 or f.name.lower().startswith(prefix_lower + "-module-")
             ]
         if not matching_files:
+            skipped_targets += 1
+            print(
+                f"[manifest] WARNING: no built file matched {target_key}; "
+                f"expected assets: {', '.join(assets_by_name) or '(prefix fallback)'}",
+                file=sys.stderr,
+            )
             continue
 
         app_name = (info.get("display_name") or target_key).strip()
@@ -89,7 +103,10 @@ def main():
             asset = assets_by_name.get(fname, {})
             lower = fname.lower()
             if not any(lower.endswith(ext) for ext in (".apk", ".apkm", ".xapk", ".apks", ".zip")):
+                print(f"[manifest] WARNING: skipping unsupported output {fname}", file=sys.stderr)
                 continue
+            if not asset:
+                print(f"[manifest] WARNING: {fname} matched by prefix fallback; asset metadata is unavailable.", file=sys.stderr)
             files[fname] = {
                 "name": file_prefix,
                 "version": version,
@@ -108,6 +125,7 @@ def main():
                 "engineBrand": info.get("engine_brand") or None,
                 "patchBrand": info.get("patch_brand") or None,
                 "densities": asset.get("densities") or [],
+                "nativeLibraries": asset.get("native_libraries") or [],
                 "minSdk": asset.get("min_sdk") or None,
                 "versionCode": asset.get("version_code") or None,
                 "patchSources": patches_ref.split() if patches_ref else [],
@@ -116,6 +134,8 @@ def main():
                 # Patch/build inspection data belongs to the matching asset;
                 # never inherit it from the app-level build object.
                 "appliedPatches": asset.get("appliedPatches") or [],
+                "skippedPatches": asset.get("skippedPatches") or [],
+                "failedPatches": asset.get("failedPatches") or [],
                 "originBuild": next_ver_code,
                 "publishedAt": now_iso,
             }
@@ -132,7 +152,10 @@ def main():
     out_path = out_dir / "build.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, separators=(",", ":"))
-    print(f"Wrote {out_path} with {len(files)} file entries (build {next_ver_code}, channel {channel}).")
+    print(
+        f"Wrote {out_path} with {len(files)} file entries "
+        f"(build {next_ver_code}, channel {channel}, skipped targets {skipped_targets})."
+    )
 
 
 if __name__ == "__main__":

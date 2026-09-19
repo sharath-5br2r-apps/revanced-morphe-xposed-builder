@@ -263,13 +263,27 @@ jobs:
             fi
             if [ -s "dev_logs/aggregated_out/build.dev.json" ]; then
               echo "Uploading dev_logs/aggregated_out/build.dev.json to release $tag..."
-              gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json" --clobber || {
+              gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json#build.json" --clobber || {
                 echo "::warning::Failed to upload dev_logs/aggregated_out/build.dev.json to release $tag, retrying..."
                 sleep 3
-                gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json" --clobber || echo "::warning::Failed to upload dev_logs/aggregated_out/build.dev.json to release $tag"
+                gh release upload "$tag" "dev_logs/aggregated_out/build.dev.json#build.json" --clobber || echo "::warning::Failed to upload dev_logs/aggregated_out/build.dev.json to release $tag"
               }
             fi
           fi
+
+      - name: Merge beta archive manifest
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ARCHIVE_TAG: beta
+          NEXT_VER_CODE: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
+          IS_PRERELEASE: "true"
+          MANIFEST_ONLY: "true"
+        run: |
+          set -euo pipefail
+          cp -f dev_logs/aggregated_out/build.dev.json build.json
+          python3 .github/scripts/build_make_manifest.py
+          bash .github/scripts/merge_archive_manifest.sh
 
   resolve_stable_version:
     needs: [check_patch, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, aggregate_dev_logs]
@@ -388,13 +402,27 @@ jobs:
             fi
             if [ -s "stable_logs/aggregated_out/build.stable.json" ]; then
               echo "Uploading stable_logs/aggregated_out/build.stable.json to release $tag..."
-              gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json" --clobber || {
+              gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json#build.json" --clobber || {
                 echo "::warning::Failed to upload stable_logs/aggregated_out/build.stable.json to release $tag, retrying..."
                 sleep 3
-                gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json" --clobber || echo "::warning::Failed to upload stable_logs/aggregated_out/build.stable.json to release $tag"
+                gh release upload "$tag" "stable_logs/aggregated_out/build.stable.json#build.json" --clobber || echo "::warning::Failed to upload stable_logs/aggregated_out/build.stable.json to release $tag"
               }
             fi
           fi
+
+      - name: Merge stable archive manifest
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ARCHIVE_TAG: stable
+          NEXT_VER_CODE: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
+          IS_PRERELEASE: "false"
+          MANIFEST_ONLY: "true"
+        run: |
+          set -euo pipefail
+          cp -f stable_logs/aggregated_out/build.stable.json build.json
+          python3 .github/scripts/build_make_manifest.py
+          bash .github/scripts/merge_archive_manifest.sh
 
   resolve_latest_version:
     needs: [check_patch, build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, aggregate_stable_logs]
@@ -518,13 +546,27 @@ jobs:
             fi
             if [ -s "latest_logs/aggregated_out/build.latest.json" ]; then
               echo "Uploading latest_logs/aggregated_out/build.latest.json to release $tag..."
-              gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json" --clobber || {
+              gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json#build.json" --clobber || {
                 echo "::warning::Failed to upload latest_logs/aggregated_out/build.latest.json to release $tag, retrying..."
                 sleep 3
-                gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json" --clobber || echo "::warning::Failed to upload latest_logs/aggregated_out/build.latest.json to release $tag"
+                gh release upload "$tag" "latest_logs/aggregated_out/build.latest.json#build.json" --clobber || echo "::warning::Failed to upload latest_logs/aggregated_out/build.latest.json to release $tag"
               }
             fi
           fi
+
+      - name: Merge latest archive manifest
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ARCHIVE_TAG: stable
+          NEXT_VER_CODE: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
+          IS_PRERELEASE: "false"
+          MANIFEST_ONLY: "true"
+        run: |
+          set -euo pipefail
+          cp -f latest_logs/aggregated_out/build.latest.json build.json
+          python3 .github/scripts/build_make_manifest.py
+          bash .github/scripts/merge_archive_manifest.sh
 
   resolve_batch_version:
     needs: check_patch
@@ -627,13 +669,31 @@ jobs:
             fi
             if [ -s "$json_file" ]; then
               echo "Uploading $json_file to release $tag..."
-              gh release upload "$tag" "$json_file" --clobber || {
+              gh release upload "$tag" "$json_file#build.json" --clobber || {
                 echo "::warning::Failed to upload $json_file to release $tag, retrying..."
                 sleep 3
-                gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
+                gh release upload "$tag" "$json_file#build.json" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
               }
             fi
           fi
+
+      - name: Merge batch archive manifest
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          NEXT_VER_CODE: ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}
+          IS_PRERELEASE: ${{ inputs.mode == 'Batch Build (Both)' && 'true' || 'false' }}
+          MANIFEST_ONLY: "true"
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.mode }}" = "Batch Build (Both)" ]; then
+            export ARCHIVE_TAG=beta
+          else
+            export ARCHIVE_TAG=stable
+          fi
+          cp -f batch_logs/aggregated_out/build.batch.json build.json
+          python3 .github/scripts/build_make_manifest.py
+          bash .github/scripts/merge_archive_manifest.sh
 
       - name: Collect update branch files (Batch)
         run: |

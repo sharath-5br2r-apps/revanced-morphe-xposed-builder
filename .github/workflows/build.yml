@@ -158,6 +158,7 @@ jobs:
 
       - name: Save APKs Cache
         uses: actions/cache/save@v6
+        continue-on-error: true
         if: always() && hashFiles('temp/cache_manifest.txt') != ''
         with:
           path: temp/apks
@@ -175,17 +176,33 @@ jobs:
         run: python3 .github/scripts/build_make_manifest.py
 
       - name: Upload to release
-        if: ${{ inputs.upload_release_metadata != false }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TAG: ${{ steps.version.outputs.NEXT_VER_CODE }}
           RELEASE_TITLE: "Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}"
           RELEASE_BODY_FILE: build.md
           IS_PRERELEASE: ${{ steps.context.outputs.IS_PRERELEASE }}
-          UPLOAD_FILES: "./build/* ./temp/manifest/build.json"
+          UPLOAD_FILES: "./build/*"
           GITHUB_REPOSITORY: ${{ github.repository }}
           UPLOAD_CONCURRENCY: "${{ vars.UPLOAD_CONCURRENCY || '4' }}"
         run: bash .github/scripts/build_upload_release.sh
+
+      - name: Upload build manifest
+        if: ${{ inputs.upload_release_metadata != false && hashFiles('temp/manifest/build.json') != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if gh release upload "$RELEASE_TAG" "temp/manifest/build.json#build.json" --clobber -R "$GITHUB_REPOSITORY"; then
+              exit 0
+            fi
+            [ "$attempt" -lt 3 ] && sleep $((attempt * 3))
+          done
+          echo "Failed to upload build.json after 3 attempts" >&2
+          exit 1
 
       - name: Upload part build metadata
         if: ${{ inputs.upload_release_metadata == false }}
@@ -208,7 +225,6 @@ jobs:
         run: bash .github/scripts/build_update_changelog.sh
 
       - name: Commit updated build and module update files
-        if: ${{ inputs.aggregate_flavor == '' && steps.update_changelog.outputs.has_modules == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: update

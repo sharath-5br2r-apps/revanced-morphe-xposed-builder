@@ -283,7 +283,7 @@ for table_name in $(toml_get_table_names); do
 	# Preserve the extended source/download controls supported by utils.sh.
 	for opt in \
 		github-asset-regex \
-		github-dlurl-regex github-release-regex github-release-name-regex github-dlurl-exclude-filter github-dlurl-source \
+		github-dlurl-regex github-release-regex github-release-name-regex github-dlurl-source \
 		gitlab-dlurl-regex gitlab-release-regex gitlab-release-name-regex gitlab-dlurl-exclude-filter \
 		forgejo-dlurl-regex forgejo-release-regex forgejo-release-name-regex forgejo-dlurl-exclude-filter \
 		apkmirror-example-url apkmirror-release-filter check-sig prefer-dl-mode custom-microg-patches version-filter; do
