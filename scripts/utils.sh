@@ -3148,7 +3148,7 @@ get_git_repo_resp() {
 get_git_repo_vers() { jq -r '.[].tag_name // empty' <<<"${__DL_RESP_CACHE__["git_$1"]:-${__GIT_RESP_JSON__:-[]}}" | sed 's/^v//i' | sort -u; }
 get_git_repo_pkg_name() { jq -r '.[0].name // empty' <<<"${__DL_RESP_CACHE__["git_$1"]:-${__GIT_RESP_JSON__:-[]}}" | sed 's/-.*//' ; }
 dl_git_repo() {
-	local provider="$1" url="$2" version="$3" output="$4" assets="${__DL_RESP_CACHE__["git_$1"]:-${__GIT_RESP_JSON__:-[]}}" regex="${args[${provider}_dlurl_regex]:-}" asset download
+	local provider="$1" url="$2" version="$3" output="$4" assets="${__DL_RESP_CACHE__["git_$1"]:-${__GIT_RESP_JSON__:-[]}}" regex="${args[github_asset_regex]:-${args[${provider}_dlurl_regex]:-}}" asset download
 	local ver="${version#v}"
 	if [ -n "$ver" ] && ! isoneof "${ver,,}" auto latest beta dev both stable exp; then
 		local version_assets

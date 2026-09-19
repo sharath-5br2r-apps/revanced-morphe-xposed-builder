@@ -282,6 +282,7 @@ for table_name in $(toml_get_table_names); do
 	app_args[patcher_args]=$(toml_get "$t" patcher-args) || app_args[patcher_args]=""
 	# Preserve the extended source/download controls supported by utils.sh.
 	for opt in \
+		github-asset-regex \
 		github-dlurl-regex github-release-regex github-release-name-regex github-dlurl-exclude-filter github-dlurl-source \
 		gitlab-dlurl-regex gitlab-release-regex gitlab-release-name-regex gitlab-dlurl-exclude-filter \
 		forgejo-dlurl-regex forgejo-release-regex forgejo-release-name-regex forgejo-dlurl-exclude-filter \
@@ -291,9 +292,11 @@ for table_name in $(toml_get_table_names); do
 	done
 	app_args[check_sig]=$(toml_get "$t" check-sig) || app_args[check_sig]="false"
 	[ -n "${app_args[check_sig]}" ] || app_args[check_sig]="false"
-	app_args[github_regex]="${app_args[github_dlurl_regex]}"
-	app_args[gitlab_regex]="${app_args[gitlab_dlurl_regex]}"
-	app_args[forgejo_regex]="${app_args[forgejo_dlurl_regex]}"
+	app_args[github_asset_regex]=$(toml_get "$t" github-asset-regex) || app_args[github_asset_regex]=""
+	[ -n "${app_args[github_asset_regex]}" ] || app_args[github_asset_regex]=$(toml_get "$t" github-regex) || app_args[github_asset_regex]=""
+	app_args[github_regex]="${app_args[github_asset_regex]}"
+	app_args[gitlab_regex]="${app_args[github_asset_regex]}"
+	app_args[forgejo_regex]="${app_args[github_asset_regex]}"
 	app_args[apkmirror_version_filter]="${app_args[version_filter]}"
 	for opt in cli-source-filter cli-tag-filter cli-release-name-filter \
 		patches-source-filter patches-tag-filter patches-release-name-filter; do
@@ -339,9 +342,9 @@ for table_name in $(toml_get_table_names); do
 	app_args[pkg_name]=$(toml_get "$t" pkg-name) || app_args[pkg_name]=""
 	app_args[patched_pkg_name]=$(toml_get "$t" patched-pkg-name) || app_args[patched_pkg_name]=""
 	app_args[dpi]=$(toml_get "$t" dpi) || app_args[dpi]="$DEF_DPI"
-	# Keep the modern github-dlurl-regex unless the legacy github-regex key
-	# explicitly overrides it.
+	# Keep the generic asset regex available to every release provider.
 	app_args[github_regex]=$(toml_get "$t" github-regex) || app_args[github_regex]="${app_args[github_dlurl_regex]}"
+	[ -n "${app_args[github_asset_regex]:-}" ] && app_args[github_regex]="${app_args[github_asset_regex]}"
 	app_args[github_release_regex]=$(toml_get "$t" github-release-regex) || app_args[github_release_regex]=""
 	table_name_f=${table_name,,}
 	table_name_f=${table_name_f// /-}

@@ -105,7 +105,8 @@ while IFS='|' read -r group app; do
     prefer_apk_mode=$(jq -r ".\"$app\".\"prefer-apk-mode\" // empty" temp_all_configs.json)
     prefer_dl_mode=$(jq -r ".\"$app\".\"prefer-dl-mode\" // empty" temp_all_configs.json)
     [ -n "$prefer_dl_mode" ] || prefer_dl_mode="${prefer_apk_mode:-apk}"
-    github_dlurl_regex=$(jq -r ".\"$app\".\"github-dlurl-regex\" // .\"$app\".\"github-regex\" // empty" temp_all_configs.json)
+    github_asset_regex=$(jq -r ".\"$app\".\"github-asset-regex\" // .\"$app\".\"github-dlurl-regex\" // .\"$app\".\"github-regex\" // empty" temp_all_configs.json)
+    github_dlurl_regex="$github_asset_regex"
     github_regex="$github_dlurl_regex"
     github_release_regex=$(jq -r ".\"$app\".\"github-release-regex\" // empty" temp_all_configs.json)
     github_release_name_regex=$(jq -r ".\"$app\".\"github-release-name-regex\" // empty" temp_all_configs.json)
@@ -113,12 +114,14 @@ while IFS='|' read -r group app; do
     github_dlurl_source=$(jq -r ".\"$app\".\"github-dlurl-source\" // empty" temp_all_configs.json)
 
     gitlab_dlurl_regex=$(jq -r ".\"$app\".\"gitlab-dlurl-regex\" // .\"$app\".\"gitlab-regex\" // empty" temp_all_configs.json)
+    [ -n "$gitlab_dlurl_regex" ] || gitlab_dlurl_regex="$github_asset_regex"
     gitlab_regex="$gitlab_dlurl_regex"
     gitlab_release_regex=$(jq -r ".\"$app\".\"gitlab-release-regex\" // empty" temp_all_configs.json)
     gitlab_release_name_regex=$(jq -r ".\"$app\".\"gitlab-release-name-regex\" // empty" temp_all_configs.json)
     gitlab_dlurl_exclude_filter=$(jq -r ".\"$app\".\"gitlab-dlurl-exclude-filter\" // .\"$app\".\"gitlab-exclude-filter\" // empty" temp_all_configs.json)
 
     forgejo_dlurl_regex=$(jq -r ".\"$app\".\"forgejo-dlurl-regex\" // .\"$app\".\"forgejo-regex\" // empty" temp_all_configs.json)
+    [ -n "$forgejo_dlurl_regex" ] || forgejo_dlurl_regex="$github_asset_regex"
     forgejo_regex="$forgejo_dlurl_regex"
     forgejo_release_regex=$(jq -r ".\"$app\".\"forgejo-release-regex\" // empty" temp_all_configs.json)
     forgejo_release_name_regex=$(jq -r ".\"$app\".\"forgejo-release-name-regex\" // empty" temp_all_configs.json)
@@ -142,6 +145,7 @@ while IFS='|' read -r group app; do
 
     args["github_dlurl"]="$github_url"
     args["github_dlurl_regex"]="$github_dlurl_regex"
+    args["github_asset_regex"]="$github_asset_regex"
     args["github_regex"]="$github_regex"
     args["github_release_regex"]="$github_release_regex"
     args["github_release_name_regex"]="$github_release_name_regex"
