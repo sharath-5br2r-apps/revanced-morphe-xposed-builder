@@ -3350,8 +3350,8 @@ build_rv() {
 	local arch=${args[arch]}
 	local arch_list=()
 	read -r -a arch_list <<< "$arch"
-	[ "${#arch_list[@]}" -eq 0 ] && arch_list=("auto")
-	[ "${arch_list[0]}" = "auto" ] && arch_list=("all" "arm64-v8a" "arm-v7a")
+	[ "${#arch_list[@]}" -eq 0 ] && arch_list=(all arm64-v8a x86_64 arm-v7a x86)
+	[ "${arch_list[0]}" = "auto" ] && arch_list=(all arm64-v8a x86_64 arm-v7a x86)
 
 	local IFS=$'\n'
 	local p_jars_arr=($(echo "${args[ptjar]}" | tr ' ' '\n' | grep -v '^$'))

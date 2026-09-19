@@ -22,7 +22,7 @@ except ImportError:
     # Exit 2: curl_cffi not installed, caller should fall back to curl/solver
     sys.exit(2)
 
-MAX_RETRIES = 2
+MAX_RETRIES = 5
 _TRAWL_READY = set()
 DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
 
@@ -267,7 +267,7 @@ def trawl_get(url: str, referer: str = "") -> None:
 # Method 3: curl_cffi browser impersonation
 # ---------------------------------------------------------------------------
 
-def cf_get(url: str, cookie_file: str) -> None:
+def curl_cffi_get(url: str, cookie_file: str) -> None:
     """Unified Python GET using curl_cffi browser impersonation when available."""
     if not _HAS_CFFI:
         return
@@ -281,7 +281,7 @@ def cf_get(url: str, cookie_file: str) -> None:
         "chrome124",
         "chrome120",
         "chrome110",
-    ]
+    ][:MAX_RETRIES]
 
     for imp in impersonate_targets:
         try:
@@ -290,7 +290,7 @@ def cf_get(url: str, cookie_file: str) -> None:
             resp = s.get(url, timeout=15, allow_redirects=True)
             if is_challenge(resp.status_code, resp.text):
                 sys.stderr.write(f"[cf_get] Cloudflare page detected via curl_cffi ({resp.status_code}); trying the next method.\n")
-                sys.exit(1)
+                continue
             if resp.status_code == 200 and resp.text:
                 cf_cookies = cookies_to_header_str(s)
                 dump_cookies_to_file(s, cookie_file)
@@ -480,7 +480,7 @@ def fetch_from_solver_html(url: str) -> str | None:
 def download_file(url: str, dest_path: str, referer: str = "", cookie_file: str = "") -> bool:
     os.makedirs(os.path.dirname(os.path.abspath(dest_path)), exist_ok=True)
     temp_dest = f"{dest_path}.part"
-    impersonate_targets = get_impersonate_targets()
+    impersonate_targets = get_impersonate_targets()[:MAX_RETRIES]
 
     for imp in impersonate_targets:
         try:
@@ -552,7 +552,7 @@ def main():
     # Try the configured methods in priority order. There is deliberately no
     # plain HTTP/FlareSolverr fallback: CFFI, CFB, and Trawl are the supported
     # Cloudflare paths and each method reports success through ok().
-    cf_get(url, cookie_file)
+    curl_cffi_get(url, cookie_file)
     sys.stderr.write("[cf_get] curl_cffi failed; switching to cf-bypasser.\n")
     cfb_get(url, referer)
     sys.stderr.write("[cf_get] cf-bypasser failed; switching to Trawl.\n")
