@@ -1,21 +1,19 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "MyFitnessPal-Morphe-Hoodles-Experimental": {
+  "SmashHit-Morphe-Byehi98": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "MyFitnessPal",
+    "app-name": "Smash Hit",
     "engine-brand": "Morphe",
-    "patch-brand": "Hoodles",
-    "sub-variant": "Experimental",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android",
-    "version": "latest",
+    "patch-brand": "Byehi98",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mediocre.smashhit",
     "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
-    "pkg-name": "com.myfitnesspal.android",
-    "uptodown-dlurl": "https://calorie-counter-myfitnesspal.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal",
-    "patches-source": "hoo-dles/morphe-patches"
+    "pkg-name": "com.mediocre.smashhit",
+    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/",
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }

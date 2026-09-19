@@ -72,13 +72,13 @@
     "stable_date": "2026-09-03T09:17:16Z"
   },
   "byehi98/okish-morphe-patches": {
-    "beta": "v1.28.1-dev.2",
-    "beta_date": "2026-09-19T02:32:19Z",
+    "beta": "v1.28.1-dev.5",
+    "beta_date": "2026-09-19T06:13:01Z",
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.28.0",
-    "stable_date": "2026-09-18T11:52:16Z"
+    "stable": "v1.28.1",
+    "stable_date": "2026-09-19T06:16:14Z"
   },
   "ch3thanhs/stylus": {
     "beta": "v1.5.2-dev.1",
