@@ -130,6 +130,7 @@
     "build-mode": "apk",
     "pkg-name": "com.arjanvlek.oxygenupdater",
     "github-dlurl": "https://github.com/oxygen-updater/os-updater",
+    "github-asset-regex": "Oxygen\\.Updater\\.{version}\\.apk",
     "patches-source": "rushiranpise/morphe-patches"
   },
   "Bitwarden-Morphe-Stylus-Experimental": {

@@ -1,20 +1,20 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "Discord-NPatch-Revenge": {
+  "ChessDotCom-Morphe-Prathxm": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "Discord",
-    "pkg-name": "com.discord",
-    "cli-type": "npatch",
-    "patch-brand": "Revenge",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "Chess.com",
+    "cli-type": "morphe",
+    "patch-brand": "Prathxm",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess",
+    "version": "auto",
     "build-mode": "apk",
-    "cli-source": "7723mod/NPatch",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.discord",
-    "patches-source": "revenge-mod/revenge-xposed",
-    "patcher-args": "-l 0",
-    "uptodown-dlurl": "https://discord-chat-for-gamers.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
+    "pkg-name": "com.chess",
+    "uptodown-dlurl": "https://chess.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/",
+    "patches-source": "PrathxmOp/Prathxm-Patches"
   }
 }

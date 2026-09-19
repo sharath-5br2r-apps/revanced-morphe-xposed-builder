@@ -1,1 +1,23 @@
-{}
+{
+  "patches-version": "stable",
+  "enable-module-update": true,
+  "CloudflareWarp-Morphe-Rushiranpise-Experimental": {
+    "enable-module-update": true,
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "Cloudflare WARP",
+    "cli-type": "morphe",
+    "patch-brand": "Rushiranpise",
+    "sub-variant": "Experimental",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "custom-microg-patches": "'None'",
+    "build-mode": "apk",
+    "pkg-name": "com.cloudflare.onedotonedotonedotone",
+    "uptodown-dlurl": "https://1-1-1-1.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet",
+    "patches-source": "rushiranpise/morphe-patches",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
+  }
+}

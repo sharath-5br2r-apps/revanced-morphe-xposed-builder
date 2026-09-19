@@ -77,6 +77,7 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.touchtype.swiftkey",
     "build-mode": "apk",
     "pkg-name": "com.touchtype.swiftkey",
+    "skip-patch-app-check": true,
     "uptodown-dlurl": "https://swiftkey-keyboard.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/swiftkey/swiftkey-keyboard",
     "patches-source": "arandomhooman/hoomans-morphe-patches"

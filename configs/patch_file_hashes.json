@@ -156,9 +156,9 @@
   },
   "morpheapp/morphe-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "c50b981a042f188b56e80d6f0c07f03f",
-      "com.google.android.youtube": "267f16e7095cb1f90814d77fb4d7b0af",
-      "shared": "15acc84bec8476ff0a246706e7c0b822"
+      "com.google.android.apps.youtube.music": "c827ab08c0282ecb40618225468b3ea5",
+      "com.google.android.youtube": "e48adbfcdc0dd7943819d590da475ab9",
+      "shared": "e352dbb1917d2766b04000d8cbc9ed12"
     },
     "stable": {}
   },
@@ -182,7 +182,10 @@
       "com.chess": "7580ebdcf711a1597afede18b87d0241",
       "shared": "896486938b5de28e83d923a732d3ec47"
     },
-    "stable": {}
+    "stable": {
+      "com.chess": "6e64f2075f9a0ffd28bd69321b738f30",
+      "shared": "896486938b5de28e83d923a732d3ec47"
+    }
   },
   "revenge-mod/revenge-xposed": {
     "beta": {},

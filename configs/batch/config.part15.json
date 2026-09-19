@@ -59,7 +59,6 @@
     "sub-variant": "Experimental",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru",
     "version": "latest",
-    "skip-patch-app-check": true,
     "build-mode": "apk",
     "pkg-name": "com.paget96.batteryguru",
     "uptodown-dlurl": "https://battery-guru.en.uptodown.com/android",

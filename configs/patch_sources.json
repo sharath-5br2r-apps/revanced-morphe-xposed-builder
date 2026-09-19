@@ -9,8 +9,8 @@
     "stable_date": "2026-06-22T17:44:41Z"
   },
   "MorpheApp/morphe-patches": {
-    "beta": "v1.44.0-dev.8",
-    "beta_date": "2026-09-19T11:51:27Z",
+    "beta": "v1.44.0-dev.10",
+    "beta_date": "2026-09-19T15:45:23Z",
     "blocked": false,
     "host": "github",
     "repo": "MorpheApp/morphe-patches",
@@ -32,8 +32,8 @@
     "blocked": false,
     "host": "github",
     "repo": "PrathxmOp/Prathxm-Patches",
-    "stable": "v1.13.0",
-    "stable_date": "2026-07-10T09:33:46Z"
+    "stable": "v1.13.1",
+    "stable_date": "2026-09-19T16:25:09Z"
   },
   "anddea/revanced-patches": {
     "beta": "v4.3.0-dev.7",
@@ -144,13 +144,13 @@
     "stable_date": "2026-09-17T16:50:03Z"
   },
   "jkennethcarino/adobo": {
-    "beta": "v1.5.0-dev.2",
-    "beta_date": "2026-09-06T15:04:24Z",
+    "beta": "v1.5.0-dev.4",
+    "beta_date": "2026-09-19T15:22:24Z",
     "blocked": false,
     "host": "github",
     "repo": "jkennethcarino/adobo",
-    "stable": "v1.4.0",
-    "stable_date": "2026-08-31T17:13:01Z"
+    "stable": "v1.5.0",
+    "stable_date": "2026-09-19T15:26:04Z"
   },
   "kiraio-moe/Lain-Patches": {
     "beta": "v1.4.0-dev.3",

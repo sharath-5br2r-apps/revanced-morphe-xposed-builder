@@ -74,7 +74,7 @@
     "variant": "AMOLED",
     "sub-variant": "Experimental",
     "build-mode": "both",
-    "arch": "arm64-v8a",
+    "arch": "arm64-v8a x86_64 arm-v7a x86",
     "version": "exp",
     "pkg-name": "com.google.android.apps.youtube.music",
     "cli-source": "MorpheApp/morphe-desktop",
