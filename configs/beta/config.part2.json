@@ -8,7 +8,6 @@
     "cli-type": "morphe",
     "variant": "AMOLED",
     "build-mode": "both",
-    "arch": "all arm64-v8a arm-v7a x86_64",
     "pkg-name": "com.google.android.youtube",
     "cli-source": "MorpheApp/morphe-desktop",
     "patches-source": "MorpheApp/morphe-patches",

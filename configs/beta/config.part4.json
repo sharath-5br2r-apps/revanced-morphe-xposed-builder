@@ -9,7 +9,6 @@
     "variant": "AMOLED",
     "sub-variant": "Experimental",
     "build-mode": "both",
-    "arch": "all arm64-v8a arm-v7a x86_64",
     "version": "exp",
     "pkg-name": "com.google.android.youtube",
     "cli-source": "MorpheApp/morphe-desktop",
