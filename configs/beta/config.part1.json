@@ -1,40 +1,19 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "YouTube-Morphe-Anddea": {
+  "SmashHit-Morphe-Byehi98": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "YouTube",
-    "engine-brand": "Morphe",
-    "patch-brand": "Anddea",
-    "build-mode": "both",
-    "arch": "all arm64-v8a arm-v7a x86_64",
-    "pkg-name": "com.google.android.youtube",
     "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "anddea/revanced-patches",
-    "included-patches": "'MaterialYou'",
-    "patcher-args": "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
-  },
-  "YouTube-Morphe-AMOLED": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "YouTube",
+    "app-name": "Smash Hit",
     "engine-brand": "Morphe",
-    "variant": "AMOLED",
-    "build-mode": "both",
+    "patch-brand": "Byehi98",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mediocre.smashhit",
+    "build-mode": "apk",
     "arch": "all arm64-v8a arm-v7a x86_64",
-    "pkg-name": "com.google.android.youtube",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": "'Theme'",
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.youtube"
+    "pkg-name": "com.mediocre.smashhit",
+    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/",
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }

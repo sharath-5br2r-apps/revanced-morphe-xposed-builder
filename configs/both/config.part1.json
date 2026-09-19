@@ -1,21 +1,21 @@
 {
   "patches-version": "both",
   "enable-module-update": true,
-  "Xodo-Morphe-Hoodles-Experimental": {
+  "MyFitnessPal-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "Xodo PDF",
+    "app-name": "MyFitnessPal",
     "engine-brand": "Morphe",
     "patch-brand": "Hoodles",
     "sub-variant": "Experimental",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.xodo.pdf.reader",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.myfitnesspal.android",
     "version": "latest",
     "build-mode": "apk",
-    "arch": "arm64-v8a arm-v7a x86_64",
-    "pkg-name": "com.xodo.pdf.reader",
-    "uptodown-dlurl": "https://xodo-pdf-reader-editor.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor",
+    "arch": "all arm64-v8a arm-v7a x86_64",
+    "pkg-name": "com.myfitnesspal.android",
+    "uptodown-dlurl": "https://calorie-counter-myfitnesspal.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal",
     "patches-source": "hoo-dles/morphe-patches"
   }
 }
