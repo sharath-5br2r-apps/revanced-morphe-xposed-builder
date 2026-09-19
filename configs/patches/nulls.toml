@@ -1,6 +1,6 @@
 enable-module-update = true
 
-[ClashOfClans-APKSigner-Nulls]
+[ClashOfClans-Nulls]
 enabled = true
 cli-type = "none"
 cli-source-host = "none"
@@ -13,7 +13,7 @@ pkg-name = "nullsclash.night.rel"
 direct-dlurl = "http://dnull.xyz/latest_coc"
 patches-source = "none"
 patches-source-host = "none"
-[ClashRoyale-APKSigner-Nulls]
+[ClashRoyale-Nulls]
 enabled = true
 cli-type = "none"
 cli-source-host = "none"
@@ -26,7 +26,7 @@ pkg-name = "nullsroyale.rel.free"
 direct-dlurl = "http://dnull.xyz/latest_cr"
 patches-source = "none"
 patches-source-host = "none"
-[BrawlStars-APKSigner-Nulls]
+[BrawlStars-Nulls]
 enabled = true
 cli-type = "none"
 cli-source-host = "none"

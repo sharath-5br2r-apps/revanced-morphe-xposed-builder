@@ -61,7 +61,7 @@
     "apkmirror-dlurl": "https://apkmirror.com/apk/twitch-interactive-inc/twitch",
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
-  "ClashOfClans-APKSigner-Nulls": {
+  "ClashOfClans-Nulls": {
     "enable-module-update": true,
     "enabled": true,
     "cli-type": "none",

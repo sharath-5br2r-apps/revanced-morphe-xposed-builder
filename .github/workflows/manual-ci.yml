@@ -1,0 +1,89 @@
+name: Manual CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      config_file:
+        description: "Config file to use"
+        required: true
+        type: choice
+        default: "configs/config.manual.generated.toml"
+        options:
+          - "configs/config.manual.generated.toml"
+          - "configs/config.manual.toml"
+          - "configs/stable/config.updated.json"
+          - "configs/beta/config.updated.json"
+          - "configs/both/config.updated.json"
+      manual_config_file:
+        description: "Optional config path or patch config name"
+        required: false
+        type: string
+        default: ""
+      exclusive_apps:
+        description: "Optional app table filter"
+        required: false
+        type: string
+        default: ""
+      remove_apks:
+        description: "Optional cached APK regex"
+        required: false
+        type: string
+        default: ""
+      patches_version:
+        description: "Optional patches version override"
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  resolve_config:
+    runs-on: ubuntu-latest
+    outputs:
+      config_file: ${{ steps.config.outputs.config_file }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Resolve config file
+        id: config
+        env:
+          SELECTED_CONFIG: ${{ inputs.config_file }}
+          MANUAL_CONFIG: ${{ inputs.manual_config_file }}
+        run: |
+          set -euo pipefail
+          config_file="${SELECTED_CONFIG:-configs/config.manual.generated.toml}"
+          if [ -n "$MANUAL_CONFIG" ]; then
+            if [ -f "$MANUAL_CONFIG" ]; then
+              config_file="$MANUAL_CONFIG"
+            elif [ -f "configs/patches/$MANUAL_CONFIG.toml" ]; then
+              config_file="configs/patches/$MANUAL_CONFIG.toml"
+            elif [ -f "configs/$MANUAL_CONFIG" ]; then
+              config_file="configs/$MANUAL_CONFIG"
+            else
+              echo "Config file '$MANUAL_CONFIG' not found" >&2
+              exit 1
+            fi
+          fi
+          echo "CONFIG_FILE=$config_file" >> "$GITHUB_OUTPUT"
+
+  build_manual:
+    needs: resolve_config
+    uses: ./.github/workflows/build.yml
+    with:
+      config_file: ${{ needs.resolve_config.outputs.config_file }}
+      exclusive_apps: ${{ inputs.exclusive_apps }}
+      remove_apks: ${{ inputs.remove_apks }}
+      patches_version: ${{ inputs.patches_version }}
+    secrets: inherit
+
+  trigger_cleanup:
+    needs: build_manual
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/cleanup.yml
+    secrets: inherit
+
+  trigger_website_update:
+    needs: [build_manual, trigger_cleanup]
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-website.yml
+    secrets: inherit

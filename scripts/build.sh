@@ -100,7 +100,11 @@ if ((PAR_JOBS > 1)); then
 		local id=$((JOB_SEQ + 1)); JOB_SEQ=$id
 		(
 			set +e
-			RVB_CHILD=1 bash -c 'set -euo pipefail; shopt -s nullglob; source "$RVB_UTILS_SH"; set_prebuilts; build_rv "$1"' _ "$1" >"$QUEUE_DIR/$id.log" 2>&1
+			if [[ "$-" == *x* ]]; then
+				RVB_CHILD=1 bash -xc 'set -euo pipefail; shopt -s nullglob; source "$RVB_UTILS_SH"; set_prebuilts; build_rv "$1"' _ "$1" >"$QUEUE_DIR/$id.log" 2>&1
+			else
+				RVB_CHILD=1 bash -c 'set -euo pipefail; shopt -s nullglob; source "$RVB_UTILS_SH"; set_prebuilts; build_rv "$1"' _ "$1" >"$QUEUE_DIR/$id.log" 2>&1
+			fi
 			echo $? >"$QUEUE_DIR/$id.rc"
 		) &
 		JOB_PID[$id]=$!; JOB_LABEL[$id]="$2"; JOB_LOG[$id]="$QUEUE_DIR/$id.log"; JOB_RC[$id]="$QUEUE_DIR/$id.rc"
@@ -213,6 +217,9 @@ for table_name in $(toml_get_table_names); do
 	patches_ref_all="" changelog_url_all=""
 	for i in "${!p_srcs[@]}"; do
 		psrc="${p_srcs[$i]}"
+		# The explicit none patcher has no patch bundle. Do not search for a
+		# synthetic temp/none-rv directory or manufacture patch metadata.
+		[ "${psrc,,}" = none ] && continue
 		phost="${p_hosts[$i]:-${p_hosts[0]}}"
 		# Find the downloaded bundle for this source to get actual version
 		pdir=${psrc%/*}; pdir=${TEMP_DIR}/${pdir,,}-rv
@@ -332,7 +339,9 @@ for table_name in $(toml_get_table_names); do
 	[ "${#arch_values[@]}" -gt 0 ] || arch_values=("${app_args[arch]}")
 	case " ${arch_values[*]} " in
 		*" both "*) arch_values=(arm64-v8a arm-v7a) ;;
-		*" all "*) arch_values=(arm64-v8a arm-v7a x86_64 x86) ;;
+		# `all` is a real universal target, not a request to fan out into
+		# architecture-specific builds. Preserve it for every patcher flow.
+		*" all "*) arch_values=(all) ;;
 	esac
 	for arch_value in "${arch_values[@]}"; do
 		app_args[table]="$table_name ($arch_value)"

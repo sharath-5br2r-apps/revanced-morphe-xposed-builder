@@ -65,7 +65,7 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/",
     "patches-source": "arandomhooman/hoomans-morphe-patches"
   },
-  "ClashRoyale-APKSigner-Nulls": {
+  "ClashRoyale-Nulls": {
     "enable-module-update": true,
     "enabled": true,
     "cli-type": "none",

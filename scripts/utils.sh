@@ -1100,6 +1100,9 @@ _patches_list() {
 
 has_compatible_patches() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 version=$4 cli_source=$5
+	if [ "${args[cli_type]:-}" = none ] || [ "$cli_source" = none ]; then
+		return 0
+	fi
 	resolve_patcher "$cli_source"
 	if [ "$PATCHER_ANY_VERSION" = true ]; then
 		return 0
@@ -3223,6 +3226,9 @@ check_is_universal() {
 # Returns: 0 continue | 1 hard failure (caller `return 1`) | 2 skip app (caller `return 0`)
 _resolve_list_and_version() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 table=$4 say_pkg=${5:-false}
+	if [ "${args[cli_type]:-}" = none ] || [ "${args[cli_source]:-}" = none ]; then
+		return 0
+	fi
 	if [ -z "$list_patches" ]; then
 		[ "$say_pkg" = true ] && pr "Package name of '${table}' is '$pkg_name'"
 		list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
