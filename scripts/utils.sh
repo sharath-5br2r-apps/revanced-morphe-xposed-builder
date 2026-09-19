@@ -714,7 +714,6 @@ set_prebuilts() {
     fi
   fi
 }
-}
 
 _req() {
 	local ip="$1" op="$2"
