@@ -240,7 +240,14 @@ source_req() {
 
 source_dl() {
 	local host=${1,,} output=$2 url=$3
-	case "$host" in github) gh_dl "$output" "$url";; *) req "$url" "$output";; esac
+	case "$host" in
+		github) gh_dl "$output" "$url" ;;
+		gitlab|forgejo|gitea)
+			# Release assets from these hosts can be served through challenge or
+			# HTML error pages; use cf_get's verified download path.
+			_cf_cffi_download "$url" "$output" ;;
+		*) req "$url" "$output" ;;
+	esac
 }
 
 filter_releases_by_regex() {
@@ -1290,16 +1297,6 @@ _cf_cffi_download() {
 	"$py_cmd" "$py_script" download "$url" "$dest" "$referer" "$TEMP_DIR/cookie.txt"
 }
 
-_fallback_get(){
-	local url=$1
-	html=$(curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 -s -f "$url" -H "User-Agent: ${DEFAULT_UA}") || return 1
-	if [[ "$html" == *"Attention Required!"* || "$html" == *"Just a moment..."* || "$html" == *"Please Wait... | Cloudflare"* || "$html" == *"Verify you are human"* ]]; then
-		return 1
-	fi
-	CF_COOKIES=""
-	user_agent="${DEFAULT_UA}"
-}
-
 _cf_get_python() {
 	local url=$1
 	local referer=${2:-}
@@ -1327,7 +1324,6 @@ _cf_get_python() {
 
 _unqueued_cf_get() {
 	_cf_get_python "$@" && return 0
-	_fallback_get "$@" && return 0
 
 	if [[ "${__SILENT_CF_GET__:-false}" != true ]]; then
 		epr "All methods failed for: $1"

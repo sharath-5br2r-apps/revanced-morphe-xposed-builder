@@ -72,15 +72,26 @@ def is_challenge(status_code: int, text: str, headers: dict = None) -> bool:
     ))
 
 
-def is_valid_download(path: str) -> bool:
-    """Reject Cloudflare challenge/error pages without assuming file type."""
+def is_valid_download(path: str, content_type: str = "") -> bool:
+    """Reject HTML/error pages without assuming the downloaded file type."""
     try:
+        content_type = (content_type or "").lower().split(";", 1)[0].strip()
+        if content_type in {"text/html", "application/xhtml+xml"}:
+            return False
         with open(path, "rb") as stream:
             header = stream.read(65536)
         if not header:
             return False
-        sample = header.decode("utf-8", errors="ignore")
-        if is_challenge(200, sample) or "<!doctype html" in sample.lower() or "<html" in sample.lower():
+        sample = header.decode("utf-8", errors="ignore").lstrip("\ufeff \t\r\n")
+        lower = sample.lower()
+        if (
+            is_challenge(200, sample)
+            or lower.startswith("<!doctype html")
+            or lower.startswith("<html")
+            or lower.startswith("<head")
+            or lower.startswith("<body")
+            or "<meta http-equiv=" in lower[:4096]
+        ):
             return False
         return True
     except OSError:
@@ -490,7 +501,10 @@ def download_file(url: str, dest_path: str, referer: str = "", cookie_file: str 
                     for chunk in resp.iter_content(chunk_size=1048576):
                         if chunk:
                             f.write(chunk)
-                if os.path.isfile(temp_dest) and os.path.getsize(temp_dest) > 0 and is_valid_download(temp_dest):
+                content_type = ""
+                if getattr(resp, "headers", None):
+                    content_type = resp.headers.get("content-type", "")
+                if os.path.isfile(temp_dest) and os.path.getsize(temp_dest) > 0 and is_valid_download(temp_dest, content_type):
                     if os.path.isfile(dest_path):
                         os.remove(dest_path)
                     os.rename(temp_dest, dest_path)
@@ -533,16 +547,12 @@ def main():
     # Serialise concurrent requests via an exclusive file lock
     _lock_fd = acquire_lock(lock_file) if lock_file else None
 
-    # Try each method in order — each calls ok() and sys.exit(0) on success
-    fallback_get(url, cookie_file)
-
-    trawl_get(url, referer)
-
+    # Try the configured methods in priority order. There is deliberately no
+    # plain HTTP/FlareSolverr fallback: CFFI, CFB, and Trawl are the supported
+    # Cloudflare paths and each method reports success through ok().
     cf_get(url, cookie_file)
-
     cfb_get(url, referer)
-
-    fs_get(url, referer)
+    trawl_get(url, referer)
 
     sys.exit(1)
 
