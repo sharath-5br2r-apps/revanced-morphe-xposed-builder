@@ -4,7 +4,7 @@ enable-module-update = true
 [YouTube-Morphe-Anddea]
 enabled = true
 app-name = "YouTube"
-engine-brand = "Morphe"
+cli-type = "morphe"
 patch-brand = "Anddea"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -21,7 +21,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [YouTube-Morphe-Anddea-AMOLED]
 enabled = true
 app-name = "YouTube"
-engine-brand = "Morphe"
+cli-type = "morphe"
 patch-brand = "Anddea"
 variant = "AMOLED"
 build-mode = "both"
@@ -38,7 +38,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [YouTubeMusic-Morphe-Anddea]
 enabled = true
 app-name = "YouTube Music"
-engine-brand = "Morphe"
+cli-type = "morphe"
 patch-brand = "Anddea"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -54,7 +54,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [YouTubeMusic-Morphe-Anddea-AMOLED]
 enabled = true
 app-name = "YouTube Music"
-engine-brand = "Morphe"
+cli-type = "morphe"
 patch-brand = "Anddea"
 variant = "AMOLED"
 build-mode = "both"

@@ -4,7 +4,7 @@ enable-module-update = true
 [CalcNote-Morphe-Binarymend]
 enabled = true
 app-name = "CalcNote"
-engine-brand = "Morphe"
+cli-type = "morphe"
 patch-brand = "Binarymend"
 pkg-name = "com.burton999.notecal"
 build-mode = "apk"

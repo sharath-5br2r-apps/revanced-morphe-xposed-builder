@@ -4,7 +4,7 @@ enable-module-update = true
 [Pinterest-Morphe-Browzomje]
 enabled = true
 app-name = "Pinterest"
-engine-brand = "Morphe"
+cli-type = "morphe"
 patch-brand = "Browzomje"
 pkg-name = "com.pinterest"
 build-mode = "apk"
@@ -18,7 +18,7 @@ patches-source = "browzomje/browzomje-patches"
 [Pinterest-Morphe-Browzomje-Experimental]
 enabled = true
 app-name = "Pinterest"
-engine-brand = "Morphe"
+cli-type = "morphe"
 patch-brand = "Browzomje"
 sub-variant = "Experimental"
 pkg-name = "com.pinterest"

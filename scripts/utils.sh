@@ -1113,7 +1113,7 @@ _patches_list() {
 
 has_compatible_patches() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 version=$4 cli_source=$5
-	if [ "${args[cli_type]:-}" = none ] || [ "$cli_source" = none ]; then
+	if [ "${args[skip_patch_app_check]:-false}" = true ]; then
 		return 0
 	fi
 	resolve_patcher "$cli_source"
@@ -1543,8 +1543,17 @@ apkmirror_search() {
 			fi
 		fi
 
+		# `all` means one representative APK, not a literal architecture.
+		# Accept the first suitable ABI when the release has no universal APK.
+		if [ "$arch" = all ]; then
+			if isoneof "$node_arch" 'universal' 'noarch' 'arm64-v8a + x86_64' 'arm64-v8a + armeabi-v7a' && { isoneof "$node_dpi" "${appdpi[@]}" || [ "$match_any_dpi" = true ]; }; then
+				echo "$dlurl"
+				return 0
+			elif [ "$match_any_dpi" = true ] && [ -z "$best_fallback_url" ]; then
+				best_fallback_url="$dlurl"
+			fi
 		# Pass 1 Logic: Return Universal/Fat Bundles immediately to optimize cache size
-		if isoneof "$node_arch" 'universal' 'noarch' 'arm64-v8a + x86_64' 'arm64-v8a + armeabi-v7a'; then
+		elif isoneof "$node_arch" 'universal' 'noarch' 'arm64-v8a + x86_64' 'arm64-v8a + armeabi-v7a'; then
 			if isoneof "$node_dpi" "${appdpi[@]}"; then
 				echo "$dlurl"
 				return 0
@@ -1661,6 +1670,7 @@ dl_apkmirror() {
 
 	if [ -z "$release_url" ]; then
 		local list_url="${url%/}"
+		local app_path_slug="${list_url##*/}"
 		local version_href=""
 
 		# 1. Targeted search query (?s=version) first as inspired by uni-apks
@@ -1670,9 +1680,9 @@ dl_apkmirror() {
 			local s_split="${s_flat//<\/a>/<\/a>
 }"
 			local s_links=$(echo "$s_split" | grep -oP 'href="\K/apk/[^"]+')
-			version_href=$(echo "$s_links" | grep -F "$search_version-release" | head -1) || true
+			version_href=$(echo "$s_links" | grep -F "/${app_path_slug}/" | grep -F "$search_version-release" | head -1) || true
 			if [ -z "$version_href" ]; then
-				version_href=$(echo "$s_split" | grep -F "$version" | grep -oP 'href="\K/apk/[^"]+' | grep -F -- '-release/' | head -1) || true
+				version_href=$(echo "$s_split" | grep -F "/${app_path_slug}/" | grep -F "$version" | grep -oP 'href="\K/apk/[^"]+' | grep -F -- '-release/' | head -1) || true
 			fi
 			if [ -n "$version_href" ]; then
 				release_url="$base_url$version_href"
@@ -3233,20 +3243,47 @@ check_is_universal() {
 	return 1
 }
 
+# Verify that a downloaded APK contains native code for the requested target.
+# `all` and `universal` accept a valid APK even when it has no native code.
+has_native_arch() {
+	local apk=$1 arch=$2 listing wanted
+	listing=$(unzip -l "$apk" 2>/dev/null || true)
+	wanted=""
+	[ -n "$listing" ] || return 1
+	# Java-only/universal APKs legitimately have no lib/ directory and can be
+	# used for every requested ABI.
+	if ! printf '%s\n' "$listing" | grep -E 'lib/[^/]+/' >/dev/null 2>&1; then
+		return 0
+	fi
+	case "$arch" in
+		all|universal) return 0 ;;
+		arm64-v8a) wanted='lib/arm64-v8a/' ;;
+		arm-v7a) wanted='lib/armeabi-v7a/' ;;
+		x86) wanted='lib/x86/' ;;
+		x86_64) wanted='lib/x86_64/' ;;
+		*) return 1 ;;
+	esac
+	if [ "$wanted" = 'lib/' ]; then
+		printf '%s\n' "$listing" | grep -E 'lib/[^/]+/' >/dev/null 2>&1
+	else
+		printf '%s\n' "$listing" | grep -F "$wanted" >/dev/null 2>&1
+	fi
+}
+
 # Shared version-resolution pre-pass used by build_rv's two call sites
 # (early pkg path + post-download path). Operates on the caller's dynamic
 # locals: list_patches, resolved_version, version_mode.
 # Returns: 0 continue | 1 hard failure (caller `return 1`) | 2 skip app (caller `return 0`)
 _resolve_list_and_version() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 table=$4 say_pkg=${5:-false}
-	if [ "${args[cli_type]:-}" = none ] || [ "${args[cli_source]:-}" = none ]; then
+	if [ "${args[skip_patch_app_check]:-false}" = true ]; then
 		return 0
 	fi
 	if [ -z "$list_patches" ]; then
 		[ "$say_pkg" = true ] && pr "Package name of '${table}' is '$pkg_name'"
 		list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]}") || return 1
 	fi
-	if [ "$PATCHER_HAS_PATCH_LIST" = true ]; then
+	if [ "$PATCHER_HAS_PATCH_LIST" = true ] && [ "${args[skip_patch_app_check]:-false}" != true ]; then
 		if ! grep -Fq "$pkg_name" <<<"$list_patches"; then
 			epr "No app-specific patches found for '$pkg_name'. Skipping completely."
 			return 2
@@ -3474,6 +3511,23 @@ build_rv() {
 	local all_resolved_versions=()
 	if [ -n "$resolved_version" ]; then
 		mapfile -t all_resolved_versions <<<"$resolved_version"
+		# A config-level `latest` may select an APK that is unavailable for one
+		# ABI. Keep the selected version first, then try at most three older
+		# compatible versions before giving up.
+		if [ "$version_mode" = latest ] && [ -n "$pkg_name" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
+			local fallback_versions fallback_raw fallback_count=0
+			fallback_raw=$(patches_list_versions "$cli_jar" "$patches_jar" "$pkg_name" "${args[cli_source]:-}" "$cli_lv_extra" 2>/dev/null || true)
+			fallback_versions=$(sed -n '/Most common compatible versions:/,$p' <<<"$fallback_raw" | sed '1d' | awk '{print $1}' | sort_vers | head -4 || true)
+			while IFS= read -r fallback_version; do
+				[ -n "$fallback_version" ] || continue
+				[ "$fallback_count" -lt 3 ] || break
+				case $'\n'"${all_resolved_versions[*]}"$'\n' in
+					*$'\n'"$fallback_version"$'\n'*) continue ;;
+				esac
+				all_resolved_versions+=("$fallback_version")
+				fallback_count=$((fallback_count + 1))
+			done <<<"$fallback_versions"
+		fi
 	else
 		all_resolved_versions=("")
 	fi
@@ -3482,7 +3536,8 @@ build_rv() {
 	local final_all_apk=""
 	local final_version=""
 	
-	for curr_resolved_version in "${all_resolved_versions[@]}"; do
+	for ((version_index=0; version_index<${#all_resolved_versions[@]}; version_index++)); do
+		curr_resolved_version="${all_resolved_versions[$version_index]}"
 		resolved_version="$curr_resolved_version"
 		skip_dl_source_check=false
 		get_latest_ver=false
@@ -3605,6 +3660,20 @@ build_rv() {
 		if [ -z "$version" ]; then
 			epr "empty version, not building ${table}."
 			continue
+		fi
+		if [ "$version_mode" = latest ] && [ -n "$dl_from" ]; then
+			local source_fallback_versions source_versions
+			source_versions=$(get_"${dl_from}"_vers 2>/dev/null || true)
+			source_fallback_versions=$(printf '%s\n' "$source_versions" | sort_vers | head -4 || true)
+			all_resolved_versions=("$version")
+			local source_fallback_count=0
+			while IFS= read -r source_version; do
+				[ -n "$source_version" ] || continue
+				[ "$source_fallback_count" -lt 3 ] || break
+				[ "$source_version" = "$version" ] && continue
+				all_resolved_versions+=("$source_version")
+				source_fallback_count=$((source_fallback_count + 1))
+			done <<<"$source_fallback_versions"
 		fi
 
 		if [ "$mode_arg" = module ]; then
@@ -3937,6 +4006,11 @@ build_rv() {
 			epr "ERROR: Could not download '${table}' for version $resolved_version"
 			continue
 		fi
+		if ! has_native_arch "$stock_apk" "$arch_f"; then
+			wpr "Rejecting downloaded APK for ${table}: missing native libraries for '${arch_f}'"
+			rm -f "$stock_apk" "$all_apk"
+			continue
+		fi
 
 		if [ -f "$stock_apk" ]; then
 			final_stock_apk="$stock_apk"
@@ -3951,6 +4025,7 @@ build_rv() {
 	version="$final_version"
 	
 	if [ ! -f "$stock_apk" ]; then
+		[ -n "$resolved_version" ] && version="$resolved_version"
 		epr "ERROR: Could not download '${table}' after trying all supported versions."
 		return 0
 	fi

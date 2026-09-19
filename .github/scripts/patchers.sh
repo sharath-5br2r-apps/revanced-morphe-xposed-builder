@@ -8,7 +8,7 @@
 # flags instead. Adding a new patcher tool = add a case here + set its flags.
 #
 # Flags exported:
-#   PATCHER_KIND          revanced | morphe | xposed | instafel | generic | apksigner | none
+#   PATCHER_KIND          revanced | morphe | npatch | lspatch | instafel | generic | apksigner | none
 #   PATCHER_FLOW          cli-patch | xposed-module | instafel-workflow | signing | passthrough
 #   PATCHER_BUNDLE_RE     jq regex matching the tool's patch-bundle assets
 #   PATCHER_LIST_BUNDLE_ARG  flag for list-versions/list-patches bundle args
@@ -50,7 +50,12 @@ resolve_patcher() {
 			has_list=false; any_ver=true; signing=false
 			per_bundle_ed=false; exp_unsup=false; mount="" ;;
 		*"npatch"*)
-			kind=xposed; flow=xposed-module; bundle_re="\\.apk$"
+			kind=npatch; flow=xposed-module; bundle_re="\\.apk$"
+			list_arg=""; list_x=""; list_b=""; lv_sub=""; lp_sub=""
+			has_list=false; any_ver=true; signing=false
+			per_bundle_ed=false; exp_unsup=false; mount="" ;;
+		*"lspatch"*)
+			kind=lspatch; flow=xposed-module; bundle_re="\\.apk$"
 			list_arg=""; list_x=""; list_b=""; lv_sub=""; lp_sub=""
 			has_list=false; any_ver=true; signing=false
 			per_bundle_ed=false; exp_unsup=false; mount="" ;;

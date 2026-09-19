@@ -6,7 +6,7 @@ engine's registry can't drift.
 The tables must stay in sync with patchers.sh (same case rules); the engine
 reads that file, CI reads this one. Divergence here = the bug class P1 removes.
 
-Kinds: revanced | morphe | xposed | instafel | generic | apksigner | none
+Kinds: revanced | morphe | npatch | lspatch | instafel | generic | apksigner | none
 
 CLI:
     patchers.py kind <cli-source>            # print kind
@@ -20,14 +20,16 @@ _SUBSTR_KINDS = [
     # (lowercase substring patterns -> kind); first match wins, same order as shell case
     (("apksigner",), "apksigner"),
     (("none",), "none"),
-    (("npatch",), "xposed"),
+    (("npatch",), "npatch"),
+    (("lspatch",), "lspatch"),
     (("instafel",), "instafel"),
     (("morphe-desktop",), "morphe"),
     (("revanced-cli",), "revanced"),
 ]
 
 BUNDLE_GLOBS = {
-    "xposed": ["*.apk"],
+    "npatch": ["*.apk"],
+    "lspatch": ["*.apk"],
     "instafel": ["*.mpp", "*.rvp", "*.jar"],   # instafel core ships as *.jar
     "morphe": ["*.mpp", "*.rvp", "*.jar"],
     "revanced": ["*.mpp", "*.rvp", "*.jar"],

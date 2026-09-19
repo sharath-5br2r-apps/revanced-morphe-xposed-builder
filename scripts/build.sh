@@ -163,14 +163,20 @@ for table_name in $(toml_get_table_names); do
 		*) cli_type="morphe" ;;
 	esac
 	cli_type="${cli_type,,}"
+	# Non-patching flows do not have a meaningful patch-app compatibility
+	# query; enable the same bypass dynamically for all signer/no-op/NPatch
+	# configurations, including generated legacy config fragments.
+	case "$cli_type" in
+		npatch|lspatch|none|apksigner) skip_patch_app_check=true ;;
+	esac
 	# Explicit downstream types override every source field. Hosts remain valid
 	# placeholders because the normal source validation still runs, but no
 	# source download/list operation is performed for these patcher types.
 	if [ "$cli_type" = "none" ] || [ "$cli_type" = "apksigner" ]; then
 		cli_src="$cli_type"
-		patches_src="$cli_type"
-		cli_src_host="github"
-		patches_src_host="github"
+		patches_src="none"
+		cli_src_host="none"
+		patches_src_host="none"
 	fi
 	if ! isoneof "$cli_src_host" github gitlab forgejo gitea none; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': expected github, gitlab, forgejo, gitea, or none"; fi
 	resolve_patcher "$cli_src" "$cli_type"
@@ -179,7 +185,8 @@ for table_name in $(toml_get_table_names); do
 	case "$PATCHER_KIND" in
 		morphe)    resolved_engine_brand="Morphe" ;;
 		revanced)  resolved_engine_brand="ReVanced" ;;
-		xposed)    resolved_engine_brand="NPatch" ;;
+		npatch)    resolved_engine_brand="NPatch" ;;
+		lspatch)   resolved_engine_brand="LSPatch" ;;
 		instafel)  resolved_engine_brand="Instafel" ;;
 		apksigner) resolved_engine_brand="Signed" ;;
 		none)      resolved_engine_brand="" ;;
@@ -264,6 +271,12 @@ for table_name in $(toml_get_table_names); do
 	app_args[exclusive_patches]=$(toml_get "$t" exclusive-patches) || app_args[exclusive_patches]=false
 	app_args[version]=$(toml_get "$t" version) || app_args[version]="auto"
 	app_args[skip_patch_app_check]=$(toml_get "$t" skip-patch-app-check) || app_args[skip_patch_app_check]=false
+	case "${app_args[cli_type],,}" in
+		npatch|lspatch|none|apksigner) app_args[skip_patch_app_check]=true ;;
+	esac
+	case "${PATCHER_KIND:-}" in
+		npatch|lspatch) app_args[skip_patch_app_check]=true ;;
+	esac
 	app_args[version_code]=$(toml_get "$t" version-code) || app_args[version_code]=""
 	app_args[app_name]=$(toml_get "$t" app-name) || app_args[app_name]=$table_name
 	app_args[patcher_args]=$(toml_get "$t" patcher-args) || app_args[patcher_args]=""
@@ -339,9 +352,6 @@ for table_name in $(toml_get_table_names); do
 	[ "${#arch_values[@]}" -gt 0 ] || arch_values=("${app_args[arch]}")
 	case " ${arch_values[*]} " in
 		*" both "*) arch_values=(arm64-v8a arm-v7a) ;;
-		# `all` is a real universal target, not a request to fan out into
-		# architecture-specific builds. Preserve it for every patcher flow.
-		*" all "*) arch_values=(all) ;;
 	esac
 	for arch_value in "${arch_values[@]}"; do
 		app_args[table]="$table_name ($arch_value)"

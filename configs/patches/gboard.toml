@@ -4,7 +4,7 @@ enable-module-update = true
 [Gboard-Morphe-Jasonwu1994Adobo]
 enabled = true
 app-name = "Gboard"
-engine-brand = "Morphe"
+cli-type = "morphe"
 patch-brand = "Jasonwu1994Adobo"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -24,7 +24,7 @@ apkmirror-release-filter = "!(lite|beta)"
 [Gboard-Morphe-Jasonwu1994Adobo-Clone]
 enabled = true
 app-name = "Gboard"
-engine-brand = "Morphe"
+cli-type = "morphe"
 patch-brand = "Jasonwu1994Adobo"
 sub-variant = "Clone"
 build-mode = "apk"

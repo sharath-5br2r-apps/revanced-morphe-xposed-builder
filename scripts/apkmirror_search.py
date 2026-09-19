@@ -153,8 +153,15 @@ def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, 
             else:
                 continue
 
+        # `all` means one representative APK, not a literal architecture.
+        # Accept the first suitable ABI when the release has no universal APK.
+        if arch == "all":
+            if node_arch in ['universal', 'noarch', 'arm64-v8a + x86_64', 'arm64-v8a + armeabi-v7a'] and (node_dpi in appdpi or match_any_dpi):
+                return dlurl
+            if (node_dpi in appdpi or match_any_dpi) and not best_fallback_url:
+                best_fallback_url = dlurl
         # Pass 1 Logic: Return Universal/Fat Bundles immediately to optimize cache size
-        if node_arch in ['universal', 'noarch', 'arm64-v8a + x86_64', 'arm64-v8a + armeabi-v7a']:
+        elif node_arch in ['universal', 'noarch', 'arm64-v8a + x86_64', 'arm64-v8a + armeabi-v7a']:
             if node_dpi in appdpi:
                 return dlurl
             elif match_any_dpi and not best_fallback_url:

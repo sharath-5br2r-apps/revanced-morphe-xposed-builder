@@ -4,7 +4,7 @@ enable-module-update = true
 [YouTube-Morphe]
 enabled = true
 app-name = "YouTube"
-engine-brand = "Morphe"
+cli-type = "morphe"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
 pkg-name = "com.google.android.youtube"
@@ -21,7 +21,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [YouTube-Morphe-AMOLED]
 enabled = true
 app-name = "YouTube"
-engine-brand = "Morphe"
+cli-type = "morphe"
 variant = "AMOLED"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -39,7 +39,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [YouTube-Morphe-Experimental]
 enabled = true
 app-name = "YouTube"
-engine-brand = "Morphe"
+cli-type = "morphe"
 sub-variant = "Experimental"
 build-mode = "both"
 arch = "all arm64-v8a arm-v7a x86_64"
@@ -57,7 +57,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [YouTube-Morphe-AMOLED-Experimental]
 enabled = true
 app-name = "YouTube"
-engine-brand = "Morphe"
+cli-type = "morphe"
 variant = "AMOLED"
 sub-variant = "Experimental"
 build-mode = "both"
@@ -78,7 +78,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [YouTubeMusic-Morphe-Experimental]
 enabled = true
 app-name = "YouTube Music"
-engine-brand = "Morphe"
+cli-type = "morphe"
 sub-variant = "Experimental"
 build-mode = "both"
 arch = "arm64-v8a arm-v7a x86_64"
@@ -96,7 +96,7 @@ cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag
 [YouTubeMusic-Morphe-AMOLED-Experimental]
 enabled = true
 app-name = "YouTube Music"
-engine-brand = "Morphe"
+cli-type = "morphe"
 variant = "AMOLED"
 sub-variant = "Experimental"
 build-mode = "both"
