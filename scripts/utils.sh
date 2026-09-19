@@ -909,6 +909,7 @@ _cache_all_archs_present() {
 	local arch arch_f check_apk
 	for arch in "${arch_list[@]}"; do
 		arch_f="${arch// /}"
+		local prepared_stock_apk="$final_stock_apk"
 		_cache_probe_apk "$ver" "$arch_f" "$raw_ver"
 		check_apk="$_CACHE_CHECK_APK"
 		if [ -z "$check_apk" ]; then
@@ -4221,6 +4222,12 @@ build_rv() {
 						-name "${pkg_name}-${version_f}-*-${arch_f}.apk" | sort | head -1)
 				fi
 			fi
+		fi
+		# The download phase may have produced a valid ABI-specific cache path
+		# with a version-code or bundle suffix. Do not replace it with an
+		# unqualified reconstructed name during the patch phase.
+		if [ ! -f "$stock_apk" ] && [ -f "$prepared_stock_apk" ]; then
+			stock_apk="$prepared_stock_apk"
 		fi
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
