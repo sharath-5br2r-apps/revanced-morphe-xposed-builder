@@ -656,6 +656,7 @@ jobs:
           branch: update
           create_branch: true
           skip_checkout: true
+          add_options: -f
           file_pattern: build.json changelogs/*.md
           commit_message: "Bump version ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
 

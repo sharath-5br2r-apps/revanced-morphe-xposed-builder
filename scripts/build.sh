@@ -66,8 +66,8 @@ DEF_SUB_VARIANT=$(toml_get "$main_config_t" sub-variant) || DEF_SUB_VARIANT=""
 DEF_DPI=$(toml_get "$main_config_t" dpi) || DEF_DPI="nodpi anydpi auto"
 DEF_ARCH=$(toml_get "$main_config_t" arch) || DEF_ARCH="both"
 DEF_BUILD_MODE=$(toml_get "$main_config_t" build-mode) || DEF_BUILD_MODE="apk"
-DEF_AUTHOR_NAME=$(toml_get "$main_config_t" author) || DEF_AUTHOR_NAME="nullcpy"
-DEF_AUTHOR_PAGE=$(toml_get "$main_config_t" author-page) || DEF_AUTHOR_PAGE="github.com/nullcpy/rvb"
+DEF_AUTHOR_NAME=$(toml_get "$main_config_t" author) || DEF_AUTHOR_NAME="sharath-5br2r"
+DEF_AUTHOR_PAGE=$(toml_get "$main_config_t" author-page) || DEF_AUTHOR_PAGE="github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder"
 mkdir -p "$TEMP_DIR" "$BUILD_DIR"
 
 # Build process pool. Each child re-sources utils.sh so patcher state and
@@ -149,7 +149,15 @@ for table_name in $(toml_get_table_names); do
 	cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
 	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
 	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
-	cli_type=$(toml_get "$t" cli-type) || cli_type="morphe"
+	cli_type=$(toml_get "$t" cli-type) || cli_type=""
+	# Generated JSON/TOML from older revisions used cli-source as the flow
+	# selector. Infer it when cli-type is absent so stale batch parts remain
+	# buildable until the next config regeneration.
+	[ -n "$cli_type" ] || case "${cli_src,,}" in
+		none) cli_type="none" ;;
+		apksigner) cli_type="apksigner" ;;
+		*) cli_type="morphe" ;;
+	esac
 	cli_type="${cli_type,,}"
 	# Explicit downstream types override every source field. Hosts remain valid
 	# placeholders because the normal source validation still runs, but no
@@ -310,7 +318,9 @@ for table_name in $(toml_get_table_names); do
 	app_args[pkg_name]=$(toml_get "$t" pkg-name) || app_args[pkg_name]=""
 	app_args[patched_pkg_name]=$(toml_get "$t" patched-pkg-name) || app_args[patched_pkg_name]=""
 	app_args[dpi]=$(toml_get "$t" dpi) || app_args[dpi]="$DEF_DPI"
-	app_args[github_regex]=$(toml_get "$t" github-regex) || app_args[github_regex]=""
+	# Keep the modern github-dlurl-regex unless the legacy github-regex key
+	# explicitly overrides it.
+	app_args[github_regex]=$(toml_get "$t" github-regex) || app_args[github_regex]="${app_args[github_dlurl_regex]}"
 	app_args[github_release_regex]=$(toml_get "$t" github-release-regex) || app_args[github_release_regex]=""
 	table_name_f=${table_name,,}
 	table_name_f=${table_name_f// /-}

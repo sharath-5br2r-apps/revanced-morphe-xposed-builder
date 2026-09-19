@@ -2291,21 +2291,31 @@ dl_github() {
         fi
     fi
 	local base_url="${__GITHUB_URL__:-https://github.com/${repo}/releases/download/${exact_tag}}"
+	# A release-list response can leave __GITHUB_URL__ at the generic download
+	# endpoint even when the requested version has an exact matching tag. Never
+	# construct /releases/download/<asset>; bind the asset to that tag.
+	if [[ "$base_url" == */releases/download ]] && [ -n "$exact_tag" ]; then
+		base_url="${base_url}/${exact_tag}"
+	fi
     
-local regex=""
+    local regex=""
     if [ -n "${args[github_regex]:-}" ]; then
         if [[ "${args[github_regex]}" == *":"* ]]; then
-            regex=$(echo "${args[github_regex]}" | awk -F'|' -v a="$arch" '{
-                for(i=1;i<=NF;i++) {
-                    split($i, kv, ":")
-                    gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[1])
-                    if(kv[1] == a) {
-                        gsub(/^[ \t'\''"]+|[ \t'\''"]+$/, "", kv[2])
-                        print kv[2]
-                        exit
-                    }
-                }
-            }')
+            # A mapping is written as `arch: regex | arch: regex`, but each
+            # regex may itself contain alternation pipes. Split only at a pipe
+            # that starts the next architecture key.
+            if command -v python3 >/dev/null 2>&1; then
+                regex=$(printf '%s\n' "${args[github_regex]}" | python3 -c '
+import re, sys
+mapping, wanted = sys.stdin.read().rstrip("\n"), sys.argv[1]
+for key, value in re.findall(r"(?:^|\|)\s*([A-Za-z0-9_-]+)\s*:\s*(.*?)(?=\s*\|\s*[A-Za-z0-9_-]+\s*:|$)", mapping):
+    if key == wanted:
+        print(value.strip())
+        break
+' "$arch")
+            else
+                regex=$(echo "${args[github_regex]}" | sed -n -E "s/.*(^|\\|)[[:space:]]*${arch}[[:space:]]*:[[:space:]]*([^|]*(\\|[^[:alnum:]_-]+.*)?)([[:space:]]*\\|[[:space:]]*[[:alnum:]_-]+[[:space:]]*:.*)?$/\\2/p")
+            fi
         else
             regex="${args[github_regex]}"
         fi
@@ -3245,6 +3255,14 @@ _resolve_list_and_version() {
 			resolved_version=$version_mode
 		fi
 	fi
+	# Gboard patch listings can suffix the app version with the ABI (for
+	# example `17.8.7-arm64-v8a`). The download sources expose the unsuffixed
+	# release, so remove that listing-only suffix before version matching and
+	# source lookup. Keep this compatibility rule scoped to Gboard.
+	local gboard_key="${table,,}${app_name,,}${pkg_name,,}"
+	if [[ "$gboard_key" == *gboard* || "$gboard_key" == *inputmethod.latin* ]]; then
+		resolved_version=$(sed -E 's/-(arm64-v8a|armeabi-v7a|arm-v7a|x86_64|x86)$//I' <<<"$resolved_version")
+	fi
 	return 0
 }
 
@@ -3626,6 +3644,14 @@ build_rv() {
 			local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 			local stock_apk="$cached_stock_apk"
 			local all_apk="$cached_all_apk"
+			# Never send a truncated cache artifact to APKEditor/Morphe. A failed
+			# parallel download can leave a file with an invalid central directory.
+			for cached_candidate in "$stock_apk" "$all_apk"; do
+				if [ -f "$cached_candidate" ] && ! unzip -tq "$cached_candidate" >/dev/null 2>&1; then
+					wpr "Removing corrupt cached archive: $cached_candidate"
+					rm -f "$cached_candidate"
+				fi
+			done
 			if [ ! -f "$stock_apk" ] && [ ! -f "$all_apk" ] && [ -n "$target_version_code" ]; then
 				local legacy_stock="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 				local legacy_all="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
@@ -3660,6 +3686,18 @@ build_rv() {
 					stock_apk="$all_apk"
 				fi
 			fi
+
+			# Re-check after legacy/bundle cache selection as well. A sibling may
+			# have populated this path after the first cache probe, and a partial
+			# archive must never reach the patcher.
+			for selected_candidate in "$stock_apk" "$all_apk"; do
+				if [ -f "$selected_candidate" ] && ! unzip -tq "$selected_candidate" >/dev/null 2>&1; then
+					wpr "Removing corrupt cached archive: $selected_candidate"
+					rm -f "$selected_candidate"
+					[ "$stock_apk" = "$selected_candidate" ] && stock_apk=""
+					[ "$all_apk" = "$selected_candidate" ] && all_apk=""
+				fi
+			done
 
 			local check_apk=""
 			[ -f "$stock_apk" ] && check_apk="$stock_apk"
@@ -3700,6 +3738,11 @@ build_rv() {
 						epr "ERROR: Downloaded file from ${dl_p} is not a valid zip archive (Cloudflare block or bad file)!"
 						rm -f "$stock_apk" "${stock_apk%.apk}".* "${stock_apk}".*
 						release_apk_lock
+						continue
+					fi
+					if ! unzip -tq "$stock_apk" >/dev/null 2>&1; then
+						epr "ERROR: Downloaded archive is corrupt or incomplete; retrying ${dl_p}"
+						rm -f "$stock_apk" "${stock_apk%.apk}".* "${stock_apk}".*
 						continue
 					fi
 					if ! unzip -l "$stock_apk" | grep '^[[:space:]]*[0-9].*AndroidManifest\.xml$' >/dev/null; then
