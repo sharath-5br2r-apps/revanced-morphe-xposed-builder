@@ -880,7 +880,7 @@ parse_arch_mapping() {
 		return 0
 	fi
 	local matched="" entry
-	local old_ifs="$IFS"
+	local old_ifs="${IFS- }"
 	IFS='|'
 	for entry in $mapping; do
 		if [[ "$entry" =~ ^[[:space:]]*([^:]+)[[:space:]]*:[[:space:]]*(.*)$ ]]; then
@@ -3684,6 +3684,12 @@ build_rv() {
 			build_mode_arr=(apk module)
 		fi
 
+		# APKMirror/Uptodown may return a product title followed by its real
+		# numeric version (for example, WARP's "1.1.1.1 + WARP: Safer Internet
+		# 6.38.9"). Downloaders require only the trailing version component.
+		if [[ "$version" == *" + "* && "$version" =~ ([0-9]+(\.[0-9]+)+([.-][A-Za-z0-9]+)*)$ ]]; then
+			version="${BASH_REMATCH[1]}"
+		fi
 		pr "Choosing version '${version}' for ${table}"
 		local version_f=${version// /}
 		version_f=${version_f#v}
@@ -3697,7 +3703,13 @@ build_rv() {
 			arch_f="${arch// /}"
 			local target_version_code
 			target_version_code=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
-			if [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; then
+			local skip_version_code_check=false
+			if [ "${args[skip_version_code_check]:-false}" = true ]; then
+				skip_version_code_check=true
+				pr "Skipping version-code selection and validation for '${table}' (${arch_f})"
+				target_version_code=""
+			fi
+			if [ "$skip_version_code_check" != true ] && { [ -z "$target_version_code" ] || [ "$target_version_code" = "auto" ]; }; then
 				target_version_code=""
 				if [ -n "$version" ] && [ -n "$cli_jar" ] && [ -n "$patches_jar" ]; then
 					local raw_vers
@@ -3735,6 +3747,12 @@ build_rv() {
 			local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
 			local stock_apk="$cached_stock_apk"
 			local all_apk="$cached_all_apk"
+			if [ "$skip_version_code_check" = true ] && [ ! -f "$stock_apk" ]; then
+				local versioned_cached
+				versioned_cached=$(find "$apk_cache_dir" -maxdepth 1 -type f \
+					-name "${pkg_name}-${version_f}-*-${arch_f}.apk" | sort | head -1)
+				[ -n "$versioned_cached" ] && stock_apk="$versioned_cached"
+			fi
 			# Never send a truncated cache artifact to APKEditor/Morphe. A failed
 			# parallel download can leave a file with an invalid central directory.
 			for cached_candidate in "$stock_apk" "$all_apk"; do
@@ -3876,7 +3894,7 @@ build_rv() {
 							continue
 						fi
 
-						if [ -n "$target_version_code" ] && [ -n "$downloaded_vc" ]; then
+						if [ "${args[skip_version_code_check]:-false}" != true ] && [ -n "$target_version_code" ] && [ -n "$downloaded_vc" ]; then
 							if [ "$downloaded_vc" != "$target_version_code" ]; then
 								epr "ERROR: Downloaded APK version code ($downloaded_vc) does not match expected ($target_version_code). Rejecting..."
 								rm -f "$stock_apk" "${stock_apk%.apk}.apkm"
@@ -4145,12 +4163,19 @@ build_rv() {
 	if [ "${args[patcher_args]}" ]; then p_patcher_args+=("${args[patcher_args]}"); fi
 	for arch in "${arch_list[@]}"; do
 		arch_f="${arch// /}"
-		if [ -f "${apk_cache_dir}/${pkg_name}-${version_f}-all.apk" ]; then
-			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
+		local build_vc build_vc_infix
+		build_vc=$(parse_arch_mapping "${args[version_code]:-}" "$arch_f")
+		build_vc_infix="${build_vc:+-${build_vc}}"
+		if [ -f "${apk_cache_dir}/${pkg_name}-${version_f}${build_vc_infix}-all.apk" ]; then
+			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${build_vc_infix}-all.apk"
+			all_apk="$stock_apk"
+		elif [ -f "${apk_cache_dir}/${pkg_name}-${version_f}${build_vc_infix}-${arch_f}.apk" ]; then
+			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${build_vc_infix}-${arch_f}.apk"
+			all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${build_vc_infix}-all.apk"
 		else
 			stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
+			all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
 		fi
-		all_apk="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")

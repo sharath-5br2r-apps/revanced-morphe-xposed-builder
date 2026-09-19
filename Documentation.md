@@ -120,6 +120,7 @@ patch-folder = "youtube"                     # Explicit patch folder in patch bu
 # --- Versioning ---
 version = "auto"                             # "auto" (highest supported by patches), "exp", "latest", "beta", or "20.40.45"
 version-code = "auto"                        # "auto", numeric string, or per-arch: "arm64-v8a: 473623755 | arm-v7a: 473623748"
+skip-version-code-check = false               # Skip versionCode selection and validation when stores use variant-specific codes
 version-filter = ""                          # Regex filter for APK versions on APKMirror
 skip-patch-app-check = false                  # Skip app/package compatibility checking
 
