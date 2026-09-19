@@ -435,6 +435,17 @@
     "apkpure-dlurl": "https://apkpure.com/medium/com.medium.reader",
     "apkcombo-dlurl": "https://apkcombo.com/medium/com.medium.reader"
   },
+  "SwiftBackup-byehi98": {
+    "enabled": false,
+    "pkg-name": "org.swiftapps.swiftbackup",
+    "app-name": "Swift Backup",
+    "patches-source": "byehi98/okish-morphe-patches",
+    "brand": "byehi98",
+    "uptodown-dlurl": "https://swift-backup.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/swiftapps-org/swift-backup",
+    "apkpure-dlurl": "https://apkpure.com/swift-backup/org.swiftapps.swiftbackup",
+    "apkcombo-dlurl": "https://apkcombo.com/swift-backup/org.swiftapps.swiftbackup"
+  },
   "Threads-chiggi": {
     "patches-source": "durgesh0505/chiggi_morphe_patches",
     "brand": "chiggi",
@@ -460,15 +471,6 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/threads-an-instagram-app",
     "uptodown-dlurl": "https://threads.en.uptodown.com/android",
     "apkpure-dlurl": "https://apkpure.com/threads-app/com.instagram.barcelona"
-  },
-  "GooglePhotos-DeVanced": {
-    "patches-source": "RookieEnough/De-Vanced",
-    "brand": "DeVanced",
-    "enabled": false,
-    "pkg-name": "com.google.android.apps.photos",
-    "app-name": "Google Photos",
-    "build-mode": "both",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/photos"
   },
   "GoogleRecorder-DeVanced": {
     "patches-source": "RookieEnough/De-Vanced",
@@ -599,23 +601,12 @@
     "apkpure-dlurl": "https://apkpure.com/byair-flight-tracker-status/com.byairapp.android",
     "apkcombo-dlurl": "https://apkcombo.com/byair-flight-tracker-status/com.byairapp.android"
   },
-  "SwiftBackup-heval99": {
-    "patches-source": "heval99/Heval-Morphe-Patches",
-    "brand": "heval99",
-    "enabled": true,
-    "pkg-name": "org.swiftapps.swiftbackup",
-    "app-name": "SwiftBackup",
-    "uptodown-dlurl": "https://swift-backup.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/swiftapps-org/swift-backup",
-    "apkpure-dlurl": "https://apkpure.com/swift-backup/org.swiftapps.swiftbackup",
-    "apkcombo-dlurl": "https://apkcombo.com/swift-backup/org.swiftapps.swiftbackup"
-  },
   "FairEmail-heval99": {
-    "patches-source": "heval99/Heval-Morphe-Patches",
-    "brand": "heval99",
-    "enabled": true,
+    "enabled": false,
     "pkg-name": "eu.faircode.email",
     "app-name": "FairEmail",
+    "brand": "heval99",
+    "patches-source": "heval99/Heval-Morphe-Patches",
     "uptodown-dlurl": "https://fairemail.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/marcel-bokhorst/fairemail-open-source-privacy-oriented-email",
     "apkpure-dlurl": "https://apkpure.com/fairemail-privacy-aware-email/eu.faircode.email",
@@ -1463,6 +1454,35 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2",
     "uptodown-dlurl": "https://macrodroid.en.uptodown.com/android"
   },
+  "GooglePhotos-DeVanced": {
+    "enabled": false,
+    "pkg-name": "com.google.android.apps.photos",
+    "app-name": "Google Photos",
+    "brand": "DeVanced",
+    "build-mode": "both",
+    "patches-source": "RookieEnough/De-Vanced",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/photos"
+  },
+  "GooglePhotos-rushiranpise": {
+    "enabled": false,
+    "pkg-name": "com.google.android.apps.photos",
+    "app-name": "Google Photos",
+    "brand": "rushiranpise",
+    "patches-source": "rushiranpise/morphe-patches",
+    "included-patches": "'AMOLED dark theme' 'Change package name' 'Enable DCIM folders backup control' 'Fix DCIM folder classification'",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/photos",
+    "uptodown-dlurl": "https://google-photos.en.uptodown.com/android"
+  },
+  "GooglePhotos-AkashSriram": {
+    "enabled": true,
+    "pkg-name": "com.google.android.apps.photos",
+    "app-name": "Google Photos",
+    "brand": "AkashSriram",
+    "build-mode": "both",
+    "patches-source": "Akash-Sriram/morphe-google-photos",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/photos",
+    "uptodown-dlurl": "https://google-photos.en.uptodown.com/android"
+  },
   "Twitter-Piko": {
     "patches-source": "crimera/piko",
     "build-mode": "both",
@@ -1669,16 +1689,6 @@
     "app-name": "Beta Maniac",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/mirko-dimartino/beta-maniac-life-of-a-beta-tester-2",
     "uptodown-dlurl": "https://beta-maniac.en.uptodown.com/android"
-  },
-  "GooglePhotos-rushiranpise": {
-    "patches-source": "rushiranpise/morphe-patches",
-    "brand": "rushiranpise",
-    "enabled": false,
-    "pkg-name": "com.google.android.apps.photos",
-    "app-name": "Google Photos",
-    "included-patches": "'AMOLED dark theme' 'Change package name' 'Enable DCIM folders backup control' 'Fix DCIM folder classification'",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/photos",
-    "uptodown-dlurl": "https://google-photos.en.uptodown.com/android"
   },
   "Messenger-rushiranpise": {
     "patches-source": "rushiranpise/morphe-patches",

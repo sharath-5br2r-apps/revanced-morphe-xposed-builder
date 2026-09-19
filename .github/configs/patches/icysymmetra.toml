@@ -1,4 +1,5 @@
 patches-source = "icysymmetra/tiktok-patches-for-morphe"
+patches-version = "both"
 brand = "icysymmetra"
 
 [TikTok-icysymmetra]
@@ -9,5 +10,6 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-includin
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
 apkpure-dlurl = "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically"
 apkcombo-dlurl = "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically"
+
 
 

@@ -9,16 +9,23 @@
       "com.tubitv": "ad4cfa4b600c6451571625a911aace33",
       "com.univision.prendetv": "af7f8e042bd4b56df21f80a2c99ac58f",
       "com.wbd.hbomax": "62d421421ab7d213ad26b1b296796164",
-      "shared": "168a520545b3cab8f69456ae06ffd0b8",
+      "shared": "44c4a841573ed76659b37cc893f21519",
       "tv.pluto.android": "40dcc7c8b97d540deab8a158a9ad6ba1",
       "tv.twitch.android.app": "dcc3c62ee2cb5ba1793d74172bcf61fb"
     }
   },
+  "akash-sriram/morphe-google-photos": {
+    "beta": {},
+    "stable": {
+      "com.google.android.apps.photos": "953773e1288687cb9cf14434668c0297",
+      "shared": "a41a99b60dbfd88a2368e5b1fd309497"
+    }
+  },
   "anddea/revanced-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "36817ab0b0cfc78d16a9f3e3ddac8500",
-      "com.google.android.youtube": "a57a6443ce30ef49c73d630e78cd282d",
-      "shared": "78a5856192f57b3a46bf8a24ef2a3bf5"
+      "com.google.android.apps.youtube.music": "e16c671799df8f6dd955061c9b98e13b",
+      "com.google.android.youtube": "ae122b40961edfd3c878ae4599a6c137",
+      "shared": "7bde30acb2bbcdec4698746c1d6db80f"
     },
     "stable": {}
   },
@@ -56,6 +63,13 @@
       "com.instagram.android": "efab2a964a11129ee3e218a482255ae3",
       "de.komoot.android": "0277a67a65d165f8c41b799a592891f4",
       "shared": "e8477a3349f8bb6238d3bdfde82b803b"
+    }
+  },
+  "byehi98/okish-morphe-patches": {
+    "beta": {},
+    "stable": {
+      "org.swiftapps.swiftbackup": "19f8e7d3f7903d93d21919ae4e0b5bc2",
+      "shared": "33476eca792cd0686939390824d18c69"
     }
   },
   "crimera/piko": {
@@ -106,8 +120,8 @@
   "heval99/heval-morphe-patches": {
     "beta": {},
     "stable": {
-      "eu.faircode.email": "6510a9ba2242ffa180d0b63b6b8702f5",
-      "org.swiftapps.swiftbackup": "a6f8bde2c097b3330f4e60644de3e125",
+      "eu.faircode.email": "9ad1d853c2566272fc126cfac453578a",
+      "org.swiftapps.swiftbackup": "d41d8cd98f00b204e9800998ecf8427e",
       "shared": "f58f43ff836e0762fe9f9d84376b1567"
     }
   },
@@ -253,7 +267,7 @@
   "morpheapp/morphe-patches": {
     "beta": {
       "com.google.android.apps.youtube.music": "bb145b7694d3a86e91ab6a153140a8de",
-      "com.google.android.youtube": "d0a85a64f330c4e9cc68a8947680cafb",
+      "com.google.android.youtube": "922cba6d9da116df91367c3399d4cfdb",
       "com.reddit.frontpage": "569f7eb9334163efdffd8a0715e61d26",
       "shared": "15acc84bec8476ff0a246706e7c0b822"
     },

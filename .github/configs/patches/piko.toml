@@ -1,4 +1,5 @@
 patches-source = "crimera/piko"
+patches-version = "both"
 build-mode = "both"
 brand = "Piko"
 
