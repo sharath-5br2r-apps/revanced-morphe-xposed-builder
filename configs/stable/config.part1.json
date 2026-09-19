@@ -1,23 +1,21 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "CloudflareWarp-Morphe-Rushiranpise-Experimental": {
-    "enable-module-update": true,
+  "BraveBrowser-Nightly-Morphe-Dh6k": {
     "enabled": true,
-    "cli-source": "MorpheApp/morphe-desktop",
-    "app-name": "Cloudflare WARP",
+    "app-name": "Brave Browser",
     "cli-type": "morphe",
-    "patch-brand": "Rushiranpise",
-    "sub-variant": "Experimental",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cloudflare.onedotonedotonedotone",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "custom-microg-patches": "'None'",
+    "patch-brand": "Dh6k",
+    "sub-variant": "Nightly",
+    "version": "beta",
     "build-mode": "apk",
-    "pkg-name": "com.cloudflare.onedotonedotonedotone",
-    "uptodown-dlurl": "https://1-1-1-1.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet",
-    "patches-source": "rushiranpise/morphe-patches",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
+    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
+    "pkg-name": "com.brave.browser_nightly",
+    "cli-source": "MorpheApp/morphe-desktop",
+    "patches-source": "dh6k/morphe-patches",
+    "patcher-args": "--continue-on-error",
+    "github-dlurl": "https://github.com/brave/brave-browser/releases",
+    "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
+    "github-release-name-regex": "^Nightly v"
   }
 }
