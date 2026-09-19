@@ -27,6 +27,7 @@
     "build-mode": "both",
     "arch": "arm64-v8a x86_64 armeabi-v7a x86",
     "pkg-name": "com.google.android.inputmethod.latin",
+    "skip-patch-app-check": true,
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin",
     "patches-source": "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'",
     "included-patches": " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'",

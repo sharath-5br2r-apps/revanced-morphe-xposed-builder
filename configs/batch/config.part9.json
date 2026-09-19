@@ -29,6 +29,7 @@
     "exclusive-patches": "jkennethcarino/adobo",
     "excluded-patches": "'Package Rename' | ",
     "pkg-name": "com.google.android.inputmethod.latin",
+    "skip-patch-app-check": true,
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.google.android.inputmethod.latin",
     "cli-source": "MorpheApp/morphe-desktop",
     "patcher-args": "-f --continue-on-error",
