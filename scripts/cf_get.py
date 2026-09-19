@@ -286,9 +286,10 @@ def cf_get(url: str, cookie_file: str) -> None:
     for imp in impersonate_targets:
         try:
             s = cffi_requests.Session(impersonate=imp)
-            load_cookies(cookie_file, s)
+            load_cookies(s, cookie_file)
             resp = s.get(url, timeout=15, allow_redirects=True)
             if is_challenge(resp.status_code, resp.text):
+                sys.stderr.write(f"[cf_get] Cloudflare page detected via curl_cffi ({resp.status_code}); trying the next method.\n")
                 sys.exit(1)
             if resp.status_code == 200 and resp.text:
                 cf_cookies = cookies_to_header_str(s)
@@ -491,6 +492,7 @@ def download_file(url: str, dest_path: str, referer: str = "", cookie_file: str 
 
             resp = s.get(url, headers=headers, timeout=(10, 300), stream=True, allow_redirects=True)
             if is_challenge(resp.status_code, "", getattr(resp, "headers", None)):
+                sys.stderr.write(f"[cf_get] Cloudflare page detected during download ({resp.status_code}); requesting solver cookies.\n")
                 solved, ua = solve_challenge(url, s)
                 if solved:
                     save_cookies(s, cookie_file, ua)
@@ -551,7 +553,9 @@ def main():
     # plain HTTP/FlareSolverr fallback: CFFI, CFB, and Trawl are the supported
     # Cloudflare paths and each method reports success through ok().
     cf_get(url, cookie_file)
+    sys.stderr.write("[cf_get] curl_cffi failed; switching to cf-bypasser.\n")
     cfb_get(url, referer)
+    sys.stderr.write("[cf_get] cf-bypasser failed; switching to Trawl.\n")
     trawl_get(url, referer)
 
     sys.exit(1)

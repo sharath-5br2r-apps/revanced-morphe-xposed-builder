@@ -222,8 +222,21 @@ cf_req() {
 		fi
 		return 1
 	fi
+	# API metadata normally does not need a solver. Fetch it directly first;
+	# this also avoids treating valid JSON as a downloadable archive. Only
+	# challenge responses are handed to the verified CFFI/CFB/Trawl path.
+	local direct_body
+	if direct_body=$(curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" \
+		--connect-timeout 15 --retry 2 -s -f "$url" -H "User-Agent: $DEFAULT_UA"); then
+		if [[ "$direct_body" != *"Just a moment..."* && "$direct_body" != *"Attention Required!"* && \
+			"$direct_body" != *"Verify you are human"* && "$direct_body" != *"challenges.cloudflare.com"* ]]; then
+			printf '%s\n' "$direct_body"
+			return 0
+		fi
+		wpr "Cloudflare page detected for $url; switching to solver methods."
+	fi
 	if _cf_get "$url"; then
-		echo "$html"
+		printf '%s\n' "$html"
 		return 0
 	fi
 	return 1
@@ -1315,7 +1328,7 @@ _cf_get_python() {
 	[ ! -f "$py_script" ] && return 2
 
 	local cffi_res
-	if cffi_res=$("$py_cmd" "$py_script" "$url" "$TEMP_DIR/cookie.txt" "$TEMP_DIR/cf_get.lock" "$referer" 2>/dev/null); then
+	if cffi_res=$("$py_cmd" "$py_script" "$url" "$TEMP_DIR/cookie.txt" "$TEMP_DIR/cf_get.lock" "$referer"); then
 		html=$(jq -r '.html // empty' <<<"$cffi_res") || return 1
 		CF_COOKIES=$(jq -r '.cf_cookies // empty' <<<"$cffi_res") || CF_COOKIES=""
 		user_agent=$(jq -r '.user_agent // empty' <<<"$cffi_res") || user_agent="${DEFAULT_UA}"
@@ -3106,7 +3119,7 @@ get_git_repo_resp() {
 			*) api_base="${api_base}/tags/${tag}" ;;
 		esac
 	fi
-	response=$(cf_req "$api_base${tag:+?}" - 2>/dev/null || req "$api_base${tag:+?}" - 2>/dev/null) || return 1
+	response=$(cf_req "$api_base${tag:+?}" - 2>/dev/null) || return 1
 	[ -n "$tag" ] && response="[$response]"
 	local assets
 	assets=$(jq -c --arg f "$filter" --arg rf "$release_filter" --arg nf "$name_filter" '
