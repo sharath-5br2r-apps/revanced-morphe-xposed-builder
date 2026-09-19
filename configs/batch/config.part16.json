@@ -9,7 +9,6 @@
     "patch-brand": "Browzomje",
     "pkg-name": "com.pinterest",
     "build-mode": "apk",
-    "arch": "all arm64-v8a arm-v7a x86_64",
     "cli-source": "MorpheApp/morphe-desktop",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.pinterest",
     "uptodown-dlurl": "https://pinterest.en.uptodown.com/android",
@@ -28,7 +27,6 @@
     "version": "latest",
     "skip-patch-app-check": true,
     "build-mode": "apk",
-    "arch": "all arm64-v8a arm-v7a x86_64",
     "pkg-name": "ginlemon.flowerfree",
     "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
@@ -43,7 +41,6 @@
     "patch-brand": "Hoodles",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.merriamwebster",
     "build-mode": "apk",
-    "arch": "all arm64-v8a arm-v7a x86_64",
     "pkg-name": "com.merriamwebster",
     "uptodown-dlurl": "https://merriam-webster.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/merriam-webster-inc/dictionary-merriam-webster",
@@ -114,8 +111,7 @@
     "pkg-name": "com.monect.portable",
     "uptodown-dlurl": "https://monect-pc-remote.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/",
-    "patches-source": "rushiranpise/morphe-patches",
-    "arch": "all arm64-v8a arm-v7a x86_64"
+    "patches-source": "rushiranpise/morphe-patches"
   },
   "AmazonAlexa-APKSigner-Signed": {
     "enable-module-update": true,
@@ -130,7 +126,6 @@
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.amazon.dee.app",
     "patches-source": "none",
     "patches-source-host": "none",
-    "arch": "all arm64-v8a arm-v7a x86_64",
     "prefer-dl-mode": "bundle",
     "uptodown-dlurl": "https://alexa.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
