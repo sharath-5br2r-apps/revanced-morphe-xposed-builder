@@ -30,6 +30,11 @@ def extract_versions(html_content: str, allow_all: bool = False) -> list[str]:
         if not allow_all and any(kw in lower for kw in ("beta", "alpha", "secondary")):
             continue
 
+        # WARP's product name starts with 1.1.1.1, which is not its app
+        # version. Remove only that known product prefix, then retain the
+        # original extraction behavior for version suffixes such as
+        # "2.76.0 Build 0".
+        clean_text = re.sub(r'^1\.1\.1\.1\s*\+\s*', '', clean_text)
         m_ver = re.search(r'(\d+\.\d+.*)$', clean_text)
         ver = m_ver.group(1).strip() if m_ver else clean_text.split()[-1]
         if ver and ver not in seen:
