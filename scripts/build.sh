@@ -334,8 +334,6 @@ for table_name in $(toml_get_table_names); do
 	app_args[arch]=$(toml_get "$t" arch) || app_args[arch]="$DEF_ARCH"
 	arch_valid=true
 	read -r -a arch_values <<< "${app_args[arch]}"
-	for ai in "${!arch_values[@]}"; do
-	done
 	app_args[arch]="${arch_values[*]}"
 	[ "${#arch_values[@]}" -eq 0 ] && arch_values=("${app_args[arch]}")
 	for arch_value in "${arch_values[@]}"; do
