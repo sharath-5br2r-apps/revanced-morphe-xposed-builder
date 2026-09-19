@@ -3000,7 +3000,7 @@ write_build_info() {
 	skipped_json=$(printf '%s\n' "$PATCH_OUTPUT" | grep -oP '(?<=INFO: Skipping disabled: ).*|(?<=INFO: Skipping incompatible patch \x27)[^\x27]+|(?<=WARN: Skipping patch \x27)[^\x27]+' | sed 's/[[:space:]]*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))' 2>/dev/null || true)
 	[[ "$skipped_json" != \[* ]] && skipped_json='[]'
 
-	python3 "${CWD}/.github/scripts/build_json_lock.py" "${BUILD_JSON_FILE}.lock" jq --arg key "$key" \
+	python3 "${CWD}/.github/scripts/build_json_lock.py" "${BUILD_JSON_FILE}.lock" --output "$BUILD_JSON_FILE" jq --arg key "$key" \
 			--arg asset_name "$asset_name" \
 			--arg ext "$ext" \
 			--arg arch "$arch" \
@@ -3093,7 +3093,7 @@ write_build_info() {
 			if $patch_brand != "" then . else del(.[$key].patch_brand) end
 		end)
 			' \
-		"$BUILD_JSON_FILE" > "${BUILD_JSON_FILE}.tmp" && mv "${BUILD_JSON_FILE}.tmp" "$BUILD_JSON_FILE"
+		"$BUILD_JSON_FILE"
 }
 # Generic release download support for GitLab, Forgejo, and Gitea.  These
 # providers expose different release JSON shapes, but all are normalized to

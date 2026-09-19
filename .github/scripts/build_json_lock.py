@@ -28,11 +28,27 @@ def main() -> int:
     if len(sys.argv) < 3:
         return 2
     lock_path = sys.argv[1]
-    command = sys.argv[2:]
+    output_path = None
+    command_start = 2
+    if len(sys.argv) > 3 and sys.argv[2] == "--output":
+        output_path = sys.argv[3]
+        command_start = 4
+    command = sys.argv[command_start:]
+    if not command:
+        return 2
     os.makedirs(os.path.dirname(os.path.abspath(lock_path)), exist_ok=True)
     with open(lock_path, "a+") as lock:
         lock_file(lock)
-        return subprocess.run(command).returncode
+        if output_path is None:
+            return subprocess.run(command).returncode
+        result = subprocess.run(command, stdout=subprocess.PIPE)
+        if result.returncode != 0:
+            return result.returncode
+        temporary = f"{output_path}.tmp.{os.getpid()}"
+        with open(temporary, "wb") as output:
+            output.write(result.stdout)
+        os.replace(temporary, output_path)
+        return 0
 
 
 if __name__ == "__main__":
