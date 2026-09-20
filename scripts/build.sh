@@ -37,7 +37,7 @@ if [ -n "$OUTPUT_DIR" ]; then BUILD_DIR="$OUTPUT_DIR"; fi
 trap "abort" INT
 
 if [ "${CLEAN_REQUESTED:-false}" = true ]; then
-	rm -r "$TEMP_DIR" "$BUILD_DIR" build.md
+	rm -r "$TEMP_DIR" "$BUILD_DIR" build.md error.log build.json.lock
 	exit 0
 fi
 
