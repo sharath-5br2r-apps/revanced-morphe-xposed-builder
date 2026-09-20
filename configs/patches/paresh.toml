@@ -1,7 +1,6 @@
 enable-module-update = true
 [Truecaller-Morphe-Paresh]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Truecaller"
 cli-type = "morphe"
 patch-brand = "Paresh"
@@ -19,9 +18,7 @@ enabled = true
 app-name = "Fing"
 cli-type = "morphe"
 patch-brand = "Paresh"
-build-mode = "apk"
 pkg-name = "com.overlook.android.fing"
-cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing"
@@ -37,9 +34,7 @@ patch-brand = "Paresh"
 sub-variant = "Experimental"
 version = "latest"
 skip-patch-app-check = true
-build-mode = "apk"
 pkg-name = "com.overlook.android.fing"
-cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://fing-network-tools.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fing-limited/fing-network-tools"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.overlook.android.fing"
@@ -54,9 +49,7 @@ app-name = "Proton VPN"
 cli-type = "morphe"
 patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
-build-mode = "apk"
 pkg-name = "ch.protonvpn.android"
-cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn"
 prefer-dl-mode = "bundle"
@@ -74,9 +67,7 @@ sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/ch.protonvpn.android"
 version = "latest"
 skip-patch-app-check = true
-build-mode = "apk"
 pkg-name = "ch.protonvpn.android"
-cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://protonvpn.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn"
 prefer-dl-mode = "bundle"
@@ -87,11 +78,9 @@ dpi = "120-640dpi"
 
 [Jiohotstar-Morphe-Paresh]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "JioHotstar"
 cli-type = "morphe"
 patch-brand = "Paresh"
-build-mode = "apk"
 pkg-name = "in.startv.hotstar"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
@@ -101,14 +90,12 @@ patches-source-host = "gitlab"
 
 [Jiohotstar-Morphe-Paresh-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "JioHotstar"
 cli-type = "morphe"
 patch-brand = "Paresh"
 sub-variant = "Experimental"
 version = "latest"
 skip-patch-app-check = true
-build-mode = "apk"
 pkg-name = "in.startv.hotstar"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/jiostar-india-private-limited/jiohotstar-4/jiohotstar-26-08-03-2-release/"
@@ -118,12 +105,10 @@ patches-source-host = "gitlab"
 
 [SDMaid-Morphe-Paresh]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "SD Maid 2/SE"
 cli-type = "morphe"
 patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
-build-mode = "apk"
 pkg-name = "eu.darken.sdmse"
 uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
@@ -133,7 +118,6 @@ patches-source-host = "gitlab"
 
 [SDMaid-Morphe-Paresh-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "SD Maid 2/SE"
 cli-type = "morphe"
 patch-brand = "Paresh"
@@ -141,7 +125,6 @@ sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/eu.darken.sdmse"
 version = "latest"
 skip-patch-app-check = true
-build-mode = "apk"
 pkg-name = "eu.darken.sdmse"
 uptodown-dlurl = "https://sd-maid-se.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner"
@@ -152,12 +135,10 @@ patches-source-host = "gitlab"
 # ── MX Player Pro (morphe-paresh) ─────────────────────────────────────────────
 [MXPlayerPro-Morphe-Paresh]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "MX Player Pro"
 cli-type = "morphe"
 patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
-build-mode = "apk"
 arch = "all arm64-v8a armeabi-v7a"
 pkg-name = "com.mxtech.videoplayer.pro"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
@@ -167,7 +148,6 @@ patches-source-host = "gitlab"
 
 [MXPlayerPro-Morphe-Paresh-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "MX Player Pro"
 cli-type = "morphe"
 patch-brand = "Paresh"
@@ -175,7 +155,6 @@ sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.mxtech.videoplayer.pro"
 version = "latest"
 skip-patch-app-check = true
-build-mode = "apk"
 arch = "all arm64-v8a armeabi-v7a"
 pkg-name = "com.mxtech.videoplayer.pro"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro"
@@ -186,12 +165,10 @@ patches-source-host = "gitlab"
 # ── Cricbuzz (morphe-paresh) ──────────────────────────────────────────────────
 [Cricbuzz-Morphe-Paresh]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Cricbuzz"
 cli-type = "morphe"
 patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
-build-mode = "apk"
 pkg-name = "com.cricbuzz.android"
 uptodown-dlurl = "https://cricbuzz-cricket-scores-and-news.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news"
@@ -200,7 +177,6 @@ patches-source-host = "gitlab"
 
 [Cricbuzz-Morphe-Paresh-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Cricbuzz"
 cli-type = "morphe"
 patch-brand = "Paresh"
@@ -208,7 +184,6 @@ sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cricbuzz.android"
 version = "latest"
 skip-patch-app-check = true
-build-mode = "apk"
 pkg-name = "com.cricbuzz.android"
 uptodown-dlurl = "https://cricbuzz-cricket-scores-and-news.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news"
@@ -218,12 +193,10 @@ patches-source-host = "gitlab"
 # ── Doc Scanner (morphe-paresh) ───────────────────────────────────────────────
 [DocScanner-Morphe-Paresh]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Doc Scanner"
 cli-type = "morphe"
 patch-brand = "Paresh"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
-build-mode = "apk"
 pkg-name = "com.cv.docscanner"
 uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
@@ -232,7 +205,6 @@ patches-source-host = "gitlab"
 
 [DocScanner-Morphe-Paresh-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Doc Scanner"
 cli-type = "morphe"
 patch-brand = "Paresh"
@@ -240,7 +212,6 @@ sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.cv.docscanner"
 version = "latest"
 skip-patch-app-check = true
-build-mode = "apk"
 pkg-name = "com.cv.docscanner"
 uptodown-dlurl = "https://doc-scanner.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
@@ -250,12 +221,10 @@ patches-source-host = "gitlab"
 # ── Eyecon (morphe-paresh) ────────────────────────────────────────────────────
 [Eyecon-Morphe-Paresh]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Eyecon"
 cli-type = "morphe"
 patch-brand = "Paresh"
 pkg-name = "com.eyecon.global"
-build-mode = "apk"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.eyecon.global"
 uptodown-dlurl = "https://eyecon-phone-dialer-and-cont-eyecon.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/eyecon-phone-dialer-contacts/eyecon-caller-id-spam-block"

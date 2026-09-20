@@ -2952,16 +2952,15 @@ write_build_info() {
 	local pkg_name=${8:-${pkg_name:-}}
 	local display_name=${9:-${app_name:-${key}}}
 	local patches_source=${10:-${args[patches_src]:-}}
-	local brand=${11:-${args[brand]:-}}
-	local variant=${12:-${args[variant]:-}}
-	local sub_variant=${13:-${args[sub_variant]:-}}
-	local target_file=${14:-}
-	local inspect_apk_override=${15:-}
-	local cli_ref=${16:-${cli_ref:-${args[cli_source]:-${args[cli]:-}}}}
-	local dpi_val=${17:-${args[dpi]:-}}
-	local removed_patches=${18:-}
-	local engine_brand=${19:-${args[engine_brand]:-}}
-	local patch_brand=${20:-${args[patch_brand]:-}}
+	local variant=${13:-${args[variant]:-}}
+	local sub_variant=${14:-${args[sub_variant]:-}}
+	local target_file=${15:-}
+	local inspect_apk_override=${16:-}
+	local cli_ref=${17:-${cli_ref:-${args[cli_source]:-${args[cli]:-}}}}
+	local dpi_val=${18:-${args[dpi]:-}}
+	local removed_patches=${19:-}
+	local engine_brand=${11:-${args[engine_brand]:-}}
+	local patch_brand=${12:-${args[patch_brand]:-}}
 
 	local arch_orig="${args[arch]// /}"
 	# asset_name is the full output filename (e.g. xrecorder-morphe-v2.5.4-all.apk).
@@ -4193,9 +4192,13 @@ build_rv() {
 	fi
 
 	local patcher_args patched_apk build_mode
-	local brand_val="${args[brand]:-}"
-	local brand_slug=""
-	[ -n "$brand_val" ] && brand_slug=$(resolve_slug "$brand_val")
+	local engine_brand_val="${args[engine_brand]:-}"
+	local engine_brand_slug=""
+	[ -n "$engine_brand_val" ] && engine_brand_slug=$(resolve_slug "$engine_brand_val")
+  
+  local patch_brand_val="${args[patch_brand]:-}"
+  local patch_brand_slug=""
+  [ -n "$patch_brand_val" ] && patch_brand_slug=$(resolve_slug "$patch_brand_val")
 
 	local variant_val="${args[variant]:-}"
 	local variant_slug=""
@@ -4206,7 +4209,8 @@ build_rv() {
 	[ -n "$sub_variant_val" ] && sub_variant_slug=$(resolve_slug "$sub_variant_val")
 
 	local file_prefix="${app_name_l}"
-	[ -n "$brand_slug" ] && file_prefix+="-${brand_slug}"
+	[ -n "$engine_brand_slug" ] && file_prefix+="-${engine_brand_slug}"
+  [ -n "$patch_brand_slug" ] && file_prefix+="-${patch_brand_slug}"
 	[ -n "$variant_slug" ] && [ "$variant_slug" != "default" ] && file_prefix+="-${variant_slug}"
 	[ -n "$sub_variant_slug" ] && file_prefix+="-${sub_variant_slug}"
 
@@ -4397,13 +4401,12 @@ build_rv() {
 				cp -f "$patched_apk" "$apk_output"
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
-			write_build_info "${table% (*)}" "${arch_f}" "$output_ext" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "$apk_output" "$apk_output"
+			write_build_info "${table% (*)}" "${arch_f}" "$output_ext" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${engine_brand_val}" "${patch_brand_val}" "${variant_val}" "${sub_variant_val}" "$apk_output" "$apk_output" 
 			continue
 		fi
-		local base_template
+   local base_template
 		base_template=$(mktemp -d -p "$TEMP_DIR")
 		cp -a $MODULE_TEMPLATE_DIR/. "$base_template"
-		local upj="${args[module_prop_name],,}-update.json"
 
 		module_config "$base_template" "$final_pkg_name" "$version_f" "$arch"
 
@@ -4413,17 +4416,7 @@ build_rv() {
 		[ -n "${args[variant]:-}" ] && [ "${args[variant]}" != "Default" ] && brand_display+=" ${args[variant]}"
 		[ -n "${args[sub_variant]:-}" ] && brand_display+=" ${args[sub_variant]}"
 		brand_display="${brand_display#" "}"
-		module_prop \
-			"${args[module_prop_name]}" \
-			"${app_name} ${brand_display}" \
-			"${version_f} (patches ${patches_ver})" \
-			"${DEF_AUTHOR_NAME:-nullcpy}" \
-			"${app_name} ${brand_display} module" \
-			"https://raw.githubusercontent.com/${GITHUB_REPOSITORY-}/update/${upj}" \
-			"$base_template"
 
-		local module_output="${file_prefix}-module-v${version_f}-${arch_f}.zip"
-		pr "Packing module ${table}"
 		cp -f "$patched_apk" "${base_template}/base.apk"
 
 		if [ "${args[include_stock]}" != "disable" ]; then
@@ -4468,28 +4461,60 @@ build_rv() {
 			fi
 		fi
 
-		pushd >/dev/null "$base_template" || abort "Module template dir not found"
-		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
-		popd >/dev/null || :
-		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
-		write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "$module_output" "$module_output"
+		# Normalize base prop ID (strips any existing -stable / -beta suffix)
+		local base_mod_id="${args[module_prop_name]:-${file_prefix}}"
+		base_mod_id="${base_mod_id%-stable}"
+		base_mod_id="${base_mod_id%-beta}"
+		local stable_module_id="${base_mod_id}-stable"
+		local beta_module_id="${base_mod_id}-beta"
 
-		# Stable patch bundles publish both module channels. The beta module uses
-		# the same patched payload but has an independent Magisk update identity.
-		local module_channel_input="${patches_ver} ${args[patches_version]:-} ${DEF_PATCHES_VER:-}"
-		if ! grep -iqE 'dev|beta|rc|alpha' <<<"$module_channel_input" && [[ "${args[module_prop_name]}" != *-beta ]]; then
-			local beta_module_output="${file_prefix}-module-beta-v${version_f}-${arch_f}.zip"
-			local beta_module_id="${args[module_prop_name]}-beta"
-			sed -i -E "s/^id=.*/id=${beta_module_id}/; s/^name=.*/name=${app_name} ${brand_display} beta/; s#^updateJson=.*#updateJson=https://raw.githubusercontent.com/${GITHUB_REPOSITORY-}/update/${beta_module_id,,}-update.json#" "${base_template}/module.prop"
-			if [ "$ENABLE_MODULE_UPDATE" = true ] && ! grep -q '^updateJson=' "${base_template}/module.prop"; then
-				echo "updateJson=https://raw.githubusercontent.com/${GITHUB_REPOSITORY-}/update/${beta_module_id,,}-update.json" >> "${base_template}/module.prop"
-			fi
-			pushd >/dev/null "$base_template" || abort "Module template dir not found"
-			zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${beta_module_output}" .
-			popd >/dev/null || :
-			pr "Built ${table} (root beta): '${BUILD_DIR}/${beta_module_output}'"
-			write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}-module-beta" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${brand_val}" "${variant_val}" "${sub_variant_val}" "$beta_module_output" "$beta_module_output"
+		# Determine whether this build belongs to the beta channel
+		local is_beta=false
+		local module_channel_input="${patches_ver} ${args[patches_version]:-} ${DEF_PATCHES_VER:-} ${version_mode:-} ${args[variant]:-} ${args[sub_variant]:-}"
+		if grep -iqE 'dev|beta|rc|alpha|canary|nightly' <<<"$module_channel_input" || [[ "${args[module_prop_name]}" == *-beta ]]; then
+			is_beta=true
 		fi
+
+		# 1. Stable build: generate the -stable module
+		if [ "$is_beta" = false ]; then
+			local stable_upj="${stable_module_id,,}-update.json"
+			module_prop \
+				"${stable_module_id}" \
+				"${app_name} ${brand_display}" \
+				"${version_f} (patches ${patches_ver})" \
+				"${DEF_AUTHOR_NAME:-nullcpy}" \
+				"${app_name} ${brand_display} module" \
+				"https://raw.githubusercontent.com/${GITHUB_REPOSITORY-}/update/${stable_upj}" \
+				"$base_template"
+
+			local module_output="${file_prefix}-module-v${version_f}-${arch_f}.zip"
+			pr "Packing module ${table} (root stable)"
+			pushd >/dev/null "$base_template" || abort "Module template dir not found"
+			zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
+			popd >/dev/null || :
+			pr "Built ${table} (root stable): '${BUILD_DIR}/${module_output}'"
+			write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${engine_brand_val}" "${patch_brand_val}" "${variant_val}" "${sub_variant_val}" "$module_output" "$module_output"
+		fi
+
+		# 2. Generate the -beta module
+		# Built for both Stable (as a companion) and Beta builds
+		local beta_upj="${beta_module_id,,}-update.json"
+		module_prop \
+			"${beta_module_id}" \
+			"${app_name} ${brand_display} beta" \
+			"${version_f} (patches ${patches_ver})" \
+			"${DEF_AUTHOR_NAME:-nullcpy}" \
+			"${app_name} ${brand_display} beta module" \
+			"https://raw.githubusercontent.com/${GITHUB_REPOSITORY-}/update/${beta_upj}" \
+			"$base_template"
+
+		local beta_module_output="${file_prefix}-module-beta-v${version_f}-${arch_f}.zip"
+		pr "Packing module ${table} (root beta)"
+		pushd >/dev/null "$base_template" || abort "Module template dir not found"
+		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${beta_module_output}" .
+		popd >/dev/null || :
+		pr "Built ${table} (root beta): '${BUILD_DIR}/${beta_module_output}'"
+		write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}-module-beta" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${engine_brand_val}" "${patch_brand_val}"  "${variant_val}" "${sub_variant_val}" "$beta_module_output" "$beta_module_output"
 		done
 	done
 }

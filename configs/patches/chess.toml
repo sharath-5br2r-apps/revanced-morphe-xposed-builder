@@ -2,13 +2,11 @@ enable-module-update = true
 
 [ChessDotCom-Morphe-Prathxm]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Chess.com"
 cli-type = "morphe"
 patch-brand = "Prathxm"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess"
 version = "auto"
-build-mode = "apk"
 pkg-name = "com.chess"
 uptodown-dlurl = "https://chess.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"
@@ -17,14 +15,12 @@ patches-source = "PrathxmOp/Prathxm-Patches"
 
 [ChessDotCom-Morphe-Prathxm-Clone]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Chess.com"
 cli-type = "morphe"
 patch-brand = "Prathxm"
 sub-variant = "Clone"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.chess"
 version = "auto"
-build-mode = "apk"
 pkg-name = "com.chess"
 uptodown-dlurl = "https://chess.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/chess-com/chess-play-learn/"

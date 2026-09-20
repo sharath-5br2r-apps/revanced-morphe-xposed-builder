@@ -4,9 +4,7 @@ enabled = true
 app-name = "Symfonium"
 cli-type = "morphe"
 patch-brand = "Hooman"
-build-mode = "apk"
 pkg-name = "app.symfonik.music.player"
-cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl = "https://symfonium.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.symfonik.music.player"
@@ -17,9 +15,7 @@ enabled = true
 app-name = "Advanced Download Manager"
 cli-type = "morphe"
 patch-brand = "Hooman"
-build-mode = "apk"
 pkg-name = "com.dv.adm"
-cli-source = "MorpheApp/morphe-desktop"
 uptodown-dlurl="https://advanced-download-manager.en.uptodown.com/android"
 apkmirror-dlurl="https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.dv.adm"
@@ -27,12 +23,10 @@ patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [Twitch-Morphe-Hooman]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Twitch"
 cli-type = "morphe"
 patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/tv.twitch.android.app"
-build-mode = "apk"
 pkg-name = "tv.twitch.android.app"
 uptodown-dlurl = "https://twitch.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/twitch-interactive-inc/twitch"
@@ -40,12 +34,10 @@ patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [BatteryGuru-Morphe-Hooman]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Battery Guru"
 cli-type = "morphe"
 patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
-build-mode = "apk"
 pkg-name = "com.paget96.batteryguru"
 uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
@@ -53,14 +45,12 @@ patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [BatteryGuru-Morphe-Hooman-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Battery Guru"
 cli-type = "morphe"
 patch-brand = "Hooman"
 sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.paget96.batteryguru"
 version = "latest"
-build-mode = "apk"
 pkg-name = "com.paget96.batteryguru"
 uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
@@ -68,12 +58,10 @@ patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [Poweramp-Morphe-Hooman]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Poweramp"
 cli-type = "morphe"
 patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
-build-mode = "apk"
 arch = "arm64-v8a"
 pkg-name = "com.maxmpz.audioplayer"
 uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
@@ -84,7 +72,6 @@ patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [Poweramp-Morphe-Hooman-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Poweramp"
 cli-type = "morphe"
 patch-brand = "Hooman"
@@ -92,7 +79,6 @@ sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer"
 version = "latest"
 skip-patch-app-check = true
-build-mode = "apk"
 arch = "arm64-v8a"
 pkg-name = "com.maxmpz.audioplayer"
 uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
@@ -103,12 +89,10 @@ patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [AdobeAcrobat-Morphe-Hooman]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Adobe Acrobat"
 cli-type = "morphe"
 patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
-build-mode = "apk"
 arch = "all arm64-v8a x86_64"
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
@@ -117,7 +101,6 @@ patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [AdobeAcrobat-Morphe-Hooman-Experimental]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Adobe Acrobat"
 cli-type = "morphe"
 patch-brand = "Hooman"
@@ -125,7 +108,6 @@ sub-variant = "Experimental"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader"
 version = "latest"
 skip-patch-app-check = true
-build-mode = "apk"
 arch = "all arm64-v8a x86_64"
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
@@ -134,12 +116,10 @@ patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [MicrosoftSwiftKey-Morphe-Hooman]
 enabled = true
-cli-source = "MorpheApp/morphe-desktop"
 app-name = "Microsoft SwiftKey"
 cli-type = "morphe"
 patch-brand = "Hooman"
 cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.touchtype.swiftkey"
-build-mode = "apk"
 pkg-name = "com.touchtype.swiftkey"
 skip-patch-app-check = true
 uptodown-dlurl = "https://swiftkey-keyboard.en.uptodown.com/android"

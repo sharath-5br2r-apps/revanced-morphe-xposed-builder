@@ -4,7 +4,6 @@ patches-version = "dev"
 enabled = true
 app-name = "Amazon Alexa"
 patch-brand = "Signed"
-build-mode = "apk"
 cli-type = "apksigner"
 pkg-name = "com.amazon.dee.app"
 cli-source-host = "none"
