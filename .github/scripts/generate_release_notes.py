@@ -71,26 +71,7 @@ def extract_arch_from_filename(fname, version=""):
     parts = name_no_mode.split("-")
     return parts[-1] if len(parts) > 1 else "all"
 
-def fetch_online_changelog(url):
-    if not url or "http" not in url:
-        return ""
-    try:
-        headers = {"User-Agent": "ReleaseNotesGenerator"}
-        gh_token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or os.environ.get("PERSONAL_ACCESS_TOKEN")
-        if "github.com" in url and "/releases/tag/" in url:
-            parts = url.split("github.com/")[-1].split("/releases/tag/")
-            repo = parts[0].strip("/")
-            tag = parts[1].strip("/")
-            api_url = f"https://api.github.com/repos/{repo}/releases/tags/{tag}"
-            if gh_token:
-                headers["Authorization"] = f"Bearer {gh_token}"
-            req = urllib.request.Request(api_url, headers=headers)
-            with urllib.request.urlopen(req, timeout=5) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
-                return (data.get("body") or "").strip()
-    except Exception:
-        pass
-    return ""
+
 
 def main():
     json_path = "build.json"
@@ -273,15 +254,6 @@ def main():
         changelog_text = group.get("release_notes") or ""
         if not changelog_text and cl_url:
             changelog_text = fetch_online_changelog(cl_url)
-
-        if changelog_text:
-            lines.append("<details>")
-            lines.append("<summary><b>Changelog</b></summary>")
-            lines.append("")
-            lines.append(changelog_text.strip())
-            lines.append("")
-            lines.append("</details>")
-            lines.append("")
 
         for app_name in sorted(valid_apps.keys()):
             app = valid_apps[app_name]
