@@ -18,7 +18,16 @@
       "shared": "419b00daa7dd52bf4dfb8d8d2f279b24",
       "tv.twitch.android.app": "e3965e2b53f7a4812153665909032d2f"
     },
-    "stable": {}
+    "stable": {
+      "app.symfonik.music.player": "694ef545e88a6f7091b8cd6bea3b08d8",
+      "com.adobe.reader": "eab937553954116a13d220032965c949",
+      "com.dv.adm": "db9675f183dd28e0c020c1e209628fbe",
+      "com.maxmpz.audioplayer": "313bbba9a73ccad15b38a37d7932503d",
+      "com.paget96.batteryguru": "9fad4e56a6eacf6894b23807c4106137",
+      "com.touchtype.swiftkey": "89e2ee9de935b0d02c00ba18c8890d0e",
+      "shared": "419b00daa7dd52bf4dfb8d8d2f279b24",
+      "tv.twitch.android.app": "22bf456248d104256a3a5108f3d482d4"
+    }
   },
   "bholeykabhakt/revanced-patches-xtra": {
     "beta": {

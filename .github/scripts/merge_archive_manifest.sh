@@ -13,7 +13,7 @@ set -euo pipefail
 
 ARCHIVE_TAG="${ARCHIVE_TAG:?ARCHIVE_TAG not set}"
 REPO="${GITHUB_REPOSITORY:?GITHUB_REPOSITORY not set}"
-NEW_MANIFEST="temp/manifest/build.json"
+NEW_MANIFEST="build.json"
 OLD_MANIFEST="temp/manifest/archive-old.json"
 LIVE_LIST="temp/manifest/archive-live-assets.txt"
 OUT_DIR="temp/archive-upload"

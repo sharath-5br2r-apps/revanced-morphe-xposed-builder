@@ -1,21 +1,35 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "BraveBrowser-Nightly-Morphe-Dh6k": {
+  "Symfonium-Morphe-Hooman": {
+    "enable-module-update": true,
     "enabled": true,
-    "app-name": "Brave Browser",
+    "app-name": "Symfonium",
     "cli-type": "morphe",
-    "patch-brand": "Dh6k",
-    "sub-variant": "Nightly",
-    "version": "beta",
+    "patch-brand": "Hooman",
     "build-mode": "apk",
-    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
-    "pkg-name": "com.brave.browser_nightly",
+    "pkg-name": "app.symfonik.music.player",
     "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "dh6k/morphe-patches",
-    "patcher-args": "--continue-on-error",
-    "github-dlurl": "https://github.com/brave/brave-browser/releases",
-    "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
-    "github-release-name-regex": "^Nightly v"
+    "uptodown-dlurl": "https://symfonium.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/app.symfonik.music.player",
+    "patches-source": "arandomhooman/hoomans-morphe-patches"
+  },
+  "Poweramp-Morphe-Hooman": {
+    "enable-module-update": true,
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "Poweramp",
+    "cli-type": "morphe",
+    "patch-brand": "Hooman",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.maxmpz.audioplayer",
+    "build-mode": "apk",
+    "arch": "arm64-v8a",
+    "pkg-name": "com.maxmpz.audioplayer",
+    "uptodown-dlurl": "https://poweramp-music-player.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/max-mp/poweramp/",
+    "apkpure-dlurl": "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer",
+    "apkcombo-dlurl": "https://apkcombo.com/poweramp/com.maxmpz.audioplayer",
+    "patches-source": "arandomhooman/hoomans-morphe-patches"
   }
 }

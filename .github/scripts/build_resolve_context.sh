@@ -39,7 +39,7 @@ elif [[ "$CONFIG" == *.toml ]]; then
   PVER=$(awk '/^\[/ {exit} {print}' "$CONFIG" | grep -E '^[[:space:]]*patches-version[[:space:]]*=' | sed -E 's/.*=[[:space:]]*"?'\''?([^"'\''[:space:]]+)"?'\''?.*/\1/' || true)
 fi
 
-if [ "$PVER" = "dev" ] || [ "$PVER" = "beta" ] || [[ "$CONFIG" == *"dev"* ]]; then
+if [ "$PVER" = "beta" ] || [ "$PVER" = "both" ] || [[ "$CONFIG" == *"dev"* ]]; then
   IS_DEV=true
 fi
 

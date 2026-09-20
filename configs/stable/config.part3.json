@@ -1,25 +1,33 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "Twitter-Morphe-Piko-MaterialYou-Experimental": {
+  "Twitch-Morphe-Hooman": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "Twitter",
-    "cli-type": "morphe",
-    "patch-brand": "Piko",
-    "variant": "MaterialYou",
-    "sub-variant": "Experimental",
-    "build-mode": "apk",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "pkg-name": "com.twitter.android",
     "cli-source": "MorpheApp/morphe-desktop",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "included-patches": "'Dynamic Color'",
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/",
-    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
+    "app-name": "Twitch",
+    "cli-type": "morphe",
+    "patch-brand": "Hooman",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/tv.twitch.android.app",
+    "build-mode": "apk",
+    "pkg-name": "tv.twitch.android.app",
+    "uptodown-dlurl": "https://twitch.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/twitch-interactive-inc/twitch",
+    "patches-source": "arandomhooman/hoomans-morphe-patches"
+  },
+  "AdobeAcrobat-Morphe-Hooman": {
+    "enable-module-update": true,
+    "enabled": true,
+    "cli-source": "MorpheApp/morphe-desktop",
+    "app-name": "Adobe Acrobat",
+    "cli-type": "morphe",
+    "patch-brand": "Hooman",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.adobe.reader",
+    "build-mode": "apk",
+    "arch": "all arm64-v8a x86_64",
+    "pkg-name": "com.adobe.reader",
+    "uptodown-dlurl": "https://adobe-reader.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-acrobat/",
+    "patches-source": "arandomhooman/hoomans-morphe-patches"
   }
 }

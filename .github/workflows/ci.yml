@@ -313,20 +313,6 @@ jobs:
           path: dev_logs/release-manifest/build.json
           if-no-files-found: error
 
-      - name: Merge beta archive manifest
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          ARCHIVE_TAG: beta
-          NEXT_VER_CODE: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
-          IS_PRERELEASE: "true"
-          MANIFEST_ONLY: "true"
-        run: |
-          set -euo pipefail
-          cp -f dev_logs/aggregated_out/build.dev.json build.json
-          test -s temp/manifest/build.json
-          bash .github/scripts/merge_archive_manifest.sh
-
       - name: Collect update branch files (Dev)
         run: |
           set -euo pipefail
@@ -520,19 +506,6 @@ jobs:
           path: stable_logs/release-manifest/build.json
           if-no-files-found: error
 
-      - name: Merge stable archive manifest
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          ARCHIVE_TAG: stable
-          NEXT_VER_CODE: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
-          IS_PRERELEASE: "false"
-          MANIFEST_ONLY: "true"
-        run: |
-          set -euo pipefail
-          cp -f stable_logs/aggregated_out/build.stable.json build.json
-          test -s temp/manifest/build.json
-          bash .github/scripts/merge_archive_manifest.sh
 
       - name: Collect update branch files (Stable)
         run: |
@@ -731,21 +704,7 @@ jobs:
           name: latest-release-manifest
           path: latest_logs/release-manifest/build.json
           if-no-files-found: error
-
-      - name: Merge latest archive manifest
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          ARCHIVE_TAG: stable
-          NEXT_VER_CODE: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
-          IS_PRERELEASE: "false"
-          MANIFEST_ONLY: "true"
-        run: |
-          set -euo pipefail
-          cp -f latest_logs/aggregated_out/build.latest.json build.json
-          test -s temp/manifest/build.json
-          bash .github/scripts/merge_archive_manifest.sh
-
+          
       - name: Collect update branch files (Latest)
         run: |
           set -euo pipefail
@@ -903,24 +862,6 @@ jobs:
           name: batch-release-manifest
           path: batch_logs/release-manifest/build.json
           if-no-files-found: error
-
-      - name: Merge batch archive manifest
-        env:
-          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          NEXT_VER_CODE: ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}
-          IS_PRERELEASE: ${{ inputs.mode == 'Batch Build (Both)' && 'true' || 'false' }}
-          MANIFEST_ONLY: "true"
-        run: |
-          set -euo pipefail
-          if [ "${{ inputs.mode }}" = "Batch Build (Both)" ]; then
-            export ARCHIVE_TAG=beta
-          else
-            export ARCHIVE_TAG=stable
-          fi
-          cp -f batch_logs/aggregated_out/build.batch.json build.json
-          test -s temp/manifest/build.json
-          bash .github/scripts/merge_archive_manifest.sh
 
       - name: Collect update branch files (Batch)
         run: |
