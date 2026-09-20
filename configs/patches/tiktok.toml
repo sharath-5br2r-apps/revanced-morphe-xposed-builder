@@ -8,7 +8,6 @@ patch-brand = "Icysymmetra"
 arch = "all arm64-v8a armeabi-v7a"
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
 patches-source = "icysymmetra/tiktok-patches-for-morphe"
 
 [TikTok-Morphe-Hxreborn]
@@ -20,5 +19,4 @@ patch-brand = "Hxreborn"
 arch = "all arm64-v8a armeabi-v7a"
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically"
 patches-source = "hxreborn/hxreborn-tiktok-patches"

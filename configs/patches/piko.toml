@@ -10,7 +10,6 @@ pkg-name = "com.instagram.android"
 patcher-args = "--continue-on-error"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
 apkmirror-example-url = "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.instagram.android"
 patches-source = "crimera/piko"
 
 
@@ -28,7 +27,6 @@ excluded-patches = "'Dynamic Color'"
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
 
@@ -47,7 +45,6 @@ excluded-patches = "'Dynamic Color'"
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 
 # ── X (Twitter) morphe-piko-materialyou (Material You / Dynamic Color) ──────────
 
@@ -64,7 +61,6 @@ included-patches = "'Dynamic Color'"
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
 
 [Twitter-Morphe-Piko-MaterialYou-Experimental]
 enabled = true
@@ -82,4 +78,3 @@ included-patches = "'Dynamic Color'"
 patcher-args = "--continue-on-error"
 uptodown-dlurl = "https://twitter.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter/"
-cache_repo_dlurl = "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.twitter.android"
