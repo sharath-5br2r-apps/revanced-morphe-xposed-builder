@@ -176,7 +176,6 @@ jobs:
         run: bash .github/scripts/build_get_output.sh
 
       - name: Generate release manifest
-        if: ${{ inputs.upload_release_metadata != false }}
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           IS_PRERELEASE: ${{ steps.context.outputs.IS_PRERELEASE }}
