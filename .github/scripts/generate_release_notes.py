@@ -252,8 +252,7 @@ def main():
         lines.append("")
 
         changelog_text = group.get("release_notes") or ""
-        if not changelog_text and cl_url:
-            changelog_text = fetch_online_changelog(cl_url)
+
 
         for app_name in sorted(valid_apps.keys()):
             app = valid_apps[app_name]
