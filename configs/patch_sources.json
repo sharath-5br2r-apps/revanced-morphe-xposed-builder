@@ -99,8 +99,8 @@
     "stable_date": "2026-08-31T02:40:04Z"
   },
   "dh6k/morphe-patches": {
-    "beta": "v1.6.0-dev.6",
-    "beta_date": "2026-09-06T05:21:07Z",
+    "beta": "v1.6.0-dev.7",
+    "beta_date": "2026-09-20T13:54:49Z",
     "blocked": false,
     "host": "github",
     "repo": "dh6k/morphe-patches",
@@ -189,8 +189,8 @@
     "stable_date": "2026-09-09T16:26:35Z"
   },
   "rushiranpise/morphe-patches": {
-    "beta": "v1.22.0-dev.1",
-    "beta_date": "2026-09-15T20:50:28Z",
+    "beta": "v1.23.0-dev.1",
+    "beta_date": "2026-09-20T12:55:20Z",
     "blocked": false,
     "host": "github",
     "repo": "rushiranpise/morphe-patches",

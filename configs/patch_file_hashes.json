@@ -86,7 +86,11 @@
     "stable": {}
   },
   "dh6k/morphe-patches": {
-    "beta": {},
+    "beta": {
+      "com.brave.browser_beta": "749c33d4daa405c165b195e20717f961",
+      "com.brave.browser_nightly": "749c33d4daa405c165b195e20717f961",
+      "shared": "40094993a0ea22956b5c66ed07617536"
+    },
     "stable": {
       "com.brave.browser_beta": "62ae75872698973b3097ee2ea2885428",
       "com.brave.browser_nightly": "62ae75872698973b3097ee2ea2885428",
@@ -202,21 +206,20 @@
   },
   "rushiranpise/morphe-patches": {
     "beta": {
-      "ch.protonvpn.android": "1615f87749b7dab57cac0d1847c3097f",
-      "com.adguard.android": "5b2b7a02e6f99456e95cd0300799e011",
-      "com.adobe.reader": "c05c4d8e096d3fd2fffec0e1e9f8b339",
-      "com.amazon.mShop.android.shopping": "6901649f342501d6f941ff6a52811b26",
-      "com.arjanvlek.oxygenupdater": "1a2829a3ec74edd838e85564458fd666",
-      "com.arlosoft.macrodroid": "6057f1721f919c1d57548d465cde7726",
-      "com.cloudflare.onedotonedotonedotone": "e482dea53e48b8e01b9ab4617f2a22a1",
-      "com.duolingo": "d41d8cd98f00b204e9800998ecf8427e",
-      "com.microsoft.office.excel": "baa75d99d58049ff5bcdbcd2b2959c39",
-      "com.microsoft.office.word": "3becdc0486ce313a8de637e3146de40e",
-      "com.monect.portable": "c05c4d8e096d3fd2fffec0e1e9f8b339",
-      "com.windscribe.vpn": "371910661a688b92d7bfe1a8b54b7b83",
-      "in.amazon.mShop.android.shopping": "6901649f342501d6f941ff6a52811b26",
-      "io.appground.blek": "211803ce0fdfe2706c3ab3bf61ed7fcd",
-      "it.mirko.beta": "9b4e60af84fb2b247a68fbbba0a6945e",
+      "ch.protonvpn.android": "e252178bf5500bd76d9a76915ab69ced",
+      "com.adguard.android": "e88e79fc0ac74f8116f7d288bb87d739",
+      "com.adobe.reader": "dc2d607c5fc159b59981b0cd066f45e0",
+      "com.amazon.mShop.android.shopping": "49d9e22a9e4baf90d158d59497795517",
+      "com.arjanvlek.oxygenupdater": "08fa7a1a543d2e6f20e89bb99e792c5f",
+      "com.arlosoft.macrodroid": "164afc70608d743d592d62a3bcdffbe6",
+      "com.cloudflare.onedotonedotonedotone": "b565cf234ac223056edc522c6a927cee",
+      "com.microsoft.office.excel": "4e88ca9136eb24418c78633e89315eb8",
+      "com.microsoft.office.word": "72410bd3067b56f1c6860cc3feb2a475",
+      "com.monect.portable": "dc2d607c5fc159b59981b0cd066f45e0",
+      "com.windscribe.vpn": "61405e464889f6c351f1f8a290e44085",
+      "in.amazon.mShop.android.shopping": "49d9e22a9e4baf90d158d59497795517",
+      "io.appground.blek": "726b6058495d9a2fc914af841567c1dd",
+      "it.mirko.beta": "b72dd5b83ce014ac4a993d5110f20b8d",
       "shared": "b337cf3aa24d7635804a8e2fa9435a93"
     },
     "stable": {}
