@@ -72,13 +72,13 @@
     "stable_date": "2026-09-03T09:17:16Z"
   },
   "byehi98/okish-morphe-patches": {
-    "beta": "v1.29.0-dev.2",
-    "beta_date": "2026-09-20T09:01:50Z",
+    "beta": "v1.29.0-dev.4",
+    "beta_date": "2026-09-20T16:16:38Z",
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.28.1",
-    "stable_date": "2026-09-19T06:16:14Z"
+    "stable": "v1.29.0",
+    "stable_date": "2026-09-20T16:42:20Z"
   },
   "ch3thanhs/stylus": {
     "beta": "v1.5.2-dev.1",
@@ -99,13 +99,13 @@
     "stable_date": "2026-08-31T02:40:04Z"
   },
   "dh6k/morphe-patches": {
-    "beta": "v1.6.0-dev.7",
-    "beta_date": "2026-09-20T13:54:49Z",
+    "beta": "v1.6.0-dev.8",
+    "beta_date": "2026-09-20T14:51:07Z",
     "blocked": false,
     "host": "github",
     "repo": "dh6k/morphe-patches",
-    "stable": "v1.5.0",
-    "stable_date": "2026-09-05T22:28:53Z"
+    "stable": "v1.6.0",
+    "stable_date": "2026-09-20T14:57:59Z"
   },
   "hoo-dles/morphe-patches": {
     "beta": "v1.44.2-dev.1",
@@ -144,8 +144,8 @@
     "stable_date": "2026-09-17T16:50:03Z"
   },
   "jkennethcarino/adobo": {
-    "beta": "v1.5.0-dev.4",
-    "beta_date": "2026-09-19T15:22:24Z",
+    "beta": "v1.6.0-dev.1",
+    "beta_date": "2026-09-20T16:13:26Z",
     "blocked": false,
     "host": "github",
     "repo": "jkennethcarino/adobo",
