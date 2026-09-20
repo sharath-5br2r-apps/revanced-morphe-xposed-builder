@@ -223,7 +223,6 @@ jobs:
           if-no-files-found: ignore
 
       - name: Update changelog and module update files
-        if: ${{ inputs.aggregate_flavor == '' }}
         id: update_changelog
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
