@@ -1,5 +1,5 @@
 name: Manual CI
-
+permissions: write-all
 on:
   workflow_dispatch:
     inputs:
