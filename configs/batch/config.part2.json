@@ -131,20 +131,18 @@
     "github-asset-regex": "Oxygen\\.Updater\\.{version}\\.apk",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "Bitwarden-Morphe-Stylus-Experimental": {
+  "TikTok-Morphe-Icysymmetra": {
+    "enable-module-update": true,
     "enabled": true,
-    "app-name": "Bitwarden",
+    "app-name": "TikTok",
+    "pkg-name": "com.zhiliaoapp.musically",
     "cli-type": "morphe",
-    "patch-brand": "Stylus",
-    "sub-variant": "Experimental",
+    "patch-brand": "Icysymmetra",
     "build-mode": "apk",
-    "pkg-name": "com.x8bit.bitwarden",
-    "cli-source": "MorpheApp/morphe-desktop",
-    "github-dlurl": "https://github.com/bitwarden/android",
-    "github-dlurl-regex": "fdroid.apk$",
-    "github-release-regex": "bwpm",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "patches-source": "ch3thanhs/stylus"
+    "arch": "all arm64-v8a armeabi-v7a",
+    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically",
+    "patches-source": "icysymmetra/tiktok-patches-for-morphe"
   }
 }

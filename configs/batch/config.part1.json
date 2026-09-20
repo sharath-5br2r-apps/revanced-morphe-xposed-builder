@@ -125,17 +125,19 @@
     "github-asset-regex": "Oxygen\\.Updater\\.{version}\\.apk",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "Bitwarden-Morphe-Stylus": {
+  "Bitwarden-Morphe-Stylus-Experimental": {
     "enabled": true,
     "app-name": "Bitwarden",
     "cli-type": "morphe",
     "patch-brand": "Stylus",
+    "sub-variant": "Experimental",
     "build-mode": "apk",
     "pkg-name": "com.x8bit.bitwarden",
     "cli-source": "MorpheApp/morphe-desktop",
     "github-dlurl": "https://github.com/bitwarden/android",
     "github-dlurl-regex": "fdroid.apk$",
     "github-release-regex": "bwpm",
+    "version": "latest",
     "skip-patch-app-check": true,
     "patches-source": "ch3thanhs/stylus"
   }

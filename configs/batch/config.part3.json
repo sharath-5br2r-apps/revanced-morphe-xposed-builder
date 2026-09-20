@@ -133,18 +133,18 @@
     "apkcombo-dlurl": "https://apkcombo.com/windscribe/com.windscribe.vpn",
     "patches-source": "rushiranpise/morphe-patches"
   },
-  "TikTok-Morphe-Icysymmetra": {
+  "TikTok-Morphe-Hxreborn": {
     "enable-module-update": true,
     "enabled": true,
     "app-name": "TikTok",
     "pkg-name": "com.zhiliaoapp.musically",
     "cli-type": "morphe",
-    "patch-brand": "Icysymmetra",
+    "patch-brand": "Hxreborn",
     "build-mode": "apk",
     "arch": "all arm64-v8a armeabi-v7a",
     "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
     "cache_repo_dlurl": "https://github.com/sharath-5br2r-apps/apks-dump/releases/tag/com.zhiliaoapp.musically",
-    "patches-source": "icysymmetra/tiktok-patches-for-morphe"
+    "patches-source": "hxreborn/hxreborn-tiktok-patches"
   }
 }
