@@ -1,16 +1,3 @@
-[Bitwarden-Morphe-Stylus]
-enabled = true
-app-name = "Bitwarden"
-cli-type = "morphe"
-patch-brand = "Stylus"
-build-mode = "apk"
-pkg-name = "com.x8bit.bitwarden"
-cli-source = "MorpheApp/morphe-desktop"
-github-dlurl = "https://github.com/bitwarden/android"
-github-dlurl-regex = "fdroid.apk$"
-github-release-regex = "bwpm"
-skip-patch-app-check = true
-patches-source = "ch3thanhs/stylus"
 [Bitwarden-Morphe-Stylus-Experimental]
 enabled = true
 app-name = "Bitwarden"
