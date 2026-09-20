@@ -8,10 +8,11 @@ build.md
 cmpr
 *-temporary-files
 __pycache__/
-build.json
+build.json*
 /test
 module/maintainer.txt
 config.stable.json
 config.beta.json
 active*.json
 tags_*.json
+error.log
