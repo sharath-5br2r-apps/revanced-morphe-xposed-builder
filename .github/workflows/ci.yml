@@ -267,7 +267,6 @@ jobs:
 
           mkdir -p dev_logs/release-manifest
           cp -f "$json_file" dev_logs/release-manifest/build.json
-
           if [ -n "$tag" ]; then
             if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
               title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
@@ -277,6 +276,7 @@ jobs:
             release_title="${title_base} (Pre-release)"
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
+            [ -s "$md_file" ] && cp $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
@@ -451,6 +451,7 @@ jobs:
             fi
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
+            [ -s "$md_file" ] && cp $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
@@ -630,6 +631,7 @@ jobs:
             fi
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
+            [ -s "$md_file" ] && cp $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
@@ -770,6 +772,7 @@ jobs:
             fi
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
+            [ -s "$md_file" ] && cp $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
