@@ -1,15 +1,1 @@
-{
-  "patches-version": "stable",
-  "enable-module-update": true,
-  "SmashHit-Morphe-Byehi98": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Smash Hit",
-    "cli-type": "morphe",
-    "patch-brand": "Byehi98",
-    "pkg-name": "com.mediocre.smashhit",
-    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/",
-    "patches-source": "byehi98/okish-morphe-patches"
-  }
-}
+{}

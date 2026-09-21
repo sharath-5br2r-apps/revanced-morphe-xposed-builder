@@ -1,15 +1,1 @@
-{
-  "patches-version": "stable",
-  "enable-module-update": true,
-  "Vector-Morphe-Byehi98": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Vector",
-    "cli-type": "morphe",
-    "patch-brand": "Byehi98",
-    "pkg-name": "com.nekki.vector",
-    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/",
-    "patches-source": "byehi98/okish-morphe-patches"
-  }
-}
+{}
