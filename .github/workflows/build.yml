@@ -237,9 +237,17 @@ jobs:
           branch: update
           skip_checkout: true
           push_options: --force
-          file_pattern: changelogs/*.md *-update.json
+          file_pattern: *-update.json
           commit_message: Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}
-
+      - name: Commit updated build and module update files(Changelog Only)
+        uses: stefanzweifel/git-auto-commit-action@v7
+        if: ${{ inputs.upload_release_metadata == false }}
+        with:
+          branch: update
+          skip_checkout: true
+          push_options: --force
+          file_pattern: changelogs/*.md
+          commit_message: Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}
       - name: Remove frequently updated apps
         run: |
           git checkout -f main
