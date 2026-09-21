@@ -26,7 +26,7 @@
       "com.paget96.batteryguru": "9fad4e56a6eacf6894b23807c4106137",
       "com.touchtype.swiftkey": "89e2ee9de935b0d02c00ba18c8890d0e",
       "shared": "419b00daa7dd52bf4dfb8d8d2f279b24",
-      "tv.twitch.android.app": "22bf456248d104256a3a5108f3d482d4"
+      "tv.twitch.android.app": "ae990bd92ef0f6fb56cab8da0398e711"
     }
   },
   "bholeykabhakt/revanced-patches-xtra": {
@@ -163,14 +163,14 @@
   "kveld9/kveld-morphe-patches": {
     "beta": {},
     "stable": {
-      "com.brave.browser": "1acdda774bd96b516db78333eb9eb478",
-      "shared": "2956a2a76167f851a1b2e522ba469e7e"
+      "com.brave.browser": "ee0b977a74853a6f8975847f0810224e",
+      "shared": "fca78f006fcc7773498c54da1f13db03"
     }
   },
   "morpheapp/morphe-patches": {
     "beta": {
       "com.google.android.apps.youtube.music": "4f383917b5388e9fb9a3d8ba68f05ad2",
-      "com.google.android.youtube": "31b71beab52e07660cd7ed2817fed51b",
+      "com.google.android.youtube": "867a727f7b3a773a927a49f8b2f9163f",
       "shared": "8c33c2a8675627741747e746ee32f8f4"
     },
     "stable": {}

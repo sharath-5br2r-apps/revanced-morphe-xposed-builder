@@ -9,8 +9,8 @@
     "stable_date": "2026-06-22T17:44:41Z"
   },
   "MorpheApp/morphe-patches": {
-    "beta": "v1.44.0-dev.12",
-    "beta_date": "2026-09-20T20:57:18Z",
+    "beta": "v1.44.0-dev.13",
+    "beta_date": "2026-09-20T23:51:56Z",
     "blocked": false,
     "host": "github",
     "repo": "MorpheApp/morphe-patches",
@@ -50,8 +50,8 @@
     "blocked": false,
     "host": "github",
     "repo": "arandomhooman/hoomans-morphe-patches",
-    "stable": "v1.52.0",
-    "stable_date": "2026-09-20T00:18:01Z"
+    "stable": "v1.53.0",
+    "stable_date": "2026-09-21T00:23:19Z"
   },
   "binarymend/morphe-patches": {
     "beta": "v1.3.1-dev.1",
@@ -176,8 +176,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.41.1",
-    "stable_date": "2026-09-18T03:51:38Z"
+    "stable": "v1.42.0",
+    "stable_date": "2026-09-20T23:37:43Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",
