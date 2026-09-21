@@ -1,4 +1,5 @@
 name: Build
+run-name: "Build [Config: ${{ inputs.config_file }} , Patch Ver:${{ inputs.patches_version || 'Default' }}]"
 
 on:
   workflow_call:
@@ -27,23 +28,6 @@ on:
         type: boolean
         default: true
       aggregate_flavor:
-        required: false
-        type: string
-        default: ""
-  workflow_dispatch:
-    inputs:
-      config_file:
-        description: "Select the config file to use"
-        required: true
-        type: choice
-        default: "configs/config.manual.toml"
-        options:
-          - "configs/config.manual.toml"
-          - "configs/beta/config.updated.json"
-          - "configs/stable/config.updated.json"
-          - "configs/both/config.updated.json"
-      remove_apks:
-        description: "Optional: APKs to remove from cache (space-separated, e.g., com.brave.browser-1.93.138-*.apk)"
         required: false
         type: string
         default: ""
