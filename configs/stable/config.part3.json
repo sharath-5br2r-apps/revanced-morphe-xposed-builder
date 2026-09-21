@@ -1,29 +1,15 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "Symfonium-Morphe-Hooman": {
+  "SmashHit-Morphe-Byehi98": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "Symfonium",
+    "app-name": "Smash Hit",
     "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "pkg-name": "app.symfonik.music.player",
-    "uptodown-dlurl": "https://symfonium.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
-  },
-  "Poweramp-Morphe-Hooman": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Poweramp",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "arch": "arm64-v8a",
-    "pkg-name": "com.maxmpz.audioplayer",
-    "uptodown-dlurl": "https://poweramp-music-player.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/max-mp/poweramp/",
-    "apkpure-dlurl": "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer",
-    "apkcombo-dlurl": "https://apkcombo.com/poweramp/com.maxmpz.audioplayer",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "patch-brand": "Byehi98",
+    "pkg-name": "com.mediocre.smashhit",
+    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/",
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }

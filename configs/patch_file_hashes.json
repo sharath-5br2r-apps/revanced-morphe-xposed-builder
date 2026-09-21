@@ -101,9 +101,10 @@
     "beta": {
       "bitpit.launcher": "8b7512facf22c0149e588b59f084ef7b",
       "cn.wps.moffice_eng": "447813aedaba74ed575d4f0cfc21a46f",
-      "com.adobe.lrmobile": "a00f2718d6ed36bc0cfc5235bbae2d24",
+      "com.adobe.lrmobile": "42c128faf0f0c6e564bc4bfe84a750e6",
       "com.amazon.avod.thirdpartyclient": "1d689bf966f0fe57015e9e4e887c3547",
       "com.bambuna.podcastaddict": "c5014f7044cccd0b5f1a3cdb162437dd",
+      "com.duolingo": "567a24ef30a153cca87e51cf0a3cf3eb",
       "com.goodreads": "c31962adcdb8d9a3594ea8a4a70cd0d8",
       "com.hellochinese": "1399ee6c3e33c987c0345bca59d0d7cb",
       "com.intsig.camscanner": "0b4ca9534c59e67d0a5cc607370bd377",
@@ -116,7 +117,7 @@
       "cz.ackee.ventusky": "ed386fb3971cb592c47941df5564d78c",
       "ginlemon.flowerfree": "8565a9df34cb8847ead3223b60d713b3",
       "pl.solidexplorer2": "a9f0bae93d8e7e68f5c5f6e4438802e6",
-      "shared": "839e8c7e9c93c3a0276e460b9e2986d7",
+      "shared": "64cf9fae36f43dc7cec677b27e2c00ab",
       "videoeditor.videorecorder.screenrecorder": "b757bfdb8b080a895208709fb2927845"
     },
     "stable": {}

@@ -72,13 +72,13 @@
     "stable_date": "2026-09-03T09:17:16Z"
   },
   "byehi98/okish-morphe-patches": {
-    "beta": "v1.29.0-dev.4",
-    "beta_date": "2026-09-20T16:16:38Z",
+    "beta": "v1.29.1-dev.1",
+    "beta_date": "2026-09-21T05:14:36Z",
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.29.0",
-    "stable_date": "2026-09-20T16:42:20Z"
+    "stable": "v1.29.1",
+    "stable_date": "2026-09-21T05:54:06Z"
   },
   "ch3thanhs/stylus": {
     "beta": "v1.5.2-dev.1",
@@ -108,8 +108,8 @@
     "stable_date": "2026-09-20T14:57:59Z"
   },
   "hoo-dles/morphe-patches": {
-    "beta": "v1.44.2-dev.1",
-    "beta_date": "2026-09-17T22:21:40Z",
+    "beta": "v1.45.0-dev.1",
+    "beta_date": "2026-09-21T06:08:39Z",
     "blocked": false,
     "host": "github",
     "repo": "hoo-dles/morphe-patches",
@@ -135,8 +135,8 @@
     "stable_date": "2026-08-23T00:36:23Z"
   },
   "jasonwu1994/Gboard-patches": {
-    "beta": "v3.11.0-dev.2",
-    "beta_date": "2026-09-18T14:38:25Z",
+    "beta": "v3.11.0-dev.3",
+    "beta_date": "2026-09-21T03:17:20Z",
     "blocked": false,
     "host": "github",
     "repo": "jasonwu1994/Gboard-patches",
@@ -176,8 +176,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v1.42.0",
-    "stable_date": "2026-09-20T23:37:43Z"
+    "stable": "v1.42.2",
+    "stable_date": "2026-09-21T02:29:42Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",

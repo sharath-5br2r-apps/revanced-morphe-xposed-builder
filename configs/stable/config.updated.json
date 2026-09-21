@@ -14,146 +14,65 @@
     "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
     "github-release-name-regex": "^Release v"
   },
-  "BraveBrowser-Nightly-Morphe-Dh6k": {
+  "BraveBrowser-Beta-Morphe-Dh6k": {
     "enabled": true,
     "app-name": "Brave Browser",
     "cli-type": "morphe",
     "patch-brand": "Dh6k",
-    "sub-variant": "Nightly",
+    "sub-variant": "Beta",
     "version": "beta",
     "arch": "arm64-v8a x86_64 armeabi-v7a x86",
-    "pkg-name": "com.brave.browser_nightly",
+    "pkg-name": "com.brave.browser_beta",
     "patches-source": "dh6k/morphe-patches",
     "patcher-args": "--continue-on-error",
     "github-dlurl": "https://github.com/brave/brave-browser/releases",
     "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
-    "github-release-name-regex": "^Nightly v"
+    "github-release-name-regex": "^Beta v"
   },
-  "Symfonium-Morphe-Hooman": {
+  "SmashHit-Morphe-Byehi98": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "Symfonium",
+    "app-name": "Smash Hit",
     "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "pkg-name": "app.symfonik.music.player",
-    "uptodown-dlurl": "https://symfonium.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "patch-brand": "Byehi98",
+    "pkg-name": "com.mediocre.smashhit",
+    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/",
+    "patches-source": "byehi98/okish-morphe-patches"
   },
-  "AdvancedDownloadManager-Morphe-Hooman": {
+  "Vector-Morphe-Byehi98": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "Advanced Download Manager",
+    "app-name": "Vector",
     "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "pkg-name": "com.dv.adm",
-    "uptodown-dlurl": "https://advanced-download-manager.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "patch-brand": "Byehi98",
+    "pkg-name": "com.nekki.vector",
+    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/",
+    "patches-source": "byehi98/okish-morphe-patches"
   },
-  "Twitch-Morphe-Hooman": {
+  "HillClimbRacing-Morphe-Byehi98": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "Twitch",
+    "app-name": "Hill Climb Racing",
     "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "pkg-name": "tv.twitch.android.app",
-    "uptodown-dlurl": "https://twitch.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/twitch-interactive-inc/twitch",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "patch-brand": "Byehi98",
+    "arch": "arm64-v8a armeabi-v7a",
+    "pkg-name": "com.fingersoft.hillclimb",
+    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/",
+    "patches-source": "byehi98/okish-morphe-patches"
   },
-  "BatteryGuru-Morphe-Hooman": {
+  "JetpackJoyride-Morphe-Byehi98": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "Battery Guru",
+    "app-name": "Jetpack Joyride",
     "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "pkg-name": "com.paget96.batteryguru",
-    "uptodown-dlurl": "https://battery-guru.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
-  },
-  "BatteryGuru-Morphe-Hooman-Experimental": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Battery Guru",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "pkg-name": "com.paget96.batteryguru",
-    "uptodown-dlurl": "https://battery-guru.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
-  },
-  "Poweramp-Morphe-Hooman": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Poweramp",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "arch": "arm64-v8a",
-    "pkg-name": "com.maxmpz.audioplayer",
-    "uptodown-dlurl": "https://poweramp-music-player.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/max-mp/poweramp/",
-    "apkpure-dlurl": "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer",
-    "apkcombo-dlurl": "https://apkcombo.com/poweramp/com.maxmpz.audioplayer",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
-  },
-  "Poweramp-Morphe-Hooman-Experimental": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Poweramp",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "arch": "arm64-v8a",
-    "pkg-name": "com.maxmpz.audioplayer",
-    "uptodown-dlurl": "https://poweramp-music-player.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/max-mp/poweramp/",
-    "apkpure-dlurl": "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer",
-    "apkcombo-dlurl": "https://apkcombo.com/poweramp/com.maxmpz.audioplayer",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
-  },
-  "AdobeAcrobat-Morphe-Hooman": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Adobe Acrobat",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "arch": "all arm64-v8a x86_64",
-    "pkg-name": "com.adobe.reader",
-    "uptodown-dlurl": "https://adobe-reader.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-acrobat/",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
-  },
-  "AdobeAcrobat-Morphe-Hooman-Experimental": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Adobe Acrobat",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "arch": "all arm64-v8a x86_64",
-    "pkg-name": "com.adobe.reader",
-    "uptodown-dlurl": "https://adobe-reader.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-acrobat/",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
-  },
-  "MicrosoftSwiftKey-Morphe-Hooman": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Microsoft SwiftKey",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
-    "pkg-name": "com.touchtype.swiftkey",
-    "skip-patch-app-check": true,
-    "uptodown-dlurl": "https://swiftkey-keyboard.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/swiftkey/swiftkey-keyboard",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "patch-brand": "Byehi98",
+    "pkg-name": "com.halfbrick.jetpackjoyride",
+    "uptodown-dlurl": "https://jetpack-joyride.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/",
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }

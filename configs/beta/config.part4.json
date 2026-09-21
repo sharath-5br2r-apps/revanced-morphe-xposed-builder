@@ -1,22 +1,77 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "YouTube-Morphe-AMOLED-Experimental": {
+  "XRecorder-Morphe-Hoodles": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "YouTube",
+    "app-name": "XRecorder",
     "cli-type": "morphe",
-    "variant": "AMOLED",
+    "patch-brand": "Hoodles",
+    "arch": "all arm64-v8a armeabi-v7a",
+    "pkg-name": "videoeditor.videorecorder.screenrecorder",
+    "uptodown-dlurl": "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "SmartLauncher6-Morphe-Hoodles-Experimental": {
+    "enable-module-update": true,
+    "enabled": true,
+    "app-name": "Smart Launcher 6",
+    "cli-type": "morphe",
+    "patch-brand": "Hoodles",
     "sub-variant": "Experimental",
-    "build-mode": "both",
-    "version": "exp",
-    "pkg-name": "com.google.android.youtube",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": "'Theme'",
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "ginlemon.flowerfree",
+    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "SolidExplorer-Morphe-Hoodles": {
+    "enable-module-update": true,
+    "enabled": true,
+    "app-name": "Solid Explorer",
+    "cli-type": "morphe",
+    "patch-brand": "Hoodles",
+    "pkg-name": "pl.solidexplorer2",
+    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "PodcastAddict-Morphe-Hoodles": {
+    "enable-module-update": true,
+    "enabled": true,
+    "app-name": "Podcast Addict",
+    "cli-type": "morphe",
+    "patch-brand": "Hoodles",
+    "pkg-name": "com.bambuna.podcastaddict",
+    "uptodown-dlurl": "https://podcast-addict.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "Ventusky-Morphe-Hoodles-Experimental": {
+    "enable-module-update": true,
+    "enabled": true,
+    "app-name": "Ventusky",
+    "cli-type": "morphe",
+    "patch-brand": "Hoodles",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "cz.ackee.ventusky",
+    "uptodown-dlurl": "https://ventusky-weather-maps-and-radar.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar",
+    "patches-source": "hoo-dles/morphe-patches"
+  },
+  "Goodreads-Morphe-Hoodles": {
+    "enable-module-update": true,
+    "enabled": true,
+    "app-name": "Goodreads",
+    "cli-type": "morphe",
+    "patch-brand": "Hoodles",
+    "pkg-name": "com.goodreads",
+    "uptodown-dlurl": "https://goodreads.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/goodreads/goodreads",
+    "patches-source": "hoo-dles/morphe-patches"
   }
 }
