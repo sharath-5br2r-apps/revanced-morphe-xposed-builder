@@ -1,1 +1,37 @@
-{}
+{
+  "patches-version": "stable",
+  "enable-module-update": true,
+  "YouTube-Morphe-AMOLED": {
+    "enable-module-update": true,
+    "enabled": true,
+    "app-name": "YouTube",
+    "cli-type": "morphe",
+    "variant": "AMOLED",
+    "build-mode": "both",
+    "pkg-name": "com.google.android.youtube",
+    "patches-source": "MorpheApp/morphe-patches",
+    "included-patches": "'Theme'",
+    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
+    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
+    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
+    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
+  },
+  "ProtonVPN-Morphe-Paresh-Experimental": {
+    "enable-module-update": true,
+    "enabled": true,
+    "app-name": "Proton VPN",
+    "cli-type": "morphe",
+    "patch-brand": "Paresh",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "ch.protonvpn.android",
+    "uptodown-dlurl": "https://protonvpn.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn",
+    "prefer-dl-mode": "bundle",
+    "patches-source": "Paresh-Maheshwari/paresh-patches",
+    "patches-source-host": "gitlab",
+    "dpi": "120-640dpi"
+  }
+}
