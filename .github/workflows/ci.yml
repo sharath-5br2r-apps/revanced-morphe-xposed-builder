@@ -317,7 +317,7 @@ jobs:
           skip_checkout: true
           add_options: -f
           push_options: --force
-          file_pattern: build.json changelogs/*.md
+          file_pattern: changelogs/*.md
           commit_message: "Bump version ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
 
   resolve_stable_version:
@@ -492,7 +492,7 @@ jobs:
           skip_checkout: true
           add_options: -f
           push_options: --force
-          file_pattern: build.json changelogs/*.md
+          file_pattern: changelogs/*.md
           commit_message: "Bump version ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
 
   resolve_latest_version:
@@ -672,7 +672,7 @@ jobs:
           skip_checkout: true
           add_options: -f
           push_options: --force
-          file_pattern: build.json changelogs/*.md
+          file_pattern: changelogs/*.md
           commit_message: "Bump version ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
 
   resolve_batch_version:
@@ -816,7 +816,7 @@ jobs:
           # Replace its previous generated snapshot so stale concurrent runs do
           # not fail with a non-fast-forward push.
           push_options: --force
-          file_pattern: build.json changelogs/*.md
+          file_pattern: changelogs/*.md
           commit_message: "Bump version ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
 
   trigger_cleanup:
