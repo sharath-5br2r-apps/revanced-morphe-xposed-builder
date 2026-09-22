@@ -9,8 +9,8 @@
     "stable_date": "2026-06-22T17:44:41Z"
   },
   "MorpheApp/morphe-patches": {
-    "beta": "v1.44.0-dev.19",
-    "beta_date": "2026-09-21T13:40:13Z",
+    "beta": "v1.45.0-dev.1",
+    "beta_date": "2026-09-22T09:11:48Z",
     "blocked": false,
     "host": "github",
     "repo": "MorpheApp/morphe-patches",
@@ -140,8 +140,8 @@
     "blocked": false,
     "host": "github",
     "repo": "jasonwu1994/Gboard-patches",
-    "stable": "custom-theme-previews-v1",
-    "stable_date": "2026-09-17T16:50:03Z"
+    "stable": "v3.11.0",
+    "stable_date": "2026-09-22T06:59:02Z"
   },
   "jkennethcarino/adobo": {
     "beta": "v1.6.0-dev.1",
