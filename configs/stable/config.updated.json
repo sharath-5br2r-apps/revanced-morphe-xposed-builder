@@ -15,40 +15,5 @@
     "github-dlurl": "https://github.com/brave/brave-browser/releases",
     "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
     "github-release-name-regex": "^Nightly v"
-  },
-  "Twitter-Morphe-Piko-Experimental": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Twitter",
-    "cli-type": "morphe",
-    "patch-brand": "Piko",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "pkg-name": "com.twitter.android",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "excluded-patches": "'Dynamic Color'",
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
-  },
-  "Twitter-Morphe-Piko-MaterialYou-Experimental": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Twitter",
-    "cli-type": "morphe",
-    "patch-brand": "Piko",
-    "variant": "MaterialYou",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "pkg-name": "com.twitter.android",
-    "patches-source": "crimera/piko",
-    "patches-source-host": "github",
-    "included-patches": "'Dynamic Color'",
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
   }
 }
