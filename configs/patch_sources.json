@@ -108,8 +108,8 @@
     "stable_date": "2026-09-20T14:57:59Z"
   },
   "hoo-dles/morphe-patches": {
-    "beta": "v1.45.0-dev.1",
-    "beta_date": "2026-09-21T06:08:39Z",
+    "beta": "v1.45.0-dev.2",
+    "beta_date": "2026-09-21T21:39:38Z",
     "blocked": false,
     "host": "github",
     "repo": "hoo-dles/morphe-patches",

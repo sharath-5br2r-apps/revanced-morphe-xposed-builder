@@ -1,37 +1,21 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "YouTube-Morphe": {
+  "PrimeVideo-Morphe-Hoodles-Shared-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "YouTube",
+    "app-name": "Prime Video",
     "cli-type": "morphe",
-    "build-mode": "both",
-    "pkg-name": "com.google.android.youtube",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": "'Theme'",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
-  },
-  "YouTubeMusic-Morphe-AMOLED-Experimental": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "YouTube Music",
-    "cli-type": "morphe",
-    "variant": "AMOLED",
+    "patch-brand": "Hoodles",
+    "variant": "Shared",
     "sub-variant": "Experimental",
-    "build-mode": "both",
-    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
-    "version": "exp",
-    "pkg-name": "com.google.android.apps.youtube.music",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": "'Theme'",
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000",
-    "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
-    "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "arch": "arm64-v8a armeabi-v7a",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
+    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
+    "patches-source": "hoo-dles/morphe-patches",
+    "excluded-patches": "'Rename Shared Permissions'"
   }
 }
