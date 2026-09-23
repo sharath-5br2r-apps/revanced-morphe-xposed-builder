@@ -1,13 +1,15 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "YouTube-Morphe-AMOLED": {
+  "YouTube-Morphe-AMOLED-Experimental": {
     "enable-module-update": true,
     "enabled": true,
     "app-name": "YouTube",
     "cli-type": "morphe",
     "variant": "AMOLED",
+    "sub-variant": "Experimental",
     "build-mode": "both",
+    "version": "exp",
     "pkg-name": "com.google.android.youtube",
     "patches-source": "MorpheApp/morphe-patches",
     "included-patches": "'Theme'",
