@@ -3,13 +3,13 @@ cli-type = "morphe"
 patch-brand = "Hoodles-Stylus"
 pkg-name = "com.github.android"
 patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"
-included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
-apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
 
 [GitHub-Morphe-Hoodles-Stylus]
 enabled = true
 app-name = "GitHub"
+included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
+apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
 
 [GitHub-Morphe-Hoodles-Stylus-Experimental]
 enabled = true
@@ -17,3 +17,6 @@ app-name = "GitHub"
 sub-variant = "Experimental"
 version = "latest"
 skip-patch-app-check = true
+included-patches = "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/github/github-2"
+apkmirror-example-url = "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
