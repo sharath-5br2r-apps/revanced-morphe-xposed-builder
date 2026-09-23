@@ -1,20 +1,16 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "YouTube-Morphe-Experimental": {
+  "HillClimbRacing-Morphe-Byehi98": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "YouTube",
+    "app-name": "Hill Climb Racing",
     "cli-type": "morphe",
-    "sub-variant": "Experimental",
-    "build-mode": "both",
-    "version": "exp",
-    "pkg-name": "com.google.android.youtube",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": "'Theme'",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
+    "patch-brand": "Byehi98",
+    "arch": "arm64-v8a armeabi-v7a",
+    "pkg-name": "com.fingersoft.hillclimb",
+    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/",
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }

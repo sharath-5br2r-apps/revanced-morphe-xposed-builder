@@ -1,20 +1,15 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "YouTube-Morphe-AMOLED": {
+  "Vector-Morphe-Byehi98": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "YouTube",
+    "app-name": "Vector",
     "cli-type": "morphe",
-    "variant": "AMOLED",
-    "build-mode": "both",
-    "pkg-name": "com.google.android.youtube",
-    "patches-source": "MorpheApp/morphe-patches",
-    "included-patches": "'Theme'",
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
+    "patch-brand": "Byehi98",
+    "pkg-name": "com.nekki.vector",
+    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/",
+    "patches-source": "byehi98/okish-morphe-patches"
   }
 }

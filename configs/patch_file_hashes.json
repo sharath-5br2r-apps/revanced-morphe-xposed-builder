@@ -60,14 +60,14 @@
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "d2e9ecf8b3d0994235a67570402df245",
-      "shared": "cb18e14763152e7a48f806880d142b75"
+      "shared": "184b4b8adf8fb338f3812cb959edbd0f"
     },
     "stable": {
       "com.fingersoft.hillclimb": "af801fe61c47338f7f247bba4f641fb0",
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "d2e9ecf8b3d0994235a67570402df245",
-      "shared": "cb18e14763152e7a48f806880d142b75"
+      "shared": "184b4b8adf8fb338f3812cb959edbd0f"
     }
   },
   "ch3thanhs/stylus": {
@@ -87,9 +87,9 @@
   },
   "dh6k/morphe-patches": {
     "beta": {
-      "com.brave.browser_beta": "ded349acd5c2996300e86eda2581a765",
-      "com.brave.browser_nightly": "ded349acd5c2996300e86eda2581a765",
-      "shared": "40094993a0ea22956b5c66ed07617536"
+      "com.brave.browser_beta": "ee5a70f03d30e451f317471490a5f1c1",
+      "com.brave.browser_nightly": "ee5a70f03d30e451f317471490a5f1c1",
+      "shared": "f0e5f4fbc50d53ecd565803fb2e4b958"
     },
     "stable": {
       "com.brave.browser_beta": "749c33d4daa405c165b195e20717f961",
@@ -164,8 +164,8 @@
   "kveld9/kveld-morphe-patches": {
     "beta": {},
     "stable": {
-      "com.brave.browser": "ee0b977a74853a6f8975847f0810224e",
-      "shared": "fca78f006fcc7773498c54da1f13db03"
+      "com.brave.browser": "eb53ea4ca9d46afacb5f3ac99da669be",
+      "shared": "eff568767b55e0bab28bf11bdd1cf3ff"
     }
   },
   "morpheapp/morphe-patches": {
