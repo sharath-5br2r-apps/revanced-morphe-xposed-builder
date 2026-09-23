@@ -65,6 +65,8 @@ Each [AppName] table can override any root key for that specific app.
 EOF
 }
 
+[ $# -eq 0 ] && { print_help; exit 0; }
+
 while [ $# -gt 0 ]; do
 	case "$1" in
 		--help|-h) print_help; exit 0 ;;
@@ -101,7 +103,7 @@ set_prebuilts
 vtf() { if ! isoneof "${1}" "true" "false"; then abort "ERROR: '${1}' is not a valid option for '${2}': only true or false is allowed"; fi; }
 
 # -- Main config --
-toml_prep "$CONFIG_FILE" || abort "could not find config file '$CONFIG_FILE'\n\tUsage: $0 [--config=path] [--allowed-apps=regex] [--output=dir]"
+toml_prep "$CONFIG_FILE" || { print_help; abort "could not find config file '$CONFIG_FILE'"; }
 main_config_t=$(toml_get_table_main)
 COMPRESSION_LEVEL=$(toml_get "$main_config_t" compression-level) || COMPRESSION_LEVEL="9"
 REMOVE_RV_INTEGRATIONS_CHECKS=$(toml_get "$main_config_t" remove-rv-integrations-checks) || REMOVE_RV_INTEGRATIONS_CHECKS="false"
