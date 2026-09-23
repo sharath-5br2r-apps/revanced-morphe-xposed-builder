@@ -194,7 +194,14 @@ abort() {
 	trap - SIGTERM SIGINT EXIT
 	exit 1
 }
-java() { env -i PATH="$PATH" HOME="$HOME" LANG="${LANG:-en_US.UTF-8}" java --enable-native-access=ALL-UNNAMED "$@"; }
+# env -i keeps JVM runs hermetic; XDG_DATA_HOME is forwarded so callers can
+# relocate an app's per-user state dir out of the shared HOME (see the
+# instafel flows) — without it, parallel builds race on $HOME state.
+java() {
+	local -a java_env=(PATH="$PATH" HOME="$HOME" LANG="${LANG:-en_US.UTF-8}")
+	[ -n "${XDG_DATA_HOME:-}" ] && java_env+=(XDG_DATA_HOME="$XDG_DATA_HOME")
+	env -i "${java_env[@]}" java --enable-native-access=ALL-UNNAMED "$@";
+}
 
 parse_host_spec() {
 	local spec="${1,,}" raw_spec="$1" host_var_name="${2:-host}" instance_var_name="${3:-host_instance}"
@@ -411,6 +418,52 @@ get_bcprov() {
 	last_provider=$(grep '^security.provider\.' "${JAVA_HOME:-}/conf/security/java.security" 2>/dev/null | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
 	last_provider=${last_provider:-0}
 	echo "security.provider.$((last_provider + 1))=org.bouncycastle.jce.provider.BouncyCastleProvider" > "$TEMP_DIR/bc.security"
+}
+
+# Convert the active BKS keystore to PKCS12 and store the path in
+# RVB_KEYSTORE_P12 (does NOT overwrite RVB_KEYSTORE). The converted file is
+# cached at $TEMP_DIR/ks-p12.keystore so this is a no-op on subsequent calls
+# within the same run. Uses keytool + Bouncy Castle (via get_bcprov).
+require_p12() {
+	local p12_ks="${TEMP_DIR}/ks-p12.keystore"
+	# Already converted this run — nothing to do.
+	if [ -f "$p12_ks" ]; then
+		RVB_KEYSTORE_P12="$p12_ks"
+		return 0
+	fi
+	# Already a PKCS12 — just copy and record the path.
+	local ks_type
+	ks_type=$(keytool -list -keystore "$RVB_KEYSTORE" \
+		-storepass "$RVB_KEYSTORE_PASS" 2>/dev/null | grep -oi 'Keystore type:.*' | head -1 | tr '[:upper:]' '[:lower:]') || true
+	if [[ "$ks_type" == *"pkcs12"* ]]; then
+		cp -f "$RVB_KEYSTORE" "$p12_ks"
+		RVB_KEYSTORE_P12="$p12_ks"
+		return 0
+	fi
+	# Need Bouncy Castle on the classpath to read BKS.
+	get_bcprov || return 1
+	pr "Converting BKS keystore to PKCS12 at '$p12_ks'"
+	local key_pass="${KEYSTORE_KEY_PASSWORD:-${RVB_KEYSTORE_PASS}}"
+	if ! keytool \
+		-importkeystore \
+		-srckeystore    "$RVB_KEYSTORE" \
+		-srcstoretype   BKS \
+		-srcstorepass   "$RVB_KEYSTORE_PASS" \
+		-srckeypass     "$key_pass" \
+		-srcalias       "$RVB_KEY_ALIAS" \
+		-destkeystore   "$p12_ks" \
+		-deststoretype  PKCS12 \
+		-deststorepass  "$RVB_KEYSTORE_PASS" \
+		-destkeypass    "$key_pass" \
+		-destalias      "$RVB_KEY_ALIAS" \
+		-noprompt \
+		-J-cp -J"${TEMP_DIR}/bcprov.jar" \
+		-J-Djava.security.properties="${TEMP_DIR}/bc.security" 2>&1; then
+		epr "keytool: BKS → PKCS12 conversion failed"
+		rm -f "$p12_ks"
+		return 1
+	fi
+	RVB_KEYSTORE_P12="$p12_ks"
 }
 
 get_apkeditor() {
@@ -733,7 +786,17 @@ _req() {
 	fi
 	local req_lock="${TEMP_DIR}/locks/$(tr -cs 'a-zA-Z0-9._-' '_' <<<"$op").lock"
 	mkdir -p "${TEMP_DIR}/locks"
-	if ! run_locked "$req_lock" curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 1 --fail -s -S "$@" "$ip" -o "$dlp"; then
+	# Ceilings for the transfer itself: --connect-timeout only bounds setup, so a
+	# mirror that connects and then trickles could occupy its build slot
+	# indefinitely. 30 min is far above any legitimate APK/bundle fetch on a
+	# runner link, and the stall guard aborts a transfer sustaining <1 KiB/s for
+	# 2 min so the caller can fall through to the next download source instead of
+	# burning the whole job timeout.
+	# Placed before "$@" so a caller can still override them with its own flags.
+	if ! run_locked "$req_lock" curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" \
+		--connect-timeout 10 --retry 1 --max-time "${RVB_DL_MAX_TIME:-1800}" \
+		--speed-limit 1024 --speed-time 120 \
+		--fail -s -S "$@" "$ip" -o "$dlp"; then
 		epr "Request failed: $ip"
 		if [ "$dlp" != - ]; then rm -f "$dlp"; fi
 		return 1
@@ -1086,25 +1149,30 @@ patches_list() {
 # Instafel CLI resolves its patcher-core jar by filename in the CLI dir, CWD
 # (and, during patching, the run temp dir). Shadow copies of the bundle jars
 # under every name the CLI may look for. Extra target dirs passed as args.
+# The CLI-dir/CWD targets are shared with sibling builds, so copy with
+# --remove-destination (unlink+create) instead of truncate-in-place when the
+# platform's cp supports it.
 _instafel_shadow_core() {
 	local cli_jar=$1 patches_jar=$2; shift 2
 	local -a extra_dirs=("$@")
 	local cli_dir cli_commit d j j_base
+	local _cp="cp"
+	cp --version 2>/dev/null | grep -q GNU && _cp="cp --remove-destination"
 	cli_dir=$(dirname "$cli_jar")
 	cli_commit=$(unzip -p "$cli_jar" META-INF/MANIFEST.MF 2>/dev/null | sed -n 's/^Patcher-Cli-Commit: //p' | tr -d '\r')
 	[ -z "$cli_commit" ] && cli_commit="$RVB_INSTAFEL_FALLBACK_COMMIT"
 	for j in $(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'); do
 		j_base=$(basename "$j")
-		cp "$j" "$cli_dir/$j_base" 2>/dev/null || :
-		cp "$j" "$j_base" 2>/dev/null || :
-		for d in "${extra_dirs[@]}"; do cp "$j" "$d/$j_base" 2>/dev/null || :; done
-		cp "$j" "$cli_dir/ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :
-		cp "$j" "ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :
-		for d in "${extra_dirs[@]}"; do cp "$j" "$d/ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :; done
+		$_cp "$j" "$cli_dir/$j_base" 2>/dev/null || :
+		$_cp "$j" "$j_base" 2>/dev/null || :
+		for d in "${extra_dirs[@]}"; do $_cp "$j" "$d/$j_base" 2>/dev/null || :; done
+		$_cp "$j" "$cli_dir/ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :
+		$_cp "$j" "ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :
+		for d in "${extra_dirs[@]}"; do $_cp "$j" "$d/ifl-patcher-core-${cli_commit}.jar" 2>/dev/null || :; done
 		if [ "$cli_commit" != "$RVB_INSTAFEL_FALLBACK_COMMIT" ]; then
-			cp "$j" "$cli_dir/ifl-patcher-core-${RVB_INSTAFEL_FALLBACK_COMMIT}.jar" 2>/dev/null || :
-			cp "$j" "ifl-patcher-core-${RVB_INSTAFEL_FALLBACK_COMMIT}.jar" 2>/dev/null || :
-			for d in "${extra_dirs[@]}"; do cp "$j" "$d/ifl-patcher-core-${RVB_INSTAFEL_FALLBACK_COMMIT}.jar" 2>/dev/null || :; done
+			$_cp "$j" "$cli_dir/ifl-patcher-core-${RVB_INSTAFEL_FALLBACK_COMMIT}.jar" 2>/dev/null || :
+			$_cp "$j" "ifl-patcher-core-${RVB_INSTAFEL_FALLBACK_COMMIT}.jar" 2>/dev/null || :
+			for d in "${extra_dirs[@]}"; do $_cp "$j" "$d/ifl-patcher-core-${RVB_INSTAFEL_FALLBACK_COMMIT}.jar" 2>/dev/null || :; done
 		fi
 	done
 }
@@ -1119,7 +1187,20 @@ _patches_list() {
 	local p_jars=($(echo "$patches_jar" | tr ' ' '\n' | grep -v '^$'))
 	if [ "$PATCHER_FLOW" = instafel-workflow ]; then
 		_instafel_shadow_core "$cli_jar" "$patches_jar"
-		if ! op=$(eval java -jar "'$cli_jar'" list 2>&1); then
+		# The patcher creates $XDG_DATA_HOME|~/.local/share/.../core_data/info.json
+		# check-then-create style at startup; concurrent builds sharing one HOME
+		# crash the loser ("Information file cannot be created"). Give each list
+		# call a private, throwaway data dir instead.
+		local ifl_xdg
+		ifl_xdg=$(mktemp -d "${TMPDIR:-/tmp}/ifl-xdg.XXXXXX" 2>/dev/null) || ifl_xdg=""
+		local op_rc=0
+		if [ -n "$ifl_xdg" ]; then
+			op=$(eval "XDG_DATA_HOME='$ifl_xdg' java -jar '$cli_jar' list" 2>&1) || op_rc=$?
+			rm -rf "$ifl_xdg" 2>/dev/null || :
+		else
+			op=$(eval java -jar "'$cli_jar'" list 2>&1) || op_rc=$?
+		fi
+		if [ "$op_rc" -ne 0 ]; then
 			epr "Could not get patches list $cli_jar: '$op'"
 			return 1
 		fi
@@ -1150,6 +1231,7 @@ _patches_list() {
 
 has_compatible_patches() {
 	local cli_jar=$1 patches_jar=$2 pkg_name=$3 version=$4 cli_source=$5
+	local inc_patches=${6:-}
 	if [ "${args[skip_patch_app_check]:-false}" = true ]; then
 		return 0
 	fi
@@ -1188,6 +1270,64 @@ has_compatible_patches() {
 			return 0
 		fi
 	done <<<"$raw_vers"
+
+	# Version-unpinned patches (e.g. structural browser hooks) enumerate their
+	# package under Compatible packages but print no version constraint, so
+	# list-versions yields no candidate line for any version. Morphe's CLI still
+	# applies them with "Compatibility: Unknown". When the strict scan above
+	# found nothing, accept the target only if an unpinned patch actually gets
+	# applied: with included-patches configured, at least one of its names must
+	# match a package-enumerated unpinned patch; with none configured, at least
+	# one such patch must be default-enabled. Otherwise warn and skip rather
+	# than hand Morphe a target where nothing applies. Global/universal patches
+	# print no package line, and pinned packages keep their version block, so
+	# both stay on the strict skip path. Only reached when no pinned patch
+	# matched, so pinned-app behavior is untouched.
+	if [ "$PATCHER_KIND" = morphe ] && [ -n "$patches_jar" ]; then
+		local op_list
+		if op_list=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name" "$cli_source"); then
+			# Emit "<patch name>\t<default-enabled>" per unpinned patch that
+			# enumerates this package. Dynamic pattern only via $0 ~ pat; state
+			# resets on every Package name line; flush at END (no exit-in-rule).
+			local unp
+			unp=$(awk -v pkg="$pkg_name" 'BEGIN{pat="^[[:space:]]*Package name:[[:space:]]*" pkg "[[:space:]]*$"}
+				function flush(){if (seen && !pins && name != "") print name "\t" en}
+				{if ($0 ~ /^INFO: Index:/ || $0 ~ /^[[:space:]]*Index:/) {flush(); name=""; en=""; seen=0; pins=0}
+					else if ($0 ~ /^[[:space:]]*Name:/) {name=$0; sub(/^[[:space:]]*Name:[[:space:]]*/, "", name); sub(/[[:space:]]+$/, "", name)}
+					else if ($0 ~ /^[[:space:]]*Enabled:/) {en=($0 ~ /true/) ? "true" : "false"}
+					else if ($0 ~ /^[[:space:]]*Package name:/) {seen=($0 ~ pat); pins=0}
+					else if ($0 ~ /^[[:space:]]*Compatible versions:/ && seen) pins=1}
+				END{flush()}' <<<"$op_list")
+			if [ -n "$unp" ]; then
+				local -a inc_names=()
+				local n uname uen
+				while IFS= read -r n; do
+					n="${n#"${n%%[![:space:]]*}"}"
+					n="${n%"${n##*[![:space:]]}"}"
+					n=${n#\'}; n=${n%\'}; n=${n#\"}; n=${n%\"}
+					[ -n "$n" ] && inc_names+=("$n")
+				done <<<"$(list_args "${inc_patches//|/ }")"
+				if [ ${#inc_names[@]} -gt 0 ]; then
+					local match=false
+					while IFS=$'\t' read -r uname uen; do
+						[ -z "$uname" ] && continue
+						for n in "${inc_names[@]}"; do
+							if [ "$n" = "$uname" ]; then match=true; break; fi
+						done
+						[ "$match" = true ] && break
+					done <<<"$unp"
+					if [ "$match" = true ]; then return 0; fi
+					wpr "Only version-unpinned patches found in '$pkg_name' bundle ($(cut -f1 <<<"$unp" | paste -sd ',' -)); none of included-patches matches them, so nothing would be applied."
+					return 1
+				fi
+				if awk -F'\t' '$2 == "true"{found=1} END{exit !found}' <<<"$unp"; then
+					return 0
+				fi
+				wpr "Only version-unpinned patches found in '$pkg_name' bundle ($(cut -f1 <<<"$unp" | paste -sd ',' -)), but none is default-enabled and no included-patches are configured."
+				return 1
+			fi
+		fi
+	fi
 
 	return 1
 }
@@ -1268,21 +1408,25 @@ _meta_field_of() {
 		_bundle_extract_base "$file" "$tmp" || { rm -f "$tmp"; return 1; }
 		probe="$tmp"
 	fi
-	local v=""
-	if [ -n "${AAPT2:-}" ] && { [ -x "$AAPT2" ] || command -v "$AAPT2" >/dev/null 2>&1; }; then
+	local v="" _tool
+	# Only use aapt2 — legacy aapt (V1) dump badging silently prints nothing
+	# for manifests compiled against recent SDKs (Android 15/16+), which causes
+	# download verification to reject perfectly valid modern APKs.
+	for _tool in "${AAPT2:-}" aapt2; do
+		[ -z "$_tool" ] && continue
+		if ! command -v "$_tool" >/dev/null 2>&1 && [ ! -x "$_tool" ]; then
+			continue
+		fi
 		case "$field" in
-			package) v=$("$AAPT2" dump packagename "$probe" 2>/dev/null | tr -d '\r\n') ;;
-			versionCode) v=$("$AAPT2" dump badging "$probe" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1) ;;
-			versionName) v=$("$AAPT2" dump badging "$probe" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) ;;
+			package)
+				v=$("$_tool" dump packagename "$probe" 2>/dev/null | tr -d '\r\n')
+				[ -z "$v" ] && v=$("$_tool" dump badging "$probe" 2>/dev/null | grep -oP "package: name='\K[^']+" | head -1)
+				;;
+			versionCode) v=$("$_tool" dump badging "$probe" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1) ;;
+			versionName) v=$("$_tool" dump badging "$probe" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) ;;
 		esac
-	else
-		case "$field" in
-			package) v=$("$AAPT2" dump packagename "$probe" 2>/dev/null | tr -d '
-') ;;
-			versionCode) v=$("$AAPT2" dump badging "$probe" 2>/dev/null | grep -oP "versionCode='\K[^']+" | head -1) ;;
-			versionName) v=$("$AAPT2" dump badging "$probe" 2>/dev/null | grep -oP "versionName='\K[^']+" | head -1) ;;
-		esac
-	fi
+		[ -n "$v" ] && break
+	done
 	[ -n "$tmp" ] && rm -f "$tmp"
 	[ -n "$v" ] && echo "$v"
 }
@@ -1458,8 +1602,12 @@ get_apkmirror_vers() {
 	fi
 }
 
-get_apkmirror_pkg_name() {
-	local resp="$__APKMIRROR_RESP__"
+# Extract the app package name from an arbitrary APKMirror page's HTML
+# (release page or category page). Every APKMirror app page embeds a Play
+# Store deep link, so this works on the release page we resolved to as well
+# as the config's category page.
+_apkmirror_html_pkg_name() {
+	local resp="$1"
 	local py_cmd=""
 	if command -v python3 >/dev/null 2>&1; then
 		py_cmd="python3"
@@ -1484,6 +1632,10 @@ get_apkmirror_pkg_name() {
 		pkg=$(sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$resp")
 	fi
 	echo "$pkg"
+}
+
+get_apkmirror_pkg_name() {
+	_apkmirror_html_pkg_name "$__APKMIRROR_RESP__"
 }
 
 apkmirror_search() {
@@ -1806,6 +1958,21 @@ dl_apkmirror() {
 
 		if [ -z "$release_url" ]; then
 			epr "Could not find version $version on APKMirror"
+			return 1
+		fi
+	fi
+
+	# APKMirror's fuzzy search fallback can resolve to an unrelated app's
+	# release page (e.g. a superseded version grabbing the top search hit),
+	# which then wastes a bundle download + merge before the post-download
+	# package guard rejects it. Verify the discovered page's package against
+	# the expected pkg_name first; only reject when the page clearly belongs
+	# to a different app (an empty extraction keeps prior behavior).
+	if [ -n "${pkg_name:-}" ] && [ -n "$resp" ]; then
+		local page_pkg
+		page_pkg=$(_apkmirror_html_pkg_name "$resp")
+		if [ -n "$page_pkg" ] && [ "$page_pkg" != "$pkg_name" ]; then
+			epr "Resolved APKMirror page is for '$page_pkg', not expected '$pkg_name'. Skipping apkmirror for version $version."
 			return 1
 		fi
 	fi
@@ -2216,9 +2383,24 @@ dl_uptodown() {
 	local py_script="${CWD}/scripts/uptodown.py"
 	[ ! -f "$py_script" ] && [ -n "${BASH_SOURCE[0]:-}" ] && py_script="$(dirname "${BASH_SOURCE[0]}")/uptodown.py"
 
+	local errf="${TEMP_DIR}/uptodown_resolve_$$.err"
 	if [ -n "$py_cmd" ] && [ -f "$py_script" ]; then
-		local py_info
-		if py_info=$("$py_cmd" "$py_script" download-url "$uptodown_dlurl" "$version" "$arch" 2>/dev/null) && [ -n "$py_info" ]; then
+		local py_info="" attempt
+		# Retry: Uptodown's API/auth endpoints are bot-gated and can throw
+		# intermittently (HTTP 403/503 or a JSON error) from datacenter IPs
+		# like GitHub runners. A few short-backoff attempts ride out transient
+		# blocks; stderr is captured (not discarded) so a hard failure reports
+		# its real cause instead of a blank "Failed to resolve".
+		for attempt in 1 2 3; do
+			if py_info=$("$py_cmd" "$py_script" download-url "$uptodown_dlurl" "$version" "$arch" 2>"$errf") && [ -n "$py_info" ]; then
+				break
+			fi
+			py_info=""
+			if [ "$attempt" -lt 3 ]; then
+				sleep $((attempt * 2))
+			fi
+		done
+		if [ -n "$py_info" ]; then
 			local cdn_url is_bundle
 			cdn_url=$(cut -f1 <<<"$py_info")
 			is_bundle=$(cut -f2 <<<"$py_info")
@@ -2226,21 +2408,27 @@ dl_uptodown() {
 			pr "Downloading from Uptodown CDN: $cdn_url"
 			if [ "$is_bundle" = "true" ]; then
 				local bundle="${output%.apk}.apkm"
-				req "$cdn_url" "$bundle" || return 1
+				req "$cdn_url" "$bundle" || { rm -f "$errf"; return 1; }
 				if [ "${MORPHE_PASSTHROUGH_ACTIVE:-false}" = true ]; then
 					cp -f "$bundle" "${output}"
 				else
-					merge_splits "$bundle" "${output}" || { rm -f "$bundle"; return 1; }
+					merge_splits "$bundle" "${output}" || { rm -f "$bundle" "$errf"; return 1; }
 					rm -f "$bundle"
 				fi
 			else
-				req "$cdn_url" "$output" || return 1
+				req "$cdn_url" "$output" || { rm -f "$errf"; return 1; }
 			fi
+			rm -f "$errf"
 			return 0
 		fi
 	fi
 
-	epr "Failed to resolve Uptodown download URL for $uptodown_dlurl version $version"
+	local reason=""
+	if [ -f "$errf" ]; then
+		reason=$(tail -1 "$errf" 2>/dev/null)
+	fi
+	epr "Failed to resolve Uptodown download URL for $uptodown_dlurl version $version: ${reason:-unknown error}"
+	rm -f "$errf"
 	return 1
 }
 
@@ -2744,7 +2932,7 @@ patch_apk() {
 			get_bcprov || return 1
 			cmd="java -cp 'temp/bcprov.jar${javapathsep:-:}$cli_jar' -Djava.security.properties=temp/bc.security top.nkbe.npatch.patch.NPatch -k '$RVB_KEYSTORE' '$RVB_KEYSTORE_PASS' '$RVB_KEY_ALIAS' '$RVB_KEYSTORE_PASS' '$stock_input' -o '$tmp_dir' $p_args_modules $patcher_args"
 		else
-			cmd="java -jar '$cli_jar' -o '$tmp_dir' $p_args_modules $patcher_args '$stock_input'"
+			cmd="java -jar '$cli_jar' -k '$RVB_KEYSTORE_P12' '$RVB_KEYSTORE_PASS' '$RVB_KEY_ALIAS' '$RVB_KEYSTORE_PASS' -o '$tmp_dir' $p_args_modules $patcher_args '$stock_input'"
 		fi
 		pr "$cmd"
 		PATCH_OUTPUT=$(eval "$cmd" 2>&1)
@@ -2767,13 +2955,18 @@ patch_apk() {
 	if [ "$PATCHER_FLOW" = instafel-workflow ]; then
 		local rel_tmp_dir="${patched_apk}-temporary-files"
 		mkdir -p "$rel_tmp_dir"
+		# Private copy of the patcher's per-user data dir (core_data/info.json):
+		# sibling builds sharing $HOME race on creating it. Lives under
+		# rel_tmp_dir, so it is cleaned up with the rest of the run's temp files.
+		local ifl_xdg="$rel_tmp_dir/xdg-data"
+		mkdir -p "$ifl_xdg"
 		_instafel_shadow_core "$cli_jar" "$patches_jar" "$rel_tmp_dir"
 
 		local expected_base
 		expected_base=$(basename "$stock_input" .apk)
 		[ -n "$expected_base" ] && [ -d "$expected_base" ] && rm -rf "$expected_base" 2>/dev/null || :
 
-		local init_cmd="java -jar '$cli_jar' init '$stock_input'"
+		local init_cmd="XDG_DATA_HOME='$ifl_xdg' java -jar '$cli_jar' init '$stock_input'"
 		pr "$init_cmd"
 		local init_op
 		init_op=$(eval "$init_cmd" 2>&1)
@@ -2808,12 +3001,12 @@ patch_apk() {
 			patches_to_run="$RVB_INSTAFEL_DEFAULT_PATCHES"
 		fi
 
-		local run_cmd="java -jar '$cli_jar' run '$wdir' $patches_to_run"
+		local run_cmd="XDG_DATA_HOME='$ifl_xdg' java -jar '$cli_jar' run '$wdir' $patches_to_run"
 		pr "$run_cmd"
 		PATCH_OUTPUT=$(eval "$run_cmd" 2>&1)
 		echo "$PATCH_OUTPUT"
 
-		local build_cmd="java -jar '$cli_jar' build '$wdir'"
+		local build_cmd="XDG_DATA_HOME='$ifl_xdg' java -jar '$cli_jar' build '$wdir'"
 		pr "$build_cmd"
 		local build_op
 		build_op=$(eval "$build_cmd" 2>&1)
@@ -3735,7 +3928,7 @@ build_rv() {
 		local version_f=${version// /}
 		version_f=${version_f#v}
 
-		if [ "${args[skip_patch_app_check]:-false}" != true ] && ! has_compatible_patches "$cli_jar" "$patches_jar" "$pkg_name" "$version_f" "${args[cli_source]:-}"; then
+		if [ "${args[skip_patch_app_check]:-false}" != true ] && ! has_compatible_patches "$cli_jar" "$patches_jar" "$pkg_name" "$version_f" "${args[cli_source]:-}" "${args[included_patches]:-}"; then
 			wpr "No compatible patches found in '${args[patches_src]:-${args[cli_source]:-}}' for '$pkg_name' v${version_f}. Skipping ${table}."
 			continue
 		fi
