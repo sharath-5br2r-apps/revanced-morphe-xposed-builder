@@ -67,7 +67,7 @@
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "d2e9ecf8b3d0994235a67570402df245",
-      "shared": "184b4b8adf8fb338f3812cb959edbd0f"
+      "shared": "7f97b54d5deb3bbcbdcedcd58e1a7f3e"
     }
   },
   "ch3thanhs/stylus": {
@@ -87,8 +87,8 @@
   },
   "dh6k/morphe-patches": {
     "beta": {
-      "com.brave.browser_beta": "ee5a70f03d30e451f317471490a5f1c1",
-      "com.brave.browser_nightly": "ee5a70f03d30e451f317471490a5f1c1",
+      "com.brave.browser_beta": "4fb8e16909dff0b7de02d2116e3f1b65",
+      "com.brave.browser_nightly": "4fb8e16909dff0b7de02d2116e3f1b65",
       "shared": "f0e5f4fbc50d53ecd565803fb2e4b958"
     },
     "stable": {
@@ -170,9 +170,9 @@
   },
   "morpheapp/morphe-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "b9add2487d3d8c78142b5b8b396043b3",
-      "com.google.android.youtube": "86da3c3d608490eb84bd61c7179b99f1",
-      "shared": "ffb06bb92d6055c2597fd1019f0732fb"
+      "com.google.android.apps.youtube.music": "bc616326b11254f18d63e9d56fab1618",
+      "com.google.android.youtube": "eacf25b851daecbaf0fc05a148c6c177",
+      "shared": "41b16140b155ecc1c335cf985a9d8868"
     },
     "stable": {
       "com.google.android.apps.youtube.music": "908eefc5b29a33d6807ef54a9ef097d9",

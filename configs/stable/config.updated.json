@@ -1,47 +1,50 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "BraveBrowser-Nightly-Morphe-Dh6k": {
-    "enabled": true,
-    "app-name": "Brave Browser",
-    "cli-type": "morphe",
-    "patch-brand": "Dh6k",
-    "sub-variant": "Nightly",
-    "version": "beta",
-    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
-    "pkg-name": "com.brave.browser_nightly",
-    "patches-source": "dh6k/morphe-patches",
-    "patcher-args": "--continue-on-error",
-    "github-dlurl": "https://github.com/brave/brave-browser/releases",
-    "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
-    "github-release-name-regex": "^Nightly v"
-  },
-  "SolidExplorer-Morphe-Hoodles-Experimental": {
+  "SmashHit-Morphe-Byehi98": {
     "enable-module-update": true,
-    "patches-source": "hoo-dles/morphe-patches",
-    "patch-brand": "Hoodles",
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Solid Explorer",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "pkg-name": "pl.solidexplorer2",
-    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
+    "app-name": "Smash Hit",
+    "pkg-name": "com.mediocre.smashhit",
+    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/"
   },
-  "TikTok-Morphe-Hushfeed": {
+  "Vector-Morphe-Byehi98": {
     "enable-module-update": true,
-    "enabled": true,
-    "app-name": "TikTok",
-    "pkg-name": "com.zhiliaoapp.musically",
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
     "cli-type": "morphe",
-    "patch-brand": "Hushfeed",
-    "arch": "all arm64-v8a armeabi-v7a",
-    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
-    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
-    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
-    "patches-source": "SysAdminDoc/hushfeed"
+    "enabled": true,
+    "app-name": "Vector",
+    "pkg-name": "com.nekki.vector",
+    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/"
+  },
+  "HillClimbRacing-Morphe-Byehi98": {
+    "enable-module-update": true,
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Hill Climb Racing",
+    "arch": "arm64-v8a armeabi-v7a",
+    "pkg-name": "com.fingersoft.hillclimb",
+    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
+  },
+  "JetpackJoyride-Morphe-Byehi98": {
+    "enable-module-update": true,
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Jetpack Joyride",
+    "pkg-name": "com.halfbrick.jetpackjoyride",
+    "uptodown-dlurl": "https://jetpack-joyride.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/"
   }
 }

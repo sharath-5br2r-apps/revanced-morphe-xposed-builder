@@ -1,1 +1,16 @@
-{}
+{
+  "patches-version": "stable",
+  "enable-module-update": true,
+  "JetpackJoyride-Morphe-Byehi98": {
+    "enable-module-update": true,
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Jetpack Joyride",
+    "pkg-name": "com.halfbrick.jetpackjoyride",
+    "uptodown-dlurl": "https://jetpack-joyride.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/"
+  }
+}
