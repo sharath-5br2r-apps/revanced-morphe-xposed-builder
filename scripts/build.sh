@@ -248,9 +248,9 @@ for table_name in $(toml_get_table_names); do
 	patches_ref_all="" changelog_url_all=""
 	for i in "${!p_srcs[@]}"; do
 		psrc="${p_srcs[$i]}"
-		# The explicit none patcher has no patch bundle. Do not search for a
+		# The explicit none or empty patcher has no patch bundle. Do not search for a
 		# synthetic temp/none-rv directory or manufacture patch metadata.
-		[ "${psrc,,}" = none ] && continue
+		[ -z "$psrc" ] || [ "${psrc,,}" = none ] && continue
 		phost="${p_hosts[$i]:-${p_hosts[0]}}"
 		# Find the downloaded bundle for this source to get actual version
 		pdir=${psrc%/*}; pdir=${TEMP_DIR}/${pdir,,}-rv

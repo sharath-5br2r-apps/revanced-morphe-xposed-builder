@@ -494,7 +494,7 @@ _get_prebuilts() {
 	local cli_filter=${8:-} patches_filter_list=${9:-} cli_tag_filter=${10:-} patches_tag_filter_list=${11:-}
 	local cli_name_filter=${12:-} patches_name_filter_list=${13:-}
 	# Downstream passthrough sources intentionally require no prebuilt lookup.
-	if [ "${cli_src,,}" = none ] || [[ " ${patches_src_list,,} " == *" none "* ]]; then
+	if [ -z "$cli_src" ] || [ -z "$patches_src_list" ] || [ "${cli_src,,}" = none ] || [[ " ${patches_src_list,,} " == *" none "* ]]; then
 		echo "none none"
 		return 0
 	fi
