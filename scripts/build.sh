@@ -67,6 +67,7 @@ if [ -z "$DEF_CLI_SRC" ]; then
 		npatch) DEF_CLI_SRC="7723mod/NPatch" ;;
 		lspatch) DEF_CLI_SRC="JingMatrix/LSPatch" ;;
 		instafel) DEF_CLI_SRC="instafel/p-rel" ;;
+		none|apksigner) DEF_CLI_SRC="" ;;
 		*) DEF_CLI_SRC="MorpheApp/morphe-desktop" ;;
 	esac
 fi
@@ -180,7 +181,7 @@ for table_name in $(toml_get_table_names); do
 			npatch) cli_src="7723mod/NPatch" ;;
 			lspatch) cli_src="JingMatrix/LSPatch" ;;
 			instafel) cli_src="instafel/p-rel" ;;
-			none|apksigner) cli_src="$cli_type" ;;
+			none|apksigner) cli_src="" ;;
 			*) cli_src="$DEF_CLI_SRC" ;;
 		esac
 	fi
@@ -196,7 +197,7 @@ for table_name in $(toml_get_table_names); do
 	# placeholders because the normal source validation still runs, but no
 	# source download/list operation is performed for these patcher types.
 	if [ "$cli_type" = "none" ] || [ "$cli_type" = "apksigner" ]; then
-		cli_src="$cli_type"
+		cli_src=""
 		patches_src="none"
 		cli_src_host="none"
 		patches_src_host="none"
