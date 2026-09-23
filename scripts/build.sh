@@ -15,8 +15,59 @@ CONFIG_FILE="config.toml"
 ALLOWED_APPS=""
 OUTPUT_DIR=""
 PATCHES_VERSION_OVERRIDE=""
+
+print_help() {
+	cat <<'EOF'
+Usage: build.sh [OPTIONS] [CONFIG_FILE]
+
+Build patched APKs from a TOML configuration file.
+
+Options:
+  --config=PATH, --config PATH
+      Path to the TOML config file (default: config.toml).
+      Can also be passed as the first positional argument.
+
+  --allowed-apps=REGEX, --allowed-apps REGEX
+      Only build app tables whose name matches the given regex.
+
+  --output=DIR, --output DIR
+      Override the output directory for built APKs.
+
+  --patches-version=VER, --patches-version VER
+      Override the patches version for all apps.
+      Values: stable | latest | both | <specific-tag>
+
+  --clean, clean
+      Remove all temp/build artifacts and exit.
+
+  --help, -h
+      Show this help message and exit.
+
+Config keys (root section):
+  cli-type          Patcher engine: morphe | revanced | npatch | lspatch | instafel | none | apksigner
+  cli-source        GitHub repo for the CLI (auto-filled from cli-type if empty)
+  cli-version       CLI release version: stable | latest | <tag>
+  cli-source-host   Host for CLI source: github | gitlab | forgejo | gitea
+  patches-source    GitHub repo for patches (default: MorpheApp/morphe-patches)
+  patches-version   Patches release version: stable | latest | both | <tag>
+  patches-source-host  Host for patches: github | gitlab | forgejo | gitea
+  patch-brand       Branding label for the patch source
+  build-mode        Output format: apk | module
+  arch              Architectures to build (default: all arm64-v8a x86_64 armeabi-v7a x86)
+  dpi               Screen densities to build (default: nodpi anydpi auto)
+  variant           APK variant filter
+  sub-variant       Sub-variant filter
+  compression-level Zip compression level 0-9 (default: 9)
+  author            Maintainer name
+  author-page       Maintainer URL
+
+Each [AppName] table can override any root key for that specific app.
+EOF
+}
+
 while [ $# -gt 0 ]; do
 	case "$1" in
+		--help|-h) print_help; exit 0 ;;
 		--config=*) CONFIG_FILE="${1#*=}" ;;
 		--config) shift; CONFIG_FILE="${1:?missing value for --config}" ;;
 		--allowed-apps=*) ALLOWED_APPS="${1#*=}" ;;
