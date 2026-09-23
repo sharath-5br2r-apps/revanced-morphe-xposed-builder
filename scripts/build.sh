@@ -73,17 +73,24 @@ Environment variables:
   RVB_KEYSTORE              Path to keystore file (default: ks.keystore)
   RVB_KEYSTORE_PASS         Keystore + key password (default: 123456789)
   RVB_KEY_ALIAS             Key alias in keystore (default: jhc)
-  KEYSTORE_FILE             Alternative: path to keystore file
-  KEYSTORE_BASE             Alternative: base64-encoded keystore content
-  KEYSTORE_PASSWORD         Alternative: keystore password
-  KEYSTORE_KEY_PASSWORD     Alternative: key password (if different from keystore password)
-  KEYSTORE_ALIAS            Alternative: key alias
+  KEYSTORE_FILE             Alternative: path to an existing keystore file
+  KEYSTORE_BASE64           Alternative: base64-encoded keystore content
+  KEYSTORE_PASSWORD         Alternative: keystore password (alias for RVB_KEYSTORE_PASS)
+  KEYSTORE_KEY_PASSWORD     Alternative: key password if different from keystore password
+  KEYSTORE_ALIAS            Alternative: key alias (alias for RVB_KEY_ALIAS)
 
   Downloads:
   RVB_DL_MAX_TIME           Max download time in seconds (default: 1800)
   APK_CACHE_DIR             Directory to cache downloaded APKs (default: TEMP_DIR/apks)
-  CF_COOKIES                Cloudflare cookies for sites behind CF protection
   UPLOAD_APKS_REPO          GitHub repo (user/repo) to upload built APKs to
+
+  Cloudflare bypass (cf_get.py):
+  CF_COOKIES                Cloudflare cookies to inject into protected downloads
+  TRAWL_URL                 Base URL of a Trawl/FlareSolverr-8191 sidecar
+  CFB_URL                   Base URL of a cf-bypasser sidecar (default: http://localhost:8000)
+  FS_URL                    Base URL of a FlareSolverr instance
+  FLARESOLVERR_URL          Alias for FS_URL
+  CF_BYPASS_SOLVER_FS_URL   Alias for FS_URL (legacy name)
 
   Patcher behaviour:
   RVB_CHECK_SIG             Verify APK signature before patching (default: false)
