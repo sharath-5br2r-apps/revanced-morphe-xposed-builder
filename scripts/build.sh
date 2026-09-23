@@ -58,7 +58,18 @@ DEF_PATCHES_VER=$(toml_get "$main_config_t" patches-version) || DEF_PATCHES_VER=
 DEF_CLI_VER=$(toml_get "$main_config_t" cli-version) || DEF_CLI_VER="stable"
 DEF_PATCHES_SRC=$(toml_get "$main_config_t" patches-source) || DEF_PATCHES_SRC="MorpheApp/morphe-patches"
 DEF_PATCHES_SRC_HOST=$(toml_get "$main_config_t" patches-source-host) || DEF_PATCHES_SRC_HOST="github"
-DEF_CLI_SRC=$(toml_get "$main_config_t" cli-source) || DEF_CLI_SRC="MorpheApp/morphe-desktop"
+DEF_CLI_TYPE=$(toml_get "$main_config_t" cli-type) || DEF_CLI_TYPE=""
+DEF_CLI_SRC=$(toml_get "$main_config_t" cli-source) || DEF_CLI_SRC=""
+if [ -z "$DEF_CLI_SRC" ]; then
+	case "${DEF_CLI_TYPE,,}" in
+		morphe) DEF_CLI_SRC="MorpheApp/morphe-desktop" ;;
+		revanced) DEF_CLI_SRC="ReVanced/revanced-cli" ;;
+		npatch) DEF_CLI_SRC="7723mod/NPatch" ;;
+		lspatch) DEF_CLI_SRC="JingMatrix/LSPatch" ;;
+		instafel) DEF_CLI_SRC="instafel/p-rel" ;;
+		*) DEF_CLI_SRC="MorpheApp/morphe-desktop" ;;
+	esac
+fi
 DEF_CLI_SRC_HOST=$(toml_get "$main_config_t" cli-source-host) || DEF_CLI_SRC_HOST="github"
 DEF_ENGINE_BRAND=$(toml_get "$main_config_t" engine-brand) || DEF_ENGINE_BRAND=""
 DEF_PATCH_BRAND=$(toml_get "$main_config_t" patch-brand) || DEF_PATCH_BRAND=""
@@ -151,10 +162,8 @@ for table_name in $(toml_get_table_names); do
 	patches_src_host=$(toml_get "$t" patches-source-host) || patches_src_host=$DEF_PATCHES_SRC_HOST
 	patches_ver=$(toml_get "$t" patches-version) || patches_ver=$DEF_PATCHES_VER
 	[ -n "$PATCHES_VERSION_OVERRIDE" ] && patches_ver="$PATCHES_VERSION_OVERRIDE"
-	cli_src=$(toml_get "$t" cli-source) || cli_src=$DEF_CLI_SRC
-	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
-	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
-	cli_type=$(toml_get "$t" cli-type) || cli_type=""
+	cli_type=$(toml_get "$t" cli-type) || cli_type="$DEF_CLI_TYPE"
+	cli_src=$(toml_get "$t" cli-source) || cli_src=""
 	# Generated JSON/TOML from older revisions used cli-source as the flow
 	# selector. Infer it when cli-type is absent so stale batch parts remain
 	# buildable until the next config regeneration.
@@ -164,6 +173,19 @@ for table_name in $(toml_get_table_names); do
 		*) cli_type="morphe" ;;
 	esac
 	cli_type="${cli_type,,}"
+	if [ -z "$cli_src" ]; then
+		case "$cli_type" in
+			morphe) cli_src="MorpheApp/morphe-desktop" ;;
+			revanced) cli_src="ReVanced/revanced-cli" ;;
+			npatch) cli_src="7723mod/NPatch" ;;
+			lspatch) cli_src="JingMatrix/LSPatch" ;;
+			instafel) cli_src="instafel/p-rel" ;;
+			none|apksigner) cli_src="$cli_type" ;;
+			*) cli_src="$DEF_CLI_SRC" ;;
+		esac
+	fi
+	cli_src_host=$(toml_get "$t" cli-source-host) || cli_src_host=$DEF_CLI_SRC_HOST
+	cli_ver=$(toml_get "$t" cli-version) || cli_ver=$DEF_CLI_VER
 	# Non-patching flows do not have a meaningful patch-app compatibility
 	# query; enable the same bypass dynamically for all signer/no-op/NPatch
 	# configurations, including generated legacy config fragments.

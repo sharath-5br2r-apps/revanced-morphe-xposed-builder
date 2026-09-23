@@ -4412,8 +4412,7 @@ build_rv() {
 	[ -n "$sub_variant_val" ] && sub_variant_slug=$(resolve_slug "$sub_variant_val")
 
 	local file_prefix="${app_name_l}"
-	[ -n "$engine_brand_slug" ] && file_prefix+="-${engine_brand_slug}"
-  [ -n "$patch_brand_slug" ] && file_prefix+="-${patch_brand_slug}"
+	[ -n "$patch_brand_slug" ] && file_prefix+="-${patch_brand_slug}"
 	[ -n "$variant_slug" ] && [ "$variant_slug" != "default" ] && file_prefix+="-${variant_slug}"
 	[ -n "$sub_variant_slug" ] && file_prefix+="-${sub_variant_slug}"
 
