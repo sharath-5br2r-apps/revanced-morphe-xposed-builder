@@ -15,5 +15,19 @@
     "github-dlurl": "https://github.com/brave/brave-browser/releases",
     "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
     "github-release-name-regex": "^Nightly v"
+  },
+  "Discord-NPatch-Revenge": {
+    "enable-module-update": true,
+    "enabled": true,
+    "app-name": "Discord",
+    "pkg-name": "com.discord",
+    "cli-type": "npatch",
+    "patch-brand": "Revenge",
+    "cli-source": "7723mod/NPatch",
+    "patches-source": "revenge-mod/revenge-xposed",
+    "patcher-args": "-l 0",
+    "uptodown-dlurl": "https://discord-chat-for-gamers.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/discord-talk-play-hang-out-341-13-stable-release/"
   }
 }
