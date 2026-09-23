@@ -193,16 +193,15 @@ for table_name in $(toml_get_table_names); do
 	case "$cli_type" in
 		npatch|lspatch|none|apksigner) skip_patch_app_check=true ;;
 	esac
-	# Explicit downstream types override every source field. Hosts remain valid
-	# placeholders because the normal source validation still runs, but no
-	# source download/list operation is performed for these patcher types.
+	# Explicit none/apksigner types have no CLI or patch bundle.
+	# Setting both sources to empty triggers the skip logic in get_prebuilts.
 	if [ "$cli_type" = "none" ] || [ "$cli_type" = "apksigner" ]; then
 		cli_src=""
-		patches_src="none"
-		cli_src_host="none"
-		patches_src_host="none"
+		patches_src=""
+		cli_src_host=""
+		patches_src_host=""
 	fi
-	if ! isoneof "$cli_src_host" github gitlab forgejo gitea none; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': expected github, gitlab, forgejo, gitea, or none"; fi
+	if [ -n "$cli_src_host" ] && ! isoneof "$cli_src_host" github gitlab forgejo gitea none; then abort "ERROR: cli-source-host '$cli_src_host' is not a valid option for '$table_name': expected github, gitlab, forgejo, gitea, or none"; fi
 	resolve_patcher "$cli_src" "$cli_type"
 	# Engine branding is determined by the explicit patcher type resolved by
 	# patchers.sh. A configured legacy brand may still identify the patch source.
@@ -224,7 +223,7 @@ for table_name in $(toml_get_table_names); do
 	p_vers=($(list_args "$patches_ver" | tr -d \"\')); [ ${#p_vers[@]} -eq 0 ] && p_vers=("$patches_ver")
 	unset IFS
 	for h in "${p_hosts[@]}"; do
-		if ! isoneof "$h" github gitlab forgejo gitea none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': expected github, gitlab, forgejo, gitea, or none"; fi
+		if [ -n "$h" ] && ! isoneof "$h" github gitlab forgejo gitea none; then abort "ERROR: patches-source-host '$h' is not a valid option for '$table_name': expected github, gitlab, forgejo, gitea, or none"; fi
 	done
 
 	cli_filter=$(toml_get "$t" cli-source-filter) || cli_filter=""
