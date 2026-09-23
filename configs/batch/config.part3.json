@@ -3,66 +3,65 @@
   "enable-module-update": true,
   "YouTubeMusic-Morphe-Anddea": {
     "enable-module-update": true,
+    "patches-source": "anddea/revanced-patches",
+    "patch-brand": "Anddea",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "YouTube Music",
-    "cli-type": "morphe",
-    "patch-brand": "Anddea",
     "build-mode": "both",
     "arch": "arm64-v8a x86_64 armeabi-v7a x86",
     "pkg-name": "com.google.android.apps.youtube.music",
-    "patches-source": "anddea/revanced-patches",
     "patcher-args": "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error",
     "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music"
   },
   "Vector-Morphe-Byehi98": {
     "enable-module-update": true,
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Vector",
-    "cli-type": "morphe",
-    "patch-brand": "Byehi98",
     "pkg-name": "com.nekki.vector",
     "uptodown-dlurl": "https://vector.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/",
-    "patches-source": "byehi98/okish-morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/"
   },
-  "NovaLauncher-Morphe-Hoodles": {
+  "SmartLauncher6-Morphe-Hoodles": {
     "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Nova Launcher",
-    "cli-type": "morphe",
+    "patches-source": "hoo-dles/morphe-patches",
     "patch-brand": "Hoodles",
-    "arch": "all arm64-v8a armeabi-v7a",
-    "pkg-name": "com.teslacoilsw.launcher",
-    "uptodown-dlurl": "https://nova-launcher.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher",
-    "patches-source": "hoo-dles/morphe-patches"
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Smart Launcher 6",
+    "pkg-name": "ginlemon.flowerfree",
+    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
   },
   "Ventusky-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Ventusky",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
     "pkg-name": "cz.ackee.ventusky",
     "uptodown-dlurl": "https://ventusky-weather-maps-and-radar.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
   },
   "AdobeAcrobat-Morphe-Hooman": {
     "enable-module-update": true,
+    "patches-source": "arandomhooman/hoomans-morphe-patches",
+    "patch-brand": "Hooman",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Adobe Acrobat",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
     "arch": "all arm64-v8a x86_64",
     "pkg-name": "com.adobe.reader",
     "uptodown-dlurl": "https://adobe-reader.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-acrobat/",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
   },
   "Fing-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
@@ -120,6 +119,8 @@
     "arch": "all arm64-v8a armeabi-v7a",
     "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
+    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
     "patches-source": "hxreborn/hxreborn-tiktok-patches"
   }
 }

@@ -3,14 +3,14 @@
   "enable-module-update": true,
   "YouTube-Morphe-Anddea-AMOLED": {
     "enable-module-update": true,
+    "patches-source": "anddea/revanced-patches",
+    "patch-brand": "Anddea",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "YouTube",
-    "cli-type": "morphe",
-    "patch-brand": "Anddea",
     "variant": "AMOLED",
     "build-mode": "both",
     "pkg-name": "com.google.android.youtube",
-    "patches-source": "anddea/revanced-patches",
     "included-patches": "'MaterialYou'",
     "patcher-args": "-e 'Theme' -OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF --continue-on-error",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
@@ -18,46 +18,47 @@
   },
   "SmashHit-Morphe-Byehi98": {
     "enable-module-update": true,
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Smash Hit",
-    "cli-type": "morphe",
-    "patch-brand": "Byehi98",
     "pkg-name": "com.mediocre.smashhit",
     "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/",
-    "patches-source": "byehi98/okish-morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/"
   },
-  "SmartLauncher6-Morphe-Hoodles-Experimental": {
+  "SmartLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Smart Launcher 6",
-    "cli-type": "morphe",
+    "patches-source": "hoo-dles/morphe-patches",
     "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Smart Launcher",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
     "pkg-name": "ginlemon.flowerfree",
     "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
   },
   "Ventusky-Morphe-Hoodles": {
     "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Ventusky",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
     "pkg-name": "cz.ackee.ventusky",
     "uptodown-dlurl": "https://ventusky-weather-maps-and-radar.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
   },
   "Poweramp-Morphe-Hooman-Experimental": {
     "enable-module-update": true,
+    "patches-source": "arandomhooman/hoomans-morphe-patches",
+    "patch-brand": "Hooman",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Poweramp",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
@@ -66,8 +67,7 @@
     "uptodown-dlurl": "https://poweramp-music-player.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/max-mp/poweramp/",
     "apkpure-dlurl": "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer",
-    "apkcombo-dlurl": "https://apkcombo.com/poweramp/com.maxmpz.audioplayer",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "apkcombo-dlurl": "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
   },
   "Fing-Morphe-Paresh": {
     "enable-module-update": true,
@@ -119,6 +119,8 @@
     "arch": "all arm64-v8a armeabi-v7a",
     "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
+    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
     "patches-source": "icysymmetra/tiktok-patches-for-morphe"
   }
 }

@@ -12,47 +12,46 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/burton999/calcnote-notepad-calculator",
     "patches-source": "binarymend/morphe-patches"
   },
-  "PrimeVideo-Morphe-Hoodles-Shared-Experimental": {
+  "CamScanner-Morphe-Hoodles": {
     "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Prime Video",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
-    "variant": "Shared",
-    "sub-variant": "Experimental",
-    "pkg-name": "com.amazon.avod.thirdpartyclient",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "arch": "arm64-v8a armeabi-v7a",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
-    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
     "patches-source": "hoo-dles/morphe-patches",
-    "excluded-patches": "'Rename Shared Permissions'"
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "CamScanner",
+    "arch": "all arm64-v8a",
+    "pkg-name": "com.intsig.camscanner",
+    "uptodown-dlurl": "https://camscanner-pdf-creator.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator/camscanner-scanner-pdf-maker-7-24-0-2608130000-release/",
+    "apkpure-dlurl": "https://apkpure.com/camscanner-scanner-pdf-maker/com.intsig.camscanner",
+    "apkcombo-dlurl": "https://apkcombo.com/camscanner/com.intsig.camscanner",
+    "patcher-args": "--continue-on-error"
   },
   "Wallcraft-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Wallcraft",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
     "pkg-name": "com.wallpaperscraft.wallpaper",
     "uptodown-dlurl": "https://wallpaperscraft.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
   },
   "Symfonium-Morphe-Hooman": {
     "enable-module-update": true,
+    "patches-source": "arandomhooman/hoomans-morphe-patches",
+    "patch-brand": "Hooman",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Symfonium",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
     "pkg-name": "app.symfonik.music.player",
     "uptodown-dlurl": "https://symfonium.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast"
   },
   "YouTubeMusic-Morphe-Experimental": {
     "enable-module-update": true,

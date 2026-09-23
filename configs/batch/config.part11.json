@@ -3,51 +3,50 @@
   "enable-module-update": true,
   "Backdrops-Morphe-BholeyKaBhakt": {
     "enable-module-update": true,
+    "patches-source": "BholeyKaBhakt/revanced-patches-xtra",
+    "patch-brand": "BholeyKaBhakt",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Backdrops",
-    "cli-type": "morphe",
-    "patch-brand": "BholeyKaBhakt",
     "pkg-name": "com.backdrops.wallpapers",
     "uptodown-dlurl": "https://backdrops.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/backdrops/backdrops-wallpapers",
-    "patches-source": "BholeyKaBhakt/revanced-patches-xtra"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/backdrops/backdrops-wallpapers"
   },
-  "PrimeVideo-Morphe-Hoodles-Experimental": {
-    "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Prime Video",
+  "GitHub-Morphe-Hoodles-Stylus-Experimental": {
     "cli-type": "morphe",
-    "patch-brand": "Hoodles",
+    "patch-brand": "Hoodles-Stylus",
+    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
+    "enabled": true,
+    "app-name": "GitHub",
+    "pkg-name": "com.github.android",
     "sub-variant": "Experimental",
-    "pkg-name": "com.amazon.avod.thirdpartyclient",
     "version": "latest",
     "skip-patch-app-check": true,
-    "arch": "arm64-v8a armeabi-v7a",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
-    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
-    "patches-source": "hoo-dles/morphe-patches"
+    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
   },
   "Wallcraft-Morphe-Hoodles": {
     "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Wallcraft",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
     "pkg-name": "com.wallpaperscraft.wallpaper",
     "uptodown-dlurl": "https://wallpaperscraft.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
   },
   "Duolingo-Morphe-Hoodles": {
     "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Duolingo",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
     "pkg-name": "com.duolingo",
     "uptodown-dlurl": "https://duolingo.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
   },
   "YouTube-Morphe-AMOLED-Experimental": {
     "enable-module-update": true,

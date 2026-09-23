@@ -3,18 +3,18 @@
   "enable-module-update": true,
   "Speedtest-Morphe-BholeyKaBhakt-Experimental": {
     "enable-module-update": true,
+    "patches-source": "BholeyKaBhakt/revanced-patches-xtra",
+    "patch-brand": "BholeyKaBhakt",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Speedtest",
     "pkg-name": "org.zwanoo.android.speedtest",
-    "cli-type": "morphe",
-    "patch-brand": "BholeyKaBhakt",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
     "arch": "arm64-v8a x86_64 armeabi-v7a x86",
     "uptodown-dlurl": "https://speedtest-net-mobile.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ookla/speedtest",
-    "patches-source": "BholeyKaBhakt/revanced-patches-xtra"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ookla/speedtest"
   },
   "ChessDotCom-Morphe-Prathxm": {
     "enable-module-update": true,
@@ -29,31 +29,31 @@
     "apkmirror-example-url": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/",
     "patches-source": "PrathxmOp/Prathxm-Patches"
   },
-  "Xodo-Morphe-Hoodles-Experimental": {
+  "NovaLauncher-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Xodo PDF",
-    "cli-type": "morphe",
+    "patches-source": "hoo-dles/morphe-patches",
     "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Nova Launcher",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
-    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
-    "pkg-name": "com.xodo.pdf.reader",
-    "uptodown-dlurl": "https://xodo-pdf-reader-editor.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor",
-    "patches-source": "hoo-dles/morphe-patches"
+    "arch": "all arm64-v8a armeabi-v7a",
+    "pkg-name": "com.teslacoilsw.launcher",
+    "uptodown-dlurl": "https://nova-launcher.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
   },
   "MyFitnessPal-Morphe-Hoodles": {
     "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "MyFitnessPal",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
     "pkg-name": "com.myfitnesspal.android",
     "uptodown-dlurl": "https://calorie-counter-myfitnesspal.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal"
   },
   "SoundCloud-Morphe-Kondratjev": {
     "enable-module-update": true,
@@ -112,5 +112,20 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet",
     "patches-source": "rushiranpise/morphe-patches",
     "apkmirror-example-url": "https://www.apkmirror.com/apk/cloudflare/1-1-1-1-faster-safer-internet/1-1-1-1-warp-safer-internet-6-38-9-release/"
+  },
+  "TikTok-Morphe-Kveld9-Asia": {
+    "enable-module-update": true,
+    "enabled": true,
+    "app-name": "TikTok",
+    "variant": "Asia",
+    "pkg-name": "com.ss.android.ugc.trill",
+    "cli-type": "morphe",
+    "patch-brand": "Kveld9",
+    "arch": "all arm64-v8a armeabi-v7a",
+    "uptodown-dlurl": "https://tik-tok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok",
+    "apkpure-dlurl": "https://apkpure.com/tiktok-asia-app/com.ss.android.ugc.trill",
+    "apkcombo-dlurl": "https://apkcombo.com/tiktok-asia/com.ss.android.ugc.trill",
+    "patches-source": "kveld9/kveld-morphe-patches"
   }
 }

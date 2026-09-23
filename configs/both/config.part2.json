@@ -1,1 +1,18 @@
-{}
+{
+  "patches-version": "both",
+  "enable-module-update": true,
+  "SolidExplorer-Morphe-Hoodles-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Solid Explorer",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "pl.solidexplorer2",
+    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
+  }
+}

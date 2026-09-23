@@ -3,17 +3,17 @@
   "enable-module-update": true,
   "Inshorts-Morphe-BholeyKaBhakt-Experimental": {
     "enable-module-update": true,
+    "patches-source": "BholeyKaBhakt/revanced-patches-xtra",
+    "patch-brand": "BholeyKaBhakt",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Inshorts",
-    "cli-type": "morphe",
-    "patch-brand": "BholeyKaBhakt",
     "sub-variant": "Experimental",
     "pkg-name": "com.nis.app",
     "version": "latest",
     "skip-patch-app-check": true,
     "uptodown-dlurl": "https://inshorts.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2/",
-    "patches-source": "BholeyKaBhakt/revanced-patches-xtra"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2/"
   },
   "Gboard-Morphe-Jasonwu1994Adobo": {
     "enable-module-update": true,
@@ -34,30 +34,31 @@
     "apkmirror-example-url": "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/",
     "apkmirror-release-filter": "!(lite|beta)"
   },
-  "SolidExplorer-Morphe-Hoodles-Experimental": {
+  "Xodo-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Solid Explorer",
-    "cli-type": "morphe",
+    "patches-source": "hoo-dles/morphe-patches",
     "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Xodo PDF",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
-    "pkg-name": "pl.solidexplorer2",
-    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager",
-    "patches-source": "hoo-dles/morphe-patches"
+    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
+    "pkg-name": "com.xodo.pdf.reader",
+    "uptodown-dlurl": "https://xodo-pdf-reader-editor.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/xodo-technologies-inc/xodo-pdf-reader-editor"
   },
   "Goodreads-Morphe-Hoodles": {
     "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Goodreads",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
     "pkg-name": "com.goodreads",
     "uptodown-dlurl": "https://goodreads.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/goodreads/goodreads",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/goodreads/goodreads"
   },
   "YouTube-Morphe": {
     "enable-module-update": true,

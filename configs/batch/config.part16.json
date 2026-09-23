@@ -12,43 +12,44 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration",
     "patches-source": "browzomje/browzomje-patches"
   },
-  "SmartLauncher-Morphe-Hoodles-Experimental": {
+  "XRecorder-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "enabled": true,
-    "app-name": "Smart Launcher",
-    "cli-type": "morphe",
+    "patches-source": "hoo-dles/morphe-patches",
     "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "XRecorder",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
-    "pkg-name": "ginlemon.flowerfree",
-    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher",
-    "patches-source": "hoo-dles/morphe-patches"
+    "arch": "all arm64-v8a armeabi-v7a",
+    "pkg-name": "videoeditor.videorecorder.screenrecorder",
+    "uptodown-dlurl": "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
   },
   "MerriamWebsterDictionary-Morphe-Hoodles": {
     "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Merriam-Webster Dictionary",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
     "pkg-name": "com.merriamwebster",
     "uptodown-dlurl": "https://merriam-webster.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/merriam-webster-inc/dictionary-merriam-webster",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/merriam-webster-inc/dictionary-merriam-webster"
   },
   "BatteryGuru-Morphe-Hooman-Experimental": {
     "enable-module-update": true,
+    "patches-source": "arandomhooman/hoomans-morphe-patches",
+    "patch-brand": "Hooman",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Battery Guru",
-    "cli-type": "morphe",
-    "patch-brand": "Hooman",
     "sub-variant": "Experimental",
     "version": "latest",
     "pkg-name": "com.paget96.batteryguru",
     "uptodown-dlurl": "https://battery-guru.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/",
-    "patches-source": "arandomhooman/hoomans-morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
   },
   "BrawlStars-Nulls": {
     "enable-module-update": true,

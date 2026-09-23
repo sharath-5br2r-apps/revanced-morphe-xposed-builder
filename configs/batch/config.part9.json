@@ -3,14 +3,14 @@
   "enable-module-update": true,
   "Automate-Morphe-BholeyKaBhakt": {
     "enable-module-update": true,
+    "patches-source": "BholeyKaBhakt/revanced-patches-xtra",
+    "patch-brand": "BholeyKaBhakt",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Automate",
-    "cli-type": "morphe",
-    "patch-brand": "BholeyKaBhakt",
     "pkg-name": "com.llamalab.automate",
     "uptodown-dlurl": "https://automate-beta.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/llamalab/automate-llamalab",
-    "patches-source": "BholeyKaBhakt/revanced-patches-xtra"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/llamalab/automate-llamalab"
   },
   "Gboard-Morphe-Jasonwu1994Adobo-Clone": {
     "enable-module-update": true,
@@ -31,31 +31,30 @@
     "apkmirror-example-url": "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/",
     "apkmirror-release-filter": "!(lite|beta)"
   },
-  "GitHub-Morphe-Hoodles-Stylus": {
+  "SolidExplorer-Morphe-Hoodles": {
     "enable-module-update": true,
-    "enabled": true,
-    "app-name": "GitHub",
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
     "cli-type": "morphe",
-    "patch-brand": "Hoodles-Stylus",
-    "pkg-name": "com.github.android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/",
-    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
-    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'"
+    "enabled": true,
+    "app-name": "Solid Explorer",
+    "pkg-name": "pl.solidexplorer2",
+    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
   },
   "Goodreads-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Goodreads",
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
     "pkg-name": "com.goodreads",
     "uptodown-dlurl": "https://goodreads.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/goodreads/goodreads",
-    "patches-source": "hoo-dles/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/goodreads/goodreads"
   },
   "YouTube-Morphe-AMOLED": {
     "enable-module-update": true,

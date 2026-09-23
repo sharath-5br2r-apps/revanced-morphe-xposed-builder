@@ -1,15 +1,34 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "SmashHit-Morphe-Byehi98": {
+  "HillClimbRacing-Morphe-Byehi98": {
+    "enable-module-update": true,
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Hill Climb Racing",
+    "arch": "arm64-v8a armeabi-v7a",
+    "pkg-name": "com.fingersoft.hillclimb",
+    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
+  },
+  "YouTube-Morphe-AMOLED-Experimental": {
     "enable-module-update": true,
     "enabled": true,
-    "app-name": "Smash Hit",
+    "app-name": "YouTube",
     "cli-type": "morphe",
-    "patch-brand": "Byehi98",
-    "pkg-name": "com.mediocre.smashhit",
-    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/",
-    "patches-source": "byehi98/okish-morphe-patches"
+    "variant": "AMOLED",
+    "sub-variant": "Experimental",
+    "build-mode": "both",
+    "version": "exp",
+    "pkg-name": "com.google.android.youtube",
+    "patches-source": "MorpheApp/morphe-patches",
+    "included-patches": "'Theme'",
+    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
+    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
+    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
+    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
   }
 }
