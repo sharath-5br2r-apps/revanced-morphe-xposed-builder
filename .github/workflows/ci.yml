@@ -276,7 +276,7 @@ jobs:
             release_title="${title_base} (Pre-release)"
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
-            [ -s "$md_file" ] && cp $md_file changelogs/$tag.md
+            [ -s "$md_file" ] && mkdir -p changelogs && cp -f  $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
@@ -451,7 +451,7 @@ jobs:
             fi
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
-            [ -s "$md_file" ] && cp $md_file changelogs/$tag.md
+            [ -s "$md_file" ] && mkdir -p changelogs && cp -f  $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
@@ -631,7 +631,7 @@ jobs:
             fi
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
-            [ -s "$md_file" ] && cp $md_file changelogs/$tag.md
+            [ -s "$md_file" ] && mkdir -p changelogs && cp -f  $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
@@ -772,7 +772,7 @@ jobs:
             fi
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
-            [ -s "$md_file" ] && cp $md_file changelogs/$tag.md
+            [ -s "$md_file" ] && mkdir -p changelogs && cp -f $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
