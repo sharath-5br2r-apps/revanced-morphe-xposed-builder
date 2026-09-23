@@ -469,11 +469,20 @@ enable-module-update = true # Generate -update.json and commit to update branch
 
 ## Local Execution (`build.sh`)
 
-You can run builds directly on Linux or Android (Termux):
+You can run builds directly on Linux or Android (Termux).
+
+> [!TIP]
+> **Fetching App Versions First:**
+> If you are building locally without pinned app versions, run `scripts/fetch_versions.sh` before running `build.sh`. This queries configured sources (APKMirror, Uptodown, GitHub, etc.) to discover and cache the latest target app versions in `configs/app_versions.json`.
+>
+> ```bash
+> # Fetch versions for all apps (or filter with --allowed-apps)
+> ./scripts/fetch_versions.sh [--allowed-apps="regex"]
+> ```
 
 ### Syntax
 ```bash
-./build.sh [--clean] [--config=path] [--allowed-apps="regex"] [--output=path] [filters...]
+./scripts/build.sh [--clean] [--config=path] [--allowed-apps="regex"] [--output=path] [filters...]
 ```
 
 ### Options & Arguments
