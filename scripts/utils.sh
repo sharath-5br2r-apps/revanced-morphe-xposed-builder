@@ -3107,6 +3107,16 @@ patch_apk() {
 	[ -n "$stage_dir" ] && rm -rf "$stage_dir"
 	echo "$PATCH_OUTPUT"
 	if [ $ret -eq 0 ] && [ -f "$patched_apk" ]; then
+		# For morphe and revanced patching flows, ensure at least one patch was applied
+		if [ "${PATCHER_KIND:-}" = morphe ] || [ "${PATCHER_KIND:-}" = revanced ]; then
+			local applied_count
+			applied_count=$(printf '%s\n' "$PATCH_OUTPUT" | grep -cP '(?<=INFO: ")[^"\n]+(?=" succeeded)|(?<=INFO: Applied: ).*|(?<=I: Patch \x27)[^\x27]+(?=\x27 loaded)' || true)
+			if [ "${applied_count:-0}" -eq 0 ]; then
+				epr "Rejecting built APK: 0 patches applied for ${PATCHER_KIND} flow."
+				rm -f "$patched_apk" 2>/dev/null || :
+				return 1
+			fi
+		fi
 		return 0
 	else
 		rm "$patched_apk" 2>/dev/null || :
