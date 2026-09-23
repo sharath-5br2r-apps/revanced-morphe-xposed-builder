@@ -19,6 +19,54 @@ OUTPUT_FILE="${FETCHED_APP_VERSIONS_FILE:-$ROOT_DIR/fetched_app_versions.json}"
 NO_SLEEP="${NO_SLEEP:-${CI_FETCH_NO_SLEEP:-false}}"
 CONFIG_LIST="${CONFIG_FILES:-}"
 ALLOWED_APPS="${CI_FETCH_ALLOWED_APPS:-}"
+
+print_help() {
+	cat <<'EOF'
+Usage: fetch_versions.sh [OPTIONS]
+
+Fetch the latest available APK version for each app defined in configs/patches/*.toml
+and write results to fetched_app_versions.json.
+
+Options:
+  --allowed-apps=REGEX, --allowed-apps REGEX
+      Only fetch versions for apps whose name matches the given regex or
+      comma/space-separated list. Unmatched apps retain their existing version.
+
+  --help, -h
+      Show this help message and exit.
+
+Environment variables:
+  GITHUB_TOKEN              GitHub API token (recommended — avoids rate limiting)
+  CONFIG_DIR                Directory containing patch TOML configs (default: configs/)
+  APP_VERSIONS_FILE         Path to app_versions.json (default: CONFIG_DIR/app_versions.json)
+  FETCHED_APP_VERSIONS_FILE Output file path (default: fetched_app_versions.json)
+  CI_FETCH_ALLOWED_APPS     Same as --allowed-apps (CI convenience alias)
+  NO_SLEEP / CI_FETCH_NO_SLEEP  Set to 'true' to skip random sleep between fetches
+
+  Cloudflare bypass (cf_get.py):
+  CF_COOKIES                Cloudflare cookies to inject into protected downloads
+  TRAWL_URL                 Base URL of a Trawl/8191 sidecar
+  CFB_URL                   Base URL of a cf-bypasser sidecar (default: http://localhost:8000)
+  FS_URL / FLARESOLVERR_URL Base URL of a FlareSolverr instance
+
+Supported download sources (configured per-app in TOML):
+  apkmirror    APKMirror (apkmirror-dlurl)
+  uptodown     Uptodown  (uptodown-dlurl)
+  apkpure      APKPure   (apkpure-dlurl)
+  apkcombo     APKCombo  (apkcombo-dlurl)
+  github       GitHub releases (github-dlurl)
+  gitlab       GitLab releases (gitlab-dlurl)
+  forgejo      Forgejo/Gitea releases (forgejo-dlurl)
+  archive      Direct archive URL (archive-dlurl)
+
+For config file keys, see Documentation.md.
+EOF
+}
+
+case "${1:-}" in
+	--help|-h) print_help; exit 0 ;;
+esac
+
 if [ "${1:-}" = "--allowed-apps" ] && [ -n "${2:-}" ]; then
     ALLOWED_APPS="$2"
 elif [[ "${1:-}" == --allowed-apps=* ]]; then
