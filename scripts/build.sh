@@ -256,6 +256,7 @@ for table_name in $(toml_get_table_names); do
 	done
 	app_args[patches_src]=${p_srcs[0]}
 	app_args[patches_ref]="${patches_ref_all% }"
+	app_args[patches_version]="$patches_ver"
 	app_args[changelog_url]="${changelog_url_all% }"
 	configured_engine_brand=$(toml_get "$t" engine-brand) || configured_engine_brand=""
 	app_args[engine_brand]="${configured_engine_brand:-$resolved_engine_brand}"

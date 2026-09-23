@@ -38,9 +38,11 @@ def normalize_channel(val):
     return val.strip()  # Pinned version string like "v1.41.0"
 
 
-def compile_configs(patches_dir="configs/patches"):
+def compile_configs(patches_dir="configs/patches", pv_override=None):
     stable_pool = {}
     beta_pool = {}
+
+    override_channel = normalize_channel(pv_override) if pv_override else None
 
     toml_files = sorted(glob.glob(os.path.join(patches_dir, "*.toml")))
     if not toml_files:
@@ -62,10 +64,13 @@ def compile_configs(patches_dir="configs/patches"):
         # File-level defaults are keys defined before tables
         file_defaults = {k: v for k, v in data.items() if not isinstance(v, dict)}
 
-        # The only non-tag selector is both; omitted keys inherit both.
-        file_pv = normalize_channel(file_defaults.get("patches-version"))
-        if not file_pv:
-            file_pv = "both"
+        # CLI/env override takes precedence over config defaults
+        if override_channel:
+            file_pv = override_channel
+        else:
+            file_pv = normalize_channel(file_defaults.get("patches-version"))
+            if not file_pv:
+                file_pv = "both"
 
         for app_key, app_table in data.items():
             if not isinstance(app_table, dict):
@@ -81,7 +86,9 @@ def compile_configs(patches_dir="configs/patches"):
                 continue
 
             app_pv_raw = app_table.get("patches-version")
-            if app_pv_raw:
+            if override_channel:
+                channel = override_channel
+            elif app_pv_raw:
                 channel = normalize_channel(app_pv_raw)
             else:
                 channel = file_pv
@@ -171,8 +178,16 @@ def compile_both_pool(patches_dir="configs/patches"):
 
 
 def main():
-    patches_dir = sys.argv[1] if len(sys.argv) > 1 else "configs/patches"
-    stable_pool, beta_pool = compile_configs(patches_dir)
+    import argparse
+    parser = argparse.ArgumentParser(description="Compile patch configs into stable and beta JSON pools.")
+    parser.add_argument("patches_dir", nargs="?", default="configs/patches", help="Directory containing TOML patch configs")
+    parser.add_argument("--patches-version", default=os.environ.get("PATCHES_VERSION", os.environ.get("PATCHES_VERSION_OVERRIDE", "")), help="Override patches-version across all configs")
+    args = parser.parse_args()
+
+    patches_dir = args.patches_dir
+    pv_override = args.patches_version or None
+
+    stable_pool, beta_pool = compile_configs(patches_dir, pv_override=pv_override)
     batch_pool = compile_batch_pool(patches_dir)
     both_pool = compile_both_pool(patches_dir)
 

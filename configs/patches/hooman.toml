@@ -1,74 +1,57 @@
 enable-module-update = true
+patches-source = "arandomhooman/hoomans-morphe-patches"
+patch-brand = "Hooman"
+cli-type = "morphe"
 [Symfonium-Morphe-Hooman]
 enabled = true
 app-name = "Symfonium"
-cli-type = "morphe"
-patch-brand = "Hooman"
 pkg-name = "app.symfonik.music.player"
 uptodown-dlurl = "https://symfonium.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast"
-patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [AdvancedDownloadManager-Morphe-Hooman]
 enabled = true
 app-name = "Advanced Download Manager"
-cli-type = "morphe"
-patch-brand = "Hooman"
 pkg-name = "com.dv.adm"
 uptodown-dlurl="https://advanced-download-manager.en.uptodown.com/android"
 apkmirror-dlurl="https://www.apkmirror.com/apk/admtorrent/advanced-download-manager/"
-patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [Twitch-Morphe-Hooman]
 enabled = true
 app-name = "Twitch"
-cli-type = "morphe"
-patch-brand = "Hooman"
 pkg-name = "tv.twitch.android.app"
 uptodown-dlurl = "https://twitch.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/twitch-interactive-inc/twitch"
-patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [BatteryGuru-Morphe-Hooman]
 enabled = true
 app-name = "Battery Guru"
-cli-type = "morphe"
-patch-brand = "Hooman"
 pkg-name = "com.paget96.batteryguru"
 uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
-patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [BatteryGuru-Morphe-Hooman-Experimental]
 enabled = true
 app-name = "Battery Guru"
-cli-type = "morphe"
-patch-brand = "Hooman"
 sub-variant = "Experimental"
 version = "latest"
 pkg-name = "com.paget96.batteryguru"
 uptodown-dlurl = "https://battery-guru.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/paget96/battery-guru-health-saver/"
-patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [Poweramp-Morphe-Hooman]
 enabled = true
 app-name = "Poweramp"
-cli-type = "morphe"
-patch-brand = "Hooman"
 arch = "arm64-v8a"
 pkg-name = "com.maxmpz.audioplayer"
 uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp/"
 apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
 apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
-patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [Poweramp-Morphe-Hooman-Experimental]
 enabled = true
 app-name = "Poweramp"
-cli-type = "morphe"
-patch-brand = "Hooman"
 sub-variant = "Experimental"
 version = "latest"
 skip-patch-app-check = true
@@ -78,24 +61,18 @@ uptodown-dlurl = "https://poweramp-music-player.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/max-mp/poweramp/"
 apkpure-dlurl = "https://apkpure.com/poweramp-music-player-trial-app/com.maxmpz.audioplayer"
 apkcombo-dlurl = "https://apkcombo.com/poweramp/com.maxmpz.audioplayer"
-patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [AdobeAcrobat-Morphe-Hooman]
 enabled = true
 app-name = "Adobe Acrobat"
-cli-type = "morphe"
-patch-brand = "Hooman"
 arch = "all arm64-v8a x86_64"
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
-patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [AdobeAcrobat-Morphe-Hooman-Experimental]
 enabled = true
 app-name = "Adobe Acrobat"
-cli-type = "morphe"
-patch-brand = "Hooman"
 sub-variant = "Experimental"
 version = "latest"
 skip-patch-app-check = true
@@ -103,15 +80,11 @@ arch = "all arm64-v8a x86_64"
 pkg-name = "com.adobe.reader"
 uptodown-dlurl = "https://adobe-reader.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/adobe-acrobat/"
-patches-source = "arandomhooman/hoomans-morphe-patches"
 
 [MicrosoftSwiftKey-Morphe-Hooman]
 enabled = true
 app-name = "Microsoft SwiftKey"
-cli-type = "morphe"
-patch-brand = "Hooman"
 pkg-name = "com.touchtype.swiftkey"
 skip-patch-app-check = true
 uptodown-dlurl = "https://swiftkey-keyboard.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/swiftkey/swiftkey-keyboard"
-patches-source = "arandomhooman/hoomans-morphe-patches"

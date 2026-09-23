@@ -136,6 +136,14 @@ patcher-args = """\
   -OanotherOption=true \
 """                                          # Additional arguments passed to the CLI
 
+# --- Patch Source & CLI Release Filtering ---
+patches-source-filter = ""                   # Regex to filter patch asset download URL
+patches-tag-filter = ""                      # Regex to filter patch release tags
+patches-release-name-filter = ""             # Regex to filter patch release titles
+cli-source-filter = ""                       # Regex to filter CLI asset download URL
+cli-tag-filter = ""                          # Regex to filter CLI release tags
+cli-release-name-filter = ""                 # Regex to filter CLI release titles
+
 # --- Upstream APK Source (Choose one) ---
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 # uptodown-dlurl = "https://youtube.en.uptodown.com/android"
@@ -147,9 +155,25 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 # forgejo-dlurl = "https://codeberg.org/owner/repo"
 # direct-dlurl = "https://example.com/app-v1.0.apk"
 # local-dlurl = "/path/to/stock.apk"
+# cache_repo-dlurl = "https://github.com/org/repo/releases/tag/..."
+
+# --- Extended Source & Download Controls ---
+check-sig = false                            # Verify downloaded APK signature
+prefer-dl-mode = "auto"                      # "apk", "bundle", or "auto"
+custom-microg-patches = ""                   # Custom microg patch list
 github-release-name-regex = "^Release v"     # Optional release-name filter
-github-asset-regex = ""                      # Asset regex for GitHub, GitLab, Forgejo, and Gitea; supports {version} and {arch}
-apkmirror-release-filter = ""                 # Optional APKMirror release filter
+github-release-regex = ""                    # Optional release-tag filter
+github-dlurl-regex = ""                      # Optional release download URL filter
+github-asset-regex = ""                      # Asset regex for GitHub, GitLab, Forgejo, and Gitea; supports {version} and {arch} (alias: github-regex)
+gitlab-release-name-regex = ""               # Optional GitLab release-name filter
+gitlab-release-regex = ""                    # Optional GitLab release-tag filter
+gitlab-dlurl-regex = ""                      # Optional GitLab release download URL filter
+gitlab-dlurl-exclude-filter = ""             # Optional regex to exclude matching GitLab download URLs
+forgejo-release-name-regex = ""              # Optional Forgejo release-name filter
+forgejo-release-regex = ""                   # Optional Forgejo release-tag filter
+forgejo-dlurl-regex = ""                     # Optional Forgejo release download URL filter
+forgejo-dlurl-exclude-filter = ""            # Optional regex to exclude matching Forgejo download URLs
+apkmirror-release-filter = ""                 # Optional APKMirror release title filter
 apkmirror-example-url = ""                    # Example release URL for APKMirror URL synthesis
 
 # --- Module Settings ---
@@ -414,6 +438,18 @@ Path to a local `.apk`, `.apks`, or `.xapk` file on disk:
 ```toml
 local-dlurl = "/path/to/stock/com.google.android.youtube-20.40.45.apk"
 ```
+
+### Extended Filtering & Source Verification
+
+- **Signature Verification (`check-sig`):** Set `check-sig = true` to verify downloaded APK signature.
+- **Preferred Mode (`prefer-dl-mode`):** `"apk"`, `"bundle"`, or `"auto"`.
+- **Custom MicroG Patches (`custom-microg-patches`):** Supply custom microg patch list or `"'None'"` to bypass.
+- **Patch/CLI Release Filters:**
+  - `patches-source-filter` / `cli-source-filter`: Regex to filter asset download URLs.
+  - `patches-tag-filter` / `cli-tag-filter`: Regex to filter release tags.
+  - `patches-release-name-filter` / `cli-release-name-filter`: Regex to filter release titles.
+- **GitLab & Forgejo Exclusion:**
+  - `gitlab-dlurl-exclude-filter` / `forgejo-dlurl-exclude-filter`: Regex pattern to exclude unwanted release download URLs.
 
 ---
 

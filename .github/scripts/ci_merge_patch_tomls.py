@@ -2,9 +2,32 @@ import os
 import glob
 import math
 
-# Keys that live in the TOML root section and must be transferred into every
-# app table when we lose the root section during aggregation.
-_INHERIT_KEYS = ("patches-source", "patch-brand")
+# Root-level keys defined in scripts/build.sh (lines 55-72) that are inherited
+# as file defaults by every app table, but are lost when the root section
+# is stripped during aggregation.
+_INHERIT_KEYS = (
+    "patches-source",
+    "patches-source-host",
+    "patches-version",
+    "cli-source",
+    "cli-source-host",
+    "cli-version",
+    "cli-type",
+    "engine-brand",
+    "patch-brand",
+    "variant",
+    "sub-variant",
+    "sub_variant",
+    "dpi",
+    "arch",
+    "build-mode",
+    "author",
+    "author-page",
+    "compression-level",
+    "remove-rv-integrations-checks",
+    "enable-module-update",
+    "include-stock",
+)
 
 
 def get_tables_with_headers(filepath):
@@ -36,7 +59,7 @@ def get_tables_with_headers(filepath):
 
 
 def get_file_defaults(filepath):
-    """Read patches-source and patch-brand from the root section (before the first [table]).
+    """Read patch-source-group keys from the root section (before the first [table]).
 
     Returns a dict {key: raw_line} for the keys found so we can inject the
     original line verbatim into each table block.
@@ -100,7 +123,7 @@ def main():
         file_defaults = get_file_defaults(fpath)
         tables = get_tables_with_headers(fpath)
         for header, content in tables:
-            # Bake patches-source and patch-brand from the root into each table so
+            # Bake patch-source-group root keys into each table so
             # the merged batch TOML is self-contained (no root to inherit from).
             content = inject_defaults_into_table(content, file_defaults)
             # extract table key e.g. [youtube-revanced] and app-name

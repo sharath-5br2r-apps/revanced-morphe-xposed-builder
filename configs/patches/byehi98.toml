@@ -1,43 +1,34 @@
 enable-module-update = true
+patches-source = "byehi98/okish-morphe-patches"
+patch-brand = "Byehi98"
+cli-type = "morphe"
 
 [SmashHit-Morphe-Byehi98]
 enabled = true
 app-name = "Smash Hit"
-cli-type = "morphe"
-patch-brand = "Byehi98"
 pkg-name = "com.mediocre.smashhit"
 uptodown-dlurl = "https://smash-hit.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mediocre/smash-hit/"
-patches-source = "byehi98/okish-morphe-patches"
 
 [Vector-Morphe-Byehi98]
 enabled = true
 app-name = "Vector"
-cli-type = "morphe"
-patch-brand = "Byehi98"
 pkg-name = "com.nekki.vector"
 uptodown-dlurl = "https://vector.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/nekki/vector/"
-patches-source = "byehi98/okish-morphe-patches"
 
 [HillClimbRacing-Morphe-Byehi98]
 enabled = true
 app-name = "Hill Climb Racing"
-cli-type = "morphe"
-patch-brand = "Byehi98"
 arch = "arm64-v8a armeabi-v7a"
 pkg-name = "com.fingersoft.hillclimb"
 uptodown-dlurl = "https://hill-climb-racing.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
-patches-source = "byehi98/okish-morphe-patches"
 
 [JetpackJoyride-Morphe-Byehi98]
 enabled = true
 app-name = "Jetpack Joyride"
-cli-type = "morphe"
-patch-brand = "Byehi98"
 pkg-name = "com.halfbrick.jetpackjoyride"
 uptodown-dlurl = "https://jetpack-joyride.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/"
 apkmirror-example-url = "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/"
-patches-source = "byehi98/okish-morphe-patches"
