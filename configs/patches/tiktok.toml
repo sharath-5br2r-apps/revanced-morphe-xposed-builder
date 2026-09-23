@@ -1,4 +1,5 @@
 enable-module-update = true
+
 [TikTok-Morphe-Icysymmetra]
 enabled = true
 app-name = "TikTok"
@@ -8,6 +9,8 @@ patch-brand = "Icysymmetra"
 arch = "all arm64-v8a armeabi-v7a"
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+apkpure-dlurl = "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically"
+apkcombo-dlurl = "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically"
 patches-source = "icysymmetra/tiktok-patches-for-morphe"
 
 [TikTok-Morphe-Hxreborn]
@@ -19,4 +22,46 @@ patch-brand = "Hxreborn"
 arch = "all arm64-v8a armeabi-v7a"
 uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+apkpure-dlurl = "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically"
+apkcombo-dlurl = "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically"
 patches-source = "hxreborn/hxreborn-tiktok-patches"
+
+[TikTok-Morphe-Hushfeed]
+enabled = true
+app-name = "TikTok"
+pkg-name = "com.zhiliaoapp.musically"
+cli-type = "morphe"
+patch-brand = "Hushfeed"
+arch = "all arm64-v8a armeabi-v7a"
+uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+apkpure-dlurl = "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically"
+apkcombo-dlurl = "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically"
+patches-source = "SysAdminDoc/hushfeed"
+
+[TikTok-Morphe-Kveld9]
+enabled = true
+app-name = "TikTok"
+pkg-name = "com.zhiliaoapp.musically"
+cli-type = "morphe"
+patch-brand = "Kveld9"
+arch = "all arm64-v8a armeabi-v7a"
+uptodown-dlurl = "https://tiktok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+apkpure-dlurl = "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically"
+apkcombo-dlurl = "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically"
+patches-source = "kveld9/kveld-morphe-patches"
+
+[TikTok-Morphe-Kveld9-Asia]
+enabled = true
+app-name = "TikTok"
+variant = "Asia"
+pkg-name = "com.ss.android.ugc.trill"
+cli-type = "morphe"
+patch-brand = "Kveld9"
+arch = "all arm64-v8a armeabi-v7a"
+uptodown-dlurl = "https://tik-tok.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok"
+apkpure-dlurl = "https://apkpure.com/tiktok-asia-app/com.ss.android.ugc.trill"
+apkcombo-dlurl = "https://apkcombo.com/tiktok-asia/com.ss.android.ugc.trill"
+patches-source = "kveld9/kveld-morphe-patches"
