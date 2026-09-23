@@ -2,6 +2,11 @@ import os
 import glob
 import math
 
+# Keys that live in the TOML root section and must be transferred into every
+# app table when we lose the root section during aggregation.
+_INHERIT_KEYS = ("patches-source", "patch-brand")
+
+
 def get_tables_with_headers(filepath):
     tables = []
     current_lines = []
@@ -21,13 +26,57 @@ def get_tables_with_headers(filepath):
                     current_lines.append(line)
         if current_lines:
             tables.append((''.join(header_comment), ''.join(current_lines)))
-    
+
     # Filter out top-level global options blocks that don't contain a table header
     valid_tables = []
     for h, c in tables:
         if any(l.strip().startswith('[') for l in c.splitlines()):
             valid_tables.append((h, c))
     return valid_tables
+
+
+def get_file_defaults(filepath):
+    """Read patches-source and patch-brand from the root section (before the first [table]).
+
+    Returns a dict {key: raw_line} for the keys found so we can inject the
+    original line verbatim into each table block.
+    """
+    found = {}
+    with open(filepath, "r", encoding="utf-8") as f:
+        for line in f:
+            stripped = line.strip()
+            if stripped.startswith('['):
+                break  # hit first table — root section done
+            if stripped and not stripped.startswith('#') and '=' in stripped:
+                key = stripped.split('=', 1)[0].strip()
+                if key in _INHERIT_KEYS:
+                    found[key] = line  # preserve original formatting
+    return found
+
+
+def inject_defaults_into_table(table_content, defaults):
+    """Inject missing root-level keys right after the [header] line.
+
+    If the table already explicitly sets a key (e.g. its own patches-source)
+    it is left untouched — app-level values always win.
+    """
+    if not defaults:
+        return table_content
+
+    lines = table_content.splitlines(keepends=True)
+    # Keys the table already defines (skip the [header] line at index 0)
+    existing_keys = set()
+    for l in lines[1:]:
+        if '=' in l and not l.strip().startswith('#'):
+            existing_keys.add(l.split('=', 1)[0].strip())
+
+    to_inject = [raw for key, raw in defaults.items() if key not in existing_keys]
+    if not to_inject:
+        return table_content
+
+    # Insert the missing lines immediately after the [header]
+    return lines[0] + ''.join(to_inject) + ''.join(lines[1:])
+
 
 def main():
     base = "configs/patches"
@@ -48,8 +97,12 @@ def main():
     for fpath in toml_files:
         fname = os.path.basename(fpath)
         patchset_name = fname.replace(".toml", "")
+        file_defaults = get_file_defaults(fpath)
         tables = get_tables_with_headers(fpath)
         for header, content in tables:
+            # Bake patches-source and patch-brand from the root into each table so
+            # the merged batch TOML is self-contained (no root to inherit from).
+            content = inject_defaults_into_table(content, file_defaults)
             # extract table key e.g. [youtube-revanced] and app-name
             key_line = ""
             app_name = ""
@@ -57,8 +110,8 @@ def main():
                 if l.strip().startswith('['):
                     key_line = l.strip().strip('[]"')
                 elif l.strip().startswith('app-name'):
-                    app_name = l.split('=')[1].strip().strip('\"\'')
-            
+                    app_name = l.split('=')[1].strip().strip("\"' ")
+
             sort_app = app_name if app_name else (key_line if key_line else patchset_name)
             sort_key = key_line if key_line else patchset_name
             all_tables.append((sort_app, sort_key, header, content))
