@@ -62,6 +62,39 @@ Config keys (root section):
   author-page       Maintainer URL
 
 Each [AppName] table can override any root key for that specific app.
+
+Environment variables:
+  GITHUB_TOKEN              GitHub API token (increases rate limit; required for private repos)
+  PARALLEL_JOBS             Number of parallel build jobs (default: nproc)
+  NEXT_VER_CODE             Override version code for built APKs (default: YYYYMMDD)
+  NORB                      Set to 'true' to skip rebuilding already-patched APKs
+
+  Keystore / signing:
+  RVB_KEYSTORE              Path to keystore file (default: ks.keystore)
+  RVB_KEYSTORE_PASS         Keystore + key password (default: 123456789)
+  RVB_KEY_ALIAS             Key alias in keystore (default: jhc)
+  KEYSTORE_FILE             Alternative: path to keystore file
+  KEYSTORE_BASE             Alternative: base64-encoded keystore content
+  KEYSTORE_PASSWORD         Alternative: keystore password
+  KEYSTORE_KEY_PASSWORD     Alternative: key password (if different from keystore password)
+  KEYSTORE_ALIAS            Alternative: key alias
+
+  Downloads:
+  RVB_DL_MAX_TIME           Max download time in seconds (default: 1800)
+  APK_CACHE_DIR             Directory to cache downloaded APKs (default: TEMP_DIR/apks)
+  CF_COOKIES                Cloudflare cookies for sites behind CF protection
+  UPLOAD_APKS_REPO          GitHub repo (user/repo) to upload built APKs to
+
+  Patcher behaviour:
+  RVB_CHECK_SIG             Verify APK signature before patching (default: false)
+  RVB_MORPHE_PASSTHROUGH    Set to 'false' to use legacy merge-at-download Morphe flow
+  RVB_INSTAFEL_DEFAULT_PATCHES   Space-separated default patches for Instafel
+  RVB_INSTAFEL_FALLBACK_COMMIT   Instafel fallback git commit to use if latest fails
+
+  Paths (usually auto-detected):
+  ANDROID_HOME              Android SDK root (also: ANDROID_SDK_ROOT)
+  JAVA_HOME                 Java installation root
+  TMPDIR                    Override system temp directory
 EOF
 }
 
