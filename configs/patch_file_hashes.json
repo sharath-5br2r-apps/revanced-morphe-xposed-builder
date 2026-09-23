@@ -87,8 +87,8 @@
   },
   "dh6k/morphe-patches": {
     "beta": {
-      "com.brave.browser_beta": "4fb8e16909dff0b7de02d2116e3f1b65",
-      "com.brave.browser_nightly": "4fb8e16909dff0b7de02d2116e3f1b65",
+      "com.brave.browser_beta": "fd01978b67dbfd1e32119458351a8002",
+      "com.brave.browser_nightly": "fd01978b67dbfd1e32119458351a8002",
       "shared": "f0e5f4fbc50d53ecd565803fb2e4b958"
     },
     "stable": {
@@ -170,9 +170,9 @@
   },
   "morpheapp/morphe-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "bc616326b11254f18d63e9d56fab1618",
-      "com.google.android.youtube": "eacf25b851daecbaf0fc05a148c6c177",
-      "shared": "41b16140b155ecc1c335cf985a9d8868"
+      "com.google.android.apps.youtube.music": "9212092df187b15fc8c0c9112959e38d",
+      "com.google.android.youtube": "47479b183b159e0562b3e4a2ef9775cc",
+      "shared": "ab5a606a8ee6ffbf85c229c21d1e9ed2"
     },
     "stable": {
       "com.google.android.apps.youtube.music": "908eefc5b29a33d6807ef54a9ef097d9",
