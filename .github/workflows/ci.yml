@@ -308,6 +308,9 @@ jobs:
             cp -f "$json_file" "build.json"
             [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
           fi
+          # Collect *-update.json from every parallel build part artifact.
+          # Doing this once in the aggregation job avoids concurrent push races.
+          find logs_artifacts -name "*-update.json" -exec cp -f {} . \; 2>/dev/null || true
 
       - name: Commit update branch files (Dev)
         uses: stefanzweifel/git-auto-commit-action@v7
@@ -317,7 +320,7 @@ jobs:
           skip_checkout: true
           add_options: -f
           push_options: --force
-          file_pattern: changelogs/*.md
+          file_pattern: "changelogs/*.md *-update.json"
           commit_message: "Bump version ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
 
   resolve_stable_version:
@@ -483,6 +486,8 @@ jobs:
             cp -f "$json_file" "build.json"
             [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
           fi
+          # Collect *-update.json from every parallel build part artifact.
+          find logs_artifacts -name "*-update.json" -exec cp -f {} . \; 2>/dev/null || true
 
       - name: Commit update branch files (Stable)
         uses: stefanzweifel/git-auto-commit-action@v7
@@ -492,7 +497,7 @@ jobs:
           skip_checkout: true
           add_options: -f
           push_options: --force
-          file_pattern: changelogs/*.md
+          file_pattern: "changelogs/*.md *-update.json"
           commit_message: "Bump version ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
 
   resolve_latest_version:
@@ -663,6 +668,8 @@ jobs:
             cp -f "$json_file" "build.json"
             [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
           fi
+          # Collect *-update.json from every parallel build part artifact.
+          find logs_artifacts -name "*-update.json" -exec cp -f {} . \; 2>/dev/null || true
 
       - name: Commit update branch files (Latest)
         uses: stefanzweifel/git-auto-commit-action@v7
@@ -672,7 +679,7 @@ jobs:
           skip_checkout: true
           add_options: -f
           push_options: --force
-          file_pattern: changelogs/*.md
+          file_pattern: "changelogs/*.md *-update.json"
           commit_message: "Bump version ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
 
   resolve_batch_version:
@@ -804,6 +811,8 @@ jobs:
             cp -f "$json_file" "build.json"
             [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
           fi
+          # Collect *-update.json from every parallel build part artifact.
+          find logs_artifacts -name "*-update.json" -exec cp -f {} . \; 2>/dev/null || true
 
       - name: Commit update branch files (Batch)
         uses: stefanzweifel/git-auto-commit-action@v7
@@ -816,7 +825,7 @@ jobs:
           # Replace its previous generated snapshot so stale concurrent runs do
           # not fail with a non-fast-forward push.
           push_options: --force
-          file_pattern: changelogs/*.md
+          file_pattern: "changelogs/*.md *-update.json"
           commit_message: "Bump version ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
 
   trigger_cleanup:

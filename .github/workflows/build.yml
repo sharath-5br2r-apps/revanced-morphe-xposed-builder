@@ -206,7 +206,7 @@ jobs:
           path: error.log
           if-no-files-found: ignore
 
-      - name: Update changelog and module update files
+      - name: Generate module update files
         id: update_changelog
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -215,23 +215,45 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: bash .github/scripts/build_update_changelog.sh
 
-      - name: Commit updated build and module update files
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: update
-          skip_checkout: true
-          push_options: --force
-          file_pattern: "*-update.json"
-          commit_message: Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}
-      - name: Commit updated build and module update files(Changelog Only)
-        uses: stefanzweifel/git-auto-commit-action@v7
-        if: ${{ inputs.upload_release_metadata == false }}
-        with:
-          branch: update
-          skip_checkout: true
-          push_options: --force
-          file_pattern: changelogs/*.md
-          commit_message: Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}
+      # Copy staged *-update.json to the working-tree root so they can be:
+      #  - picked up by the part-logs artifact upload (parallel builds), or
+      #  - committed directly by the standalone commit step (single-job builds).
+      - name: Stage module update files
+        if: ${{ steps.update_changelog.outputs.has_modules == 'true' }}
+        run: |
+          shopt -s nullglob
+          files=(temp/update-files/*-update.json)
+          shopt -u nullglob
+          for f in "${files[@]}"; do cp -f "$f" .; done
+
+      # Standalone (non-partitioned) builds have only one job so there is no
+      # push race.  Commit update files and changelog directly to the update branch.
+      - name: Commit module update files (standalone)
+        if: ${{ inputs.aggregate_flavor == '' && steps.update_changelog.outputs.has_modules == 'true' }}
+        env:
+          NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
+        run: |
+          set -euo pipefail
+          mkdir -p changelogs
+          src_md="build.md"
+          [ -f build.tmp ] && src_md="build.tmp"
+          [ -f "$src_md" ] && cp -f "$src_md" "changelogs/${NEXT_VER_CODE}.md"
+          git fetch origin update 2>/dev/null || true
+          if git ls-remote --heads origin update | grep -q 'refs/heads/update'; then
+            git checkout -B update origin/update
+          else
+            git switch --orphan update
+          fi
+          shopt -s nullglob
+          for f in temp/update-files/*-update.json; do cp -f "$f" .; done
+          shopt -u nullglob
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f -- *-update.json changelogs/ 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Bump version ${NEXT_VER_CODE}"
+          git push origin update --force
+          git checkout main
+
       - name: Remove frequently updated apps
         run: |
           git checkout -f main
@@ -267,8 +289,9 @@ jobs:
             build.json
             build.md
             error.log
+            *-update.json
             ${{ inputs.config_file }}
-            if-no-files-found: ignore
+          if-no-files-found: ignore
 
 
 
