@@ -17,17 +17,17 @@
   },
   "Pinterest-Morphe-Browzomje-Experimental": {
     "enable-module-update": true,
+    "patches-source": "browzomje/browzomje-patches",
+    "patch-brand": "Browzomje",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Pinterest",
-    "cli-type": "morphe",
-    "patch-brand": "Browzomje",
     "sub-variant": "Experimental",
     "pkg-name": "com.pinterest",
     "version": "latest",
     "skip-patch-app-check": true,
     "uptodown-dlurl": "https://pinterest.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration",
-    "patches-source": "browzomje/browzomje-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/pinterest/pinterest-one-destination-for-a-world-of-inspiration"
   },
   "SmartLauncher-Morphe-Hoodles": {
     "enable-module-update": true,
@@ -67,55 +67,56 @@
   },
   "Truecaller-Morphe-Paresh": {
     "enable-module-update": true,
+    "patches-source": "Paresh-Maheshwari/paresh-patches",
+    "patches-source-host": "gitlab",
+    "patch-brand": "Paresh",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Truecaller",
-    "cli-type": "morphe",
-    "patch-brand": "Paresh",
     "build-mode": "both",
     "arch": "all arm64-v8a armeabi-v7a",
     "pkg-name": "com.truecaller",
     "uptodown-dlurl": "https://truecaller.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/true-software-scandinavia-ab/truecaller-caller-id-block",
-    "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/true-software-scandinavia-ab/truecaller-caller-id-block"
   },
   "Instagram-Morphe-Piko": {
     "enable-module-update": true,
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Instagram",
-    "cli-type": "morphe",
-    "patch-brand": "Piko",
     "arch": "arm64-v8a x86_64",
     "pkg-name": "com.instagram.android",
     "patcher-args": "--continue-on-error",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/instagram/instagram-instagram",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/",
-    "patches-source": "crimera/piko"
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/instagram/instagram-instagram/instagram-439-0-0-37-89-release/"
   },
   "OxygenUpdater-Morphe-Rushiranpise": {
     "enable-module-update": true,
+    "patches-source": "rushiranpise/morphe-patches",
+    "patch-brand": "Rushiranpise",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Oxygen Updater",
-    "cli-type": "morphe",
-    "patch-brand": "Rushiranpise",
     "custom-microg-patches": "'None'",
     "pkg-name": "com.arjanvlek.oxygenupdater",
     "github-dlurl": "https://github.com/oxygen-updater/os-updater",
-    "github-asset-regex": "Oxygen\\.Updater\\.{version}\\.apk",
-    "patches-source": "rushiranpise/morphe-patches"
+    "github-asset-regex": "Oxygen\\.Updater\\.{version}\\.apk"
   },
   "Bitwarden-Morphe-Stylus-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "ch3thanhs/stylus",
+    "patch-brand": "Stylus",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Bitwarden",
-    "cli-type": "morphe",
-    "patch-brand": "Stylus",
     "sub-variant": "Experimental",
     "pkg-name": "com.x8bit.bitwarden",
     "github-dlurl": "https://github.com/bitwarden/android",
     "github-dlurl-regex": "fdroid.apk$",
     "github-release-regex": "bwpm",
     "version": "latest",
-    "skip-patch-app-check": true,
-    "patches-source": "ch3thanhs/stylus"
+    "skip-patch-app-check": true
   }
 }

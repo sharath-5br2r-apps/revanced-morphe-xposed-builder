@@ -2,9 +2,10 @@
   "patches-version": "both",
   "enable-module-update": true,
   "BraveBrowser-Nightly-Morphe-Dh6k": {
+    "enable-module-update": true,
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Brave Browser",
-    "cli-type": "morphe",
     "patch-brand": "Dh6k",
     "sub-variant": "Nightly",
     "version": "beta",
@@ -55,50 +56,51 @@
   },
   "ClashRoyale-Nulls": {
     "enable-module-update": true,
-    "enabled": true,
+    "patches-source": "none",
+    "patches-source-host": "none",
+    "patch-brand": "Nulls",
     "cli-type": "none",
     "cli-source-host": "none",
+    "enabled": true,
     "app-name": "Clash Royale",
-    "patch-brand": "Nulls",
     "arch": "all",
     "pkg-name": "nullsroyale.rel.free",
-    "direct-dlurl": "http://dnull.xyz/latest_cr",
-    "patches-source": "none",
-    "patches-source-host": "none"
+    "direct-dlurl": "http://dnull.xyz/latest_cr"
   },
   "DocScanner-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
+    "patches-source": "Paresh-Maheshwari/paresh-patches",
+    "patches-source-host": "gitlab",
+    "patch-brand": "Paresh",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Doc Scanner",
-    "cli-type": "morphe",
-    "patch-brand": "Paresh",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
     "pkg-name": "com.cv.docscanner",
     "uptodown-dlurl": "https://doc-scanner.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator",
-    "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lufick/document-scanner-pdf-creator"
   },
   "PCRemote-Morphe-Rushiranpise": {
     "enable-module-update": true,
+    "patches-source": "rushiranpise/morphe-patches",
+    "patch-brand": "Rushiranpise",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "PC Remote",
-    "cli-type": "morphe",
-    "patch-brand": "Rushiranpise",
     "custom-microg-patches": "'None'",
     "pkg-name": "com.monect.portable",
     "uptodown-dlurl": "https://monect-pc-remote.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/",
-    "patches-source": "rushiranpise/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/monect-suzhou-co-ltd/pc-remote/"
   },
   "ProtonVPN-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
+    "patches-source": "rushiranpise/morphe-patches",
+    "patch-brand": "Rushiranpise",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Proton VPN",
-    "cli-type": "morphe",
-    "patch-brand": "Rushiranpise",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
@@ -106,7 +108,6 @@
     "uptodown-dlurl": "https://protonvpn.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/",
     "prefer-dl-mode": "bundle",
-    "dpi": "120-640dpi",
-    "patches-source": "rushiranpise/morphe-patches"
+    "dpi": "120-640dpi"
   }
 }

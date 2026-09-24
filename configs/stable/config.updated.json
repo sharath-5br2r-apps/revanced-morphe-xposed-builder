@@ -2,9 +2,10 @@
   "patches-version": "stable",
   "enable-module-update": true,
   "BraveBrowser-Nightly-Morphe-Dh6k": {
+    "enable-module-update": true,
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Brave Browser",
-    "cli-type": "morphe",
     "patch-brand": "Dh6k",
     "sub-variant": "Nightly",
     "version": "beta",
@@ -15,44 +16,5 @@
     "github-dlurl": "https://github.com/brave/brave-browser/releases",
     "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
     "github-release-name-regex": "^Nightly v"
-  },
-  "GitHub-Morphe-Hoodles-Stylus": {
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles-Stylus",
-    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
-    "enabled": true,
-    "app-name": "GitHub",
-    "pkg-name": "com.github.android",
-    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
-  },
-  "GitHub-Morphe-Hoodles-Stylus-Experimental": {
-    "cli-type": "morphe",
-    "patch-brand": "Hoodles-Stylus",
-    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
-    "enabled": true,
-    "app-name": "GitHub",
-    "pkg-name": "com.github.android",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
-  },
-  "Bitwarden-Morphe-Stylus-Experimental": {
-    "enabled": true,
-    "app-name": "Bitwarden",
-    "cli-type": "morphe",
-    "patch-brand": "Stylus",
-    "sub-variant": "Experimental",
-    "pkg-name": "com.x8bit.bitwarden",
-    "github-dlurl": "https://github.com/bitwarden/android",
-    "github-dlurl-regex": "fdroid.apk$",
-    "github-release-regex": "bwpm",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "patches-source": "ch3thanhs/stylus"
   }
 }

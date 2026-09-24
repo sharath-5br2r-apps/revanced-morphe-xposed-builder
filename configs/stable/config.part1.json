@@ -2,9 +2,10 @@
   "patches-version": "stable",
   "enable-module-update": true,
   "BraveBrowser-Nightly-Morphe-Dh6k": {
+    "enable-module-update": true,
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Brave Browser",
-    "cli-type": "morphe",
     "patch-brand": "Dh6k",
     "sub-variant": "Nightly",
     "version": "beta",

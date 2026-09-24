@@ -13,6 +13,7 @@
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/backdrops/backdrops-wallpapers"
   },
   "GitHub-Morphe-Hoodles-Stylus-Experimental": {
+    "enable-module-update": true,
     "cli-type": "morphe",
     "patch-brand": "Hoodles-Stylus",
     "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
@@ -50,15 +51,16 @@
   },
   "YouTube-Morphe-AMOLED-Experimental": {
     "enable-module-update": true,
+    "patches-source": "MorpheApp/morphe-patches",
+    "patch-brand": "morphe",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "YouTube",
-    "cli-type": "morphe",
     "variant": "AMOLED",
     "sub-variant": "Experimental",
     "build-mode": "both",
     "version": "exp",
     "pkg-name": "com.google.android.youtube",
-    "patches-source": "MorpheApp/morphe-patches",
     "included-patches": "'Theme'",
     "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
@@ -68,30 +70,30 @@
   },
   "MXPlayerPro-Morphe-Paresh-Experimental": {
     "enable-module-update": true,
+    "patches-source": "Paresh-Maheshwari/paresh-patches",
+    "patches-source-host": "gitlab",
+    "patch-brand": "Paresh",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "MX Player Pro",
-    "cli-type": "morphe",
-    "patch-brand": "Paresh",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
     "arch": "all arm64-v8a armeabi-v7a",
     "pkg-name": "com.mxtech.videoplayer.pro",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/mx-media-entertainment-pte-ltd/mx-player-pro",
-    "uptodown-dlurl": "https://mx-player.en.uptodown.com/android",
-    "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab"
+    "uptodown-dlurl": "https://mx-player.en.uptodown.com/android"
   },
   "AmazonShopping-Morphe-Rushiranpise": {
     "enable-module-update": true,
+    "patches-source": "rushiranpise/morphe-patches",
+    "patch-brand": "Rushiranpise",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "Amazon Shopping",
-    "cli-type": "morphe",
-    "patch-brand": "Rushiranpise",
     "pkg-name": "com.amazon.mShop.android.shopping",
     "uptodown-dlurl": "https://amazon-shopping.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/",
-    "patches-source": "rushiranpise/morphe-patches",
     "included-patches": "'Dark Mode' 'Open Links in Browser'",
     "excluded-patches": "'Hide Rufus Tab'",
     "custom-microg-patches": "'None'",
@@ -99,13 +101,13 @@
   },
   "MacroDroid-Morphe-Rushiranpise": {
     "enable-module-update": true,
+    "patches-source": "rushiranpise/morphe-patches",
+    "patch-brand": "Rushiranpise",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "MacroDroid",
-    "cli-type": "morphe",
-    "patch-brand": "Rushiranpise",
     "pkg-name": "com.arlosoft.macrodroid",
     "uptodown-dlurl": "https://macrodroid.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/",
-    "patches-source": "rushiranpise/morphe-patches"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/arlosoft/macrodroid-device-automation-2/"
   }
 }
