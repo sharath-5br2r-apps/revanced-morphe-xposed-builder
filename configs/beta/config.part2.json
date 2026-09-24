@@ -3,32 +3,19 @@
   "enable-module-update": true,
   "YouTube-Morphe-AMOLED": {
     "enable-module-update": true,
+    "patches-source": "MorpheApp/morphe-patches",
+    "patch-brand": "morphe",
+    "cli-type": "morphe",
     "enabled": true,
     "app-name": "YouTube",
-    "cli-type": "morphe",
     "variant": "AMOLED",
     "build-mode": "both",
     "pkg-name": "com.google.android.youtube",
-    "patches-source": "MorpheApp/morphe-patches",
     "included-patches": "'Theme'",
     "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
     "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
     "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
-  },
-  "Bitwarden-Morphe-Stylus-Experimental": {
-    "enabled": true,
-    "app-name": "Bitwarden",
-    "cli-type": "morphe",
-    "patch-brand": "Stylus",
-    "sub-variant": "Experimental",
-    "pkg-name": "com.x8bit.bitwarden",
-    "github-dlurl": "https://github.com/bitwarden/android",
-    "github-dlurl-regex": "fdroid.apk$",
-    "github-release-regex": "bwpm",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "patches-source": "ch3thanhs/stylus"
   }
 }
