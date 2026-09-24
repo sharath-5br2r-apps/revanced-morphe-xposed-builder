@@ -249,21 +249,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
-          json_file=""
-          md_file=""
-          if [ -d "dev_logs/aggregated_out" ]; then
-            for j in dev_logs/aggregated_out/build.*.json; do
-              [ -s "$j" ] && { json_file="$j"; cp -f "$j" build.json; break; }
-            done
-            for m in dev_logs/aggregated_out/build.*.md; do
-              [ -s "$m" ] && { md_file="$m"; cp -f "$m" release_notes.md; break; }
-            done
-          fi
+          json_file="dev_logs/aggregated_out/build.json"
+          md_file="dev_logs/aggregated_out/build.md"
 
           if [ ! -s "$json_file" ]; then
             echo "::error::Dev build.json was not found"
             exit 1
           fi
+
+          cp -f "$json_file" build.json
+          [ -s "$md_file" ] && cp -f "$md_file" release_notes.md
 
           mkdir -p dev_logs/release-manifest
           cp -f "$json_file" dev_logs/release-manifest/build.json
@@ -283,10 +278,10 @@ jobs:
               gh release create "$tag" --title "$release_title" --prerelease "${notes_arg[@]}" || true
             fi
             echo "Uploading $json_file to release $tag..."
-            gh release upload "$tag" "$json_file#build.json" --clobber || {
+            gh release upload "$tag" "$json_file" --clobber || {
               echo "::warning::Failed to upload $json_file to release $tag, retrying..."
               sleep 3
-              gh release upload "$tag" "$json_file#build.json" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
+              gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
             }
           fi
 
@@ -302,8 +297,8 @@ jobs:
           set -euo pipefail
           mkdir -p changelogs
           tag="${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}"
-          json_file="dev_logs/aggregated_out/build.dev.json"
-          changelog_file="dev_logs/aggregated_out/build.dev.md"
+          json_file="dev_logs/aggregated_out/build.json"
+          changelog_file="dev_logs/aggregated_out/build.md"
           if [ -n "$tag" ] && [ -s "$json_file" ]; then
             cp -f "$json_file" "build.json"
             [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
@@ -427,21 +422,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
-          json_file=""
-          md_file=""
-          if [ -d "stable_logs/aggregated_out" ]; then
-            for j in stable_logs/aggregated_out/build.*.json; do
-              [ -s "$j" ] && { json_file="$j"; cp -f "$j" build.json; break; }
-            done
-            for m in stable_logs/aggregated_out/build.*.md; do
-              [ -s "$m" ] && { md_file="$m"; cp -f "$m" release_notes.md; break; }
-            done
-          fi
+          json_file="stable_logs/aggregated_out/build.json"
+          md_file="stable_logs/aggregated_out/build.md"
 
           if [ ! -s "$json_file" ]; then
             echo "::error::Stable build.json was not found"
             exit 1
           fi
+
+          cp -f "$json_file" build.json
+          [ -s "$md_file" ] && cp -f "$md_file" release_notes.md
 
           mkdir -p stable_logs/release-manifest
           cp -f "$json_file" stable_logs/release-manifest/build.json
@@ -461,10 +451,10 @@ jobs:
               gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
             fi
             echo "Uploading $json_file to release $tag..."
-            gh release upload "$tag" "$json_file#build.json" --clobber || {
+            gh release upload "$tag" "$json_file" --clobber || {
               echo "::warning::Failed to upload $json_file to release $tag, retrying..."
               sleep 3
-              gh release upload "$tag" "$json_file#build.json" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
+              gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
             }
           fi
 
@@ -480,8 +470,8 @@ jobs:
           set -euo pipefail
           mkdir -p changelogs
           tag="${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}"
-          json_file="stable_logs/aggregated_out/build.stable.json"
-          changelog_file="stable_logs/aggregated_out/build.stable.md"
+          json_file="stable_logs/aggregated_out/build.json"
+          changelog_file="stable_logs/aggregated_out/build.md"
           if [ -n "$tag" ] && [ -s "$json_file" ]; then
             cp -f "$json_file" "build.json"
             [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
@@ -609,21 +599,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
-          json_file=""
-          md_file=""
-          if [ -d "latest_logs/aggregated_out" ]; then
-            for j in latest_logs/aggregated_out/build.*.json; do
-              [ -s "$j" ] && { json_file="$j"; cp -f "$j" build.json; break; }
-            done
-            for m in latest_logs/aggregated_out/build.*.md; do
-              [ -s "$m" ] && { md_file="$m"; cp -f "$m" release_notes.md; break; }
-            done
-          fi
+          json_file="latest_logs/aggregated_out/build.json"
+          md_file="latest_logs/aggregated_out/build.md"
 
           if [ ! -s "$json_file" ]; then
             echo "::error::Latest build.json was not found"
             exit 1
           fi
+
+          cp -f "$json_file" build.json
+          [ -s "$md_file" ] && cp -f "$md_file" release_notes.md
 
           mkdir -p latest_logs/release-manifest
           cp -f "$json_file" latest_logs/release-manifest/build.json
@@ -643,10 +628,10 @@ jobs:
               gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
             fi
             echo "Uploading $json_file to release $tag..."
-            gh release upload "$tag" "$json_file#build.json" --clobber || {
+            gh release upload "$tag" "$json_file" --clobber || {
               echo "::warning::Failed to upload $json_file to release $tag, retrying..."
               sleep 3
-              gh release upload "$tag" "$json_file#build.json" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
+              gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
             }
           fi
 
@@ -662,8 +647,8 @@ jobs:
           set -euo pipefail
           mkdir -p changelogs
           tag="${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}"
-          json_file="latest_logs/aggregated_out/build.latest.json"
-          changelog_file="latest_logs/aggregated_out/build.latest.md"
+          json_file="latest_logs/aggregated_out/build.json"
+          changelog_file="latest_logs/aggregated_out/build.md"
           if [ -n "$tag" ] && [ -s "$json_file" ]; then
             cp -f "$json_file" "build.json"
             [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"
@@ -751,22 +736,16 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
-          # Discover aggregated json and markdown directly from previous step
-          json_file=""
-          md_file=""
-          if [ -d "batch_logs/aggregated_out" ]; then
-            for j in batch_logs/aggregated_out/build.*.json; do
-              [ -s "$j" ] && { json_file="$j"; cp -f "$j" build.json; break; }
-            done
-            for m in batch_logs/aggregated_out/build.*.md; do
-              [ -s "$m" ] && { md_file="$m"; cp -f "$m" release_notes.md; break; }
-            done
-          fi
+          json_file="batch_logs/aggregated_out/build.json"
+          md_file="batch_logs/aggregated_out/build.md"
 
           if [ ! -s "$json_file" ]; then
             echo "::error::Batch build.json was not found"
             exit 1
           fi
+
+          cp -f "$json_file" build.json
+          [ -s "$md_file" ] && cp -f "$md_file" release_notes.md
 
           mkdir -p batch_logs/release-manifest
           cp -f "$json_file" batch_logs/release-manifest/build.json
@@ -786,10 +765,10 @@ jobs:
               gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
             fi
             echo "Uploading $json_file as build.json to release $tag..."
-            gh release upload "$tag" "$json_file#build.json" --clobber || {
+            gh release upload "$tag" "$json_file" --clobber || {
               echo "::warning::Failed to upload $json_file to release $tag, retrying..."
               sleep 3
-              gh release upload "$tag" "$json_file#build.json" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
+              gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
             }
           fi
 
@@ -805,8 +784,8 @@ jobs:
           set -euo pipefail
           mkdir -p changelogs
           tag="${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
-          json_file="batch_logs/aggregated_out/build.batch.json"
-          changelog_file="batch_logs/aggregated_out/build.batch.md"
+          json_file="batch_logs/aggregated_out/build.json"
+          changelog_file="batch_logs/aggregated_out/build.md"
           if [ -n "$tag" ] && [ -s "$json_file" ]; then
             cp -f "$json_file" "build.json"
             [ -s "$changelog_file" ] && cp -f "$changelog_file" "changelogs/${tag}.md"

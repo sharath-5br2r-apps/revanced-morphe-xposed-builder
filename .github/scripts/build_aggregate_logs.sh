@@ -5,8 +5,8 @@ FLAVOR="${1:-manual}" # stable, dev, or manual
 
 echo "[+] Aggregating build logs for flavor: $FLAVOR"
 
-aggregated_json="aggregated_out/build.${FLAVOR}.json"
-aggregated_md="aggregated_out/build.${FLAVOR}.md"
+aggregated_json="aggregated_out/build.json"
+aggregated_md="aggregated_out/build.md"
 aggregated_errors="aggregated_out/error.log"
 
 mkdir -p aggregated_out
