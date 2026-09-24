@@ -16,3 +16,4 @@ config.beta.json
 active*.json
 tags_*.json
 error.log
+configs/patches/merged/
