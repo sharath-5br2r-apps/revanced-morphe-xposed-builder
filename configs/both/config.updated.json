@@ -1,17 +1,3 @@
 {
-  "patches-version": "both",
-  "MyFitnessPal-Morphe-Hoodles-Experimental": {
-    "enable-module-update": true,
-    "patches-source": "hoo-dles/morphe-patches",
-    "patch-brand": "Hoodles",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "MyFitnessPal",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "pkg-name": "com.myfitnesspal.android",
-    "uptodown-dlurl": "https://calorie-counter-myfitnesspal.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal"
-  }
+  "patches-version": "both"
 }
