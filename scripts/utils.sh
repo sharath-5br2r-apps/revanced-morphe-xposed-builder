@@ -3169,8 +3169,10 @@ write_build_info() {
 	# asset_name is the full output filename (e.g. xrecorder-morphe-v2.5.4-all.apk).
 	# Falls back to arch+ext if target_file is not yet known at call time.
 	local asset_name
-	if [ -n "${14:-}" ]; then
-		asset_name=$(basename "${14}")
+	if [ -n "${target_file:-}" ]; then
+		asset_name=$(basename "${target_file}")
+	elif [ -n "${15:-}" ]; then
+		asset_name=$(basename "${15}")
 	else
 		asset_name="${arch}${ext}"
 	fi

@@ -63,7 +63,10 @@ def main():
             else:
                 matching_files = [f for f in built_files if f.name in assets_by_name]
         else:
-            # Compatibility with older raw build.json files that had no assets.
+            matching_files = []
+
+        if not matching_files and not manifest_only:
+            # Fallback to filename prefix matching if asset entries didn't match or were absent.
             prefix_lower = file_prefix.lower()
             matching_files = [
                 f for f in built_files
@@ -100,7 +103,15 @@ def main():
 
         for f in matching_files:
             fname = f.name
-            asset = assets_by_name.get(fname, {})
+            asset = assets_by_name.get(fname)
+            if not asset:
+                # Try matching by arch and extension from the assets list
+                f_arch = extract_arch(fname, version)
+                for a in assets:
+                    if isinstance(a, dict) and (a.get("arch") == f_arch or (not a.get("arch") and not f_arch)):
+                        asset = a
+                        break
+            asset = asset or {}
             lower = fname.lower()
             if not any(lower.endswith(ext) for ext in (".apk", ".apkm", ".xapk", ".apks", ".zip")):
                 print(f"[manifest] WARNING: skipping unsupported output {fname}", file=sys.stderr)
