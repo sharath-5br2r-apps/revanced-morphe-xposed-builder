@@ -1,1 +1,18 @@
-{}
+{
+  "patches-version": "stable",
+  "enable-module-update": true,
+  "GitHub-Morphe-Hoodles-Stylus-Experimental": {
+    "cli-type": "morphe",
+    "patch-brand": "Hoodles-Stylus",
+    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
+    "enabled": true,
+    "app-name": "GitHub",
+    "pkg-name": "com.github.android",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
+  }
+}

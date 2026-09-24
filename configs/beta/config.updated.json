@@ -99,5 +99,19 @@
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
     "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
     "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+  },
+  "Bitwarden-Morphe-Stylus-Experimental": {
+    "enabled": true,
+    "app-name": "Bitwarden",
+    "cli-type": "morphe",
+    "patch-brand": "Stylus",
+    "sub-variant": "Experimental",
+    "pkg-name": "com.x8bit.bitwarden",
+    "github-dlurl": "https://github.com/bitwarden/android",
+    "github-dlurl-regex": "fdroid.apk$",
+    "github-release-regex": "bwpm",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "patches-source": "ch3thanhs/stylus"
   }
 }
