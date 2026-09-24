@@ -113,8 +113,8 @@
     "blocked": false,
     "host": "github",
     "repo": "dh6k/morphe-patches",
-    "stable": "v1.6.0",
-    "stable_date": "2026-09-20T14:57:59Z"
+    "stable": "v1.7.0",
+    "stable_date": "2026-09-24T07:45:37Z"
   },
   "hoo-dles/morphe-patches": {
     "beta": "v1.45.0-dev.2",

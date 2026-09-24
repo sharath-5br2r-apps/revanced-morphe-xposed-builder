@@ -92,9 +92,9 @@
       "shared": "f0e5f4fbc50d53ecd565803fb2e4b958"
     },
     "stable": {
-      "com.brave.browser_beta": "749c33d4daa405c165b195e20717f961",
-      "com.brave.browser_nightly": "749c33d4daa405c165b195e20717f961",
-      "shared": "40094993a0ea22956b5c66ed07617536"
+      "com.brave.browser_beta": "fd01978b67dbfd1e32119458351a8002",
+      "com.brave.browser_nightly": "fd01978b67dbfd1e32119458351a8002",
+      "shared": "f0e5f4fbc50d53ecd565803fb2e4b958"
     }
   },
   "hoo-dles/morphe-patches": {
