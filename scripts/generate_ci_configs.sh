@@ -1,5 +1,5 @@
 #!/bin/bash
 set -euo pipefail
 
-# Generate combined manual config from all patch files
-yq eval-all '. as $item ireduce ({}; . + $item )' configs/patches/*.toml > configs/config.manual.generated.toml
+# Generate normalized merged patch TOML configs and combined manual config
+python3 .github/scripts/ci_merge_patch_tomls.py

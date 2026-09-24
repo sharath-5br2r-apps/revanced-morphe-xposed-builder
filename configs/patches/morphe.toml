@@ -1,13 +1,13 @@
 enable-module-update = true
+patches-source = "MorpheApp/morphe-patches"
+patch-brand = "morphe"
+cli-type = "morphe"
 
-# ── YouTube morphe (stock/default theme) ──────────────────────────────────────
 [YouTube-Morphe]
 enabled = true
 app-name = "YouTube"
-cli-type = "morphe"
 build-mode = "both"
 pkg-name = "com.google.android.youtube"
-patches-source = "MorpheApp/morphe-patches"
 included-patches = "'Theme'"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
@@ -18,11 +18,9 @@ apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 [YouTube-Morphe-AMOLED]
 enabled = true
 app-name = "YouTube"
-cli-type = "morphe"
 variant = "AMOLED"
 build-mode = "both"
 pkg-name = "com.google.android.youtube"
-patches-source = "MorpheApp/morphe-patches"
 included-patches = "'Theme'"
 patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
@@ -33,12 +31,10 @@ apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 [YouTube-Morphe-Experimental]
 enabled = true
 app-name = "YouTube"
-cli-type = "morphe"
 sub-variant = "Experimental"
 build-mode = "both"
 version = "exp"
 pkg-name = "com.google.android.youtube"
-patches-source = "MorpheApp/morphe-patches"
 included-patches = "'Theme'"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
@@ -48,13 +44,11 @@ apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 [YouTube-Morphe-AMOLED-Experimental]
 enabled = true
 app-name = "YouTube"
-cli-type = "morphe"
 variant = "AMOLED"
 sub-variant = "Experimental"
 build-mode = "both"
 version = "exp"
 pkg-name = "com.google.android.youtube"
-patches-source = "MorpheApp/morphe-patches"
 included-patches = "'Theme'"
 patcher-args = "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
@@ -62,17 +56,14 @@ apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
 apkpure-dlurl = "https://apkpure.com/youtube-app/com.google.android.youtube"
 apkcombo-dlurl = "https://apkcombo.com/youtube/com.google.android.youtube"
 
-
 [YouTubeMusic-Morphe-Experimental]
 enabled = true
 app-name = "YouTube Music"
-cli-type = "morphe"
 sub-variant = "Experimental"
 build-mode = "both"
 arch = "arm64-v8a x86_64 armeabi-v7a x86"
 version = "exp"
 pkg-name = "com.google.android.apps.youtube.music"
-patches-source = "MorpheApp/morphe-patches"
 included-patches = "'Theme'"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
@@ -82,14 +73,12 @@ apkcombo-dlurl = "https://apkcombo.com/youtube-music/com.google.android.apps.you
 [YouTubeMusic-Morphe-AMOLED-Experimental]
 enabled = true
 app-name = "YouTube Music"
-cli-type = "morphe"
 variant = "AMOLED"
 sub-variant = "Experimental"
 build-mode = "both"
 arch = "arm64-v8a x86_64 armeabi-v7a x86"
 version = "exp"
 pkg-name = "com.google.android.apps.youtube.music"
-patches-source = "MorpheApp/morphe-patches"
 included-patches = "'Theme'"
 patcher-args = "-OdarkThemeBackgroundColor=#000000"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"

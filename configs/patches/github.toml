@@ -1,3 +1,4 @@
+enable-module-update = true
 cli-type = "morphe"
 patch-brand = "Hoodles-Stylus"
 patches-source = "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'"

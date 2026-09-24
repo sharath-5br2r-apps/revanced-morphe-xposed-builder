@@ -1,14 +1,15 @@
 enable-module-update = true
+patches-source = "none"
+patches-source-host = "none"
 patches-version = "dev"
+patch-brand = "Signed"
+cli-type = "apksigner"
+cli-source-host = "none"
+
 [AmazonAlexa-APKSigner-Signed]
 enabled = true
 app-name = "Amazon Alexa"
-patch-brand = "Signed"
-cli-type = "apksigner"
 pkg-name = "com.amazon.dee.app"
-cli-source-host = "none"
-patches-source = "none"
-patches-source-host = "none"
 prefer-dl-mode = "bundle"
 uptodown-dlurl = "https://alexa.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"

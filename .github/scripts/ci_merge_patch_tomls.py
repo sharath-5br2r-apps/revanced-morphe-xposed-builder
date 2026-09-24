@@ -181,5 +181,16 @@ def main():
 
         print(f"[+] Created '{chunk_name}' with {len(chunk_apps)} distinct apps ({len(chunk_items)} builds)")
 
+    # Also generate configs/config.manual.generated.toml with baked-in defaults
+    manual_file = "configs/config.manual.generated.toml"
+    manual_content = ["enable-module-update = true\n"]
+    for sort_app, sort_key, header, tbl_content in all_tables:
+        if header:
+            manual_content.append(header)
+        manual_content.append(tbl_content)
+    with open(manual_file, "w", encoding="utf-8") as out_fp:
+        out_fp.write("\n\n".join(manual_content) + "\n")
+    print(f"[+] Created '{manual_file}' with {len(all_tables)} builds")
+
 if __name__ == "__main__":
     main()

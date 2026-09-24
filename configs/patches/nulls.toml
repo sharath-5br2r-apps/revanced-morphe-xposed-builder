@@ -1,35 +1,25 @@
 enable-module-update = true
+patches-source = "none"
+patches-source-host = "none"
+patch-brand = "Nulls"
+cli-type = "none"
+cli-source-host = "none"
 
 [ClashOfClans-Nulls]
 enabled = true
-cli-type = "none"
-cli-source-host = "none"
 app-name = "Clash of Clans"
-patch-brand = "Nulls"
 arch = "all"
 pkg-name = "nullsclash.night.rel"
 direct-dlurl = "http://dnull.xyz/latest_coc"
-patches-source = "none"
-patches-source-host = "none"
 [ClashRoyale-Nulls]
 enabled = true
-cli-type = "none"
-cli-source-host = "none"
 app-name = "Clash Royale"
-patch-brand = "Nulls"
 arch = "all"
 pkg-name = "nullsroyale.rel.free"
 direct-dlurl = "http://dnull.xyz/latest_cr"
-patches-source = "none"
-patches-source-host = "none"
 [BrawlStars-Nulls]
 enabled = true
-cli-type = "none"
-cli-source-host = "none"
 app-name = "Brawl Stars"
-patch-brand = "Nulls"
 arch = "all"
 pkg-name = "daniillnull.nulls.brawlstars"
 direct-dlurl = "http://dnull.xyz/latest_bs"
-patches-source = "none"
-patches-source-host = "none"

@@ -1,13 +1,12 @@
 enable-module-update = true
+patches-source = "kiraio-moe/Lain-Patches"
+patch-brand = "Lain"
+cli-type = "morphe"
 
-# ── Drofus (morphe-lain) ─────────────────────────────────────────────────────
 [Drofus-Morphe-Lain]
 enabled = true
 app-name = "Drofus"
-cli-type = "morphe"
-patch-brand = "Lain"
 arch = "arm64-v8a armeabi-v7a"
 pkg-name = "com.mixapplications.rufus"
 uptodown-dlurl = "https://rufus-unofficial.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/mixapplications/drofus-iso2usb"
-patches-source = "kiraio-moe/Lain-Patches"

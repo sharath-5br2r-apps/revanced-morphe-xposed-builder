@@ -1,10 +1,11 @@
 enable-module-update = true
+patches-source = "kondratjev/morphe-patches"
+patch-brand = "Kondratjev"
+cli-type = "morphe"
 
 [SoundCloud-Morphe-Kondratjev]
 enabled = true
 app-name = "SoundCloud"
-cli-type = "morphe"
-patch-brand = "Kondratjev"
 version = "auto"
 arch = "arm64-v8a armeabi-v7a x86_64 x86"
 pkg-name = "com.soundcloud.android"
@@ -13,4 +14,3 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundclou
 apkmirror-example-url = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/soundcloud-the-music-you-love-2026-07-23-release-release"
 apkpure-dlurl = "https://apkpure.com/sound-cloud-android-app/com.soundcloud.android"
 apkcombo-dlurl = "https://apkcombo.com/soundcloud/com.soundcloud.android"
-patches-source = "kondratjev/morphe-patches"

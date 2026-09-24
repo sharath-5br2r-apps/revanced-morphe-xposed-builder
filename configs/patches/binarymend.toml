@@ -1,12 +1,11 @@
 enable-module-update = true
-
+patches-source = "binarymend/morphe-patches"
+patch-brand = "Binarymend"
+cli-type = "morphe"
 
 [CalcNote-Morphe-Binarymend]
 enabled = true
 app-name = "CalcNote"
-cli-type = "morphe"
-patch-brand = "Binarymend"
 pkg-name = "com.burton999.notecal"
 uptodown-dlurl = "https://calcnote-notepad-calculator.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/burton999/calcnote-notepad-calculator"
-patches-source = "binarymend/morphe-patches"

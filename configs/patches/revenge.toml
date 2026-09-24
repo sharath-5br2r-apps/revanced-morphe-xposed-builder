@@ -1,12 +1,13 @@
 enable-module-update = true
+patches-source = "revenge-mod/revenge-xposed"
+patch-brand = "Revenge"
+cli-type = "npatch"
+cli-source = "7723mod/NPatch"
+
 [Discord-NPatch-Revenge]
 enabled = true 
 app-name = "Discord"
 pkg-name = "com.discord"
-cli-type = "npatch"
-patch-brand = "Revenge"
-cli-source = "7723mod/NPatch"
-patches-source = "revenge-mod/revenge-xposed"
 patcher-args = "-l 0"
 uptodown-dlurl = "https://discord-chat-for-gamers.en.uptodown.com/android"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/discord/discord-chat-for-gamers"
