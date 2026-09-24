@@ -347,10 +347,10 @@ apkmirror-example-url = "https://www.apkmirror.com/apk/chess-com/chess-play-lear
 included-patches = "'Clone Chess.com'"
 
 
-[Gboard-Morphe-Jasonwu1994Adobo]
+[Gboard-Morphe-Jasonwu1994-Adobo]
 enable-module-update = true
 patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
-patch-brand = "Jasonwu1994Adobo"
+patch-brand = "Jasonwu1994-Adobo"
 cli-type = "morphe"
 enabled = true
 app-name = "Gboard"
@@ -368,10 +368,10 @@ apkmirror-release-filter = "!(lite|beta)"
 
 
 
-[Gboard-Morphe-Jasonwu1994Adobo-Clone]
+[Gboard-Morphe-Jasonwu1994-Adobo-Clone]
 enable-module-update = true
 patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
-patch-brand = "Jasonwu1994Adobo"
+patch-brand = "Jasonwu1994-Adobo"
 cli-type = "morphe"
 enabled = true
 app-name = "Gboard"

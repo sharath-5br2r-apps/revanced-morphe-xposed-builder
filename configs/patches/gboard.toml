@@ -1,9 +1,9 @@
 enable-module-update = true
 patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
-patch-brand = "Jasonwu1994Adobo"
+patch-brand = "Jasonwu1994-Adobo"
 cli-type = "morphe"
 
-[Gboard-Morphe-Jasonwu1994Adobo]
+[Gboard-Morphe-Jasonwu1994-Adobo]
 enabled = true
 app-name = "Gboard"
 build-mode = "both"
@@ -18,7 +18,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
 apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
 apkmirror-release-filter = "!(lite|beta)"
 
-[Gboard-Morphe-Jasonwu1994Adobo-Clone]
+[Gboard-Morphe-Jasonwu1994-Adobo-Clone]
 enabled = true
 app-name = "Gboard"
 sub-variant = "Clone"

@@ -12,12 +12,12 @@
     "uptodown-dlurl": "https://automate-beta.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/llamalab/automate-llamalab"
   },
-  "Gboard-Morphe-Jasonwu1994Adobo-Clone": {
+  "Gboard-Morphe-Jasonwu1994-Adobo-Clone": {
     "enable-module-update": true,
     "enabled": true,
     "app-name": "Gboard",
     "cli-type": "morphe",
-    "patch-brand": "Jasonwu1994Adobo",
+    "patch-brand": "Jasonwu1994-Adobo",
     "sub-variant": "Clone",
     "arch": "arm64-v8a x86_64 armeabi-v7a x86",
     "patches-source": "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'",
