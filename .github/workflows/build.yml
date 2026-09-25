@@ -259,6 +259,15 @@ jobs:
           git checkout -f main
           bash .github/scripts/build_exclude_from_archive.sh
 
+      - name: Dump built file names
+        run: |
+          if [ -d "build" ]; then
+            find build -maxdepth 1 -type f -exec basename {} \; | sort -u > built_files.txt
+          else
+            > built_files.txt
+          fi
+          echo "Dumped $(wc -l < built_files.txt) built file names into built_files.txt"
+
       - name: Upload to release (Archive)
         id: archive_upload
         continue-on-error: true
@@ -274,6 +283,7 @@ jobs:
         run: bash .github/scripts/build_upload_release.sh
 
       - name: Merge and upload archive manifest
+        if: ${{ inputs.aggregate_flavor == '' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ARCHIVE_TAG: ${{ steps.context.outputs.ARCHIVE_TAG }}
@@ -289,6 +299,7 @@ jobs:
             build.json
             build.md
             error.log
+            built_files.txt
             *-update.json
             ${{ inputs.config_file }}
           if-no-files-found: ignore

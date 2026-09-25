@@ -39,7 +39,23 @@ def main():
             build_info = json.load(f)
 
     build_dir = Path("build")
-    built_files = [f for f in build_dir.iterdir() if f.is_file()] if build_dir.exists() else []
+    built_files_env = os.environ.get("BUILT_FILES_FILE", "").strip() or os.environ.get("BUILD_FILES_FILE", "").strip()
+    built_files_path = Path(built_files_env) if built_files_env else None
+    if not built_files_path or not built_files_path.is_file():
+        if Path("aggregated_out/built_files.txt").is_file():
+            built_files_path = Path("aggregated_out/built_files.txt")
+        elif Path("built_files.txt").is_file():
+            built_files_path = Path("built_files.txt")
+        elif Path("build_files.txt").is_file():
+            built_files_path = Path("build_files.txt")
+
+    if built_files_path and built_files_path.is_file():
+        with open(built_files_path, encoding="utf-8") as f:
+            built_files = [Path(line.strip()) for line in f if line.strip()]
+    elif build_dir.exists():
+        built_files = [f for f in build_dir.iterdir() if f.is_file()]
+    else:
+        built_files = []
     manifest_only = os.environ.get("MANIFEST_ONLY", "false").lower() == "true"
 
     files = {}
@@ -56,16 +72,18 @@ def main():
             if isinstance(asset, dict) and asset.get("name")
         }
         if assets_by_name:
-            if manifest_only:
+            if built_files:
+                matching_files = [f for f in built_files if f.name in assets_by_name]
+            elif manifest_only:
                 # Aggregate jobs do not download the APKs. Use the exact asset
                 # names recorded by the regular build.json from each build job.
                 matching_files = [Path(name) for name in assets_by_name]
             else:
-                matching_files = [f for f in built_files if f.name in assets_by_name]
+                matching_files = []
         else:
             matching_files = []
 
-        if not matching_files and not manifest_only:
+        if not matching_files and built_files:
             # Fallback to filename prefix matching if asset entries didn't match or were absent.
             prefix_lower = file_prefix.lower()
             matching_files = [

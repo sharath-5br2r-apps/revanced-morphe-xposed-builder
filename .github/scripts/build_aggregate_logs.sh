@@ -8,11 +8,13 @@ echo "[+] Aggregating build logs for flavor: $FLAVOR"
 aggregated_json="aggregated_out/build.json"
 aggregated_md="aggregated_out/build.md"
 aggregated_errors="aggregated_out/error.log"
+aggregated_files="aggregated_out/built_files.txt"
 
 mkdir -p aggregated_out
 echo "{}" > "$aggregated_json"
 > "$aggregated_md"
 > "$aggregated_errors"
+> "$aggregated_files"
 
 # Collect all downloaded part-logs (support build.json directly or inside subdirectories)
 for json_file in $(find . \( -name "build.json" -o -name "build*.json" \) 2>/dev/null); do
@@ -60,6 +62,17 @@ done < <(find . -type f -name build.md ! -path "./$aggregated_md" | sort)
 
 if [ -s "$aggregated_md" ]; then
   echo "[+] Aggregated changelog size: $(wc -c < "$aggregated_md") bytes"
+fi
+
+# Collect all downloaded part-logs built_files.txt
+while IFS= read -r f_file; do
+  [ -s "$f_file" ] || continue
+  cat "$f_file" >> "$aggregated_files"
+done < <(find . -type f \( -name "built_files.txt" -o -name "build_files.txt" \) ! -path "./$aggregated_files" 2>/dev/null | sort -u)
+sort -u "$aggregated_files" -o "$aggregated_files"
+
+if [ -s "$aggregated_files" ]; then
+  echo "[+] Aggregated built files count: $(wc -l < "$aggregated_files")"
 fi
 
 entries_count=$(jq 'keys | length' "$aggregated_json" 2>/dev/null || echo 0)

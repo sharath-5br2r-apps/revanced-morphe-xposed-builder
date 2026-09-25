@@ -17,3 +17,5 @@ active*.json
 tags_*.json
 error.log
 configs/patches/merged/
+built_files*.txt
+build_files*.txt

@@ -13,16 +13,24 @@ set -euo pipefail
 
 ARCHIVE_TAG="${ARCHIVE_TAG:?ARCHIVE_TAG not set}"
 REPO="${GITHUB_REPOSITORY:?GITHUB_REPOSITORY not set}"
-NEW_MANIFEST="temp/manifest/build.json"
+NEW_MANIFEST="${NEW_MANIFEST:-}"
+if [ -z "$NEW_MANIFEST" ] || [ ! -f "$NEW_MANIFEST" ]; then
+  if [ -f "temp/manifest/build.json" ]; then
+    NEW_MANIFEST="temp/manifest/build.json"
+  elif [ -f "build.json" ]; then
+    NEW_MANIFEST="build.json"
+  fi
+fi
 OLD_MANIFEST="temp/manifest/archive-old.json"
 LIVE_LIST="temp/manifest/archive-live-assets.txt"
+CURRENT_FILES="temp/manifest/current-build-files.txt"
 OUT_DIR="temp/archive-upload"
 OUT_MANIFEST="$OUT_DIR/build.json"
 
 mkdir -p temp/manifest "$OUT_DIR"
 
-if [ ! -f "$NEW_MANIFEST" ]; then
-  echo "No $NEW_MANIFEST present — skipping archive manifest merge."
+if [ -z "$NEW_MANIFEST" ] || [ ! -f "$NEW_MANIFEST" ]; then
+  echo "No manifest present — skipping archive manifest merge."
   exit 0
 fi
 
@@ -36,12 +44,42 @@ gh api --paginate "repos/$REPO/releases/tags/$ARCHIVE_TAG" -q '.assets[].name' \
   | grep -E '\.(apk|zip)$' > "$LIVE_LIST" || true
 jq -Rn '[inputs]' "$LIVE_LIST" > temp/manifest/archive-live.json
 
-# 3. Union (new entries override same-filename old entries), keep only keys whose
+# 3. Determine current build files:
+# In aggregate mode: read from dumped file (BUILT_FILES_FILE / built_files.txt / build_files.txt).
+# In regular build mode: read from build/ directory.
+if [ -n "${BUILT_FILES_FILE:-}" ] && [ -f "$BUILT_FILES_FILE" ]; then
+  echo "Reading current build files from $BUILT_FILES_FILE"
+  cp -f "$BUILT_FILES_FILE" "$CURRENT_FILES"
+elif [ -f "aggregated_out/built_files.txt" ]; then
+  echo "Reading current build files from aggregated_out/built_files.txt"
+  cp -f "aggregated_out/built_files.txt" "$CURRENT_FILES"
+elif [ -f "built_files.txt" ]; then
+  echo "Reading current build files from built_files.txt"
+  cp -f "built_files.txt" "$CURRENT_FILES"
+elif [ -f "build_files.txt" ]; then
+  echo "Reading current build files from build_files.txt"
+  cp -f "build_files.txt" "$CURRENT_FILES"
+elif [ -d "build" ]; then
+  echo "Reading current build files from build/"
+  find build -maxdepth 1 -type f -exec basename {} \; > "$CURRENT_FILES"
+else
+  echo "Warning: Neither build directory nor built files list found; taking files from $NEW_MANIFEST"
+  jq -r '.files // {} | keys[]' "$NEW_MANIFEST" > "$CURRENT_FILES" 2>/dev/null || true
+fi
+jq -Rn '[inputs | select(length > 0)]' "$CURRENT_FILES" > temp/manifest/current-build-files.json
+
+# 4. Union (new entries override same-filename old entries), keep only keys whose
 #    file exists in the release, stamp archive meta.
 jq -s --slurpfile live temp/manifest/archive-live.json \
+      --slurpfile current temp/manifest/current-build-files.json \
   --arg tag "$ARCHIVE_TAG" \
   --arg now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '
-    ((.[0].files // {}) + (.[1].files // {})) as $merged
+    (if ($current[0] | length) > 0 then
+      (.[1].files // {} | with_entries(select(.key as $k | $current[0] | index($k))))
+    else
+      (.[1].files // {})
+    end) as $new_files
+    | ((.[0].files // {}) + $new_files) as $merged
     | {schema: 1,
        kind: "archive",
        meta: {build: $tag, channel: $tag, publishedAt: $now},

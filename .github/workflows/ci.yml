@@ -292,6 +292,15 @@ jobs:
           path: dev_logs/release-manifest/build.json
           if-no-files-found: error
 
+      - name: Merge and upload archive manifest (Dev)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ARCHIVE_TAG: beta
+          BUILT_FILES_FILE: dev_logs/aggregated_out/built_files.txt
+          NEW_MANIFEST: dev_logs/aggregated_out/build.json
+        run: bash .github/scripts/merge_archive_manifest.sh
+
       - name: Collect update branch files (Dev)
         run: |
           set -euo pipefail
@@ -464,6 +473,15 @@ jobs:
           name: stable-release-manifest
           path: stable_logs/release-manifest/build.json
           if-no-files-found: error
+
+      - name: Merge and upload archive manifest (Stable)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ARCHIVE_TAG: stable
+          BUILT_FILES_FILE: stable_logs/aggregated_out/built_files.txt
+          NEW_MANIFEST: stable_logs/aggregated_out/build.json
+        run: bash .github/scripts/merge_archive_manifest.sh
 
       - name: Collect update branch files (Stable)
         run: |
@@ -641,7 +659,16 @@ jobs:
           name: latest-release-manifest
           path: latest_logs/release-manifest/build.json
           if-no-files-found: error
-          
+
+      - name: Merge and upload archive manifest (Latest)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ARCHIVE_TAG: stable
+          BUILT_FILES_FILE: latest_logs/aggregated_out/built_files.txt
+          NEW_MANIFEST: latest_logs/aggregated_out/build.json
+        run: bash .github/scripts/merge_archive_manifest.sh
+
       - name: Collect update branch files (Latest)
         run: |
           set -euo pipefail
@@ -778,6 +805,15 @@ jobs:
           name: batch-release-manifest
           path: batch_logs/release-manifest/build.json
           if-no-files-found: error
+
+      - name: Merge and upload archive manifest (Batch)
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ARCHIVE_TAG: ${{ inputs.mode == 'Batch Build (Both)' && 'beta' || 'stable' }}
+          BUILT_FILES_FILE: batch_logs/aggregated_out/built_files.txt
+          NEW_MANIFEST: batch_logs/aggregated_out/build.json
+        run: bash .github/scripts/merge_archive_manifest.sh
 
       - name: Collect update branch files (Batch)
         run: |
