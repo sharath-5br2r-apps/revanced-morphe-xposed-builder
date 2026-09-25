@@ -1,16 +1,18 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "HillClimbRacing-Morphe-Byehi98": {
+  "TikTok-Morphe-Hushfeed": {
     "enable-module-update": true,
-    "patches-source": "byehi98/okish-morphe-patches",
-    "patch-brand": "Byehi98",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Hill Climb Racing",
-    "arch": "arm64-v8a armeabi-v7a",
-    "pkg-name": "com.fingersoft.hillclimb",
-    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
+    "app-name": "TikTok",
+    "pkg-name": "com.zhiliaoapp.musically",
+    "patch-brand": "Hushfeed",
+    "arch": "all arm64-v8a armeabi-v7a",
+    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
+    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
+    "patches-source": "SysAdminDoc/hushfeed"
   }
 }

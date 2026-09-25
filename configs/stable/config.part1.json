@@ -1,15 +1,19 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "SmashHit-Morphe-Byehi98": {
+  "PrimeVideo-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-source": "byehi98/okish-morphe-patches",
-    "patch-brand": "Byehi98",
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Smash Hit",
-    "pkg-name": "com.mediocre.smashhit",
-    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/"
+    "app-name": "Prime Video",
+    "sub-variant": "Experimental",
+    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "arch": "arm64-v8a armeabi-v7a",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
+    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android"
   }
 }

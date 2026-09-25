@@ -41,8 +41,8 @@
     "blocked": false,
     "host": "github",
     "repo": "SysAdminDoc/hushfeed",
-    "stable": "v0.58.0",
-    "stable_date": "2026-09-21T12:50:34Z"
+    "stable": "v0.59.0",
+    "stable_date": "2026-09-25T20:42:08Z"
   },
   "anddea/revanced-patches": {
     "beta": "v4.3.0-dev.8",
@@ -135,8 +135,8 @@
     "stable_date": "2026-09-07T08:52:16Z"
   },
   "icysymmetra/tiktok-patches-for-morphe": {
-    "beta": "v0.8.0-dev.11",
-    "beta_date": "2026-09-14T21:05:20Z",
+    "beta": "v0.8.0-dev.12",
+    "beta_date": "2026-09-25T21:33:08Z",
     "blocked": false,
     "host": "github",
     "repo": "icysymmetra/tiktok-patches-for-morphe",

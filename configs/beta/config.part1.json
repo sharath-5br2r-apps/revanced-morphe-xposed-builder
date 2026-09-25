@@ -1,46 +1,18 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "YouTube-Morphe-Anddea": {
+  "TikTok-Morphe-Icysymmetra": {
     "enable-module-update": true,
-    "patches-source": "anddea/revanced-patches",
-    "patch-brand": "Anddea",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "YouTube",
-    "build-mode": "both",
-    "pkg-name": "com.google.android.youtube",
-    "included-patches": "'MaterialYou'",
-    "patcher-args": "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube"
-  },
-  "Vector-Morphe-Byehi98": {
-    "enable-module-update": true,
-    "patches-source": "byehi98/okish-morphe-patches",
-    "patch-brand": "Byehi98",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "Vector",
-    "pkg-name": "com.nekki.vector",
-    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/"
-  },
-  "YouTube-Morphe-Experimental": {
-    "enable-module-update": true,
-    "patches-source": "MorpheApp/morphe-patches",
-    "patch-brand": "morphe",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "YouTube",
-    "sub-variant": "Experimental",
-    "build-mode": "both",
-    "version": "exp",
-    "pkg-name": "com.google.android.youtube",
-    "included-patches": "'Theme'",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
+    "app-name": "TikTok",
+    "pkg-name": "com.zhiliaoapp.musically",
+    "patch-brand": "Icysymmetra",
+    "arch": "all arm64-v8a armeabi-v7a",
+    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
+    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
+    "patches-source": "icysymmetra/tiktok-patches-for-morphe"
   }
 }

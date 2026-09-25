@@ -1,50 +1,50 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "SmashHit-Morphe-Byehi98": {
+  "PrimeVideo-Morphe-Hoodles-Experimental": {
     "enable-module-update": true,
-    "patches-source": "byehi98/okish-morphe-patches",
-    "patch-brand": "Byehi98",
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Smash Hit",
-    "pkg-name": "com.mediocre.smashhit",
-    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/"
-  },
-  "Vector-Morphe-Byehi98": {
-    "enable-module-update": true,
-    "patches-source": "byehi98/okish-morphe-patches",
-    "patch-brand": "Byehi98",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "Vector",
-    "pkg-name": "com.nekki.vector",
-    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/"
-  },
-  "HillClimbRacing-Morphe-Byehi98": {
-    "enable-module-update": true,
-    "patches-source": "byehi98/okish-morphe-patches",
-    "patch-brand": "Byehi98",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "Hill Climb Racing",
+    "app-name": "Prime Video",
+    "sub-variant": "Experimental",
+    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "version": "latest",
+    "skip-patch-app-check": true,
     "arch": "arm64-v8a armeabi-v7a",
-    "pkg-name": "com.fingersoft.hillclimb",
-    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
+    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android"
   },
-  "JetpackJoyride-Morphe-Byehi98": {
+  "PrimeVideo-Morphe-Hoodles-Shared-Experimental": {
     "enable-module-update": true,
-    "patches-source": "byehi98/okish-morphe-patches",
-    "patch-brand": "Byehi98",
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Jetpack Joyride",
-    "pkg-name": "com.halfbrick.jetpackjoyride",
-    "uptodown-dlurl": "https://jetpack-joyride.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/halfbrick-studios/jetpack-joyride/jetpack-joyride-1-104-1-release/"
+    "app-name": "Prime Video",
+    "variant": "Shared",
+    "sub-variant": "Experimental",
+    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "arch": "arm64-v8a armeabi-v7a",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
+    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
+    "excluded-patches": "'Rename Shared Permissions'"
+  },
+  "TikTok-Morphe-Hushfeed": {
+    "enable-module-update": true,
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "TikTok",
+    "pkg-name": "com.zhiliaoapp.musically",
+    "patch-brand": "Hushfeed",
+    "arch": "all arm64-v8a armeabi-v7a",
+    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
+    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
+    "patches-source": "SysAdminDoc/hushfeed"
   }
 }

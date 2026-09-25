@@ -1,1 +1,21 @@
-{}
+{
+  "patches-version": "both",
+  "enable-module-update": true,
+  "PrimeVideo-Morphe-Hoodles-Shared-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Prime Video",
+    "variant": "Shared",
+    "sub-variant": "Experimental",
+    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "arch": "arm64-v8a armeabi-v7a",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
+    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
+    "excluded-patches": "'Rename Shared Permissions'"
+  }
+}
