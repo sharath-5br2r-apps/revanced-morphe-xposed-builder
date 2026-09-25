@@ -60,7 +60,7 @@
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "d2e9ecf8b3d0994235a67570402df245",
-      "shared": "7f97b54d5deb3bbcbdcedcd58e1a7f3e"
+      "shared": "3b223cf735679051ba1fc6a2ecdb7cff"
     },
     "stable": {
       "com.fingersoft.hillclimb": "af801fe61c47338f7f247bba4f641fb0",
@@ -175,8 +175,8 @@
   },
   "morpheapp/morphe-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "9d25cfd6ee351e37c189927d81b9b4c4",
-      "com.google.android.youtube": "b50ba43a3e8016f6ebf0f10af052a886",
+      "com.google.android.apps.youtube.music": "72a3212aaa6753b10894a6f76f7f2b94",
+      "com.google.android.youtube": "290ed857681dbc6a353bae25b563fd33",
       "shared": "68bc263706f8e8eb00256dd72315cda6"
     },
     "stable": {
