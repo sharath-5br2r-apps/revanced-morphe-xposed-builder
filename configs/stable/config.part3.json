@@ -1,1 +1,16 @@
-{}
+{
+  "patches-version": "stable",
+  "enable-module-update": true,
+  "HillClimbRacing-Morphe-Byehi98": {
+    "enable-module-update": true,
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Hill Climb Racing",
+    "arch": "arm64-v8a armeabi-v7a",
+    "pkg-name": "com.fingersoft.hillclimb",
+    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
+  }
+}

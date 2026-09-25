@@ -1,29 +1,47 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "Vector-Morphe-Byehi98": {
+  "YouTube-Morphe-Anddea-AMOLED": {
+    "enable-module-update": true,
+    "patches-source": "anddea/revanced-patches",
+    "patch-brand": "Anddea",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "YouTube",
+    "variant": "AMOLED",
+    "build-mode": "both",
+    "pkg-name": "com.google.android.youtube",
+    "included-patches": "'MaterialYou'",
+    "patcher-args": "-e 'Theme' -OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF --continue-on-error",
+    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube"
+  },
+  "HillClimbRacing-Morphe-Byehi98": {
     "enable-module-update": true,
     "patches-source": "byehi98/okish-morphe-patches",
     "patch-brand": "Byehi98",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Vector",
-    "pkg-name": "com.nekki.vector",
-    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/"
+    "app-name": "Hill Climb Racing",
+    "arch": "arm64-v8a armeabi-v7a",
+    "pkg-name": "com.fingersoft.hillclimb",
+    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
   },
-  "YouTube-Morphe-Experimental": {
+  "YouTube-Morphe-AMOLED-Experimental": {
     "enable-module-update": true,
     "patches-source": "MorpheApp/morphe-patches",
     "patch-brand": "morphe",
     "cli-type": "morphe",
     "enabled": true,
     "app-name": "YouTube",
+    "variant": "AMOLED",
     "sub-variant": "Experimental",
     "build-mode": "both",
     "version": "exp",
     "pkg-name": "com.google.android.youtube",
     "included-patches": "'Theme'",
+    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
     "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
     "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
     "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
