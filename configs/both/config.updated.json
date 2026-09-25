@@ -1,3 +1,21 @@
 {
-  "patches-version": "both"
+  "patches-version": "both",
+  "AmazonIndia-Morphe-Rushiranpise-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "rushiranpise/morphe-patches",
+    "patch-brand": "Rushiranpise",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Amazon India",
+    "sub-variant": "Experimental",
+    "pkg-name": "in.amazon.mShop.android.shopping",
+    "uptodown-dlurl": "https://amazon-india.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay",
+    "included-patches": "'Dark Mode' 'Open Links in Browser'",
+    "excluded-patches": "'Hide Rufus Tab'",
+    "custom-microg-patches": "'None'",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "arch": "all arm64-v8a armeabi-v7a"
+  }
 }
