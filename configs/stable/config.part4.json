@@ -1,19 +1,18 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "TikTok-Morphe-Kveld9-Asia": {
+  "TikTok-Morphe-Kveld9": {
     "enable-module-update": true,
     "cli-type": "morphe",
     "enabled": true,
     "app-name": "TikTok",
-    "variant": "Asia",
-    "pkg-name": "com.ss.android.ugc.trill",
+    "pkg-name": "com.zhiliaoapp.musically",
     "patch-brand": "Kveld9",
     "arch": "all arm64-v8a armeabi-v7a",
-    "uptodown-dlurl": "https://tik-tok.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok",
-    "apkpure-dlurl": "https://apkpure.com/tiktok-asia-app/com.ss.android.ugc.trill",
-    "apkcombo-dlurl": "https://apkcombo.com/tiktok-asia/com.ss.android.ugc.trill",
+    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
+    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
     "patches-source": "kveld9/kveld-morphe-patches"
   }
 }
