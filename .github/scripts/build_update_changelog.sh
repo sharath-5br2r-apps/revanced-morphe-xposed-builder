@@ -31,6 +31,9 @@ UPDATE_OUT="temp/update-files"
 mkdir -p "$UPDATE_OUT"
 
 cd build || { echo "build folder not found"; exit 1; }
+# Staging list for the auto-commit step (file_pattern can't enumerate dynamic
+# subdirectory paths); consumed by build.yml as a multiline git add argument.
+: > ../.updated_pointers
 for OUTPUT in *module*.zip; do
   [ "$OUTPUT" = "*module*.zip" ] && continue
   ZIP_S=$(unzip -p "$OUTPUT" module.prop)

@@ -75,6 +75,7 @@ RVB_INSTAFEL_DEFAULT_PATCHES="${RVB_INSTAFEL_DEFAULT_PATCHES:-unlock_developer_o
 RVB_MORPHE_PASSTHROUGH="${RVB_MORPHE_PASSTHROUGH:-true}"
 
 declare -gA __PREBUILTS_CACHE__
+declare -g __PREBUILTS_RESULT=""
 declare -gA __PATCHES_LIST_CACHE__
 declare -gA __PATCH_VER_CACHE__
 declare -gA __PKG_VERS_CACHE__
@@ -477,16 +478,33 @@ get_apkeditor() {
 	gh_dl "$TEMP_DIR/apkeditor.jar" "$dl_url" >/dev/null || return 1
 }
 
+# Result is published through the global __PREBUILTS_RESULT instead of stdout on
+# purpose: callers MUST invoke this directly (NOT via $(...)). Command
+# substitution runs in a subshell, so the __PREBUILTS_CACHE__ write below would
+# be discarded there and every call would miss the cache and re-hit the release
+# API. Printing to a global keeps both the cache write and the read in the main
+# shell so repeated apps sharing a source set are served from memory.
 get_prebuilts() {
 	local cache_key="${1}_${2}_${3}_${4}_${5}_${6}_${7:-}_${8:-}_${9:-}_${10:-}_${11:-}_${12:-}"
 	if [ -n "${__PREBUILTS_CACHE__["$cache_key"]:-}" ]; then
-		echo "${__PREBUILTS_CACHE__["$cache_key"]}"
+		__PREBUILTS_RESULT="${__PREBUILTS_CACHE__["$cache_key"]}"
 		return 0
 	fi
 	local result
 	if ! result=$(_get_prebuilts "$@"); then return 1; fi
 	__PREBUILTS_CACHE__["$cache_key"]="$result"
-	echo "$result"
+	__PREBUILTS_RESULT="$result"
+}
+
+# Canonical on-disk folder for a source's downloaded release assets. Namespaced by
+# forge host AND the full owner/repo so that two repos under one owner (e.g.
+# hxreborn/morphe-patches vs hxreborn/hxreborn-tiktok-patches), or the same
+# owner/repo on GitHub vs GitLab, never share a folder and cross-match by version.
+# Lowercased; '/' becomes '__'; the legacy '-rv' (ReVanced) marker is kept.
+rv_release_dir() { # $1=host (github|gitlab) $2=owner/repo -> ${TEMP_DIR}/<host>__<owner>__<repo>-rv
+	local slug=${2,,}
+	slug=${slug//\//__}
+	printf '%s/%s__%s-rv' "$TEMP_DIR" "${1,,}" "$slug"
 }
 
 _get_prebuilts() {
@@ -507,18 +525,23 @@ _get_prebuilts() {
 	
 	local first_patch_src
 	first_patch_src=$(list_args "$patches_src_list" | tr -d \"\' | head -n 1)
-	pr "Getting prebuilts (${first_patch_src%/*})" >&2
+	# The "Getting prebuilts" header is printed lazily, exactly once, the first
+	# time a file actually needs to be downloaded (see the download sites below),
+	# so fully disk-cached runs stay silent instead of repeating it per app.
+	local prebuilts_header_printed=false
 
-	local cl_dir=${first_patch_src%/*}
-	cl_dir=${TEMP_DIR}/${cl_dir,,}-rv
+	local first_patch_host
+	first_patch_host=$(list_args "$patches_host_list" | tr -d \"\' | head -n 1)
+	local cl_dir
+	cl_dir=$(rv_release_dir "$first_patch_host" "$first_patch_src")
 	[ -d "$cl_dir" ] || mkdir "$cl_dir"
 
 	local host=$cli_host src=$cli_src tag="CLI" ver=${cli_ver} fprefix="cli" host_instance=""
 	parse_host_spec "$host" host host_instance || abort "source host '$host' is not supported"
 
 	local grab_cl=false
-	local dir=${src%/*}
-	dir=${TEMP_DIR}/${dir,,}-rv
+	local dir
+	dir=$(rv_release_dir "$host" "$src")
 	[ -d "$dir" ] || mkdir "$dir"
 
 	local rv_rel release resp tag_name matches asset name url
@@ -586,6 +609,7 @@ _get_prebuilts() {
 		url=$(source_release_asset_url "$host" <<<"$asset")
 		name=$(jq -r .name <<<"$asset")
 		file="${dir}/${name}"
+		if [ "$prebuilts_header_printed" != true ]; then pr "Getting prebuilts (${first_patch_src%/*})" >&2; prebuilts_header_printed=true; fi
 		if [ "$host" = github ]; then
 			gh_dl "$file" "$url" >&2 || return 1
 		else
@@ -620,8 +644,14 @@ _get_prebuilts() {
 		local tag="Patches" fprefix="patches"
 		local grab_cl=true
 		
-		local dir=${src%/*}
-		dir=${TEMP_DIR}/${dir,,}-rv
+		# Reset per-source resolution state. `local` re-declaration does NOT clear a
+		# variable already local to this function, so release would otherwise leak from
+		# the CLI block (or the previous source). The concrete-version branch below is
+		# gated on [ -z "$release" ], so a stale release would skip the tag fetch and
+		# resolve this source's bundle from the wrong release entirely.
+		local rv_rel resp tag_name matches asset name url release=""
+		local dir
+		dir=$(rv_release_dir "$host" "$src")
 		[ -d "$dir" ] || mkdir "$dir"
 		
 		local rv_rel release resp tag_name matches asset name url
@@ -689,6 +719,7 @@ _get_prebuilts() {
 			url=$(source_release_asset_url "$host" <<<"$asset")
 			name=$(jq -r .name <<<"$asset")
 			file="${dir}/${name}"
+			if [ "$prebuilts_header_printed" != true ]; then pr "Getting prebuilts (${first_patch_src%/*})" >&2; prebuilts_header_printed=true; fi
 			if [ "$host" = github ]; then
 				gh_dl "$file" "$url" >&2 || return 1
 			else
@@ -702,6 +733,11 @@ _get_prebuilts() {
 		fi
 
 		echo "$tag_name" > "${dir}/tag_name.txt"
+		# Per-bundle tag marker, keyed to the exact downloaded/found file. Unlike the
+		# dir-level tag_name.txt it is immune to other versions/apps sharing the same
+		# folder and to a process-level cache hit skipping the rewrite, so build.sh
+		# can always read the authoritative tag for the file this build actually used.
+		echo "$tag_name" > "${file}.tag"
 
 		if [ "$grab_cl" = true ]; then
 			changelog_url=$(source_release_web_url "$host" "$src" "$tag_name" "$host_instance") || changelog_url=""
@@ -3734,7 +3770,7 @@ build_rv() {
 	# 1. Resolve pkg_name early if possible and check cache
 	if [ -n "$pkg_name" ]; then
 		# Check app_versions.json for exact version
-		local app_versions_file=".github/configs/app_versions.json"
+		local app_versions_file="state/app_versions.json"
 		if [ -f "$app_versions_file" ]; then
 			local t_pure="${table% (arm64-v8a)}"
 			t_pure="${t_pure% (armeabi-v7a)}"
@@ -4611,6 +4647,8 @@ build_rv() {
    local base_template
 		base_template=$(mktemp -d -p "$TEMP_DIR")
 		cp -a $MODULE_TEMPLATE_DIR/. "$base_template"
+		local upj
+		upj=$(update_json_path "${args[module_prop_name]}" "${DEF_AUTHOR_NAME:-nullcpy}")
 
 		module_config "$base_template" "$final_pkg_name" "$version_f" "$arch"
 
@@ -4737,6 +4775,29 @@ module_config() {
 PKG_VER=$3
 MODULE_ARCH=$ma" >"$1/config"
 }
+
+# Map a module id (module_prop_name) to its update-branch JSON path:
+#   <channel>/<id-without-author-or-channel-suffix>.json
+# The channel folder (stable|beta) replaces the old "-beta-" filename infix,
+# and the author segment is dropped since it's constant for this repo.
+# Module id shape from build.sh: <table>-<author>[-beta][-arm64|-arm].
+# This path is a wire format baked into every module zip via module.prop
+# updateJson — changing it orphans installed modules; never restructure
+# the branch to "tidy" it.
+update_json_path() {
+	local mpn=${1,,} author=${2,,} chan=stable arch=""
+	case $mpn in
+		*-arm64) arch="-arm64"; mpn=${mpn%-arm64} ;;
+		*-arm) arch="-arm"; mpn=${mpn%-arm} ;;
+	esac
+	if [[ $mpn == *-beta ]]; then
+		chan="beta"
+		mpn=${mpn%-beta}
+	fi
+	[ -n "$author" ] && mpn=${mpn%-$author}
+	echo "$chan/${mpn}${arch}.json"
+}
+
 module_prop() {
 	echo "id=${1}
 name=${2}

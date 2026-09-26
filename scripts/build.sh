@@ -311,11 +311,18 @@ for table_name in $(toml_get_table_names); do
 	patches_filter=$(toml_get "$t" patches-source-filter) || patches_filter=""
 	patches_tag_filter=$(toml_get "$t" patches-tag-filter) || patches_tag_filter=""
 	patches_name_filter=$(toml_get "$t" patches-release-name-filter) || patches_name_filter=""
-	if ! PREBUILTS="$(get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver" "$cli_type" "$cli_filter" "$patches_filter" "$cli_tag_filter" "$patches_tag_filter" "$cli_name_filter" "$patches_name_filter")"; then
+	# NOTE: called directly, not via $(...), so the __PREBUILTS_CACHE__ write in
+	# get_prebuilts survives in this shell (see get_prebuilts in utils.sh).
+	if ! get_prebuilts "$cli_src_host" "$cli_src" "$cli_ver" "$patches_src_host" "$patches_src" "$patches_ver" "$cli_type" "$cli_filter" "$patches_filter" "$cli_tag_filter" "$patches_tag_filter" "$cli_name_filter" "$patches_name_filter"; then
 		epr "Could not get prebuilts"
 		continue
 	fi
-	read -r cli_jar patches_jar_all <<< "$PREBUILTS"
+	read -r -a __pb <<< "$__PREBUILTS_RESULT"
+	cli_jar=${__pb[0]}
+	patches_jar_all="${__pb[*]:1}"
+	# Resolved patch bundles, index-aligned with p_srcs (both derive from the same
+	# patches_src string via list_args), so metadata can name the exact file used.
+	__pb_patches=("${__pb[@]:1}")
 	app_args[cli]=$cli_jar
 	app_args[ptjar]=$patches_jar_all
 	app_args[cli_source]=$cli_src
@@ -330,17 +337,17 @@ for table_name in $(toml_get_table_names); do
 		# synthetic temp/none-rv directory or manufacture patch metadata.
 		[ -z "$psrc" ] || [ "${psrc,,}" = none ] && continue
 		phost="${p_hosts[$i]:-${p_hosts[0]}}"
-		# Find the downloaded bundle for this source to get actual version
-		pdir=${psrc%/*}; pdir=${TEMP_DIR}/${pdir,,}-rv
-		case "$PATCHER_FLOW" in
-			xposed-module) pfile=$(find "$pdir" -name '*.apk' 2>/dev/null | sort | tail -1) ;;
-			instafel-workflow) pfile=$(find "$pdir" -name 'ifl-patcher*.jar' 2>/dev/null | sort | tail -1) ;;
-			*) pfile=$(find "$pdir" \( -name 'patches-*.rvp' -o -name 'patches-*.jar' -o -name '*.mpp' \) 2>/dev/null | sort | tail -1) ;;
-		esac
+		# Use the exact bundle resolved for THIS build (index-aligned with p_srcs)
+		# instead of re-scanning the folder, which would report the highest-sorted
+		# version when several versions of the same repo coexist.
+		pfile="${__pb_patches[$i]:-}"
 		if [ -n "$pfile" ]; then
+			pdir=$(dirname "$pfile")
 			pfilename=${pfile##*/}
 			
-			if [ -f "${pdir}/tag_name.txt" ]; then
+			if [ -f "${pfile}.tag" ]; then
+				ptag=$(cat "${pfile}.tag")
+			elif [ -f "${pdir}/tag_name.txt" ]; then
 				ptag=$(cat "${pdir}/tag_name.txt")
 			else
 				pver_actual=${pfilename#*-}; pver_actual=${pver_actual%.*}

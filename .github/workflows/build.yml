@@ -4,6 +4,10 @@ run-name: "Build [Config: ${{ inputs.config_file }} , Patch Ver:${{ inputs.patch
 on:
   workflow_call:
     inputs:
+      config_branch:
+        required: false
+        type: string
+        default: "main"
       config_file:
         required: true
         type: string
@@ -31,6 +35,38 @@ on:
         required: false
         type: string
         default: ""
+  workflow_dispatch:
+    inputs:
+      config_branch:
+        description: "Config source branch"
+        required: true
+        type: choice
+        default: "main"
+        options:
+          - "main"
+          - "data"
+      config_file:
+        description: "Select the config file to use"
+        required: true
+        type: choice
+        default: "configs/config.manual.toml"
+        options:
+          - "configs/config.manual.toml"
+          - "configs/beta_build.json"
+          - "configs/stable_build.json"
+          - "configs/stable/config.updated.json"
+          - "configs/beta/config.updated.json"
+          - "configs/both/config.updated.json"
+      remove_apks:
+        description: "Optional: APKs to remove from cache (space-separated, e.g., com.brave.browser-1.93.138-*.apk)"
+        required: false
+        type: string
+        default: ""
+      patches_version:
+        description: "Optional patches version override"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: build-${{ inputs.config_file }}
@@ -46,6 +82,10 @@ jobs:
       next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
       archive_tag: ${{ steps.context.outputs.ARCHIVE_TAG }}
       flavor_tag: ${{ steps.context.outputs.FLAVOR_TAG }}
+    # Performance tuning knobs
+    env:
+      PARALLEL_JOBS: "2"
+      UPLOAD_CONCURRENCY: "10"
     services:
       cf_solver:
         image: ghcr.io/sarperavci/cloudflarebypassforscraping:latest
@@ -75,9 +115,17 @@ jobs:
             fi
           fi
 
+      - name: Fetch configs & state
+        run: bash .github/scripts/fetch_data_branch.sh "${{ inputs.config_branch || 'main' }}"
+
       - name: Resolve build context
         id: context
-        run: bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}" "${{ inputs.patches_version }}"
+        run: |
+          cfg="${{ inputs.config_file }}"
+          if [ ! -f "$cfg" ] && [ -f "temp_configs/${cfg#configs/}" ]; then
+            cfg="temp_configs/${cfg#configs/}"
+          fi
+          bash .github/scripts/build_resolve_context.sh "$cfg" "${{ inputs.patches_version }}"
 
       - name: Resolve version code
         id: version
@@ -95,7 +143,7 @@ jobs:
         uses: actions/cache/restore@v6
         with:
           path: temp/apks
-          key: apks-v4-${{ hashFiles(inputs.config_file, 'configs/app_versions.json') }}
+          key: apks-v4-${{ hashFiles(inputs.config_file, 'configs/app_versions.json', 'state/app_versions.json') }}
           restore-keys: |
             apks-v4-
 
@@ -197,7 +245,6 @@ jobs:
           echo "Failed to upload build.json after 3 attempts" >&2
           exit 1
 
-
       - name: Upload error log
         if: ${{ inputs.aggregate_flavor == '' && hashFiles('error.log') != '' }}
         uses: actions/upload-artifact@v7
@@ -282,13 +329,14 @@ jobs:
           UPLOAD_CONCURRENCY: "${{ vars.UPLOAD_CONCURRENCY || '4' }}"
         run: bash .github/scripts/build_upload_release.sh
 
-      - name: Merge and upload archive manifest
+      - name: Merge archive manifest into website branch
         if: ${{ inputs.aggregate_flavor == '' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ARCHIVE_TAG: ${{ steps.context.outputs.ARCHIVE_TAG }}
+          BUILD_TAG: ${{ steps.version.outputs.NEXT_VER_CODE }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-        run: bash .github/scripts/merge_archive_manifest.sh
+        run: bash .github/scripts/merge_archive_branch.sh
 
       - name: Upload part build metadata
         if: ${{ inputs.upload_release_metadata == false }}
@@ -303,8 +351,6 @@ jobs:
             *-update.json
             ${{ inputs.config_file }}
           if-no-files-found: ignore
-
-
 
       - name: Notify website catalog rebuild
         if: ${{ inputs.upload_release_metadata != false }}

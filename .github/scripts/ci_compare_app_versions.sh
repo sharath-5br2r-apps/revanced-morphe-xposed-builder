@@ -2,7 +2,8 @@
 export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
 
-CURRENT_VERSIONS="configs/app_versions.json"
+CURRENT_VERSIONS="state/app_versions.json"
+[ -f "$CURRENT_VERSIONS" ] || CURRENT_VERSIONS="configs/app_versions.json"
 ACTIVE_APPS="active_apps.json"
 
 [ -f "$CURRENT_VERSIONS" ] || echo '{}' > "$CURRENT_VERSIONS"

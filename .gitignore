@@ -14,8 +14,9 @@ module/maintainer.txt
 config.stable.json
 config.beta.json
 active*.json
-tags_*.json
+tags_*.json
 error.log
 configs/patches/merged/
 built_files*.txt
 build_files*.txt
+.updated_pointers

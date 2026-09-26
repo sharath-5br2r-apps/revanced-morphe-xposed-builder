@@ -3,6 +3,14 @@ permissions: write-all
 on:
   workflow_dispatch:
     inputs:
+      config_branch:
+        description: "Config source branch"
+        required: true
+        type: choice
+        default: "main"
+        options:
+          - "main"
+          - "data"
       config_file:
         description: "Config file to use"
         required: true
@@ -14,6 +22,8 @@ on:
           - "configs/stable/config.updated.json"
           - "configs/beta/config.updated.json"
           - "configs/both/config.updated.json"
+          - "configs/beta_build.json"
+          - "configs/stable_build.json"
       manual_config_file:
         description: "Optional config path or patch config name"
         required: false
@@ -44,6 +54,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Fetch configs & state
+        run: bash .github/scripts/fetch_data_branch.sh "${{ inputs.config_branch }}"
+
       - name: Resolve config file
         id: config
         env:
@@ -55,6 +68,8 @@ jobs:
           if [ -n "$MANUAL_CONFIG" ]; then
             if [ -f "$MANUAL_CONFIG" ]; then
               config_file="$MANUAL_CONFIG"
+            elif [ -f "temp_configs/$MANUAL_CONFIG" ]; then
+              config_file="temp_configs/$MANUAL_CONFIG"
             elif [ -f "configs/patches/$MANUAL_CONFIG.toml" ]; then
               config_file="configs/patches/$MANUAL_CONFIG.toml"
             elif [ -f "configs/$MANUAL_CONFIG" ]; then
@@ -64,12 +79,17 @@ jobs:
               exit 1
             fi
           fi
+          # Fallback to temp_configs if selected file was materialized there
+          if [ ! -f "$config_file" ] && [ -f "temp_configs/${config_file#configs/}" ]; then
+            config_file="temp_configs/${config_file#configs/}"
+          fi
           echo "CONFIG_FILE=$config_file" >> "$GITHUB_OUTPUT"
 
   build_manual:
     needs: resolve_config
     uses: ./.github/workflows/build.yml
     with:
+      config_branch: ${{ inputs.config_branch }}
       config_file: ${{ needs.resolve_config.outputs.config_file }}
       exclusive_apps: ${{ inputs.exclusive_apps }}
       remove_apks: ${{ inputs.remove_apks }}
