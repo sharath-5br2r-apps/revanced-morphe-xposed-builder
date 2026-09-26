@@ -102,9 +102,19 @@ def main():
     build_dir = Path("build")
     build_info = load_json(json_path, default={})
 
-    # Index files actually present in build/
+    # Index files actually present in build/ or built_files.txt
     built_files = set()
-    if build_dir.exists():
+    built_files_env = os.environ.get("BUILT_FILES_FILE", "").strip() or os.environ.get("BUILD_FILES_FILE", "").strip()
+    bpath = Path(built_files_env) if built_files_env else None
+    if not bpath or not bpath.is_file():
+        for candidate in ["aggregated_out/built_files.txt", "built_files.txt", "build_files.txt"]:
+            if Path(candidate).is_file():
+                bpath = Path(candidate)
+                break
+    if bpath and bpath.is_file():
+        with open(bpath, encoding="utf-8") as f:
+            built_files = {line.strip() for line in f if line.strip()}
+    elif build_dir.exists():
         built_files = {f.name for f in build_dir.iterdir() if f.is_file() and f.suffix.lower() in [".apk", ".zip"]}
 
     # patch_source → { source, tag, changelog_url, release_notes, apps: { display_name → { version, apks, modules } } }
