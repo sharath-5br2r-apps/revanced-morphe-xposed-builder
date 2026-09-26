@@ -1,35 +1,37 @@
 {
   "patches-version": "both",
-  "PrimeVideo-Morphe-Hoodles-Experimental": {
+  "AmazonShopping-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
-    "patches-source": "hoo-dles/morphe-patches",
-    "patch-brand": "Hoodles",
+    "patches-source": "rushiranpise/morphe-patches",
+    "patch-brand": "Rushiranpise",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Prime Video",
+    "app-name": "Amazon Shopping",
     "sub-variant": "Experimental",
-    "pkg-name": "com.amazon.avod.thirdpartyclient",
+    "pkg-name": "com.amazon.mShop.android.shopping",
+    "uptodown-dlurl": "https://amazon-shopping.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/",
+    "included-patches": "'Dark Mode' 'Open Links in Browser'",
+    "excluded-patches": "'Hide Rufus Tab'",
+    "custom-microg-patches": "'None'",
     "version": "latest",
     "skip-patch-app-check": true,
-    "arch": "arm64-v8a armeabi-v7a",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
-    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android"
+    "arch": "all arm64-v8a armeabi-v7a"
   },
-  "PrimeVideo-Morphe-Hoodles-Shared-Experimental": {
+  "AdobeAcrobat-Morphe-Rushiranpise-Experimental": {
     "enable-module-update": true,
-    "patches-source": "hoo-dles/morphe-patches",
-    "patch-brand": "Hoodles",
+    "patches-source": "rushiranpise/morphe-patches",
+    "patch-brand": "Rushiranpise",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Prime Video",
-    "variant": "Shared",
+    "app-name": "Adobe Acrobat",
     "sub-variant": "Experimental",
-    "pkg-name": "com.amazon.avod.thirdpartyclient",
     "version": "latest",
     "skip-patch-app-check": true,
-    "arch": "arm64-v8a armeabi-v7a",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video",
-    "uptodown-dlurl": "https://amazon-video.en.uptodown.com/android",
-    "excluded-patches": "'Rename Shared Permissions'"
+    "arch": "all arm64-v8a x86_64",
+    "pkg-name": "com.adobe.reader",
+    "uptodown-dlurl": "https://adobe-reader.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-acrobat",
+    "custom-microg-patches": "'None'"
   }
 }

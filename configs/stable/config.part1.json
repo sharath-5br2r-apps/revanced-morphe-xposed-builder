@@ -1,18 +1,36 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "TikTok-Morphe-Hushfeed": {
+  "BraveBrowser-Morphe-Kveld9": {
     "enable-module-update": true,
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "TikTok",
-    "pkg-name": "com.zhiliaoapp.musically",
-    "patch-brand": "Hushfeed",
-    "arch": "all arm64-v8a armeabi-v7a",
-    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
-    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
-    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
-    "patches-source": "SysAdminDoc/hushfeed"
+    "app-name": "Brave Browser",
+    "patch-brand": "Kveld9",
+    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
+    "pkg-name": "com.brave.browser",
+    "patches-source": "kveld9/kveld-morphe-patches",
+    "patcher-args": "--continue-on-error",
+    "github-dlurl": "https://github.com/brave/brave-browser/releases",
+    "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
+    "github-release-name-regex": "^Release v"
+  },
+  "AmazonShopping-Morphe-Rushiranpise-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "rushiranpise/morphe-patches",
+    "patch-brand": "Rushiranpise",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Amazon Shopping",
+    "sub-variant": "Experimental",
+    "pkg-name": "com.amazon.mShop.android.shopping",
+    "uptodown-dlurl": "https://amazon-shopping.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/",
+    "included-patches": "'Dark Mode' 'Open Links in Browser'",
+    "excluded-patches": "'Hide Rufus Tab'",
+    "custom-microg-patches": "'None'",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "arch": "all arm64-v8a armeabi-v7a"
   }
 }

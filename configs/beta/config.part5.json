@@ -1,22 +1,19 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "YouTubeMusic-Morphe-Experimental": {
+  "YouTube-Morphe": {
     "enable-module-update": true,
     "patches-source": "MorpheApp/morphe-patches",
     "patch-brand": "morphe",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "YouTube Music",
-    "sub-variant": "Experimental",
+    "app-name": "YouTube",
     "build-mode": "both",
-    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
-    "version": "exp",
-    "pkg-name": "com.google.android.apps.youtube.music",
+    "pkg-name": "com.google.android.youtube",
     "included-patches": "'Theme'",
-    "uptodown-dlurl": "https://youtube-music.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube-music",
-    "apkpure-dlurl": "https://apkpure.com/youtube-music/com.google.android.apps.youtube.music",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube-music/com.google.android.apps.youtube.music"
+    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
+    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
+    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
   }
 }
