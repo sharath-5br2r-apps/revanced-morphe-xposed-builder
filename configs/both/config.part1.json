@@ -1,22 +1,20 @@
 {
   "patches-version": "both",
   "enable-module-update": true,
-  "AmazonShopping-Morphe-Rushiranpise-Experimental": {
+  "Twitter-Morphe-Piko-Experimental": {
     "enable-module-update": true,
-    "patches-source": "rushiranpise/morphe-patches",
-    "patch-brand": "Rushiranpise",
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Amazon Shopping",
+    "app-name": "Twitter",
     "sub-variant": "Experimental",
-    "pkg-name": "com.amazon.mShop.android.shopping",
-    "uptodown-dlurl": "https://amazon-shopping.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/",
-    "included-patches": "'Dark Mode' 'Open Links in Browser'",
-    "excluded-patches": "'Hide Rufus Tab'",
-    "custom-microg-patches": "'None'",
     "version": "latest",
     "skip-patch-app-check": true,
-    "arch": "all arm64-v8a armeabi-v7a"
+    "pkg-name": "com.twitter.android",
+    "excluded-patches": "'Dynamic Color'",
+    "patcher-args": "--continue-on-error",
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
   }
 }

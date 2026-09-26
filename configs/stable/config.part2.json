@@ -1,1 +1,21 @@
-{}
+{
+  "patches-version": "stable",
+  "enable-module-update": true,
+  "Twitter-Morphe-Piko-MaterialYou-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Twitter",
+    "variant": "MaterialYou",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "com.twitter.android",
+    "included-patches": "'Dynamic Color'",
+    "patcher-args": "--continue-on-error",
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
+  }
+}

@@ -1,18 +1,20 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "TikTok-Morphe-Icysymmetra": {
+  "Twitter-Morphe-Piko-Experimental": {
     "enable-module-update": true,
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "TikTok",
-    "pkg-name": "com.zhiliaoapp.musically",
-    "patch-brand": "Icysymmetra",
-    "arch": "all arm64-v8a armeabi-v7a",
-    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
-    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
-    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
-    "patches-source": "icysymmetra/tiktok-patches-for-morphe"
+    "app-name": "Twitter",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "com.twitter.android",
+    "excluded-patches": "'Dynamic Color'",
+    "patcher-args": "--continue-on-error",
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
   }
 }
