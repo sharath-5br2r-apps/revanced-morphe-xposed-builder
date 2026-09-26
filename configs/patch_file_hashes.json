@@ -137,7 +137,10 @@
       "com.zhiliaoapp.musically": "4dbbc2c764e93c8131bfeba4742c852a",
       "shared": "4c8e9750b338baa9b2956091fbe5841a"
     },
-    "stable": {}
+    "stable": {
+      "com.zhiliaoapp.musically": "4dbbc2c764e93c8131bfeba4742c852a",
+      "shared": "4c8e9750b338baa9b2956091fbe5841a"
+    }
   },
   "jasonwu1994/gboard-patches": {
     "beta": {},

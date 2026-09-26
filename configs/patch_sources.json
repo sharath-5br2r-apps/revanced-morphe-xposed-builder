@@ -140,12 +140,12 @@
     "blocked": false,
     "host": "github",
     "repo": "icysymmetra/tiktok-patches-for-morphe",
-    "stable": "v0.7.0",
-    "stable_date": "2026-08-23T00:36:23Z"
+    "stable": "v0.8.0",
+    "stable_date": "2026-09-26T15:27:09Z"
   },
   "jasonwu1994/Gboard-patches": {
-    "beta": "v3.11.0-dev.3",
-    "beta_date": "2026-09-21T03:17:20Z",
+    "beta": "v3.12.0-dev.5",
+    "beta_date": "2026-09-26T17:41:56Z",
     "blocked": false,
     "host": "github",
     "repo": "jasonwu1994/Gboard-patches",
@@ -153,8 +153,8 @@
     "stable_date": "2026-09-22T06:59:02Z"
   },
   "jkennethcarino/adobo": {
-    "beta": "v1.6.0-dev.1",
-    "beta_date": "2026-09-20T16:13:26Z",
+    "beta": "v1.6.0-dev.3",
+    "beta_date": "2026-09-26T18:21:28Z",
     "blocked": false,
     "host": "github",
     "repo": "jkennethcarino/adobo",
