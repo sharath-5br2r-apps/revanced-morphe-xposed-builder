@@ -1,20 +1,19 @@
 {
   "patches-version": "both",
   "enable-module-update": true,
-  "Twitter-Morphe-Piko-Experimental": {
+  "GitHub-Morphe-Hoodles-Stylus-Experimental": {
     "enable-module-update": true,
-    "patches-source": "crimera/piko",
-    "patch-brand": "Piko",
     "cli-type": "morphe",
+    "patch-brand": "Hoodles-Stylus",
+    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
     "enabled": true,
-    "app-name": "Twitter",
+    "app-name": "GitHub",
+    "pkg-name": "com.github.android",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
-    "pkg-name": "com.twitter.android",
-    "excluded-patches": "'Dynamic Color'",
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
+    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
   }
 }

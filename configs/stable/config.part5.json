@@ -1,18 +1,19 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "TikTok-Morphe-Hushfeed": {
+  "GitHub-Morphe-Hoodles-Stylus-Experimental": {
     "enable-module-update": true,
     "cli-type": "morphe",
+    "patch-brand": "Hoodles-Stylus",
+    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
     "enabled": true,
-    "app-name": "TikTok",
-    "pkg-name": "com.zhiliaoapp.musically",
-    "patch-brand": "Hushfeed",
-    "arch": "all arm64-v8a armeabi-v7a",
-    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
-    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
-    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
-    "patches-source": "SysAdminDoc/hushfeed"
+    "app-name": "GitHub",
+    "pkg-name": "com.github.android",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
   }
 }

@@ -60,14 +60,14 @@
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "d2e9ecf8b3d0994235a67570402df245",
-      "shared": "47ae58347dfc342a6256d103eeda1488"
+      "shared": "64f463b6109603f4c215ac2e7128a396"
     },
     "stable": {
       "com.fingersoft.hillclimb": "af801fe61c47338f7f247bba4f641fb0",
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "d2e9ecf8b3d0994235a67570402df245",
-      "shared": "47ae58347dfc342a6256d103eeda1488"
+      "shared": "1dea10f2add77225eb842f4c7e67ed6c"
     }
   },
   "ch3thanhs/stylus": {
@@ -90,8 +90,8 @@
   },
   "dh6k/morphe-patches": {
     "beta": {
-      "com.brave.browser_beta": "fd01978b67dbfd1e32119458351a8002",
-      "com.brave.browser_nightly": "fd01978b67dbfd1e32119458351a8002",
+      "com.brave.browser_beta": "7fe66cdccac0a56efe89d4ef5f2cb9fd",
+      "com.brave.browser_nightly": "7fe66cdccac0a56efe89d4ef5f2cb9fd",
       "shared": "f0e5f4fbc50d53ecd565803fb2e4b958"
     },
     "stable": {
