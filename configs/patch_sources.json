@@ -27,8 +27,8 @@
     "stable_date": "2026-09-01T16:37:52.954Z"
   },
   "PrathxmOp/Prathxm-Patches": {
-    "beta": "v1.13.1-dev.4",
-    "beta_date": "2026-08-24T16:16:24Z",
+    "beta": "v1.13.2-dev.1",
+    "beta_date": "2026-09-27T16:37:53Z",
     "blocked": false,
     "host": "github",
     "repo": "PrathxmOp/Prathxm-Patches",
@@ -81,13 +81,13 @@
     "stable_date": "2026-09-03T09:17:16Z"
   },
   "byehi98/okish-morphe-patches": {
-    "beta": "v1.33.1-dev.2",
-    "beta_date": "2026-09-27T09:30:47Z",
+    "beta": "v1.34.0-dev.1",
+    "beta_date": "2026-09-27T16:49:22Z",
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.33.1",
-    "stable_date": "2026-09-27T09:33:22Z"
+    "stable": "v1.34.0",
+    "stable_date": "2026-09-27T16:51:46Z"
   },
   "ch3thanhs/stylus": {
     "beta": "v1.5.3-dev.1",
@@ -108,8 +108,8 @@
     "stable_date": "2026-08-31T02:40:04Z"
   },
   "dh6k/morphe-patches": {
-    "beta": "v1.8.0-dev.12",
-    "beta_date": "2026-09-27T14:09:37Z",
+    "beta": "v1.7.0-dev.7",
+    "beta_date": "2026-09-23T17:27:21Z",
     "blocked": false,
     "host": "github",
     "repo": "dh6k/morphe-patches",
@@ -131,8 +131,8 @@
     "blocked": false,
     "host": "github",
     "repo": "hxreborn/hxreborn-tiktok-patches",
-    "stable": "v1.3.0",
-    "stable_date": "2026-09-07T08:52:16Z"
+    "stable": "v1.4.0",
+    "stable_date": "2026-09-27T18:29:23Z"
   },
   "icysymmetra/tiktok-patches-for-morphe": {
     "beta": "v0.8.0-dev.12",

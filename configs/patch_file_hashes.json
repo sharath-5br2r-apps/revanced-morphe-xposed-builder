@@ -90,8 +90,8 @@
   },
   "dh6k/morphe-patches": {
     "beta": {
-      "com.brave.browser_beta": "be4de61cea6160c07df3584151761cde",
-      "com.brave.browser_nightly": "be4de61cea6160c07df3584151761cde",
+      "com.brave.browser_beta": "fd01978b67dbfd1e32119458351a8002",
+      "com.brave.browser_nightly": "fd01978b67dbfd1e32119458351a8002",
       "shared": "f0e5f4fbc50d53ecd565803fb2e4b958"
     },
     "stable": {
@@ -130,7 +130,10 @@
       "com.zhiliaoapp.musically": "31826a4c879bc7d00a9deae8714d190a",
       "shared": "ec632f44c27d68976062d7ff9a37232d"
     },
-    "stable": {}
+    "stable": {
+      "com.zhiliaoapp.musically": "ab35fa0298769c3032ac28b317eb9c43",
+      "shared": "261a0b0cd5b11f65cbae870040a7ef37"
+    }
   },
   "icysymmetra/tiktok-patches-for-morphe": {
     "beta": {
@@ -205,7 +208,7 @@
   },
   "prathxmop/prathxm-patches": {
     "beta": {
-      "com.chess": "7580ebdcf711a1597afede18b87d0241",
+      "com.chess": "257e9d045a556ccb7f6ca07067963275",
       "shared": "896486938b5de28e83d923a732d3ec47"
     },
     "stable": {

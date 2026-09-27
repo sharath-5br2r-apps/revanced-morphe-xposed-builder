@@ -1,32 +1,19 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "Vector-Morphe-Byehi98": {
+  "ChessDotCom-Morphe-Prathxm-Clone": {
     "enable-module-update": true,
-    "patches-source": "byehi98/okish-morphe-patches",
-    "patch-brand": "Byehi98",
+    "patches-source": "PrathxmOp/Prathxm-Patches",
+    "patch-brand": "Prathxm",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Vector",
-    "pkg-name": "com.nekki.vector",
-    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/"
-  },
-  "YouTube-Morphe-Experimental": {
-    "enable-module-update": true,
-    "patches-source": "MorpheApp/morphe-patches",
-    "patch-brand": "morphe",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "YouTube",
-    "sub-variant": "Experimental",
-    "build-mode": "both",
-    "version": "exp",
-    "pkg-name": "com.google.android.youtube",
-    "included-patches": "'Theme'",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
+    "app-name": "Chess.com",
+    "sub-variant": "Clone",
+    "version": "auto",
+    "pkg-name": "com.chess",
+    "uptodown-dlurl": "https://chess.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/",
+    "apkmirror-example-url": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/",
+    "included-patches": "'Clone Chess.com'"
   }
 }
