@@ -1,20 +1,15 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "Twitter-Morphe-Piko-Experimental": {
+  "SmashHit-Morphe-Byehi98": {
     "enable-module-update": true,
-    "patches-source": "crimera/piko",
-    "patch-brand": "Piko",
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Twitter",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "pkg-name": "com.twitter.android",
-    "excluded-patches": "'Dynamic Color'",
-    "patcher-args": "--continue-on-error",
-    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
+    "app-name": "Smash Hit",
+    "pkg-name": "com.mediocre.smashhit",
+    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/"
   }
 }

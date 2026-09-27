@@ -41,8 +41,8 @@
     "blocked": false,
     "host": "github",
     "repo": "SysAdminDoc/hushfeed",
-    "stable": "v0.60.0",
-    "stable_date": "2026-09-25T23:55:49Z"
+    "stable": "v0.61.0",
+    "stable_date": "2026-09-27T01:06:12Z"
   },
   "anddea/revanced-patches": {
     "beta": "v4.3.0-dev.8",
@@ -86,8 +86,8 @@
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.31.1",
-    "stable_date": "2026-09-26T04:11:08Z"
+    "stable": "v1.32.0",
+    "stable_date": "2026-09-27T00:59:33Z"
   },
   "ch3thanhs/stylus": {
     "beta": "v1.5.3-dev.1",

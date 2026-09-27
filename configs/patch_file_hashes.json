@@ -67,7 +67,7 @@
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "d2e9ecf8b3d0994235a67570402df245",
-      "shared": "b0daf11baed29670ec4f16ea6e449080"
+      "shared": "47ae58347dfc342a6256d103eeda1488"
     }
   },
   "ch3thanhs/stylus": {
@@ -240,8 +240,8 @@
   "sysadmindoc/hushfeed": {
     "beta": {},
     "stable": {
-      "com.zhiliaoapp.musically": "72f0af3917246bccfddc8409103d07a3",
-      "shared": "d98d134085e880fcec6fd44b190a04fe"
+      "com.zhiliaoapp.musically": "a287d5dcfe24bc70de3a9fed3483376b",
+      "shared": "0ca417bf7ac7c4735ed4df9c02831487"
     }
   }
 }
