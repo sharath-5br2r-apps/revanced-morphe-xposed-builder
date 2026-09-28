@@ -41,8 +41,8 @@
     "blocked": false,
     "host": "github",
     "repo": "SysAdminDoc/hushfeed",
-    "stable": "v0.61.0",
-    "stable_date": "2026-09-27T01:06:12Z"
+    "stable": "v0.63.0",
+    "stable_date": "2026-09-28T03:35:29Z"
   },
   "anddea/revanced-patches": {
     "beta": "v4.3.0-dev.8",
@@ -81,8 +81,8 @@
     "stable_date": "2026-09-03T09:17:16Z"
   },
   "byehi98/okish-morphe-patches": {
-    "beta": "v1.34.0-dev.1",
-    "beta_date": "2026-09-27T16:49:22Z",
+    "beta": "v1.35.0-dev.2",
+    "beta_date": "2026-09-28T10:07:24Z",
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
@@ -117,8 +117,8 @@
     "stable_date": "2026-09-24T07:45:37Z"
   },
   "hoo-dles/morphe-patches": {
-    "beta": "v1.45.0-dev.2",
-    "beta_date": "2026-09-21T21:39:38Z",
+    "beta": "v1.45.0-dev.5",
+    "beta_date": "2026-09-28T06:56:09Z",
     "blocked": false,
     "host": "github",
     "repo": "hoo-dles/morphe-patches",
