@@ -9,8 +9,8 @@
     "stable_date": "2026-06-22T17:44:41Z"
   },
   "MorpheApp/morphe-patches": {
-    "beta": "v1.45.0-dev.18",
-    "beta_date": "2026-09-27T11:33:43Z",
+    "beta": "v1.45.0-dev.19",
+    "beta_date": "2026-09-28T16:09:32Z",
     "blocked": false,
     "host": "github",
     "repo": "MorpheApp/morphe-patches",
@@ -27,8 +27,8 @@
     "stable_date": "2026-09-01T16:37:52.954Z"
   },
   "PrathxmOp/Prathxm-Patches": {
-    "beta": "v1.13.2-dev.1",
-    "beta_date": "2026-09-27T16:37:53Z",
+    "beta": "v1.14.0-dev.5",
+    "beta_date": "2026-09-28T17:50:26Z",
     "blocked": false,
     "host": "github",
     "repo": "PrathxmOp/Prathxm-Patches",
@@ -41,17 +41,17 @@
     "blocked": false,
     "host": "github",
     "repo": "SysAdminDoc/hushfeed",
-    "stable": "v0.63.0",
-    "stable_date": "2026-09-28T03:35:29Z"
+    "stable": "v0.64.0",
+    "stable_date": "2026-09-28T14:46:11Z"
   },
   "anddea/revanced-patches": {
-    "beta": "v4.3.0-dev.8",
-    "beta_date": "2026-09-25T17:22:21Z",
+    "beta": "v4.3.1-dev.1",
+    "beta_date": "2026-09-28T12:51:41Z",
     "blocked": false,
     "host": "github",
     "repo": "anddea/revanced-patches",
-    "stable": "v4.2.0",
-    "stable_date": "2026-08-07T15:03:16Z"
+    "stable": "v4.3.0",
+    "stable_date": "2026-09-28T12:26:39Z"
   },
   "arandomhooman/hoomans-morphe-patches": {
     "beta": "v1.44.0-dev.4",
@@ -86,8 +86,8 @@
     "blocked": false,
     "host": "github",
     "repo": "byehi98/okish-morphe-patches",
-    "stable": "v1.34.0",
-    "stable_date": "2026-09-27T16:51:46Z"
+    "stable": "v1.35.0",
+    "stable_date": "2026-09-28T10:21:02Z"
   },
   "ch3thanhs/stylus": {
     "beta": "v1.5.3-dev.1",
@@ -122,8 +122,8 @@
     "blocked": false,
     "host": "github",
     "repo": "hoo-dles/morphe-patches",
-    "stable": "v1.44.1",
-    "stable_date": "2026-09-17T16:37:30Z"
+    "stable": "v1.45.0",
+    "stable_date": "2026-09-28T18:20:13Z"
   },
   "hxreborn/hxreborn-tiktok-patches": {
     "beta": "v0.10.0-dev.1",
