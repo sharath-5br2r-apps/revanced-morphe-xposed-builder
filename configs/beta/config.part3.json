@@ -1,92 +1,106 @@
 {
   "patches-version": "beta",
   "enable-module-update": true,
-  "CamScanner-Morphe-Hoodles": {
+  "HillClimbRacing-Morphe-Byehi98": {
     "enable-module-update": true,
-    "patches-source": "hoo-dles/morphe-patches",
-    "patch-brand": "Hoodles",
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "CamScanner",
-    "arch": "all arm64-v8a",
-    "pkg-name": "com.intsig.camscanner",
-    "uptodown-dlurl": "https://camscanner-pdf-creator.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/intsig-pte/camscanner-phone-pdf-creator/camscanner-scanner-pdf-maker-7-24-0-2608130000-release/",
-    "apkpure-dlurl": "https://apkpure.com/camscanner-scanner-pdf-maker/com.intsig.camscanner",
-    "apkcombo-dlurl": "https://apkcombo.com/camscanner/com.intsig.camscanner",
-    "patcher-args": "--continue-on-error"
+    "app-name": "Hill Climb Racing",
+    "arch": "arm64-v8a armeabi-v7a",
+    "pkg-name": "com.fingersoft.hillclimb",
+    "uptodown-dlurl": "https://hill-climb-racing.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/fingersoft/hill-climb-racing/"
   },
-  "SmartLauncher-Morphe-Hoodles": {
+  "XRecorder-Morphe-Hoodles": {
     "enable-module-update": true,
     "patches-source": "hoo-dles/morphe-patches",
     "patch-brand": "Hoodles",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Smart Launcher",
+    "app-name": "XRecorder",
+    "arch": "all arm64-v8a armeabi-v7a",
+    "pkg-name": "videoeditor.videorecorder.screenrecorder",
+    "uptodown-dlurl": "https://videoeditor-videorecorder-screenrecorder.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/inshot-inc-2/screen-recorder-video-recorder-xrecorder"
+  },
+  "SmartLauncher6-Morphe-Hoodles-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Smart Launcher 6",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
     "pkg-name": "ginlemon.flowerfree",
     "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
   },
-  "NovaLauncher-Morphe-Hoodles-Experimental": {
+  "SolidExplorer-Morphe-Hoodles": {
     "enable-module-update": true,
     "patches-source": "hoo-dles/morphe-patches",
     "patch-brand": "Hoodles",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Nova Launcher",
+    "app-name": "Solid Explorer",
+    "pkg-name": "pl.solidexplorer2",
+    "uptodown-dlurl": "https://solid-explorer-file-manager.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/lmicp/solid-explorer-file-manager"
+  },
+  "PodcastAddict-Morphe-Hoodles": {
+    "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Podcast Addict",
+    "pkg-name": "com.bambuna.podcastaddict",
+    "uptodown-dlurl": "https://podcast-addict.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/xavier-guillemane/podcast-addict"
+  },
+  "Ventusky-Morphe-Hoodles-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "hoo-dles/morphe-patches",
+    "patch-brand": "Hoodles",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Ventusky",
     "sub-variant": "Experimental",
     "version": "latest",
     "skip-patch-app-check": true,
-    "arch": "all arm64-v8a armeabi-v7a",
-    "pkg-name": "com.teslacoilsw.launcher",
-    "uptodown-dlurl": "https://nova-launcher.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/instabridge-sweden-ab/nova-launcher"
+    "pkg-name": "cz.ackee.ventusky",
+    "uptodown-dlurl": "https://ventusky-weather-maps-and-radar.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ventusky/ventusky-weather-maps-radar"
   },
-  "Wallcraft-Morphe-Hoodles": {
+  "Goodreads-Morphe-Hoodles": {
     "enable-module-update": true,
     "patches-source": "hoo-dles/morphe-patches",
     "patch-brand": "Hoodles",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Wallcraft",
-    "pkg-name": "com.wallpaperscraft.wallpaper",
-    "uptodown-dlurl": "https://wallpaperscraft.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nebuchadnezzar-doo/wallpapers-hd-4k-backgrounds"
+    "app-name": "Goodreads",
+    "pkg-name": "com.goodreads",
+    "uptodown-dlurl": "https://goodreads.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/goodreads/goodreads"
   },
-  "MerriamWebsterDictionary-Morphe-Hoodles": {
+  "YouTube-Morphe-AMOLED": {
     "enable-module-update": true,
-    "patches-source": "hoo-dles/morphe-patches",
-    "patch-brand": "Hoodles",
+    "patches-source": "MorpheApp/morphe-patches",
+    "patch-brand": "morphe",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Merriam-Webster Dictionary",
-    "pkg-name": "com.merriamwebster",
-    "uptodown-dlurl": "https://merriam-webster.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/merriam-webster-inc/dictionary-merriam-webster"
-  },
-  "HelloChinese-Morphe-Hoodles": {
-    "enable-module-update": true,
-    "patches-source": "hoo-dles/morphe-patches",
-    "patch-brand": "Hoodles",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "HelloChinese",
-    "arch": "arm64-v8a",
-    "pkg-name": "com.hellochinese",
-    "uptodown-dlurl": "https://hellochinese.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/hellochinese-learn-chinese-mandarin/hellochinese-learn-chinese/"
-  },
-  "AdobeLightroom-Morphe-Hoodles": {
-    "enable-module-update": true,
-    "patches-source": "hoo-dles/morphe-patches",
-    "patch-brand": "Hoodles",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "Adobe Lightroom",
-    "arch": "arm64-v8a",
-    "pkg-name": "com.adobe.lrmobile",
-    "uptodown-dlurl": "https://adobe-lightroom-mobile.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-lightroom/"
+    "app-name": "YouTube",
+    "variant": "AMOLED",
+    "build-mode": "both",
+    "pkg-name": "com.google.android.youtube",
+    "included-patches": "'Theme'",
+    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
+    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
+    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
+    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
   }
 }

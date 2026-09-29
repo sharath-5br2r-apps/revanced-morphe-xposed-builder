@@ -1,18 +1,19 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "SmartLauncher-Morphe-Hoodles-Experimental": {
+  "Bitwarden-Morphe-Stylus-Experimental": {
     "enable-module-update": true,
-    "patches-source": "hoo-dles/morphe-patches",
-    "patch-brand": "Hoodles",
+    "patches-source": "ch3thanhs/stylus",
+    "patch-brand": "Stylus",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Smart Launcher",
+    "app-name": "Bitwarden",
     "sub-variant": "Experimental",
+    "pkg-name": "com.x8bit.bitwarden",
+    "github-dlurl": "https://github.com/bitwarden/android",
+    "github-dlurl-regex": "fdroid.apk$",
+    "github-release-regex": "bwpm",
     "version": "latest",
-    "skip-patch-app-check": true,
-    "pkg-name": "ginlemon.flowerfree",
-    "uptodown-dlurl": "https://smart-launcher.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher"
+    "skip-patch-app-check": true
   }
 }
