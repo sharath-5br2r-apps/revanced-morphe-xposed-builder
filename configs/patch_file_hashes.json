@@ -198,10 +198,10 @@
   "kveld9/kveld-morphe-patches": {
     "beta": {},
     "stable": {
-      "com.brave.browser": "af6984094c19854a21d44dcb26cc2ae9",
-      "com.ss.android.ugc.trill": "00d65fbe6f4f7c87bd8be6359daf3c3a",
-      "com.zhiliaoapp.musically": "00d65fbe6f4f7c87bd8be6359daf3c3a",
-      "shared": "e4b02b0b1e928d82a8f1872bf3a792b5"
+      "com.brave.browser": "f8c3df8a6630418f017919aa01bc7544",
+      "com.ss.android.ugc.trill": "67df967ea653062f9bc93d07a6c36a79",
+      "com.zhiliaoapp.musically": "67df967ea653062f9bc93d07a6c36a79",
+      "shared": "3b0c92d64eca90dcfd844501ccbddce7"
     }
   },
   "morpheapp/morphe-patches": {

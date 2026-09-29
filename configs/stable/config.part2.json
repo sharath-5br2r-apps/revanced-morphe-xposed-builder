@@ -1,19 +1,34 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "ChessDotCom-Morphe-Prathxm-Clone": {
+  "BraveBrowser-Beta-Morphe-Dh6k": {
     "enable-module-update": true,
-    "patches-source": "PrathxmOp/Prathxm-Patches",
-    "patch-brand": "Prathxm",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Chess.com",
-    "sub-variant": "Clone",
-    "version": "auto",
-    "pkg-name": "com.chess",
-    "uptodown-dlurl": "https://chess.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/chess-com/chess-play-learn/chess-com-do-you-miss-us-4-10-6-googleplay-release/",
-    "included-patches": "'Clone Chess.com'"
+    "app-name": "Brave Browser",
+    "patch-brand": "Dh6k",
+    "sub-variant": "Beta",
+    "version": "beta",
+    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
+    "pkg-name": "com.brave.browser_beta",
+    "patches-source": "dh6k/morphe-patches",
+    "patcher-args": "--continue-on-error",
+    "github-dlurl": "https://github.com/brave/brave-browser/releases",
+    "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
+    "github-release-name-regex": "^Beta v"
+  },
+  "TikTok-Morphe-Kveld9": {
+    "enable-module-update": true,
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "TikTok",
+    "pkg-name": "com.zhiliaoapp.musically",
+    "patch-brand": "Kveld9",
+    "arch": "all arm64-v8a armeabi-v7a",
+    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
+    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
+    "patches-source": "kveld9/kveld-morphe-patches"
   }
 }
