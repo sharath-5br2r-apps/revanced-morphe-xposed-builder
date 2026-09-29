@@ -1,19 +1,30 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "GitHub-Morphe-Hoodles-Stylus-Experimental": {
+  "Vector-Morphe-Byehi98": {
     "enable-module-update": true,
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
     "cli-type": "morphe",
-    "patch-brand": "Hoodles-Stylus",
-    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
     "enabled": true,
-    "app-name": "GitHub",
-    "pkg-name": "com.github.android",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
+    "app-name": "Vector",
+    "pkg-name": "com.nekki.vector",
+    "uptodown-dlurl": "https://vector.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/nekki/vector/"
+  },
+  "AmazonAlexa-APKSigner-Signed": {
+    "enable-module-update": true,
+    "patches-source": "none",
+    "patches-source-host": "none",
+    "patches-version": "dev",
+    "patch-brand": "Signed",
+    "cli-type": "apksigner",
+    "cli-source-host": "none",
+    "enabled": true,
+    "app-name": "Amazon Alexa",
+    "pkg-name": "com.amazon.dee.app",
+    "prefer-dl-mode": "bundle",
+    "uptodown-dlurl": "https://alexa.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
   }
 }

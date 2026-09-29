@@ -1,16 +1,32 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "GitHub-Morphe-Hoodles-Stylus": {
+  "SmashHit-Morphe-Byehi98": {
     "enable-module-update": true,
+    "patches-source": "byehi98/okish-morphe-patches",
+    "patch-brand": "Byehi98",
     "cli-type": "morphe",
-    "patch-brand": "Hoodles-Stylus",
-    "patches-source": "'hoo-dles/morphe-patches' 'ch3thanhs/stylus'",
     "enabled": true,
-    "app-name": "GitHub",
-    "pkg-name": "com.github.android",
-    "included-patches": "'AMOLED dark theme' | 'Force system font (including monospace) (GitHub)'",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/github/github-2",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/github/github-2/github-1-202-0-release/"
+    "app-name": "Smash Hit",
+    "pkg-name": "com.mediocre.smashhit",
+    "uptodown-dlurl": "https://smash-hit.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/mediocre/smash-hit/"
+  },
+  "Twitter-Morphe-Piko-MaterialYou-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Twitter",
+    "variant": "MaterialYou",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "com.twitter.android",
+    "included-patches": "'Dynamic Color'",
+    "patcher-args": "--continue-on-error",
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
   }
 }

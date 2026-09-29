@@ -89,23 +89,18 @@
     "uptodown-dlurl": "https://adobe-lightroom-mobile.en.uptodown.com/android",
     "apkmirror-dlurl": "https://www.apkmirror.com/apk/adobe/adobe-lightroom/"
   },
-  "YouTube-Morphe-AMOLED-Experimental": {
+  "Twitter-Morphe-Piko-MaterialYou": {
     "enable-module-update": true,
-    "patches-source": "MorpheApp/morphe-patches",
-    "patch-brand": "morphe",
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "YouTube",
-    "variant": "AMOLED",
-    "sub-variant": "Experimental",
-    "build-mode": "both",
-    "version": "exp",
-    "pkg-name": "com.google.android.youtube",
-    "included-patches": "'Theme'",
-    "patcher-args": "-OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF",
-    "uptodown-dlurl": "https://youtube.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://apkmirror.com/apk/google-inc/youtube",
-    "apkpure-dlurl": "https://apkpure.com/youtube-app/com.google.android.youtube",
-    "apkcombo-dlurl": "https://apkcombo.com/youtube/com.google.android.youtube"
+    "app-name": "Twitter",
+    "variant": "MaterialYou",
+    "pkg-name": "com.twitter.android",
+    "included-patches": "'Dynamic Color'",
+    "patcher-args": "--continue-on-error",
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
   }
 }

@@ -15,5 +15,53 @@
     "github-dlurl": "https://github.com/brave/brave-browser/releases",
     "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
     "github-release-name-regex": "^Nightly v"
+  },
+  "Twitter-Morphe-Piko-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Twitter",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "com.twitter.android",
+    "excluded-patches": "'Dynamic Color'",
+    "patcher-args": "--continue-on-error",
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
+  },
+  "Twitter-Morphe-Piko-MaterialYou-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Twitter",
+    "variant": "MaterialYou",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "com.twitter.android",
+    "included-patches": "'Dynamic Color'",
+    "patcher-args": "--continue-on-error",
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
+  },
+  "AmazonAlexa-APKSigner-Signed": {
+    "enable-module-update": true,
+    "patches-source": "none",
+    "patches-source-host": "none",
+    "patches-version": "dev",
+    "patch-brand": "Signed",
+    "cli-type": "apksigner",
+    "cli-source-host": "none",
+    "enabled": true,
+    "app-name": "Amazon Alexa",
+    "pkg-name": "com.amazon.dee.app",
+    "prefer-dl-mode": "bundle",
+    "uptodown-dlurl": "https://alexa.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/"
   }
 }
