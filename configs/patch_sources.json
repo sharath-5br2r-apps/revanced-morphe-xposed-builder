@@ -27,13 +27,13 @@
     "stable_date": "2026-09-01T16:37:52.954Z"
   },
   "PrathxmOp/Prathxm-Patches": {
-    "beta": "v1.14.0-dev.5",
-    "beta_date": "2026-09-28T17:50:26Z",
+    "beta": "v1.15.0-dev.1",
+    "beta_date": "2026-09-28T21:57:54Z",
     "blocked": false,
     "host": "github",
     "repo": "PrathxmOp/Prathxm-Patches",
-    "stable": "v1.13.1",
-    "stable_date": "2026-09-19T16:25:09Z"
+    "stable": "v1.15.0",
+    "stable_date": "2026-09-28T22:01:05Z"
   },
   "SysAdminDoc/hushfeed": {
     "beta": "",
@@ -117,8 +117,8 @@
     "stable_date": "2026-09-24T07:45:37Z"
   },
   "hoo-dles/morphe-patches": {
-    "beta": "v1.45.0-dev.5",
-    "beta_date": "2026-09-28T06:56:09Z",
+    "beta": "v1.46.0-dev.2",
+    "beta_date": "2026-09-28T21:15:10Z",
     "blocked": false,
     "host": "github",
     "repo": "hoo-dles/morphe-patches",

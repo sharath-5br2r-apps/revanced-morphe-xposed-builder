@@ -106,26 +106,26 @@
   },
   "hoo-dles/morphe-patches": {
     "beta": {
-      "bitpit.launcher": "ec102ff92cca39b2dff086dd24cd4991",
-      "cn.wps.moffice_eng": "ec102ff92cca39b2dff086dd24cd4991",
-      "com.adobe.lrmobile": "ec102ff92cca39b2dff086dd24cd4991",
-      "com.amazon.avod.thirdpartyclient": "ec102ff92cca39b2dff086dd24cd4991",
-      "com.bambuna.podcastaddict": "542e3254ba0a21f9307939f47b21a705",
-      "com.duolingo": "6ba659cfdbf711bc809748472c379f4c",
-      "com.goodreads": "a0a8c0e87c0803f1bdff2305f42bcff1",
-      "com.hellochinese": "45826e87af789323e1dbbad0efdf5f25",
-      "com.intsig.camscanner": "0bbb72e4937d524ef286dbad4b95bc57",
-      "com.merriamwebster": "ec102ff92cca39b2dff086dd24cd4991",
-      "com.myfitnesspal.android": "5a12d687e3b5f55db8cdc8c6cd0f16f1",
-      "com.pandora.android": "c2a1568fd04a14160321effc7a0db91a",
-      "com.teslacoilsw.launcher": "ec102ff92cca39b2dff086dd24cd4991",
-      "com.wallpaperscraft.wallpaper": "d2b31b329790ce988a7b55ac030cdc27",
-      "com.xodo.pdf.reader": "062bc1f071f6d3be20e5fdf0a731bea5",
-      "cz.ackee.ventusky": "337238b8e73b392f0287e68fa4df2b21",
-      "ginlemon.flowerfree": "ec102ff92cca39b2dff086dd24cd4991",
-      "pl.solidexplorer2": "ec102ff92cca39b2dff086dd24cd4991",
+      "bitpit.launcher": "9c2fb145194ebcf10146819886060c78",
+      "cn.wps.moffice_eng": "9c2fb145194ebcf10146819886060c78",
+      "com.adobe.lrmobile": "9c2fb145194ebcf10146819886060c78",
+      "com.amazon.avod.thirdpartyclient": "9c2fb145194ebcf10146819886060c78",
+      "com.bambuna.podcastaddict": "fb6ecec54a5d7a944e8ef9831a2f81fe",
+      "com.duolingo": "d5f46746e2d78972f49afa0be6d9190e",
+      "com.goodreads": "d67f76799e8c35a3d24bec421ca78fe9",
+      "com.hellochinese": "0c158f18cb403590f62ace664833bb85",
+      "com.intsig.camscanner": "0e738c23c305c6082dd9be71bf1c4cdc",
+      "com.merriamwebster": "9c2fb145194ebcf10146819886060c78",
+      "com.myfitnesspal.android": "11a6fad82a90219dc206fd07fa05a8d4",
+      "com.pandora.android": "4f405e2a9620160ed303c4c8cda07371",
+      "com.teslacoilsw.launcher": "9c2fb145194ebcf10146819886060c78",
+      "com.wallpaperscraft.wallpaper": "80e7450d870366c2caf40b64ec902852",
+      "com.xodo.pdf.reader": "15cd76f8b505f5e7446d061cd3f731a0",
+      "cz.ackee.ventusky": "2b908e43f989352d5dfec8cfd696504e",
+      "ginlemon.flowerfree": "9c2fb145194ebcf10146819886060c78",
+      "pl.solidexplorer2": "9c2fb145194ebcf10146819886060c78",
       "shared": "c505753bedcdff538d9cb87f2a52bdbe",
-      "videoeditor.videorecorder.screenrecorder": "e6c4dd814effc06cfb52815ea7fd21f9"
+      "videoeditor.videorecorder.screenrecorder": "1d79ba5b453829f1deb272b5d62ec9f5"
     },
     "stable": {
       "bitpit.launcher": "ec102ff92cca39b2dff086dd24cd4991",
@@ -233,11 +233,11 @@
   },
   "prathxmop/prathxm-patches": {
     "beta": {
-      "com.chess": "e20403a485b4ac126e7ee8f007f6b99e",
+      "com.chess": "25c7722aef59b236fc4b873f2bf32e08",
       "shared": "896486938b5de28e83d923a732d3ec47"
     },
     "stable": {
-      "com.chess": "6e64f2075f9a0ffd28bd69321b738f30",
+      "com.chess": "538aade6f1eb332e22512294dff18494",
       "shared": "896486938b5de28e83d923a732d3ec47"
     }
   },
