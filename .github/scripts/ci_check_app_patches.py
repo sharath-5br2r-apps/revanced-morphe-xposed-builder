@@ -207,11 +207,21 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
         os.remove(old_f)
 
     try:
-        host = new_info.get('host', 'github')
-        if host == 'gitlab':
+        # Parse host field: supports "host_url|host_type" or "host_type"
+        host_raw = (new_info.get('host') or 'github').strip()
+        if '|' in host_raw:
+            host_url, host_type = host_raw.split('|', 1)
+            host_url = host_url.strip().rstrip('/')
+            host_type = host_type.strip().lower()
+        else:
+            host_url = None
+            host_type = host_raw.lower()
+
+        if host_type == 'gitlab':
+            base_url = host_url or 'https://gitlab.com'
             encoded_repo = repo.replace('/', '%2F')
-            api_url = f"https://gitlab.com/api/v4/projects/{encoded_repo}/releases/{tag}"
-            req = urllib.request.Request(api_url)
+            api_url = f"{base_url}/api/v4/projects/{encoded_repo}/releases/{tag}"
+            req = urllib.request.Request(api_url, headers={'User-Agent': 'Mozilla/5.0 (rvb-check-patches)'})
             with urllib.request.urlopen(req) as response:
                 release_data = json.loads(response.read().decode('utf-8'))
 
@@ -226,23 +236,16 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
                     break
 
             if not download_url:
-                raise Exception(
-                    f"No .mpp, .rvp, or .jar asset found in GitLab release for {repo}@{tag}")
+                raise Exception(f"No .mpp, .rvp, or .jar asset found in GitLab release for {repo}@{tag}")
 
-            dl_req = urllib.request.Request(
-                download_url, headers={'Accept': 'application/octet-stream'})
+            dl_req = urllib.request.Request(download_url, headers={'Accept': 'application/octet-stream', 'User-Agent': 'Mozilla/5.0'})
             with urllib.request.urlopen(dl_req) as dl_resp, open(file_name, 'wb') as out_file:
                 out_file.write(dl_resp.read())
-        elif host == 'codeberg':
-            # Forgejo/Gitea (codeberg.org): the tag endpoint is GitHub-shaped, but the
-            # asset link lives in browser_download_url (.url comes back null) and `gh`
-            # cannot address a non-GitHub forge at all. Not reachable for today's
-            # sources - a Codeberg bundle here is an Xposed module, which takes the
-            # "not a revanced/morphe patcher" path above - but the alternative is a
-            # GitHub API call for a repository that only exists on Codeberg.
-            api_url = f"https://codeberg.org/api/v1/repos/{repo}/releases/tags/{tag}"
+        elif host_type in ('forgejo', 'gitea', 'codeberg'):
+            base_url = host_url or 'https://codeberg.org'
+            api_url = f"{base_url}/api/v1/repos/{repo}/releases/tags/{tag}"
             req = urllib.request.Request(
-                api_url, headers={'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0 (rvb-patch-sync)'})
+                api_url, headers={'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0 (rvb-check-patches)'})
             with urllib.request.urlopen(req, timeout=45) as response:
                 release_data = json.loads(response.read().decode('utf-8'))
 
@@ -251,24 +254,19 @@ def evaluate_repo_channel(repo_lower, repo, tag, channel, new_info, hashes, acti
             for asset in (release_data.get('assets') or []):
                 name = asset.get('name', '')
                 if name.endswith('.mpp') or name.endswith('.rvp') or name.endswith('.jar'):
-                    download_url = asset.get(
-                        'browser_download_url') or asset.get('url')
+                    download_url = asset.get('browser_download_url') or asset.get('url')
                     file_name = name
                     break
 
             if not download_url:
-                raise Exception(
-                    f"No .mpp, .rvp, or .jar asset found in Codeberg release for {repo}@{tag}")
+                raise Exception(f"No .mpp, .rvp, or .jar asset found in Forgejo/Gitea/Codeberg release for {repo}@{tag}")
 
-            dl_req = urllib.request.Request(
-                download_url, headers={'User-Agent': 'Mozilla/5.0 (rvb-patch-sync)'})
+            dl_req = urllib.request.Request(download_url, headers={'User-Agent': 'Mozilla/5.0 (rvb-check-patches)'})
             with urllib.request.urlopen(dl_req, timeout=45) as dl_resp, open(file_name, 'wb') as out_file:
                 out_file.write(dl_resp.read())
         else:
-            # Download asset using gh cli
-            subprocess.run(['gh', 'release', 'download', tag, '-R', repo, '-p', '*.mpp',
-                           '-p', '*.rvp', '-p', '*.jar', '--clobber'], check=True, capture_output=True)
-
+            # Download asset using gh cli (github or unknown)
+            subprocess.run(['gh', 'release', 'download', tag, '-R', repo, '-p', '*.mpp', '-p', '*.rvp', '-p', '*.jar', '--clobber'], check=True, capture_output=True)
         # Find downloaded files
         files = glob.glob('*.mpp') + glob.glob('*.rvp') + glob.glob('*.jar')
         # Exclude cli jar if any
@@ -353,7 +351,6 @@ def run():
             tags_new = json.load(f)
     except FileNotFoundError:
         tags_new = {}
-
     # The changed-source diff lives in derive_source_changes.py (run by
     # sync_patch_sources.py) so this step cannot drift from the trigger flags or
     # from the config generator's idea of which sources moved.
@@ -369,7 +366,7 @@ def run():
     for rec in changed:
         moved.setdefault(rec['key'], {})[rec['channel']] = rec['tag']
 
-    hash_file = 'state/patch_file_hashes.json'
+    hash_file = "state/patch_file_hashes.json" if os.path.exists("state/patch_file_hashes.json") else ("configs/patch_file_hashes.json" if os.path.exists("configs/patch_file_hashes.json") or os.path.isdir("configs") else ".github/configs/patch_file_hashes.json")
     if os.path.exists(hash_file):
         with open(hash_file, 'r') as f:
             hashes = json.load(f)
@@ -414,6 +411,17 @@ def run():
 
     with open('active_patch_apps.beta.json', 'w') as f:
         json.dump(beta_set, f)
+
+    with open('active_patch_apps.dev.json', 'w') as f:
+        json.dump(beta_set, f)
+
+    # The latest and absolute-latest build lanes use the same patch activity
+    # set, but must remain distinct artifacts so either lane can be consumed
+    # independently by the build workflow.
+    with open('active_patch_apps.latest.json', 'w') as f:
+        json.dump(stable_set, f)
+    with open('active_patch_apps.both.json', 'w') as f:
+        json.dump(stable_set, f)
 
     if stable_set or beta_set:
         parts = []

@@ -1,12 +1,16 @@
 #!/bin/bash
+export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
 
 CURRENT_VERSIONS="state/app_versions.json"
+[ -f "$CURRENT_VERSIONS" ] || CURRENT_VERSIONS="configs/app_versions.json"
 ACTIVE_APPS="active_apps.json"
 
 [ -f "$CURRENT_VERSIONS" ] || echo '{}' > "$CURRENT_VERSIONS"
 
-if [ -f fetched_app_versions.json ]; then
+if [ -n "${FETCHED_APP_VERSIONS:-}" ]; then
+    :
+elif [ -f fetched_app_versions.json ]; then
     FETCHED_APP_VERSIONS=$(cat fetched_app_versions.json)
 else
     FETCHED_APP_VERSIONS="{}"
@@ -27,14 +31,13 @@ while IFS= read -r group; do
     if [ "$new_ver" != "$old_ver" ] && [ "$new_ver" != "null" ] && [ -n "$new_ver" ]; then
         echo "::notice::Update detected for $group: $old_ver -> $new_ver"
         TRIGGER_APP_UPDATE=1
-        
         # Add all constituent keys to active_apps.json
         keys=$(jq -r ".\"$group\".keys[]? // \"$group\"" "$CURRENT_VERSIONS")
         for key in $keys; do
             jq --arg k "$key" '. + [$k] | unique' "$ACTIVE_APPS" > tmp.json && mv tmp.json "$ACTIVE_APPS"
         done
         
-        # Add to app_updates.json for Telegram notification (using Group name)
+        # Record the update for downstream release tooling.
         jq --arg grp "$group" --arg old "${old_ver:-unknown}" --arg new "$new_ver" '.[$grp] = {old: $old, new: $new}' "$APP_UPDATES_FILE" > tmp.json && mv tmp.json "$APP_UPDATES_FILE"
         
         # Update current versions

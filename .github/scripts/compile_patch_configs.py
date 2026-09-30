@@ -6,9 +6,7 @@ and generates config.stable.json and config.beta.json with dynamic pool routing:
 - apps with patches-version = "stable" go to stable pool only
 - apps with patches-version = "beta" go to beta pool only
 - apps with patches-version = "both" go to both pools
-- apps with no patches-version inherit the file-level default, which is itself
-  "stable" unless the filename carries .beta. — so such an app lands in
-  one pool, not both. "both" is what opts an app into both.
+- apps with no patches-version inherit the file-level default ("both" by default, or "beta" if filename contains .beta.)
 - apps with enabled = false are omitted
 
 Which release a channel keyword means is not resolved here: the generated config
@@ -77,13 +75,10 @@ def compile_configs(patches_dir="configs/patches"):
         file_defaults = {k: v for k,
                          v in data.items() if not isinstance(v, dict)}
 
-        # Resolve file-level channel default (default is "stable" if omitted)
+        # The only non-tag selector is both; omitted keys inherit both.
         file_pv = normalize_channel(file_defaults.get("patches-version"))
         if not file_pv:
-            # A .beta. filename is the only file-name signal; "dev" is not a channel
-            # spelling any more, and matching on a bare substring would pull in a
-            # source named like devanced.toml.
-            file_pv = "beta" if ".beta." in filename else "stable"
+            file_pv = "beta" if ".beta." in filename else "both"
 
         for app_key, app_table in data.items():
             if not isinstance(app_table, dict):
@@ -150,9 +145,59 @@ def compile_configs(patches_dir="configs/patches"):
     return stable_pool, beta_pool
 
 
+def compile_batch_pool(patches_dir="configs/patches"):
+    batch_pool = {}
+    toml_files = sorted(glob.glob(os.path.join(patches_dir, "*.toml")))
+    for filepath in toml_files:
+        try:
+            with open(filepath, "rb") as f:
+                data = tomllib.load(f)
+        except Exception:
+            continue
+        file_defaults = {k: v for k, v in data.items() if not isinstance(v, dict)}
+        for app_key, app_table in data.items():
+            if not isinstance(app_table, dict):
+                continue
+            merged = dict(file_defaults)
+            merged.update(app_table)
+            enabled = merged.get("enabled", True)
+            if isinstance(enabled, str):
+                enabled = enabled.lower() == "true"
+            if not enabled:
+                continue
+            entry = dict(merged)
+            entry.pop("patches-version", None)
+            batch_pool[app_key] = entry
+    return batch_pool
+
+
+def compile_both_pool(patches_dir="configs/patches"):
+    """Return every enabled app, preserving explicit stable/beta selectors."""
+    pool = {}
+    toml_files = sorted(glob.glob(os.path.join(patches_dir, "*.toml")))
+    for filepath in toml_files:
+        try:
+            with open(filepath, "rb") as f:
+                data = tomllib.load(f)
+        except Exception:
+            continue
+        file_defaults = {k: v for k, v in data.items() if not isinstance(v, dict)}
+        for app_key, app_table in data.items():
+            if not isinstance(app_table, dict):
+                continue
+            merged = dict(file_defaults)
+            merged.update(app_table)
+            if str(merged.get("enabled", True)).lower() == "false":
+                continue
+            pool[app_key] = merged
+    return pool
+
+
 def main():
     patches_dir = sys.argv[1] if len(sys.argv) > 1 else "configs/patches"
     stable_pool, beta_pool = compile_configs(patches_dir)
+    batch_pool = compile_batch_pool(patches_dir)
+    both_pool = compile_both_pool(patches_dir)
 
     stable_out = {"patches-version": "stable"}
     stable_out.update(stable_pool)
@@ -160,15 +205,41 @@ def main():
     beta_out = {"patches-version": "beta"}
     beta_out.update(beta_pool)
 
+    batch_out = {"patches-version": "both"}
+    batch_out.update(batch_pool)
+    both_out = {"patches-version": "both"}
+    both_out.update(both_pool)
+
     with open("config.stable.json", "w", encoding="utf-8") as f:
         json.dump(stable_out, f, indent=2)
 
     with open("config.beta.json", "w", encoding="utf-8") as f:
         json.dump(beta_out, f, indent=2)
 
+    cfg_dir = "configs"
+    os.makedirs(cfg_dir, exist_ok=True)
+    with open(f"{cfg_dir}/config.latest.json", "w", encoding="utf-8") as f:
+        json.dump(both_out, f, indent=2)
+    with open(f"{cfg_dir}/config.both.json", "w", encoding="utf-8") as f:
+        json.dump(both_out, f, indent=2)
+
+    import math
+    batch_app_keys = list(batch_pool.keys())
+    num_parts = 5
+    chunk_size = math.ceil(len(batch_app_keys) / num_parts)
+    for i in range(num_parts):
+        part_num = i + 1
+        part_keys = batch_app_keys[i * chunk_size : (i + 1) * chunk_size]
+        part_data = {"patches-version": "both"}
+        for k in part_keys:
+            part_data[k] = batch_pool[k]
+        with open(f"{cfg_dir}/config.latest.part{part_num}.json", "w", encoding="utf-8") as pf:
+            json.dump(part_data, pf, indent=2)
+
     print("Base patch configurations compiled successfully.")
     print(f"Stable pool apps: {len(stable_pool)}")
     print(f"Beta pool apps:   {len(beta_pool)}")
+    print(f"Batch pool apps:  {len(batch_pool)} (split into 5 parts)")
 
 
 if __name__ == "__main__":

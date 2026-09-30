@@ -1,17 +1,50 @@
 name: Build
+run-name: "Build [Config: ${{ inputs.config_file }} , Patch Ver:${{ inputs.patches_version || 'Default' }}]"
 
 on:
   workflow_call:
     inputs:
+      config_branch:
+        required: false
+        type: string
+        default: "main"
       config_file:
         required: true
+        type: string
+      exclusive_apps:
+        required: false
         type: string
       remove_apks:
         required: false
         type: string
         default: ""
+      patches_version:
+        required: false
+        type: string
+        default: ""
+      release_version_code:
+        required: false
+        type: string
+        default: ""
+      upload_release_metadata:
+        description: "Upload build metadata directly to the release"
+        required: false
+        type: boolean
+        default: true
+      aggregate_flavor:
+        required: false
+        type: string
+        default: ""
   workflow_dispatch:
     inputs:
+      config_branch:
+        description: "Config source branch"
+        required: true
+        type: choice
+        default: "main"
+        options:
+          - "main"
+          - "data"
       config_file:
         description: "Select the config file to use"
         required: true
@@ -21,14 +54,22 @@ on:
           - "configs/config.manual.toml"
           - "configs/beta_build.json"
           - "configs/stable_build.json"
+          - "configs/stable/config.updated.json"
+          - "configs/beta/config.updated.json"
+          - "configs/both/config.updated.json"
       remove_apks:
         description: "Optional: APKs to remove from cache (space-separated, e.g., com.brave.browser-1.93.138-*.apk)"
         required: false
         type: string
         default: ""
+      patches_version:
+        description: "Optional patches version override"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
-  group: build
+  group: build-${{ inputs.config_file }}
   cancel-in-progress: false
 
 jobs:
@@ -37,8 +78,11 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 120
-    # Performance tuning knobs — version-controlled here instead of repo
-    # variables (visible in PRs, survive forks, git history for the values).
+    outputs:
+      next_ver_code: ${{ steps.version.outputs.NEXT_VER_CODE }}
+      archive_tag: ${{ steps.context.outputs.ARCHIVE_TAG }}
+      flavor_tag: ${{ steps.context.outputs.FLAVOR_TAG }}
+    # Performance tuning knobs
     env:
       # How many app builds run at the same time. 1 = one at a time (normal).
       # Set to 2-4 to speed up builds (runner has 4 cores).
@@ -64,91 +108,84 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      - name: Fetch configs & state (data branch)
-        # Materializes configs/ (human TOMLs + generated *_build.json) and
-        # state/ (watcher JSONs) — the data branch is their canonical home.
-        run: bash .github/scripts/fetch_data_branch.sh
+      - name: Setup Android build tools
+        run: |
+          sdk_dir="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          if [ -d "$sdk_dir/build-tools" ]; then
+            latest_bt=$(ls -d "$sdk_dir/build-tools"/* 2>/dev/null | sort -V | tail -1 || true)
+            if [ -n "$latest_bt" ] && [ -d "$latest_bt" ]; then
+              echo "$latest_bt" >> "$GITHUB_PATH"
+            fi
+          fi
+
+      - name: Fetch configs & state
+        run: bash .github/scripts/fetch_data_branch.sh "${{ inputs.config_branch || 'main' }}"
 
       - name: Resolve build context
         id: context
-        env:
-          TG_THREAD_STABLE: ${{ vars.TG_THREAD_STABLE }}
-          TG_THREAD_BETA: ${{ vars.TG_THREAD_BETA }}
-        run: bash .github/scripts/build_resolve_context.sh "${{ inputs.config_file }}"
-
-      - name: Install Bouncy Castle for BKS Keystore
         run: |
-          CFG="${{ steps.context.outputs.CONFIG_FILE }}"
-          if [[ "$CFG" == *.json ]]; then
-            RESOLVED="$CFG"
-          else
-            mkdir -p temp
-            yq -o=json eval . "$CFG" > temp/resolved_config.json
-            RESOLVED=temp/resolved_config.json
+          cfg="${{ inputs.config_file }}"
+          if [ ! -f "$cfg" ] && [ -f "temp_configs/${cfg#configs/}" ]; then
+            cfg="temp_configs/${cfg#configs/}"
           fi
-          if python3 .github/scripts/patchers.py needs-bks "$RESOLVED"; then
-            bash .github/scripts/build_install_bouncy_castle.sh
-          else
-            echo "Skipping Bouncy Castle installation (no BKS-needing Xposed modules found in config)."
-          fi
-
-      - name: Install signing keystore
-        env:
-          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
-          KEYSTORE_P12_B64: ${{ secrets.KEYSTORE_P12_B64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        run: bash .github/scripts/install_keystore.sh
+          bash .github/scripts/build_resolve_context.sh "$cfg" "${{ inputs.patches_version }}"
 
       - name: Resolve version code
         id: version
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash .github/scripts/build_resolve_version.sh
+          PASSED_VER_CODE: ${{ inputs.release_version_code }}
+        run: |
+          if [ -n "$PASSED_VER_CODE" ]; then
+            echo "NEXT_VER_CODE=$PASSED_VER_CODE" >> "$GITHUB_OUTPUT"
+          else
+            bash .github/scripts/build_resolve_version.sh
+          fi
 
       - name: Restore APKs Cache
         uses: actions/cache/restore@v6
         with:
           path: temp/apks
-          key: apks-${{ github.run_id }}
+          key: apks-v4-${{ hashFiles(inputs.config_file, 'configs/app_versions.json', 'state/app_versions.json') }}
           restore-keys: |
-            apks-
+            apks-v4-
 
       - name: Remove specific APKs from cache
         if: ${{ inputs.remove_apks != '' }}
         run: |
           if [ -d "temp/apks" ]; then
             cd temp/apks
-            for apk in ${{ inputs.remove_apks }}; do
-              echo "Removing $apk from cache..."
-              rm -f $apk || true
-            done
+            find . -maxdepth 1 -type f -regextype posix-extended -regex ".*/(${{ inputs.remove_apks }})" -exec rm -f {} +
           fi
-
-      - name: Setup Python dependencies
-        run: |
-          pip install --no-cache-dir curl_cffi || true
 
       - name: Build modules and apks
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
-          UPLOAD_APKS_REPO: "${{ vars.APKS_REPO || 'nullcpy/apks' }}"
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.APKS_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          APKS_REPO: ${{ vars.APKS_REPO }}
+          UPLOAD_APKS_REPO: "${{ vars.APKS_REPO }}"
+          APKS_REPO_URL: "${{ vars.APKS_REPO_URL || vars.APKS_REPO }}"
           GITHUB_REPOSITORY: ${{ github.repository }}
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          CF_SOLVER_URL: "http://localhost:8000"
+          CFB_URL: "http://localhost:8000"
           RVB_MORPHE_PASSTHROUGH: "${{ vars.RVB_MORPHE_PASSTHROUGH || 'true' }}"
-          RELEASE_NOTES_TG_LINK: "${{ vars.RELEASE_NOTES_TG_LINK || 'https://t.me/rvb27' }}"
-          RELEASE_NOTES_DONATE_LINK: "${{ vars.RELEASE_NOTES_DONATE_LINK || 'https://fahim-ahmed05.github.io/donate' }}"
-          RELEASE_NOTES_WEBSITE_LINK: "${{ vars.RELEASE_NOTES_WEBSITE_LINK || 'https://nullcpy.github.io' }}"
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD || secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS || 'jhc' }}
+          RELEASE_NOTES_WEBSITE_LINK: "${{ vars.RELEASE_NOTES_WEBSITE_LINK || 'https://sharath-5br2r.github.io/catalog' }}"
         run: |
           set -euo pipefail
-          bash scripts/build.sh "${{ steps.context.outputs.CONFIG_FILE }}"
+          bash scripts/build.sh --config="${{ steps.context.outputs.CONFIG_FILE }}" --allowed-apps="${{ inputs.exclusive_apps }}" --patches-version="${{ inputs.patches_version }}"
 
       - name: Update Usage Tracker
         env:
-          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN }}
-          APKS_REPO: "${{ vars.APKS_REPO || 'nullcpy/apks' }}"
+          APKS_REPO_TOKEN: ${{ secrets.APKS_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          APKS_REPO: "${{ vars.APKS_REPO }}"
+          APKS_REPO_URL: "${{ vars.APKS_REPO_URL || vars.APKS_REPO }}"
         run: python3 .github/scripts/update_usage_tracker.py || true
         
       - name: Cleanup old cached APKs
@@ -163,6 +200,7 @@ jobs:
 
       - name: Save APKs Cache
         uses: actions/cache/save@v6
+        continue-on-error: true
         if: always() && hashFiles('temp/cache_manifest.txt') != ''
         with:
           path: temp/apks
@@ -176,7 +214,10 @@ jobs:
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
           IS_PRERELEASE: ${{ steps.context.outputs.IS_PRERELEASE }}
-        run: python3 .github/scripts/build_make_manifest.py
+        run: | 
+          cat build.json
+          python3 .github/scripts/build_make_manifest.py
+          cp -f temp/manifest/build.json build.json
 
       - name: Upload to release
         env:
@@ -187,9 +228,44 @@ jobs:
           IS_PRERELEASE: ${{ steps.context.outputs.IS_PRERELEASE }}
           UPLOAD_FILES: "./build/*"
           GITHUB_REPOSITORY: ${{ github.repository }}
+          UPLOAD_CONCURRENCY: "${{ vars.UPLOAD_CONCURRENCY || '4' }}"
         run: bash .github/scripts/build_upload_release.sh
 
-      - name: Update changelog and module update files
+      - name: Upload build manifest
+        if: ${{ inputs.upload_release_metadata != false && hashFiles('temp/manifest/build.json') != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.version.outputs.NEXT_VER_CODE }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if gh release upload "$RELEASE_TAG" "build.json" --clobber -R "$GITHUB_REPOSITORY"; then
+              exit 0
+            fi
+            [ "$attempt" -lt 3 ] && sleep $((attempt * 3))
+          done
+          echo "Failed to upload build.json after 3 attempts" >&2
+          exit 1
+
+      - name: Upload error log
+        if: ${{ inputs.aggregate_flavor == '' && (hashFiles('error.log') != '' || hashFiles('error.json') != '' || hashFiles('error.md') != '') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: error_log
+          path: |
+            error.log
+            error.json
+            build_log.json
+            error.md
+          if-no-files-found: ignore
+
+      - name: Display Build & Error Summary
+        if: ${{ inputs.aggregate_flavor == '' && hashFiles('error.md') != '' }}
+        run: |
+          cat error.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Generate module update files
         id: update_changelog
         env:
           NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
@@ -198,27 +274,58 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: bash .github/scripts/build_update_changelog.sh
 
-      - name: Commit updated build and module update files
-        if: steps.update_changelog.outputs.has_modules == 'true'
-        # Explicit staging (the auto-commit action's default would sweep in
-        # unrelated dirt): pointers listed by build_update_changelog.sh plus
-        # this build's changelog. Branch already checked out by that script.
+      # Copy staged *-update.json to the working-tree root so they can be:
+      #  - picked up by the part-logs artifact upload (parallel builds), or
+      #  - committed directly by the standalone commit step (single-job builds).
+      - name: Stage module update files
+        if: ${{ steps.update_changelog.outputs.has_modules == 'true' }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add --pathspec-from-file=.updated_pointers
-          git add changelogs
-          if git diff --cached --quiet; then
-            echo "No update-branch changes to commit."
+          shopt -s nullglob
+          files=(temp/update-files/*-update.json)
+          shopt -u nullglob
+          for f in "${files[@]}"; do cp -f "$f" .; done
+
+      # Standalone (non-partitioned) builds have only one job so there is no
+      # push race.  Commit update files and changelog directly to the update branch.
+      - name: Commit module update files (standalone)
+        if: ${{ inputs.aggregate_flavor == '' && steps.update_changelog.outputs.has_modules == 'true' }}
+        env:
+          NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
+        run: |
+          set -euo pipefail
+          mkdir -p changelogs
+          src_md="build.md"
+          [ -f build.tmp ] && src_md="build.tmp"
+          [ -f "$src_md" ] && cp -f "$src_md" "changelogs/${NEXT_VER_CODE}.md"
+          git fetch origin update 2>/dev/null || true
+          if git ls-remote --heads origin update | grep -q 'refs/heads/update'; then
+            git checkout -B update origin/update
           else
-            git commit -m "Bump version ${{ steps.version.outputs.NEXT_VER_CODE }}"
-            git push origin update
+            git switch --orphan update
           fi
+          shopt -s nullglob
+          for f in temp/update-files/*-update.json; do cp -f "$f" .; done
+          shopt -u nullglob
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f -- *-update.json changelogs/ 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Bump version ${NEXT_VER_CODE}"
+          git push origin update --force
+          git checkout main
 
       - name: Remove frequently updated apps
         run: |
           git checkout -f main
           bash .github/scripts/build_exclude_from_archive.sh
+
+      - name: Dump built file names
+        run: |
+          if [ -d "build" ]; then
+            find build -maxdepth 1 -type f -exec basename {} \; | sort -u > built_files.txt
+          else
+            > built_files.txt
+          fi
+          echo "Dumped $(wc -l < built_files.txt) built file names into built_files.txt"
 
       - name: Upload to release (Archive)
         id: archive_upload
@@ -232,9 +339,11 @@ jobs:
           RELEASE_TARGET: main
           UPLOAD_FILES: "./build/*"
           GITHUB_REPOSITORY: ${{ github.repository }}
+          UPLOAD_CONCURRENCY: "${{ vars.UPLOAD_CONCURRENCY || '4' }}"
         run: bash .github/scripts/build_upload_release.sh
 
       - name: Merge archive manifest into website branch
+        if: ${{ inputs.aggregate_flavor == '' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ARCHIVE_TAG: ${{ steps.context.outputs.ARCHIVE_TAG }}
@@ -242,14 +351,32 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: bash .github/scripts/merge_archive_branch.sh
 
-      - name: Notify telegram
+      - name: Upload part build metadata
+        if: ${{ inputs.upload_release_metadata == false }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: part-logs-${{ inputs.aggregate_flavor || steps.context.outputs.FLAVOR_TAG || 'logs' }}-${{ steps.context.outputs.CONFIG_TAG || 'part' }}
+          path: |
+            build.json
+            build.md
+            error.log
+            error.json
+            build_log.json
+            error.md
+            built_files.txt
+            *-update.json
+            ${{ inputs.config_file }}
+          if-no-files-found: ignore
+
+      - name: Notify website catalog rebuild
+        if: ${{ inputs.upload_release_metadata != false }}
+        continue-on-error: true
         env:
-          TG_TOKEN: ${{ secrets.TG_TOKEN }}
-          TG_CHAT_ID: "${{ vars.TG_CHAT_ID || '@rvb27' }}"
-          TG_CHAT_ID_BROADCAST: "${{ vars.TG_CHAT_ID_BROADCAST || '@rvb28' }}"
-          TG_THREAD_ID: ${{ steps.context.outputs.TG_THREAD_ID }}
-          TITLE_SUFFIX: ${{ steps.context.outputs.TITLE_SUFFIX }}
-          NEXT_VER_CODE: ${{ steps.version.outputs.NEXT_VER_CODE }}
-          GITHUB_SERVER_URL: ${{ github.server_url }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: bash .github/scripts/build_notify_telegram.sh
+          DISPATCH_TOKEN: ${{ secrets.WEBSITE_TOKEN || secrets.WEBSITE_DISPATCH_TOKEN || secrets.WEBSITE_REPO_TOKEN || secrets.APKS_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          WEBSITE_REPO: "${{ vars.WEBSITE_REPO || 'sharath-5br2r-apps/sharath-5br2r-apps.github.io' }}"
+        run: |
+          curl -fsS -X POST "https://api.github.com/repos/${WEBSITE_REPO}/dispatches" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $DISPATCH_TOKEN" \
+            -d '{"event_type": "catalog-updated"}' \
+            || echo "::warning::Website catalog dispatch failed; the scheduled rebuild will converge."

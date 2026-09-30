@@ -1,36 +1,87 @@
 #!/bin/bash
+export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
+MODE="${MODE:-Default}"
 
-RAW_TRIGGER_STABLE=${RAW_TRIGGER_STABLE:-0}
-RAW_TRIGGER_BETA=${RAW_TRIGGER_BETA:-0}
-RAW_TRIGGER_APP_UPDATE=${RAW_TRIGGER_APP_UPDATE:-0}
+if [ "${CREATED:-false}" = "true" ] || [ "${SKIP_BUILD:-false}" = "true" ] || [ "$MODE" = "Update Versions Only" ] || [ "$MODE" = "Generate Configs Only (No Build)" ] || [[ "$MODE" == "Batch Build"* ]] || [ "$MODE" = "Manual Config" ]; then
+  echo "TRIGGER_STABLE=0" >> "$GITHUB_OUTPUT"
+  echo "TRIGGER_PRERELEASE=0" >> "$GITHUB_OUTPUT"
+  echo "TRIGGER_LATEST=0" >> "$GITHUB_OUTPUT"
+  for i in {1..5}; do
+    echo "HAS_DEV_${i}=0" >> "$GITHUB_OUTPUT"
+    echo "HAS_STABLE_${i}=0" >> "$GITHUB_OUTPUT"
+    echo "HAS_LATEST_${i}=0" >> "$GITHUB_OUTPUT"
+  done
+  exit 0
+fi
+
+if [ "$MODE" = "Build Only" ]; then
+  RAW_TRIGGER_STABLE=1
+  RAW_TRIGGER_PRERELEASE=1
+  RAW_TRIGGER_APP_UPDATE=1
+else
+  RAW_TRIGGER_STABLE=${RAW_TRIGGER_STABLE:-0}
+  RAW_TRIGGER_PRERELEASE=${RAW_TRIGGER_PRERELEASE:-0}
+  RAW_TRIGGER_APP_UPDATE=${RAW_TRIGGER_APP_UPDATE:-0}
+fi
 
 TRIGGER_STABLE=0
-TRIGGER_BETA=0
+TRIGGER_PRERELEASE=0
 
-if [ "$RAW_TRIGGER_STABLE" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
-  CFG="configs/stable_build.json"
-  if [ -f "$CFG" ]; then
-    ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
-    if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
-      TRIGGER_STABLE=1
-    else
-      echo "::notice::Skipping stable build trigger: no enabled apps in $CFG"
-    fi
+if [ "$RAW_TRIGGER_STABLE" = "1" ]; then
+  CFG="configs/stable/config.updated.json"
+  ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
+  if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
+    TRIGGER_STABLE=1
+  else
+    echo "::notice::Stable config has 0 enabled apps. Skipping stable build."
   fi
 fi
 
-if [ "$RAW_TRIGGER_BETA" = "1" ] || [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
-  CFG="configs/beta_build.json"
-  if [ -f "$CFG" ]; then
-    ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
+if [ "$RAW_TRIGGER_PRERELEASE" = "1" ]; then
+  CFG="configs/beta/config.updated.json"
+  ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" || echo 0)
+  if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
+    TRIGGER_PRERELEASE=1
+  else
+    echo "::notice::Skipping dev build trigger: no enabled apps in $CFG"
+  fi
+fi
+
+for i in {1..5}; do
+  dev_file="configs/beta/config.part${i}.json"
+  if [ -s "$dev_file" ] && [ "$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$dev_file" 2>/dev/null || echo 0)" -gt 0 ]; then
+    echo "HAS_DEV_${i}=1" >> "$GITHUB_OUTPUT"
+  else
+    echo "HAS_DEV_${i}=0" >> "$GITHUB_OUTPUT"
+  fi
+
+  stable_file="configs/stable/config.part${i}.json"
+  if [ -s "$stable_file" ] && [ "$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$stable_file" 2>/dev/null || echo 0)" -gt 0 ]; then
+    echo "HAS_STABLE_${i}=1" >> "$GITHUB_OUTPUT"
+  else
+    echo "HAS_STABLE_${i}=0" >> "$GITHUB_OUTPUT"
+  fi
+
+  latest_file="configs/both/config.part${i}.json"
+  if [ -s "$latest_file" ] && [ "$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$latest_file" 2>/dev/null || echo 0)" -gt 0 ]; then
+    echo "HAS_LATEST_${i}=1" >> "$GITHUB_OUTPUT"
+  else
+    echo "HAS_LATEST_${i}=0" >> "$GITHUB_OUTPUT"
+  fi
+done
+
+TRIGGER_LATEST=0
+if [ "$RAW_TRIGGER_APP_UPDATE" = "1" ]; then
+  CFG="configs/both/config.updated.json"
+  if [ -s "$CFG" ]; then
+    ENABLED_COUNT=$(jq '[.[] | objects | select(.enabled != false)] | length' "$CFG" 2>/dev/null || echo 0)
     if [ "${ENABLED_COUNT:-0}" -gt 0 ]; then
-      TRIGGER_BETA=1
-    else
-      echo "::notice::Skipping beta build trigger: no enabled apps in $CFG"
+      TRIGGER_LATEST=1
     fi
   fi
 fi
 
 echo "TRIGGER_STABLE=$TRIGGER_STABLE" >> "$GITHUB_OUTPUT"
-echo "TRIGGER_BETA=$TRIGGER_BETA" >> "$GITHUB_OUTPUT"
+echo "TRIGGER_PRERELEASE=$TRIGGER_PRERELEASE" >> "$GITHUB_OUTPUT"
+echo "TRIGGER_LATEST=$TRIGGER_LATEST" >> "$GITHUB_OUTPUT"

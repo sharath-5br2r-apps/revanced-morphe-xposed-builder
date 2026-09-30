@@ -1,33 +1,62 @@
 #!/bin/bash
+export GITHUB_OUTPUT="${GITHUB_OUTPUT:-github_output.env}"
 set -euo pipefail
-CONFIG="${1:-}"
+CONFIG="$1"
+P_OVERRIDE="${2:-}"
 
-if [ -z "$CONFIG" ] || [ ! -f "$CONFIG" ]; then
-  echo "::error::Config file not found: ${CONFIG:-(empty)}"
+if [ ! -f "$CONFIG" ]; then
+  echo "::error::Config file not found: $CONFIG"
   exit 1
 fi
 
 echo "CONFIG_FILE=$CONFIG" >> "$GITHUB_OUTPUT"
 
-IS_BETA=false
-# Two ways a build is a pre-release: the config FILENAME (the generated
-# beta_build.json, or a hand-written .beta. TOML) or the channel value it carries,
-# which is only ever "stable" or "beta". A "dev" spelling used to be accepted in
-# both; it matched whole paths too loosely to be safe and no config ever used it.
-if [[ "$CONFIG" == *"beta"* ]]; then
-  IS_BETA=true
-elif [[ "$CONFIG" == *.json ]]; then
-  pv=$(jq -r '."patches-version" // empty' "$CONFIG")
-  if [ "$pv" = "beta" ]; then
-    IS_BETA=true
+# Count enabled apps in config file (JSON or TOML)
+HAS_ENABLED=true
+if [[ "$CONFIG" == *.json ]]; then
+  ENABLED_COUNT=$(jq '[to_entries[] | select(.value | type == "object" and (.value.enabled // true) != false)] | length' "$CONFIG" 2>/dev/null || echo "0")
+  if [ "$ENABLED_COUNT" -eq 0 ]; then
+    HAS_ENABLED=false
   fi
 elif [[ "$CONFIG" == *.toml ]]; then
-  if awk '/^\[/ {exit} {print}' "$CONFIG" | grep -qE '^[[:space:]]*patches-version[[:space:]]*=[[:space:]]*"?beta"?'; then
-    IS_BETA=true
+  if ! grep -iqE '^[[:space:]]*enabled[[:space:]]*=[[:space:]]*true' "$CONFIG" && ! grep -qE '^\[.+\]' "$CONFIG"; then
+    HAS_ENABLED=false
   fi
 fi
 
-if [ "$IS_BETA" = true ]; then
+echo "HAS_ENABLED_APPS=$HAS_ENABLED" >> "$GITHUB_OUTPUT"
+if [ "$HAS_ENABLED" = false ]; then
+  echo "::notice::No enabled apps found in config file '$CONFIG'. Skipping build steps."
+fi
+
+IS_DEV=false
+PVER=""
+if [ -n "$P_OVERRIDE" ]; then
+  PVER="$P_OVERRIDE"
+elif [[ "$CONFIG" == *.json ]]; then
+  PVER=$(jq -r '."patches-version" // empty' "$CONFIG" 2>/dev/null || true)
+elif [[ "$CONFIG" == *.toml ]]; then
+  PVER=$(awk '/^\[/ {exit} {print}' "$CONFIG" | grep -E '^[[:space:]]*patches-version[[:space:]]*=' | sed -E 's/.*=[[:space:]]*"?'\''?([^"'\''[:space:]]+)"?'\''?.*/\1/' || true)
+fi
+
+if [ "$PVER" = "beta" ] || [ "$PVER" = "both" ] || [[ "$CONFIG" == *"dev"* ]]; then
+  IS_DEV=true
+fi
+
+CONFIG_BASE=$(basename "$CONFIG")
+CONFIG_TAG="${CONFIG_BASE%.*}"
+CONFIG_TAG="${CONFIG_TAG//./-}"
+echo "CONFIG_TAG=$CONFIG_TAG" >> "$GITHUB_OUTPUT"
+
+FLAVOR_TAG="stable"
+if [ "$PVER" = "dev" ] || [[ "$CONFIG" == *"dev"* ]]; then
+  FLAVOR_TAG="dev"
+elif [ "$PVER" = "both" ] || [[ "$CONFIG" == *"latest"* ]]; then
+  FLAVOR_TAG="latest"
+fi
+echo "FLAVOR_TAG=$FLAVOR_TAG" >> "$GITHUB_OUTPUT"
+
+if [ "$IS_DEV" = true ]; then
   echo "IS_PRERELEASE=true" >> "$GITHUB_OUTPUT"
   echo "TG_THREAD_ID=${TG_THREAD_BETA:-350}" >> "$GITHUB_OUTPUT"
   echo "TITLE_SUFFIX= (Pre-release)" >> "$GITHUB_OUTPUT"

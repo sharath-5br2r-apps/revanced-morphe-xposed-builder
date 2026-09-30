@@ -1,6 +1,6 @@
 # Normalize line endings: shell/python/workflow/data files are LF everywhere
 # (Windows checkouts with core.autocrlf=true otherwise inject CRLF and break
-# WSL/Linux execution + byte-comparison of trace goldens).
+# WSL/Linux execution.
 * text=auto
 
 *.sh text eol=lf
@@ -10,7 +10,6 @@
 *.yaml text eol=lf
 *.json text eol=lf
 *.toml text eol=lf
-*.trace text eol=lf
 *.md text
 
 *.jar binary

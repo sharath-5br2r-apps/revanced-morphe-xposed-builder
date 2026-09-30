@@ -7,24 +7,12 @@ MODULES=(build/*module*.zip)
 shopt -u nullglob
 
 if [ ${#MODULES[@]} -eq 0 ]; then
-  echo "No modules produced in this build. Skipping update branch changelog."
-  if [ -n "${GITHUB_OUTPUT-}" ]; then
-    echo "has_modules=false" >> "$GITHUB_OUTPUT"
-  fi
+  echo "No modules produced in this build. Skipping module update file generation."
+  [ -n "${GITHUB_OUTPUT-}" ] && echo "has_modules=false" >> "$GITHUB_OUTPUT"
   exit 0
 fi
 
-if [ -n "${GITHUB_OUTPUT-}" ]; then
-  echo "has_modules=true" >> "$GITHUB_OUTPUT"
-fi
-
-git checkout -f update || git switch --discard-changes --orphan update
-mkdir -p changelogs
-SRC_MD="build.md"
-[ -f build.tmp ] && SRC_MD="build.tmp"
-if [ -f "$SRC_MD" ]; then
-  cp -f "$SRC_MD" "changelogs/${NEXT_VER_CODE}.md"
-fi
+[ -n "${GITHUB_OUTPUT-}" ] && echo "has_modules=true" >> "$GITHUB_OUTPUT"
 
 get_update_json() {
   echo "{
@@ -35,6 +23,13 @@ get_update_json() {
 }"
 }
 
+# Stage *-update.json files in temp/update-files/ rather than committing them
+# directly from each parallel build job.  The aggregation jobs (aggregate_dev_logs,
+# aggregate_stable_logs, etc.) collect every part's files and do one atomic commit
+# to the update branch, preventing push-race failures.
+UPDATE_OUT="temp/update-files"
+mkdir -p "$UPDATE_OUT"
+
 cd build || { echo "build folder not found"; exit 1; }
 # Staging list for the auto-commit step (file_pattern can't enumerate dynamic
 # subdirectory paths); consumed by build.yml as a multiline git add argument.
@@ -42,15 +37,12 @@ cd build || { echo "build folder not found"; exit 1; }
 for OUTPUT in *module*.zip; do
   [ "$OUTPUT" = "*module*.zip" ] && continue
   ZIP_S=$(unzip -p "$OUTPUT" module.prop)
-  if ! UPDATE_JSON=$(echo "$ZIP_S" | grep updateJson); then continue; fi
-  # The baked URL is the one true path (<branch>/update/<channel>/<name>.json);
-  # mirror it verbatim so the branch layout can never drift from what modules
-  # poll (see update_json_path in scripts/utils.sh).
-  UPDATE_JSON="${UPDATE_JSON#*/update/}"
-  mkdir -p "../$(dirname "$UPDATE_JSON")"
-  echo "$UPDATE_JSON" >> ../.updated_pointers
-  VER=$(echo "$ZIP_S" | grep version=)
+  UPDATE_JSON=$(echo "$ZIP_S" | grep updateJson || true)
+  [ -z "$UPDATE_JSON" ] && continue
+  UPDATE_JSON="${UPDATE_JSON##*/}"
+  VER=$(echo "$ZIP_S" | grep 'version=' | head -1)
   VER="${VER##*=}"
   DLURL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$ARCHIVE_TAG/${OUTPUT}"
-  get_update_json "$VER" "$DLURL" >"../$UPDATE_JSON"
+  get_update_json "$VER" "$DLURL" > "../${UPDATE_OUT}/${UPDATE_JSON}"
+  echo "Generated ${UPDATE_OUT}/${UPDATE_JSON}"
 done

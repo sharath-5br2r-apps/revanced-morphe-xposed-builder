@@ -30,6 +30,11 @@ def extract_versions(html_content: str, allow_all: bool = False) -> list[str]:
         if not allow_all and any(kw in lower for kw in ("beta", "alpha", "secondary")):
             continue
 
+        # WARP's product name starts with 1.1.1.1, which is not its app
+        # version. Remove only that known product prefix, then retain the
+        # original extraction behavior for version suffixes such as
+        # "2.76.0 Build 0".
+        clean_text = re.sub(r'^1\.1\.1\.1\s*\+\s*', '', clean_text)
         m_ver = re.search(r'(\d+\.\d+.*)$', clean_text)
         ver = m_ver.group(1).strip() if m_ver else clean_text.split()[-1]
         if ver and ver not in seen:
@@ -47,14 +52,38 @@ def extract_package_name(html_content: str) -> str | None:
         return m2.group(1)
     return None
 
-def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc):
-    dpi_str = dpi if dpi else "nodpi anydpi auto"
+def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc, rel_filter=""):
+    dpi_raw = dpi if dpi else "nodpi anydpi auto"
     appdpi = ["nodpi", "anydpi"]
     match_any_dpi = False
-    if dpi_str:
-        appdpi.extend(dpi_str.split())
-        if "auto" in appdpi:
-            match_any_dpi = True
+    
+    dpi_items = []
+    if isinstance(dpi_raw, str):
+        dpi_str = dpi_raw.strip()
+        if (dpi_str.startswith("[") and dpi_str.endswith("]")) or (dpi_str.startswith("{") and dpi_str.endswith("}")):
+            try:
+                import json
+                parsed = json.loads(dpi_str)
+                if isinstance(parsed, list):
+                    dpi_items = [str(x) for x in parsed]
+                elif isinstance(parsed, dict):
+                    dpi_items = [str(x) for x in parsed.values()]
+            except Exception:
+                dpi_items = dpi_str.split()
+        else:
+            dpi_items = dpi_str.split()
+    elif isinstance(dpi_raw, list):
+        dpi_items = [str(x) for x in dpi_raw]
+    elif isinstance(dpi_raw, dict):
+        dpi_items = [str(x) for x in dpi_raw.values()]
+    else:
+        dpi_items = str(dpi_raw).split()
+
+    for item in dpi_items:
+        appdpi.extend(str(item).split())
+
+    if "auto" in appdpi:
+        match_any_dpi = True
 
     best_fallback_url = ""
     specific_arch_url = ""
@@ -76,6 +105,22 @@ def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, 
         dlurl = href_m.group(1)
         if not dlurl.startswith("http"):
             dlurl = "https://www.apkmirror.com" + dlurl
+
+        # Check rel_filter if specified
+        if rel_filter:
+            # Extract readable variant text from row or accent_color anchor
+            variant_m = re.search(r'<a[^>]*class="[^"]*accent_color[^"]*"[^>]*>(.*?)</a>', r, re.DOTALL)
+            variant_text = re.sub(r'<[^>]+>', '', variant_m.group(1)).strip() if variant_m else ""
+            if not variant_text:
+                variant_text = re.sub(r'<[^>]+>', ' ', r).strip()
+
+            if rel_filter.startswith("!"):
+                neg_pat = rel_filter[1:]
+                if re.search(neg_pat, dlurl, re.IGNORECASE) or re.search(neg_pat, variant_text, re.IGNORECASE):
+                    continue
+            else:
+                if not (re.search(rel_filter, dlurl, re.IGNORECASE) or re.search(rel_filter, variant_text, re.IGNORECASE)):
+                    continue
 
         badge_m = re.search(r'class="[^"]*apkm-badge[^"]*"[^>]*>([^<]+)</span>', r)
         node_apk_bundle = badge_m.group(1).strip() if badge_m else "APK"
@@ -107,14 +152,27 @@ def apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, 
             if clean_search_version not in dlurl and search_version not in dlurl:
                 continue
 
-        if target_vc:
+        if target_vc and target_vc != "bypass":
             if node_vc and node_vc == target_vc:
                 return dlurl
             else:
                 continue
 
+        # `all` means one representative APK, not a literal architecture.
+        # Accept the first suitable ABI when the release has no universal APK.
+        if arch == "all":
+            if node_arch in ['universal', 'noarch', 'arm64-v8a + x86_64', 'arm64-v8a + x86 + x86_64', 'arm64-v8a + armeabi-v7a', 'arm64-v8a + armeabi'] and (node_dpi in appdpi or match_any_dpi):
+                return dlurl
+            if (node_dpi in appdpi or match_any_dpi) and not best_fallback_url:
+                best_fallback_url = dlurl
         # Pass 1 Logic: Return Universal/Fat Bundles immediately to optimize cache size
-        if node_arch in ['universal', 'noarch', 'arm64-v8a + x86_64', 'arm64-v8a + armeabi-v7a']:
+        elif node_arch in ['universal', 'noarch'] or (
+            arch == 'armeabi-v7a' and node_arch in ['arm64-v8a + armeabi-v7a', 'arm64-v8a + armeabi']
+        ) or (
+            arch in ['x86', 'x86_64'] and node_arch in ['arm64-v8a + x86_64', 'arm64-v8a + x86 + x86_64']
+        ) or (
+            arch == 'arm64-v8a' and node_arch in ['arm64-v8a + x86_64', 'arm64-v8a + x86 + x86_64', 'arm64-v8a + armeabi-v7a', 'arm64-v8a + armeabi']
+        ):
             if node_dpi in appdpi:
                 return dlurl
             elif match_any_dpi and not best_fallback_url:
@@ -167,12 +225,13 @@ def main():
     clean_search_version = sys.argv[4]
     search_version = sys.argv[5]
     target_vc = sys.argv[6] if len(sys.argv) > 6 else ""
+    rel_filter = sys.argv[7] if len(sys.argv) > 7 else ""
 
     html_content = sys.stdin.read()
     if not html_content:
         sys.exit(1)
 
-    url = apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc)
+    url = apkmirror_search(html_content, dpi, arch, apk_bundle, clean_search_version, search_version, target_vc, rel_filter)
     if url:
         print(url)
         sys.exit(0)

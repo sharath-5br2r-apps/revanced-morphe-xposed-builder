@@ -1,29 +1,60 @@
 #!/bin/bash
 set -euo pipefail
 
-# Materialize the `data` branch into the working tree: configs/ (human TOMLs
-# + generated *_build.json) and state/ (watcher JSONs), so every generator,
-# watcher and build finds its inputs at the paths it already references
-# (commit_data_branch.sh / push_data_configs.sh are the writer sides).
+# Materialize configs and state into the working tree.
+# Default target branch is `data`, but can be overridden (e.g. `main` or custom)
+# via first positional parameter or CONFIG_BRANCH env var.
 #
-# Run right after actions/checkout in any job that reads them:
-#   ci.yml (watcher), build.yml (builds). Local dev: run after cloning, and
-# whenever you want fresh state/configs.
-#
-# WARNING: this OVERWRITES local files under configs/ — publish hand-edited
-# TOMLs first with: bash .github/scripts/push_data_configs.sh "<message>"
-#
-# Hard-fail by design: a missing `data` branch must never silently fall back
-# to stale or empty state (same stance as merge_archive_branch.sh).
+# When fetching from `data`, configs/stable/, configs/beta/, and configs/batch/
+# are placed into temp_configs/ as a scratch directory, reserving configs/patches/
+# and configs/*.toml for on-tree configuration.
 
-if ! git fetch -q origin data; then
-	echo "FATAL: 'data' branch not found on origin — restore it (see temp/seed_data_branch.sh)." >&2
+TARGET_BRANCH="${1:-${CONFIG_BRANCH:-data}}"
+
+if [ "$TARGET_BRANCH" = "main" ] || [ "$TARGET_BRANCH" = "HEAD" ]; then
+	echo "Using configs from local checkout ($TARGET_BRANCH) — skipping fetch_data_branch."
+	exit 0
+fi
+
+if ! git fetch -q origin "$TARGET_BRANCH"; then
+	echo "FATAL: '$TARGET_BRANCH' branch not found on origin." >&2
 	exit 1
 fi
 
-git checkout -q FETCH_HEAD -- configs/ state/
-# Worktree-only: drop the staging entries the checkout added (the paths are
-# gitignored on main; leaving them in the index dirties `git status`).
-git reset -q -- $(git ls-tree --name-only -r FETCH_HEAD configs/ state/)
-echo "Materialized data@$(git rev-parse --short FETCH_HEAD):"
-git ls-tree --name-only -r FETCH_HEAD configs/ state/ | sed 's/^/  /'
+# Fetch state/ if present
+STATE_LIST=$(git ls-tree --name-only -r FETCH_HEAD state/ 2>/dev/null || true)
+if [ -n "$STATE_LIST" ]; then
+	git checkout -q FETCH_HEAD -- state/ 2>/dev/null || true
+	git reset -q -- $STATE_LIST 2>/dev/null || true
+fi
+
+# Fetch configs/ from the branch into temp_configs/
+mkdir -p temp_configs
+CONFIGS_LIST=$(git ls-tree --name-only -r FETCH_HEAD configs/ 2>/dev/null || true)
+if [ -n "$CONFIGS_LIST" ]; then
+	git checkout -q FETCH_HEAD -- configs/ 2>/dev/null || true
+	git reset -q -- $CONFIGS_LIST 2>/dev/null || true
+
+	# Route generated pool configs to temp_configs scratch directory
+	for d in stable beta batch both; do
+		if [ -d "configs/$d" ]; then
+			rm -rf "temp_configs/$d"
+			cp -r "configs/$d" "temp_configs/$d"
+			rm -rf "configs/$d"
+		fi
+	done
+
+	for f in configs/stable_build.json configs/beta_build.json; do
+		if [ -f "$f" ]; then
+			cp -f "$f" "temp_configs/"
+			rm -f "$f"
+		fi
+	done
+
+	# Restore on-tree configs/patches from HEAD so configs/patches stays clean
+	if git ls-tree -d HEAD configs/patches >/dev/null 2>&1; then
+		git checkout -q HEAD -- configs/patches/ 2>/dev/null || true
+	fi
+fi
+
+echo "Materialized $TARGET_BRANCH@$(git rev-parse --short FETCH_HEAD) (temp_configs populated, configs/patches reserved for on-tree)"

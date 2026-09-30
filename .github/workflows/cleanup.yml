@@ -3,6 +3,14 @@ name: Cleanup
 on:
   workflow_call:
   workflow_dispatch:
+   inputs:
+     cleanup_all_releases:
+      type: boolean
+      description: "Whether to Delete All Releases"
+      required: true
+      default: false
+        
+        
 
 concurrency:
   group: clean
@@ -21,13 +29,23 @@ jobs:
 
       - name: Delete Older Releases and Workflows
         uses: ophub/delete-releases-workflows@main
+        if: ${{ inputs.cleanup_all_releases == false }}
         with:
           delete_releases: true
           delete_tags: true
-          releases_keep_latest: 98
-          delete_workflows: true
-          workflows_keep_day: 3
+          releases_keep_latest: 200
+          delete_workflows: false
           releases_keep_keyword: stable/beta
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Delete All Releases and Older Workflows
+        uses: ophub/delete-releases-workflows@main
+        if: ${{ inputs.cleanup_all_releases == true }}
+        with:
+          delete_releases: true
+          delete_tags: true
+          releases_keep_latest: 0
+          delete_workflows: false
           gh_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cleanup Archive Release Assets
@@ -48,12 +66,11 @@ jobs:
       - name: Notify website catalog rebuild
         continue-on-error: true
         env:
-          DISPATCH_TOKEN: ${{ secrets.WEBSITE_DISPATCH_TOKEN || secrets.APKS_REPO_TOKEN }}
-          WEBSITE_REPO: "${{ vars.WEBSITE_REPO || 'nullcpy/nullcpy.github.io' }}"
+          DISPATCH_TOKEN: ${{ secrets.WEBSITE_TOKEN || secrets.WEBSITE_DISPATCH_TOKEN || secrets.WEBSITE_REPO_TOKEN || secrets.APKS_REPO_TOKEN || secrets.PERSONAL_ACCESS_TOKEN || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          WEBSITE_REPO: "${{ vars.WEBSITE_REPO || 'sharath-5br2r-apps/sharath-5br2r-apps.github.io' }}"
         run: |
           curl -fsS -X POST "https://api.github.com/repos/${WEBSITE_REPO}/dispatches" \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $DISPATCH_TOKEN" \
             -d '{"event_type": "catalog-updated"}' \
             || echo "::warning::Website catalog dispatch failed; the scheduled rebuild will converge."
-

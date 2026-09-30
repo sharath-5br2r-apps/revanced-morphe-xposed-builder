@@ -32,30 +32,78 @@ def main():
 
     build_json_file = Path("build.json")
     if not build_json_file.exists():
-        print("No build.json found — writing empty manifest.")
+        print("[manifest] ERROR: build.json is missing; writing an empty manifest.", file=sys.stderr)
         build_info = {}
     else:
         with open(build_json_file, encoding="utf-8") as f:
             build_info = json.load(f)
 
     build_dir = Path("build")
-    built_files = [f for f in build_dir.iterdir() if f.is_file()] if build_dir.exists() else []
+    built_files_env = os.environ.get("BUILT_FILES_FILE", "").strip() or os.environ.get("BUILD_FILES_FILE", "").strip()
+    built_files_path = Path(built_files_env) if built_files_env else None
+    if not built_files_path or not built_files_path.is_file():
+        if Path("aggregated_out/built_files.txt").is_file():
+            built_files_path = Path("aggregated_out/built_files.txt")
+        elif Path("built_files.txt").is_file():
+            built_files_path = Path("built_files.txt")
+        elif Path("build_files.txt").is_file():
+            built_files_path = Path("build_files.txt")
+
+    if built_files_path and built_files_path.is_file():
+        with open(built_files_path, encoding="utf-8") as f:
+            built_files = [Path(line.strip()) for line in f if line.strip()]
+    elif build_dir.exists():
+        built_files = [f for f in build_dir.iterdir() if f.is_file()]
+    else:
+        built_files = []
+    manifest_only = os.environ.get("MANIFEST_ONLY", "false").lower() == "true"
 
     files = {}
+    skipped_targets = 0
     for target_key, info in build_info.items():
+        if not isinstance(info, dict):
+            print(f"[manifest] WARNING: skipping {target_key}: entry is not an object.", file=sys.stderr)
+            continue
         file_prefix = info.get("name") or target_key
-        prefix_lower = file_prefix.lower()
-        matching_files = [
-            f for f in built_files
-            if f.name.lower().startswith(prefix_lower + "-v") or f.name.lower().startswith(prefix_lower + "-module-")
-        ]
+        assets = info.get("assets") or []
+        assets_by_name = {
+            asset.get("name"): asset
+            for asset in assets
+            if isinstance(asset, dict) and asset.get("name")
+        }
+        if assets_by_name:
+            if built_files:
+                matching_files = [f for f in built_files if f.name in assets_by_name]
+            elif manifest_only:
+                # Aggregate jobs do not download the APKs. Use the exact asset
+                # names recorded by the regular build.json from each build job.
+                matching_files = [Path(name) for name in assets_by_name]
+            else:
+                matching_files = []
+        else:
+            matching_files = []
+
+        if not matching_files and built_files:
+            # Fallback to filename prefix matching if asset entries didn't match or were absent.
+            prefix_lower = file_prefix.lower()
+            matching_files = [
+                f for f in built_files
+                if f.name.lower().startswith(prefix_lower + "-v")
+                or f.name.lower().startswith(prefix_lower + "-module-")
+            ]
         if not matching_files:
+            skipped_targets += 1
+            print(
+                f"[manifest] WARNING: no built file matched {target_key}; "
+                f"expected assets: {', '.join(assets_by_name) or '(prefix fallback)'}",
+                file=sys.stderr,
+            )
             continue
 
         app_name = (info.get("display_name") or target_key).strip()
         app_key = normalize_key(app_name) or normalize_key(target_key)
 
-        brand_cfg = (info.get("brand") or "").strip()
+        brand_cfg = (info.get("patch_brand") or "").strip()
         if brand_cfg:
             brand_key, brand_name = normalize_key(brand_cfg), brand_cfg
         else:
@@ -68,27 +116,55 @@ def main():
         version = info.get("version", "")
         patches_ref = (info.get("patches") or "").strip()
         changelog_url = (info.get("changelog") or "").strip()
+        changelog_urls = info.get("changelog_urls") or (changelog_url.split() if changelog_url else [])
+        raw_changelogs = info.get("changelogs") or []
 
         for f in matching_files:
             fname = f.name
+            asset = assets_by_name.get(fname)
+            if not asset:
+                # Try matching by arch and extension from the assets list
+                f_arch = extract_arch(fname, version)
+                for a in assets:
+                    if isinstance(a, dict) and (a.get("arch") == f_arch or (not a.get("arch") and not f_arch)):
+                        asset = a
+                        break
+            asset = asset or {}
             lower = fname.lower()
-            if not (lower.endswith(".apk") or lower.endswith(".zip")):
+            if not any(lower.endswith(ext) for ext in (".apk", ".apkm", ".xapk", ".apks", ".zip")):
+                print(f"[manifest] WARNING: skipping unsupported output {fname}", file=sys.stderr)
                 continue
+            if not asset:
+                print(f"[manifest] WARNING: {fname} matched by prefix fallback; asset metadata is unavailable.", file=sys.stderr)
             files[fname] = {
                 "name": file_prefix,
                 "version": version,
                 "appKey": app_key,
                 "appName": app_name,
-                "arch": normalize_arch(extract_arch(fname, version)),
-                "fileType": "APK" if lower.endswith(".apk") else "Module",
+                "arch": normalize_arch(asset.get("arch") or extract_arch(fname, version)),
+                "fileType": "APK" if any(lower.endswith(ext) for ext in (".apk", ".apkm", ".xapk", ".apks")) else "Module",
                 "brandKey": brand_key,
                 "brandName": brand_name,
                 "variant": variant_val,
                 "subVariant": sub_variant_val,
-                "packageName": (info.get("package_name") or "").strip() or None,
+                "packageName": (info.get("package_name") or info.get("pkgname") or "").strip() or None,
+                "cli": info.get("cli") or None,
+                "patches": patches_ref or None,
+                "patchesSource": info.get("patches_source") or None,
+                "engineBrand": info.get("engine_brand") or None,
+                "patchBrand": info.get("patch_brand") or None,
+                "densities": asset.get("densities") or [],
+                "nativeLibraries": asset.get("native_libraries") or [],
+                "minSdk": asset.get("min_sdk") or None,
+                "versionCode": asset.get("version_code") or None,
                 "patchSources": patches_ref.split() if patches_ref else [],
-                "changelogs": changelog_url.split() if changelog_url else [],
-                "appliedPatches": info.get("applied_patches") or [],
+                "changelogUrls": changelog_urls,
+                "changelogs": raw_changelogs,
+                # Patch/build inspection data belongs to the matching asset;
+                # never inherit it from the app-level build object.
+                "appliedPatches": asset.get("appliedPatches") or [],
+                "skippedPatches": asset.get("skippedPatches") or [],
+                "failedPatches": asset.get("failedPatches") or [],
                 "originBuild": next_ver_code,
                 "publishedAt": now_iso,
             }
@@ -105,7 +181,10 @@ def main():
     out_path = out_dir / "build.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, separators=(",", ":"))
-    print(f"Wrote {out_path} with {len(files)} file entries (build {next_ver_code}, channel {channel}).")
+    print(
+        f"Wrote {out_path} with {len(files)} file entries "
+        f"(build {next_ver_code}, channel {channel}, skipped targets {skipped_targets})."
+    )
 
 
 if __name__ == "__main__":

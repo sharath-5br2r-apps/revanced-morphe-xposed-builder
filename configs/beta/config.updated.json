@@ -1,0 +1,18 @@
+{
+  "patches-version": "beta",
+  "Bitwarden-Morphe-Stylus-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "ch3thanhs/stylus",
+    "patch-brand": "Stylus",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Bitwarden",
+    "sub-variant": "Experimental",
+    "pkg-name": "com.x8bit.bitwarden",
+    "github-dlurl": "https://github.com/bitwarden/android",
+    "github-dlurl-regex": "fdroid.apk$",
+    "github-release-regex": "bwpm",
+    "version": "latest",
+    "skip-patch-app-check": true
+  }
+}

@@ -36,7 +36,8 @@ except ImportError:
 
 
 PATCHES_DIR = "configs/patches"
-STATE_FILE = "state/patch_sources.json"
+STATE_FILE = "state/patch_sources.json" if os.path.exists("state/patch_sources.json") else ("configs/patch_sources.json" if os.path.isdir("configs") else ".github/configs/patch_sources.json")
+STATE_FILE = "configs/patch_sources.json" if os.path.isdir("configs") else ".github/configs/patch_sources.json"
 
 
 def split_quoted_list(text):
@@ -56,7 +57,7 @@ def split_quoted_list(text):
 def discover_active_sources(patches_dir=PATCHES_DIR):
     """Scans all TOML files and returns a dict: repo -> host for all enabled apps."""
     active_sources = {}
-    toml_files = sorted(glob.glob(os.path.join(patches_dir, "*.toml")))
+    toml_files = sorted(glob.glob(os.path.join(patches_dir, "*.toml")) + glob.glob(os.path.join(patches_dir, "**/*.toml")))
 
     for filepath in toml_files:
         try:
@@ -89,13 +90,13 @@ def discover_active_sources(patches_dir=PATCHES_DIR):
 
             src_list = split_quoted_list(src_str)
             host_list = split_quoted_list(host_str)
-
             for i, src in enumerate(src_list):
+                if not src or src.lower() == "none":
+                    continue
                 host = host_list[i] if i < len(host_list) else (
                     host_list[0] if host_list else "github")
                 host = host.lower()
-                if src:
-                    active_sources[src] = host
+                active_sources[src] = host
 
     return active_sources
 
@@ -182,6 +183,26 @@ def fetch_codeberg_releases(repo, token=None):
     )
 
 
+def fetch_forgejo_releases(repo, host_instance="codeberg.org"):
+    instance = host_instance or "codeberg.org"
+    if not instance.startswith("http"):
+        instance = f"https://{instance}"
+    url = f"{instance.rstrip('/')}/api/v1/repos/{repo}/releases?per_page=100"
+    headers = {"User-Agent": "Mozilla/5.0 (rvb-patch-sync)"}
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            return json.loads(resp.read().decode("utf-8")), False
+    except urllib.error.HTTPError as e:
+        if e.code in (403, 404):
+            return None, True
+        print(f"Warning: Forgejo API error {e.code} for {repo} on {instance}", file=sys.stderr)
+        return None, False
+    except Exception as e:
+        print(f"Warning: Failed to fetch Forgejo releases for {repo} on {instance}: {e}", file=sys.stderr)
+        return None, False
+
+
 def parse_releases(releases, host):
     if not isinstance(releases, list):
         return "", "", "", ""
@@ -259,7 +280,7 @@ def main():
 
         if host == "gitlab":
             releases, blocked = fetch_gitlab_releases(repo)
-        elif host == "codeberg":
+        elif host in ("forgejo", "gitea", "codeberg"):
             releases, blocked = fetch_codeberg_releases(repo, codeberg_token)
         else:
             releases, blocked = fetch_github_releases(repo, token)
@@ -361,6 +382,7 @@ def main():
         with open(github_output, "a", encoding="utf-8") as f:
             f.write(f"TRIGGER_STABLE={trigger_stable}\n")
             f.write(f"TRIGGER_BETA={trigger_beta}\n")
+            f.write(f"TRIGGER_PRERELEASE={trigger_beta}\n")
             f.write(f"TRIGGER_BLOCKED={trigger_blocked}\n")
 
     print(

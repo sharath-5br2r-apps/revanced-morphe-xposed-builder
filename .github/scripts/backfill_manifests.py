@@ -27,7 +27,7 @@ from pathlib import Path
 SCHEMA_VERSION = 1
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from naming import extract_arch, file_prefix as file_prefix_of, normalize_arch  # noqa: E402
+from naming import extract_arch, file_prefix as file_prefix_of, normalize_arch, normalize_key  # noqa: E402
 
 
 def run_cmd(cmd, check=True):
@@ -76,7 +76,8 @@ def manifest_entry_from_app(file_obj, app, brand, variant_meta, build, published
         "packageName": variant_meta.get("packageName"),
         "patchSources": build.get("patchSources") or [],
         "changelogs": build.get("changelogs") or [],
-        "appliedPatches": build.get("appliedPatches") or [],
+        # APK patch results are asset-local; never inherit root build fields.
+        "appliedPatches": file_obj.get("appliedPatches") or [],
         "originBuild": str(build.get("build")) if not build.get("isArchive") else None,
         "publishedAt": build.get("publishedAt") or published_at,
     }
@@ -99,7 +100,15 @@ def main():
         print(f"Error: data.json not found at {data_json_path}", file=sys.stderr)
         sys.exit(1)
     catalog = json.load(open(data_json_path, encoding="utf-8"))
-    print(f"Loaded catalog: {len(catalog.get('apps', []))} apps, updated_at={catalog.get('updated_at')}")
+    # utils.sh writes the build metadata as a filename-independent map:
+    # {"target-key": {"name": ..., "assets": [{"name": ..., ...}]}}.
+    # Older versions of this script only understood the website's {apps: []}
+    # catalog, which silently produced empty manifests when given build.json.
+    raw_build = catalog if isinstance(catalog, dict) and "apps" not in catalog else None
+    if raw_build is not None:
+        print(f"Loaded raw build metadata: {len(raw_build)} targets")
+    else:
+        print(f"Loaded catalog: {len(catalog.get('apps', []))} apps, updated_at={catalog.get('updated_at')}")
 
     live = load_live_releases(args.repo)
     print(f"Live releases: {len(live)}")
@@ -116,7 +125,62 @@ def main():
             "files": {},
         }
 
-    for app in catalog.get("apps", []):
+    def add_raw_build(tag, raw):
+        """Convert the structure emitted by utils.sh/write_build_info."""
+        rel = live.get(tag, {})
+        is_archive = tag in ("stable", "beta")
+        bucket = archives if is_archive else numbered
+        if tag not in bucket:
+            channel = "beta" if rel.get("prerelease") else "stable"
+            bucket[tag] = new_manifest("archive" if is_archive else "build", tag,
+                                       channel, rel.get("published_at", ""))
+        manifest = bucket[tag]
+        for target_key, info in raw.items():
+            if not isinstance(info, dict):
+                continue
+            for asset in info.get("assets", []):
+                if not isinstance(asset, dict) or not asset.get("name"):
+                    continue
+                fname = asset["name"]
+                low = fname.lower()
+                if not (low.endswith(".apk") or low.endswith(".zip")):
+                    continue
+                patches = info.get("patches") or ""
+                patch_sources = info.get("patches_source") or ""
+                brand = info.get("patch_brand") or ""
+                entry = {
+                    "name": info.get("name") or target_key,
+                    "version": info.get("version"),
+                    "appKey": normalize_key(info.get("display_name") or target_key),
+                    "appName": info.get("display_name") or target_key,
+                    "arch": normalize_arch(asset.get("arch") or extract_arch(fname, info.get("version") or "")),
+                    "fileType": "APK" if low.endswith(".apk") else "Module",
+                    "brandKey": brand or None,
+                    "brandName": brand or None,
+                    "variant": info.get("variant"),
+                    "subVariant": info.get("sub_variant"),
+                    "packageName": info.get("package_name") or info.get("pkgname"),
+                    "patchSources": patch_sources.split() if isinstance(patch_sources, str) else patch_sources,
+                    "changelogs": (info.get("changelog") or "").split(),
+                    "appliedPatches": asset.get("appliedPatches") or [],
+                    "originBuild": None if is_archive else tag,
+                    "publishedAt": asset.get("published_at") or rel.get("published_at", ""),
+                }
+                manifest["files"][fname] = entry
+
+    if raw_build is not None:
+        # A raw build.json has no release id; use the explicitly supplied tag
+        # when present, otherwise apply it to the sole live numbered release.
+        tag = str(os.environ.get("BUILD_TAG") or raw_build.get("releaseId") or raw_build.get("build") or "")
+        if not tag:
+            candidates = [t for t in live if t not in ("stable", "beta")]
+            tag = candidates[0] if len(candidates) == 1 else ""
+        if tag:
+            add_raw_build(tag, raw_build)
+        else:
+            print("Warning: raw build metadata has no release tag; using fallback entries only")
+
+    for app in catalog.get("apps", []) if raw_build is None else []:
         for brand in app.get("brands", []):
             # variant meta map keyed by (variant, subVariant): prefix + packageName
             vmeta = {}
