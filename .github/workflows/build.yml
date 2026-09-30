@@ -7,7 +7,7 @@ on:
       config_branch:
         required: false
         type: string
-        default: "main"
+        default: "data"
       config_file:
         required: true
         type: string
@@ -87,7 +87,7 @@ jobs:
           fi
 
       - name: Fetch configs & state
-        run: bash .github/scripts/fetch_data_branch.sh "${{ inputs.config_branch || 'main' }}"
+        run: bash .github/scripts/fetch_data_branch.sh "${{ inputs.config_branch || 'data' }}"
 
       - name: Resolve build context
         id: context

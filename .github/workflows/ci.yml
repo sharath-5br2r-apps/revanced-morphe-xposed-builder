@@ -116,6 +116,9 @@ jobs:
       - name: Setup Python dependencies
         run: pip install --no-cache-dir curl_cffi || true
 
+      - name: Fetch configs & state (data branch)
+        run: bash .github/scripts/fetch_data_branch.sh
+
       - name: Sync patch sources and fetch tags
         if: ${{ inputs.mode != 'Build Only' }}
         id: compare

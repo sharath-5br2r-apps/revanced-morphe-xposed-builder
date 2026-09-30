@@ -87,6 +87,7 @@ if [ ! -s "$ROOT_DIR/temp_all_configs.json" ]; then
     exit 0
 fi
 
+mkdir -p "$(dirname "$APP_VERSIONS_FILE")"
 [ -f "$APP_VERSIONS_FILE" ] || echo '{}' > "$APP_VERSIONS_FILE"
 
 WORK_FILE=$(mktemp "${TMPDIR:-/tmp}/ci-fetch.XXXXXX")
