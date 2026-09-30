@@ -35,38 +35,6 @@ on:
         required: false
         type: string
         default: ""
-  workflow_dispatch:
-    inputs:
-      config_branch:
-        description: "Config source branch"
-        required: true
-        type: choice
-        default: "main"
-        options:
-          - "main"
-          - "data"
-      config_file:
-        description: "Select the config file to use"
-        required: true
-        type: choice
-        default: "configs/config.manual.toml"
-        options:
-          - "configs/config.manual.toml"
-          - "configs/beta_build.json"
-          - "configs/stable_build.json"
-          - "configs/stable/config.updated.json"
-          - "configs/beta/config.updated.json"
-          - "configs/both/config.updated.json"
-      remove_apks:
-        description: "Optional: APKs to remove from cache (space-separated, e.g., com.brave.browser-1.93.138-*.apk)"
-        required: false
-        type: string
-        default: ""
-      patches_version:
-        description: "Optional patches version override"
-        required: false
-        type: string
-        default: ""
 
 concurrency:
   group: build-${{ inputs.config_file }}

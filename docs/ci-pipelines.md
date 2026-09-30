@@ -7,9 +7,8 @@ GitHub's limits; notify reports failures.
 | File | Name | Triggered by | Concurrency group |
 |---|---|---|---|
 | [ci.yml](../.github/workflows/ci.yml) | CI | `schedule` cron `0 */4 * * *`, `workflow_dispatch` | `ci` |
-| [build.yml](../.github/workflows/build.yml) | Build | `workflow_call` only — from `ci.yml` (per pool) or `manual-ci.yml` | `build` |
+| [build.yml](../.github/workflows/build.yml) | Build | `workflow_call` only — from `ci.yml` (per pool) | `build` |
 | [cleanup.yml](../.github/workflows/cleanup.yml) | Cleanup | `workflow_call`, `workflow_dispatch` | `clean` |
-| [manual-ci.yml](../.github/workflows/manual-ci.yml) | Manual CI | `workflow_dispatch` (config choice + optional `remove_apks`) | `ci` |
 | [notify.yml](../.github/workflows/notify.yml) | Notify | `workflow_call`, on `failure()` of the caller | — |
 | [trace-verify.yml](../.github/workflows/trace-verify.yml) | Trace Verify | `push` touching `scripts/build.sh`, `scripts/utils.sh` or `.github/traces/**` | `trace-verify` |
 
