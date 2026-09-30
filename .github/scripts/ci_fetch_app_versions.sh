@@ -61,7 +61,7 @@ Supported download sources (configured per-app in TOML):
   forgejo      Forgejo/Gitea releases (forgejo-dlurl)
   archive      Direct archive URL (archive-dlurl)
 
-For config file keys, see Documentation.md.
+For config file keys, see CONFIG.md.
 EOF
 }
 

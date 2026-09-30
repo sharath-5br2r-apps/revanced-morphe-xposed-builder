@@ -51,7 +51,7 @@ Thank you to everyone in the open-source community who helps keep these projects
 
 Configuration syntax, available options, prerequisites, local `build.sh`
 usage, architecture selection, keystore setup, and CI behavior are documented
-in the [Configuration and Usage Guide](Documentation.md).
+in the [Configuration and Usage Guide](CONFIG.md).
 
 ---
 

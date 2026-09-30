@@ -1,7 +1,7 @@
 # Agent instructions
 
 Working in `sharath-5br2r-apps/revanced-morphe-xposed-builder` (downstream fork of `nullcpy/rvb`).
-Read [docs/ai-context.md](docs/ai-context.md) and [Documentation.md](Documentation.md)
+Read [docs/ai-context.md](docs/ai-context.md) and [CONFIG.md](CONFIG.md)
 before making a change. The rules below are the ones that cause damage when broken.
 
 1. **`main` is pure code.** `configs/` and `state/` are gitignored materialisations
@@ -48,4 +48,4 @@ engine stages → [docs/build-engine.md](docs/build-engine.md); workflow order o
 gating → [docs/ci-pipelines.md](docs/ci-pipelines.md); branches, releases and file
 names → [docs/storage-and-branches.md](docs/storage-and-branches.md); anything the
 website reads → [docs/website-contract.md](docs/website-contract.md); TOML keys →
-[CONFIG.md](CONFIG.md) and [Documentation.md](Documentation.md).
+[CONFIG.md](CONFIG.md).
