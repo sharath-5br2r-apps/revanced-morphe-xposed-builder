@@ -1,7 +1,7 @@
 # 0006 — Filename parsing is imported across the repo boundary, never mirrored
 
 **Status:** accepted (2026-09-29)
-**Affects:** `nullcpy.github.io/.github/scripts/rebuild_catalog.py`,
+**Affects:** `sharath-5br2r-apps.github.io/.github/scripts/rebuild_catalog.py`,
 `.github/workflows/rebuild-catalog.yml`, `.github/scripts/naming.py`
 
 ## Context

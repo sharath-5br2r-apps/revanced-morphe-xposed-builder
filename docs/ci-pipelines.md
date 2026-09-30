@@ -140,7 +140,7 @@ Step order, with the reason each is where it is:
    gone; `cleanup_website_branch.sh` drops `manifests/<tag>.json` for deleted
    releases.
 4. A `catalog-updated` `repository_dispatch` to `vars.WEBSITE_REPO`
-   (default `nullcpy/nullcpy.github.io`), authenticated with
+   (default `sharath-5br2r-apps/sharath-5br2r-apps.github.io`), authenticated with
    `WEBSITE_DISPATCH_TOKEN` falling back to `APKS_REPO_TOKEN`. `continue-on-error`,
    because the site also rebuilds on its own schedule — a lost dispatch delays the
    catalogue, it does not break it.
@@ -151,7 +151,7 @@ Step order, with the reason each is where it is:
 |---|---|---|---|
 | secret | `GITHUB_TOKEN` (auto) | all | `contents: write` on the jobs that push branches |
 | secret | `KEYSTORE_B64`, `KEYSTORE_P12_B64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS` | build | signing identity |
-| secret | `APKS_REPO_TOKEN` | build, cleanup | cross-repo write to `nullcpy/apks`, doubles as dispatch token |
+| secret | `APKS_REPO_TOKEN` | build, cleanup | cross-repo write to `sharath-5br2r-apps/apks-dump`, doubles as dispatch token |
 | secret | `CODEBERG_TOKEN` | watcher | raises Codeberg/Forgejo rate limits |
 | secret | `TG_TOKEN`, `WEBSITE_DISPATCH_TOKEN` (optional) | notify steps | |
 | var | `APKS_REPO`, `WEBSITE_REPO` | build, cleanup | alternate cache/site repos for forks |

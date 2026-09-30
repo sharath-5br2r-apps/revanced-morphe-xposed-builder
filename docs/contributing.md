@@ -55,7 +55,7 @@ immediately instead of waiting, run **Manual CI** (`workflow_dispatch`) against
 
 ```bash
 git clone <this repo> && cd rvb
-bash .github/scripts/fetch_data_branch.sh    # you cannot build or test without this
+bash .github/scripts/fetch_data_branch.sh    # or `bash scripts/fetch_local_data.sh` to checkout from local data branch
 ```
 
 Requirements: bash 4+ (the project's tests are written against bash 5.x under Git
@@ -74,7 +74,7 @@ bash scripts/build.sh configs/config.manual.toml
 Expect it to need real network access to the stores. Module auto-update is
 disabled locally by design (there is no published `update` branch for a local run
 to point at), and output lands in `build/` with `build.json` + `build.md`
-describing it. `bash scripts/build.sh clean` resets.
+describing it. For complete local build options, arguments, and syntax, see [**`docs/local-build.md`**](local-build.md). `bash scripts/build.sh clean` resets.
 
 ### Test what you changed
 
@@ -150,9 +150,9 @@ about which flags actually reached the tool. Two lessons baked into the habit:
 ## Reading the running system
 
 ```bash
-gh run list --repo nullcpy/rvb                     # recent CI / Build / Cleanup runs
+gh run list --repo sharath-5br2r-apps/rvb          # recent CI / Build / Cleanup runs
 gh run view <id> --log-failed                      # the failing step, filtered
-gh api repos/nullcpy/rvb/releases/tags/stable -q '.assets[].name'   # what is downloadable now
+gh api repos/sharath-5br2r-apps/rvb/releases/tags/stable -q '.assets[].name'   # what is downloadable now
 git fetch origin website && git show FETCH_HEAD:archive/stable.json | jq '.files | length'
 ```
 

@@ -6,11 +6,11 @@ line is either a rule you must obey or a fact you cannot infer from a single fil
 
 ## What this is
 
-`nullcpy/rvb` automatically builds patched Android APKs and Magisk/KernelSU
+`sharath-5br2r-apps/rvb` automatically builds patched Android APKs and Magisk/KernelSU
 modules (ReVanced-family, Morphe, and others) whenever an upstream **patch source**
 or an upstream **app** releases something new, publishes the files to GitHub
 Releases, records build metadata on a Git branch, and feeds a static download site
-(`nullcpy.github.io`). Detail: [architecture.md](architecture.md).
+(`sharath-5br2r-apps.github.io`). Detail: [architecture.md](architecture.md).
 
 ## Hard rules
 
@@ -87,7 +87,7 @@ Releases, records build metadata on a Git branch, and feeds a static download si
 | `update` | `<channel>/<module-id>.json` pointers, `changelogs/<code>.md` | build job, when modules were built |
 
 Releases: numbered (`260141`) = immutable per-build; `stable`/`beta` = rolling
-archives whose metadata CI never touches. External: `nullcpy/apks` = shared
+archives whose metadata CI never touches. External: `sharath-5br2r-apps/apks-dump` = shared
 download cache (release per package name). Full detail:
 [storage-and-branches.md](storage-and-branches.md) and
 [cache-repo.md](cache-repo.md).
@@ -131,7 +131,7 @@ fixed: `cache_repo` → `direct` → `github` → `archive` → `apkmirror` → 
 |---|---|---|
 | Add/enable/disable an app or patch | `data:configs/patches/*.toml` ([CONFIG.md](../CONFIG.md)) | Manual CI on `configs/config.manual.toml` |
 | Fix a scraper / download source | `scripts/utils.sh` (`dl_<source>`, `get_<source>_resp/vers`) | trace harness + a single-app manual build |
-| Debug a cache miss or a vanished stock APK | `dl_cache_repo`, `usage.json` in `nullcpy/apks` | [cache-repo.md](cache-repo.md) debugging checklist |
+| Debug a cache miss or a vanished stock APK | `dl_cache_repo`, `usage.json` in `sharath-5br2r-apps/apks-dump` | [cache-repo.md](cache-repo.md) debugging checklist |
 | Change patch invocation/flags | `scripts/utils.sh:patch_apk`, `.github/scripts/patchers.sh` | `trace_runner.sh verify` (goldens will diff — read them) |
 | Change release upload semantics | `.github/scripts/build_upload_release.sh` | stubbed-`gh` metadata matrix harness |
 | Change what gets built when | `.github/scripts/ci_*.sh` and `.py` | read the previous run's flags; dispatch CI |
@@ -148,7 +148,7 @@ bash .github/traces/trace_runner.sh capture          # re-record goldens after i
 bash scripts/build.sh configs/config.manual.toml     # real build (network + java + jq)
 bash scripts/build.sh clean                          # reset temp/ build/ build.md
 bash .github/scripts/push_data_configs.sh "feat(config): …"   # publish TOML edits
-gh run list --repo nullcpy/rvb                       # what ran and how
+gh run list --repo sharath-5br2r-apps/rvb            # what ran and how
 ```
 
 ## Glossary

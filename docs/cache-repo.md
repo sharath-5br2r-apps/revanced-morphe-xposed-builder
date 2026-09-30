@@ -1,14 +1,14 @@
-# The stock-APK cache repository (`nullcpy/apks`)
+# The stock-APK cache repository (`sharath-5br2r-apps/apks-dump`)
 
 A separate repository that stores the **upstream, unpatched** APKs and bundles the
 builder downloads, so a version is scraped from a store once rather than once per
 build, per architecture, per fork. This file documents rvb's side of it — the
 contract. The contributor workflow (getting write access, the three equivalent
 `upload_apks.*` scripts, renaming APKMirror downloads) belongs to
-[the repo's own README](https://github.com/nullcpy/apks/blob/main/README.md).
+[the repo's own README](https://github.com/sharath-5br2r-apps/apks-dump/blob/main/README.md).
 
 ```
-      store / forge                 nullcpy/apks                    rvb build
+      store / forge         sharath-5br2r-apps/apks-dump          rvb build
    (APKMirror, Uptodown, …)   →   release per package name    ←   download source #1
                                        ↑        │
                           upload after a        │ read as `cache_repo`
@@ -145,12 +145,12 @@ invisible. The version code is the one component the key intentionally ignores.
 
 ```bash
 # is the package cached at all, and under what names?
-gh api --paginate repos/nullcpy/apks/releases/tags/<pkg> -q '.assets[].name'
+gh api --paginate repos/sharath-5br2r-apps/apks-dump/releases/tags/<pkg> -q '.assets[].name'
 # does cleanup think it is used? (from a clone of the cache repo)
 jq -r '.["<pkg>-<version>"] | if type=="number" then todate else "untracked" end' usage.json
 # what did the last build actually consume?
 #   temp/used_versions.txt on the runner, and the "Uploading newly downloaded APKs
-#   to nullcpy/apks" line in the Build step log
+#   to sharath-5br2r-apps/apks-dump" line in the Build step log
 # which source served the app?
 #   "Downloading '<app>' from '<source>'" in that app's ::group:: block
 ```

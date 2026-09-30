@@ -4,7 +4,7 @@ Two repositories, one product: the builder publishes, the site renders. This fil
 documents only the **seam** — the formats and ordering rules that cross the
 boundary. The site's internals (UI, `script.js` configuration, categories,
 notices, search engine, Obtainium flow) are documented by its own guide:
-[`nullcpy.github.io/CONFIG.md`](https://github.com/nullcpy/nullcpy.github.io/blob/main/CONFIG.md).
+[`sharath-5br2r-apps.github.io/CONFIG.md`](https://github.com/sharath-5br2r-apps/sharath-5br2r-apps.github.io/blob/main/CONFIG.md).
 
 ## What crosses the boundary
 
@@ -129,7 +129,7 @@ expressed — the full account is
 3. **Bump `schema`** in the manifest envelope for a breaking change, and make the
    consumer reject an unknown major version loudly instead of half-reading it.
 4. **Verify both ends before pushing.** Locally:
-   `python3 .github/scripts/rebuild_catalog.py --repo nullcpy/rvb --manifest-dir <clone-of-website-branch> --out /tmp/data.json.new --existing data.json`
+   `python3 .github/scripts/rebuild_catalog.py --repo sharath-5br2r-apps/rvb --manifest-dir <clone-of-website-branch> --out /tmp/data.json.new --existing data.json`
    then diff `/tmp/data.json.new` against `data.json` ignoring `updated_at` —
    exactly what the workflow's report step does. On GitHub: run
    `rebuild-catalog.yml` with `dry_run: true`.

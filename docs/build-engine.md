@@ -121,7 +121,7 @@ in; the first source that yields a verified artifact wins:
 
 | # | Source | Notes |
 |---|---|---|
-| 1 | `cache_repo` | `nullcpy/apks` — release per package name, download-only (never used to list versions) → [cache-repo.md](cache-repo.md) |
+| 1 | `cache_repo` | `sharath-5br2r-apps/apks-dump` — release per package name, download-only (never used to list versions) → [cache-repo.md](cache-repo.md) |
 | 2 | `direct` | a straight file URL in the config |
 | 3 | `github` | release assets, filtered by `github-release-regex` / `github-regex`, arch-mapped |
 | 4 | `archive` | `archive.org` item, the long-term fallback for delisted versions |
@@ -150,7 +150,7 @@ Supporting machinery:
 | Layer | Location | Keyed by | Written by |
 |---|---|---|---|
 | Actions cache | `temp/apks` on the runner | `apks-<hash of size+name manifest>` | `build.yml` restore/save |
-| Shared APK cache | `nullcpy/apks` releases | tag = package name | the engine, after a successful fresh download (`UPLOAD_APKS_REPO`, `GH_TOKEN=APKS_REPO_TOKEN`) |
+| Shared APK cache | `sharath-5br2r-apps/apks-dump` releases | tag = package name | the engine, after a successful fresh download (`UPLOAD_APKS_REPO`, `GH_TOKEN=APKS_REPO_TOKEN`) |
 | Prebuilt tools | `temp/<host>__<owner>__<repo>-rv` | patch source / CLI release | `get_prebuilts` |
 | In-process | `__PREBUILTS_CACHE__`, `__PATCH_VER_CACHE__`, `__PKG_VERS_CACHE__`, `__DL_RESP_CACHE__` | per job | memoised lookups |
 

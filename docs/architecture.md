@@ -9,18 +9,18 @@
         │ watcher lists releases, every 4 h       direct URL, shared APK cache
         ▼                                              │
  ┌──────────────────────────────────────┐              ▼
- │ nullcpy/rvb  (this repo)             │      ┌──────────────────┐
- │  main     code, workflows, docs      │      │  nullcpy/apks    │
- │  data     configs/ + state/          │      │  shared APK cache│
- │  website  manifests/ + archive/      │      │  + usage stats   │
- │  update   module update pointers     │      └──────────────────┘
- │  Releases numbered + stable + beta   │
+ │ sharath-5br2r-apps/rvb (this repo)   │      ┌───────────────────────┐
+ │  main     code, workflows, docs      │      │ sharath-5br2r-apps/   │
+ │  data     configs/ + state/          │      │ apks-dump             │
+ │  website  manifests/ + archive/      │      │ shared APK cache      │
+ │  update   module update pointers     │      │ + usage stats         │
+ │  Releases numbered + stable + beta   │      └───────────────────────┘
  └──────────────────────────────────────┘
         │            ▲        │
         │            │        │ clone --branch website (manifest input)
         │            │        ▼
         │            │   ┌────────────────────────────────────────┐
-        │            │   │ nullcpy/nullcpy.github.io              │
+        │            │   │ sharath-5br2r-apps.github.io           │
         │            │   │  rebuild-catalog.yml → data.json       │
         │            │   │  GitHub Pages: index.html + script.js  │
         │            │   └────────────────────────────────────────┘
@@ -29,17 +29,17 @@
           catalog-updated repository_dispatch (from cleanup.yml)
 ```
 
-Four moving parts: **this repo** builds and publishes, the **`apks` repo** is a
+Four moving parts: **this repo** builds and publishes, the **`apks-dump` repo** is a
 shared download cache, the **`website` branch** is the build-metadata store, and
-**`nullcpy.github.io`** folds that store into the `data.json` the site renders.
+**`sharath-5br2r-apps.github.io`** folds that store into the `data.json` the site renders.
 
 ## Repositories
 
 | Repo | Role | Written by |
 |---|---|---|
-| `nullcpy/rvb` | The builder: engine, CI, patch configs, artifacts | CI + maintainer |
-| `nullcpy/apks` | Cross-run cache of downloaded stock APKs/bundles plus a usage tracker | CI (`GH_TOKEN`/`APKS_REPO_TOKEN`, `vars.APKS_REPO`) |
-| `nullcpy/nullcpy.github.io` | The download site: catalogue generator + static Pages UI | CI rebuild + maintainer |
+| `sharath-5br2r-apps/rvb` | The builder: engine, CI, patch configs, artifacts | CI + maintainer |
+| `sharath-5br2r-apps/apks-dump` | Cross-run cache of downloaded stock APKs/bundles plus a usage tracker | CI (`GH_TOKEN`/`APKS_REPO_TOKEN`, `vars.APKS_REPO`) |
+| `sharath-5br2r-apps/sharath-5br2r-apps.github.io` | The download site: catalogue generator + static Pages UI | CI rebuild + maintainer |
 
 The site is a separate repository with its own guide; this folder documents only
 the seam between them → [website-contract.md](website-contract.md).
@@ -129,7 +129,7 @@ Cloudflare-bypass sidecar service on `:8000`:
 2. Install Bouncy Castle only if a BKS-needing Xposed module is in the config;
    install the signing keystore from secrets.
 3. `build_resolve_version.sh` computes `NEXT_VER_CODE`; the Actions APK cache is
-   restored and the `nullcpy/apks` repo cache is available to the engine as the
+   restored and the `sharath-5br2r-apps/apks-dump` repo cache is available to the engine as the
    highest-priority download source.
 4. `scripts/build.sh configs/<pool>_build.json` runs the engine →
    [build-engine.md](build-engine.md). Output: `build/` files, `build.json`,
@@ -172,7 +172,7 @@ only fires on `failure()`.
 | Which app versions are current in the stores | scraped live; `data:state/app_versions.json` only tracks what a CLI cannot report |
 | What went into a build | `website:manifests/<tag>.json` |
 | What is downloadable right now | the GitHub Releases API (existence, size, download counts) |
-| What the website shows | `nullcpy.github.io:data.json`, derived — never hand-edited except to fix a bad fold |
+| What the website shows | `sharath-5br2r-apps.github.io:data.json`, derived — never hand-edited except to fix a bad fold |
 | What module id polls for updates | `updateJson` baked into `module.prop`, mirroring `update_json_path()` |
 
 ## Failure policy, and why it is asymmetric

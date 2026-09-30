@@ -153,7 +153,7 @@ manifest's recorded arch is authoritative, and the derivation itself lives in
 `naming.py` alone — the website imports that module rather than copying it
 ([website-contract.md](website-contract.md)).
 
-## `nullcpy/apks` (shared download cache)
+## `sharath-5br2r-apps/apks-dump` (shared download cache)
 
 A **separate repository**, not a branch: one release per Android package name,
 holding the stock APKs and bundles the engine has already fetched, named

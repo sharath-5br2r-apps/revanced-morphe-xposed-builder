@@ -14,7 +14,8 @@ people changing the pipeline and for AI agents asked to do so.
 | change how an APK is fetched, patched, packaged, signed | [build-engine.md](build-engine.md) |
 | know where a file lives, who writes it, how to recover it | [storage-and-branches.md](storage-and-branches.md) |
 | work on the catalogue the website renders (`data.json`) | [website-contract.md](website-contract.md) |
-| understand or debug the stock-APK cache (`nullcpy/apks`) | [cache-repo.md](cache-repo.md) |
+| understand or debug the stock-APK cache (`sharath-5br2r-apps/apks-dump`) | [cache-repo.md](cache-repo.md) |
+| build locally with `build.sh` on Linux or Termux | [local-build.md](local-build.md) |
 | make any change: setup, tests, commit and publish rules | [contributing.md](contributing.md) |
 | brief an AI agent with the shortest correct context | [ai-context.md](ai-context.md) |
 | know *why* a rule exists and what was rejected | [decisions/](decisions/) |
@@ -29,8 +30,8 @@ rots.
 | Every TOML key the builder accepts | [CONFIG.md](../CONFIG.md) |
 | Release-manifest scripts, repair tooling, uploader knobs | [.github/scripts/README.md](../.github/scripts/README.md) |
 | Offline regression harness (fixtures, goldens, stubs) | [.github/traces/README.md](../.github/traces/README.md) |
-| Website UI, `data.json` schema v2, `script.js` config, Obtainium flow | [`nullcpy.github.io/CONFIG.md`](https://github.com/nullcpy/nullcpy.github.io/blob/main/CONFIG.md) |
-| Contributing APKs to the cache (`upload_apks.*`, write access, renaming) | [`nullcpy/apks/README.md`](https://github.com/nullcpy/apks/blob/main/README.md) |
+| Website UI, `data.json` schema v2, `script.js` config, Obtainium flow | [`sharath-5br2r-apps.github.io/CONFIG.md`](https://github.com/sharath-5br2r-apps/sharath-5br2r-apps.github.io/blob/main/CONFIG.md) |
+| Contributing APKs to the cache (`upload_apks.*`, write access, renaming) | [`sharath-5br2r-apps/apks-dump/README.md`](https://github.com/sharath-5br2r-apps/apks-dump/blob/main/README.md) |
 
 ## How to keep these files honest
 

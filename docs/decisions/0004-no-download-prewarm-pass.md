@@ -65,7 +65,7 @@ problem; the remaining benefit was theoretical.
 
 - Build time is bounded by download latency per app, and that is accepted. If it ever
   becomes a real problem, the escalation order is: raise `PARALLEL_JOBS`, then check
-  the cache hit rate in `nullcpy/apks`, only then consider restructuring phases —
+  the cache hit rate in `sharath-5br2r-apps/apks-dump`, only then consider restructuring phases —
   with a measurement attached.
 - `build_rv` has no mode flag. Anyone adding "download only" behaviour should treat
   this file as the reason to say no first.
