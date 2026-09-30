@@ -8,16 +8,21 @@ echo "[+] Aggregating build logs for flavor: $FLAVOR"
 aggregated_json="aggregated_out/build.json"
 aggregated_md="aggregated_out/build.md"
 aggregated_errors="aggregated_out/error.log"
+aggregated_errors_json="aggregated_out/error.json"
+aggregated_log_json="aggregated_out/build_log.json"
+aggregated_errors_md="aggregated_out/error.md"
 aggregated_files="aggregated_out/built_files.txt"
 
 mkdir -p aggregated_out
 echo "{}" > "$aggregated_json"
 > "$aggregated_md"
 > "$aggregated_errors"
+echo "[]" > "$aggregated_errors_json"
+echo "[]" > "$aggregated_log_json"
 > "$aggregated_files"
 
 # Collect all downloaded part-logs (support build.json directly or inside subdirectories)
-for json_file in $(find . \( -name "build.json" -o -name "build*.json" \) 2>/dev/null); do
+for json_file in $(find . \( -name "build.json" -o -name "build*.json" \) ! -name "build_log.json" 2>/dev/null); do
   # Avoid merging output target if running in same dir
   if [ -s "$json_file" ] && [ "${json_file#./}" != "$aggregated_json" ]; then
     echo "[+] Merging $json_file into $aggregated_json"
@@ -32,6 +37,24 @@ for json_file in $(find . \( -name "build.json" -o -name "build*.json" \) 2>/dev
   fi
 done
 
+# Aggregate error.json files
+for ej in $(find . -type f -name "error.json" ! -path "./$aggregated_errors_json" 2>/dev/null); do
+  if [ -s "$ej" ] && jq -e 'type == "array" and length > 0' "$ej" >/dev/null 2>&1; then
+    tmp_merged=$(mktemp)
+    jq -s '.[0] + .[1]' "$aggregated_errors_json" "$ej" > "$tmp_merged"
+    mv "$tmp_merged" "$aggregated_errors_json"
+  fi
+done
+
+# Aggregate build_log.json files
+for bl in $(find . -type f -name "build_log.json" ! -path "./$aggregated_log_json" 2>/dev/null); do
+  if [ -s "$bl" ] && jq -e 'type == "array" and length > 0' "$bl" >/dev/null 2>&1; then
+    tmp_merged=$(mktemp)
+    jq -s '.[0] + .[1]' "$aggregated_log_json" "$bl" > "$tmp_merged"
+    mv "$tmp_merged" "$aggregated_log_json"
+  fi
+done
+
 # Preserve warnings and errors emitted by each parallel build part.
 while IFS= read -r error_file; do
   [ -s "$error_file" ] || continue
@@ -40,6 +63,13 @@ while IFS= read -r error_file; do
     cat "$error_file"
   } >> "$aggregated_errors"
 done < <(find . -type f -name error.log ! -path "./$aggregated_errors" 2>/dev/null | sort)
+
+# Generate aggregated error.md from aggregated JSON logs
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
+if [ -f "$ROOT_DIR/.github/scripts/generate_error_markdown.py" ]; then
+  python3 "$ROOT_DIR/.github/scripts/generate_error_markdown.py" aggregated_out "$aggregated_errors_md" || true
+fi
 
 # Generate aggregated build.md directly from aggregated build.json
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

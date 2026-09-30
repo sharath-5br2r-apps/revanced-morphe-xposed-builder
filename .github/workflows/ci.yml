@@ -24,6 +24,48 @@ on:
           - "Build Only"
           - "Batch Build (Stable)"
           - "Batch Build (Both)"
+          - "Manual Config"
+      config_branch:
+        description: "Config source branch (Manual Config mode)"
+        required: false
+        type: choice
+        default: "main"
+        options:
+          - "main"
+          - "data"
+      config_file:
+        description: "Config file to use (Manual Config mode)"
+        required: false
+        type: choice
+        default: "configs/config.manual.generated.toml"
+        options:
+          - "configs/config.manual.generated.toml"
+          - "configs/config.manual.toml"
+          - "configs/stable/config.updated.json"
+          - "configs/beta/config.updated.json"
+          - "configs/both/config.updated.json"
+          - "configs/beta_build.json"
+          - "configs/stable_build.json"
+      manual_config_file:
+        description: "Optional config path or patch config name (Manual Config mode)"
+        required: false
+        type: string
+        default: ""
+      exclusive_apps:
+        description: "Optional app table filter (Manual Config mode)"
+        required: false
+        type: string
+        default: ""
+      remove_apks:
+        description: "Optional cached APK regex (Manual Config mode)"
+        required: false
+        type: string
+        default: ""
+      patches_version:
+        description: "Optional patches version override (Manual Config mode)"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: ci
@@ -85,6 +127,16 @@ jobs:
         env:
           CFB_URL: "http://localhost:8000"
         run: bash .github/scripts/ci_fetch_app_versions.sh
+
+      - name: Upload Fetch Versions log artifact
+        if: ${{ inputs.mode != 'Build Only' && hashFiles('fetched_app_versions.json') != '' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: fetched-app-versions
+          path: |
+            fetched_app_versions.json
+            check_list.txt
+          if-no-files-found: ignore
         
       - name: Compare App Versions
         if: ${{ inputs.mode != 'Build Only' }}
@@ -843,14 +895,66 @@ jobs:
           file_pattern: "changelogs/*.md *-update.json"
           commit_message: "Bump version ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}"
 
+  resolve_manual_config:
+    if: ${{ inputs.mode == 'Manual Config' }}
+    runs-on: ubuntu-latest
+    outputs:
+      config_file: ${{ steps.config.outputs.config_file }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Fetch configs & state
+        run: bash .github/scripts/fetch_data_branch.sh "${{ inputs.config_branch || 'main' }}"
+
+      - name: Resolve config file
+        id: config
+        env:
+          SELECTED_CONFIG: ${{ inputs.config_file }}
+          MANUAL_CONFIG: ${{ inputs.manual_config_file }}
+        run: |
+          set -euo pipefail
+          config_file="${SELECTED_CONFIG:-configs/config.manual.generated.toml}"
+          if [ -n "$MANUAL_CONFIG" ]; then
+            if [ -f "$MANUAL_CONFIG" ]; then
+              config_file="$MANUAL_CONFIG"
+            elif [ -f "temp_configs/$MANUAL_CONFIG" ]; then
+              config_file="temp_configs/$MANUAL_CONFIG"
+            elif [ -f "configs/patches/$MANUAL_CONFIG.toml" ]; then
+              config_file="configs/patches/$MANUAL_CONFIG.toml"
+            elif [ -f "configs/$MANUAL_CONFIG" ]; then
+              config_file="configs/$MANUAL_CONFIG"
+            else
+              echo "Config file '$MANUAL_CONFIG' not found" >&2
+              exit 1
+            fi
+          fi
+          # Fallback to temp_configs if selected file was materialized there
+          if [ ! -f "$config_file" ] && [ -f "temp_configs/${config_file#configs/}" ]; then
+            config_file="temp_configs/${config_file#configs/}"
+          fi
+          echo "CONFIG_FILE=$config_file" >> "$GITHUB_OUTPUT"
+
+  build_manual:
+    needs: resolve_manual_config
+    if: ${{ inputs.mode == 'Manual Config' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      config_branch: ${{ inputs.config_branch || 'main' }}
+      config_file: ${{ needs.resolve_manual_config.outputs.config_file }}
+      exclusive_apps: ${{ inputs.exclusive_apps || '' }}
+      remove_apks: ${{ inputs.remove_apks || '' }}
+      patches_version: ${{ inputs.patches_version || '' }}
+    secrets: inherit
+
   trigger_cleanup:
-    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, build_batch, aggregate_batch_logs]
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, build_batch, aggregate_batch_logs, build_manual]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
 
   trigger_website_update:
-    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, build_batch, aggregate_batch_logs, trigger_cleanup]
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, build_batch, aggregate_batch_logs, build_manual, trigger_cleanup]
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit

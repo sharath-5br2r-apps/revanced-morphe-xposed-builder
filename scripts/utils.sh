@@ -17,6 +17,8 @@ DL_SRCS=("local" "direct" "cache_repo" "github" "gitlab" "forgejo" "archive" "ap
 BUILD_JSON_FILE="build.json"
 PATCH_OUTPUT=""
 RVB_ERROR_LOG="${RVB_ERROR_LOG:-error.log}"
+RVB_ERROR_JSON="${RVB_ERROR_JSON:-error.json}"
+RVB_LOG_JSON="${RVB_LOG_JSON:-build_log.json}"
 
 # Cross-platform advisory lock for shared downloads and generated metadata.
 # Uses fcntl on Unix and msvcrt on Windows through the same Python helper.
@@ -178,15 +180,29 @@ toml_get() {
 	else return 1; fi
 }
 
+log_build_event() {
+	local level="$1" msg="$2"
+	local app="${CURRENT_APP_NAME:-}"
+	local part="${CURRENT_BUILD_PART:-${CONFIG_TAG:-}}"
+	if [ -f "${CWD}/.github/scripts/append_build_log.py" ]; then
+		python3 "${CWD}/.github/scripts/append_build_log.py" "$RVB_LOG_JSON" "$level" "$msg" "$app" "$part" 2>/dev/null || true
+		if [ "$level" = "error" ] || [ "$level" = "warning" ]; then
+			python3 "${CWD}/.github/scripts/append_build_log.py" "$RVB_ERROR_JSON" "$level" "$msg" "$app" "$part" 2>/dev/null || true
+		fi
+	fi
+}
+
 pr() { echo >&2 -e "\033[0;32m[+] ${1}\033[0m"; }
 epr() {
 	echo >&2 -e "\033[0;31m[-] ${1}\033[0m"
 	printf '%s\n' "[-] ${1}" >> "$RVB_ERROR_LOG"
+	log_build_event "error" "${1}"
 	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::error::utils.sh [-] ${1}\n"; fi
 }
 wpr() {
 	echo >&2 -e "\033[0;33m[!] ${1}\033[0m"
 	printf '%s\n' "[!] ${1}" >> "$RVB_ERROR_LOG"
+	log_build_event "warning" "${1}"
 	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::warning::utils.sh [!] ${1}\n"; fi
 }
 abort() {
@@ -3627,6 +3643,7 @@ build_rv() {
 	app_name_l=$(resolve_slug "$app_name")
 	[ -z "$app_name_l" ] && { app_name_l=${app_name,,}; app_name_l=${app_name_l// /-}; }
 	local table=${args[table]}
+	local CURRENT_APP_NAME="${table}"
 	local dl_from=${args[dl_from]}
 	local arch=${args[arch]}
 	local arch_list=()
@@ -4641,6 +4658,7 @@ build_rv() {
 				cp -f "$patched_apk" "$apk_output"
 			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
+			log_build_event "success" "Built ${table} (non-root): '${apk_output}'"
 			write_build_info "${table% (*)}" "${arch_f}" "$output_ext" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${engine_brand_val}" "${patch_brand_val}" "${variant_val}" "${sub_variant_val}" "$apk_output" "$apk_output" 
 			continue
 		fi
@@ -4735,6 +4753,7 @@ build_rv() {
 			zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
 			popd >/dev/null || :
 			pr "Built ${table} (root stable): '${BUILD_DIR}/${module_output}'"
+			log_build_event "success" "Built ${table} (root stable): '${BUILD_DIR}/${module_output}'"
 			write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${engine_brand_val}" "${patch_brand_val}" "${variant_val}" "${sub_variant_val}" "$module_output" "$module_output"
 		fi
 
@@ -4756,6 +4775,7 @@ build_rv() {
 		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${beta_module_output}" .
 		popd >/dev/null || :
 		pr "Built ${table} (root beta): '${BUILD_DIR}/${beta_module_output}'"
+		log_build_event "success" "Built ${table} (root beta): '${BUILD_DIR}/${beta_module_output}'"
 		write_build_info "${table% (*}" "${arch_f}" ".zip" "${file_prefix}-module-beta" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${engine_brand_val}" "${patch_brand_val}"  "${variant_val}" "${sub_variant_val}" "$beta_module_output" "$beta_module_output"
 		done
 	done

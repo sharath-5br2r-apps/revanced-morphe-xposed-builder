@@ -246,11 +246,15 @@ jobs:
           exit 1
 
       - name: Upload error log
-        if: ${{ inputs.aggregate_flavor == '' && hashFiles('error.log') != '' }}
+        if: ${{ inputs.aggregate_flavor == '' && (hashFiles('error.log') != '' || hashFiles('error.json') != '' || hashFiles('error.md') != '') }}
         uses: actions/upload-artifact@v7
         with:
           name: error_log
-          path: error.log
+          path: |
+            error.log
+            error.json
+            build_log.json
+            error.md
           if-no-files-found: ignore
 
       - name: Generate module update files
@@ -347,6 +351,9 @@ jobs:
             build.json
             build.md
             error.log
+            error.json
+            build_log.json
+            error.md
             built_files.txt
             *-update.json
             ${{ inputs.config_file }}

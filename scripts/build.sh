@@ -10,6 +10,8 @@ export RVB_UTILS_SH
 source "$RVB_UTILS_SH"
 echo '{}' > "$BUILD_JSON_FILE"
 : > "${RVB_ERROR_LOG:-error.log}"
+echo '[]' > "${RVB_ERROR_JSON:-error.json}"
+echo '[]' > "${RVB_LOG_JSON:-build_log.json}"
 
 CONFIG_FILE="config.toml"
 ALLOWED_APPS=""
@@ -116,7 +118,7 @@ if [ -n "$OUTPUT_DIR" ]; then BUILD_DIR="$OUTPUT_DIR"; fi
 trap "abort" INT
 
 if [ "${CLEAN_REQUESTED:-false}" = true ]; then
-	rm -r "$TEMP_DIR" "$BUILD_DIR" build.md error.log build.json.lock
+	rm -rf "$TEMP_DIR" "$BUILD_DIR" build.md error.log error.json build_log.json error.md build.json.lock
 	exit 0
 fi
 
@@ -173,7 +175,7 @@ declare -gA JOB_PID=() JOB_LABEL=() JOB_LOG=() JOB_RC=()
 JOB_SEQ=0
 if ((PAR_JOBS > 1)); then
 	mkdir -p "$QUEUE_DIR"
-	export RVB_UTILS_SH COMPRESSION_LEVEL ENABLE_MODULE_UPDATE DEF_AUTHOR_NAME REMOVE_RV_INTEGRATIONS_CHECKS
+	export RVB_UTILS_SH COMPRESSION_LEVEL ENABLE_MODULE_UPDATE DEF_AUTHOR_NAME REMOVE_RV_INTEGRATIONS_CHECKS RVB_ERROR_LOG RVB_ERROR_JSON RVB_LOG_JSON
 	_reap_done() {
 		local id rc
 		for id in "${!JOB_PID[@]}"; do
@@ -182,7 +184,9 @@ if ((PAR_JOBS > 1)); then
 			[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::group::Building ${JOB_LABEL[$id]}"
 			cat "${JOB_LOG[$id]}" 2>/dev/null
 			[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::endgroup::"
-			[ "$rc" = 0 ] || epr "Build failed for ${JOB_LABEL[$id]} (exit $rc)"
+			if [ "$rc" != 0 ]; then
+				CURRENT_APP_NAME="${JOB_LABEL[$id]}" epr "Build failed for ${JOB_LABEL[$id]} (exit $rc)"
+			fi
 			rm -f "${JOB_LOG[$id]}" "${JOB_RC[$id]}"
 			unset "JOB_PID[$id]" "JOB_LABEL[$id]" "JOB_LOG[$id]" "JOB_RC[$id]"
 		done
@@ -193,6 +197,7 @@ if ((PAR_JOBS > 1)); then
 		local id=$((JOB_SEQ + 1)); JOB_SEQ=$id
 		(
 			set +e
+			export CURRENT_APP_NAME="$2"
 			if [[ "$-" == *x* ]]; then
 				RVB_CHILD=1 bash -xc 'set -euo pipefail; shopt -s nullglob; source "$RVB_UTILS_SH"; set_prebuilts; build_rv "$1"' _ "$1" >"$QUEUE_DIR/$id.log" 2>&1
 			else
@@ -206,6 +211,7 @@ fi
 _run_build() {
 	if ((PAR_JOBS <= 1)); then
 		[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::group::Building $1"
+		export CURRENT_APP_NAME="$1"
 		build_rv "$2" || epr "Build failed for $1"
 		[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::endgroup::"
 	else
@@ -492,7 +498,10 @@ rm -rf temp/tmp.*
 if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then abort "All builds failed."; fi
 
 if command -v python3 >/dev/null 2>&1; then
-	python3 .github/scripts/generate_release_notes.py
+	python3 .github/scripts/generate_release_notes.py || true
+	if [ -f .github/scripts/generate_error_markdown.py ]; then
+		python3 .github/scripts/generate_error_markdown.py . error.md || true
+	fi
 fi
 
 pr "Done"
