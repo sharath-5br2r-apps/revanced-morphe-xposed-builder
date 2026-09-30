@@ -130,7 +130,6 @@ if [ -n "$ALLOWED_APPS" ]; then
     rm -f "$allowed_apps_file"
 fi
 
-declare -A cached_versions
 declare -A args
 
 while IFS='|' read -r group app; do
@@ -258,56 +257,48 @@ while IFS='|' read -r group app; do
     for i in "${!dlurls[@]}"; do
         dlurl="${dlurls[$i]}"
         source="${sources[$i]}"
-        cache_key="url_${source}_${dlurl//[^a-zA-Z0-9]/_}_${github_release_name_regex//[^a-zA-Z0-9]/_}_${github_release_regex//[^a-zA-Z0-9]/_}_${gitlab_release_name_regex//[^a-zA-Z0-9]/_}_${forgejo_release_name_regex//[^a-zA-Z0-9]/_}"
-        
-        if [ -n "${cached_versions["$cache_key"]:-}" ]; then
-            latest_ver="${cached_versions["$cache_key"]}"
-            echo "Reusing cached version for $app: $latest_ver"
+
+        if [[ "$source" == "archive" ]]; then
+            "get_${source}_resp" "$dlurl" || continue
+            latest_ver=$("get_${source}_vers" | get_highest_ver) || true
+        elif [[ "$source" == "github" ]]; then
+            get_github_resp "$dlurl" || { wpr "Failed github resp for $app"; continue; }
+            vers=$(get_github_vers) || { wpr "Failed github vers for $app"; continue; }
+            latest_ver=$(echo "$vers" | get_highest_ver) || true
+        elif [[ "$source" == "gitlab" ]]; then
+            get_gitlab_resp "$dlurl" || { wpr "Failed gitlab resp for $app"; continue; }
+            vers=$(get_gitlab_vers) || { wpr "Failed gitlab vers for $app"; continue; }
+            latest_ver=$(echo "$vers" | get_highest_ver) || true
+        elif [[ "$source" == "forgejo" ]]; then
+            get_forgejo_resp "$dlurl" || { wpr "Failed forgejo resp for $app"; continue; }
+            vers=$(get_forgejo_vers) || { wpr "Failed forgejo vers for $app"; continue; }
+            latest_ver=$(echo "$vers" | get_highest_ver) || true
+        elif [[ "$source" == "apkmirror" ]]; then
+            __APKMIRROR_RELEASE_FILTER__="${apkmirror_release_filter:-}"
+            export __APKMIRROR_RELEASE_FILTER__
+            get_apkmirror_resp "$dlurl" || { wpr "Failed apkmirror resp for $app"; continue; }
+            vers=$(get_apkmirror_vers) || { wpr "Failed apkmirror vers for $app"; continue; }
+            latest_ver=$(echo "$vers" | get_highest_ver) || true
+        elif [[ "$source" == "uptodown" ]]; then
+            get_uptodown_resp "$dlurl" || { wpr "Failed uptodown resp for $app"; continue; }
+            vers=$(get_uptodown_vers) || { wpr "Failed uptodown vers for $app"; continue; }
+            latest_ver=$(echo "$vers" | get_highest_ver) || true
+        elif [[ "$source" == "apkpure" ]]; then
+            get_apkpure_resp "$dlurl" || { wpr "Failed apkpure resp for $app"; continue; }
+            vers=$(get_apkpure_vers) || { wpr "Failed apkpure vers for $app"; continue; }
+            latest_ver=$(echo "$vers" | get_highest_ver) || true
+        elif [[ "$source" == "apkcombo" ]]; then
+            get_apkcombo_resp "$dlurl" || { wpr "Failed apkcombo resp for $app"; continue; }
+            vers=$(get_apkcombo_vers) || { wpr "Failed apkcombo vers for $app"; continue; }
+            latest_ver=$(echo "$vers" | get_highest_ver) || true
+        fi
+
+        if [ -n "$latest_ver" ]; then
+            # Sleep to avoid rate limiting
+            if [ "$NO_SLEEP" != true ] && [ "$NO_SLEEP" != 1 ]; then
+                sleep $((RANDOM % 5 + 3))
+            fi
             break
-        else
-            if [[ "$source" == "archive" ]]; then
-                "get_${source}_resp" "$dlurl" || continue
-                latest_ver=$("get_${source}_vers" | get_highest_ver) || true
-            elif [[ "$source" == "github" ]]; then
-                get_github_resp "$dlurl" || { wpr "Failed github resp for $app"; continue; }
-                vers=$(get_github_vers) || { wpr "Failed github vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "gitlab" ]]; then
-                get_gitlab_resp "$dlurl" || { wpr "Failed gitlab resp for $app"; continue; }
-                vers=$(get_gitlab_vers) || { wpr "Failed gitlab vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "forgejo" ]]; then
-                get_forgejo_resp "$dlurl" || { wpr "Failed forgejo resp for $app"; continue; }
-                vers=$(get_forgejo_vers) || { wpr "Failed forgejo vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "apkmirror" ]]; then
-                __APKMIRROR_RELEASE_FILTER__="${apkmirror_release_filter:-}"
-                export __APKMIRROR_RELEASE_FILTER__
-                get_apkmirror_resp "$dlurl" || { wpr "Failed apkmirror resp for $app"; continue; }
-                vers=$(get_apkmirror_vers) || { wpr "Failed apkmirror vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "uptodown" ]]; then
-                get_uptodown_resp "$dlurl" || { wpr "Failed uptodown resp for $app"; continue; }
-                vers=$(get_uptodown_vers) || { wpr "Failed uptodown vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "apkpure" ]]; then
-                get_apkpure_resp "$dlurl" || { wpr "Failed apkpure resp for $app"; continue; }
-                vers=$(get_apkpure_vers) || { wpr "Failed apkpure vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            elif [[ "$source" == "apkcombo" ]]; then
-                get_apkcombo_resp "$dlurl" || { wpr "Failed apkcombo resp for $app"; continue; }
-                vers=$(get_apkcombo_vers) || { wpr "Failed apkcombo vers for $app"; continue; }
-                latest_ver=$(echo "$vers" | get_highest_ver) || true
-            fi
-            
-            if [ -n "$latest_ver" ]; then
-                cached_versions["$cache_key"]="$latest_ver"
-                # Sleep to avoid rate limiting only if we actually fetched
-                if [ "$NO_SLEEP" != true ] && [ "$NO_SLEEP" != 1 ]; then
-                    sleep $((RANDOM % 5 + 3))
-                fi
-                break
-            fi
         fi
     done
     
