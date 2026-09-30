@@ -41,8 +41,8 @@
     "blocked": false,
     "host": "github",
     "repo": "SysAdminDoc/hushfeed",
-    "stable": "v0.64.0",
-    "stable_date": "2026-09-28T14:46:11Z"
+    "stable": "v0.65.0",
+    "stable_date": "2026-09-30T03:21:31Z"
   },
   "anddea/revanced-patches": {
     "beta": "v4.3.1-dev.1",
@@ -90,8 +90,8 @@
     "stable_date": "2026-09-29T14:46:15Z"
   },
   "ch3thanhs/stylus": {
-    "beta": "v1.5.4-dev.2",
-    "beta_date": "2026-09-29T14:09:43Z",
+    "beta": "v1.5.5-dev.1",
+    "beta_date": "2026-09-30T01:04:05Z",
     "blocked": false,
     "host": "github",
     "repo": "ch3thanhs/stylus",
@@ -117,8 +117,8 @@
     "stable_date": "2026-09-24T07:45:37Z"
   },
   "hoo-dles/morphe-patches": {
-    "beta": "v1.46.0-dev.5",
-    "beta_date": "2026-09-29T19:34:43Z",
+    "beta": "v1.46.0-dev.6",
+    "beta_date": "2026-09-30T01:10:16Z",
     "blocked": false,
     "host": "github",
     "repo": "hoo-dles/morphe-patches",
@@ -185,8 +185,8 @@
     "blocked": false,
     "host": "github",
     "repo": "kveld9/kveld-morphe-patches",
-    "stable": "v2.1.0",
-    "stable_date": "2026-09-29T01:39:16Z"
+    "stable": "v2.2.0",
+    "stable_date": "2026-09-30T01:11:03Z"
   },
   "revenge-mod/revenge-xposed": {
     "beta": "",

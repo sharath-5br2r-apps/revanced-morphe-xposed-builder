@@ -77,7 +77,7 @@
   "ch3thanhs/stylus": {
     "beta": {
       "com.x8bit.bitwarden": "cc6b03c83af9ea448f5b2e197afb2831",
-      "shared": "d3095f4c5c9a17e50b93b97c74cdedac"
+      "shared": "818c43aebd0337b0812ade32e9eeaf07"
     },
     "stable": {
       "com.x8bit.bitwarden": "cc6b03c83af9ea448f5b2e197afb2831",
@@ -198,10 +198,10 @@
   "kveld9/kveld-morphe-patches": {
     "beta": {},
     "stable": {
-      "com.brave.browser": "f8c3df8a6630418f017919aa01bc7544",
-      "com.ss.android.ugc.trill": "67df967ea653062f9bc93d07a6c36a79",
-      "com.zhiliaoapp.musically": "67df967ea653062f9bc93d07a6c36a79",
-      "shared": "3b0c92d64eca90dcfd844501ccbddce7"
+      "com.brave.browser": "492beffc598616f3306255f4f8f00d9e",
+      "com.ss.android.ugc.trill": "80205536dc7e04845fca993afb42a5e5",
+      "com.zhiliaoapp.musically": "80205536dc7e04845fca993afb42a5e5",
+      "shared": "950391ec0ddd785a1cc905d90dd754f6"
     }
   },
   "morpheapp/morphe-patches": {
@@ -268,8 +268,8 @@
   "sysadmindoc/hushfeed": {
     "beta": {},
     "stable": {
-      "com.zhiliaoapp.musically": "fc4af1550b7d0997d2a8c0bc5064953f",
-      "shared": "d7c14db5a51d76e766c055e000c5fa19"
+      "com.zhiliaoapp.musically": "9e99149518187505803771aa5c2f8742",
+      "shared": "52b764a4a41894e0d8052f8021e4e680"
     }
   }
 }
