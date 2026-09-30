@@ -36,8 +36,7 @@ except ImportError:
 
 
 PATCHES_DIR = "configs/patches"
-STATE_FILE = "state/patch_sources.json" if os.path.exists("state/patch_sources.json") else ("configs/patch_sources.json" if os.path.isdir("configs") else ".github/configs/patch_sources.json")
-STATE_FILE = "configs/patch_sources.json" if os.path.isdir("configs") else ".github/configs/patch_sources.json"
+STATE_FILE = "state/patch_sources.json" if os.path.exists("state/patch_sources.json") else "configs/patch_sources.json"
 
 
 def split_quoted_list(text):

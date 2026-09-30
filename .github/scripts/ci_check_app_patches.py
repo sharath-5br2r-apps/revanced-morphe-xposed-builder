@@ -366,7 +366,7 @@ def run():
     for rec in changed:
         moved.setdefault(rec['key'], {})[rec['channel']] = rec['tag']
 
-    hash_file = "state/patch_file_hashes.json" if os.path.exists("state/patch_file_hashes.json") else ("configs/patch_file_hashes.json" if os.path.exists("configs/patch_file_hashes.json") or os.path.isdir("configs") else ".github/configs/patch_file_hashes.json")
+    hash_file = "state/patch_file_hashes.json" if os.path.exists("state/patch_file_hashes.json") else "configs/patch_file_hashes.json"
     if os.path.exists(hash_file):
         with open(hash_file, 'r') as f:
             hashes = json.load(f)
