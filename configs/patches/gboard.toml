@@ -1,0 +1,34 @@
+enable-module-update = true
+patches-source = "'jasonwu1994/Gboard-patches' 'jkennethcarino/adobo'"
+patch-brand = "Jasonwu1994-Adobo"
+cli-type = "morphe"
+
+[Gboard-Morphe-Jasonwu1994-Adobo]
+enabled = true
+app-name = "Gboard"
+build-mode = "both"
+arch = "arm64-v8a x86_64 armeabi-v7a x86"
+pkg-name = "com.google.android.inputmethod.latin"
+skip-patch-app-check = true
+included-patches = " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"
+exclusive-patches = "jkennethcarino/adobo"
+excluded-patches = "'Package Rename' | "
+patcher-args = "-f --continue-on-error"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
+apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
+apkmirror-release-filter = "!(lite|beta)"
+
+[Gboard-Morphe-Jasonwu1994-Adobo-Clone]
+enabled = true
+app-name = "Gboard"
+sub-variant = "Clone"
+arch = "arm64-v8a x86_64 armeabi-v7a x86"
+included-patches = " | 'Enable clipboard in incognito' 'Enable voice typing in incognito'"
+exclusive-patches = "jkennethcarino/adobo"
+excluded-patches = "'Package Rename' | "
+pkg-name = "com.google.android.inputmethod.latin"
+skip-patch-app-check = true
+patcher-args = "-f --continue-on-error"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/gboard"
+apkmirror-example-url = "https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-17-8-7-939743344-release/"
+apkmirror-release-filter = "!(lite|beta)"

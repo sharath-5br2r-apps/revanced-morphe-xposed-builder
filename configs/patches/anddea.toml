@@ -1,74 +1,50 @@
+enable-module-update = true
 patches-source = "anddea/revanced-patches"
+patch-brand = "Anddea"
+cli-type = "morphe"
+
+# ── YouTube morphe-anddea (stock/AMOLED, default) ─────────────────────────────
+[YouTube-Morphe-Anddea]
+enabled = true
+app-name = "YouTube"
 build-mode = "both"
-brand = "anddea"
-
-[youtube-anddea-nord]
-enabled = true
 pkg-name = "com.google.android.youtube"
-app-name = "YouTube"
-patch-folder = "youtube"
-variant = "Nord Theme"
 included-patches = "'MaterialYou'"
-patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#2E3440 -OlightThemeBackgroundColor=#E5E9F0"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
-archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
 
-[youtube-music-anddea-nord]
+# ── YouTube morphe-anddea-amoled (#000000 explicit) ───────────────────────────
+[YouTube-Morphe-Anddea-AMOLED]
 enabled = true
-pkg-name = "com.google.android.apps.youtube.music"
-app-name = "YouTube Music"
-patch-folder = "music"
-variant = "Nord Theme"
-patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=#2E3440 -OmaterialYou=#5E81AC"
-uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
-apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
-archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.youtube.music"
-
-[youtube-anddea-mocha]
-enabled = true
-pkg-name = "com.google.android.youtube"
 app-name = "YouTube"
-patch-folder = "youtube"
-variant = "Mocha Theme"
+variant = "AMOLED"
+build-mode = "both"
+pkg-name = "com.google.android.youtube"
 included-patches = "'MaterialYou'"
-patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF181825 -OlightThemeBackgroundColor=#E6E9EF"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#000000 -OlightThemeBackgroundColor=#FFFFFF --continue-on-error"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
-archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
 
-[youtube-music-anddea-mocha]
+[YouTubeMusic-Morphe-Anddea]
 enabled = true
-pkg-name = "com.google.android.apps.youtube.music"
 app-name = "YouTube Music"
-patch-folder = "music"
-variant = "Mocha Theme"
-patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=#FF181825 -OmaterialYou=#89B4FA"
+build-mode = "both"
+arch = "arm64-v8a x86_64 armeabi-v7a x86"
+pkg-name = "com.google.android.apps.youtube.music"
+patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black --continue-on-error"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
-archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.youtube.music"
 
-[youtube-anddea]
+# ── YouTube Music morphe-anddea-amoled (#000000 explicit) ─────────────────────
+[YouTubeMusic-Morphe-Anddea-AMOLED]
 enabled = true
-pkg-name = "com.google.android.youtube"
-app-name = "YouTube"
-patch-folder = "youtube"
-patches-version = "both"
-patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
-uptodown-dlurl = "https://youtube.en.uptodown.com/android"
-apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube"
-archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.youtube"
-
-[youtube-music-anddea]
-enabled = true
-pkg-name = "com.google.android.apps.youtube.music"
 app-name = "YouTube Music"
-patch-folder = "music"
-patches-version = "both"
-patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black"
+variant = "AMOLED"
+build-mode = "both"
+arch = "arm64-v8a x86_64 armeabi-v7a x86"
+pkg-name = "com.google.android.apps.youtube.music"
+patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=#000000 --continue-on-error"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube-music"
-archive-dlurl = "https://archive.org/download/geologically/apks/com.google.android.apps.youtube.music"
-
-
 

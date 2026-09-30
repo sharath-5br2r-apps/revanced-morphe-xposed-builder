@@ -1,20 +1,16 @@
+enable-module-update = true
 patches-source = "kondratjev/morphe-patches"
-brand = "kondratjev"
+patch-brand = "Kondratjev"
+cli-type = "morphe"
 
-[CalorieCounter-kondratjev]
+[SoundCloud-Morphe-Kondratjev]
 enabled = true
-pkg-name = "com.fatsecret.android"
-app-name = "Calorie Counter"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/fatsecret/calorie-counter-by-fatsecret/"
-uptodown-dlurl = "https://fatsecret-calorie-counter.en.uptodown.com/android"
-apkpure-dlurl = "https://apkpure.com/calorie-counter-by-fatsecret/com.fatsecret.android"
-apkcombo-dlurl = "https://apkcombo.com/fatsecret/com.fatsecret.android"
-
-[SoundCloud-kondratjev]
-enabled = true
-pkg-name = "com.soundcloud.android"
 app-name = "SoundCloud"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
+version = "auto"
+arch = "arm64-v8a armeabi-v7a x86_64 x86"
+pkg-name = "com.soundcloud.android"
 uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/"
+apkmirror-example-url = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/soundcloud-the-music-you-love-2026-07-23-release-release"
 apkpure-dlurl = "https://apkpure.com/sound-cloud-android-app/com.soundcloud.android"
 apkcombo-dlurl = "https://apkcombo.com/soundcloud/com.soundcloud.android"
