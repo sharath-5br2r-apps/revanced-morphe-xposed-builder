@@ -1694,7 +1694,50 @@ sign_apk() {
 
 merge_splits() {
 	local bundle=$1 output=$2
-	if unzip -l "$bundle" | grep '^[[:space:]]*[0-9].*AndroidManifest\.xml$' >/dev/null; then
+	# Serialize merges (and the apkeditor/apksigner writes they do) targeting
+	# the same output: build.sh may run several tables over one shared stock
+	# cache path concurrently when parallel-jobs > 1. Lock name is flattened
+	# from the target path — no mkdir needed.
+	local _ms_lock="${TEMP_DIR}/mergesplits.$(tr -c 'a-zA-Z0-9._-' '_' <<<"$output").lock"
+	local _ms_lock_pid="" _ms_lock_ready=""
+	local _universal_lock="${CWD}/.github/scripts/universal_lock.py"
+	[ ! -f "$_universal_lock" ] && [ -n "${BASH_SOURCE[0]:-}" ] && _universal_lock="$(dirname "$(dirname "${BASH_SOURCE[0]}")")/.github/scripts/universal_lock.py"
+
+	if [ -f "$_universal_lock" ] && command -v python3 >/dev/null 2>&1; then
+		mkdir -p "${TEMP_DIR}/mergesplits_locks"
+		_ms_lock_ready="${TEMP_DIR}/mergesplits_locks/.ready-$$-${RANDOM}"
+		python3 "$_universal_lock" "$_ms_lock" "$_ms_lock_ready" &
+		_ms_lock_pid=$!
+		for _lock_wait in $(seq 1 100); do
+			[ -f "$_ms_lock_ready" ] && break
+			sleep 0.1
+		done
+		if [ ! -f "$_ms_lock_ready" ]; then
+			kill "$_ms_lock_pid" 2>/dev/null || true
+			wpr "Could not acquire merge_splits lock for $output"
+			_ms_lock_pid=""
+		fi
+	elif command -v flock >/dev/null 2>&1; then
+		exec 201>"$_ms_lock"
+		flock -x 201
+	fi
+
+	local _ms_ret=0
+	_merge_splits_locked "$bundle" "$output" || _ms_ret=$?
+
+	if [ -n "$_ms_lock_pid" ]; then
+		kill "$_ms_lock_pid" 2>/dev/null || true
+		rm -f "$_ms_lock_ready"
+	elif command -v flock >/dev/null 2>&1; then
+		exec 201>&-
+	fi
+
+	return $_ms_ret
+}
+
+_merge_splits_locked() {
+	local bundle=$1 output=$2
+	if unzip -l "$bundle" 2>/dev/null | grep -q '^[[:space:]]*[0-9].*AndroidManifest\.xml$'; then
 		pr "Downloaded bundle is actually a standard APK. Bypassing merge."
 		mv -f "$bundle" "$output"
 		return 0
@@ -1703,23 +1746,29 @@ merge_splits() {
 	apk_count=$(unzip -l "$bundle" 2>/dev/null | grep -c '\.apk$' || true)
 	if [ "$apk_count" -le 1 ] && unzip -l "$bundle" 2>/dev/null | grep -q '^[[:space:]]*[0-9].*base\.apk$'; then
 		pr "Extracting base.apk from bundle"
-		unzip -p "$bundle" base.apk > "$output" || return 1
+		unzip -p "$bundle" base.apk > "${output}-merge-tmp" || { rm -f "${output}-merge-tmp"; return 1; }
+		mv -f "${output}-merge-tmp" "$output"
 		return 0
 	fi
 	pr "Merging splits"
 	get_apkeditor || return 1
-	if ! OP=$(java -jar "$TEMP_DIR/apkeditor.jar" merge -i "$bundle" -o "${output}-unsigned" -clean-meta -f 2>&1); then
+	# write to temp siblings and rename atomically: a concurrent process may
+	# have already produced (or be reading) $output — never truncate in place
+	if ! OP=$(java -jar "$TEMP_DIR/apkeditor.jar" merge -i "$bundle" -o "${output}-merge-tmp.unsigned" -clean-meta -f 2>&1); then
 		epr "APKEditor error: $OP"
+		rm -f "${output}-merge-tmp.unsigned"
 		return 1
 	fi
 	# sign the merged stock apk
 	get_bcprov || return 1
 	if ! OP=$(java -cp "$APKSIGNER$javapathsep$TEMP_DIR/bcprov.jar" com.android.apksigner.ApkSignerTool sign --ks "$RVB_KEYSTORE" --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks-type BKS --ks-pass "pass:$RVB_KEYSTORE_PASS" --key-pass "pass:$RVB_KEYSTORE_PASS" --ks-key-alias "$RVB_KEY_ALIAS" \
-		--out "${output}" "${output}-unsigned"); then
+		--out "${output}-merge-tmp" "${output}-merge-tmp.unsigned"); then
 		epr "apksigner error: $OP"
+		rm -f "${output}-merge-tmp.unsigned" "${output}-merge-tmp"
 		return 1
 	fi
-	rm "${output}.idsig" "${output}-unsigned" 2>/dev/null || :
+	mv -f "${output}-merge-tmp" "$output" || return 1
+	rm -f "${output}.idsig" "${output}-merge-tmp.unsigned" 2>/dev/null || :
 	return 0
 }
 
