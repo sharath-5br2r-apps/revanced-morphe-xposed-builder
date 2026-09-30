@@ -1,4 +1,4 @@
-name: "CI / Update Versions"
+name: "CI / Update Versions / Manual CI"
 run-name: "CI Run [Mode: ${{ inputs.mode || 'Scheduled/Default' }}]"
 permissions: write-all
 on:
@@ -175,6 +175,16 @@ jobs:
           RAW_TRIGGER_PRERELEASE: ${{ steps.compare.outputs.TRIGGER_PRERELEASE || '0' }}
           RAW_TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE || '0' }}
         run: bash .github/scripts/ci_resolve_triggers.sh
+
+      - name: Generate First Step Summary (Fetch Versions / Configs)
+        if: ${{ inputs.mode != 'Build Only' }}
+        continue-on-error: true
+        env:
+          CI_MODE: ${{ inputs.mode || 'Default' }}
+          TRIGGER_STABLE: ${{ steps.effective_triggers.outputs.TRIGGER_STABLE }}
+          TRIGGER_PRERELEASE: ${{ steps.effective_triggers.outputs.TRIGGER_PRERELEASE }}
+          TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE }}
+        run: python3 .github/scripts/generate_first_step_summary.py
 
       - name: Commit updated version metadata and configs
         if: ${{ inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || inputs.mode == 'Batch Build (Stable)' || inputs.mode == 'Batch Build (Both)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
@@ -958,3 +968,30 @@ jobs:
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/update-website.yml
     secrets: inherit
+
+  workflow_summary:
+    needs: [build_stable_1, build_stable_2, build_stable_3, build_stable_4, build_stable_5, build_dev_1, build_dev_2, build_dev_3, build_dev_4, build_dev_5, build_latest_1, build_latest_2, build_latest_3, build_latest_4, build_latest_5, aggregate_dev_logs, aggregate_stable_logs, aggregate_latest_logs, build_batch, aggregate_batch_logs, build_manual, trigger_cleanup, trigger_website_update]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download all build and error artifacts
+        uses: actions/download-artifact@v8
+        continue-on-error: true
+        with:
+          path: logs_artifacts
+          merge-multiple: false
+
+      - name: Generate Final Workflow Summary & Aggregate Markdown
+        run: |
+          python3 .github/scripts/aggregate_all_workflow_logs.py workflow_summary.md
+
+      - name: Upload Final Workflow Summary
+        uses: actions/upload-artifact@v7
+        if: ${{ hashFiles('workflow_summary.md') != '' }}
+        with:
+          name: workflow-summary
+          path: workflow_summary.md
+          if-no-files-found: ignore

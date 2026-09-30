@@ -257,6 +257,11 @@ jobs:
             error.md
           if-no-files-found: ignore
 
+      - name: Display Build & Error Summary
+        if: ${{ inputs.aggregate_flavor == '' && hashFiles('error.md') != '' }}
+        run: |
+          cat error.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Generate module update files
         id: update_changelog
         env:
