@@ -168,33 +168,88 @@ DEF_AUTHOR_NAME=$(toml_get "$main_config_t" author) || DEF_AUTHOR_NAME="sharath-
 DEF_AUTHOR_PAGE=$(toml_get "$main_config_t" author-page) || DEF_AUTHOR_PAGE="github.com/sharath-5br2r-apps/revanced-morphe-xposed-builder"
 mkdir -p "$TEMP_DIR" "$BUILD_DIR"
 
-# Build process pool. Each child re-sources utils.sh so patcher state and
-# caches remain isolated; architecture slices use this same table queue.
-PAR_JOBS="${PARALLEL_JOBS:-$(nproc 2>/dev/null || echo 1)}"
-[[ "$PAR_JOBS" =~ ^[0-9]+$ ]] || PAR_JOBS="$(nproc 2>/dev/null || echo 1)"
+# Concurrent table builds. The ONLY knob is the PARALLEL_JOBS env set in
+# .github/workflows/build.yml — it is not read from any config file.
+# 1 (default) keeps the historical fully-sequential path untouched.
+PAR_JOBS="${PARALLEL_JOBS:-1}"
+[[ "$PAR_JOBS" =~ ^[0-9]+$ ]] || { epr "PARALLEL_JOBS '$PAR_JOBS' is not a number; falling back to 1"; PAR_JOBS=1; }
 ((PAR_JOBS < 1)) && PAR_JOBS=1
+((PAR_JOBS > 8)) && { wpr "capping parallel-jobs at 8 (runner is 4-core/16GB)"; PAR_JOBS=8; }
+pr "PARALLEL_JOBS: $PAR_JOBS"
+mkdir -p "$TEMP_DIR" "$BUILD_DIR"
+
+: >build.md
+ENABLE_MODULE_UPDATE=$(toml_get "$main_config_t" enable-module-update) || ENABLE_MODULE_UPDATE=true
+if [ "$ENABLE_MODULE_UPDATE" = true ] && [ -z "${GITHUB_REPOSITORY-}" ]; then
+	pr "You are building locally. Module updates will not be enabled."
+	ENABLE_MODULE_UPDATE=false
+fi
+if ((COMPRESSION_LEVEL > 9)) || ((COMPRESSION_LEVEL < 0)); then abort "compression-level must be within 0-9"; fi
+
+rm -rf module/bin/*/tmp.*
+for file in "$TEMP_DIR"/*/changelog.md; do
+	[ -f "$file" ] && : >"$file"
+done
+
+mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm ${MODULE_TEMPLATE_DIR}/bin/x86 ${MODULE_TEMPLATE_DIR}/bin/x64
+echo "${DEF_AUTHOR_NAME}${DEF_AUTHOR_PAGE:+ ($DEF_AUTHOR_PAGE)}" > "${MODULE_TEMPLATE_DIR}/maintainer.txt"
+
+# -- Build process pool (parallel-jobs > 1) --
+# Each table build runs as a fresh `bash -c` child that re-sources utils.sh,
+# so PATCHER_*/PATCH_OUTPUT globals and in-process caches are per-job by
+# construction. Children log to temp/queue/<id>.log and drop an rc file; the
+# parent replays finished logs inside their own ::group:: (completion order)
+# so the Actions log stays as clean as the sequential one. Serial mode
+# (PAR_JOBS=1) bypasses all of this and behaves exactly as before.
 QUEUE_DIR="$TEMP_DIR/queue"
+# =() initializers are required: bash 5.3+ treats bare `declare -gA` as unset
+# under `set -u`, breaking ${#JOB_PID[@]} on the empty pool.
 declare -gA JOB_PID=() JOB_LABEL=() JOB_LOG=() JOB_RC=()
 JOB_SEQ=0
+
 if ((PAR_JOBS > 1)); then
 	mkdir -p "$QUEUE_DIR"
+	# vars build_rv reads as globals; children get them through the env
 	export RVB_UTILS_SH COMPRESSION_LEVEL ENABLE_MODULE_UPDATE DEF_AUTHOR_NAME REMOVE_RV_INTEGRATIONS_CHECKS RVB_ERROR_LOG RVB_ERROR_JSON RVB_LOG_JSON
+
 	_reap_done() {
 		local id rc
 		for id in "${!JOB_PID[@]}"; do
-			[ -f "${JOB_RC[$id]}" ] || { kill -0 "${JOB_PID[$id]}" 2>/dev/null && continue || echo 137 >"${JOB_RC[$id]}"; }
+			if [ ! -f "${JOB_RC[$id]}" ]; then
+				# still running → keep waiting; wrapper died without an rc (killed
+				# externally, rare) → synthesize a failure so the drain can't hang
+				kill -0 "${JOB_PID[$id]}" 2>/dev/null && continue
+				echo 137 >"${JOB_RC[$id]}"
+			fi
 			rc=$(cat "${JOB_RC[$id]}" 2>/dev/null) || rc=1
-			[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::group::Building ${JOB_LABEL[$id]}"
+			if [ -n "${GITHUB_REPOSITORY:-}" ]; then
+				echo "::group::Building ${JOB_LABEL[$id]}"
+			else
+				pr "Building ${JOB_LABEL[$id]}"
+			fi
 			cat "${JOB_LOG[$id]}" 2>/dev/null
-			[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::endgroup::"
+			if [ -n "${GITHUB_REPOSITORY:-}" ]; then
+				echo "::endgroup::"
+			else
+				pr "End of ${JOB_LABEL[$id]}"
+			fi
 			if [ "$rc" != 0 ]; then
 				CURRENT_APP_NAME="${JOB_LABEL[$id]}" epr "Build failed for ${JOB_LABEL[$id]} (exit $rc)"
 			fi
 			rm -f "${JOB_LOG[$id]}" "${JOB_RC[$id]}"
 			unset "JOB_PID[$id]" "JOB_LABEL[$id]" "JOB_LOG[$id]" "JOB_RC[$id]"
 		done
+		return 0
 	}
-	_wait_slot() { while ((${#JOB_PID[@]} >= PAR_JOBS)); do _reap_done; ((${#JOB_PID[@]} < PAR_JOBS)) && break; wait -n >/dev/null 2>&1 || true; done; }
+	_wait_slot() {
+		while ((${#JOB_PID[@]} >= PAR_JOBS)); do
+			_reap_done
+			((${#JOB_PID[@]} < PAR_JOBS)) && break
+			wait -n >/dev/null 2>&1 || true
+			sleep 1
+		done
+		return 0
+	}
 	_enqueue_build() {
 		_wait_slot
 		local id=$((JOB_SEQ + 1)); JOB_SEQ=$id
@@ -213,30 +268,22 @@ if ((PAR_JOBS > 1)); then
 fi
 _run_build() {
 	if ((PAR_JOBS <= 1)); then
-		[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::group::Building $1"
+		if [ -n "${GITHUB_REPOSITORY:-}" ]; then
+			echo "::group::Building $1"
+		else
+			pr "Building $1"
+		fi
 		export CURRENT_APP_NAME="$1"
 		build_rv "$2" || epr "Build failed for $1"
-		[ -n "${GITHUB_REPOSITORY:-}" ] && echo "::endgroup::"
+		if [ -n "${GITHUB_REPOSITORY:-}" ]; then
+			echo "::endgroup::"
+		else
+			pr "End of $1"
+		fi
 	else
 		_enqueue_build "$2" "$1"
 	fi
 }
-
-: >build.md
-ENABLE_MODULE_UPDATE=$(toml_get "$main_config_t" enable-module-update) || ENABLE_MODULE_UPDATE=true
-if [ "$ENABLE_MODULE_UPDATE" = true ] && [ -z "${GITHUB_REPOSITORY-}" ]; then
-	pr "You are building locally. Module updates will not be enabled."
-	ENABLE_MODULE_UPDATE=false
-fi
-if ((COMPRESSION_LEVEL > 9)) || ((COMPRESSION_LEVEL < 0)); then abort "compression-level must be within 0-9"; fi
-
-rm -rf module/bin/*/tmp.*
-for file in "$TEMP_DIR"/*/changelog.md; do
-	[ -f "$file" ] && : >"$file"
-done
-
-mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm ${MODULE_TEMPLATE_DIR}/bin/x86 ${MODULE_TEMPLATE_DIR}/bin/x64
-echo "${DEF_AUTHOR_NAME}${DEF_AUTHOR_PAGE:+ ($DEF_AUTHOR_PAGE)}" > "${MODULE_TEMPLATE_DIR}/maintainer.txt"
 
 for table_name in $(toml_get_table_names); do
 	if [ -z "$table_name" ]; then continue; fi
@@ -512,13 +559,17 @@ for table_name in $(toml_get_table_names); do
 		_run_build "${app_args[table]}" "$(declare -p app_args)"
 	done
 done
+
+# Drain the pool: replay every remaining job log as it finishes, then fold
+# the per-job build.json fragments into the final catalog.
 while ((PAR_JOBS > 1 && ${#JOB_PID[@]} > 0)); do
 	_reap_done
 	((${#JOB_PID[@]} > 0)) || break
 	wait -n >/dev/null 2>&1 || true
+	sleep 1
 done
-rm -rf "$QUEUE_DIR"
-rm -rf temp/tmp.*
+merge_build_info
+rm -rf temp/tmp.* "$TEMP_DIR"/*-merge-tmp* "$TEMP_DIR"/*/*-merge-tmp* "$QUEUE_DIR" "$TEMP_DIR/dllocks" "$TEMP_DIR/apkslocks" "$TEMP_DIR/mergesplits_locks" "$TEMP_DIR"/morphe-stage-*
 if [ -z "$(ls -A1 "${BUILD_DIR}")" ]; then abort "All builds failed."; fi
 
 if command -v python3 >/dev/null 2>&1; then
