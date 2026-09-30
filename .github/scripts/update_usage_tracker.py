@@ -57,8 +57,10 @@ def main():
     for version in used_versions:
         usage_data[version] = current_time
 
-    with open(usage_file, "w") as f:
-        json.dump(usage_data, f, indent=2)
+    with open(usage_file, "w", encoding="utf-8") as f:
+        # sort_keys must match cleanup-apks.py: both workflows rewrite this file and
+        # push to main, and a stable order keeps those commits to real changes only.
+        json.dump(usage_data, f, indent=2, sort_keys=True)
 
     os.chdir(clone_dir)
     

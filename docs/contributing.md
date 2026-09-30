@@ -44,7 +44,7 @@ fetch, not after. For a one-off hand edit you may also `git switch data`, commit
 push, `git switch main` — then re-run the fetch, because switching clobbers the
 ignored local copies.
 
-Your change takes effect on the next watcher run (every 4 hours): the pool configs
+Your change takes effect on the next watcher run (every 2 hours): the pool configs
 are regenerated from your TOML and the affected app gets built. To verify
 immediately instead of waiting, run **Manual CI** (`workflow_dispatch`) against
 `configs/config.manual.toml` — a hand-built config that never touches the pools.

@@ -55,7 +55,7 @@ Releases, records build metadata on a Git branch, and feeds a static download si
     that must run forever goes to `.github/traces/`. An absence assertion needs a
     negative control in the same harness.
 13. Nothing here runs on `push` to `main` except Trace Verify. A workflow change
-    takes effect on the next *scheduled* run (every 4 h) or a dispatch.
+    takes effect on the next *scheduled* run (every 2 h) or a dispatch.
 
 ## File map
 

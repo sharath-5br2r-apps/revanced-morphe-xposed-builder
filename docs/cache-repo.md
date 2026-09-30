@@ -24,7 +24,7 @@ contract. The contributor workflow (getting write access, the three equivalent
 | Assets | `<pkg>-<version>[-<versionCode>]-<arch>.<ext>` |
 | `<arch>` | `all`, `universal`, `common`, `arm64-v8a`, `arm-v7a`, `armeabi-v7a`, `x86`, `x86_64` |
 | `<ext>` | `apk`, `xapk`, `apkm`, `apks` |
-| `usage.json` | `"<pkg>-<version>"` → epoch seconds of last use (no version code, on purpose — see below) |
+| `usage.json` | `"<pkg>-<version>"` → epoch seconds of last use, keys sorted (no version code, on purpose — see below) |
 | Uploaders | `upload_apks.ps1` / `.sh` / `.py` (human-contributed), the rvb engine (automated) |
 | Retention | `.github/scripts/cleanup-apks.py`, weekly |
 
@@ -82,7 +82,8 @@ with three attempts, because parallel jobs can race on the same tag between the
 cache is an optimisation, and losing an upload must not lose the build.
 
 Then, once per build run, `update_usage_tracker.py` clones the repo shallowly,
-stamps every key from `temp/used_versions.txt` with the current time, and pushes
+stamps every key from `temp/used_versions.txt` with the current time, dumps the file
+with sorted keys (see **File ordering** below) and pushes
 `chore: update cache usage tracker`. It exits quietly when `APKS_REPO_TOKEN` or the
 file is missing, and when nothing changed — so a run that hit only cache entries
 still counts as usage, while a run that built nothing writes nothing.
@@ -101,6 +102,8 @@ still counts as usage, while a run that built nothing writes nothing.
    inactive for more than **30 days** (`KEEP_DAYS`).
 5. Drop `usage.json` keys whose assets no longer exist, so the file cannot grow
    without bound or resurrect a deleted version's score.
+6. Rewrite `usage.json` with sorted keys and commit it back to `main` — but only when
+   something actually changed.
 
 Net effect: a version CI keeps consuming never ages out, recent versions are
 protected even if unused, and the repo's storage cost tracks *live* demand instead
@@ -140,6 +143,28 @@ What genuinely must stay in step is the **other** end of the name: change the
 `-<arch>.<ext>` suffix pattern, or the arch/extension vocabulary, and the strip stops
 matching — those assets then never group at all, which is both unprunable and
 invisible. The version code is the one component the key intentionally ignores.
+
+## File ordering: both writers sort
+
+`usage.json` is machine-managed state that **two** workflows rewrite and push to the
+cache repo's `main` — `update_usage_tracker.py` here after every build run, and
+`cleanup-apks.py` on the weekly prune. Both dump with `sort_keys=True`, so a commit
+contains only the versions whose stamp actually moved.
+
+Without sorting, JSON order is insertion order: a key that already exists keeps its
+old line wherever it happens to sit, while every newly indexed version lands at the
+bottom. The files then drift apart between the two writers, and one of them eventually
+re-scrambles the whole file into a reorder commit that hides the handful of meaningful
+lines — and a build push racing the Sunday prune conflicts on a difference that is not
+a difference. Sorting also keeps the file legible when you read it after a cache miss:
+every version of one package sits on consecutive lines.
+
+The convention only holds while both sides agree: drop `sort_keys` in either writer and
+the other's next run produces the reorder again. Keys are ASCII package names, so the
+order is by Unicode code point and identical on every runner; neither writer adds a
+trailing newline. Do not hand-edit the file to add an entry — an untracked version is
+indexed automatically at its upload time, and a key whose asset does not exist is
+pruned as a ghost entry the following Sunday.
 
 ## Debugging checklist
 
