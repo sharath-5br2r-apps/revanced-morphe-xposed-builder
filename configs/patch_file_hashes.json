@@ -1,11 +1,15 @@
 {
   "anddea/revanced-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "2114cf43fd309673be0b921863d04f1a",
-      "com.google.android.youtube": "8d118997fb49f857aa10ddf36463a2df",
+      "com.google.android.apps.youtube.music": "7f1291038edaabc0b7e2c199f811b26e",
+      "com.google.android.youtube": "ed00f8921443fb10d19109ea452cbea0",
       "shared": "64cd23189407b4424baeb9406ad36646"
     },
-    "stable": {}
+    "stable": {
+      "com.google.android.apps.youtube.music": "38f7dee029d8d691d4d374f1f5bf7718",
+      "com.google.android.youtube": "d06afb843949a979631311fc60e15b59",
+      "shared": "64cd23189407b4424baeb9406ad36646"
+    }
   },
   "arandomhooman/hoomans-morphe-patches": {
     "beta": {
@@ -60,20 +64,20 @@
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "d2e9ecf8b3d0994235a67570402df245",
-      "shared": "cf96a0e4389a7465a858b9c9e29bc4bc"
+      "shared": "df1e544c795360d701d1ab6cd2a67088"
     },
     "stable": {
       "com.fingersoft.hillclimb": "af801fe61c47338f7f247bba4f641fb0",
       "com.halfbrick.jetpackjoyride": "84f98d8933229ee632c07b93e244129c",
       "com.mediocre.smashhit": "6cbd6dd6a9951ce0b422e1c4c0d07d1e",
       "com.nekki.vector": "d2e9ecf8b3d0994235a67570402df245",
-      "shared": "cf96a0e4389a7465a858b9c9e29bc4bc"
+      "shared": "df1e544c795360d701d1ab6cd2a67088"
     }
   },
   "ch3thanhs/stylus": {
     "beta": {
       "com.x8bit.bitwarden": "cc6b03c83af9ea448f5b2e197afb2831",
-      "shared": "d3095f4c5c9a17e50b93b97c74cdedac"
+      "shared": "818c43aebd0337b0812ade32e9eeaf07"
     },
     "stable": {
       "com.x8bit.bitwarden": "cc6b03c83af9ea448f5b2e197afb2831",
@@ -82,9 +86,9 @@
   },
   "crimera/piko": {
     "beta": {
-      "com.instagram.android": "9fdac617e2f3580eeaf8156617709903",
-      "com.twitter.android": "4fc2550423abe25a1647d19df78db37f",
-      "shared": "306a26f969894f9f6eb65156853a889a"
+      "com.instagram.android": "d11a308bd5975b1e031bd75b79b677ab",
+      "com.twitter.android": "fdffc390c593cfc8f0ba76cc093b18b6",
+      "shared": "fd0f7f25f8b90543c362c99530812b52"
     },
     "stable": {}
   },
@@ -102,42 +106,69 @@
   },
   "hoo-dles/morphe-patches": {
     "beta": {
-      "bitpit.launcher": "8b7512facf22c0149e588b59f084ef7b",
-      "cn.wps.moffice_eng": "447813aedaba74ed575d4f0cfc21a46f",
-      "com.adobe.lrmobile": "42c128faf0f0c6e564bc4bfe84a750e6",
-      "com.amazon.avod.thirdpartyclient": "1d689bf966f0fe57015e9e4e887c3547",
-      "com.bambuna.podcastaddict": "c5014f7044cccd0b5f1a3cdb162437dd",
-      "com.duolingo": "567a24ef30a153cca87e51cf0a3cf3eb",
-      "com.goodreads": "c31962adcdb8d9a3594ea8a4a70cd0d8",
-      "com.hellochinese": "1399ee6c3e33c987c0345bca59d0d7cb",
-      "com.intsig.camscanner": "0b4ca9534c59e67d0a5cc607370bd377",
-      "com.merriamwebster": "085859c18ca7dbcef6e0d1edbb5a6dbf",
-      "com.myfitnesspal.android": "ed1989ddb10bfad4387b5865ba8a1915",
-      "com.pandora.android": "979f2d05036202d55389b47205cc1a72",
-      "com.teslacoilsw.launcher": "acd4f90ccaae4da6f18831921f006d95",
-      "com.wallpaperscraft.wallpaper": "e76ad26c50960129bfcdf1593ba6a70f",
-      "com.xodo.pdf.reader": "044607ae6eda76ffb2cbceaedfd3f136",
-      "cz.ackee.ventusky": "ed386fb3971cb592c47941df5564d78c",
-      "ginlemon.flowerfree": "8565a9df34cb8847ead3223b60d713b3",
-      "pl.solidexplorer2": "a9f0bae93d8e7e68f5c5f6e4438802e6",
-      "shared": "176302522d2873861d0737663bec04af",
-      "videoeditor.videorecorder.screenrecorder": "b757bfdb8b080a895208709fb2927845"
+      "bitpit.launcher": "7614c2c49bd328dd8f7e0b04a9ba6a0f",
+      "cn.wps.moffice_eng": "7614c2c49bd328dd8f7e0b04a9ba6a0f",
+      "com.adobe.lrmobile": "7614c2c49bd328dd8f7e0b04a9ba6a0f",
+      "com.amazon.avod.thirdpartyclient": "7614c2c49bd328dd8f7e0b04a9ba6a0f",
+      "com.bambuna.podcastaddict": "44e6352ab7db9cb6c95b498724c9e40c",
+      "com.duolingo": "c518cb5d42f33806e6c1c22e9a651d46",
+      "com.goodreads": "e1760b56a1321562a6dd34606328ce6a",
+      "com.hellochinese": "b51f1f1033e2efbf71dae6084dd2975a",
+      "com.intsig.camscanner": "b675a981325693379f49ebf134ec9464",
+      "com.merriamwebster": "7614c2c49bd328dd8f7e0b04a9ba6a0f",
+      "com.myfitnesspal.android": "7300336949e204cee476303f7de134ea",
+      "com.pandora.android": "80d5655e4169d77a88e1cc2026ece379",
+      "com.teslacoilsw.launcher": "7614c2c49bd328dd8f7e0b04a9ba6a0f",
+      "com.wallpaperscraft.wallpaper": "554bcd7a888df9292842e5b8be3baa8c",
+      "com.xodo.pdf.reader": "86268a214ff0baecbeccc337139fba6c",
+      "cz.ackee.ventusky": "09deaf476cf4950d0127e6211d86803c",
+      "ginlemon.flowerfree": "7614c2c49bd328dd8f7e0b04a9ba6a0f",
+      "pl.solidexplorer2": "7614c2c49bd328dd8f7e0b04a9ba6a0f",
+      "shared": "b8e9c2ea552b3ab6be1d146fea1be5e9",
+      "videoeditor.videorecorder.screenrecorder": "0bc775c3ea976d8c1e93fcc1ba82c67c"
     },
-    "stable": {}
+    "stable": {
+      "bitpit.launcher": "ec102ff92cca39b2dff086dd24cd4991",
+      "cn.wps.moffice_eng": "ec102ff92cca39b2dff086dd24cd4991",
+      "com.adobe.lrmobile": "ec102ff92cca39b2dff086dd24cd4991",
+      "com.amazon.avod.thirdpartyclient": "ec102ff92cca39b2dff086dd24cd4991",
+      "com.bambuna.podcastaddict": "542e3254ba0a21f9307939f47b21a705",
+      "com.duolingo": "6ba659cfdbf711bc809748472c379f4c",
+      "com.goodreads": "a0a8c0e87c0803f1bdff2305f42bcff1",
+      "com.hellochinese": "45826e87af789323e1dbbad0efdf5f25",
+      "com.intsig.camscanner": "0bbb72e4937d524ef286dbad4b95bc57",
+      "com.merriamwebster": "ec102ff92cca39b2dff086dd24cd4991",
+      "com.myfitnesspal.android": "5a12d687e3b5f55db8cdc8c6cd0f16f1",
+      "com.pandora.android": "c2a1568fd04a14160321effc7a0db91a",
+      "com.teslacoilsw.launcher": "ec102ff92cca39b2dff086dd24cd4991",
+      "com.wallpaperscraft.wallpaper": "d2b31b329790ce988a7b55ac030cdc27",
+      "com.xodo.pdf.reader": "062bc1f071f6d3be20e5fdf0a731bea5",
+      "cz.ackee.ventusky": "337238b8e73b392f0287e68fa4df2b21",
+      "ginlemon.flowerfree": "ec102ff92cca39b2dff086dd24cd4991",
+      "pl.solidexplorer2": "ec102ff92cca39b2dff086dd24cd4991",
+      "shared": "c505753bedcdff538d9cb87f2a52bdbe",
+      "videoeditor.videorecorder.screenrecorder": "e6c4dd814effc06cfb52815ea7fd21f9"
+    }
   },
   "hxreborn/hxreborn-tiktok-patches": {
     "beta": {
       "com.zhiliaoapp.musically": "31826a4c879bc7d00a9deae8714d190a",
       "shared": "ec632f44c27d68976062d7ff9a37232d"
     },
-    "stable": {}
+    "stable": {
+      "com.zhiliaoapp.musically": "ab35fa0298769c3032ac28b317eb9c43",
+      "shared": "261a0b0cd5b11f65cbae870040a7ef37"
+    }
   },
   "icysymmetra/tiktok-patches-for-morphe": {
     "beta": {
       "com.zhiliaoapp.musically": "4dbbc2c764e93c8131bfeba4742c852a",
       "shared": "4c8e9750b338baa9b2956091fbe5841a"
     },
-    "stable": {}
+    "stable": {
+      "com.zhiliaoapp.musically": "4dbbc2c764e93c8131bfeba4742c852a",
+      "shared": "4c8e9750b338baa9b2956091fbe5841a"
+    }
   },
   "jasonwu1994/gboard-patches": {
     "beta": {},
@@ -167,17 +198,17 @@
   "kveld9/kveld-morphe-patches": {
     "beta": {},
     "stable": {
-      "com.brave.browser": "eb15658fdc23b6f97d5ba7ee2ae7f60e",
-      "com.ss.android.ugc.trill": "43e37dc34ffd05891f9087e9f10dae0b",
-      "com.zhiliaoapp.musically": "43e37dc34ffd05891f9087e9f10dae0b",
-      "shared": "b86a5c58bd9d47c55928cebfee37025a"
+      "com.brave.browser": "492beffc598616f3306255f4f8f00d9e",
+      "com.ss.android.ugc.trill": "80205536dc7e04845fca993afb42a5e5",
+      "com.zhiliaoapp.musically": "80205536dc7e04845fca993afb42a5e5",
+      "shared": "950391ec0ddd785a1cc905d90dd754f6"
     }
   },
   "morpheapp/morphe-patches": {
     "beta": {
-      "com.google.android.apps.youtube.music": "124126789c7ac352e96a035261baffa2",
-      "com.google.android.youtube": "12ccd53c0220bcc541b20acfc7fc2be4",
-      "shared": "2ae9970594e5fbcba3eef3afbbdce1a6"
+      "com.google.android.apps.youtube.music": "80ba468a432c65075d51a366cca36397",
+      "com.google.android.youtube": "541055fa04d67f99ab69753bfbcf464e",
+      "shared": "d372456be79b343b1cfd762aa488344f"
     },
     "stable": {
       "com.google.android.apps.youtube.music": "908eefc5b29a33d6807ef54a9ef097d9",
@@ -202,11 +233,11 @@
   },
   "prathxmop/prathxm-patches": {
     "beta": {
-      "com.chess": "7580ebdcf711a1597afede18b87d0241",
+      "com.chess": "25c7722aef59b236fc4b873f2bf32e08",
       "shared": "896486938b5de28e83d923a732d3ec47"
     },
     "stable": {
-      "com.chess": "6e64f2075f9a0ffd28bd69321b738f30",
+      "com.chess": "538aade6f1eb332e22512294dff18494",
       "shared": "896486938b5de28e83d923a732d3ec47"
     }
   },
@@ -237,8 +268,8 @@
   "sysadmindoc/hushfeed": {
     "beta": {},
     "stable": {
-      "com.zhiliaoapp.musically": "72f0af3917246bccfddc8409103d07a3",
-      "shared": "d98d134085e880fcec6fd44b190a04fe"
+      "com.zhiliaoapp.musically": "9e99149518187505803771aa5c2f8742",
+      "shared": "52b764a4a41894e0d8052f8021e4e680"
     }
   }
 }

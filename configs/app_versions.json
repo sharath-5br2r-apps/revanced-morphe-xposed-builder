@@ -17,13 +17,13 @@
     "keys": [
       "AmazonAlexa-APKSigner-Signed"
     ],
-    "version": "2.2.711118.0"
+    "version": "2.2.716377.0"
   },
   "Adobe Acrobat": {
     "keys": [
       "AdobeAcrobat-Morphe-Rushiranpise-Experimental"
     ],
-    "version": "26.8.3"
+    "version": "26.9.0"
   },
   "Proton VPN": {
     "keys": [
@@ -36,7 +36,7 @@
       "Twitter-Morphe-Piko-Experimental",
       "Twitter-Morphe-Piko-MaterialYou-Experimental"
     ],
-    "version": "12.28.0-prod.01"
+    "version": "12.30.0-prod.01"
   },
   "Speedtest": {
     "keys": [
@@ -60,13 +60,13 @@
     "keys": [
       "BraveBrowser-Beta-Morphe-Dh6k"
     ],
-    "version": "1.97.48"
+    "version": "1.97.52"
   },
   "Brave Nightly": {
     "keys": [
       "BraveBrowser-Nightly-Morphe-Dh6k"
     ],
-    "version": "1.98.33"
+    "version": "1.98.43"
   },
   "PC Remote": {
     "keys": [
@@ -84,7 +84,7 @@
     "keys": [
       "GitHub-Morphe-Hoodles-Stylus-Experimental"
     ],
-    "version": "1.277.0"
+    "version": "1.278.0"
   },
   "Fing": {
     "keys": [
@@ -96,7 +96,7 @@
     "keys": [
       "Jiohotstar-Morphe-Paresh-Experimental"
     ],
-    "version": "26.08.31.3"
+    "version": "26.09.14.1"
   },
   "Nova Launcher": {
     "keys": [
@@ -120,7 +120,7 @@
     "keys": [
       "Xodo-Morphe-Hoodles-Experimental"
     ],
-    "version": "11.2.0"
+    "version": "11.3.0"
   },
   "Beta Maniac": {
     "keys": [
@@ -152,7 +152,7 @@
     "keys": [
       "AmazonShopping-Morphe-Rushiranpise-Experimental"
     ],
-    "version": "32.17.0.100"
+    "version": "32.18.0.100"
   },
   "XRecorder": {
     "keys": [
@@ -164,13 +164,13 @@
     "keys": [
       "SmartLauncher6-Morphe-Hoodles-Experimental"
     ],
-    "version": "6.6 build 020"
+    "version": "6.6 build 021"
   },
   "Smart Launcher": {
     "keys": [
       "SmartLauncher-Morphe-Hoodles-Experimental"
     ],
-    "version": "6.6 build 020"
+    "version": "6.6 build 021"
   },
   "Windscribe VPN": {
     "keys": [
@@ -188,7 +188,7 @@
     "keys": [
       "AdGuard-Morphe-Rushiranpise-Experimental"
     ],
-    "version": "4.14.1"
+    "version": "4.14.2"
   },
   "Pinterest": {
     "keys": [
@@ -236,7 +236,7 @@
     "keys": [
       "PodcastAddict-Morphe-Hoodles-Experimental"
     ],
-    "version": "2026.10.1"
+    "version": "2026.12"
   },
   "Ventusky": {
     "keys": [
