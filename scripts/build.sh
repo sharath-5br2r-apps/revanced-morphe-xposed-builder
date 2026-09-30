@@ -47,7 +47,7 @@ Options:
 
 Note:
   When building locally without pinned versions, run scripts/fetch_versions.sh
-  first to discover and populate latest APK versions in configs/app_versions.json.
+  first to discover and populate latest APK versions in state/app_versions.json.
 
 For config file keys and per-app table options, see Documentation.md.
 

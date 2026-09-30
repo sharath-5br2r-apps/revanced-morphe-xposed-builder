@@ -472,10 +472,14 @@ enable-module-update = true # Generate -update.json and commit to update branch
 You can run builds directly on Linux or Android (Termux).
 
 > [!TIP]
-> **Fetching App Versions First:**
-> If you are building locally without pinned app versions, run `scripts/fetch_versions.sh` before running `build.sh`. This queries configured sources (APKMirror, Uptodown, GitHub, etc.) to discover and cache the latest target app versions in `configs/app_versions.json`.
+> **Getting Configs and Fetching App Versions First:**
+> Run `scripts/fetch_local_data.sh` to materialize `configs/` and `state/` from your local `data` branch.
+> If you are building locally without pinned app versions, run `scripts/fetch_versions.sh` before running `build.sh`. This queries configured sources (APKMirror, Uptodown, GitHub, etc.) to discover and cache the latest target app versions in `state/app_versions.json`.
 >
 > ```bash
+> # Materialize configs and state from local data branch
+> ./scripts/fetch_local_data.sh
+>
 > # Fetch versions for all apps (or filter with --allowed-apps)
 > ./scripts/fetch_versions.sh [--allowed-apps="regex"]
 > ```

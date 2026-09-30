@@ -14,7 +14,9 @@ ROOT_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
 cd "$ROOT_DIR"
 
 CONFIG_DIR="${CONFIG_DIR:-$ROOT_DIR/configs}"
-APP_VERSIONS_FILE="${APP_VERSIONS_FILE:-$CONFIG_DIR/app_versions.json}"
+STATE_DIR="${STATE_DIR:-$ROOT_DIR/state}"
+APP_VERSIONS_FILE="${APP_VERSIONS_FILE:-$STATE_DIR/app_versions.json}"
+[ -f "$APP_VERSIONS_FILE" ] || [ ! -f "$CONFIG_DIR/app_versions.json" ] || APP_VERSIONS_FILE="$CONFIG_DIR/app_versions.json"
 OUTPUT_FILE="${FETCHED_APP_VERSIONS_FILE:-$ROOT_DIR/fetched_app_versions.json}"
 NO_SLEEP="${NO_SLEEP:-${CI_FETCH_NO_SLEEP:-false}}"
 CONFIG_LIST="${CONFIG_FILES:-}"

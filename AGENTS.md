@@ -11,7 +11,8 @@ before making a change. The rules below are the ones that cause damage when brok
    `bash .github/scripts/push_data_configs.sh "<msg>"`. `fetch_data_branch.sh`
    **overwrites** local `configs/` — publish before fetching or lose edits.
 3. **Local builds:**
-   Run `scripts/fetch_versions.sh` to update target app versions in `configs/app_versions.json`.
+   Run `scripts/fetch_local_data.sh [branch]` to checkout `configs/` and `state/` from local `data` branch.
+   Run `scripts/fetch_versions.sh` to update target app versions in `state/app_versions.json`.
    Run `scripts/generate_manual_config.sh` to compile merged TOMLs in `configs/patches/merged/`.
    Run `scripts/build.sh [--config=path] [--allowed-apps="regex"]` for local patching on Linux/Android (Termux).
 4. **A field nobody named is not yours to write.** A default that asserts a value
