@@ -15,8 +15,8 @@ set -euo pipefail
 #     insurance, not a merge strategy: on a race, our worktree files win.
 #   - fetch_data_branch.sh is the counterpart that materializes the branch
 #     back into configs/ and state/ for builds and watchers.
-#   - Only *.json directly under configs/ and state/ is committed — human
-#     TOMLs (push_data_configs.sh territory) can never reach `data` here.
+#   - Only *.json files under configs/ (including channel subdirs) and state/
+#     are committed — human TOMLs (push_data_configs.sh territory) can never reach `data` here.
 
 BRANCH="data"
 STATE_DIRS=("configs" "state")
