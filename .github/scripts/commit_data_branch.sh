@@ -33,17 +33,16 @@ build_commit() {
 	local base=$1 d idx tree blob old changed="" commit
 	idx=$(mktemp)
 	GIT_INDEX_FILE=$idx git read-tree "$base"
-	shopt -s nullglob
 	for d in "${STATE_DIRS[@]}"; do
-		for f in "$d"/*.json; do
+		[ -d "$d" ] || continue
+		while IFS= read -r -d '' f; do
 			blob=$(git hash-object -w "$f")
 			old=$(git rev-parse "$base:$f" 2> /dev/null || echo '')
 			[ "$blob" = "$old" ] && continue
 			GIT_INDEX_FILE=$idx git update-index --add --cacheinfo "100644,$blob,$f"
 			changed=1
-		done
+		done < <(find "$d" -type f -name '*.json' -print0)
 	done
-	shopt -u nullglob
 	[ -n "$changed" ] || {
 		rm -f "$idx"
 		return 1

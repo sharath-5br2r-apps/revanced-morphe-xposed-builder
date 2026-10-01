@@ -193,14 +193,11 @@ jobs:
           TRIGGER_APP_UPDATE: ${{ steps.compare_apps.outputs.TRIGGER_APP_UPDATE }}
         run: python3 .github/scripts/generate_first_step_summary.py
 
-      - name: Commit updated version metadata and configs
+      - name: Commit updated state and configs to data branch
         if: ${{ inputs.mode == 'Update Versions Only' || inputs.mode == 'Generate Configs Only (No Build)' || inputs.mode == 'Default' || inputs.mode == 'Batch Build (Stable)' || inputs.mode == 'Batch Build (Both)' || steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1' }}
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: main
-          skip_checkout: true
-          file_pattern: configs/app_versions.json configs/patch_sources.json configs/patch_file_hashes.json configs/*/config.updated.json configs/*/config.part*.json
-          commit_message: "Update patch sources, app versions and generated configs [skip ci]"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/commit_data_branch.sh
 
       - name: Upload split config part artifacts
         if: ${{ inputs.mode != 'Batch Build (Stable)' && inputs.mode != 'Batch Build (Both)' && (steps.compare.outputs.TRIGGER_STABLE == '1' || steps.compare.outputs.TRIGGER_PRERELEASE == '1' || steps.compare.outputs.TRIGGER_BLOCKED == '1' || steps.compare_apps.outputs.TRIGGER_APP_UPDATE == '1') }}
