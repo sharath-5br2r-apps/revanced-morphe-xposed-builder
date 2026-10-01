@@ -26,10 +26,12 @@ treat the branch copy as the one a contributor reading the branch will see first
 
 ```
 configs/
-  config.manual.toml          hand-built config for Manual CI
   patches/<author>.toml       one file per patch source family (the real config)
-  stable_build.json           generated: the stable pool for the next build
-  beta_build.json             generated: the beta pool
+  config.manual.toml          hand-built config for Manual CI (optional)
+  stable/                     generated: split config parts (config.part*.json)
+  beta/                       generated: split config parts (config.part*.json)
+  batch/                      generated: split config parts (config.part*.json)
+  both/                       generated: split config parts (config.part*.json)
 state/
   patch_sources.json          per source: host, repo, stable tag+date, beta tag+date, blocked
   app_versions.json           app: {keys: […], version}; "_check_only_listed": true
@@ -38,12 +40,14 @@ state/
 
 - Both directories are ignored on `main` ([.gitignore](../.gitignore)) and exist
   locally only as materialisations. Never `git add` them.
+- Strictly lives under `configs/` and `state/`. Temporary directories such as `temp_configs/` are not used; `fetch_data_branch.sh` materialises files directly into `configs/` and `state/` (preserving `configs/patches/` from HEAD).
+- Split config parts (`configs/<channel>/config.part*.json`) generated during CI are uploaded as the `split-configs` artifact and downloaded directly into `configs/` across parallel build jobs.
 - **`fetch_data_branch.sh` overwrites local `configs/` and `state/`.** Publish
   hand-edited TOMLs *before* fetching, or lose them:
   `bash .github/scripts/push_data_configs.sh "<message>"` — plumbing temp-index
   commit of `configs/**/*.toml` only, using your git identity.
 - Writer boundaries are enforced by glob, not convention: the CI committer commits
-  only `*.json` directly under those two directories, so it can never sweep a
+  only `*.json` directly under those directories, so it can never sweep a
   half-edited TOML into history — and equally, it cannot delete one. A *renamed*
   TOML must therefore be removed on `data` explicitly, or the old name lingers.
 - `state/` is regenerable: the watcher rebuilds it from the forges. `configs/`

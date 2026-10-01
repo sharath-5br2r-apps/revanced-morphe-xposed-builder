@@ -99,8 +99,9 @@ Step order, with the reason each is where it is:
 
 1. Java 21 (Temurin) → checkout `main` with `fetch-depth: 0` and submodules (full
    history is needed to enumerate existing tags and to commit to other branches) →
-   `fetch_data_branch.sh`.
-2. `build_resolve_context.sh` maps the config file to `ARCHIVE_TAG`,
+   `fetch_data_branch.sh` (materialises `configs/` and `state/` directly) →
+   download `split-configs` artifact into workspace.
+2. `build_resolve_context.sh` maps the config file (`configs/<channel>/config.part*.json` or manual TOML) to `ARCHIVE_TAG`,
    `IS_PRERELEASE`, `TITLE_SUFFIX` and the Telegram thread — the single owner of
    "which channel is this run".
 3. Install Bouncy Castle **only if** `patchers.py needs-bks` says a module in this
@@ -112,6 +113,7 @@ Step order, with the reason each is where it is:
    `pip install curl_cffi` for the store scrapers. The Cloudflare-bypass sidecar
    runs as a job `service` on `:8000`.
 7. `scripts/build.sh <config>` — the engine ([build-engine.md](build-engine.md)).
+
    `UPLOAD_APKS_REPO` + `APKS_REPO_TOKEN` turn on the shared cache repo;
    `RVB_MORPHE_PASSTHROUGH` and the `RELEASE_NOTES_*_LINK` vars are passed here.
 8. `update_usage_tracker.py` (`|| true`), `build_cache_cleanup.sh`, then the cache

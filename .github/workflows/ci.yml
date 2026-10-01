@@ -935,8 +935,6 @@ jobs:
           if [ -n "$MANUAL_CONFIG" ]; then
             if [ -f "$MANUAL_CONFIG" ]; then
               config_file="$MANUAL_CONFIG"
-            elif [ -f "temp_configs/$MANUAL_CONFIG" ]; then
-              config_file="temp_configs/$MANUAL_CONFIG"
             elif [ -f "configs/patches/$MANUAL_CONFIG.toml" ]; then
               config_file="configs/patches/$MANUAL_CONFIG.toml"
             elif [ -f "configs/$MANUAL_CONFIG" ]; then
@@ -945,10 +943,6 @@ jobs:
               echo "Config file '$MANUAL_CONFIG' not found" >&2
               exit 1
             fi
-          fi
-          # Fallback to temp_configs if selected file was materialized there
-          if [ ! -f "$config_file" ] && [ -f "temp_configs/${config_file#configs/}" ]; then
-            config_file="temp_configs/${config_file#configs/}"
           fi
           echo "CONFIG_FILE=$config_file" >> "$GITHUB_OUTPUT"
 

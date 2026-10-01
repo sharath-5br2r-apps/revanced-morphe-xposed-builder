@@ -52,7 +52,7 @@ the seam between them → [website-contract.md](website-contract.md).
 | Branch | Contains | Sole writer | Read by |
 |---|---|---|---|
 | `main` | Engine, workflows, scripts, `module/` template, `bin/`, docs | Maintainer (PRs) | every job, checked out first |
-| `data` | `configs/` (human TOMLs + generated `stable_build.json`/`beta_build.json`), `state/` (watcher JSONs) | watcher (`commit_data_branch.sh`) for `*.json`; maintainer (`push_data_configs.sh`) for `*.toml` | watcher and build jobs, via `fetch_data_branch.sh` |
+| `data` | `configs/` (human TOMLs + generated split pool parts `configs/{stable,beta,batch,both}/config.part*.json`), `state/` (watcher JSONs) | watcher (`commit_data_branch.sh`) for `*.json`; maintainer (`push_data_configs.sh`) for `*.toml` | watcher and build jobs, via `fetch_data_branch.sh` |
 | `website` | `manifests/<tag>.json` per build + cumulative `archive/{stable,beta}.json` | `merge_archive_branch.sh` (build), `cleanup_website_branch.sh` (prune) | the site's `rebuild_catalog.py` |
 | `update` | `changelogs/<code>.md` + `<channel>/<module-id>.json` pointers | `build_update_changelog.sh`, `cleanup_update_branch.sh` | KernelSU / Magisk module updaters, at phone-check time |
 
@@ -126,6 +126,7 @@ scheduler is best-effort and drops missed ticks — see
 Cloudflare-bypass sidecar service on `:8000`:
 
 1. Checkout `main` (full history, submodules) → `fetch_data_branch.sh` →
+   download `split-configs` artifact into workspace →
    `build_resolve_context.sh` maps the config file to `ARCHIVE_TAG`,
    `IS_PRERELEASE`, Telegram thread and title suffix.
 2. Install Bouncy Castle only if a BKS-needing Xposed module is in the config;
@@ -133,7 +134,7 @@ Cloudflare-bypass sidecar service on `:8000`:
 3. `build_resolve_version.sh` computes `NEXT_VER_CODE`; the Actions APK cache is
    restored and the `sharath-5br2r-apps/apks-dump` repo cache is available to the engine as the
    highest-priority download source.
-4. `scripts/build.sh configs/<pool>_build.json` runs the engine →
+4. `scripts/build.sh configs/<channel>/config.part*.json` (or manual config) runs the engine →
    [build-engine.md](build-engine.md). Output: `build/` files, `build.json`,
    `build.md`.
 5. `update_usage_tracker.py` records which app versions this run consumed;

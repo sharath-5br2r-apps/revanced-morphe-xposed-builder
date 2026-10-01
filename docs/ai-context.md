@@ -82,7 +82,7 @@ Releases, records build metadata on a Git branch, and feeds a static download si
 | Branch | Holds | Written by |
 |---|---|---|
 | `main` | code + docs | humans, PRs |
-| `data` | `configs/` TOMLs + generated pool JSON, `state/` JSONs | humans (TOML), watcher (JSON) |
+| `data` | `configs/` TOMLs + generated split pool JSON (`configs/{stable,beta,batch,both}/config.part*.json`), `state/` JSONs | humans (TOML), watcher (JSON) |
 | `website` | `manifests/<tag>.json`, `archive/{stable,beta}.json` (schema v1) | build job, after the archive upload |
 | `update` | `<channel>/<module-id>.json` pointers, `changelogs/<code>.md` | build job, when modules were built |
 

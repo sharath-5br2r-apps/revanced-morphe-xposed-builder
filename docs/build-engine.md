@@ -7,8 +7,8 @@ Magisk module zip.
 ## Entry point and invariants
 
 ```bash
-bash scripts/build.sh configs/stable_build.json   # CWD must be the repo root
-bash scripts/build.sh clean                       # remove temp/, build/, build.md
+bash scripts/build.sh configs/stable/config.part1.json   # or merged TOML: configs/patches/merged/anddea.toml
+bash scripts/build.sh clean                             # remove temp/, build/, build.md
 ```
 
 - `build.sh` sources its sibling `utils.sh` explicitly and exports `RVB_UTILS_SH`

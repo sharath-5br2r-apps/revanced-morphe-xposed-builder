@@ -89,14 +89,18 @@ jobs:
       - name: Fetch configs & state
         run: bash .github/scripts/fetch_data_branch.sh "${{ inputs.config_branch || 'data' }}"
 
+      - name: Download split config parts
+        uses: actions/download-artifact@v8
+        with:
+          name: split-configs
+        continue-on-error: true
+
       - name: Resolve build context
         id: context
         run: |
           cfg="${{ inputs.config_file }}"
-          if [ ! -f "$cfg" ] && [ -f "temp_configs/${cfg#configs/}" ]; then
-            cfg="temp_configs/${cfg#configs/}"
-          fi
           bash .github/scripts/build_resolve_context.sh "$cfg" "${{ inputs.patches_version }}"
+
 
       - name: Resolve version code
         id: version
