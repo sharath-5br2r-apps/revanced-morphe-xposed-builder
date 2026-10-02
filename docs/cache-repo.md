@@ -66,6 +66,14 @@ Reading is deliberately narrow:
   supported) which **nothing currently populates** — an extension point, not a live
   feature. Treat it as unwired until a config key exists for it.
 
+A single-ABI artifact is only ever stored and served under its own ABI key — never
+promoted to the shared `-all` name, which only a verified universal bundle may use.
+A companion on-disk **download-link index** (`temp/urlindex`, per-run, outside
+`apk_cache_dir`) records what an arch-blind store link (APKPure/APKCombo/Uptodown)
+actually contains after the first fetch, so a sibling architecture neither
+re-downloads it nor adopts it under the wrong name
+([decisions/0007](decisions/0007-requested-arch-is-a-hard-requirement.md)).
+
 ## How rvb writes it
 
 After a *fresh* download succeeds (never one that came from the cache itself, and

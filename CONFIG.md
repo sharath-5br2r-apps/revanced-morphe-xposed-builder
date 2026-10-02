@@ -67,6 +67,10 @@ patches-version = "both"  # file-level default
 patches-version = "stable"  # app-level override
 ```
 
+> [!NOTE]
+> **Architecture Hard Requirement:**  
+> A requested arch is a hard requirement: a build is produced only when a download actually carries that ABI (or is universal / has no native code at all). A wrong single ABI is rejected and the next source tried; if none supplies the arch, that channel is simply not built — never shipped under another arch's name. So an arm64-only app publishes only its arm64 artifact and no arm-v7a file, and the reverse. Universal bundles serve both channels from one fetch. (See [docs/decisions/0007](docs/decisions/0007-requested-arch-is-a-hard-requirement.md)).
+
 ---
 
 ## Complete Reference Example

@@ -58,7 +58,7 @@ entirely.
 | v1 (rvb) | v2 (site) | Notes |
 |---|---|---|
 | key = asset filename | `assets[].name` | the join key for everything mutable |
-| `name`, `version`, `arch`, `fileType` | asset + build fields | arch ordering: `arm64`, `arm`, `all`, `universal`, `x86_64`, `x86` |
+| `name`, `version`, `arch`, `fileType` | asset + build fields | arch ordering: `arm64`, `arm`, `all`, `universal`, `x86_64`, `x86`. A build publishes only the arches it actually produced, so an app may carry a subset (a single-ABI app has one arch entry) — the catalog derives from the manifests present, never assumes both channels exist ([decisions/0007](decisions/0007-requested-arch-is-a-hard-requirement.md)) |
 | `appKey`, `appName` | `apps[]` identity | app grouping |
 | `brandKey`, `brandName`, `variant`, `subVariant` | `brands[]`, `variants[]` | variant is `null` for `default` |
 | `appliedPatches[]`, `changelogs[]`, `patchSources[]` | the ref tables above | |

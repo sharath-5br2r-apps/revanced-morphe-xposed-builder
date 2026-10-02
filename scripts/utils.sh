@@ -1598,7 +1598,7 @@ _bundle_ext_of() { # $1=path -> echoes extension without dot if it is a bundle
 _bundle_keep_regex_for_arch() {
 	case "$1" in
 		arm64-v8a) echo 'arm64_v8a' ;;
-		armeabi-v7a) echo 'armeabi' ;;
+		armeabi-v7a|arm-v7a) echo 'armeabi' ;;
 		x86_64) echo 'x86_64' ;;
 		x86) echo 'x86(?!_)' ;;
 		*) echo '' ;; # all/universal: keep everything
@@ -2510,9 +2510,12 @@ dl_apkpure() {
 	if [ -n "$variant_url" ]; then
 		download_url="$variant_url"
 	elif [ -n "$arch" ] && ! isoneof "$arch" all universal; then
-		# Deliberately a warning, not a refusal: an app published for fewer ABIs than the
-		# matrix builds is common, and dropping the build would be worse than shipping the
-		# only bundle that exists - but the mismatch has to be visible in the log.
+		# Deliberately still taken: when the store lists no variant for this arch the
+		# featured link is the only thing there, and its real ABI is only knowable from
+		# its bytes. It is fetched, fingerprinted into the download-link index, then judged
+		# by the arch-honesty gate in build_rv - which rejects a wrong single ABI instead of
+		# shipping it under this arch's name. A repeat job hits the index and skips the
+		# fetch. (docs/decisions/0007)
 		wpr "APKPure lists no '$arch' variant for '${__APKPURE_PKG__}'; using the featured link, which may carry a different ABI than '$arch'"
 	fi
 
@@ -2524,6 +2527,18 @@ dl_apkpure() {
 	echo "$download_url" | grep -qi 'xapk' && is_bundle=true
 
 	local bundle="${output%.apk}.xapk"
+
+	# Learned link index: the URL has no ABI in it, so consult what an earlier build
+	# already fetched from this exact link. Adopt it (no network) when it satisfies
+	# this arch, skip the source (no network) when it is a known other single ABI,
+	# and only download-and-remember when nothing is recorded yet.
+	local _idx=""
+	_idx=$(_dlurl_index_lookup "$download_url" "$arch") || true
+	if [ "$_idx" = REJECT ]; then
+		wpr "APKPure link for '${__APKPURE_PKG__}' is known to serve a different ABI than '$arch'; skipping source without re-download"
+		return 1
+	fi
+
 	if [ "$is_bundle" = true ]; then
 		# d.apkpure.com sits behind Cloudflare (verified: Server: cloudflare, CF-RAY on the
 		# file endpoint itself). It answers a residential IP with a plain 302 to the CDN and
@@ -2538,14 +2553,20 @@ dl_apkpure() {
 		# the .xapk, and only then trips the zip check, so the log blames a corrupt archive
 		# instead of naming the HTTP status. APKPure challenges are also frequently
 		# transient, hence the retry on the transient statuses curl knows.
-		if ! _cf_cffi_download "$download_url" "$bundle" "$dl_page_url"; then
-			rm -f "$bundle" 2>/dev/null
-			curl -L --fail --retry 2 --retry-delay 3 --retry-connrefused -s -S \
-				-H "User-Agent: ${user_agent:-$DEFAULT_UA}" \
-				-H "Referer: $dl_page_url" \
-				"${cookie_header[@]}" \
-				--connect-timeout 30 --max-time 300 \
-				"$download_url" -o "$bundle" || { rm -f "$bundle"; return 1; }
+		if [ -n "$_idx" ]; then
+			cp -f "$_idx" "$bundle" || { rm -f "$bundle"; return 1; }
+			pr "Adopting cached APKPure download for '$download_url' (no re-download)"
+		else
+			if ! _cf_cffi_download "$download_url" "$bundle" "$dl_page_url"; then
+				rm -f "$bundle" 2>/dev/null
+				curl -L --fail --retry 2 --retry-delay 3 --retry-connrefused -s -S \
+					-H "User-Agent: ${user_agent:-$DEFAULT_UA}" \
+					-H "Referer: $dl_page_url" \
+					"${cookie_header[@]}" \
+					--connect-timeout 30 --max-time 300 \
+					"$download_url" -o "$bundle" || { rm -f "$bundle"; return 1; }
+			fi
+			_dlurl_index_record "$download_url" "$bundle"
 		fi
 		if ! _apkpure_install_xapk "$bundle" "${output}"; then
 			rm -f "$bundle"
@@ -2555,14 +2576,20 @@ dl_apkpure() {
 			rm -f "$bundle"
 		fi
 	else
-		if ! _cf_cffi_download "$download_url" "${output}" "$dl_page_url"; then
-			rm -f "${output}" 2>/dev/null
-			curl -L --fail -s -S \
-				-H "User-Agent: ${user_agent:-$DEFAULT_UA}" \
-				-H "Referer: $dl_page_url" \
-				"${cookie_header[@]}" \
-				--connect-timeout 30 --max-time 300 \
-				"$download_url" -o "${output}" || { rm -f "${output}"; return 1; }
+		if [ -n "$_idx" ]; then
+			cp -f "$_idx" "${output}" || { rm -f "${output}"; return 1; }
+			pr "Adopting cached APKPure download for '$download_url' (no re-download)"
+		else
+			if ! _cf_cffi_download "$download_url" "${output}" "$dl_page_url"; then
+				rm -f "${output}" 2>/dev/null
+				curl -L --fail -s -S \
+					-H "User-Agent: ${user_agent:-$DEFAULT_UA}" \
+					-H "Referer: $dl_page_url" \
+					"${cookie_header[@]}" \
+					--connect-timeout 30 --max-time 300 \
+					"$download_url" -o "${output}" || { rm -f "${output}"; return 1; }
+			fi
+			_dlurl_index_record "$download_url" "${output}"
 		fi
 	fi
 }
@@ -2762,9 +2789,9 @@ dl_apkcombo() {
 	done
 
 	if [ -z "$dl_url" ] && [ -n "$any_url" ]; then
-		# Same trade-off as APKPure: shipping something beats losing the build, but an
-		# unlabelled link may carry a different ABI than the file name claims, so it has to
-		# be said out loud instead of passing as a normal selection.
+		# Same as APKPure: this link's real ABI is decided by its bytes downstream, not
+		# by the unlabelled URL here. It is fingerprinted into the download-link index and
+		# then judged by the arch-honesty gate in build_rv (docs/decisions/0007).
 		wpr "APKCombo lists no '$arch' variant for '${__APKCOMBO_PKG__}'; using the first link on the page, which may carry a different ABI"
 		dl_url="$any_url"
 	fi
@@ -2811,15 +2838,30 @@ PYC
 			-H "Referer: $page_url" "$dl_url") || return 1
 	fi
 
+	# Learned link index (see dl_apkpure): adopt without a fetch, skip a known wrong
+	# ABI without a fetch, otherwise fetch once and remember what the bytes are.
+	local _idx=""
+	_idx=$(_dlurl_index_lookup "$final_url" "$arch") || true
+	if [ "$_idx" = REJECT ]; then
+		wpr "APKCombo link is known to serve a different ABI than '$arch'; skipping source without re-download"
+		return 1
+	fi
+
 	pr "Downloading from APKCombo: $final_url"
 	# The redirect chain from apkcombo.com -> download.pureapk.com -> data.winudf.com
 	# forbids cross-origin referers from apkcombo.com (pureapk treats it as hotlinking
 	# and redirects to apkpure.com/url?e=2 which 403s). Send with no referer.
-	if ! _cf_cffi_download "$final_url" "$output" ""; then
-		rm -f "$output" 2>/dev/null
-		curl -L --fail -s -S --connect-timeout 30 --max-time 300 \
-			-H "User-Agent: ${user_agent:-$DEFAULT_UA}" \
-			"$final_url" -o "$output" || { rm -f "$output"; return 1; }
+	if [ -n "$_idx" ]; then
+		cp -f "$_idx" "$output" || { rm -f "$output"; return 1; }
+		pr "Adopting cached APKCombo download for '$final_url' (no re-download)"
+	else
+		if ! _cf_cffi_download "$final_url" "$output" ""; then
+			rm -f "$output" 2>/dev/null
+			curl -L --fail -s -S --connect-timeout 30 --max-time 300 \
+				-H "User-Agent: ${user_agent:-$DEFAULT_UA}" \
+				"$final_url" -o "$output" || { rm -f "$output"; return 1; }
+		fi
+		_dlurl_index_record "$final_url" "$output"
 	fi
 	if ! unzip -l "$output" >/dev/null 2>&1; then
 		epr "Downloaded file from APKCombo is not a valid zip"
@@ -2913,6 +2955,10 @@ get_uptodown_pkg_name() {
 
 dl_uptodown() {
 	local uptodown_dlurl=$1 version=$2 output=$3 arch=$4 _dpi=$5
+	# Keep the build-arch token for the link index; $arch is remapped to the store's
+	# ABI spelling below for the resolver, and the index keys speak build tokens.
+	local _arch_f="$arch"
+	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
 
 	local py_cmd=""
 	if command -v python3 >/dev/null 2>&1; then
@@ -2947,13 +2993,33 @@ dl_uptodown() {
 			is_bundle=$(cut -f2 <<<"$py_info")
 
 			pr "Downloading from Uptodown CDN: $cdn_url"
+			# Learned link index (see dl_apkpure): adopt, skip, or fetch-and-remember.
+			local _idx=""
+			_idx=$(_dlurl_index_lookup "$cdn_url" "$_arch_f") || true
+			if [ "$_idx" = REJECT ]; then
+				wpr "Uptodown link is known to serve a different ABI than '$_arch_f'; skipping source without re-download"
+				rm -f "$errf"
+				return 1
+			fi
 			if [ "$is_bundle" = "true" ]; then
 				local bundle="${output%.apk}.apkm"
-				req "$cdn_url" "$bundle" || { rm -f "$errf"; return 1; }
+				if [ -n "$_idx" ]; then
+					cp -f "$_idx" "$bundle" || { rm -f "$errf"; return 1; }
+					pr "Adopting cached Uptodown download for '$cdn_url' (no re-download)"
+				else
+					req "$cdn_url" "$bundle" || { rm -f "$errf"; return 1; }
+					_dlurl_index_record "$cdn_url" "$bundle"
+				fi
 				_bundle_to_apk "$bundle" "${output}" || { rm -f "$bundle" "$errf"; return 1; }
 				[ "${MORPHE_PASSTHROUGH_ACTIVE:-false}" != true ] && rm -f "$bundle"
 			else
-				req "$cdn_url" "$output" || { rm -f "$errf"; return 1; }
+				if [ -n "$_idx" ]; then
+					cp -f "$_idx" "${output}" || { rm -f "$errf"; return 1; }
+					pr "Adopting cached Uptodown download for '$cdn_url' (no re-download)"
+				else
+					req "$cdn_url" "${output}" || { rm -f "$errf"; return 1; }
+					_dlurl_index_record "$cdn_url" "${output}"
+				fi
 			fi
 			rm -f "$errf"
 			return 0
@@ -4116,6 +4182,68 @@ _cache_arch_key() { # $1=artifact  $2=arch_f this build asked for
 	printf '%s' "$2"
 }
 
+# Does a list of ABIs satisfy a build arch? $1=ABI tokens (space or newline
+# separated), $2=build arch token. An arch-agnostic artifact (empty list) and the
+# catch-all arches (all/universal/auto) satisfy everything; otherwise the list has
+# to name $2 exactly. Deliberately NOT a downward-compat test: arm-v7a bytes do run
+# on arm64 devices, but shipping them under an arm64-v8a name would be the mislabel
+# this gate exists to remove (docs/decisions/0007). IFS-independent on purpose -
+# build_rv runs with IFS=$'\n'.
+_abis_satisfies() { # $1=abi list  $2=arch
+	local arch=${2:-}; arch=${arch// /}
+	case "$arch" in all | universal | auto | "") return 0 ;; esac
+	[ -z "${1// /}" ] && return 0
+	tr ' \n' '\n\n' <<<"$1" | grep -qxF -- "$arch"
+}
+
+# Same predicate, read straight off an artifact's bytes. Unreadable is treated as a
+# pass (the conservative key: it can only ever be served to itself, matching
+# _cache_arch_key's stance), never as a reason to drop a build.
+_artifact_satisfies_arch() { # $1=apk or bundle  $2=arch
+	local abis
+	abis=$(_artifact_abis "$1" 2>/dev/null) || return 0
+	_abis_satisfies "$abis" "${2:-}"
+}
+
+# -------------------- learned download-link index --------------------
+# An APKPure/APKCombo/Uptodown link carries no ABI in its URL, so the only way to
+# know what it serves is to fetch it. The first build to want one fetches it once and
+# records what the bytes actually are here; every later build consults the record and
+# either adopts the stored blob with no network hit (right arch) or skips the source
+# with no network hit (wrong arch). Kept out of apk_cache_dir so it never enters the
+# cache manifest, and independent of the arch-specific staging so a build that rejects
+# an artifact still leaves it for its sibling. Scoped to a run; wiped with temp/.
+_dlurl_sha() { printf '%s' "$1" | sha1sum | cut -d' ' -f1; }
+
+# Echoes the blob path when a recorded link satisfies $2, "REJECT" when it is a
+# recorded different single ABI, or nothing when the link is unknown (so an unknown
+# link is fetched, never refused without evidence).
+_dlurl_index_lookup() { # $1=url  $2=arch
+	local url=$1 arch=${2:-} key abis="" path=""
+	key="${TEMP_DIR}/urlindex/keys/$(_dlurl_sha "$url")"
+	[ -f "$key" ] || return 0
+	IFS=$'\t' read -r abis path < "$key" 2>/dev/null || true
+	if [ -z "$path" ] || [ ! -f "$path" ]; then return 0; fi
+	if _abis_satisfies "$abis" "$arch"; then printf '%s' "$path"; else printf 'REJECT'; fi
+}
+
+# Record what a link's bytes are, after a real fetch, whether or not this build keeps
+# them. Published atomically (temp+mv) so a concurrent reader never sees a half line.
+_dlurl_index_record() { # $1=url  $2=artifact path
+	local url=$1 art=$2
+	[ -f "$art" ] || return 0
+	local sha ext keysdir="${TEMP_DIR}/urlindex/keys" blobsdir="${TEMP_DIR}/urlindex/blobs"
+	sha=$(_dlurl_sha "$url"); ext="${art##*.}"
+	mkdir -p "$keysdir" "$blobsdir" 2>/dev/null || return 0
+	local blob="$blobsdir/$sha.$ext"
+	cp -f "$art" "$blob" 2>/dev/null || return 0
+	local abis joined
+	abis=$(_artifact_abis "$art" 2>/dev/null) || abis=""
+	joined=$(tr '\n' ' ' <<<"$abis" | sed -e 's/  */ /g' -e 's/^ //' -e 's/ $//')
+	printf '%s\t%s\n' "$joined" "$blob" > "$keysdir/$sha.tmp.$$" \
+		&& mv -f "$keysdir/$sha.tmp.$$" "$keysdir/$sha"
+}
+
 # Recorded version for one app from state/app_versions.json. $1 = build table
 # name (the " (arch)" suffix build_rv carries is stripped before matching).
 # The file maps a group to {keys[], version} and the watcher only maintains the
@@ -4900,6 +5028,22 @@ build_rv() {
 						continue
 					fi
 
+					# Arch honesty: a download that does not carry the requested ABI is not
+					# the artifact this build asked for. Reject it and fall through to the next
+					# source; when no source supplies the arch the build is not produced at all
+					# (replaces the old "warn + ship the featured bundle under another arch's
+					# name" behaviour - docs/decisions/0007). Judged on the vendor bundle when one
+					# is present, because a passthrough base.apk alone can look ABI-less.
+					local _abi_file="$stock_apk" _abx
+					for _abx in xapk apkm apks; do
+						[ -f "${stock_apk%.apk}.${_abx}" ] && { _abi_file="${stock_apk%.apk}.${_abx}"; break; }
+					done
+					if ! _artifact_satisfies_arch "$_abi_file" "$arch"; then
+						wpr "Downloaded artifact from '${dl_p}' does not carry '$arch' (found: $(tr '\n' ' ' <<<"$(_artifact_abis "$_abi_file" 2>/dev/null)")); skipping source"
+						rm -f "$stock_apk" "${stock_apk%.apk}".* "${stock_apk}".*
+						continue
+					fi
+
 					break
 				done
 				local _be
@@ -5270,13 +5414,13 @@ build_rv() {
 			if check_is_universal "$stock_apk"; then
 				:
 			elif [ "$arch" = "arm64-v8a" ]; then
-				zip -d "$stock_apk_to_patch" "lib/armeabi-v7a/*" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
-			elif [ "$arch" = "armeabi-v7a" ]; then
+				zip -d "$stock_apk_to_patch" "lib/armeabi-v7a/*" "lib/armeabi/*" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
+			elif [ "$arch" = "armeabi-v7a" ] || [ "$arch" = "arm-v7a" ]; then
 				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
 			elif [ "$arch" = "x86" ]; then
-				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/x86_64/*" "lib/armeabi-v7a/*" >/dev/null 2>&1 || :
+				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/x86_64/*" "lib/armeabi-v7a/*" "lib/armeabi/*" >/dev/null 2>&1 || :
 			elif [ "$arch" = "x86_64" ]; then
-				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/armeabi-v7a/*" "lib/x86/*" >/dev/null 2>&1 || :
+				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/armeabi-v7a/*" "lib/armeabi/*" "lib/x86/*" >/dev/null 2>&1 || :
 			else
 				zip -d "$stock_apk_to_patch" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
 			fi
@@ -5389,8 +5533,8 @@ build_rv() {
 					return 0
 				fi
 				if [ "$arch" = "arm64-v8a" ]; then
-					unzip -j "$_split_src" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
-				elif [ "$arch" = "armeabi-v7a" ]; then
+					unzip -j "$_split_src" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*armeabi_v7a.apk' -x '*armeabi-v7a.apk' -x '*armeabi.apk' -d "${base_template}/stock/" >/dev/null 2>&1
+				elif [ "$arch" = "armeabi-v7a" ] || [ "$arch" = "arm-v7a" ]; then
 					unzip -j "$_split_src" '*.apk' -x '*x86_64.apk' -x '*x86.apk' -x '*arm64_v8a.apk' -d "${base_template}/stock/" >/dev/null 2>&1
 				elif [ "$arch" = "x86" ]; then
 					unzip -j "$_split_src" '*.apk' -x '*x86_64.apk' -x '*arm64_v8a.apk' -x '*armeabi_v7a.apk' -d "${base_template}/stock/" >/dev/null 2>&1

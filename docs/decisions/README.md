@@ -37,6 +37,7 @@ document.
 | [0004](0004-no-download-prewarm-pass.md) | No download prewarm pass; fetching stays inside each build | build pool, download flock, `RVB_DL_MAX_TIME` |
 | [0005](0005-tuning-knobs-live-in-the-workflow.md) | Build tuning knobs live in the workflow's env block | `PARALLEL_JOBS`, `UPLOAD_CONCURRENCY`, no config keys |
 | [0006](0006-filename-parsing-is-imported-not-mirrored.md) | Filename parsing is imported across the repo boundary, never mirrored | `naming.py`, the site's catalogue rebuild |
+| [0007](0007-requested-arch-is-a-hard-requirement.md) | A requested build arch is a hard requirement; no mislabeled artifacts | `build_rv` download gate, download-link index, published arch names |
 
 Candidates still unwritten, because the reasoning currently lives only in commit
 messages: pinning a patch source's `patches-version` to a tag vs resolving the

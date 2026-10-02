@@ -102,7 +102,10 @@ download cache (release per package name). Full detail:
 
 Target `versionCode` derives from patch metadata only. Download source order is
 fixed: `cache_repo` → `direct` → `github` → `archive` → `apkmirror` → `uptodown` →
-`apkpure` → `apkcombo`.
+`apkpure` → `apkcombo`. A download is accepted only if its bytes carry the requested
+arch (or are universal/arch-agnostic); a wrong single ABI falls through to the next
+source and the arch goes unbuilt if none supplies it
+([decisions/0007](decisions/0007-requested-arch-is-a-hard-requirement.md)).
 
 ## Looks wrong, is intentional
 
@@ -121,6 +124,7 @@ fixed: `cache_repo` → `direct` → `github` → `archive` → `apkmirror` → 
 | Module auto-update silently off for local builds | no published `update` branch to point a phone at |
 | No config sets `cache_repo-dlurl`, yet the cache source always works | `build_rv` synthesises the URL from `UPLOAD_APKS_REPO` + package name → [cache-repo.md](cache-repo.md) |
 | There is no download-concurrency knob and no pre-download phase | a prewarm pool was built and reverted as unmeasured complexity → [decisions/0004](decisions/0004-no-download-prewarm-pass.md); the per `pkg+version` flock already collapses duplicates |
+| A single-ABI app publishes only one arch and the other is silently absent | the requested arch is a hard requirement; never a mislabeled file — an arm64-only app ships no `arm-v7a` APK and users install the honest artifact → [decisions/0007](decisions/0007-requested-arch-is-a-hard-requirement.md) |
 | Tuning values sit in `build.yml` `env:` rather than in config or repo variables | reviewable, fork-safe, git history for the numbers → [decisions/0005](decisions/0005-tuning-knobs-live-in-the-workflow.md) |
 | A malformed `patch_sources.json` answers "not blocked" instead of failing closed | fail-open on purpose: the alternative silently skips every app → [decisions/0003](decisions/0003-blocked-patch-sources-are-skipped.md) |
 | `configs/stable_build.json` keeps `patches-version: "stable"` rather than a tag | one source of truth (`state/patch_sources.json`) instead of a stamped copy that can go stale |

@@ -94,7 +94,17 @@ for adding surface without a measured gain
    `RVB_MORPHE_PASSTHROUGH=true` (morphe merges natively, and some APKs misbehave
    after `apkeditor`'s rewrite + re-sign); otherwise `merge_splits` flattens them.
    `verify_downloaded_apk` then checks the payload really is the requested
-   package/version/arch before anything is patched.
+   package/version/arch before anything is patched. An **arch-honesty gate** follows:
+   the artifact's real ABIs are read off its bytes (`_artifact_abis`) and, unless it
+   carries the requested arch or is universal/arch-agnostic, the download is rejected
+   and the run falls through to the next source — the arch goes unbuilt if no source
+   supplies it, so no file is ever named for an ABI it does not contain
+   ([decisions/0007](decisions/0007-requested-arch-is-a-hard-requirement.md)).
+   APKPure/APKCombo/Uptodown links carry no ABI in the URL, so the first build to want
+   one fetches it **once** and records its bytes in `temp/urlindex`; a later job that
+   resolves the same link adopts the stored blob (right arch) or skips the source
+   (wrong arch) with no network hit. Universal bundles are cached under the shared
+   `-all` key and reused by both arch jobs from that single fetch.
 5. **Arch trimming** — bundles go through `_trim_bundle_for_arch` (config members
    filtered by ABI); plain APKs get foreign `lib/<abi>/*` entries removed with
    `zip -d`. Result is cached as `<prefix>-<version>-<arch>.stripped.<ext>`, and
@@ -117,7 +127,8 @@ for adding surface without a measured gain
 ## Download sources, in priority order
 
 `DL_SRCS` in [utils.sh](../scripts/utils.sh) is the order every app is attempted
-in; the first source that yields a verified artifact wins:
+in; the first source that yields a verified artifact **carrying the requested arch**
+(see the arch-honesty gate above) wins:
 
 | # | Source | Notes |
 |---|---|---|

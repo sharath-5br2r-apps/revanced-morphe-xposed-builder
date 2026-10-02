@@ -85,6 +85,12 @@ Per-file entry keys: `name` (file prefix), `version`, `appKey`, `appName`, `arch
 is merged into an archive, which is how the site still links an archived file to
 its build), `publishedAt`.
 
+The `<arch>` token in an asset filename is frozen grammar (parse it only through
+`.github/scripts/naming.py`). A manifest records exactly the arches a build
+produced, so an app may legitimately list one arch rather than both — the requested
+arch is a hard requirement and an absent channel is unbuilt, never a mislabeled
+file ([decisions/0007](decisions/0007-requested-arch-is-a-hard-requirement.md)).
+
 An archive envelope restamps `meta` as `{build: <channel>, channel: <channel>,
 publishedAt: <merge time>}` while keeping the surviving file entries.
 
