@@ -1,6 +1,6 @@
 # CI pipelines
 
-Six workflows in [.github/workflows](../.github/workflows). One watcher decides
+Workflows in [.github/workflows](../.github/workflows). One watcher decides
 *whether* to build; the reusable build job does the building; cleanup keeps
 GitHub's limits; notify reports failures.
 
@@ -9,9 +9,8 @@ GitHub's limits; notify reports failures.
 | [build.yml](../.github/workflows/build.yml) | Build | `workflow_call` only — from `ci.yml` (per pool) | `build` |
 | [cleanup.yml](../.github/workflows/cleanup.yml) | Cleanup | `workflow_call`, `workflow_dispatch` | `clean` |
 | [notify.yml](../.github/workflows/notify.yml) | Notify | `workflow_call`, on `failure()` of the caller | — |
-| [trace-verify.yml](../.github/workflows/trace-verify.yml) | Trace Verify | `push` touching `scripts/build.sh`, `scripts/utils.sh` or `.github/traces/**` | `trace-verify` |
 
-Nothing here runs on `push` to `main` except Trace Verify: a push changes
+Nothing here runs on `push` to `main`: a push changes
 behaviour for the *next* scheduled run, it does not start a build.
 
 The watcher's cron is `37 */2 * * *` — a 2 h cadence on an odd minute, both halves
@@ -192,7 +191,7 @@ and a maintainer reads it on failure.
 
 | Change | Cheapest honest verification |
 |---|---|
-| Engine functions (`utils.sh`) | `bash .github/traces/trace_runner.sh verify` — offline, no network |
+| Engine functions (`utils.sh`) | `bash .github/traces/test_cache_helpers.sh` / `bash .github/traces/test_bundle_helpers.sh` — offline unit tests |
 | A shell script CI calls | a stubbed-binary harness in `temp/` (see [contributing.md](contributing.md)) |
 | Release/upload behaviour | the metadata matrix harness + a `workflow_dispatch` of Manual CI against `configs/config.manual.toml` |
 | Watcher gating | Manual CI with a chosen config, or read the previous run's flags in the Actions UI |

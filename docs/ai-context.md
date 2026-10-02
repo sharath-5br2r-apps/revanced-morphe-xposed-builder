@@ -67,9 +67,8 @@ Releases, records build metadata on a Git branch, and feeds a static download si
 | `.github/workflows/ci.yml` | the watcher: detects changes, regenerates pool configs, decides per-channel build triggers |
 | `.github/workflows/build.yml` | reusable build job; owns tuning env (`PARALLEL_JOBS`, `UPLOAD_CONCURRENCY`), keystore, caches, uploads, branch merges |
 | `.github/workflows/cleanup.yml` | release/asset pruning + `catalog-updated` dispatch to the site |
-| `.github/workflows/trace-verify.yml` | offline regression gate on engine pushes |
 | `.github/scripts/` | CI-side tooling; the [index](../.github/scripts/README.md) describes each script's contract |
-| `.github/traces/` | fixtures + `curl`/`java` stubs + golden argv files; the engine's safety net |
+| `.github/traces/` | regression test helpers for engine cache and bundle logic |
 | `configs/patches/*.toml` *(on `data`)* | the actual app configuration — one file per patch-source family |
 | `state/*.json` *(on `data`)* | watcher memory: patch source tags/blocked flags, app versions, bundle hashes |
 | `module/` | Magisk/KernelSU module template (scripted `module.prop`, `config`, `service.sh`, `action.sh`, bundled binaries) |
@@ -136,7 +135,7 @@ source and the arch goes unbuilt if none supplies it
 | Add/enable/disable an app or patch | `data:configs/patches/*.toml` ([CONFIG.md](../CONFIG.md)) | Manual CI on `configs/config.manual.toml` |
 | Fix a scraper / download source | `scripts/utils.sh` (`dl_<source>`, `get_<source>_resp/vers`) | trace harness + a single-app manual build |
 | Debug a cache miss or a vanished stock APK | `dl_cache_repo`, `usage.json` in `sharath-5br2r-apps/apks-dump` | [cache-repo.md](cache-repo.md) debugging checklist |
-| Change patch invocation/flags | `scripts/utils.sh:patch_apk`, `.github/scripts/patchers.sh` | `trace_runner.sh verify` (goldens will diff — read them) |
+| Change patch invocation/flags | `scripts/utils.sh:patch_apk`, `.github/scripts/patchers.sh` | unit tests under `.github/traces/` |
 | Change release upload semantics | `.github/scripts/build_upload_release.sh` | stubbed-`gh` metadata matrix harness |
 | Change what gets built when | `.github/scripts/ci_*.sh` and `.py` | read the previous run's flags; dispatch CI |
 | Change manifest/catalogue format | `build_make_manifest.py` (+ `naming.py`, shared by import) then site `rebuild_catalog.py` | site rebuild `dry_run: true` + diff |
@@ -147,8 +146,8 @@ source and the arch goes unbuilt if none supplies it
 
 ```bash
 bash .github/scripts/fetch_data_branch.sh            # materialise configs/ + state/
-bash .github/traces/trace_runner.sh verify           # offline engine regression gate
-bash .github/traces/trace_runner.sh capture          # re-record goldens after intent change
+bash .github/traces/test_cache_helpers.sh            # cache helpers regression test
+bash .github/traces/test_bundle_helpers.sh           # bundle helpers regression test
 bash scripts/build.sh configs/config.manual.toml     # real build (network + java + jq)
 bash scripts/build.sh clean                          # reset temp/ build/ build.md
 bash .github/scripts/push_data_configs.sh "feat(config): …"   # publish TOML edits

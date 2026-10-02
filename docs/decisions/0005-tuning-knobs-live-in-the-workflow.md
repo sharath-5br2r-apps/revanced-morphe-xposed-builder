@@ -69,7 +69,5 @@ The rationale recorded in the workflow itself:
 
 ## Verification
 
-`bash .github/traces/trace_runner.sh verify` is recorded against the sequential
-shape (`PARALLEL_JOBS` unset → 1), so pool-related regressions surface there; the
-pool's own invariants (rc-file drain, orphaned-child `137`, log replay grouping) are
+The pool's own invariants (rc-file drain, orphaned-child `137`, log replay grouping) are
 exercised by real CI runs, where the step groups per build are visible in the log.

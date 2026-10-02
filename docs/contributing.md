@@ -80,8 +80,7 @@ describing it. For complete local build options, arguments, and syntax, see [**`
 
 | Layer | Command | Notes |
 |---|---|---|
-| Patcher/tool decisions in the engine | `bash .github/traces/trace_runner.sh verify` | offline; stubbed `curl`/`java` + fixtures; runs on push to `build.sh`/`utils.sh`. After an *intentional* argv change: `… capture`, read the diff, commit the goldens |
-| Cache / bundle helpers | `bash .github/traces/test_cache_helpers.sh`, `bash .github/traces/test_bundle_helpers.sh` | same job |
+| Cache / bundle helpers | `bash .github/traces/test_cache_helpers.sh`, `bash .github/traces/test_bundle_helpers.sh` | unit tests |
 | A CI shell script | a stubbed-binary harness under `temp/` | convention below |
 | Website-facing formats | `rebuild-catalog.yml` with `dry_run: true` | see [website-contract.md](website-contract.md) |
 
@@ -135,7 +134,7 @@ about which flags actually reached the tool. Two lessons baked into the habit:
 
 ### Pull request checklist
 
-1. `bash .github/traces/trace_runner.sh verify` passes (if you touched the engine).
+1. `bash .github/traces/test_cache_helpers.sh` and `test_bundle_helpers.sh` pass.
 2. Any new/changed wire format is reflected in
    [storage-and-branches.md](storage-and-branches.md) and, if it crosses the seam,
    in [website-contract.md](website-contract.md). Filename-parsing rules belong in

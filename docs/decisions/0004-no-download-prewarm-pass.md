@@ -75,6 +75,4 @@ problem; the remaining benefit was theoretical.
 ## Verification
 
 `.github/traces/test_cache_helpers.sh` pins the flock-adjacent cache behaviour
-(architecture keys, `-all` promotion, `_cache_all_archs_present`); the golden traces
-were recorded against the post-revert shape, so a reintroduced phase would show up
-there immediately (`bash .github/traces/trace_runner.sh verify`).
+(architecture keys, promotion, `_cache_all_archs_present`).

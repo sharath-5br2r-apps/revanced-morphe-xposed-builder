@@ -82,6 +82,3 @@ v7a-only app produces no `arm64-v8a` artifact.
   as unknown; arm64-only does not satisfy arm-v7a; universal satisfies both).
 - `bash .github/traces/test_cache_helpers.sh` — the per-arch cache key rule (a
   sibling single-ABI file is not adopted by the other arch).
-- `bash .github/traces/trace_runner.sh verify` — engine goldens stay green (the
-  download loop is not exercised by the stubbed traces, so a change here shows up in
-  the helper tests, not the goldens).
