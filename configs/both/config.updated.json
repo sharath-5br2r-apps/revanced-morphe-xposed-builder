@@ -1,19 +1,36 @@
 {
   "patches-version": "both",
-  "BraveBrowser-Beta-Morphe-Dh6k": {
+  "Twitter-Morphe-Piko-Experimental": {
     "enable-module-update": true,
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Brave Browser",
-    "patch-brand": "Dh6k",
-    "sub-variant": "Beta",
-    "version": "beta",
-    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
-    "pkg-name": "com.brave.browser_beta",
-    "patches-source": "dh6k/morphe-patches",
+    "app-name": "Twitter",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "com.twitter.android",
+    "excluded-patches": "'Dynamic Color'",
     "patcher-args": "--continue-on-error",
-    "github-dlurl": "https://github.com/brave/brave-browser/releases",
-    "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
-    "github-release-name-regex": "^Beta v"
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
+  },
+  "Twitter-Morphe-Piko-MaterialYou-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "crimera/piko",
+    "patch-brand": "Piko",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Twitter",
+    "variant": "MaterialYou",
+    "sub-variant": "Experimental",
+    "version": "latest",
+    "skip-patch-app-check": true,
+    "pkg-name": "com.twitter.android",
+    "included-patches": "'Dynamic Color'",
+    "patcher-args": "--continue-on-error",
+    "uptodown-dlurl": "https://twitter.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/x-corp/twitter/"
   }
 }
