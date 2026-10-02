@@ -15,5 +15,20 @@
     "github-dlurl": "https://github.com/brave/brave-browser/releases",
     "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
     "github-release-name-regex": "^Nightly v"
+  },
+  "Bitwarden-Morphe-Stylus-Experimental": {
+    "enable-module-update": true,
+    "patches-source": "ch3thanhs/stylus",
+    "patch-brand": "Stylus",
+    "cli-type": "morphe",
+    "enabled": true,
+    "app-name": "Bitwarden",
+    "sub-variant": "Experimental",
+    "pkg-name": "com.x8bit.bitwarden",
+    "github-dlurl": "https://github.com/bitwarden/android",
+    "github-dlurl-regex": "fdroid.apk$",
+    "github-release-regex": "bwpm",
+    "version": "latest",
+    "skip-patch-app-check": true
   }
 }
