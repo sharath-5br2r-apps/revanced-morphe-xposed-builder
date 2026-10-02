@@ -1263,14 +1263,17 @@ _cache_probe_apk() {
 	vc=$(_cache_target_vc "$raw_ver" "$arch")
 	local vc_infix="${vc:+-$vc}"
 	local stock_apk="${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.apk"
-	local all_apk="${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.apk"
+	local all_apk=""
+	[ "$arch" = all ] || [ "$arch" = universal ] && all_apk="${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.apk"
 	[ -f "$stock_apk" ] && check_apk="$stock_apk"
-	[ -z "$check_apk" ] && [ -f "$all_apk" ] && check_apk="$all_apk"
+	[ -z "$check_apk" ] && [ -n "$all_apk" ] && [ -f "$all_apk" ] && check_apk="$all_apk"
 	if [ -z "$check_apk" ] && [ "${_CACHE_BUNDLE_OK:-false}" = true ]; then
 		local bx bpath
 		for bx in xapk apkm apks; do
 			bpath="${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.${bx}"
-			[ -f "$bpath" ] || bpath="${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.${bx}"
+			if [ ! -f "$bpath" ] && { [ "$arch" = all ] || [ "$arch" = universal ]; }; then
+				bpath="${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.${bx}"
+			fi
 			if [ -f "$bpath" ]; then check_apk="$bpath"; all_apk="$bpath"; break; fi
 		done
 	fi
@@ -1293,14 +1296,21 @@ _cache_touch_apks() {
 	local vc; vc=$(_cache_target_vc "$ver" "$arch")
 	local vc_infix="${vc:+-$vc}"
 	local f
-	for f in "${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.apk" \
-		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.apk" \
-		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.xapk" \
-		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.apkm" \
-		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.apks" \
-		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.xapk" \
-		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.apkm" \
-		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.apks"; do
+	local candidates=(
+		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.apk"
+		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.xapk"
+		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.apkm"
+		"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-${arch}.apks"
+	)
+	if [ "$arch" = all ] || [ "$arch" = universal ]; then
+		candidates+=(
+			"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.apk"
+			"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.xapk"
+			"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.apkm"
+			"${apk_cache_dir}/${pkg_name}-${ver}${vc_infix}-all.apks"
+		)
+	fi
+	for f in "${candidates[@]}"; do
 		[ -f "$f" ] && touch "$f" 2>/dev/null || true
 	done
 }
@@ -4156,12 +4166,13 @@ _artifact_abis() { # $1=apk or bundle
 }
 
 # True when the artifact may be cached under the shared "-all" key: it carries no
-# ABI-specific content at all, or it carries both arm ABIs (the rule as it was, kept).
+# ABI-specific content at all, or it carries at least 2 architectures.
 check_is_universal() { # $1=apk or bundle
-	local abis
+	local abis n
 	abis=$(_artifact_abis "$1") || return 1
 	[ -z "$abis" ] && return 0
-	printf '%s\n' "$abis" | grep -qx arm64-v8a && printf '%s\n' "$abis" | grep -qx armeabi-v7a
+	n=$(printf '%s\n' "$abis" | grep -c .)
+	[ "$n" -ge 2 ]
 }
 
 # The arch token an artifact belongs under in a cache file name.
@@ -4827,7 +4838,10 @@ build_rv() {
 				rm -f "${_apk_lock_ready:-}"
 			}
 			local cached_stock_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.apk"
-			local cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
+			local cached_all_apk=""
+			if [ "$arch_f" = all ] || [ "$arch_f" = universal ]; then
+				cached_all_apk="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.apk"
+			fi
 			local stock_apk="$cached_stock_apk"
 			local all_apk="$cached_all_apk"
 			if [ "$skip_version_code_check" = true ] && [ ! -f "$stock_apk" ]; then
@@ -4838,18 +4852,22 @@ build_rv() {
 			fi
 			# Never send a truncated cache artifact to APKEditor/Morphe. A failed
 			# parallel download can leave a file with an invalid central directory.
-			for cached_candidate in "$stock_apk" "$all_apk"; do
+			for cached_candidate in "$stock_apk" ${all_apk:+"$all_apk"}; do
 				if [ -f "$cached_candidate" ] && ! unzip -tq "$cached_candidate" >/dev/null 2>&1; then
 					wpr "Removing corrupt cached archive: $cached_candidate"
 					rm -f "$cached_candidate"
 				fi
 			done
-			if [ ! -f "$stock_apk" ] && [ ! -f "$all_apk" ] && [ -n "$target_version_code" ]; then
+			if [ ! -f "$stock_apk" ] && [ -n "$all_apk" ] && [ ! -f "$all_apk" ] && [ -n "$target_version_code" ]; then
 				local legacy_stock="${apk_cache_dir}/${pkg_name}-${version_f}-${arch_f}.apk"
 				local legacy_all="${apk_cache_dir}/${pkg_name}-${version_f}-all.apk"
-				if [ -f "$legacy_stock" ] || [ -f "$legacy_all" ]; then
+				if [ -f "$legacy_stock" ]; then
 					stock_apk="$legacy_stock"
-					all_apk="$legacy_all"
+				elif [ "$arch_f" = all ] || [ "$arch_f" = universal ]; then
+					if [ -f "$legacy_all" ]; then
+						stock_apk="$legacy_all"
+						all_apk="$legacy_all"
+					fi
 				fi
 			fi
 			local cached_bundle_apk=""
@@ -4857,14 +4875,16 @@ build_rv() {
 				local bx _bp
 				for bx in xapk apkm apks; do
 					_bp="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-${arch_f}.${bx}"
-					[ -f "$_bp" ] || _bp="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.${bx}"
+					if [ ! -f "$_bp" ] && { [ "$arch_f" = all ] || [ "$arch_f" = universal ]; }; then
+						_bp="${apk_cache_dir}/${pkg_name}-${version_f}${vc_infix}-all.${bx}"
+					fi
 					if [ -f "$_bp" ]; then cached_bundle_apk="$_bp"; break; fi
 				done
 			fi
 			if [ -n "$cached_bundle_apk" ]; then
 				stock_apk="$cached_bundle_apk"
 				all_apk="$cached_bundle_apk"
-			elif [ -f "$all_apk" ]; then
+			elif [ -n "$all_apk" ] && [ -f "$all_apk" ]; then
 				local missing_arch=false
 				if [ "$arch_f" = "arm64-v8a" ] && ! unzip -l "$all_apk" 2>/dev/null | grep -q "lib/arm64-v8a/"; then
 					unzip -l "$all_apk" 2>/dev/null | grep -q "lib/" && missing_arch=true

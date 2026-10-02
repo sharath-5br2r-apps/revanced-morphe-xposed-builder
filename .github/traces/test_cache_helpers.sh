@@ -32,25 +32,26 @@ arch_list=(all)
 : > "$apk_cache_dir/com.test-1.2.3-all.apk"
 _cache_all_archs_present 1.2.3 validate || fail "validate without vc target"
 
-# --- arch-satisfaction rules: a universal -all.apk (or a vendor bundle) must
-# satisfy every arch, so a build whose sibling arch already fetched it
-# short-circuits on the cache check and touches no mirror; a per-arch stock apk
-# must not leak to the other arch.
+# --- arch-satisfaction rules: a universal -all.apk must only satisfy universal / all
+# builds. For every non-universal arch, local cached universal apks/bundles must not
+# be used; a per-arch stock apk must not leak to another arch either.
 rm -f "$apk_cache_dir/com.test-1.2.3-arm64-v8a.apk"
 : > "$apk_cache_dir/com.test-1.2.3-all.apk"
-arch_list=(arm-v7a); _cache_all_archs_present 1.2.3 || fail "universal must satisfy arm-v7a"
-arch_list=(arm64-v8a); _cache_all_archs_present 1.2.3 || fail "universal must satisfy arm64-v8a"
-arch_list=(arm64-v8a arm-v7a); _cache_all_archs_present 1.2.3 || fail "universal must satisfy both arches"
+arch_list=(all); _cache_all_archs_present 1.2.3 || fail "universal must satisfy all"
+arch_list=(universal); _cache_all_archs_present 1.2.3 || fail "universal must satisfy universal"
+arch_list=(armeabi-v7a); _cache_all_archs_present 1.2.3 && fail "universal must not satisfy non-universal arch armeabi-v7a"
+arch_list=(arm64-v8a); _cache_all_archs_present 1.2.3 && fail "universal must not satisfy non-universal arch arm64-v8a"
 rm -f "$apk_cache_dir/com.test-1.2.3-all.apk"
 : > "$apk_cache_dir/com.test-1.2.3-arm64-v8a.apk"
-arch_list=(arm-v7a); _cache_all_archs_present 1.2.3 && fail "per-arch apk must not satisfy the other arch"
+arch_list=(armeabi-v7a); _cache_all_archs_present 1.2.3 && fail "per-arch apk must not satisfy the other arch"
+arch_list=(arm64-v8a); _cache_all_archs_present 1.2.3 || fail "per-arch apk must satisfy its own arch"
 
 _CACHE_BUNDLE_OK=true
 : > "$apk_cache_dir/com.test-4.0.0-all.xapk"
-arch_list=(arm-v7a); _cache_all_archs_present 4.0.0 || fail "bundle must satisfy arm-v7a"
-arch_list=(arm64-v8a arm-v7a); _cache_all_archs_present 4.0.0 || fail "bundle must satisfy both arches"
+arch_list=(all); _cache_all_archs_present 4.0.0 || fail "bundle must satisfy all"
+arch_list=(armeabi-v7a); _cache_all_archs_present 4.0.0 && fail "bundle must not satisfy non-universal arch"
 _CACHE_BUNDLE_OK=false
-arch_list=(arm-v7a); _cache_all_archs_present 4.0.0 && fail "bundle must be ignored when passthrough is off"
+arch_list=(all); _cache_all_archs_present 4.0.0 && fail "bundle must be ignored when passthrough is off"
 rm -f "$apk_cache_dir/com.test-4.0.0-all.xapk" "$apk_cache_dir/com.test-1.2.3-arm64-v8a.apk"
 arch_list=(all)
 
