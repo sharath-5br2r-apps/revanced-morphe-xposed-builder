@@ -16,21 +16,5 @@
     "github-dlurl": "https://github.com/brave/brave-browser/releases",
     "github-asset-regex": "arm64-v8a: BraveMonoarm64\\.apk$ | armeabi-v7a: BraveMonoarm\\.apk$ | x86_64: BraveMonox64\\.apk$ | x86: BraveMonox86\\.apk$",
     "github-release-name-regex": "^Beta v"
-  },
-  "SDMaid-Morphe-Paresh-Experimental": {
-    "enable-module-update": true,
-    "patches-source": "Paresh-Maheshwari/paresh-patches",
-    "patches-source-host": "gitlab",
-    "patch-brand": "Paresh",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "SD Maid 2/SE",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "pkg-name": "eu.darken.sdmse",
-    "uptodown-dlurl": "https://sd-maid-se.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner",
-    "apkmirror-example-url": "https://www.apkmirror.com/apk/darken/sd-maid-2-se-system-cleaner/sd-maid-2-se-system-cleaner-2-0-3-rc0-release"
   }
 }
