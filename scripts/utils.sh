@@ -3890,6 +3890,35 @@ write_build_info() {
 			' \
 		"$BUILD_JSON_FILE"
 }
+
+# Recombine any per-write fragments from $TEMP_DIR/build_info into
+# $BUILD_JSON_FILE if fragments were written, or no-op if writes went
+# directly to $BUILD_JSON_FILE under locking.
+merge_build_info() {
+	local frag_dir="${TEMP_DIR}/build_info"
+	[ -d "$frag_dir" ] || return 0
+	local files=()
+	mapfile -t files < <(find "$frag_dir" -maxdepth 1 -type f -name '*.json' | sort)
+	if [ ${#files[@]} -eq 0 ]; then
+		rm -rf "$frag_dir"
+		return 0
+	fi
+	jq -s '
+		reduce .[] as $f ({};
+			($f | to_entries[0]) as $e |
+			if .[$e.key] == null then .[$e.key] = $e.value
+			else
+				.[$e.key].exts = ((.[$e.key].exts + $e.value.exts) | unique) |
+				reduce (["name","arch","version","patches","changelog","package_name","display_name","patches_source","brand","variant","sub_variant"][]) as $k (.;
+					if ((.[$e.key][$k] // "") == "") and (($e.value[$k] // "") != "")
+					then .[$e.key][$k] = $e.value[$k] else . end) |
+				if ((.[$e.key].applied_patches | length) == 0) and (($e.value.applied_patches | length) > 0)
+				then .[$e.key].applied_patches = $e.value.applied_patches else . end
+			end)
+	' "${files[@]}" >"${BUILD_JSON_FILE}.merge-tmp" && mv -f "${BUILD_JSON_FILE}.merge-tmp" "$BUILD_JSON_FILE"
+	rm -rf "$frag_dir"
+}
+
 # Generic release download support for GitLab, Forgejo, and Gitea.  These
 # providers expose different release JSON shapes, but all are normalized to
 # the same asset list used by the downloader.
