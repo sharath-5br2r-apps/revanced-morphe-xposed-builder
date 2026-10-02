@@ -716,7 +716,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           BUILD_TAG: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
-          ARCHIVE_TAG: stable
+          ARCHIVE_TAG: beta
           BUILT_FILES_FILE: latest_logs/aggregated_out/built_files.txt
           NEW_MANIFEST: latest_logs/aggregated_out/build.json
         run: bash .github/scripts/merge_archive_branch.sh
