@@ -94,8 +94,8 @@
   },
   "dh6k/morphe-patches": {
     "beta": {
-      "com.brave.browser_beta": "11a8b3610daae4f327c05a0b4fb4c852",
-      "com.brave.browser_nightly": "11a8b3610daae4f327c05a0b4fb4c852",
+      "com.brave.browser_beta": "596d08ca960037b29cd15edb1a4c3748",
+      "com.brave.browser_nightly": "596d08ca960037b29cd15edb1a4c3748",
       "shared": "36cd49875a6ddeedb0aef0119117331b"
     },
     "stable": {

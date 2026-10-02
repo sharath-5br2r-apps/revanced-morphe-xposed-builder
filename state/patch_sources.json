@@ -108,8 +108,8 @@
     "stable_date": "2026-08-31T02:40:04Z"
   },
   "dh6k/morphe-patches": {
-    "beta": "v1.9.0-dev.1",
-    "beta_date": "2026-10-01T15:41:52Z",
+    "beta": "v1.9.0-dev.2",
+    "beta_date": "2026-10-02T04:46:42Z",
     "blocked": false,
     "host": "github",
     "repo": "dh6k/morphe-patches",
