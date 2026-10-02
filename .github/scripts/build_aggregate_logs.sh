@@ -64,6 +64,17 @@ while IFS= read -r error_file; do
   } >> "$aggregated_errors"
 done < <(find . -type f -name error.log ! -path "./$aggregated_errors" 2>/dev/null | sort)
 
+# Collect all downloaded part-logs built_files.txt
+while IFS= read -r f_file; do
+  [ -s "$f_file" ] || continue
+  cat "$f_file" >> "$aggregated_files"
+done < <(find . -type f \( -name "built_files.txt" -o -name "build_files.txt" \) ! -path "./$aggregated_files" 2>/dev/null | sort -u)
+sort -u "$aggregated_files" -o "$aggregated_files"
+
+if [ -s "$aggregated_files" ]; then
+  echo "[+] Aggregated built files count: $(wc -l < "$aggregated_files")"
+fi
+
 # Generate aggregated error.md from aggregated JSON logs
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 ROOT_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
@@ -72,8 +83,6 @@ if [ -f "$ROOT_DIR/.github/scripts/generate_error_markdown.py" ]; then
 fi
 
 # Generate aggregated build.md directly from aggregated build.json
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-ROOT_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
 if [ -f "$ROOT_DIR/.github/scripts/generate_release_notes.py" ]; then
   echo "[+] Generating $aggregated_md from $aggregated_json"
   python3 "$ROOT_DIR/.github/scripts/generate_release_notes.py" "$aggregated_json" "$aggregated_md" || true
@@ -100,17 +109,6 @@ fi
 
 if [ -s "$aggregated_md" ]; then
   echo "[+] Aggregated changelog size: $(wc -c < "$aggregated_md") bytes"
-fi
-
-# Collect all downloaded part-logs built_files.txt
-while IFS= read -r f_file; do
-  [ -s "$f_file" ] || continue
-  cat "$f_file" >> "$aggregated_files"
-done < <(find . -type f \( -name "built_files.txt" -o -name "build_files.txt" \) ! -path "./$aggregated_files" 2>/dev/null | sort -u)
-sort -u "$aggregated_files" -o "$aggregated_files"
-
-if [ -s "$aggregated_files" ]; then
-  echo "[+] Aggregated built files count: $(wc -l < "$aggregated_files")"
 fi
 
 entries_count=$(jq 'keys | length' "$aggregated_json" 2>/dev/null || echo 0)

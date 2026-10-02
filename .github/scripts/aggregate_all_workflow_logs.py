@@ -118,11 +118,7 @@ def main() -> int:
     out_lines = []
     out_lines.append("# 🏁 Final Build Workflow Summary\n")
     out_lines.append(global_summary)
-    out_lines.append("\n---\n")
-
-    if per_artifact_sections:
-        out_lines.append("## 📑 Per-Artifact Build Logs\n")
-        out_lines.extend(per_artifact_sections)
+    out_lines.append("\n")
 
     final_content = "\n".join(out_lines) + "\n"
 

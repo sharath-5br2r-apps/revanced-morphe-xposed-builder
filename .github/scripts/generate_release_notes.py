@@ -117,6 +117,21 @@ def main():
     elif build_dir.exists():
         built_files = {f.name for f in build_dir.iterdir() if f.is_file() and f.suffix.lower() in [".apk", ".zip"]}
 
+    # Safety check: if built_files is specified but matches zero assets in build_info,
+    # don't filter out everything (prevents generating notes without apps).
+    if built_files:
+        matches_any = False
+        for _, info in build_info.items():
+            if isinstance(info, dict):
+                for asset in info.get("assets") or []:
+                    if asset.get("name") in built_files:
+                        matches_any = True
+                        break
+            if matches_any:
+                break
+        if not matches_any:
+            built_files = set()
+
     # patch_source → { source, tag, changelog_url, release_notes, apps: { display_name → { version, apks, modules } } }
     patch_groups = {}
 

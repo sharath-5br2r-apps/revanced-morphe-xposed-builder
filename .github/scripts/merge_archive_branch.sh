@@ -20,7 +20,7 @@ ARCHIVE_TAG="${ARCHIVE_TAG:?ARCHIVE_TAG not set}"
 BUILD_TAG="${BUILD_TAG:?BUILD_TAG not set}"
 REPO="${GITHUB_REPOSITORY:?GITHUB_REPOSITORY not set}"
 BRANCH="website"
-NEW_MANIFEST="temp/manifest/build.json"
+NEW_MANIFEST="${NEW_MANIFEST:-temp/manifest/build.json}"
 OLD_MANIFEST="temp/manifest/archive-old.json"
 LIVE_LIST="temp/manifest/archive-live-assets.txt"
 
@@ -28,6 +28,7 @@ if [ ! -f "$NEW_MANIFEST" ]; then
   echo "No $NEW_MANIFEST present — skipping archive manifest merge."
   exit 0
 fi
+NEW_MANIFEST="$(cd "$(dirname "$NEW_MANIFEST")" && pwd)/$(basename "$NEW_MANIFEST")"
 
 ORIG_REF=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo main)
 cleanup() {
@@ -41,7 +42,7 @@ trap cleanup EXIT
 git fetch origin "$BRANCH"
 git checkout -q -B "$BRANCH" "origin/$BRANCH"
 
-mkdir -p manifests archive
+mkdir -p manifests archive temp/manifest
 cp "$NEW_MANIFEST" "manifests/$BUILD_TAG.json"
 
 if [ -f "archive/$ARCHIVE_TAG.json" ]; then

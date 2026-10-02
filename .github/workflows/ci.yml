@@ -329,12 +329,7 @@ jobs:
           mkdir -p dev_logs/release-manifest
           cp -f "$json_file" dev_logs/release-manifest/build.json
           if [ -n "$tag" ]; then
-            if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
-              title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
-            else
-              title_base="Build $tag"
-            fi
-            release_title="${title_base} (Pre-release)"
+            release_title="Build No. ${tag} (Beta)"
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
             [ -s "$md_file" ] && mkdir -p changelogs && cp -f  $md_file changelogs/$tag.md
@@ -343,12 +338,6 @@ jobs:
             else
               gh release create "$tag" --title "$release_title" --prerelease "${notes_arg[@]}" || true
             fi
-            echo "Uploading $json_file to release $tag..."
-            gh release upload "$tag" "$json_file" --clobber || {
-              echo "::warning::Failed to upload $json_file to release $tag, retrying..."
-              sleep 3
-              gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
-            }
           fi
 
       - name: Upload dev release manifest artifact
@@ -362,12 +351,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          BUILD_TAG: ${{ needs.resolve_dev_version.outputs.next_ver_code_dev }}
           ARCHIVE_TAG: beta
           BUILT_FILES_FILE: dev_logs/aggregated_out/built_files.txt
           NEW_MANIFEST: dev_logs/aggregated_out/build.json
-        run: bash .github/scripts/merge_archive_manifest.sh
+        run: bash .github/scripts/merge_archive_branch.sh
 
       - name: Collect update branch files (Dev)
+        id: collect_update
         run: |
           set -euo pipefail
           mkdir -p changelogs
@@ -381,8 +372,14 @@ jobs:
           # Collect *-update.json from every parallel build part artifact.
           # Doing this once in the aggregation job avoids concurrent push races.
           find logs_artifacts -name "*-update.json" -exec cp -f {} . \; 2>/dev/null || true
+          if [ -n "$(find . -maxdepth 1 -name "*-update.json" -print -quit 2>/dev/null)" ]; then
+            echo "has_modules=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_modules=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Commit update branch files (Dev)
+        if: steps.collect_update.outputs.has_modules == 'true'
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: update
@@ -512,25 +509,15 @@ jobs:
           cp -f "$json_file" stable_logs/release-manifest/build.json
 
           if [ -n "$tag" ]; then
-            if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
-              title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
-            else
-              title_base="Build $tag"
-            fi
+            release_title="Build No. ${tag} (Stable)"
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
             [ -s "$md_file" ] && mkdir -p changelogs && cp -f  $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
-              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
+              gh release create "$tag" --title "$release_title" "${notes_arg[@]}" || true
             fi
-            echo "Uploading $json_file to release $tag..."
-            gh release upload "$tag" "$json_file" --clobber || {
-              echo "::warning::Failed to upload $json_file to release $tag, retrying..."
-              sleep 3
-              gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
-            }
           fi
 
       - name: Upload stable release manifest artifact
@@ -544,12 +531,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          BUILD_TAG: ${{ needs.resolve_stable_version.outputs.next_ver_code_stable }}
           ARCHIVE_TAG: stable
           BUILT_FILES_FILE: stable_logs/aggregated_out/built_files.txt
           NEW_MANIFEST: stable_logs/aggregated_out/build.json
-        run: bash .github/scripts/merge_archive_manifest.sh
+        run: bash .github/scripts/merge_archive_branch.sh
 
       - name: Collect update branch files (Stable)
+        id: collect_update
         run: |
           set -euo pipefail
           mkdir -p changelogs
@@ -562,8 +551,14 @@ jobs:
           fi
           # Collect *-update.json from every parallel build part artifact.
           find logs_artifacts -name "*-update.json" -exec cp -f {} . \; 2>/dev/null || true
+          if [ -n "$(find . -maxdepth 1 -name "*-update.json" -print -quit 2>/dev/null)" ]; then
+            echo "has_modules=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_modules=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Commit update branch files (Stable)
+        if: steps.collect_update.outputs.has_modules == 'true'
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: update
@@ -698,25 +693,15 @@ jobs:
           cp -f "$json_file" latest_logs/release-manifest/build.json
 
           if [ -n "$tag" ]; then
-            if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
-              title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
-            else
-              title_base="Build $tag"
-            fi
+            release_title="Build No. ${tag} (Latest)"
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
             [ -s "$md_file" ] && mkdir -p changelogs && cp -f  $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
-              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
+              gh release create "$tag" --title "$release_title" "${notes_arg[@]}" || true
             fi
-            echo "Uploading $json_file to release $tag..."
-            gh release upload "$tag" "$json_file" --clobber || {
-              echo "::warning::Failed to upload $json_file to release $tag, retrying..."
-              sleep 3
-              gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
-            }
           fi
 
       - name: Upload latest release manifest artifact
@@ -730,12 +715,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          BUILD_TAG: ${{ needs.resolve_latest_version.outputs.next_ver_code_latest }}
           ARCHIVE_TAG: stable
           BUILT_FILES_FILE: latest_logs/aggregated_out/built_files.txt
           NEW_MANIFEST: latest_logs/aggregated_out/build.json
-        run: bash .github/scripts/merge_archive_manifest.sh
+        run: bash .github/scripts/merge_archive_branch.sh
 
       - name: Collect update branch files (Latest)
+        id: collect_update
         run: |
           set -euo pipefail
           mkdir -p changelogs
@@ -748,8 +735,14 @@ jobs:
           fi
           # Collect *-update.json from every parallel build part artifact.
           find logs_artifacts -name "*-update.json" -exec cp -f {} . \; 2>/dev/null || true
+          if [ -n "$(find . -maxdepth 1 -name "*-update.json" -print -quit 2>/dev/null)" ]; then
+            echo "has_modules=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_modules=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Commit update branch files (Latest)
+        if: steps.collect_update.outputs.has_modules == 'true'
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: update
@@ -844,25 +837,15 @@ jobs:
           cp -f "$json_file" batch_logs/release-manifest/build.json
 
           if [ -n "$tag" ]; then
-            if [[ "$tag" =~ ^([0-9]{4}\.[0-9]{2}\.[0-9]{2})-([0-9]+)$ ]]; then
-              title_base="Build ${BASH_REMATCH[1]} (revision ${BASH_REMATCH[2]})"
-            else
-              title_base="Build $tag"
-            fi
+            release_title="Build No. ${tag} (${{ inputs.mode == 'Batch Build (Both)' && 'Beta' || 'Stable' }})"
             notes_arg=("--notes" "")
             [ -s "$md_file" ] && notes_arg=("--notes-file" "$md_file")
             [ -s "$md_file" ] && mkdir -p changelogs && cp -f $md_file changelogs/$tag.md
             if gh release view "$tag" >/dev/null 2>&1; then
               [ -s "$md_file" ] && gh release edit "$tag" --notes-file "$md_file" || true
             else
-              gh release create "$tag" --title "$title_base" "${notes_arg[@]}" || true
+              gh release create "$tag" --title "$release_title" "${notes_arg[@]}" || true
             fi
-            echo "Uploading $json_file as build.json to release $tag..."
-            gh release upload "$tag" "$json_file" --clobber || {
-              echo "::warning::Failed to upload $json_file to release $tag, retrying..."
-              sleep 3
-              gh release upload "$tag" "$json_file" --clobber || echo "::warning::Failed to upload $json_file to release $tag"
-            }
           fi
 
       - name: Upload batch release manifest artifact
@@ -876,12 +859,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          BUILD_TAG: ${{ needs.resolve_batch_version.outputs.next_ver_code_batch }}
           ARCHIVE_TAG: ${{ inputs.mode == 'Batch Build (Both)' && 'beta' || 'stable' }}
           BUILT_FILES_FILE: batch_logs/aggregated_out/built_files.txt
           NEW_MANIFEST: batch_logs/aggregated_out/build.json
-        run: bash .github/scripts/merge_archive_manifest.sh
+        run: bash .github/scripts/merge_archive_branch.sh
 
       - name: Collect update branch files (Batch)
+        id: collect_update
         run: |
           set -euo pipefail
           mkdir -p changelogs
@@ -894,8 +879,14 @@ jobs:
           fi
           # Collect *-update.json from every parallel build part artifact.
           find logs_artifacts -name "*-update.json" -exec cp -f {} . \; 2>/dev/null || true
+          if [ -n "$(find . -maxdepth 1 -name "*-update.json" -print -quit 2>/dev/null)" ]; then
+            echo "has_modules=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_modules=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Commit update branch files (Batch)
+        if: steps.collect_update.outputs.has_modules == 'true'
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: update
