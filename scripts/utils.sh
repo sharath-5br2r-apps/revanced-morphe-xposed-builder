@@ -4121,7 +4121,7 @@ verify_downloaded_apk() {
 
 # Which ABIs an artifact actually carries, read off its contents.
 #
-# Prints one build-arch token per line (arm64-v8a, arm-v7a, x86_64, x86), nothing when
+# Prints one build-arch token per line (arm64-v8a, armeabi-v7a, x86_64, x86), nothing when
 # the artifact has no ABI-specific content, and fails when the file is not a zip.
 # Two shapes have to be understood, and only the first ever was:
 #   merged apk               -> native libraries at lib/<abi>/
@@ -4141,11 +4141,11 @@ _artifact_abis() { # $1=apk or bundle
 		while IFS= read -r n; do
 			case "$n" in
 				lib/arm64-v8a/*) echo arm64-v8a ;;
-				lib/armeabi-v7a/*) echo arm-v7a ;;
+				lib/armeabi-v7a/* | lib/armeabi/*) echo armeabi-v7a ;;
 				lib/x86_64/*) echo x86_64 ;;
 				lib/x86/*) echo x86 ;;
 				*config.arm64_v8a.apk) echo arm64-v8a ;;
-				*config.armeabi_v7a.apk | *config.armeabi-v7a.apk | *config.armeabi.apk) echo arm-v7a ;;
+				*config.armeabi_v7a.apk | *config.armeabi-v7a.apk | *config.armeabi.apk) echo armeabi-v7a ;;
 				*config.x86_64.apk) echo x86_64 ;;
 				*config.x86.apk) echo x86 ;;
 			esac
@@ -4161,7 +4161,7 @@ check_is_universal() { # $1=apk or bundle
 	local abis
 	abis=$(_artifact_abis "$1") || return 1
 	[ -z "$abis" ] && return 0
-	printf '%s\n' "$abis" | grep -qx arm64-v8a && printf '%s\n' "$abis" | grep -qx arm-v7a
+	printf '%s\n' "$abis" | grep -qx arm64-v8a && printf '%s\n' "$abis" | grep -qx armeabi-v7a
 }
 
 # The arch token an artifact belongs under in a cache file name.
@@ -4185,15 +4185,18 @@ _cache_arch_key() { # $1=artifact  $2=arch_f this build asked for
 # Does a list of ABIs satisfy a build arch? $1=ABI tokens (space or newline
 # separated), $2=build arch token. An arch-agnostic artifact (empty list) and the
 # catch-all arches (all/universal/auto) satisfy everything; otherwise the list has
-# to name $2 exactly. Deliberately NOT a downward-compat test: arm-v7a bytes do run
+# to name $2 exactly. Deliberately NOT a downward-compat test: 32-bit ARM bytes do run
 # on arm64 devices, but shipping them under an arm64-v8a name would be the mislabel
 # this gate exists to remove (docs/decisions/0007). IFS-independent on purpose -
 # build_rv runs with IFS=$'\n'.
 _abis_satisfies() { # $1=abi list  $2=arch
 	local arch=${2:-}; arch=${arch// /}
+	[ "$arch" = "arm-v7a" ] && arch="armeabi-v7a"
 	case "$arch" in all | universal | auto | "") return 0 ;; esac
 	[ -z "${1// /}" ] && return 0
-	tr ' \n' '\n\n' <<<"$1" | grep -qxF -- "$arch"
+	local list_norm
+	list_norm=$(printf '%s\n' "$1" | sed -e 's/arm-v7a/armeabi-v7a/g')
+	tr ' \n' '\n\n' <<<"$list_norm" | grep -qxF -- "$arch"
 }
 
 # Same predicate, read straight off an artifact's bytes. Unreadable is treated as a
@@ -4253,6 +4256,7 @@ _app_versions_json_ver() {
 	local app_versions_file="state/app_versions.json"
 	[ -f "$app_versions_file" ] || return 0
 	local t_pure="${1% (arm64-v8a)}"
+	t_pure="${t_pure% (armeabi-v7a)}"
 	t_pure="${t_pure% (arm-v7a)}"
 	jq -r --arg t "$t_pure" 'to_entries | map(select(.key | startswith("_") | not)) | map(select(.value.keys != null and (.value.keys | index($t)))) | .[0].value.version // empty' "$app_versions_file"
 }
@@ -4570,6 +4574,7 @@ build_rv() {
 		if [ -f "$app_versions_file" ]; then
 			local t_pure="${table% (arm64-v8a)}"
 			t_pure="${t_pure% (armeabi-v7a)}"
+			t_pure="${t_pure% (arm-v7a)}"
 			local json_ver=$(jq -r --arg t "$t_pure" 'to_entries | map(select(.key | startswith("_") | not)) | map(select(.value.keys != null and (.value.keys | index($t)))) | .[0].value.version // empty' "$app_versions_file")
 			if [ -n "$json_ver" ]; then
 				resolved_version="$json_ver"
