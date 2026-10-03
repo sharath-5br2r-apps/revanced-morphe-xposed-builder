@@ -111,10 +111,16 @@ if [ -s "$aggregated_md" ]; then
   echo "[+] Aggregated changelog size: $(wc -c < "$aggregated_md") bytes"
 fi
 
-entries_count=$(jq 'keys | length' "$aggregated_json" 2>/dev/null || echo 0)
+if jq -e 'has("files")' "$aggregated_json" >/dev/null 2>&1; then
+  entries_count=$(jq '.files | length' "$aggregated_json" 2>/dev/null || echo 0)
+else
+  entries_count=$(jq 'keys | length' "$aggregated_json" 2>/dev/null || echo 0)
+fi
+
 if [ "$entries_count" -eq 0 ]; then
   echo "[-] ERROR: No build logs or JSON entries found to aggregate! Failing step."
   exit 1
 fi
 
 echo "[+] Aggregated build.json entries count: $entries_count"
+

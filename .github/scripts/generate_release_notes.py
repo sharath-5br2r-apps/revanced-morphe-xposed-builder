@@ -121,136 +121,236 @@ def main():
     # don't filter out everything (prevents generating notes without apps).
     if built_files:
         matches_any = False
-        for _, info in build_info.items():
-            if isinstance(info, dict):
-                for asset in info.get("assets") or []:
-                    if asset.get("name") in built_files:
-                        matches_any = True
-                        break
-            if matches_any:
-                break
+        if "files" in build_info and isinstance(build_info.get("files"), dict):
+            for fname in build_info["files"].keys():
+                if fname in built_files:
+                    matches_any = True
+                    break
+        else:
+            for _, info in build_info.items():
+                if isinstance(info, dict):
+                    for asset in info.get("assets") or []:
+                        if asset.get("name") in built_files:
+                            matches_any = True
+                            break
+                if matches_any:
+                    break
         if not matches_any:
             built_files = set()
 
     # patch_source → { source, tag, changelog_url, release_notes, apps: { display_name → { version, apks, modules } } }
     patch_groups = {}
+    arch_priority = {"arm64": 0, "arm": 1, "all": 2, "universal": 3, "x86_64": 4, "x86": 5}
 
-    for target_key, info in build_info.items():
-        if not isinstance(info, dict):
-            continue
+    if "files" in build_info and isinstance(build_info.get("files"), dict):
+        manifest_meta = build_info.get("meta") or {}
+        default_release_tag = next_ver_code or str(manifest_meta.get("build") or "").strip()
 
-        # Skip legacy file-named keys
-        if target_key.lower().endswith((".apk", ".zip")):
-            continue
-
-        patches_source = info.get("patches_source") or ""
-        patches_ref = info.get("patches") or ""
-        if isinstance(patches_ref, list):
-            patches_ref = " ".join(str(p) for p in patches_ref)
-
-        changelog_val = info.get("changelog") or ""
-        if isinstance(changelog_val, list):
-            changelog_val = " ".join(str(c) for c in changelog_val)
-        changelog_url = changelog_val.strip()
-
-        primary_source = patches_source.split()[0] if patches_source else (
-            patches_ref.split()[0].split("/")[0] if "/" in patches_ref else "Patched"
-        )
-
-        patch_tag = ""
-        first_url = changelog_url.split()[0] if changelog_url else ""
-        if first_url:
-            for sep in ["/tag/", "/-/releases/", "/releases/"]:
-                if sep in first_url:
-                    patch_tag = first_url.split(sep)[-1].strip("/")
-                    break
-        if not patch_tag and patches_ref:
-            ref_part = re.sub(r"\.(mpp|jar|rvp|apk|zip)$", "", patches_ref.split()[0], flags=re.IGNORECASE)
-            tag_match = re.search(r"v?\d+(\.\d+)+([.-][a-zA-Z0-9]+)*", ref_part)
-            if tag_match:
-                matched = tag_match.group(0)
-                patch_tag = matched if matched.startswith("v") else f"v{matched}"
-
-        group_key = primary_source
-        if group_key not in patch_groups:
-            patch_groups[group_key] = {
-                "source": primary_source,
-                "tag": patch_tag,
-                "changelog_url": first_url,
-                "release_notes": "",
-                "apps": {}
-            }
-
-        display_name = resolve_display_name(target_key, info)
-        version = str(info.get("version", "")).strip()
-
-        if display_name not in patch_groups[group_key]["apps"]:
-            patch_groups[group_key]["apps"][display_name] = {
-                "display_name": display_name,
-                "version": version,
-                "apks": [],
-                "modules": []
-            }
-        app_entry = patch_groups[group_key]["apps"][display_name]
-        if version and not app_entry["version"]:
-            app_entry["version"] = version
-
-        # Build download links from assets[]
-        assets = info.get("assets") or []
-        for asset in assets:
-            fname = asset.get("name", "")
-            if not fname:
+        for fname, file_data in build_info["files"].items():
+            if not isinstance(file_data, dict):
                 continue
-
-            # Only include if file is on disk, or build/ is absent (aggregated/remote run)
             if built_files and fname not in built_files:
                 continue
 
-            arch_raw = asset.get("arch") or extract_arch_from_filename(fname, version)
+            primary_source = (
+                file_data.get("brandName")
+                or file_data.get("patchesSource")
+                or "Patched"
+            )
+            if " " in primary_source:
+                primary_source = primary_source.split()[0]
+
+            patch_tag = ""
+            first_url = ""
+            changelog_urls = file_data.get("changelogUrls") or []
+            if changelog_urls:
+                first_url = str(changelog_urls[0]).strip()
+                for sep in ["/tag/", "/-/releases/", "/releases/"]:
+                    if sep in first_url:
+                        patch_tag = first_url.split(sep)[-1].strip("/")
+                        break
+
+            patches_ref = file_data.get("patches") or ""
+            if not patch_tag and patches_ref:
+                ref_part = re.sub(r"\.(mpp|jar|rvp|apk|zip)$", "", str(patches_ref).split()[0], flags=re.IGNORECASE)
+                tag_match = re.search(r"v?\d+(\.\d+)+([.-][a-zA-Z0-9]+)*", ref_part)
+                if tag_match:
+                    matched = tag_match.group(0)
+                    patch_tag = matched if matched.startswith("v") else f"v{matched}"
+
+            group_key = primary_source
+            if group_key not in patch_groups:
+                patch_groups[group_key] = {
+                    "source": primary_source,
+                    "tag": patch_tag,
+                    "changelog_url": first_url,
+                    "release_notes": "",
+                    "apps": {}
+                }
+
+            base_app_name = file_data.get("appName") or file_data.get("name") or fname
+            variant = (file_data.get("variant") or "").strip()
+            sub_variant = (file_data.get("subVariant") or "").strip()
+            extras = []
+            if variant and variant.lower() != "default":
+                extras.append(variant)
+            if sub_variant:
+                extras.append(sub_variant)
+            display_name = f"{base_app_name} ({' - '.join(extras)})" if extras else base_app_name
+
+            version = str(file_data.get("version", "")).strip()
+
+            if display_name not in patch_groups[group_key]["apps"]:
+                patch_groups[group_key]["apps"][display_name] = {
+                    "display_name": display_name,
+                    "version": version,
+                    "apks": [],
+                    "modules": []
+                }
+            app_entry = patch_groups[group_key]["apps"][display_name]
+            if version and not app_entry["version"]:
+                app_entry["version"] = version
+
+            arch_raw = file_data.get("arch") or extract_arch_from_filename(fname, version)
             norm_arch = normalize_arch(arch_raw)
+
+            file_release_code = str(file_data.get("originBuild") or default_release_tag).strip()
             dl_url = (
-                f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
-                if github_repo and next_ver_code else f"./build/{fname}"
+                f"{github_server}/{github_repo}/releases/download/{file_release_code}/{fname}"
+                if github_repo and file_release_code else f"./build/{fname}"
             )
 
             lower = fname.lower()
-            if lower.endswith(".apk") and "-module-" not in lower:
+            file_type = str(file_data.get("fileType", "")).upper()
+            if (file_type == "APK" or lower.endswith(".apk")) and "-module-" not in lower:
                 if not any(u == dl_url for _, u, *_ in app_entry["apks"]):
                     app_entry["apks"].append((norm_arch, dl_url))
-            elif lower.endswith(".zip") and "-module-" in lower:
+            elif file_type == "MODULE" or (lower.endswith(".zip") and "-module-" in lower):
                 display_label = f"{norm_arch} (Beta Channel)" if "-module-beta" in lower else norm_arch
                 if not any(u == dl_url for _, u, *_ in app_entry["modules"]):
                     app_entry["modules"].append((display_label, dl_url, norm_arch, "-module-beta" in lower))
 
-        # Fallback: no assets[], reconstruct filenames from top-level exts[]+name+arch
-        if not assets:
-            name = info.get("name", "")
-            arch = str(info.get("arch", "")).strip()
-            exts = info.get("exts") or []
-            clean_ver = version.replace(" ", "")
-            norm_arch = normalize_arch(arch)
-            for ext in exts:
-                ext = ext.lstrip(".")
-                if ext == "apk":
-                    fname = f"{name}-v{clean_ver}-{arch or 'all'}.apk"
-                    dl_url = (
-                        f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
-                        if github_repo and next_ver_code else fname
-                    )
+        for group in patch_groups.values():
+            for app_entry in group["apps"].values():
+                app_entry["apks"].sort(key=lambda x: arch_priority.get(x[0], 99))
+                app_entry["modules"].sort(key=lambda x: (arch_priority.get(x[2], 99), 1 if x[3] else 0))
+
+    else:
+        for target_key, info in build_info.items():
+            if not isinstance(info, dict):
+                continue
+
+            # Skip legacy file-named keys
+            if target_key.lower().endswith((".apk", ".zip")):
+                continue
+
+            patches_source = info.get("patches_source") or ""
+            patches_ref = info.get("patches") or ""
+            if isinstance(patches_ref, list):
+                patches_ref = " ".join(str(p) for p in patches_ref)
+
+            changelog_val = info.get("changelog") or ""
+            if isinstance(changelog_val, list):
+                changelog_val = " ".join(str(c) for c in changelog_val)
+            changelog_url = changelog_val.strip()
+
+            primary_source = patches_source.split()[0] if patches_source else (
+                patches_ref.split()[0].split("/")[0] if "/" in patches_ref else "Patched"
+            )
+
+            patch_tag = ""
+            first_url = changelog_url.split()[0] if changelog_url else ""
+            if first_url:
+                for sep in ["/tag/", "/-/releases/", "/releases/"]:
+                    if sep in first_url:
+                        patch_tag = first_url.split(sep)[-1].strip("/")
+                        break
+            if not patch_tag and patches_ref:
+                ref_part = re.sub(r"\.(mpp|jar|rvp|apk|zip)$", "", patches_ref.split()[0], flags=re.IGNORECASE)
+                tag_match = re.search(r"v?\d+(\.\d+)+([.-][a-zA-Z0-9]+)*", ref_part)
+                if tag_match:
+                    matched = tag_match.group(0)
+                    patch_tag = matched if matched.startswith("v") else f"v{matched}"
+
+            group_key = primary_source
+            if group_key not in patch_groups:
+                patch_groups[group_key] = {
+                    "source": primary_source,
+                    "tag": patch_tag,
+                    "changelog_url": first_url,
+                    "release_notes": "",
+                    "apps": {}
+                }
+
+            display_name = resolve_display_name(target_key, info)
+            version = str(info.get("version", "")).strip()
+
+            if display_name not in patch_groups[group_key]["apps"]:
+                patch_groups[group_key]["apps"][display_name] = {
+                    "display_name": display_name,
+                    "version": version,
+                    "apks": [],
+                    "modules": []
+                }
+            app_entry = patch_groups[group_key]["apps"][display_name]
+            if version and not app_entry["version"]:
+                app_entry["version"] = version
+
+            # Build download links from assets[]
+            assets = info.get("assets") or []
+            for asset in assets:
+                fname = asset.get("name", "")
+                if not fname:
+                    continue
+
+                # Only include if file is on disk, or build/ is absent (aggregated/remote run)
+                if built_files and fname not in built_files:
+                    continue
+
+                arch_raw = asset.get("arch") or extract_arch_from_filename(fname, version)
+                norm_arch = normalize_arch(arch_raw)
+                dl_url = (
+                    f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
+                    if github_repo and next_ver_code else f"./build/{fname}"
+                )
+
+                lower = fname.lower()
+                if lower.endswith(".apk") and "-module-" not in lower:
                     if not any(u == dl_url for _, u, *_ in app_entry["apks"]):
                         app_entry["apks"].append((norm_arch, dl_url))
-                elif ext == "zip":
-                    fname = f"{name}-module-v{clean_ver}-{arch or 'all'}.zip"
-                    dl_url = (
-                        f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
-                        if github_repo and next_ver_code else fname
-                    )
+                elif lower.endswith(".zip") and "-module-" in lower:
+                    display_label = f"{norm_arch} (Beta Channel)" if "-module-beta" in lower else norm_arch
                     if not any(u == dl_url for _, u, *_ in app_entry["modules"]):
-                        app_entry["modules"].append((norm_arch, dl_url, norm_arch, False))
+                        app_entry["modules"].append((display_label, dl_url, norm_arch, "-module-beta" in lower))
 
-        arch_priority = {"arm64": 0, "arm": 1, "all": 2, "universal": 3, "x86_64": 4, "x86": 5}
-        app_entry["apks"].sort(key=lambda x: arch_priority.get(x[0], 99))
-        app_entry["modules"].sort(key=lambda x: (arch_priority.get(x[2], 99), 1 if x[3] else 0))
+            # Fallback: no assets[], reconstruct filenames from top-level exts[]+name+arch
+            if not assets:
+                name = info.get("name", "")
+                arch = str(info.get("arch", "")).strip()
+                exts = info.get("exts") or []
+                clean_ver = version.replace(" ", "")
+                norm_arch = normalize_arch(arch)
+                for ext in exts:
+                    ext = ext.lstrip(".")
+                    if ext == "apk":
+                        fname = f"{name}-v{clean_ver}-{arch or 'all'}.apk"
+                        dl_url = (
+                            f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
+                            if github_repo and next_ver_code else fname
+                        )
+                        if not any(u == dl_url for _, u, *_ in app_entry["apks"]):
+                            app_entry["apks"].append((norm_arch, dl_url))
+                    elif ext == "zip":
+                        fname = f"{name}-module-v{clean_ver}-{arch or 'all'}.zip"
+                        dl_url = (
+                            f"{github_server}/{github_repo}/releases/download/{next_ver_code}/{fname}"
+                            if github_repo and next_ver_code else fname
+                        )
+                        if not any(u == dl_url for _, u, *_ in app_entry["modules"]):
+                            app_entry["modules"].append((norm_arch, dl_url, norm_arch, False))
+
+            app_entry["apks"].sort(key=lambda x: arch_priority.get(x[0], 99))
+            app_entry["modules"].sort(key=lambda x: (arch_priority.get(x[2], 99), 1 if x[3] else 0))
 
     # Build output markdown
     lines = []
