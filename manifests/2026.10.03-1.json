@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "kind": "archive",
+  "kind": "build",
   "meta": {
-    "build": "stable",
+    "build": "2026.10.03-1",
     "channel": "stable",
-    "publishedAt": "2026-10-03T04:27:57Z"
+    "publishedAt": "2026-10-03T04:19:28Z"
   },
   "files": {
     "speedtest-bholeykabhakt-v7.0.4-x86.apk": {
@@ -2321,6 +2321,62 @@
       "originBuild": "2026.10.03-1",
       "publishedAt": "2026-10-03T04:13:21Z"
     },
+    "myfitnesspal-hoodles-experimental-v26.39.0-arm64-v8a.apk": {
+      "name": "myfitnesspal-hoodles-experimental",
+      "version": "26.39.0",
+      "appKey": "myfitnesspal",
+      "appName": "MyFitnessPal",
+      "arch": "arm64-v8a",
+      "fileType": "APK",
+      "brandKey": "hoodles",
+      "brandName": "Hoodles",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "com.myfitnesspal.android",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "hoo-dles/patches-1.46.0.mpp",
+      "patchesSource": "hoo-dles/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Hoodles",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "x86",
+        "x86_64"
+      ],
+      "minSdk": "33",
+      "versionCode": "51509",
+      "patchSources": [
+        "hoo-dles/patches-1.46.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/hoo-dles/morphe-patches/releases/tag/v1.46.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Enable Premium+"
+      ],
+      "skippedPatches": [
+        "Hide app icon (default)",
+        "Enable debug (default)",
+        "Change package name (default)",
+        "MicroG integration (default)",
+        "Disable Pairip license check (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:13:21Z"
+    },
     "myfitnesspal-hoodles-experimental-v26.39.0-all.apk": {
       "name": "myfitnesspal-hoodles-experimental",
       "version": "26.39.0",
@@ -3758,195 +3814,6 @@
         "MX Player Pro License"
       ],
       "skippedPatches": [],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:17:03Z"
-    },
-    "amazon-india-rushiranpise-experimental-v32.18.0.300-armeabi-v7a.apk": {
-      "name": "amazon-india-rushiranpise-experimental",
-      "version": "32.18.0.300",
-      "appKey": "amazonindia",
-      "appName": "Amazon India",
-      "arch": "armeabi-v7a",
-      "fileType": "APK",
-      "brandKey": "rushiranpise",
-      "brandName": "Rushiranpise",
-      "variant": null,
-      "subVariant": "Experimental",
-      "packageName": "in.amazon.mShop.android.shopping",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "rushiranpise/patches-1.22.0.mpp",
-      "patchesSource": "rushiranpise/morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Rushiranpise",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a"
-      ],
-      "minSdk": "31",
-      "versionCode": "1243240206",
-      "patchSources": [
-        "rushiranpise/patches-1.22.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Dark mode",
-        "Disable search suggestions tracking",
-        "Disable video autoplay",
-        "Fix Amazon manifest conflicts",
-        "Open links in browser",
-        "Price history charts",
-        "Remove ads"
-      ],
-      "skippedPatches": [
-        "Hide Rufus tab",
-        "Disable PairIP license check (default)",
-        "Provide Original app certificate (default)",
-        "Spoof Widevine / DRM level (default)",
-        "Fix Firebase after re-signing (default)",
-        "GmsCore support (MicroG) (default)",
-        "Spoof install source (default)",
-        "Spoof app signature (default)"
-      ],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:17:03Z"
-    },
-    "amazon-india-rushiranpise-experimental-v32.18.0.300-arm64-v8a.apk": {
-      "name": "amazon-india-rushiranpise-experimental",
-      "version": "32.18.0.300",
-      "appKey": "amazonindia",
-      "appName": "Amazon India",
-      "arch": "arm64-v8a",
-      "fileType": "APK",
-      "brandKey": "rushiranpise",
-      "brandName": "Rushiranpise",
-      "variant": null,
-      "subVariant": "Experimental",
-      "packageName": "in.amazon.mShop.android.shopping",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "rushiranpise/patches-1.22.0.mpp",
-      "patchesSource": "rushiranpise/morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Rushiranpise",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a"
-      ],
-      "minSdk": "31",
-      "versionCode": "1243240206",
-      "patchSources": [
-        "rushiranpise/patches-1.22.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Dark mode",
-        "Disable search suggestions tracking",
-        "Disable video autoplay",
-        "Fix Amazon manifest conflicts",
-        "Open links in browser",
-        "Price history charts",
-        "Remove ads"
-      ],
-      "skippedPatches": [
-        "Hide Rufus tab",
-        "Disable PairIP license check (default)",
-        "Provide Original app certificate (default)",
-        "Spoof Widevine / DRM level (default)",
-        "Fix Firebase after re-signing (default)",
-        "GmsCore support (MicroG) (default)",
-        "Spoof install source (default)",
-        "Spoof app signature (default)"
-      ],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:17:03Z"
-    },
-    "amazon-india-rushiranpise-experimental-v32.18.0.300-all.apk": {
-      "name": "amazon-india-rushiranpise-experimental",
-      "version": "32.18.0.300",
-      "appKey": "amazonindia",
-      "appName": "Amazon India",
-      "arch": "all",
-      "fileType": "APK",
-      "brandKey": "rushiranpise",
-      "brandName": "Rushiranpise",
-      "variant": null,
-      "subVariant": "Experimental",
-      "packageName": "in.amazon.mShop.android.shopping",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "rushiranpise/patches-1.22.0.mpp",
-      "patchesSource": "rushiranpise/morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Rushiranpise",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a"
-      ],
-      "minSdk": "31",
-      "versionCode": "1243240206",
-      "patchSources": [
-        "rushiranpise/patches-1.22.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Dark mode",
-        "Disable search suggestions tracking",
-        "Disable video autoplay",
-        "Fix Amazon manifest conflicts",
-        "Open links in browser",
-        "Price history charts",
-        "Remove ads"
-      ],
-      "skippedPatches": [
-        "Hide Rufus tab",
-        "Disable PairIP license check (default)",
-        "Provide Original app certificate (default)",
-        "Spoof Widevine / DRM level (default)",
-        "Fix Firebase after re-signing (default)",
-        "GmsCore support (MicroG) (default)",
-        "Spoof install source (default)",
-        "Spoof app signature (default)"
-      ],
       "failedPatches": [],
       "originBuild": "2026.10.03-1",
       "publishedAt": "2026-10-03T04:17:03Z"
@@ -6151,6 +6018,195 @@
         "Disable Play Store updates (default)",
         "GmsCore support",
         "Network proxy (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:17:03Z"
+    },
+    "amazon-india-rushiranpise-experimental-v32.18.0.300-armeabi-v7a.apk": {
+      "name": "amazon-india-rushiranpise-experimental",
+      "version": "32.18.0.300",
+      "appKey": "amazonindia",
+      "appName": "Amazon India",
+      "arch": "armeabi-v7a",
+      "fileType": "APK",
+      "brandKey": "rushiranpise",
+      "brandName": "Rushiranpise",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "in.amazon.mShop.android.shopping",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "rushiranpise/patches-1.22.0.mpp",
+      "patchesSource": "rushiranpise/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Rushiranpise",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "31",
+      "versionCode": "1243240206",
+      "patchSources": [
+        "rushiranpise/patches-1.22.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Dark mode",
+        "Disable search suggestions tracking",
+        "Disable video autoplay",
+        "Fix Amazon manifest conflicts",
+        "Open links in browser",
+        "Price history charts",
+        "Remove ads"
+      ],
+      "skippedPatches": [
+        "Hide Rufus tab",
+        "Disable PairIP license check (default)",
+        "Provide Original app certificate (default)",
+        "Spoof Widevine / DRM level (default)",
+        "Fix Firebase after re-signing (default)",
+        "GmsCore support (MicroG) (default)",
+        "Spoof install source (default)",
+        "Spoof app signature (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:17:03Z"
+    },
+    "amazon-india-rushiranpise-experimental-v32.18.0.300-arm64-v8a.apk": {
+      "name": "amazon-india-rushiranpise-experimental",
+      "version": "32.18.0.300",
+      "appKey": "amazonindia",
+      "appName": "Amazon India",
+      "arch": "arm64-v8a",
+      "fileType": "APK",
+      "brandKey": "rushiranpise",
+      "brandName": "Rushiranpise",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "in.amazon.mShop.android.shopping",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "rushiranpise/patches-1.22.0.mpp",
+      "patchesSource": "rushiranpise/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Rushiranpise",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "31",
+      "versionCode": "1243240206",
+      "patchSources": [
+        "rushiranpise/patches-1.22.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Dark mode",
+        "Disable search suggestions tracking",
+        "Disable video autoplay",
+        "Fix Amazon manifest conflicts",
+        "Open links in browser",
+        "Price history charts",
+        "Remove ads"
+      ],
+      "skippedPatches": [
+        "Hide Rufus tab",
+        "Disable PairIP license check (default)",
+        "Provide Original app certificate (default)",
+        "Spoof Widevine / DRM level (default)",
+        "Fix Firebase after re-signing (default)",
+        "GmsCore support (MicroG) (default)",
+        "Spoof install source (default)",
+        "Spoof app signature (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:17:03Z"
+    },
+    "amazon-india-rushiranpise-experimental-v32.18.0.300-all.apk": {
+      "name": "amazon-india-rushiranpise-experimental",
+      "version": "32.18.0.300",
+      "appKey": "amazonindia",
+      "appName": "Amazon India",
+      "arch": "all",
+      "fileType": "APK",
+      "brandKey": "rushiranpise",
+      "brandName": "Rushiranpise",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "in.amazon.mShop.android.shopping",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "rushiranpise/patches-1.22.0.mpp",
+      "patchesSource": "rushiranpise/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Rushiranpise",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "31",
+      "versionCode": "1243240206",
+      "patchSources": [
+        "rushiranpise/patches-1.22.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Dark mode",
+        "Disable search suggestions tracking",
+        "Disable video autoplay",
+        "Fix Amazon manifest conflicts",
+        "Open links in browser",
+        "Price history charts",
+        "Remove ads"
+      ],
+      "skippedPatches": [
+        "Hide Rufus tab",
+        "Disable PairIP license check (default)",
+        "Provide Original app certificate (default)",
+        "Spoof Widevine / DRM level (default)",
+        "Fix Firebase after re-signing (default)",
+        "GmsCore support (MicroG) (default)",
+        "Spoof install source (default)",
+        "Spoof app signature (default)"
       ],
       "failedPatches": [],
       "originBuild": "2026.10.03-1",
@@ -17042,6 +17098,55 @@
       "originBuild": "2026.10.03-1",
       "publishedAt": "2026-10-03T04:18:22Z"
     },
+    "hill-climb-racing-byehi98-v1.72.2-armeabi-v7a.apk": {
+      "name": "hill-climb-racing-byehi98",
+      "version": "1.72.2",
+      "appKey": "hillclimbracing",
+      "appName": "Hill Climb Racing",
+      "arch": "armeabi-v7a",
+      "fileType": "APK",
+      "brandKey": "byehi98",
+      "brandName": "Byehi98",
+      "variant": null,
+      "subVariant": null,
+      "packageName": "com.fingersoft.hillclimb",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "byehi98/patches-1.36.2.mpp",
+      "patchesSource": "byehi98/okish-morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Byehi98",
+      "densities": [
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "24",
+      "versionCode": "936",
+      "patchSources": [
+        "byehi98/patches-1.36.2.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/byehi98/okish-morphe-patches/releases/tag/v1.36.2"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Hill Climb Racing Ad Removal",
+        "Hill Climb Racing Free Store",
+        "Hill Climb Racing Instant Rewarded Video Rewards"
+      ],
+      "skippedPatches": [],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:18:22Z"
+    },
     "youtube-music-anddea-amoled-module-v9.15.51-armeabi-v7a.zip": {
       "name": "youtube-music-anddea-amoled",
       "version": "9.15.51",
@@ -18517,150 +18622,6 @@
       "originBuild": "2026.10.03-1",
       "publishedAt": "2026-10-03T04:18:22Z"
     },
-    "adobe-acrobat-hooman-experimental-v26.9.1-all.apk": {
-      "name": "adobe-acrobat-hooman-experimental",
-      "version": "26.9.1",
-      "appKey": "adobeacrobat",
-      "appName": "Adobe Acrobat",
-      "arch": "all",
-      "fileType": "APK",
-      "brandKey": "hooman",
-      "brandName": "Hooman",
-      "variant": null,
-      "subVariant": "Experimental",
-      "packageName": "com.adobe.reader",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "arandomhooman/patches-1.53.0.mpp",
-      "patchesSource": "arandomhooman/hoomans-morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Hooman",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "x86_64"
-      ],
-      "minSdk": "28",
-      "versionCode": "1932149937",
-      "patchSources": [
-        "arandomhooman/patches-1.53.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.53.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Unlock Pro"
-      ],
-      "skippedPatches": [],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:18:22Z"
-    },
-    "adobe-acrobat-hooman-experimental-v26.9.1-arm64-v8a.apk": {
-      "name": "adobe-acrobat-hooman-experimental",
-      "version": "26.9.1",
-      "appKey": "adobeacrobat",
-      "appName": "Adobe Acrobat",
-      "arch": "arm64-v8a",
-      "fileType": "APK",
-      "brandKey": "hooman",
-      "brandName": "Hooman",
-      "variant": null,
-      "subVariant": "Experimental",
-      "packageName": "com.adobe.reader",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "arandomhooman/patches-1.53.0.mpp",
-      "patchesSource": "arandomhooman/hoomans-morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Hooman",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "x86_64"
-      ],
-      "minSdk": "28",
-      "versionCode": "1932149937",
-      "patchSources": [
-        "arandomhooman/patches-1.53.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.53.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Unlock Pro"
-      ],
-      "skippedPatches": [],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:18:22Z"
-    },
-    "adobe-acrobat-hooman-experimental-v26.9.1-x86_64.apk": {
-      "name": "adobe-acrobat-hooman-experimental",
-      "version": "26.9.1",
-      "appKey": "adobeacrobat",
-      "appName": "Adobe Acrobat",
-      "arch": "x86_64",
-      "fileType": "APK",
-      "brandKey": "hooman",
-      "brandName": "Hooman",
-      "variant": null,
-      "subVariant": "Experimental",
-      "packageName": "com.adobe.reader",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "arandomhooman/patches-1.53.0.mpp",
-      "patchesSource": "arandomhooman/hoomans-morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Hooman",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "x86_64"
-      ],
-      "minSdk": "28",
-      "versionCode": "1932149937",
-      "patchSources": [
-        "arandomhooman/patches-1.53.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.53.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Unlock Pro"
-      ],
-      "skippedPatches": [],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:18:22Z"
-    },
     "proton-vpn-paresh-v5.19.72.0-arm64-v8a.apk": {
       "name": "proton-vpn-paresh",
       "version": "5.19.72.0",
@@ -18910,6 +18871,150 @@
       "appliedPatches": [
         "Disable telemetry",
         "Proton VPN Premium"
+      ],
+      "skippedPatches": [],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:18:22Z"
+    },
+    "adobe-acrobat-hooman-experimental-v26.9.1-all.apk": {
+      "name": "adobe-acrobat-hooman-experimental",
+      "version": "26.9.1",
+      "appKey": "adobeacrobat",
+      "appName": "Adobe Acrobat",
+      "arch": "all",
+      "fileType": "APK",
+      "brandKey": "hooman",
+      "brandName": "Hooman",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "com.adobe.reader",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "arandomhooman/patches-1.53.0.mpp",
+      "patchesSource": "arandomhooman/hoomans-morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Hooman",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "x86_64"
+      ],
+      "minSdk": "28",
+      "versionCode": "1932149937",
+      "patchSources": [
+        "arandomhooman/patches-1.53.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.53.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Unlock Pro"
+      ],
+      "skippedPatches": [],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:18:22Z"
+    },
+    "adobe-acrobat-hooman-experimental-v26.9.1-arm64-v8a.apk": {
+      "name": "adobe-acrobat-hooman-experimental",
+      "version": "26.9.1",
+      "appKey": "adobeacrobat",
+      "appName": "Adobe Acrobat",
+      "arch": "arm64-v8a",
+      "fileType": "APK",
+      "brandKey": "hooman",
+      "brandName": "Hooman",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "com.adobe.reader",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "arandomhooman/patches-1.53.0.mpp",
+      "patchesSource": "arandomhooman/hoomans-morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Hooman",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "x86_64"
+      ],
+      "minSdk": "28",
+      "versionCode": "1932149937",
+      "patchSources": [
+        "arandomhooman/patches-1.53.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.53.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Unlock Pro"
+      ],
+      "skippedPatches": [],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:18:22Z"
+    },
+    "adobe-acrobat-hooman-experimental-v26.9.1-x86_64.apk": {
+      "name": "adobe-acrobat-hooman-experimental",
+      "version": "26.9.1",
+      "appKey": "adobeacrobat",
+      "appName": "Adobe Acrobat",
+      "arch": "x86_64",
+      "fileType": "APK",
+      "brandKey": "hooman",
+      "brandName": "Hooman",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "com.adobe.reader",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "arandomhooman/patches-1.53.0.mpp",
+      "patchesSource": "arandomhooman/hoomans-morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Hooman",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "x86_64"
+      ],
+      "minSdk": "28",
+      "versionCode": "1932149937",
+      "patchSources": [
+        "arandomhooman/patches-1.53.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/arandomhooman/hoomans-morphe-patches/releases/tag/v1.53.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Unlock Pro"
       ],
       "skippedPatches": [],
       "failedPatches": [],
@@ -28269,6 +28374,61 @@
       "originBuild": "2026.10.03-1",
       "publishedAt": "2026-10-03T04:15:17Z"
     },
+    "wps-office-hoodles-v18.24-armeabi-v7a.apk": {
+      "name": "wps-office-hoodles",
+      "version": "18.24",
+      "appKey": "wpsoffice",
+      "appName": "WPS Office",
+      "arch": "armeabi-v7a",
+      "fileType": "APK",
+      "brandKey": "hoodles",
+      "brandName": "Hoodles",
+      "variant": null,
+      "subVariant": null,
+      "packageName": "cn.wps.moffice_eng",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "hoo-dles/patches-1.46.0.mpp",
+      "patchesSource": "hoo-dles/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Hoodles",
+      "densities": [
+        "120",
+        "160",
+        "213",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "24",
+      "versionCode": "1555",
+      "patchSources": [
+        "hoo-dles/patches-1.46.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/hoo-dles/morphe-patches/releases/tag/v1.46.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Enable Pro"
+      ],
+      "skippedPatches": [
+        "Hide app icon (default)",
+        "Enable debug (default)",
+        "Change package name (default)",
+        "MicroG integration (default)",
+        "Disable Pairip license check (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:15:17Z"
+    },
     "cricbuzz-paresh-experimental-v16.09.04-x86.apk": {
       "name": "cricbuzz-paresh-experimental",
       "version": "16.09.04",
@@ -28520,61 +28680,6 @@
         "Cricbuzz Premium"
       ],
       "skippedPatches": [],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:15:17Z"
-    },
-    "wps-office-hoodles-v18.24-armeabi-v7a.apk": {
-      "name": "wps-office-hoodles",
-      "version": "18.24",
-      "appKey": "wpsoffice",
-      "appName": "WPS Office",
-      "arch": "armeabi-v7a",
-      "fileType": "APK",
-      "brandKey": "hoodles",
-      "brandName": "Hoodles",
-      "variant": null,
-      "subVariant": null,
-      "packageName": "cn.wps.moffice_eng",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "hoo-dles/patches-1.46.0.mpp",
-      "patchesSource": "hoo-dles/morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Hoodles",
-      "densities": [
-        "120",
-        "160",
-        "213",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a"
-      ],
-      "minSdk": "24",
-      "versionCode": "1555",
-      "patchSources": [
-        "hoo-dles/patches-1.46.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/hoo-dles/morphe-patches/releases/tag/v1.46.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Enable Pro"
-      ],
-      "skippedPatches": [
-        "Hide app icon (default)",
-        "Enable debug (default)",
-        "Change package name (default)",
-        "MicroG integration (default)",
-        "Disable Pairip license check (default)"
-      ],
       "failedPatches": [],
       "originBuild": "2026.10.03-1",
       "publishedAt": "2026-10-03T04:15:17Z"
@@ -35123,6 +35228,168 @@
       "originBuild": "2026.10.03-1",
       "publishedAt": "2026-10-03T04:12:54Z"
     },
+    "nova-launcher-hoodles-experimental-v8.9.2)-arm64-v8a.apk": {
+      "name": "nova-launcher-hoodles-experimental",
+      "version": "8.9.2)",
+      "appKey": "novalauncher",
+      "appName": "Nova Launcher",
+      "arch": "arm64-v8a",
+      "fileType": "APK",
+      "brandKey": "hoodles",
+      "brandName": "Hoodles",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "com.teslacoilsw.launcher",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "hoo-dles/patches-1.46.0.mpp",
+      "patchesSource": "hoo-dles/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Hoodles",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "26",
+      "versionCode": "89200",
+      "patchSources": [
+        "hoo-dles/patches-1.46.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/hoo-dles/morphe-patches/releases/tag/v1.46.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Enable Prime"
+      ],
+      "skippedPatches": [
+        "Hide app icon (default)",
+        "Enable debug (default)",
+        "Change package name (default)",
+        "MicroG integration (default)",
+        "Disable Pairip license check (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:12:54Z"
+    },
+    "nova-launcher-hoodles-experimental-v8.9.2)-all.apk": {
+      "name": "nova-launcher-hoodles-experimental",
+      "version": "8.9.2)",
+      "appKey": "novalauncher",
+      "appName": "Nova Launcher",
+      "arch": "all",
+      "fileType": "APK",
+      "brandKey": "hoodles",
+      "brandName": "Hoodles",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "com.teslacoilsw.launcher",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "hoo-dles/patches-1.46.0.mpp",
+      "patchesSource": "hoo-dles/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Hoodles",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "26",
+      "versionCode": "89200",
+      "patchSources": [
+        "hoo-dles/patches-1.46.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/hoo-dles/morphe-patches/releases/tag/v1.46.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Enable Prime"
+      ],
+      "skippedPatches": [
+        "Hide app icon (default)",
+        "Enable debug (default)",
+        "Change package name (default)",
+        "MicroG integration (default)",
+        "Disable Pairip license check (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:12:54Z"
+    },
+    "nova-launcher-hoodles-experimental-v8.9.2)-armeabi-v7a.apk": {
+      "name": "nova-launcher-hoodles-experimental",
+      "version": "8.9.2)",
+      "appKey": "novalauncher",
+      "appName": "Nova Launcher",
+      "arch": "armeabi-v7a",
+      "fileType": "APK",
+      "brandKey": "hoodles",
+      "brandName": "Hoodles",
+      "variant": null,
+      "subVariant": "Experimental",
+      "packageName": "com.teslacoilsw.launcher",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "hoo-dles/patches-1.46.0.mpp",
+      "patchesSource": "hoo-dles/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Hoodles",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "26",
+      "versionCode": "89200",
+      "patchSources": [
+        "hoo-dles/patches-1.46.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/hoo-dles/morphe-patches/releases/tag/v1.46.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Enable Prime"
+      ],
+      "skippedPatches": [
+        "Hide app icon (default)",
+        "Enable debug (default)",
+        "Change package name (default)",
+        "MicroG integration (default)",
+        "Disable Pairip license check (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:12:54Z"
+    },
     "chess-com-prathxm-v4.10.0-armeabi-v7a.apk": {
       "name": "chess-com-prathxm",
       "version": "4.10.0",
@@ -36137,6 +36404,53 @@
         "Premium unlock",
         "Remove ads"
       ],
+      "skippedPatches": [],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:12:54Z"
+    },
+    "discord-revenge-v347.12-Stable-arm64-v8a.apk": {
+      "name": "discord-revenge",
+      "version": "347.12-Stable",
+      "appKey": "discord",
+      "appName": "Discord",
+      "arch": "arm64-v8a",
+      "fileType": "APK",
+      "brandKey": "revenge",
+      "brandName": "Revenge",
+      "variant": null,
+      "subVariant": null,
+      "packageName": "com.discord",
+      "cli": "7723mod/NPatch",
+      "patches": "revenge-mod/app-release.apk",
+      "patchesSource": "revenge-mod/revenge-xposed",
+      "engineBrand": "NPatch",
+      "patchBrand": "Revenge",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "x86",
+        "x86_64"
+      ],
+      "minSdk": "28",
+      "versionCode": "347012",
+      "patchSources": [
+        "revenge-mod/app-release.apk"
+      ],
+      "changelogUrls": [
+        "https://github.com/revenge-mod/revenge-xposed/releases/tag/1603"
+      ],
+      "changelogs": [],
+      "appliedPatches": [],
       "skippedPatches": [],
       "failedPatches": [],
       "originBuild": "2026.10.03-1",
@@ -37838,6 +38152,195 @@
         "Change package name (default)",
         "MicroG integration (default)",
         "Disable Pairip license check (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:19:03Z"
+    },
+    "amazon-india-rushiranpise-v32.17.0.300-armeabi-v7a.apk": {
+      "name": "amazon-india-rushiranpise",
+      "version": "32.17.0.300",
+      "appKey": "amazonindia",
+      "appName": "Amazon India",
+      "arch": "armeabi-v7a",
+      "fileType": "APK",
+      "brandKey": "rushiranpise",
+      "brandName": "Rushiranpise",
+      "variant": null,
+      "subVariant": null,
+      "packageName": "in.amazon.mShop.android.shopping",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "rushiranpise/patches-1.22.0.mpp",
+      "patchesSource": "rushiranpise/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Rushiranpise",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "31",
+      "versionCode": "1243230206",
+      "patchSources": [
+        "rushiranpise/patches-1.22.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Dark mode",
+        "Disable search suggestions tracking",
+        "Disable video autoplay",
+        "Fix Amazon manifest conflicts",
+        "Open links in browser",
+        "Price history charts",
+        "Remove ads"
+      ],
+      "skippedPatches": [
+        "Hide Rufus tab",
+        "Disable PairIP license check (default)",
+        "Provide Original app certificate (default)",
+        "Spoof Widevine / DRM level (default)",
+        "Fix Firebase after re-signing (default)",
+        "GmsCore support (MicroG) (default)",
+        "Spoof install source (default)",
+        "Spoof app signature (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:19:03Z"
+    },
+    "amazon-india-rushiranpise-v32.17.0.300-arm64-v8a.apk": {
+      "name": "amazon-india-rushiranpise",
+      "version": "32.17.0.300",
+      "appKey": "amazonindia",
+      "appName": "Amazon India",
+      "arch": "arm64-v8a",
+      "fileType": "APK",
+      "brandKey": "rushiranpise",
+      "brandName": "Rushiranpise",
+      "variant": null,
+      "subVariant": null,
+      "packageName": "in.amazon.mShop.android.shopping",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "rushiranpise/patches-1.22.0.mpp",
+      "patchesSource": "rushiranpise/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Rushiranpise",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "31",
+      "versionCode": "1243230206",
+      "patchSources": [
+        "rushiranpise/patches-1.22.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Dark mode",
+        "Disable search suggestions tracking",
+        "Disable video autoplay",
+        "Fix Amazon manifest conflicts",
+        "Open links in browser",
+        "Price history charts",
+        "Remove ads"
+      ],
+      "skippedPatches": [
+        "Hide Rufus tab",
+        "Disable PairIP license check (default)",
+        "Provide Original app certificate (default)",
+        "Spoof Widevine / DRM level (default)",
+        "Fix Firebase after re-signing (default)",
+        "GmsCore support (MicroG) (default)",
+        "Spoof install source (default)",
+        "Spoof app signature (default)"
+      ],
+      "failedPatches": [],
+      "originBuild": "2026.10.03-1",
+      "publishedAt": "2026-10-03T04:19:03Z"
+    },
+    "amazon-india-rushiranpise-v32.17.0.300-all.apk": {
+      "name": "amazon-india-rushiranpise",
+      "version": "32.17.0.300",
+      "appKey": "amazonindia",
+      "appName": "Amazon India",
+      "arch": "all",
+      "fileType": "APK",
+      "brandKey": "rushiranpise",
+      "brandName": "Rushiranpise",
+      "variant": null,
+      "subVariant": null,
+      "packageName": "in.amazon.mShop.android.shopping",
+      "cli": "MorpheApp/morphe-desktop",
+      "patches": "rushiranpise/patches-1.22.0.mpp",
+      "patchesSource": "rushiranpise/morphe-patches",
+      "engineBrand": null,
+      "patchBrand": "Rushiranpise",
+      "densities": [
+        "120",
+        "160",
+        "240",
+        "320",
+        "480",
+        "640",
+        "65534",
+        "65535"
+      ],
+      "nativeLibraries": [
+        "arm64-v8a",
+        "armeabi-v7a"
+      ],
+      "minSdk": "31",
+      "versionCode": "1243230206",
+      "patchSources": [
+        "rushiranpise/patches-1.22.0.mpp"
+      ],
+      "changelogUrls": [
+        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
+      ],
+      "changelogs": [],
+      "appliedPatches": [
+        "Dark mode",
+        "Disable search suggestions tracking",
+        "Disable video autoplay",
+        "Fix Amazon manifest conflicts",
+        "Open links in browser",
+        "Price history charts",
+        "Remove ads"
+      ],
+      "skippedPatches": [
+        "Hide Rufus tab",
+        "Disable PairIP license check (default)",
+        "Provide Original app certificate (default)",
+        "Spoof Widevine / DRM level (default)",
+        "Fix Firebase after re-signing (default)",
+        "GmsCore support (MicroG) (default)",
+        "Spoof install source (default)",
+        "Spoof app signature (default)"
       ],
       "failedPatches": [],
       "originBuild": "2026.10.03-1",
@@ -40043,195 +40546,6 @@
         "Spoof signature (default)",
         "Disable Play Store updates (default)",
         "Network proxy (default)"
-      ],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:19:03Z"
-    },
-    "amazon-india-rushiranpise-v32.17.0.300-armeabi-v7a.apk": {
-      "name": "amazon-india-rushiranpise",
-      "version": "32.17.0.300",
-      "appKey": "amazonindia",
-      "appName": "Amazon India",
-      "arch": "armeabi-v7a",
-      "fileType": "APK",
-      "brandKey": "rushiranpise",
-      "brandName": "Rushiranpise",
-      "variant": null,
-      "subVariant": null,
-      "packageName": "in.amazon.mShop.android.shopping",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "rushiranpise/patches-1.22.0.mpp",
-      "patchesSource": "rushiranpise/morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Rushiranpise",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a"
-      ],
-      "minSdk": "31",
-      "versionCode": "1243230206",
-      "patchSources": [
-        "rushiranpise/patches-1.22.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Dark mode",
-        "Disable search suggestions tracking",
-        "Disable video autoplay",
-        "Fix Amazon manifest conflicts",
-        "Open links in browser",
-        "Price history charts",
-        "Remove ads"
-      ],
-      "skippedPatches": [
-        "Hide Rufus tab",
-        "Disable PairIP license check (default)",
-        "Provide Original app certificate (default)",
-        "Spoof Widevine / DRM level (default)",
-        "Fix Firebase after re-signing (default)",
-        "GmsCore support (MicroG) (default)",
-        "Spoof install source (default)",
-        "Spoof app signature (default)"
-      ],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:19:03Z"
-    },
-    "amazon-india-rushiranpise-v32.17.0.300-arm64-v8a.apk": {
-      "name": "amazon-india-rushiranpise",
-      "version": "32.17.0.300",
-      "appKey": "amazonindia",
-      "appName": "Amazon India",
-      "arch": "arm64-v8a",
-      "fileType": "APK",
-      "brandKey": "rushiranpise",
-      "brandName": "Rushiranpise",
-      "variant": null,
-      "subVariant": null,
-      "packageName": "in.amazon.mShop.android.shopping",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "rushiranpise/patches-1.22.0.mpp",
-      "patchesSource": "rushiranpise/morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Rushiranpise",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a"
-      ],
-      "minSdk": "31",
-      "versionCode": "1243230206",
-      "patchSources": [
-        "rushiranpise/patches-1.22.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Dark mode",
-        "Disable search suggestions tracking",
-        "Disable video autoplay",
-        "Fix Amazon manifest conflicts",
-        "Open links in browser",
-        "Price history charts",
-        "Remove ads"
-      ],
-      "skippedPatches": [
-        "Hide Rufus tab",
-        "Disable PairIP license check (default)",
-        "Provide Original app certificate (default)",
-        "Spoof Widevine / DRM level (default)",
-        "Fix Firebase after re-signing (default)",
-        "GmsCore support (MicroG) (default)",
-        "Spoof install source (default)",
-        "Spoof app signature (default)"
-      ],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:19:03Z"
-    },
-    "amazon-india-rushiranpise-v32.17.0.300-all.apk": {
-      "name": "amazon-india-rushiranpise",
-      "version": "32.17.0.300",
-      "appKey": "amazonindia",
-      "appName": "Amazon India",
-      "arch": "all",
-      "fileType": "APK",
-      "brandKey": "rushiranpise",
-      "brandName": "Rushiranpise",
-      "variant": null,
-      "subVariant": null,
-      "packageName": "in.amazon.mShop.android.shopping",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "rushiranpise/patches-1.22.0.mpp",
-      "patchesSource": "rushiranpise/morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Rushiranpise",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a"
-      ],
-      "minSdk": "31",
-      "versionCode": "1243230206",
-      "patchSources": [
-        "rushiranpise/patches-1.22.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/rushiranpise/morphe-patches/releases/tag/v1.22.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Dark mode",
-        "Disable search suggestions tracking",
-        "Disable video autoplay",
-        "Fix Amazon manifest conflicts",
-        "Open links in browser",
-        "Price history charts",
-        "Remove ads"
-      ],
-      "skippedPatches": [
-        "Hide Rufus tab",
-        "Disable PairIP license check (default)",
-        "Provide Original app certificate (default)",
-        "Spoof Widevine / DRM level (default)",
-        "Fix Firebase after re-signing (default)",
-        "GmsCore support (MicroG) (default)",
-        "Spoof install source (default)",
-        "Spoof app signature (default)"
       ],
       "failedPatches": [],
       "originBuild": "2026.10.03-1",
@@ -43288,158 +43602,6 @@
       "failedPatches": [],
       "originBuild": "2026.10.03-1",
       "publishedAt": "2026-10-03T04:19:28Z"
-    },
-    "myfitnesspal-hoodles-experimental-v26.39.0-arm64-v8a.apk": {
-      "name": "myfitnesspal-hoodles-experimental",
-      "version": "26.39.0",
-      "appKey": "myfitnesspal",
-      "appName": "MyFitnessPal",
-      "arch": "arm64-v8a",
-      "fileType": "APK",
-      "brandKey": "hoodles",
-      "brandName": "Hoodles",
-      "variant": null,
-      "subVariant": "Experimental",
-      "packageName": "com.myfitnesspal.android",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "hoo-dles/patches-1.46.0.mpp",
-      "patchesSource": "hoo-dles/morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Hoodles",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a",
-        "x86",
-        "x86_64"
-      ],
-      "minSdk": "33",
-      "versionCode": "51509",
-      "patchSources": [
-        "hoo-dles/patches-1.46.0.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/hoo-dles/morphe-patches/releases/tag/v1.46.0"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Enable Premium+"
-      ],
-      "skippedPatches": [
-        "Hide app icon (default)",
-        "Enable debug (default)",
-        "Change package name (default)",
-        "MicroG integration (default)",
-        "Disable Pairip license check (default)"
-      ],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:13:21Z"
-    },
-    "hill-climb-racing-byehi98-v1.72.2-armeabi-v7a.apk": {
-      "name": "hill-climb-racing-byehi98",
-      "version": "1.72.2",
-      "appKey": "hillclimbracing",
-      "appName": "Hill Climb Racing",
-      "arch": "armeabi-v7a",
-      "fileType": "APK",
-      "brandKey": "byehi98",
-      "brandName": "Byehi98",
-      "variant": null,
-      "subVariant": null,
-      "packageName": "com.fingersoft.hillclimb",
-      "cli": "MorpheApp/morphe-desktop",
-      "patches": "byehi98/patches-1.36.2.mpp",
-      "patchesSource": "byehi98/okish-morphe-patches",
-      "engineBrand": null,
-      "patchBrand": "Byehi98",
-      "densities": [
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534",
-        "65535"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a"
-      ],
-      "minSdk": "24",
-      "versionCode": "936",
-      "patchSources": [
-        "byehi98/patches-1.36.2.mpp"
-      ],
-      "changelogUrls": [
-        "https://github.com/byehi98/okish-morphe-patches/releases/tag/v1.36.2"
-      ],
-      "changelogs": [],
-      "appliedPatches": [
-        "Hill Climb Racing Ad Removal",
-        "Hill Climb Racing Free Store",
-        "Hill Climb Racing Instant Rewarded Video Rewards"
-      ],
-      "skippedPatches": [],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:18:22Z"
-    },
-    "discord-revenge-v347.12-Stable-arm64-v8a.apk": {
-      "name": "discord-revenge",
-      "version": "347.12-Stable",
-      "appKey": "discord",
-      "appName": "Discord",
-      "arch": "arm64-v8a",
-      "fileType": "APK",
-      "brandKey": "revenge",
-      "brandName": "Revenge",
-      "variant": null,
-      "subVariant": null,
-      "packageName": "com.discord",
-      "cli": "7723mod/NPatch",
-      "patches": "revenge-mod/app-release.apk",
-      "patchesSource": "revenge-mod/revenge-xposed",
-      "engineBrand": "NPatch",
-      "patchBrand": "Revenge",
-      "densities": [
-        "120",
-        "160",
-        "240",
-        "320",
-        "480",
-        "640",
-        "65534"
-      ],
-      "nativeLibraries": [
-        "arm64-v8a",
-        "armeabi-v7a",
-        "x86",
-        "x86_64"
-      ],
-      "minSdk": "28",
-      "versionCode": "347012",
-      "patchSources": [
-        "revenge-mod/app-release.apk"
-      ],
-      "changelogUrls": [
-        "https://github.com/revenge-mod/revenge-xposed/releases/tag/1603"
-      ],
-      "changelogs": [],
-      "appliedPatches": [],
-      "skippedPatches": [],
-      "failedPatches": [],
-      "originBuild": "2026.10.03-1",
-      "publishedAt": "2026-10-03T04:12:54Z"
     }
   }
 }
