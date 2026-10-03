@@ -183,7 +183,7 @@ toml_get() {
 log_build_event() {
 	local level="$1" msg="$2"
 	local app="${CURRENT_APP_NAME:-}"
-	local part="${CURRENT_BUILD_PART:-${CONFIG_TAG:-}}"
+	local part="${CURRENT_BUILD_PART:-}"
 	if [ -f "${CWD}/.github/scripts/append_build_log.py" ]; then
 		python3 "${CWD}/.github/scripts/append_build_log.py" "$RVB_LOG_JSON" "$level" "$msg" "$app" "$part" 2>/dev/null || true
 		if [ "$level" = "error" ] || [ "$level" = "warning" ]; then
@@ -195,7 +195,7 @@ log_build_event() {
 pr() { echo >&2 -e "\033[0;32m[+] ${1}\033[0m"; }
 epr() {
 	local app="${CURRENT_APP_NAME:-}"
-	local part="${CURRENT_BUILD_PART:-${CONFIG_TAG:-}}"
+	local part="${CURRENT_BUILD_PART:-}"
 	local pfx="[-]"
 	[ -n "$app" ] && pfx="$pfx [$app]"
 	[ -n "$part" ] && pfx="$pfx [$part]"
@@ -206,7 +206,7 @@ epr() {
 }
 wpr() {
 	local app="${CURRENT_APP_NAME:-}"
-	local part="${CURRENT_BUILD_PART:-${CONFIG_TAG:-}}"
+	local part="${CURRENT_BUILD_PART:-}"
 	local pfx="[!]"
 	[ -n "$app" ] && pfx="$pfx [$app]"
 	[ -n "$part" ] && pfx="$pfx [$part]"
@@ -4407,6 +4407,7 @@ build_rv() {
 	[ -z "$app_name_l" ] && { app_name_l=${app_name,,}; app_name_l=${app_name_l// /-}; }
 	local table=${args[table]}
 	local CURRENT_APP_NAME="${table}"
+	export CURRENT_BUILD_PART="check_version"
 	local dl_from=${args[dl_from]}
 	local arch=${args[arch]}
 	local arch_list=()
@@ -4826,6 +4827,7 @@ build_rv() {
 				pr "Target version code for '$pkg_name' (v${version}, arch: ${arch_f}): $target_version_code"
 			fi
 
+			CURRENT_BUILD_PART="download"
 			local vc_infix="${target_version_code:+-${target_version_code}}"
 			local _apk_lock_pid="" _apk_lock_ready=""
 			mkdir -p "${TEMP_DIR}/apkslocks"
@@ -5375,6 +5377,7 @@ build_rv() {
 		if [ ! -f "$stock_apk" ] && [ -f "$prepared_stock_apk" ]; then
 			stock_apk="$prepared_stock_apk"
 		fi
+	CURRENT_BUILD_PART="patch"
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
 		local -a cur_per_bundle_ed_args=("${per_bundle_ed_args[@]}")
@@ -5522,7 +5525,8 @@ build_rv() {
 			write_build_info "${table% (*)}" "${arch_f}" "$output_ext" "${file_prefix}" "$version_f" "$patches_ref" "$changelog_url" "$final_pkg_name" "${app_name}" "${args[patches_src]}" "${engine_brand_val}" "${patch_brand_val}" "${variant_val}" "${sub_variant_val}" "$apk_output" "$apk_output" 
 			continue
 		fi
-   local base_template
+		CURRENT_BUILD_PART="build_module"
+		local base_template
 		base_template=$(mktemp -d -p "$TEMP_DIR")
 		cp -a $MODULE_TEMPLATE_DIR/. "$base_template"
 		local upj
@@ -5609,8 +5613,13 @@ build_rv() {
 
 			local module_output="${file_prefix}-module-v${version_f}-${arch_f}.zip"
 			pr "Packing module ${table} (root stable)"
+			log_build_event "info" "Packing module ${table} (root stable)"
 			pushd >/dev/null "$base_template" || abort "Module template dir not found"
-			zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .
+			if ! zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${module_output}" .; then
+				popd >/dev/null || :
+				epr "Failed to pack module ${table} (root stable)"
+				return 0
+			fi
 			popd >/dev/null || :
 			pr "Built ${table} (root stable): '${BUILD_DIR}/${module_output}'"
 			log_build_event "success" "Built ${table} (root stable): '${BUILD_DIR}/${module_output}'"
@@ -5631,8 +5640,13 @@ build_rv() {
 
 		local beta_module_output="${file_prefix}-module-beta-v${version_f}-${arch_f}.zip"
 		pr "Packing module ${table} (root beta)"
+		log_build_event "info" "Packing module ${table} (root beta)"
 		pushd >/dev/null "$base_template" || abort "Module template dir not found"
-		zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${beta_module_output}" .
+		if ! zip -"$COMPRESSION_LEVEL" -FSqr "${CWD}/${BUILD_DIR}/${beta_module_output}" .; then
+			popd >/dev/null || :
+			epr "Failed to pack module ${table} (root beta)"
+			return 0
+		fi
 		popd >/dev/null || :
 		pr "Built ${table} (root beta): '${BUILD_DIR}/${beta_module_output}'"
 		log_build_event "success" "Built ${table} (root beta): '${BUILD_DIR}/${beta_module_output}'"

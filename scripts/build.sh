@@ -115,12 +115,7 @@ done
 
 if [ -n "$OUTPUT_DIR" ]; then BUILD_DIR="$OUTPUT_DIR"; fi
 
-if [ -z "${CURRENT_BUILD_PART:-}" ]; then
-	_cfg_base=$(basename "$CONFIG_FILE")
-	_cfg_tag="${_cfg_base%.*}"
-	CURRENT_BUILD_PART="${_cfg_tag//./-}"
-fi
-export CURRENT_BUILD_PART
+export CURRENT_BUILD_PART="${CURRENT_BUILD_PART:-}"
 
 trap "abort" INT
 
