@@ -115,6 +115,13 @@ done
 
 if [ -n "$OUTPUT_DIR" ]; then BUILD_DIR="$OUTPUT_DIR"; fi
 
+if [ -z "${CURRENT_BUILD_PART:-}" ]; then
+	_cfg_base=$(basename "$CONFIG_FILE")
+	_cfg_tag="${_cfg_base%.*}"
+	CURRENT_BUILD_PART="${_cfg_tag//./-}"
+fi
+export CURRENT_BUILD_PART
+
 trap "abort" INT
 
 if [ "${CLEAN_REQUESTED:-false}" = true ]; then
@@ -210,7 +217,7 @@ JOB_SEQ=0
 if ((PAR_JOBS > 1)); then
 	mkdir -p "$QUEUE_DIR"
 	# vars build_rv reads as globals; children get them through the env
-	export RVB_UTILS_SH COMPRESSION_LEVEL ENABLE_MODULE_UPDATE DEF_AUTHOR_NAME REMOVE_RV_INTEGRATIONS_CHECKS RVB_ERROR_LOG RVB_ERROR_JSON RVB_LOG_JSON
+	export RVB_UTILS_SH COMPRESSION_LEVEL ENABLE_MODULE_UPDATE DEF_AUTHOR_NAME REMOVE_RV_INTEGRATIONS_CHECKS RVB_ERROR_LOG RVB_ERROR_JSON RVB_LOG_JSON CURRENT_BUILD_PART
 
 	_reap_done() {
 		local id rc

@@ -194,16 +194,26 @@ log_build_event() {
 
 pr() { echo >&2 -e "\033[0;32m[+] ${1}\033[0m"; }
 epr() {
-	echo >&2 -e "\033[0;31m[-] ${1}\033[0m"
-	printf '%s\n' "[-] ${1}" >> "$RVB_ERROR_LOG"
+	local app="${CURRENT_APP_NAME:-}"
+	local part="${CURRENT_BUILD_PART:-${CONFIG_TAG:-}}"
+	local pfx="[-]"
+	[ -n "$app" ] && pfx="$pfx [$app]"
+	[ -n "$part" ] && pfx="$pfx [$part]"
+	echo >&2 -e "\033[0;31m${pfx} ${1}\033[0m"
+	printf '%s\n' "${pfx} ${1}" >> "$RVB_ERROR_LOG"
 	log_build_event "error" "${1}"
-	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::error::utils.sh [-] ${1}\n"; fi
+	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::error::utils.sh ${pfx} ${1}\n"; fi
 }
 wpr() {
-	echo >&2 -e "\033[0;33m[!] ${1}\033[0m"
-	printf '%s\n' "[!] ${1}" >> "$RVB_ERROR_LOG"
+	local app="${CURRENT_APP_NAME:-}"
+	local part="${CURRENT_BUILD_PART:-${CONFIG_TAG:-}}"
+	local pfx="[!]"
+	[ -n "$app" ] && pfx="$pfx [$app]"
+	[ -n "$part" ] && pfx="$pfx [$part]"
+	echo >&2 -e "\033[0;33m${pfx} ${1}\033[0m"
+	printf '%s\n' "${pfx} ${1}" >> "$RVB_ERROR_LOG"
 	log_build_event "warning" "${1}"
-	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::warning::utils.sh [!] ${1}\n"; fi
+	if [ "${GITHUB_REPOSITORY-}" ]; then echo >&2 -e "::warning::utils.sh ${pfx} ${1}\n"; fi
 }
 abort() {
 	epr "ABORT: ${1-}"
