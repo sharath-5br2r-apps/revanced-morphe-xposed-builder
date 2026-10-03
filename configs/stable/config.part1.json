@@ -1,19 +1,18 @@
 {
   "patches-version": "stable",
   "enable-module-update": true,
-  "Speedtest-Morphe-BholeyKaBhakt-Experimental": {
+  "TikTok-Morphe-Hushfeed": {
     "enable-module-update": true,
-    "patches-source": "BholeyKaBhakt/revanced-patches-xtra",
-    "patch-brand": "BholeyKaBhakt",
     "cli-type": "morphe",
     "enabled": true,
-    "app-name": "Speedtest",
-    "pkg-name": "org.zwanoo.android.speedtest",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
-    "uptodown-dlurl": "https://speedtest-net-mobile.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ookla/speedtest"
+    "app-name": "TikTok",
+    "pkg-name": "com.zhiliaoapp.musically",
+    "patch-brand": "Hushfeed",
+    "arch": "all arm64-v8a armeabi-v7a",
+    "uptodown-dlurl": "https://tiktok.en.uptodown.com/android",
+    "apkmirror-dlurl": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly",
+    "apkpure-dlurl": "https://apkpure.com/tiktok-app/com.zhiliaoapp.musically",
+    "apkcombo-dlurl": "https://apkcombo.com/tiktok-videos-shop-live/com.zhiliaoapp.musically",
+    "patches-source": "SysAdminDoc/hushfeed"
   }
 }
