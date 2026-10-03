@@ -1,18 +1,3 @@
 {
-  "patches-version": "both",
-  "Speedtest-Morphe-BholeyKaBhakt-Experimental": {
-    "enable-module-update": true,
-    "patches-source": "BholeyKaBhakt/revanced-patches-xtra",
-    "patch-brand": "BholeyKaBhakt",
-    "cli-type": "morphe",
-    "enabled": true,
-    "app-name": "Speedtest",
-    "pkg-name": "org.zwanoo.android.speedtest",
-    "sub-variant": "Experimental",
-    "version": "latest",
-    "skip-patch-app-check": true,
-    "arch": "arm64-v8a x86_64 armeabi-v7a x86",
-    "uptodown-dlurl": "https://speedtest-net-mobile.en.uptodown.com/android",
-    "apkmirror-dlurl": "https://www.apkmirror.com/apk/ookla/speedtest"
-  }
+  "patches-version": "both"
 }
